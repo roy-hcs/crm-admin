@@ -1,5 +1,2 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-# Run lint-staged to check files that are being committed
 npx lint-staged
+npx tsc --noEmit

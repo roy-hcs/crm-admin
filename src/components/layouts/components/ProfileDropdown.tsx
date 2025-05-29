@@ -20,10 +20,10 @@ export const ProfileDropdown: React.FC = () => {
   const callToAction = (menu: string) => {
     switch (menu) {
       case 'profile':
-        console.log('jump to profile');
+        navigate('/profile');
         break;
       case 'settings':
-        console.log('jump to settings');
+        navigate('/settings');
         break;
       case 'logout':
         handleLogout();
