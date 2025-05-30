@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { X, MoreHorizontal } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTabStore, type TabItem } from '../../store/tabStore';
+import { cn } from '@/lib/utils';
 
 export function TabNavigation() {
   const navigate = useNavigate();
@@ -15,13 +16,24 @@ export function TabNavigation() {
 
   const handleCloseTab = (e: React.MouseEvent, key: string) => {
     e.stopPropagation();
+    if (activeTab === key) {
+      const currentIndex = tabs.findIndex(tab => tab.key === activeTab);
+      if (tabs[currentIndex + 1]) {
+        setActiveTab(tabs[currentIndex + 1].key);
+        navigate(tabs[currentIndex + 1].path);
+      } else if (tabs[currentIndex - 1]) {
+        // in current design, there always should be a previous tab (dashboard) if the current one is closed
+        setActiveTab(tabs[currentIndex - 1].key);
+        navigate(tabs[currentIndex - 1].path);
+      }
+    }
     removeTab(key);
   };
 
   const handleTabActions = (action: 'closeAll' | 'closeOthers') => {
     if (action === 'closeAll') {
       closeAllTabs();
-      navigate('/dashboard');
+      navigate('/');
     } else if (action === 'closeOthers') {
       closeOtherTabs(activeTab);
     }
@@ -29,19 +41,22 @@ export function TabNavigation() {
   };
 
   return (
-    <div className="bg-background relative flex w-full items-center border-b">
-      <div className="flex flex-1 items-center overflow-x-auto p-1">
+    <div className="bg-background relative flex w-full items-center border-b py-0.5">
+      <div className="flex flex-1 items-center gap-0.5 overflow-x-auto px-0.5">
         {tabs.map(tab => (
           <div
             key={tab.key}
-            className={`mx-1 flex cursor-pointer items-center rounded-md px-4 py-2 select-none ${activeTab === tab.key ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'} `}
+            className={cn(
+              'flex cursor-pointer items-center border px-2 py-1 text-xs select-none',
+              activeTab === tab.key ? 'bg-primary text-primary-foreground' : 'hover:bg-muted',
+            )}
             onClick={() => handleTabClick(tab)}
           >
             <span>{tab.title}</span>
             {tab.closable && (
               <button
                 onClick={e => handleCloseTab(e, tab.key)}
-                className="hover:bg-primary-foreground hover:text-primary ml-2 rounded-full p-1"
+                className="hover:bg-primary-foreground hover:text-primary ml-2 cursor-pointer rounded-full"
               >
                 <X className="h-3 w-3" />
               </button>
@@ -49,13 +64,10 @@ export function TabNavigation() {
           </div>
         ))}
       </div>
-
+      {/* TODO: not sure whether keep it or not */}
       <div className="relative px-2">
-        <button
-          onClick={() => setShowDropdown(!showDropdown)}
-          className="hover:bg-muted rounded-md p-2"
-        >
-          <MoreHorizontal className="h-5 w-5" />
+        <button onClick={() => setShowDropdown(!showDropdown)} className="hover:bg-muted px-2 py-1">
+          <MoreHorizontal className="h-4 w-4" />
         </button>
 
         {showDropdown && (

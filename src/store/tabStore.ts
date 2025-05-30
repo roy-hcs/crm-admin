@@ -26,7 +26,7 @@ interface TabStore {
 export const useTabStore = create<TabStore>()(
   persist(
     (set, get) => ({
-      tabs: [{ key: 'dashboard', title: 'Dashboard', path: '/dashboard', closable: false }],
+      tabs: [{ key: 'dashboard', title: 'Dashboard', path: '/', closable: false }],
       activeTab: 'dashboard',
       cachedTabKeys: ['dashboard'],
       maxCachedTabs: 10,

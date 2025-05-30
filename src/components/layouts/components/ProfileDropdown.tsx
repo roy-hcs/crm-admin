@@ -8,11 +8,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/auth';
 import { useNavigate } from 'react-router-dom';
+import { useTabStore } from '@/store/tabStore';
 
 export const ProfileDropdown: React.FC = () => {
   const menus = ['profile', 'settings', 'logout'];
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const { addTab } = useTabStore();
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -20,9 +22,11 @@ export const ProfileDropdown: React.FC = () => {
   const callToAction = (menu: string) => {
     switch (menu) {
       case 'profile':
+        addTab({ key: 'profile', title: 'Profile', path: '/profile', closable: true });
         navigate('/profile');
         break;
       case 'settings':
+        addTab({ key: 'settings', title: 'Settings', path: '/settings', closable: true });
         navigate('/settings');
         break;
       case 'logout':

@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Users,
   BarChart2,
@@ -26,6 +26,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
+import { useTabStore } from '@/store/tabStore';
 
 interface MenuItem {
   title: string;
@@ -49,20 +50,28 @@ function AccordionMenuItem({ item, level }: AccordionMenuItemProps) {
   const location = useLocation();
   const isActive = item.path === location.pathname;
   const hasChildren = item.children && item.children.length > 0;
+  const navigate = useNavigate();
+  const { addTab } = useTabStore();
+  const handleClick = (path?: string) => {
+    if (path) {
+      addTab({ key: path, title: item.title, path, closable: true });
+      navigate(path);
+    }
+  };
 
   if (!hasChildren) {
     return (
       <div className="my-1">
-        <Link
-          to={item.path || '#'}
+        <button
+          onClick={() => handleClick(item.path)}
           className={cn(
-            'flex items-center rounded-md p-2 text-sm',
+            'flex w-full cursor-pointer items-center rounded-md p-2 text-sm',
             isActive ? 'bg-card text-sidebar-accent-foreground' : 'hover:bg-accent',
           )}
         >
           {item.icon && <span className="mr-3">{item.icon}</span>}
           <span>{item.title}</span>
-        </Link>
+        </button>
       </div>
     );
   }

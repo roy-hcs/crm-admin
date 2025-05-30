@@ -1,54 +1,80 @@
-# React + TypeScript + Vite
+# CRM Admin Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a CRM (Customer Relationship Management) admin dashboard built with **React** and **Vite**. It leverages a variety of modern web technologies and tools to provide a robust and efficient development experience.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Framework**: [React](https://react.dev/) with [Vite](https://vitejs.dev/) for fast development and optimized builds
+- **UI Components**: [Shadcn](https://ui.shadcn.com/) for highly customizable and accessible components
+- **State Management**: [Zustand](https://github.com/pmndrs/zustand) for simple and scalable application state management
+- **Data Fetching**: [TanStack Query](https://tanstack.com/query) for efficient and reliable data handling
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) for utility-first styling and rapid UI development
+- **Language**: [TypeScript](https://www.typescriptlang.org/) for type safety and improved developer experience
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **Node.js**: Ensure you have Node.js version >= 18.17.0 installed. You can download it from [Node.js official website](https://nodejs.org/).
+- **pnpm**: This project uses [pnpm](https://pnpm.io/) as the package manager. Install it globally if you haven't already:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+  ```bash
+  npm install -g pnpm
+  ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Installation
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/crm-admin.git
+   cd crm-admin
+   ```
+
+2. Install the dependencies:
+
+   ```bash
+   pnpm install
+   ```
+
+### Running the Project
+
+1. Start the development server:
+
+   ```bash
+   pnpm dev
+   ```
+
+2. Open your browser and navigate to `http://localhost:5173` to see the project in action.
+
+## Code Quality Tools
+
+This project is configured with several tools to maintain code quality:
+
+### Husky Pre-commit Hooks
+
+The project uses [Husky](https://typicode.github.io/husky/) to run checks before each commit:
+
+- TypeScript type checking
+- ESLint linting
+- Formatting checks
+
+This ensures that all committed code meets the project's quality standards.
+
+### Manual Checks
+
+You can also run these checks manually using the following scripts:
+
+```bash
+# TypeScript type checking
+pnpm typecheck
+
+# ESLint linting
+pnpm lint
+
+# Build the project
+pnpm build
+
+# Preview production build
+pnpm preview
 ```
