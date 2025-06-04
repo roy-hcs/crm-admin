@@ -1,7 +1,7 @@
 import { RouterProvider } from 'react-router-dom';
 import { router } from './routes';
 import { AuthProvider } from './contexts/auth';
-import { QueryProvider } from './contexts/QueryContext';
+import { QueryProvider } from './contexts/query';
 import { ErrorProvider } from '@/contexts/error';
 import { ErrorAlert } from './components/common/ErrorAlert';
 import { Suspense } from 'react';
