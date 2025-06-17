@@ -7,8 +7,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 
-export const LanguageSwitcher: React.FC = () => {
+export const LanguageSwitcher: React.FC<{ showLabel?: boolean; className?: string }> = ({
+  showLabel = true,
+  className,
+}) => {
   const { language, setLanguage } = useStore();
 
   const languages = [
@@ -18,9 +22,11 @@ export const LanguageSwitcher: React.FC = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="hover:bg-accent flex cursor-pointer items-center rounded-sm p-2">
+      <DropdownMenuTrigger
+        className={cn('hover:bg-accent flex cursor-pointer items-center rounded-sm p-2', className)}
+      >
         <Globe className="h-5 w-5" />
-        <span className="ml-2 hidden sm:inline-block">{language.toUpperCase()}</span>
+        {showLabel && <span className="ml-2 hidden sm:inline-block">{language.toUpperCase()}</span>}
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {languages.map(lang => (

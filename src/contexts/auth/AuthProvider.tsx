@@ -1,9 +1,11 @@
 import { useState, useEffect, type ReactNode } from 'react';
 import { AuthContext, type User } from './auth-context';
+import { useTabStore } from '@/store/tabStore';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
+  const { closeAllTabs } = useTabStore();
 
   useEffect(() => {
     // Check if there's a stored token or session
@@ -44,6 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     localStorage.removeItem('auth_token');
+    closeAllTabs();
     setIsAuthenticated(false);
     setUser(null);
   };

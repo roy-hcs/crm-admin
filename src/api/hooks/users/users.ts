@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryClient } from '../../../lib/tanstack-query';
 import { fetchWithAuth } from '../../client';
 
@@ -21,7 +21,7 @@ export interface LoginParams {
   username: string;
   password: string;
   rememberMe: boolean;
-  type: string;
+  type: number;
 }
 
 export interface RegisterParams {
@@ -35,24 +35,53 @@ export interface RegisterParams {
 export function useLogin() {
   return useMutation({
     mutationFn: async (params: LoginParams) => {
+      const formData = new URLSearchParams();
+      Object.entries(params).forEach(([key, value]) => {
+        formData.append(key, String(value));
+      });
       const data = await fetchWithAuth<{
         code: number;
         msg: string;
         data: { userId: string; pubKey: string } | null;
       }>('/login', {
         method: 'POST',
-        body: JSON.stringify(params),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        credentials: 'include',
+        body: formData.toString(),
       });
-      // Store auth token if returned
-      // if (data.token) {
-      //   localStorage.setItem('authToken', data.token);
-      // }
 
       return data;
     },
     onSuccess: () => {
       // Invalidate queries that should refresh after login
       queryClient.invalidateQueries({ queryKey: ['user'] });
+    },
+  });
+}
+
+export function useLoginConfig() {
+  return useQuery({
+    queryKey: ['loginConfig'],
+    queryFn: async () => {
+      const data = await fetchWithAuth<{
+        code: number;
+        msg: string;
+        data: string | null;
+      }>('/loginConfig');
+      return data;
+    },
+  });
+}
+
+export function useLogout() {
+  return useQuery({
+    queryKey: ['logout'],
+    queryFn: async () => {
+      const data = await fetchWithAuth<{ code: number; msg: string }>('/logout');
+      return data;
     },
   });
 }

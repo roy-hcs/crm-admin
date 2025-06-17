@@ -4,5 +4,13 @@
   "dashboard": "仪表盘",
   "Reload Page": "重新加载页面",
   "An Error Occurred": "发生错误",
-  "Something went wrong. Please try again later.": "发生错误。请稍后再试。"
+  "Something went wrong. Please try again later.": "发生错误。请稍后再试。",
+  "email": "邮箱",
+  "mobile": "手机",
+  "password": "密码",
+  "Welcome  back": "欢迎回来",
+  "Enter your email below to sign in your account": "在下面输入您的邮箱以登录您的账户",
+  "Enter your mobile below to sign in your account": "在下面输入您的手机以登录您的账户",
+  "Login with": "使用 {{method}} 登录",
+  "forget": "忘记密码？"
 }

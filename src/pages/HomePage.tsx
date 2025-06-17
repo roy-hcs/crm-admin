@@ -2,6 +2,8 @@ import { AreaChart } from '@/components/charts/AreaCharts';
 import { BarChart } from '@/components/charts/BarCharts';
 import { LineChart } from '@/components/charts/LineCharts';
 import { PieChart } from '@/components/charts/PieCharts';
+import { ToolTip } from '@/components/common/ToolTip';
+import { Info } from 'lucide-react';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -148,7 +150,12 @@ export function HomePage() {
       <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* Stats Cards */}
         <div className="bg-background border-border rounded-lg border p-4 shadow-sm">
-          <h3 className="text-muted-foreground text-lg font-medium">Total Customers</h3>
+          <h3 className="text-muted-foreground flex items-center gap-2.5 text-lg font-medium">
+            <span>Total Customers</span>
+            <ToolTip content={<div>it is some info in tooltip</div>}>
+              <Info />
+            </ToolTip>
+          </h3>
           <p className="text-3xl font-bold">1,256</p>
           <p className="mt-2 text-sm text-green-500">+12% from last month</p>
         </div>

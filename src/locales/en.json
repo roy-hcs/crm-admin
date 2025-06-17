@@ -4,5 +4,13 @@
   "dashboard": "Dashboard",
   "Reload Page": "Reload Page",
   "An Error Occurred": "An Error Occurred",
-  "Something went wrong. Please try again later.": "Something went wrong. Please try again later."
+  "Something went wrong. Please try again later.": "Something went wrong. Please try again later.",
+  "email": "email",
+  "mobile": "mobile",
+  "password": "password",
+  "Welcome  back": "Welcome back",
+  "Enter your email below to sign in your account": "Enter your email below to sign in to your account",
+  "Enter your mobile below to sign in your account": "Enter your mobile below to sign in to your account",
+  "Login with": "Login with {{method}}",
+  "forget": "Forget?"
 }

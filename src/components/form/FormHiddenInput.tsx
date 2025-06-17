@@ -4,7 +4,7 @@ import { Input } from '../ui/input';
 
 interface FormHiddenInputProps<T extends FieldValues> {
   name: FieldPath<T>;
-  value: string;
+  value: string | number;
   control: Control<T>;
 }
 

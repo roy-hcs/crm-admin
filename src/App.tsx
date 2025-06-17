@@ -8,6 +8,7 @@ import { Suspense } from 'react';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { AppError } from './components/common/AppError';
+import { Toaster } from 'sonner';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <ErrorAlert />
             <Suspense fallback={<div className="loading">Loading...</div>}>
               <RouterProvider router={router} fallbackElement={<NotFoundPage />} />
+              <Toaster richColors position="top-center" />
             </Suspense>
           </AuthProvider>
         </QueryProvider>

@@ -1,10 +1,15 @@
 // Base API configuration with fetch
+import { toast } from 'sonner';
 
-// API base URL
-export const API_BASE_URL = 'http://admin-1.hcs55.com:38080';
-
-// Helper function for fetch with error handling
-export async function fetchWithAuth<T>(url: string, options: RequestInit = {}) {
+// TODO: need to update production API according to the environment
+export const API_BASE_URL =
+  process.env.NODE_ENV === 'production' ? 'https://api.example.com' : '/api';
+export async function fetchWithAuth<T>(
+  url: string,
+  options: RequestInit = {},
+  showErrorToast = true,
+) {
+  // TODO: this system does not use token to authenticate, it uses session cookie, need to remove it later
   const token = localStorage.getItem('authToken');
 
   // Add authorization header if token exists
@@ -17,6 +22,7 @@ export async function fetchWithAuth<T>(url: string, options: RequestInit = {}) {
   const response = await fetch(`${API_BASE_URL}${url}`, {
     ...options,
     headers,
+    credentials: 'include',
   });
 
   if (!response.ok) {
@@ -33,6 +39,13 @@ export async function fetchWithAuth<T>(url: string, options: RequestInit = {}) {
       errorMessage = errorData.message || response.statusText;
     } catch {
       errorMessage = response.statusText;
+    }
+
+    // Show error toast notification using Sonner
+    if (showErrorToast) {
+      toast.error('Request Failed', {
+        description: errorMessage || 'An error occurred while processing your request.',
+      });
     }
 
     throw new Error(errorMessage);
