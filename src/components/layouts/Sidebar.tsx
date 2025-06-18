@@ -5,7 +5,6 @@ import {
   Settings,
   Home,
   FileText,
-  UserPlus,
   Mail,
   MessageSquare,
   Phone,
@@ -129,47 +128,32 @@ export function Sidebar({ open }: SidebarProps) {
       icon: <Home className="h-5 w-5" />,
     },
     {
-      title: 'Customers',
+      title: '账户管理',
       icon: <Users className="h-5 w-5" />,
       children: [
         {
-          title: 'All Customers',
-          path: '/customers',
+          title: '个人中心',
+          path: '/account/profile',
         },
         {
-          title: 'Customer Details',
-          path: '/customers/details',
+          title: 'CRM账户',
+          path: '/account/crm-accounts',
         },
         {
-          title: 'Customer Management',
-          icon: <UserPlus className="h-5 w-5" />,
-          children: [
-            {
-              title: 'Add Customer',
-              path: '/customers/add',
-            },
-            {
-              title: 'Edit Customer',
-              path: '/customers/edit',
-            },
-            {
-              title: 'Customer Categories',
-              children: [
-                {
-                  title: 'VIP Customers',
-                  path: '/customers/categories/vip',
-                },
-                {
-                  title: 'Regular Customers',
-                  path: '/customers/categories/regular',
-                },
-                {
-                  title: 'New Customers',
-                  path: '/customers/categories/new',
-                },
-              ],
-            },
-          ],
+          title: '交易账户',
+          path: '/account/trading-accounts',
+        },
+        {
+          title: '客户关系',
+          path: '/account/relationships',
+        },
+        {
+          title: '账户组设置',
+          path: '/account/account-groups',
+        },
+        {
+          title: '钱包账户',
+          path: '/account/wallet-accounts',
         },
       ],
     },

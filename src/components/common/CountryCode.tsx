@@ -38,7 +38,7 @@ export const CountryCode: React.FC<CountryCodeProps> = ({
 }) => {
   return (
     <Select value={value} onValueChange={onValueChange} disabled={disabled}>
-      <SelectTrigger className={cn('w-[85px]', className)}>
+      <SelectTrigger className={cn('w-22', className)}>
         <SelectValue placeholder="Select" />
       </SelectTrigger>
       <SelectContent>

@@ -39,6 +39,9 @@ interface AreaChartProps {
   }[];
   height?: number;
   stacked?: boolean;
+  xAxisLabel?: string;
+  yAxisLabel?: string;
+  options?: ChartOptions<'line'>;
 }
 
 export const AreaChart: FC<AreaChartProps> = ({
@@ -47,8 +50,11 @@ export const AreaChart: FC<AreaChartProps> = ({
   datasets,
   height = 300,
   stacked = false,
+  xAxisLabel = '',
+  yAxisLabel = '',
+  options = {},
 }) => {
-  const options: ChartOptions<'line'> = {
+  const areaOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -72,17 +78,18 @@ export const AreaChart: FC<AreaChartProps> = ({
       x: {
         title: {
           display: true,
-          text: 'Month',
+          text: xAxisLabel,
         },
       },
       y: {
         stacked: stacked,
         title: {
           display: true,
-          text: 'Value',
+          text: yAxisLabel,
         },
       },
     },
+    ...options,
   };
 
   // Format the datasets with theme-compatible colors and fill
@@ -109,7 +116,7 @@ export const AreaChart: FC<AreaChartProps> = ({
 
   return (
     <div style={{ height: `${height}px`, width: '100%' }}>
-      <Line options={options} data={chartData} />
+      <Line options={areaOptions} data={chartData} />
     </div>
   );
 };

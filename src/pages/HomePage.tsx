@@ -1,185 +1,460 @@
+import {
+  useDepositAllReport,
+  useFundFlowReport,
+  useRegCountReport,
+  useServerList,
+  useSumReport,
+  useSymbolReport,
+} from '@/api/hooks/system/system';
+import { ServerItem } from '@/api/hooks/system/types';
 import { AreaChart } from '@/components/charts/AreaCharts';
 import { BarChart } from '@/components/charts/BarCharts';
 import { LineChart } from '@/components/charts/LineCharts';
 import { PieChart } from '@/components/charts/PieCharts';
 import { ToolTip } from '@/components/common/ToolTip';
+import { FormSelect } from '@/components/form/FormSelect';
 import { Info } from 'lucide-react';
-import type { FC } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useEffect, useMemo, useState, type FC } from 'react';
+// import { useTranslation } from 'react-i18next';
+import dayjs from 'dayjs';
+import { cn } from '@/lib/utils';
+const options = [
+  { label: '7天内', value: 1 },
+  { label: '15天内', value: 2 },
+  { label: '30天内', value: 3 },
+  { label: '3月内', value: 4 },
+  { label: '半年内', value: 5 },
+  { label: '一年内', value: 6 },
+];
 
-const LineChartExample: FC = () => {
-  const exampleData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [
+const DataOverviewCard: FC = () => {
+  const now = dayjs(new Date()).format('YYYY-MM-DD HH:mm');
+  const today = dayjs(new Date()).format('YYYY-MM-DD');
+  const yesterday = dayjs(new Date()).subtract(1, 'day').format('YYYY-MM-DD');
+  const [todayData, setTodayData] = useState<number[]>([]);
+  const { data } = useSumReport();
+  const { data: withdrawAndDepositData } = useFundFlowReport('1');
+  const difference = useMemo(() => {
+    const withdrawAndDepositObj = withdrawAndDepositData?.data;
+    const yesterdayData = withdrawAndDepositObj?.[yesterday] || [0, 0];
+    const todayData = withdrawAndDepositObj?.[today] || [0, 0];
+    return {
+      input:
+        yesterdayData[0] === 0
+          ? todayData[0] === 0
+            ? 0
+            : 1
+          : (todayData[0] - yesterdayData[0]) / yesterdayData[0],
+      output:
+        yesterdayData[1] === 0
+          ? todayData[1] === 0
+            ? 0
+            : 1
+          : (todayData[1] - yesterdayData[1]) / yesterdayData[1],
+    };
+  }, [withdrawAndDepositData, today, yesterday]);
+  const inputChartData = useMemo(() => {
+    const rowData = withdrawAndDepositData?.data || {};
+    const labels = Object.keys(rowData);
+    const dataArr = Object.values(rowData);
+    const datasets = [
       {
-        label: 'Sales 2023',
-        data: [12, 19, 3, 5, 2, 3],
+        label: 'Input',
+        data: dataArr.map(item => item?.[0] || 0),
       },
+    ];
+    return { labels, datasets };
+  }, [withdrawAndDepositData]);
+  const outputChartData = useMemo(() => {
+    const rowData = withdrawAndDepositData?.data || {};
+    const labels = Object.keys(rowData);
+    const dataArr = Object.values(rowData);
+    const datasets = [
       {
-        label: 'Sales 2022',
-        data: [8, 15, 7, 9, 12, 10],
+        label: 'Input',
+        data: dataArr.map(item => item?.[1] || 0),
       },
-    ],
+    ];
+    return { labels, datasets };
+  }, [withdrawAndDepositData]);
+
+  const percentageFormat = (value: number) => {
+    return (value * 100).toFixed(0) + '%';
   };
 
+  const sumData = useMemo(() => {
+    const sum = data?.data;
+    return [
+      { title: 'CRM用户数（个）', value: sum?.crmUser || 0 },
+      { title: '交易账户数（个）', value: sum?.dealAccount || 0 },
+      { title: '入金待审（USD）', value: sum?.deposit || 0 },
+      { title: '出金待审（USD）', value: sum?.withdraw || 0 },
+    ];
+  }, [data]);
+
+  useEffect(() => {
+    if (withdrawAndDepositData && withdrawAndDepositData.data) {
+      setTodayData(withdrawAndDepositData.data[today] || [0, 0]);
+    }
+  }, [withdrawAndDepositData, today]);
+
   return (
-    <LineChart
-      labels={exampleData.labels}
-      datasets={exampleData.datasets}
-      title="Monthly Sales Comparison"
-    />
+    <div className="bg-card mb-4 rounded-lg shadow">
+      <div className="flex justify-between border-b p-4">
+        <div className="flex">
+          <div>数据总览</div>
+          <ToolTip content={<div>it is some info in tooltip</div>}>
+            <Info />
+          </ToolTip>
+        </div>
+        <div>数据更新时间: {now}</div>
+      </div>
+      <div className="grid grid-cols-3 gap-3 p-4">
+        <div className="rounded-lg border p-3">
+          <div className="relative">
+            <div>今日入金</div>
+            <div>{todayData[0]}</div>
+            <div
+              className={cn(
+                'absolute top-0 right-0 min-w-10 rounded-full p-1 text-xs',
+                difference.input >= 0 ? 'bg-green-500' : 'bg-red-500',
+              )}
+            >
+              {percentageFormat(difference.input)}
+            </div>
+          </div>
+          <div>
+            <BarChart
+              title=""
+              labels={inputChartData.labels}
+              datasets={inputChartData.datasets}
+              height={200}
+              hideLegend={true}
+              options={{
+                scales: {
+                  x: {
+                    display: false,
+                  },
+                  y: {
+                    display: false,
+                  },
+                },
+              }}
+            />
+          </div>
+        </div>
+        <div className="rounded-lg border p-3">
+          <div className="relative">
+            <div>今日出金</div>
+            <div>{todayData[1]}</div>
+            <div
+              className={cn(
+                'absolute top-0 right-0 min-w-10 rounded-full p-1 text-center text-xs',
+                difference.output >= 0 ? 'bg-green-500' : 'bg-red-500',
+              )}
+            >
+              {percentageFormat(difference.output)}
+            </div>
+          </div>
+          <div>
+            <BarChart
+              title=""
+              labels={outputChartData.labels}
+              datasets={outputChartData.datasets}
+              height={200}
+              hideLegend={true}
+              options={{
+                scales: {
+                  x: {
+                    display: false,
+                  },
+                  y: {
+                    display: false,
+                  },
+                },
+              }}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 grid-rows-2 gap-3">
+          {sumData.map((item, index) => (
+            <div key={index} className="rounded-lg border p-3">
+              <div className="text-muted-foreground text-sm">{item.title}</div>
+              <div
+                className="line-clamp-1 text-lg font-semibold overflow-ellipsis"
+                title={`${item.value}`}
+              >
+                {item.value}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 
-const BarChartExample: FC = () => {
-  const exampleData = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-      {
-        label: 'My First Dataset',
-        data: [65, 59, 80, 81, 56, 55, 40],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 205, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(201, 203, 207, 0.2)',
-        ],
-        borderColor: [
-          'rgb(255, 99, 132)',
-          'rgb(255, 159, 64)',
-          'rgb(255, 205, 86)',
-          'rgb(75, 192, 192)',
-          'rgb(54, 162, 235)',
-          'rgb(153, 102, 255)',
-          'rgb(201, 203, 207)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
+const SymbolReportPieChart: FC<{ serverList: ServerItem[] }> = ({ serverList }) => {
+  const [type, setType] = useState('1');
+  const [serverId, setServerId] = useState<string>('');
+  const { data, isLoading } = useSymbolReport({
+    type,
+    isAsc: 'desc',
+    serverId,
+    pageNum: NaN,
+  });
+  console.log(data, 'symbol report data');
+  useEffect(() => {
+    if (serverList.length > 0) {
+      setServerId(serverList[0].id);
+    }
+  }, [serverList]);
+  const servers = useMemo(() => {
+    return serverList.map(server => ({
+      label: server.serverName,
+      value: server.id,
+    }));
+  }, [serverList]);
+
+  const chartData = useMemo(() => {
+    return data?.rows
+      ? {
+          labels: data?.rows.map(item => item.symbol || ''),
+          datasets: [
+            {
+              data: data?.rows.map(item => item.amount),
+            },
+          ],
+        }
+      : { labels: [''], datasets: [{ data: [100] }] };
+  }, [data?.rows]);
 
   return (
-    <BarChart
-      labels={exampleData.labels}
-      datasets={exampleData.datasets}
-      title="Product Sales"
-      height={300}
-    />
+    <div className="bg-card mb-4 rounded-lg p-6 shadow">
+      <div className="mb-4 flex items-center justify-between">
+        <div>交易品种概览</div>
+        <FormSelect
+          onValueChange={setServerId}
+          options={servers}
+          value={serverId}
+          className="h-4 w-40"
+          placeholder="选择服务器"
+        />
+        <FormSelect
+          onValueChange={setType}
+          options={options}
+          value={type}
+          className="h-4 w-25"
+          placeholder="选择时间"
+        />
+      </div>
+      <div className="mt-4 min-h-75">
+        {isLoading ? (
+          <div>loading</div>
+        ) : (
+          <PieChart labels={chartData.labels} datasets={chartData.datasets} height={300} />
+        )}
+      </div>
+    </div>
   );
 };
 
-const PieChartExample: FC = () => {
-  const exampleData = {
-    labels: ['Red', 'Blue', 'Yellow'],
-    datasets: [
+const WithDrawReportAreaChart: FC = () => {
+  const [type, setType] = useState('1');
+  const { data, isLoading } = useFundFlowReport(type);
+  const chartData = useMemo(() => {
+    if (!data || !data.data) return { labels: [], datasets: [] };
+    const rowData = data.data;
+    const labels = Object.keys(rowData);
+    const dataArr = Object.values(rowData);
+    const datasets = [
       {
-        data: [300, 50, 100],
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-        hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+        label: '出金',
+        data: dataArr.map(item => item?.[1] || 0),
+        borderColor: 'rgba(84, 112, 198, 1)',
+        backgroundColor: 'rgba(84, 112, 198, 0.5)',
       },
-    ],
-  };
-
+      {
+        label: '入金',
+        data: dataArr.map(item => item?.[0] || 0),
+        borderColor: 'rgba(145, 204, 117, 1)',
+        backgroundColor: 'rgba(145, 204, 117, 0.5)',
+      },
+      {
+        label: '净流入/流出',
+        data: dataArr.map(item => (item?.[0] || 0) - (item?.[1] || 0)),
+        borderColor: 'rgba(250, 200, 88, 1)',
+        backgroundColor: 'rgba(250, 200, 88, 0.5)',
+      },
+    ];
+    return { labels, datasets };
+  }, [data]);
   return (
-    <PieChart
-      labels={exampleData.labels}
-      datasets={exampleData.datasets}
-      title="Distribution of Colors"
-      height={300}
-    />
+    <div className="bg-card rounded-lg p-6 shadow">
+      <div className="flex justify-between">
+        <div>出入金总览</div>
+        <FormSelect
+          onValueChange={setType}
+          options={options}
+          value={type}
+          className="h-4 w-25"
+          placeholder="选择时间"
+        />
+      </div>
+      <div className="mt-4 min-h-75">
+        {isLoading ? (
+          <div>loading</div>
+        ) : (
+          <AreaChart
+            labels={chartData?.labels || []}
+            datasets={chartData?.datasets || []}
+            title="出入金总览"
+            stacked={false}
+          />
+        )}
+      </div>
+    </div>
   );
 };
 
-const AreaChartExample: FC = () => {
-  const exampleData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [
+const RegCountReportLineChart: FC<{ serverList: ServerItem[] }> = () => {
+  const [type, setType] = useState('1');
+  const { data, isLoading } = useRegCountReport(type);
+  const chartData = useMemo(() => {
+    if (!data || !data.data) return { labels: [], datasets: [] };
+    const rowData = data.data;
+    const labels = Object.keys(rowData);
+    const dataArr = Object.values(rowData);
+    const datasets = [
       {
-        label: 'Traffic 2023',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
-        data: [1200, 1900, 1500, 2500, 2200, 3000],
+        label: '新增真实账号',
+        data: dataArr.map(item => item?.[0] || 0),
       },
       {
-        label: 'Traffic 2022',
-        borderColor: 'rgba(153, 102, 255, 1)',
-        backgroundColor: 'rgba(153, 102, 255, 0.5)',
-        data: [800, 900, 700, 1000, 1200, 1500],
+        label: '新增模拟账号',
+        data: dataArr.map(item => item?.[1] || 0),
       },
       {
-        label: 'Traffic 2021',
-        borderColor: 'rgba(255, 159, 64, 1)',
-        backgroundColor: 'rgba(255, 159, 64, 0.5)',
-        data: [600, 800, 500, 700, 900, 1100],
+        label: '新注册CRM账号',
+        data: dataArr.map(item => item?.[2] || 0),
       },
-    ],
-  };
+    ];
+    return { labels, datasets };
+  }, [data]);
 
   return (
-    <AreaChart
-      labels={exampleData.labels}
-      datasets={exampleData.datasets}
-      title="Website Traffic Comparison"
-      stacked={false}
-    />
+    <div className="bg-card mb-4 rounded-lg p-6 shadow">
+      <div className="flex justify-between">
+        <div>账户开通概览</div>
+        <FormSelect
+          onValueChange={setType}
+          options={options}
+          value={type}
+          className="h-4 w-25"
+          placeholder="选择时间"
+        />
+      </div>
+      <div className="mt-4 min-h-75">
+        {isLoading ? (
+          <div>loading</div>
+        ) : (
+          <LineChart
+            labels={chartData?.labels || []}
+            datasets={chartData?.datasets || []}
+            title="账户开通概览"
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
+const DepositAllReportBarChart: FC = () => {
+  const [type, setType] = useState('1');
+  const { data, isLoading } = useDepositAllReport(type);
+  const chartData = useMemo(() => {
+    if (!data || !data.data) return { labels: [], datasets: [] };
+    const rowData = data.data;
+    const labels = Object.keys(rowData);
+    const dataArr = Object.values(rowData);
+    const datasets = [
+      {
+        label: '已审出金',
+        data: dataArr.map(item => item?.[1] || 0),
+      },
+      {
+        label: '待审入金',
+        data: dataArr.map(item => item?.[0] || 0),
+      },
+    ];
+    console.log(datasets, 'deposit all report datasets');
+    return { labels, datasets };
+  }, [data]);
+
+  return (
+    <div className="bg-card mb-4 rounded-lg p-6 shadow">
+      <div className="flex justify-between">
+        <div>在途资金预览</div>
+        <FormSelect
+          onValueChange={setType}
+          options={options}
+          value={type}
+          className="h-4 w-25"
+          placeholder="选择时间"
+        />
+      </div>
+      <div className="mt-4 min-h-75">
+        {isLoading ? (
+          <div>loading</div>
+        ) : (
+          <BarChart
+            labels={chartData?.labels || []}
+            datasets={chartData?.datasets || []}
+            title="在途资金预览"
+            options={{
+              responsive: true,
+              scales: {
+                x: {
+                  stacked: true,
+                  ticks: {
+                    maxTicksLimit: 7, // Limit the number of ticks shown
+                    autoSkip: true, // Enable automatic skipping of labels
+                    maxRotation: 45, // Rotate labels if needed
+                    minRotation: 0,
+                  },
+                  grid: {
+                    display: true,
+                  },
+                },
+                y: {
+                  stacked: true,
+                },
+              },
+            }}
+          />
+        )}
+      </div>
+    </div>
   );
 };
 
 export function HomePage() {
-  const { t } = useTranslation();
+  const [serverList, setServerList] = useState<ServerItem[]>([]);
+  const { data: serverListRes } = useServerList();
+  useEffect(() => {
+    if (serverListRes && serverListRes.rows) {
+      setServerList(serverListRes.rows);
+    }
+  }, [serverListRes]);
 
   return (
-    <div className="bg-card rounded-lg p-6 shadow">
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">{t('dashboard')}</h2>
-      </div>
-
+    <div className="">
+      <DataOverviewCard />
       <div className="mb-6">
-        <h2>charts</h2>
-        <div className="grid grid-cols-2 gap-6">
-          <LineChartExample />
-          <BarChartExample />
-          <PieChartExample />
-          <AreaChartExample />
-        </div>
-      </div>
-
-      <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-3">
-        {/* Stats Cards */}
-        <div className="bg-background border-border rounded-lg border p-4 shadow-sm">
-          <h3 className="text-muted-foreground flex items-center gap-2.5 text-lg font-medium">
-            <span>Total Customers</span>
-            <ToolTip content={<div>it is some info in tooltip</div>}>
-              <Info />
-            </ToolTip>
-          </h3>
-          <p className="text-3xl font-bold">1,256</p>
-          <p className="mt-2 text-sm text-green-500">+12% from last month</p>
-        </div>
-
-        <div className="bg-background border-border rounded-lg border p-4 shadow-sm">
-          <h3 className="text-muted-foreground text-lg font-medium">Revenue</h3>
-          <p className="text-3xl font-bold">$34,256</p>
-          <p className="mt-2 text-sm text-green-500">+8% from last month</p>
-        </div>
-
-        <div className="bg-background border-border rounded-lg border p-4 shadow-sm">
-          <h3 className="text-muted-foreground text-lg font-medium">Active Projects</h3>
-          <p className="text-3xl font-bold">23</p>
-          <p className="mt-2 text-sm text-red-500">-2 from last month</p>
-        </div>
-      </div>
-
-      {/* Main content */}
-      <div className="bg-background border-border rounded-lg border p-6">
-        <h3 className="mb-4 text-xl font-semibold">Welcome to the Dashboard!</h3>
-        <p className="text-muted-foreground">
-          This is the main dashboard area of your CRM application. Here you'll find key metrics and
-          quick access to important features.
-        </p>
+        <SymbolReportPieChart serverList={serverList} />
+        <RegCountReportLineChart serverList={serverList} />
+        <DepositAllReportBarChart />
+        <WithDrawReportAreaChart />
       </div>
     </div>
   );

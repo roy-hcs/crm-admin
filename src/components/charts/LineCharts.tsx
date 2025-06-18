@@ -1,3 +1,4 @@
+import { generateColorfulColor } from '@/lib/utils';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,6 +27,7 @@ interface LineChartProps {
     tension?: number;
   }[];
   height?: number;
+  options?: ChartOptions<'line'>;
 }
 
 export const LineChart: FC<LineChartProps> = ({
@@ -33,8 +35,9 @@ export const LineChart: FC<LineChartProps> = ({
   labels,
   datasets,
   height = 300,
+  options = {},
 }) => {
-  const options: ChartOptions<'line'> = {
+  const lineOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -45,26 +48,37 @@ export const LineChart: FC<LineChartProps> = ({
         display: !!title,
         text: title,
       },
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+      },
     },
+    hover: {
+      mode: 'nearest',
+      intersect: true,
+    },
+    ...options,
   };
 
-  // Format the datasets with theme-compatible colors
   const chartData = {
     labels,
-    datasets: datasets.map((dataset, index) => ({
-      label: dataset.label,
-      data: dataset.data,
-      borderColor: dataset.borderColor || `var(--chart-${(index % 5) + 1})`,
-      backgroundColor: dataset.backgroundColor || `var(--chart-${(index % 5) + 1})`,
-      tension: dataset.tension || 0.3,
-      borderWidth: 2,
-      pointRadius: 3,
-    })),
+    datasets: datasets.map((dataset, index) => {
+      const color = dataset.borderColor || generateColorfulColor(index);
+      return {
+        label: dataset.label,
+        data: dataset.data,
+        borderColor: color,
+        backgroundColor: dataset.backgroundColor || color + '80', // Add transparency for background
+        tension: dataset.tension || 0.3,
+        borderWidth: 2,
+        pointRadius: 3,
+      };
+    }),
   };
 
   return (
     <div style={{ height: `${height}px`, width: '100%' }}>
-      <Line options={options} data={chartData} />
+      <Line options={lineOptions} data={chartData} />
     </div>
   );
 };
