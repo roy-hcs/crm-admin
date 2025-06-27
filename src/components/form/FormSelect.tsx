@@ -10,8 +10,8 @@ import { FC, PropsWithChildren } from 'react';
 export const FormSelect: FC<
   PropsWithChildren<{
     options: { label: string; value: string | number }[];
-    onValueChange: (value: string) => void;
-    value: string;
+    onValueChange?: (value: string) => void;
+    value?: string;
     placeholder?: string;
     className?: string;
   }>

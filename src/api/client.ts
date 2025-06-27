@@ -92,17 +92,36 @@ export async function apiPost<T = null, D extends ApiPostData = Record<string, u
   });
 }
 
-export type FormValue = string | number | boolean;
+export type FormValue = string | number | boolean | undefined | Record<string, unknown> | null;
+
+function flattenParams(
+  obj: Record<string, FormValue>,
+  parentKey = '',
+  result: URLSearchParams = new URLSearchParams(),
+) {
+  Object.entries(obj).forEach(([key, value]) => {
+    const newKey = parentKey ? `${parentKey}[${key}]` : key;
+
+    if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+      flattenParams(value as Record<string, FormValue>, newKey, result);
+    } else {
+      result.append(newKey, `${value ?? ''}`);
+    }
+  });
+
+  return result;
+}
 
 function apiFormPostBase<T>(
   url: string,
   params: Record<string, FormValue>,
   options?: RequestInit,
 ): Promise<T> {
-  const urlSearchParams = new URLSearchParams();
-  Object.entries(params).forEach(([key, value]) => {
-    urlSearchParams.append(key, String(value));
-  });
+  // const urlSearchParams = new URLSearchParams();
+  // Object.entries(params).forEach(([key, value]) => {
+  //   urlSearchParams.append(key, String(value));
+  // });
+  const urlSearchParams = flattenParams(params);
 
   return fetchWithAuth<T>(url, {
     ...options,

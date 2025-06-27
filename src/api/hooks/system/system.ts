@@ -1,11 +1,14 @@
 import { apiFormPostCustom, apiGet, FormValue } from '@/api/client';
 import { useQuery } from '@tanstack/react-query';
 import {
+  CrmUserParams,
+  CrmUserResponse,
   RegCountReportItem,
   ServerListResponse,
   SumReport,
   SymbolReportParams,
   SymbolReportResponse,
+  TagUserItem,
   WithDrawReportItem,
 } from './types';
 
@@ -60,5 +63,21 @@ export function useSumReport() {
   return useQuery({
     queryKey: ['sumReport'],
     queryFn: () => apiGet<SumReport>('/system/sumReport'),
+  });
+}
+
+// query can be route, userId, accounts, origin
+export function useCrmUser(params: CrmUserParams, query?: string) {
+  return useQuery({
+    queryKey: ['crmUser', params, query],
+    queryFn: () =>
+      apiFormPostCustom<CrmUserResponse>(`/system/crmUser/list${query ? '?' + query : ''}`, params),
+  });
+}
+
+export function useTagUserCountList() {
+  return useQuery({
+    queryKey: ['tagUserCountList'],
+    queryFn: () => apiGet<TagUserItem[]>('/system/crmUser/tagsUserCountList'),
   });
 }

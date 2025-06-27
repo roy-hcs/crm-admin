@@ -198,7 +198,7 @@ export const LoginForm = ({
             className="w-full cursor-pointer"
             disabled={loginMutation.isPending}
           >
-            {loginMutation.isPending ? 'Logging in...' : 'Login'}
+            {loginMutation.isPending ? t('logging in...') : t('login')}
           </Button>
           <Button
             type="button"

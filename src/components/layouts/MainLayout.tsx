@@ -14,7 +14,7 @@ export function MainLayout() {
   };
 
   return (
-    <div className="bg-background flex h-screen">
+    <div className="bg-background flex h-screen overflow-hidden">
       <Sidebar open={sidebarOpen} />
 
       <div className="flex flex-1 flex-col overflow-hidden">
