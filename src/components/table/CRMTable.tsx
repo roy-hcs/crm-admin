@@ -1,8 +1,51 @@
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, Row } from '@tanstack/react-table';
 import { DataTable } from './DataTable';
 import { CrmUserItem } from '@/api/hooks/system/types';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Switch } from '../ui/switch';
+import { Alert } from '../common/Alert';
+import { useCallback, useState } from 'react';
+import { useChangeUserStatus } from '@/api/hooks/system/system';
+import { useQueryClient } from '@tanstack/react-query';
+import { Checkbox } from '@/components/ui/checkbox';
+
+const StatusCell = ({ row }: { row: Row<CrmUserItem> }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const changeStatusMutation = useChangeUserStatus();
+  const queryClient = useQueryClient();
+
+  const onConfirm = useCallback(async () => {
+    const res = await changeStatusMutation.mutateAsync({
+      id: row.original.id,
+      status: row.original.status === 1 ? 0 : 1, // Toggle status
+    });
+    if (res.code === 0) {
+      // get table list with current filters
+      queryClient.invalidateQueries({ queryKey: ['crmUser'] });
+    }
+  }, [changeStatusMutation, queryClient, row.original.id, row.original.status]);
+
+  return (
+    <>
+      <Switch
+        className="cursor-pointer bg-white data-[state=checked]:bg-blue-500"
+        checked={row.original.status === 1}
+        onClick={() => setIsOpen(true)}
+      />
+      <Alert
+        trigger={null}
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        cancelText="取消"
+        confirmText={'确认'}
+        title={'系统提示'}
+        content={row.original.status === 1 ? '确认要停用该账户吗？' : '确认要启用该账户吗？'}
+        onConfirm={onConfirm}
+      />
+    </>
+  );
+};
 
 export const CRMTable = ({
   data,
@@ -27,6 +70,30 @@ export const CRMTable = ({
 }) => {
   const crmColumns: ColumnDef<CrmUserItem>[] = [
     {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-blue-500"
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-blue-500"
+          checked={row.getIsSelected()}
+          onCheckedChange={value => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
       id: 'userName',
       header: 'userName',
       accessorFn: row => row.userName,
@@ -40,6 +107,7 @@ export const CRMTable = ({
     {
       accessorKey: 'status',
       header: 'Status',
+      cell: ({ row }) => <StatusCell row={row} />,
     },
     {
       id: 'mobile',

@@ -23,7 +23,7 @@ interface DataTableProps<TData, TValue> {
   pageIndex: number;
   pageSize: number;
   onPageChange: (pageIndex: number) => void;
-  onPageSizeChange: (pageSize: number) => void;
+  onPageSizeChange?: (pageSize: number) => void;
   thCls?: string;
   tdCls?: string;
   loading?: boolean;
@@ -72,7 +72,7 @@ export function DataTable<TData, TValue>({
           onPageChange(newState.pageIndex);
         }
         if (newState.pageSize !== pagination.pageSize) {
-          onPageSizeChange(newState.pageSize);
+          onPageSizeChange?.(newState.pageSize);
         }
       }
     },

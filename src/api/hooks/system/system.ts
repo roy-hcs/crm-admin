@@ -1,8 +1,9 @@
-import { apiFormPostCustom, apiGet, FormValue } from '@/api/client';
-import { useQuery } from '@tanstack/react-query';
+import { apiFormPost, apiFormPostCustom, apiGet, FormValue } from '@/api/client';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   CrmUserParams,
   CrmUserResponse,
+  CustomRelationsItem,
   RegCountReportItem,
   ServerListResponse,
   SumReport,
@@ -79,5 +80,23 @@ export function useTagUserCountList() {
   return useQuery({
     queryKey: ['tagUserCountList'],
     queryFn: () => apiGet<TagUserItem[]>('/system/crmUser/tagsUserCountList'),
+  });
+}
+
+export function useCustomerRelationsPostList(params: { userId: string } | null = null) {
+  return useQuery({
+    queryKey: ['customerRelationsPostList', params],
+    queryFn: () =>
+      apiFormPostCustom<CustomRelationsItem[]>(
+        '/system/crmUser/customerRelationsPostList',
+        params || {},
+      ),
+  });
+}
+
+export function useChangeUserStatus() {
+  return useMutation({
+    mutationFn: (params: { id: string; status: number }) =>
+      apiFormPost('/system/crmUser/changeStatus', params),
   });
 }

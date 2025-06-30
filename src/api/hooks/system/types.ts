@@ -82,6 +82,7 @@ export type CrmUserParams = {
   isAsc?: string;
   params: {
     threeCons?: string;
+    fiveCons?: string;
     regStartTime?: string;
     regEndTime?: string;
     fuzzyMobile?: string;
@@ -170,4 +171,12 @@ export type TagUserItem = {
   userCount: string;
   id: string;
   tagName: string;
+};
+
+export type CustomRelationsItem = {
+  childNames: string;
+  crmRebateLevel: string;
+  id: string;
+  hasChildren: boolean;
+  parentName: string;
 };
