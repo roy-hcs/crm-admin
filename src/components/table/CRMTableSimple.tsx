@@ -59,7 +59,7 @@ export const CRMTableSimple = ({
       id: 'mobile',
       header: 'Mobile',
       cell: ({ row }) => (
-        <div className="max-w-25 whitespace-pre-wrap">
+        <div className="whitespace-pre-wrap">
           <span>{row.original.mzone ? `+${row.original.mzone} ` : ''}</span>
           <span>{row.original.mobile}</span>
         </div>
@@ -88,5 +88,5 @@ export const CRMTableSimple = ({
       thCls="text-center text-[13px]"
       tdCls="text-center text-xs"
     />
-  ) : null; // Replace with actual data
+  ) : null;
 };

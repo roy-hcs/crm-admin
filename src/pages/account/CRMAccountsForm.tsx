@@ -11,24 +11,32 @@ import { FormSelect } from '@/components/form/FormSelect';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { CrmUserItem, TagUserItem } from '@/api/hooks/system/types';
 import Dialog from '@/components/common/Dialog';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AccountDialog } from './AccountDialog';
-// import { Cascader, CascaderProps } from 'antd';
-// import { useCustomerRelationsPostList } from '@/api/hooks/system/system';
+import { useCustomerRelationsPostList } from '@/api/hooks/system/system';
+import { Cascader, CascaderProps } from 'antd';
 
-// interface Option {
-//   value: string;
-//   label: string;
-//   children?: Option[];
-// }
+interface CascaderOption {
+  value: string;
+  label: string;
+  isLeaf: boolean;
+  children?: CascaderOption[];
+  loading?: boolean;
+}
 
-// interface CascaderOption {
-//   value: string;
-//   label: string;
-//   isLeaf: boolean;
-//   children?: CascaderOption[];
-//   loading?: boolean;
-// }
+type FormData = {
+  accountType: string;
+  regStartTime: { from: string; to: string };
+  name: string;
+  status: string;
+  mobile: string;
+  email: string;
+  role: string;
+  inviter: string;
+  accounts: string;
+  certiricateNo: string;
+  tags: string;
+};
 
 const SelectUpperPopup = ({ field }: { field: ControllerRenderProps<FieldValues, 'inviter'> }) => {
   const [selectedUser, setSelectedUser] = useState<CrmUserItem | null>(null);
@@ -38,7 +46,7 @@ const SelectUpperPopup = ({ field }: { field: ControllerRenderProps<FieldValues,
       <FormControl className="basis-9/12">
         <AccountDialog
           trigger={
-            <div className="w-full cursor-pointer border p-2">
+            <div className="w-full basis-9/12 cursor-pointer border p-2">
               {selectedUser ? `${selectedUser.userName}(${selectedUser.showId})` : '请选择'}
             </div>
           }
@@ -59,81 +67,83 @@ const SelectAccountsPopup = ({
   field: ControllerRenderProps<FieldValues, 'accounts'>;
 }) => {
   const [selectedUser, setSelectedUser] = useState<CrmUserItem | null>(null);
-  // const [options, setOptions] = useState<Option[]>([]);
-  // const [selectedId, setSelectedId] = useState<string>('');
-  // const { data: relations, isLoading } = useCustomerRelationsPostList(
-  //   selectedId ? { userId: selectedId } : null,
-  // );
+  const [options, setOptions] = useState<CascaderOption[]>([]);
+  const [selectedId, setSelectedId] = useState<string>('');
+  const [selectedOptionId, setSelectedOptionId] = useState<string>('');
+  const [selectedOptionLabel, setSelectedOptionLabel] = useState<string>('');
+  const { data: relations, isLoading } = useCustomerRelationsPostList(
+    selectedId ? { userId: selectedId } : null,
+  );
 
-  // useEffect(() => {
-  //   if (selectedUser) {
-  //     // Initial query to fetch root level options based on selected user
-  //     const rootLevelOptions: CascaderOption[] = [
-  //       {
-  //         value: selectedUser.id,
-  //         label: `${selectedUser.userName}(${selectedUser.showId})`,
-  //         isLeaf: false,
-  //       },
-  //     ];
-  //     setOptions(rootLevelOptions);
-  //     // Set selectedId to trigger the query for children
-  //     setSelectedId(selectedUser.id);
-  //   } else {
-  //     setOptions([]);
-  //     setSelectedId('');
-  //   }
-  // }, [selectedUser]);
+  const updateOptionChildren = useCallback(
+    (
+      options: CascaderOption[],
+      targetValue: string,
+      children: CascaderOption[],
+    ): CascaderOption[] => {
+      return options.map(option => {
+        if (option.value === targetValue) {
+          return { ...option, children, loading: false };
+        }
+        if (option.children) {
+          return {
+            ...option,
+            children: updateOptionChildren(option.children, targetValue, children),
+          };
+        }
+        return option;
+      });
+    },
+    [],
+  );
 
-  // useEffect(() => {
-  //   if (relations && selectedId) {
-  //     // Find the option that needs children
-  //     const updateOptionsWithChildren = (opts: CascaderOption[]): CascaderOption[] => {
-  //       return opts.map(opt => {
-  //         if (opt.value === selectedId) {
-  //           // Convert relations data to cascader options
-  //           const children = relations.map(item => ({
-  //             value: item.id,
-  //             label: `${item.childNames || 'Unnamed'}${item.crmRebateLevel ? ` (${item.crmRebateLevel})` : ''}`,
-  //             isLeaf: !item.hasChildren,
-  //           }));
+  const loadData = (selectedOptions: CascaderOption[]) => {
+    const targetOption = selectedOptions[selectedOptions.length - 1];
+    // Mark as loading
+    targetOption.loading = true;
+    setOptions(options => updateOptionChildren(options, targetOption.value, []));
+    // Set selectedId to trigger data fetch
+    setSelectedId(targetOption.value);
+  };
 
-  //           return {
-  //             ...opt,
-  //             children,
-  //             loading: false,
-  //           };
-  //         } else if (opt.children) {
-  //           return {
-  //             ...opt,
-  //             children: updateOptionsWithChildren(opt.children),
-  //           };
-  //         }
-  //         return opt;
-  //       });
-  //     };
+  useEffect(() => {
+    if (relations && !selectedId) {
+      setOptions(
+        relations
+          .map(item => ({
+            value: item.id,
+            label: item.parentName || 'Unnamed',
+            isLeaf: !item.hasChildren,
+          }))
+          .filter(item => {
+            if (selectedUser) {
+              return item.value === selectedUser.id;
+            }
+            return true;
+          }),
+      );
+    }
+  }, [relations, selectedId, selectedUser]);
 
-  //     setOptions(prev => updateOptionsWithChildren(prev));
-  //   }
-  // }, [relations, selectedId]);
+  useEffect(() => {
+    if (relations && selectedId) {
+      const children = relations.map(child => ({
+        value: child.id,
+        label: child.parentName || 'Unnamed',
+        isLeaf: !child.hasChildren,
+      }));
+      setOptions(options => updateOptionChildren(options, selectedId, children));
+    }
+  }, [relations, selectedId, updateOptionChildren]);
 
-  // const loadData: CascaderProps['loadData'] = selectedOptions => {
-  //   const targetOption = selectedOptions[selectedOptions.length - 1];
-
-  //   // Mark as loading
-  //   targetOption.loading = true;
-  //   setOptions([...options]);
-
-  //   // Set the ID to trigger the tanstack query
-  //   setSelectedId(targetOption.value);
-  // };
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('on submit');
   };
-  // const onChange: CascaderProps<Option>['onChange'] = value => {
-  //   console.log(value);
-  // };
+  const onChange: CascaderProps<CascaderOption>['onChange'] = (value, selectedOptions) => {
+    setSelectedOptionId(value[value.length - 1]);
+    setSelectedOptionLabel(selectedOptions?.[selectedOptions.length - 1]?.label || '');
+  };
 
   return (
     <FormItem className="flex text-sm">
@@ -141,20 +151,26 @@ const SelectAccountsPopup = ({
       <FormControl className="basis-9/12">
         <Dialog
           title="请选择上级范围"
-          className="min-w-1/2"
+          className="flex min-h-1/2 min-w-1/2 flex-col"
           trigger={
-            <div className="w-full cursor-pointer border p-2">
-              {selectedUser ? `${selectedUser.userName}(${selectedUser.showId})` : '请选择'}
+            <div className="w-full basis-9/12 cursor-pointer border p-2">
+              {selectedOptionLabel ? selectedOptionLabel : '请选择'}
             </div>
           }
           cancelText="取消"
           confirmText="确认"
           onConfirm={() => {
-            field.onChange('');
+            field.onChange(selectedOptionId);
           }}
         >
           <form className="flex items-center gap-4 text-sm" onSubmit={onSubmit}>
-            <input type="text" disabled className="h-9 border px-2" placeholder="请选择CRM" />
+            <input
+              type="text"
+              disabled
+              value={selectedUser?.userName || ''}
+              className="h-9 border px-2"
+              placeholder="请选择CRM"
+            />
             <AccountDialog
               selectedUser={selectedUser}
               setSelectedUser={setSelectedUser}
@@ -178,17 +194,18 @@ const SelectAccountsPopup = ({
               重置
             </button>
           </form>
-          <div>
-            <input type="text" />
-            {/* <Cascader
+          <div className="flex-1">
+            {/* TODO: use regular ul li instead of Cascader here may be better */}
+            <Cascader
               options={options}
               loadData={loadData}
               onChange={onChange}
               notFoundContent={isLoading ? '加载中...' : '无数据'}
+              displayRender={labels => labels[labels.length - 1]}
               changeOnSelect
               // add this to make sure the children options can unfold normally
               getPopupContainer={triggerNode => triggerNode.parentNode as HTMLElement}
-            /> */}
+            />
           </div>
         </Dialog>
       </FormControl>
@@ -196,17 +213,82 @@ const SelectAccountsPopup = ({
     </FormItem>
   );
 };
-export const CRMForm = ({ tagsUserList }: { tagsUserList: TagUserItem[] }) => {
+export const CRMForm = ({
+  tagsUserList,
+  setOtherParams,
+  setParams,
+  setTags,
+}: {
+  tagsUserList: TagUserItem[];
+  setOtherParams: (params: {
+    status: string;
+    role: string;
+    certiricateNo: string;
+    accountType: string;
+  }) => void;
+  setParams: (params: {
+    threeCons: string;
+    regEndTime: string;
+    regStartTime: string;
+    fuzzyMobile: string;
+    fuzzyEmail: string;
+    inviter: string;
+    accounts: string;
+  }) => void;
+  setTags: (tags: string) => void;
+}) => {
   const form = useForm({
     defaultValues: {
       threeCons: '',
-      regStartTime: '',
-      // Add more fields as needed
+      regStartTime: { from: '', to: '' },
+      name: '',
+      status: '',
+      mobile: '',
+      email: '',
+      role: '',
+      inviter: '',
+      accounts: '',
+      certiricateNo: '',
+      tags: '',
+      accountType: '',
     },
   });
-  const onSubmit = () => {
-    // console.log('Form submitted with data:', data);
-    // Handle form submission logic here
+
+  const onSubmit = (data: FormData) => {
+    setParams({
+      threeCons: data.name,
+      regStartTime: data.regStartTime.from,
+      regEndTime: data.regStartTime.to,
+      fuzzyMobile: data.mobile,
+      fuzzyEmail: data.email,
+      inviter: data.inviter,
+      accounts: data.accounts,
+    });
+    setOtherParams({
+      status: data.status,
+      role: data.role,
+      certiricateNo: data.certiricateNo,
+      accountType: data.accountType,
+    });
+    setTags(data.tags);
+  };
+  const onReset = () => {
+    setParams({
+      threeCons: '',
+      regEndTime: '',
+      regStartTime: '',
+      fuzzyMobile: '',
+      fuzzyEmail: '',
+      inviter: '',
+      accounts: '',
+    });
+    setOtherParams({
+      status: '',
+      role: '',
+      certiricateNo: '',
+      accountType: '',
+    });
+    setTags('');
   };
   const statusOptions = [
     { label: '启用', value: '1' },
@@ -217,6 +299,7 @@ export const CRMForm = ({ tagsUserList }: { tagsUserList: TagUserItem[] }) => {
     { label: '用户', value: '1' },
     { label: '代理', value: '2' },
   ];
+  // TODO: get this data from API later
   const roleOptions = [
     { label: 'CRM用户', value: '131' },
     { label: 'MAM', value: '198' },
@@ -234,10 +317,11 @@ export const CRMForm = ({ tagsUserList }: { tagsUserList: TagUserItem[] }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
+        onReset={onReset}
         className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4"
       >
         <FormField
-          name="fuzzyEmail"
+          name="name"
           render={({ field }) => (
             <FormItem className="flex text-sm">
               <FormLabel className="basis-3/12">姓名/账户ID:</FormLabel>
@@ -255,18 +339,24 @@ export const CRMForm = ({ tagsUserList }: { tagsUserList: TagUserItem[] }) => {
         />
         <FormField
           name="status"
-          render={() => (
+          render={({ field }) => (
             <FormItem className="flex text-sm">
               <FormLabel className="basis-3/12">状态:</FormLabel>
               <FormControl className="basis-9/12">
-                <FormSelect options={statusOptions} className="rounded-none" placeholder="请选择" />
+                <FormSelect
+                  options={statusOptions}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  className="rounded-none"
+                  placeholder="请选择"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <FormField
-          name="registerTime"
+          name="regStartTime"
           render={() => (
             <FormItem className="flex text-sm">
               <FormLabel className="basis-3/12">注册时间:</FormLabel>
@@ -313,11 +403,17 @@ export const CRMForm = ({ tagsUserList }: { tagsUserList: TagUserItem[] }) => {
         />
         <FormField
           name="role"
-          render={() => (
+          render={({ field }) => (
             <FormItem className="flex text-sm">
               <FormLabel className="basis-3/12">角色:</FormLabel>
               <FormControl className="basis-9/12">
-                <FormSelect options={roleOptions} className="rounded-none" placeholder="请选择" />
+                <FormSelect
+                  options={roleOptions}
+                  className="rounded-none"
+                  placeholder="请选择"
+                  value={field.value}
+                  onValueChange={field.onChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -355,11 +451,13 @@ export const CRMForm = ({ tagsUserList }: { tagsUserList: TagUserItem[] }) => {
         />
         <FormField
           name="accountType"
-          render={() => (
+          render={({ field }) => (
             <FormItem className="flex text-sm">
               <FormLabel className="basis-3/12">CRM账户类型:</FormLabel>
               <FormControl className="basis-9/12">
                 <FormSelect
+                  value={field.value}
+                  onValueChange={field.onChange}
                   options={crmAccountTypeOptions}
                   className="rounded-none"
                   placeholder="请选择"
@@ -371,19 +469,35 @@ export const CRMForm = ({ tagsUserList }: { tagsUserList: TagUserItem[] }) => {
         />
         <FormField
           name="tags"
-          render={() => (
+          render={({ field }) => (
             <FormItem className="flex text-sm">
               <FormLabel className="basis-3/12">标签名称:</FormLabel>
               <FormControl className="basis-9/12">
-                <FormSelect options={tagsOptions} className="rounded-none" placeholder="请选择" />
+                <FormSelect
+                  options={tagsOptions}
+                  className="rounded-none"
+                  placeholder="请选择"
+                  value={field.value}
+                  onValueChange={field.onChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className="col-span-1 flex justify-center gap-2 sm:col-span-2 md:col-span-4">
-          <button type="submit">submit</button>
-          <button type="reset">reset</button>
+        <div className="col-span-1 flex justify-center gap-4 sm:col-span-2 md:col-span-4">
+          <button
+            type="submit"
+            className="cursor-pointer rounded border-blue-500 bg-blue-500 px-4 py-2 text-white"
+          >
+            submit
+          </button>
+          <button
+            type="reset"
+            className="cursor-pointer rounded border bg-white px-4 py-2 text-blue-500"
+          >
+            reset
+          </button>
         </div>
       </form>
     </Form>

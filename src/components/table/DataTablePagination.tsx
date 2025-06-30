@@ -1,22 +1,22 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@radix-ui/react-select';
 import { Table } from '@tanstack/react-table';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { Button } from '../ui/button';
+import { cn } from '@/lib/utils';
+import { FormSelect } from '../form/FormSelect';
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
   totalCount?: number;
+  className?: string;
 }
 
-export function DataTablePagination<TData>({ table, totalCount }: DataTablePaginationProps<TData>) {
+export function DataTablePagination<TData>({
+  table,
+  totalCount,
+  className,
+}: DataTablePaginationProps<TData>) {
   return (
-    <div className="flex items-center justify-between px-2">
+    <div className={cn('flex items-center justify-between px-2', className)}>
       <div className="text-muted-foreground flex-1 text-sm">
         {/* Show total count provided by API */}
         {totalCount !== undefined && <span>{totalCount} total records</span>}
@@ -24,23 +24,17 @@ export function DataTablePagination<TData>({ table, totalCount }: DataTablePagin
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
-          <Select
-            value={`${table.getState().pagination.pageSize}`}
-            onValueChange={value => {
-              table.setPageSize(Number(value));
-            }}
-          >
-            <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
-            </SelectTrigger>
-            <SelectContent side="top">
-              {[10, 20, 25, 30, 40, 50].map(pageSize => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <FormSelect
+            options={[
+              { label: '10', value: '10' },
+              { label: '20', value: '20' },
+              { label: '30', value: '30' },
+              { label: '40', value: '40' },
+              { label: '50', value: '50' },
+            ]}
+            value={table.getState().pagination.pageSize.toString()}
+            onValueChange={value => table.setPageSize(Number(value))}
+          />
         </div>
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
           Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount() || 1}

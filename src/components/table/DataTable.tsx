@@ -68,7 +68,6 @@ export function DataTable<TData, TValue>({
       if (typeof updater === 'function') {
         const newState = updater(pagination);
         if (newState.pageIndex !== pagination.pageIndex) {
-          console.log('onPageChange', newState.pageIndex);
           onPageChange(newState.pageIndex);
         }
         if (newState.pageSize !== pagination.pageSize) {
@@ -78,7 +77,6 @@ export function DataTable<TData, TValue>({
     },
     manualPagination: true,
     getCoreRowModel: getCoreRowModel(),
-    // getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
@@ -128,7 +126,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} totalCount={pageCount * pageSize} />
+      <DataTablePagination className="mt-4" table={table} totalCount={pageCount * pageSize} />
     </div>
   );
 }

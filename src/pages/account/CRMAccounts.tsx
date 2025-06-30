@@ -4,7 +4,7 @@ import { EmblaCarousel } from '@/components/common/EmblaCarousel';
 import { CRMTable } from '@/components/table/CRMTable';
 import { cn } from '@/lib/utils';
 import { CircleChevronLeft } from 'lucide-react';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { CRMForm } from './CRMAccountsForm';
 
 const TagItem: FC<TagUserItem & { setTags: (id: string) => void; className?: string }> = ({
@@ -30,39 +30,45 @@ export const CRMAccounts = () => {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [tags, setTags] = useState('');
+  const [params, setParams] = useState({
+    threeCons: '',
+    regEndTime: '',
+    regStartTime: '',
+    fuzzyMobile: '',
+    fuzzyEmail: '',
+    inviter: '',
+    accounts: '',
+  });
+
+  const [otherParams, setOtherParams] = useState({
+    status: '',
+    role: '',
+    certiricateNo: '',
+    accountType: '',
+  });
   const { data: tagUserCountList, isLoading: tagUserCountListLoading } = useTagUserCountList();
   const { data: crmUsers, isLoading: crmUsersLoading } = useCrmUser(
     {
       pageSize,
       pageNum: pageNum + 1,
       orderByColumn: '',
-      params: {
-        threeCons: '',
-        regEndTime: '',
-        regStartTime: '',
-        fuzzyMobile: '',
-        fuzzyEmail: '',
-        inviter: '',
-        accounts: '',
-      },
+      params,
       isAsc,
-      status: '',
-      role: '',
-      certiricateNo: '',
-      accountType: '',
       tags,
+      ...otherParams,
     },
     'origin=1',
   );
 
-  useEffect(() => {
-    console.log('crm users', crmUsers);
-  }, [crmUsers]);
-
   return (
     <div>
       <div>
-        <CRMForm tagsUserList={tagUserCountList?.data || []} />
+        <CRMForm
+          tagsUserList={tagUserCountList?.data || []}
+          setParams={setParams}
+          setOtherParams={setOtherParams}
+          setTags={setTags}
+        />
       </div>
       <div className="mt-4 flex items-center gap-4">
         <TagItem
