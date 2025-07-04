@@ -1,43 +1,44 @@
 import { FieldPath, FieldValues } from 'react-hook-form';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { CrmSelect } from '../common/CrmSelect';
 import { useCrmFormContext } from '@/contexts/form';
 import { cn } from '@/lib/utils';
-interface FormSelectProps<T extends FieldValues> {
+
+interface FormInputProps<T extends FieldValues> {
   name: FieldPath<T>;
   label: string;
-  options: { label: string; value: string }[];
-  placeholder?: string;
+  placeholder: string;
   className?: string;
 }
 
-export function FormSelect<T extends FieldValues>({
-  options,
+export function FormInput<T extends FieldValues>({
   name,
   label,
   placeholder,
   className,
-}: FormSelectProps<T>) {
+  ...props
+}: FormInputProps<T> & React.ComponentPropsWithoutRef<'input'>) {
   const { form } = useCrmFormContext<T>();
   return (
     <FormField
-      name={name}
       control={form.control}
+      name={name}
       render={({ field }) => (
         <FormItem>
           <div className={cn('flex items-center text-sm', className)}>
-            <FormLabel className="shrink-0 basis-3/12">{label}</FormLabel>
-            <FormControl className="grow-0 basis-9/12">
-              <CrmSelect
-                options={options}
-                value={field.value}
-                onValueChange={field.onChange}
-                className="rounded-none"
+            <FormLabel className="basis-3/12">{label}</FormLabel>
+            <FormControl className="basis-9/12">
+              <input
+                type="text"
+                {...props}
+                {...field}
+                className="h-9 w-full border px-2"
                 placeholder={placeholder}
               />
             </FormControl>
           </div>
-          <FormMessage />
+          <div className="flex justify-end">
+            <FormMessage className="basis-9/12" />
+          </div>
         </FormItem>
       )}
     />

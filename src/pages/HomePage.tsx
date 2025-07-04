@@ -12,7 +12,7 @@ import { BarChart } from '@/components/charts/BarCharts';
 import { LineChart } from '@/components/charts/LineCharts';
 import { PieChart } from '@/components/charts/PieCharts';
 import { ToolTip } from '@/components/common/ToolTip';
-import { FormSelect } from '@/components/form/FormSelect';
+import { CrmSelect } from '@/components/common/CrmSelect';
 import { Info } from 'lucide-react';
 import { useEffect, useMemo, useState, type FC } from 'react';
 // import { useTranslation } from 'react-i18next';
@@ -203,7 +203,6 @@ const SymbolReportPieChart: FC<{ serverList: ServerItem[] }> = ({ serverList }) 
     serverId,
     pageNum: NaN,
   });
-  console.log(data, 'symbol report data');
   useEffect(() => {
     if (serverList.length > 0) {
       setServerId(serverList[0].id);
@@ -233,14 +232,14 @@ const SymbolReportPieChart: FC<{ serverList: ServerItem[] }> = ({ serverList }) 
     <div className="bg-card mb-4 rounded-lg p-6 shadow">
       <div className="mb-4 flex items-center justify-between">
         <div>交易品种概览</div>
-        <FormSelect
+        <CrmSelect
           onValueChange={setServerId}
           options={servers}
           value={serverId}
           className="h-4 w-40"
           placeholder="选择服务器"
         />
-        <FormSelect
+        <CrmSelect
           onValueChange={setType}
           options={options}
           value={type}
@@ -293,7 +292,7 @@ const WithDrawReportAreaChart: FC = () => {
     <div className="bg-card rounded-lg p-6 shadow">
       <div className="flex justify-between">
         <div>出入金总览</div>
-        <FormSelect
+        <CrmSelect
           onValueChange={setType}
           options={options}
           value={type}
@@ -346,7 +345,7 @@ const RegCountReportLineChart: FC<{ serverList: ServerItem[] }> = () => {
     <div className="bg-card mb-4 rounded-lg p-6 shadow">
       <div className="flex justify-between">
         <div>账户开通概览</div>
-        <FormSelect
+        <CrmSelect
           onValueChange={setType}
           options={options}
           value={type}
@@ -387,7 +386,6 @@ const DepositAllReportBarChart: FC = () => {
         data: dataArr.map(item => item?.[0] || 0),
       },
     ];
-    console.log(datasets, 'deposit all report datasets');
     return { labels, datasets };
   }, [data]);
 
@@ -395,7 +393,7 @@ const DepositAllReportBarChart: FC = () => {
     <div className="bg-card mb-4 rounded-lg p-6 shadow">
       <div className="flex justify-between">
         <div>在途资金预览</div>
-        <FormSelect
+        <CrmSelect
           onValueChange={setType}
           options={options}
           value={type}

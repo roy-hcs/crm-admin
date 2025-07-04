@@ -1,0 +1,976 @@
+{
+  "mzone": [
+    {
+      "area": "China (中国)",
+      "code": "86"
+    },
+    {
+      "area": "China Hongkong (中国香港)",
+      "code": "852"
+    },
+    {
+      "area": "China Taiwan (中国台湾地区)",
+      "code": "886"
+    },
+    {
+      "area": "Afghanistan",
+      "code": "93"
+    },
+    {
+      "area": "Albania (Shqipëri)",
+      "code": "355"
+    },
+    {
+      "area": "Algeria",
+      "code": "213"
+    },
+    {
+      "area": "Aland Islands",
+      "code": "358"
+    },
+    {
+      "area": "American Samoa",
+      "code": "1684"
+    },
+    {
+      "area": "Andorra",
+      "code": "376"
+    },
+    {
+      "area": "Angola",
+      "code": "244"
+    },
+    {
+      "area": "Anguilla",
+      "code": "1264"
+    },
+    {
+      "area": "Antigua and Barbuda",
+      "code": "1268"
+    },
+    {
+      "area": "Argentina",
+      "code": "54"
+    },
+    {
+      "area": "Armenia (Հայաստան)",
+      "code": "374"
+    },
+    {
+      "area": "Aruba",
+      "code": "297"
+    },
+    {
+      "area": "Australia",
+      "code": "61"
+    },
+    {
+      "area": "Austria (Österreich)",
+      "code": "43"
+    },
+    {
+      "area": "Azerbaijan (Azərbaycan)",
+      "code": "994"
+    },
+    {
+      "area": "Bahamas",
+      "code": "1242"
+    },
+    {
+      "area": "Bahrain",
+      "code": "973"
+    },
+    {
+      "area": "Bangladesh",
+      "code": "880"
+    },
+    {
+      "area": "Barbados",
+      "code": "1246"
+    },
+    {
+      "area": "Belarus (Беларусь)",
+      "code": "375"
+    },
+    {
+      "area": "Belgium (België)",
+      "code": "32"
+    },
+    {
+      "area": "Belize",
+      "code": "501"
+    },
+    {
+      "area": "Benin (Bénin)",
+      "code": "229"
+    },
+    {
+      "area": "Bermuda",
+      "code": "1441"
+    },
+    {
+      "area": "Bhutan",
+      "code": "975"
+    },
+    {
+      "area": "Bolivia",
+      "code": "591"
+    },
+    {
+      "area": "Bosnia and Herzegovina",
+      "code": "387"
+    },
+    {
+      "area": "Botswana",
+      "code": "267"
+    },
+    {
+      "area": "Brazil (Brasil)",
+      "code": "55"
+    },
+    {
+      "area": "British Indian Ocean Territory",
+      "code": "246"
+    },
+    {
+      "area": "British Virgin Islands",
+      "code": "1284"
+    },
+    {
+      "area": "Brunei",
+      "code": "673"
+    },
+    {
+      "area": "Bulgaria (България)",
+      "code": "359"
+    },
+    {
+      "area": "Burkina Faso",
+      "code": "226"
+    },
+    {
+      "area": "Burundi (Uburundi)",
+      "code": "257"
+    },
+    {
+      "area": "Cambodia",
+      "code": "855"
+    },
+    {
+      "area": "Cameroon (Cameroun)",
+      "code": "237"
+    },
+    {
+      "area": "Canada",
+      "code": "1"
+    },
+    {
+      "area": "Cape Verde (Kabu Verdi)",
+      "code": "238"
+    },
+    {
+      "area": "Caribbean Netherlands",
+      "code": "599"
+    },
+    {
+      "area": "Cayman Islands",
+      "code": "1345"
+    },
+    {
+      "area": "Central African Republic (République centrafricaine)",
+      "code": "236"
+    },
+    {
+      "area": "Chad (Tchad)",
+      "code": "235"
+    },
+    {
+      "area": "Chile",
+      "code": "56"
+    },
+    {
+      "area": "Christmas Island",
+      "code": "61"
+    },
+    {
+      "area": "Cocos (Keeling) Islands",
+      "code": "61"
+    },
+    {
+      "area": "Colombia",
+      "code": "57"
+    },
+    {
+      "area": "Comoros",
+      "code": "269"
+    },
+    {
+      "area": "Congo (DRC) (Jamhuri ya Kidemokrasia ya Kongo)",
+      "code": "243"
+    },
+    {
+      "area": "Congo (Republic) (Congo-Brazzaville)",
+      "code": "242"
+    },
+    {
+      "area": "Cook Islands",
+      "code": "682"
+    },
+    {
+      "area": "Costa Rica",
+      "code": "506"
+    },
+    {
+      "area": "Côte d’Ivoire",
+      "code": "225"
+    },
+    {
+      "area": "Croatia (Hrvatska)",
+      "code": "385"
+    },
+    {
+      "area": "Cuba",
+      "code": "53"
+    },
+    {
+      "area": "Curaçao",
+      "code": "599"
+    },
+    {
+      "area": "Cyprus (Κύπρος)",
+      "code": "357"
+    },
+    {
+      "area": "Czech Republic (Česká republika)",
+      "code": "420"
+    },
+    {
+      "area": "Denmark (Danmark)",
+      "code": "45"
+    },
+    {
+      "area": "Djibouti",
+      "code": "253"
+    },
+    {
+      "area": "Dominica",
+      "code": "1767"
+    },
+    {
+      "area": "Dominican Republic (República Dominicana)",
+      "code": "1"
+    },
+    {
+      "area": "Ecuador",
+      "code": "593"
+    },
+    {
+      "area": "Egypt",
+      "code": "20"
+    },
+    {
+      "area": "El Salvador",
+      "code": "503"
+    },
+    {
+      "area": "Equatorial Guinea (Guinea Ecuatorial)",
+      "code": "240"
+    },
+    {
+      "area": "Eritrea",
+      "code": "291"
+    },
+    {
+      "area": "Estonia (Eesti)",
+      "code": "372"
+    },
+    {
+      "area": "Ethiopia",
+      "code": "251"
+    },
+    {
+      "area": "Falkland Islands (Islas Malvinas)",
+      "code": "500"
+    },
+    {
+      "area": "Faroe Islands (Føroyar)",
+      "code": "298"
+    },
+    {
+      "area": "Fiji",
+      "code": "679"
+    },
+    {
+      "area": "Finland (Suomi)",
+      "code": "358"
+    },
+    {
+      "area": "France",
+      "code": "33"
+    },
+    {
+      "area": "French Guiana (Guyane française)",
+      "code": "594"
+    },
+    {
+      "area": "French Polynesia (Polynésie française)",
+      "code": "689"
+    },
+    {
+      "area": "Gabon",
+      "code": "241"
+    },
+    {
+      "area": "Gambia",
+      "code": "220"
+    },
+    {
+      "area": "Georgia (საქართველო)",
+      "code": "995"
+    },
+    {
+      "area": "Germany (Deutschland)",
+      "code": "49"
+    },
+    {
+      "area": "Ghana (Gaana)",
+      "code": "233"
+    },
+    {
+      "area": "Gibraltar",
+      "code": "350"
+    },
+    {
+      "area": "Greece (Ελλάδα)",
+      "code": "30"
+    },
+    {
+      "area": "Greenland (Kalaallit Nunaat)",
+      "code": "299"
+    },
+    {
+      "area": "Grenada",
+      "code": "1473"
+    },
+    {
+      "area": "Guadeloupe",
+      "code": "590"
+    },
+    {
+      "area": "Guam",
+      "code": "1671"
+    },
+    {
+      "area": "Guatemala",
+      "code": "502"
+    },
+    {
+      "area": "Guernsey",
+      "code": "44"
+    },
+    {
+      "area": "Guinea (Guinée)",
+      "code": "224"
+    },
+    {
+      "area": "Guinea-Bissau (Guiné Bissau)",
+      "code": "245"
+    },
+    {
+      "area": "Guyana",
+      "code": "592"
+    },
+    {
+      "area": "Haiti",
+      "code": "509"
+    },
+    {
+      "area": "Honduras",
+      "code": "504"
+    },
+    {
+      "area": "Hungary (Magyarország)",
+      "code": "36"
+    },
+    {
+      "area": "Iceland (Ísland)",
+      "code": "354"
+    },
+    {
+      "area": "India",
+      "code": "91"
+    },
+    {
+      "area": "Indonesia",
+      "code": "62"
+    },
+    {
+      "area": "Iran",
+      "code": "98"
+    },
+    {
+      "area": "Iraq",
+      "code": "964"
+    },
+    {
+      "area": "Ireland",
+      "code": "353"
+    },
+    {
+      "area": "Isle of Man",
+      "code": "44"
+    },
+    {
+      "area": "Israel",
+      "code": "972"
+    },
+    {
+      "area": "Italy (Italia)",
+      "code": "39"
+    },
+    {
+      "area": "Jamaica",
+      "code": "1876"
+    },
+    {
+      "area": "Japan (日本)",
+      "code": "81"
+    },
+    {
+      "area": "Jersey",
+      "code": "44"
+    },
+    {
+      "area": "Jordan",
+      "code": "962"
+    },
+    {
+      "area": "Kazakhstan (Казахстан)",
+      "code": "7"
+    },
+    {
+      "area": "Kenya",
+      "code": "254"
+    },
+    {
+      "area": "Kiribati",
+      "code": "686"
+    },
+    {
+      "area": "Kosovo",
+      "code": "383"
+    },
+    {
+      "area": "Kuwait",
+      "code": "965"
+    },
+    {
+      "area": "Kyrgyzstan (Кыргызстан)",
+      "code": "996"
+    },
+    {
+      "area": "Laos",
+      "code": "856"
+    },
+    {
+      "area": "Latvia (Latvija)",
+      "code": "371"
+    },
+    {
+      "area": "Lebanon",
+      "code": "961"
+    },
+    {
+      "area": "Lesotho",
+      "code": "266"
+    },
+    {
+      "area": "Liberia",
+      "code": "231"
+    },
+    {
+      "area": "Libya",
+      "code": "218"
+    },
+    {
+      "area": "Liechtenstein",
+      "code": "423"
+    },
+    {
+      "area": "Lithuania (Lietuva)",
+      "code": "370"
+    },
+    {
+      "area": "Luxembourg",
+      "code": "352"
+    },
+    {
+      "area": "Macau (澳門)",
+      "code": "853"
+    },
+    {
+      "area": "Macedonia (FYROM) (Македонија)",
+      "code": "389"
+    },
+    {
+      "area": "Madagascar (Madagasikara)",
+      "code": "261"
+    },
+    {
+      "area": "Malawi",
+      "code": "265"
+    },
+    {
+      "area": "Malaysia",
+      "code": "60"
+    },
+    {
+      "area": "Maldives",
+      "code": "960"
+    },
+    {
+      "area": "Mali",
+      "code": "223"
+    },
+    {
+      "area": "Malta",
+      "code": "356"
+    },
+    {
+      "area": "Marshall Islands",
+      "code": "692"
+    },
+    {
+      "area": "Martinique",
+      "code": "596"
+    },
+    {
+      "area": "Mauritania",
+      "code": "222"
+    },
+    {
+      "area": "Mauritius (Moris)",
+      "code": "230"
+    },
+    {
+      "area": "Mayotte",
+      "code": "262"
+    },
+    {
+      "area": "Mexico (México)",
+      "code": "52"
+    },
+    {
+      "area": "Micronesia",
+      "code": "691"
+    },
+    {
+      "area": "Moldova (Republica Moldova)",
+      "code": "373"
+    },
+    {
+      "area": "Monaco",
+      "code": "377"
+    },
+    {
+      "area": "Mongolia (Монгол)",
+      "code": "976"
+    },
+    {
+      "area": "Montenegro (Crna Gora)",
+      "code": "382"
+    },
+    {
+      "area": "Montserrat",
+      "code": "1664"
+    },
+    {
+      "area": "Morocco",
+      "code": "212"
+    },
+    {
+      "area": "Mozambique (Moçambique)",
+      "code": "258"
+    },
+    {
+      "area": "Myanmar (Burma)",
+      "code": "95"
+    },
+    {
+      "area": "Namibia (Namibië)",
+      "code": "264"
+    },
+    {
+      "area": "Nauru",
+      "code": "674"
+    },
+    {
+      "area": "Nepal",
+      "code": "977"
+    },
+    {
+      "area": "Netherlands (Nederland)",
+      "code": "31"
+    },
+    {
+      "area": "New Caledonia (Nouvelle-Calédonie)",
+      "code": "687"
+    },
+    {
+      "area": "New Zealand",
+      "code": "64"
+    },
+    {
+      "area": "Nicaragua",
+      "code": "505"
+    },
+    {
+      "area": "Niger (Nijar)",
+      "code": "227"
+    },
+    {
+      "area": "Nigeria",
+      "code": "234"
+    },
+    {
+      "area": "Niue",
+      "code": "683"
+    },
+    {
+      "area": "Norfolk Island",
+      "code": "672"
+    },
+    {
+      "area": "North Korea (조선 민주주의 인민 공화국)",
+      "code": "850"
+    },
+    {
+      "area": "Northern Mariana Islands",
+      "code": "1670"
+    },
+    {
+      "area": "Norway (Norge)",
+      "code": "47"
+    },
+    {
+      "area": "Oman",
+      "code": "968"
+    },
+    {
+      "area": "Pakistan",
+      "code": "92"
+    },
+    {
+      "area": "Palau",
+      "code": "680"
+    },
+    {
+      "area": "Palestine",
+      "code": "970"
+    },
+    {
+      "area": "Panama (Panamá)",
+      "code": "507"
+    },
+    {
+      "area": "Papua New Guinea",
+      "code": "675"
+    },
+    {
+      "area": "Paraguay",
+      "code": "595"
+    },
+    {
+      "area": "Peru (Perú)",
+      "code": "51"
+    },
+    {
+      "area": "Philippines",
+      "code": "63"
+    },
+    {
+      "area": "Poland (Polska)",
+      "code": "48"
+    },
+    {
+      "area": "Portugal",
+      "code": "351"
+    },
+    {
+      "area": "Puerto Rico",
+      "code": "1"
+    },
+    {
+      "area": "Qatar",
+      "code": "974"
+    },
+    {
+      "area": "Réunion (La Réunion)",
+      "code": "262"
+    },
+    {
+      "area": "Romania (România)",
+      "code": "40"
+    },
+    {
+      "area": "Russia (Россия)",
+      "code": "7"
+    },
+    {
+      "area": "Rwanda",
+      "code": "250"
+    },
+    {
+      "area": "Saint Barthélemy (Saint-Barthélemy)",
+      "code": "590"
+    },
+    {
+      "area": "Saint Helena",
+      "code": "290"
+    },
+    {
+      "area": "Saint Kitts and Nevis",
+      "code": "1869"
+    },
+    {
+      "area": "Saint Lucia",
+      "code": "1758"
+    },
+    {
+      "area": "Saint Martin (Saint-Martin (partie française))",
+      "code": "590"
+    },
+    {
+      "area": "Saint Pierre and Miquelon (Saint-Pierre-et-Miquelon)",
+      "code": "508"
+    },
+    {
+      "area": "Saint Vincent and the Grenadines",
+      "code": "1784"
+    },
+    {
+      "area": "Samoa",
+      "code": "685"
+    },
+    {
+      "area": "San Marino",
+      "code": "378"
+    },
+    {
+      "area": "São Tomé and Príncipe (São Tomé e Príncipe)",
+      "code": "239"
+    },
+    {
+      "area": "Saudi Arabia",
+      "code": "966"
+    },
+    {
+      "area": "Senegal (Sénégal)",
+      "code": "221"
+    },
+    {
+      "area": "Serbia (Србија)",
+      "code": "381"
+    },
+    {
+      "area": "Seychelles",
+      "code": "248"
+    },
+    {
+      "area": "Sierra Leone",
+      "code": "232"
+    },
+    {
+      "area": "Singapore",
+      "code": "65"
+    },
+    {
+      "area": "Sint Maarten",
+      "code": "1721"
+    },
+    {
+      "area": "Slovakia (Slovensko)",
+      "code": "421"
+    },
+    {
+      "area": "Slovenia (Slovenija)",
+      "code": "386"
+    },
+    {
+      "area": "Solomon Islands",
+      "code": "677"
+    },
+    {
+      "area": "Somalia (Soomaaliya)",
+      "code": "252"
+    },
+    {
+      "area": "South Africa",
+      "code": "27"
+    },
+    {
+      "area": "South Korea (대한민국)",
+      "code": "82"
+    },
+    {
+      "area": "South Sudan",
+      "code": "211"
+    },
+    {
+      "area": "Spain (España)",
+      "code": "34"
+    },
+    {
+      "area": "Sri Lanka",
+      "code": "94"
+    },
+    {
+      "area": "Sudan",
+      "code": "249"
+    },
+    {
+      "area": "Suriname",
+      "code": "597"
+    },
+    {
+      "area": "Svalbard and Jan Mayen",
+      "code": "47"
+    },
+    {
+      "area": "Swaziland",
+      "code": "268"
+    },
+    {
+      "area": "Sweden (Sverige)",
+      "code": "46"
+    },
+    {
+      "area": "Switzerland (Schweiz)",
+      "code": "41"
+    },
+    {
+      "area": "Syria",
+      "code": "963"
+    },
+    {
+      "area": "Tajikistan",
+      "code": "992"
+    },
+    {
+      "area": "Tanzania",
+      "code": "255"
+    },
+    {
+      "area": "Thailand",
+      "code": "66"
+    },
+    {
+      "area": "Timor-Leste",
+      "code": "670"
+    },
+    {
+      "area": "Togo",
+      "code": "228"
+    },
+    {
+      "area": "Tokelau",
+      "code": "690"
+    },
+    {
+      "area": "Tonga",
+      "code": "676"
+    },
+    {
+      "area": "Trinidad and Tobago",
+      "code": "1868"
+    },
+    {
+      "area": "Tunisia",
+      "code": "216"
+    },
+    {
+      "area": "Turkey (Türkiye)",
+      "code": "90"
+    },
+    {
+      "area": "Turkmenistan",
+      "code": "993"
+    },
+    {
+      "area": "Turks and Caicos Islands",
+      "code": "1649"
+    },
+    {
+      "area": "Tuvalu",
+      "code": "688"
+    },
+    {
+      "area": "U.S. Virgin Islands",
+      "code": "1340"
+    },
+    {
+      "area": "Uganda",
+      "code": "256"
+    },
+    {
+      "area": "Ukraine (Україна)",
+      "code": "380"
+    },
+    {
+      "area": "United Arab Emirates",
+      "code": "971"
+    },
+    {
+      "area": "United Kingdom",
+      "code": "44"
+    },
+    {
+      "area": "United States",
+      "code": "1"
+    },
+    {
+      "area": "Uruguay",
+      "code": "598"
+    },
+    {
+      "area": "Uzbekistan (Oʻzbekiston)",
+      "code": "998"
+    },
+    {
+      "area": "Vanuatu",
+      "code": "678"
+    },
+    {
+      "area": "Vatican City (Città del Vaticano)",
+      "code": "39"
+    },
+    {
+      "area": "Venezuela",
+      "code": "58"
+    },
+    {
+      "area": "Vietnam (Việt Nam)",
+      "code": "84"
+    },
+    {
+      "area": "Wallis and Futuna",
+      "code": "681"
+    },
+    {
+      "area": "Western Sahara",
+      "code": "212"
+    },
+    {
+      "area": "Yemen",
+      "code": "967"
+    },
+    {
+      "area": "Zambia",
+      "code": "260"
+    },
+    {
+      "area": "Zimbabwe",
+      "code": "263"
+    }
+  ]
+}

@@ -3,9 +3,18 @@ import { TagUserItem } from '@/api/hooks/system/types';
 import { EmblaCarousel } from '@/components/common/EmblaCarousel';
 import { CRMTable } from '@/components/table/CRMTable';
 import { cn } from '@/lib/utils';
-import { CircleChevronLeft } from 'lucide-react';
-import { FC, useState } from 'react';
-import { CRMForm } from './CRMAccountsForm';
+import {
+  CircleChevronLeft,
+  Download,
+  Menu,
+  RefreshCcw,
+  Search,
+  Settings,
+  Users,
+} from 'lucide-react';
+import { FC, useRef, useState } from 'react';
+import { CRMForm, CRMFormRef } from './components/CRMAccountsForm';
+import { AddUserDialog } from './components/AddUserDialog';
 
 const TagItem: FC<TagUserItem & { setTags: (id: string) => void; className?: string }> = ({
   userCount,
@@ -26,6 +35,8 @@ const TagItem: FC<TagUserItem & { setTags: (id: string) => void; className?: str
 };
 
 export const CRMAccounts = () => {
+  const formRef = useRef<CRMFormRef>(null);
+  const [formShow, setFormShow] = useState(true);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc'>('asc');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -60,10 +71,37 @@ export const CRMAccounts = () => {
     'origin=1',
   );
 
+  const reset = () => {
+    setParams({
+      threeCons: '',
+      regEndTime: '',
+      regStartTime: '',
+      fuzzyMobile: '',
+      fuzzyEmail: '',
+      inviter: '',
+      accounts: '',
+    });
+    setOtherParams({
+      status: '',
+      role: '',
+      certiricateNo: '',
+      accountType: '',
+    });
+    setTags('');
+    setPageNum(0);
+    formRef.current?.onReset();
+  };
+
   return (
     <div>
-      <div>
+      <div
+        className={cn(
+          'overflow-hidden transition-all duration-300 ease-in-out',
+          formShow ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0',
+        )}
+      >
         <CRMForm
+          ref={formRef}
           tagsUserList={tagUserCountList?.data || []}
           setParams={setParams}
           setOtherParams={setOtherParams}
@@ -79,7 +117,9 @@ export const CRMAccounts = () => {
           className="shrink-0"
         />
         {tagUserCountListLoading ? (
-          <div className="flex h-full basis-full items-center justify-center">数据加载中</div>
+          <div className="flex h-full basis-full animate-pulse items-center justify-center">
+            数据加载中
+          </div>
         ) : (
           <EmblaCarousel
             options={{
@@ -119,6 +159,36 @@ export const CRMAccounts = () => {
         )}
       </div>
       <div className="mt-4">
+        <div className="mb-4 flex justify-between">
+          <div className="flex gap-4">
+            <AddUserDialog />
+
+            <button className="flex h-9 cursor-pointer items-center gap-1 border px-4 text-sm leading-normal">
+              <Download className="size-3.5" />
+              <span>导出</span>
+            </button>
+            <button className="flex h-9 cursor-pointer items-center gap-1 border px-4 text-sm leading-normal">
+              <Menu className="size-3.5" />
+              <span>批量设置角色</span>
+            </button>
+            <button className="flex h-9 cursor-pointer items-center gap-1 border px-4 text-sm leading-normal">
+              <Users className="size-3.5" />
+              <span>用户统计</span>
+            </button>
+            <button className="flex h-9 cursor-pointer items-center gap-1 border px-4 text-sm leading-normal">
+              <Settings className="size-3.5" />
+              <span>生命周期&用户标签</span>
+            </button>
+          </div>
+          <div className="flex items-center">
+            <button className="cursor-pointer border p-2" onClick={() => setFormShow(!formShow)}>
+              <Search className="size-3.5" />
+            </button>
+            <button className="cursor-pointer border-y border-r p-2" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </button>
+          </div>
+        </div>
         <CRMTable
           data={crmUsers?.rows || []}
           pageCount={Math.ceil(+(crmUsers?.total || 0) / pageSize)}

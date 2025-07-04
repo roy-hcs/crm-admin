@@ -22,9 +22,10 @@ interface DialogProps {
   isConfirmDisabled?: boolean;
   className?: string;
   onCancel?: () => void;
-  onConfirm?: () => void;
+  onConfirm?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  footerShow?: boolean;
 }
 
 const Dialog: React.FC<DialogProps> = ({
@@ -40,6 +41,7 @@ const Dialog: React.FC<DialogProps> = ({
   onConfirm,
   open,
   onOpenChange,
+  footerShow = true,
 }) => {
   const handleCancel = () => {
     onCancel?.();
@@ -47,8 +49,8 @@ const Dialog: React.FC<DialogProps> = ({
     onOpenChange(false);
   };
 
-  const handleConfirm = () => {
-    onConfirm?.();
+  const handleConfirm = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    onConfirm?.(e);
     if (!onOpenChange) return;
     onOpenChange(false);
   };
@@ -68,30 +70,32 @@ const Dialog: React.FC<DialogProps> = ({
           </DialogHeader>
         )}
         {children}
-        <DialogFooter className="gap-2 sm:justify-end">
-          <DialogClose>
-            <div
-              className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-blue-500"
-              onClick={handleCancel}
-            >
-              {cancelText}
-            </div>
-          </DialogClose>
-          <DialogClose>
-            <div
-              onClick={() => {
-                if (isConfirmDisabled) return;
-                handleConfirm?.();
-              }}
-              className={cn(
-                'rounded-sm border bg-blue-500 px-4 py-2 text-white',
-                isConfirmDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
-              )}
-            >
-              {confirmText}
-            </div>
-          </DialogClose>
-        </DialogFooter>
+        {footerShow && (
+          <DialogFooter className="gap-2 sm:justify-end">
+            <DialogClose>
+              <div
+                className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-blue-500"
+                onClick={handleCancel}
+              >
+                {cancelText}
+              </div>
+            </DialogClose>
+            <DialogClose>
+              <div
+                onClick={e => {
+                  if (isConfirmDisabled) return;
+                  handleConfirm?.(e);
+                }}
+                className={cn(
+                  'rounded-sm border bg-blue-500 px-4 py-2 text-white',
+                  isConfirmDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+                )}
+              >
+                {confirmText}
+              </div>
+            </DialogClose>
+          </DialogFooter>
+        )}
       </DialogContent>
     </ShadcnDialog>
   );

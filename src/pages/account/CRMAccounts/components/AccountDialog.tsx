@@ -20,7 +20,6 @@ export const AccountDialog = ({
 }) => {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  // const [selectedUser, setSelectedUser] = useState<CrmUserItem | null>(null);
   const [search, setSearch] = useState('');
   const [params, setParams] = useState({
     threeCons: '',

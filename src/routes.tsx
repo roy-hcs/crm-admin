@@ -6,7 +6,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { SettingPage } from './pages/SettingPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { SalesReportPage } from './pages/SalesReportPage';
-import { CRMAccounts } from './pages/account/CRMAccounts';
+import { CRMAccounts } from './pages/account/CRMAccounts/CRMAccounts';
 
 // Import other pages as needed
 
@@ -35,7 +35,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/account/crm-accounts',
-        element: <CRMAccounts />, // Replace with actual component
+        element: <CRMAccounts />,
       },
       // Add more routes that should use MainLayout here
       {

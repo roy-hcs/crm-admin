@@ -2,7 +2,7 @@ import { Table } from '@tanstack/react-table';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
-import { FormSelect } from '../form/FormSelect';
+import { CrmSelect } from '../common/CrmSelect';
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -24,7 +24,7 @@ export function DataTablePagination<TData>({
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
-          <FormSelect
+          <CrmSelect
             options={[
               { label: '10', value: '10' },
               { label: '20', value: '20' },
