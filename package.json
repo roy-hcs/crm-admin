@@ -9,7 +9,10 @@
     "lint": "eslint . --ext ts,tsx",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "prepare": "husky"
+    "prepare": "husky",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "format:fix": "prettier --write . && eslint . --ext ts,tsx --fix"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
