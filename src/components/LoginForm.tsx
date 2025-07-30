@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { useApi } from '../contexts/query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -27,6 +26,7 @@ import ECB from 'crypto-js/mode-ecb';
 import Pkcs7 from 'crypto-js/pad-pkcs7';
 import md5 from 'blueimp-md5';
 import Hex from 'crypto-js/enc-hex';
+import { useLogin, useLoginConfig } from '@/api/hooks/users/users';
 
 // TODO: warn text should support i18n
 const emailSchema = z.object({
@@ -56,7 +56,6 @@ export const LoginForm = ({
   const [showPWD, setShowPWD] = useState(false);
   const [secretKey, setSecretKey] = useState<string>('');
   const navigate = useNavigate();
-  const { useLogin, useLoginConfig } = useApi().users;
   const loginMutation = useLogin();
   const { data: loginConfig } = useLoginConfig();
   const { t } = useTranslation();

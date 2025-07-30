@@ -1,20 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { apiFormPost, apiGet, FormValue } from '../../client';
+import { apiFormPost, apiGet } from '../../client';
+import { LoginParams } from './types';
 
-// Types
-export interface User {
-  id: string;
-  username: string;
-  email: string;
-  // Other user properties
-}
-
-export interface LoginParams extends Record<string, FormValue> {
-  username: string;
-  password: string;
-  rememberMe: boolean;
-  type: number;
-}
 export function useLogin() {
   return useMutation({
     mutationFn: (params: LoginParams) =>

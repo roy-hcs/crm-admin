@@ -11,8 +11,8 @@ import * as z from 'zod';
 import { SelectUpperPopup } from './SelectUpperPopup';
 import { FormSelect } from '@/components/form/FormSelect';
 import { colorPreferenceOptions, crmAccountTypeOptions, roleOptions } from '@/lib/const';
-import { CrmSelect } from '@/components/common/CrmSelect';
-import mobileZone from '@/data/mzone.json';
+// import { CrmSelect } from '@/components/common/CrmSelect';
+// import mobileZone from '@/data/mzone.json';
 import { FormPhoneInput } from '@/components/form/FormPhoneInput';
 
 // the data form needs to collect
@@ -80,23 +80,23 @@ export const AddUserDialog = () => {
       status: '1',
     },
   });
-  const onSubmit = async data => {
+  const onSubmit = async (data: { [key: string]: string }) => {
     console.log('on submit---', data);
-    // try {
-    //   setIsSubmitting(true);
-    //   // Make your API request here
-    //   // const response = await api.createUser(data);
-    //   console.log('Form submitted:', data);
+    try {
+      setIsSubmitting(true);
+      // Make your API request here
+      // const response = await api.createUser(data);
+      console.log('Form submitted:', data);
 
-    //   // If the request is successful, close the dialog
-    //   // setOpen(false);
-    // } catch (error) {
-    //   // If the request fails, keep the dialog open and show error
-    //   console.error('Error submitting form:', error);
-    //   // You can set an error state and display it in your form
-    // } finally {
-    //   setIsSubmitting(false);
-    // }
+      // If the request is successful, close the dialog
+      // setOpen(false);
+    } catch (error) {
+      // If the request fails, keep the dialog open and show error
+      console.error('Error submitting form:', error);
+      // You can set an error state and display it in your form
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   const onCancel = () => {
     // Reset the form when the dialog is closed
