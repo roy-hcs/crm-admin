@@ -236,6 +236,7 @@ const SymbolReportPieChart: FC<{ serverList: ServerItem[] }> = ({ serverList }) 
           onValueChange={setServerId}
           options={servers}
           value={serverId}
+          showRowValue={false}
           className="h-4 w-40"
           placeholder="选择服务器"
         />

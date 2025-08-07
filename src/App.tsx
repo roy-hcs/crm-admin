@@ -8,18 +8,22 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { AppError } from './components/common/AppError';
 import { Toaster } from 'sonner';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './lib/tanstack-query';
 
 function App() {
   return (
     <ErrorBoundary fallback={<AppError />}>
       <ErrorProvider>
-        <AuthProvider>
-          <ErrorAlert />
-          <Suspense fallback={<div className="loading">Loading...</div>}>
-            <RouterProvider router={router} fallbackElement={<NotFoundPage />} />
-            <Toaster richColors position="top-center" />
-          </Suspense>
-        </AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <ErrorAlert />
+            <Suspense fallback={<div className="loading">Loading...</div>}>
+              <RouterProvider router={router} fallbackElement={<NotFoundPage />} />
+              <Toaster richColors position="top-center" />
+            </Suspense>
+          </AuthProvider>
+        </QueryClientProvider>
       </ErrorProvider>
     </ErrorBoundary>
   );
