@@ -19,24 +19,28 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 export const BarChart: FC<
   ChartData<'bar'> & {
     title: string;
-    horizontal?: boolean;
     height?: number;
     options?: ChartOptions<'bar'>;
     hideLegend?: boolean;
+    horizontal?: boolean; // 横向柱状图
+    vertical?: boolean; // 纵向柱状图
   }
 > = ({
   title = 'Bar Chart',
   labels,
   datasets,
   height = 300,
-  horizontal = false,
+  horizontal = true,
+  vertical = true,
   options = {},
   hideLegend = false,
 }) => {
+  // 依据横/纵向动态配置 x/y 的网格与边框
+
   const barOptions: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
-    indexAxis: horizontal ? 'y' : 'x',
+    indexAxis: 'x',
     plugins: {
       legend: {
         display: !hideLegend,
@@ -55,7 +59,40 @@ export const BarChart: FC<
       mode: 'nearest',
       intersect: true,
     },
+    // 先应用外部 options，再用我们明确的 scales 覆盖关键项，避免 any 与类型问题
     ...options,
+    scales: {
+      x: horizontal
+        ? {
+            // 横向柱：x 为数值轴（展示横向参考线）
+            grid: {
+              display: false,
+              color: '#E5E7EB',
+              lineWidth: 2,
+              // @ts-expect-error Chart.js 4 支持 dash，但类型定义可能缺失
+              dash: [10, 6],
+            },
+            border: { display: false },
+          }
+        : {
+            display: false,
+          },
+      y: vertical
+        ? {
+            // 纵向柱：y 为数值轴（展示横向参考线）
+            grid: {
+              display: true,
+              color: '#E5E7EB',
+              lineWidth: 2,
+              // @ts-expect-error Chart.js 4 支持 dash，但类型定义可能缺失
+              dash: [10, 6],
+            },
+            border: { display: false },
+          }
+        : {
+            display: false,
+          },
+    },
   };
 
   const chartData: ChartData<'bar'> = {
