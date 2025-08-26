@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/select';
 import { FC, PropsWithChildren } from 'react';
 
-export const CrmSelect: FC<
+export const RrhSelect: FC<
   PropsWithChildren<{
     options: { label: string; value: string | number }[];
     onValueChange?: (value: string) => void;

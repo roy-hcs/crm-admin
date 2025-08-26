@@ -11,9 +11,11 @@ import * as z from 'zod';
 import { SelectUpperPopup } from './SelectUpperPopup';
 import { FormSelect } from '@/components/form/FormSelect';
 import { colorPreferenceOptions, crmAccountTypeOptions, roleOptions } from '@/lib/const';
-// import { CrmSelect } from '@/components/common/CrmSelect';
+// import { RrhSelect } from '@/components/common/RrhSelect';
 // import mobileZone from '@/data/mzone.json';
 import { FormPhoneInput } from '@/components/form/FormPhoneInput';
+import { useTranslation } from 'react-i18next';
+import { Button } from '@/components/ui/button';
 
 // the data form needs to collect
 // {
@@ -63,6 +65,7 @@ export const AddUserDialog = () => {
   //     value: `+${item.code}`,
   //   };
   // });
+  const { t } = useTranslation();
 
   const form = useForm({
     resolver: zodResolver(z.object(addUserSchema)),
@@ -106,14 +109,17 @@ export const AddUserDialog = () => {
   return (
     <Dialog
       trigger={
-        <button className="flex cursor-pointer items-center gap-1 border bg-blue-500 px-4 text-sm text-white">
+        <Button
+          variant="outline"
+          className="flex cursor-pointer items-center gap-1 border px-4 text-sm text-[#1E1E1E]"
+        >
           <Plus className="size-3.5" />
-          <span>新增</span>
-        </button>
+          <span>{t('Add Client')}</span>
+        </Button>
       }
-      title="新增CRM账户"
+      title={t('Add Client')}
       className="flex min-h-1/2 min-w-1/2 flex-col"
-      cancelText="取消"
+      cancelText={t('Cancel')}
       confirmText="确认"
       isConfirmDisabled={isSubmitting}
       open={open}
@@ -143,7 +149,7 @@ export const AddUserDialog = () => {
                   <FormItem className="flex">
                     <FormLabel className="basis-3/12">手机号码:</FormLabel>
                     <div className="flex basis-9/12 items-center">
-                      <CrmSelect
+                      <RrhSelect
                         options={mobileZoneOptions}
                         value={mzone}
                         showRowValue={true}

@@ -20,6 +20,9 @@ import { FormProvider } from '@/contexts/form';
 import { FormSelect } from '@/components/form/FormSelect';
 import { SelectUpperPopup } from './SelectUpperPopup';
 import { crmAccountTypeOptions, roleOptions, statusOptions } from '@/lib/const';
+import { cn } from '@/lib/utils';
+import { RrhButton } from '@/components/common/RrhButton';
+import { Input } from '@/components/ui/input';
 
 interface CascaderOption {
   value: string;
@@ -45,8 +48,10 @@ type FormData = {
 
 const SelectAccountsPopup = ({
   field,
+  verticalLabel = false,
 }: {
   field: ControllerRenderProps<FieldValues, 'accounts'>;
+  verticalLabel?: boolean;
 }) => {
   const [selectedUser, setSelectedUser] = useState<CrmUserItem | null>(null);
   const [options, setOptions] = useState<CascaderOption[]>([]);
@@ -128,14 +133,14 @@ const SelectAccountsPopup = ({
   };
 
   return (
-    <FormItem className="flex text-sm">
-      <FormLabel className="basis-3/12">账户范围:</FormLabel>
+    <FormItem className={cn('flex text-sm', verticalLabel ? 'flex-col items-start gap-2' : '')}>
+      <FormLabel className="basis-3/12 text-[#757F8D]">账户范围:</FormLabel>
       <FormControl className="basis-9/12">
         <Dialog
           title="请选择上级范围"
           className="flex min-h-1/2 min-w-1/2 flex-col"
           trigger={
-            <div className="h-9 w-full shrink-0 basis-9/12 cursor-pointer border p-2">
+            <div className="h-9 w-full shrink-0 basis-9/12 cursor-pointer rounded-md border p-2 text-[#757F8D]">
               {selectedOptionLabel ? selectedOptionLabel : '请选择'}
             </div>
           }
@@ -146,7 +151,7 @@ const SelectAccountsPopup = ({
           }}
         >
           <form className="flex items-center gap-4 text-sm" onSubmit={onSubmit}>
-            <input
+            <Input
               type="text"
               disabled
               value={selectedUser?.userName || ''}
@@ -158,23 +163,23 @@ const SelectAccountsPopup = ({
               setSelectedUser={setSelectedUser}
               title="请选择上级范围"
               trigger={
-                <button
+                <RrhButton
                   type="button"
-                  className="flex h-9 cursor-pointer items-center gap-1 border bg-blue-500 px-2 text-white"
+                  className="flex h-9 cursor-pointer items-center gap-1 border bg-[#1E1E1E] px-6 text-white"
                 >
                   选择
-                </button>
+                </RrhButton>
               }
               onConfirm={() => {
                 field.onChange('');
               }}
             />
-            <button
+            <RrhButton
               type="reset"
-              className="flex h-9 cursor-pointer items-center gap-1 border bg-white px-2 text-blue-500"
+              className="flex h-9 cursor-pointer items-center gap-1 border bg-white px-6 text-[#1E1E1E]"
             >
               重置
-            </button>
+            </RrhButton>
           </form>
           <div className="flex-1">
             {/* TODO: use regular ul li instead of Cascader here may be better */}
@@ -199,7 +204,7 @@ export interface CRMFormRef {
   onReset: () => void;
 }
 
-export const CRMForm = forwardRef<
+export const CRMAccountsForm = forwardRef<
   CRMFormRef,
   {
     tagsUserList: TagUserItem[];
@@ -290,16 +295,42 @@ export const CRMForm = forwardRef<
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4"
+          className="flex flex-col gap-4 overflow-auto p-4"
         >
-          <FormInput name="name" label="姓名/账户ID:" placeholder="请输入姓名/账户ID" />
-          <FormSelect name="status" label="状态:" placeholder="请选择" options={statusOptions} />
+          <FormInput
+            verticalLabel
+            name="name"
+            label="姓名/账户ID:"
+            placeholder="请输入姓名/账户ID"
+          />
+          <FormInput verticalLabel name="email" label="邮箱:" placeholder="请输入邮箱" />
+          <FormInput
+            verticalLabel
+            name="certiricateNo"
+            label="证件号码:"
+            placeholder="请输入证件号码"
+          />
+          <FormInput verticalLabel name="mobile" label="手机号:" placeholder="请输入手机号码" />
+          <FormSelect
+            verticalLabel
+            name="status"
+            label="状态:"
+            placeholder="请选择"
+            options={statusOptions}
+          />
+          <FormSelect
+            verticalLabel
+            name="role"
+            label="角色:"
+            placeholder="请选择"
+            options={roleOptions}
+          />
 
           <FormField
             name="regStartTime"
             render={() => (
-              <FormItem className="flex text-sm">
-                <FormLabel className="basis-3/12">注册时间:</FormLabel>
+              <FormItem className="flex flex-col gap-2 text-sm">
+                <FormLabel className="basis-3/12 text-[#757F8D]">注册时间:</FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="regStartTime" control={form.control} />
                 </FormControl>
@@ -307,44 +338,49 @@ export const CRMForm = forwardRef<
               </FormItem>
             )}
           />
-          <FormInput name="mobile" label="手机号:" placeholder="请输入手机号码" />
-          <FormInput name="email" label="邮箱:" placeholder="请输入邮箱" />
-          <FormSelect name="role" label="角色:" placeholder="请选择" options={roleOptions} />
+
           <FormField
             name="inviter"
             render={({ field }) => {
-              return <SelectUpperPopup field={field} />;
+              return <SelectUpperPopup verticalLabel field={field} />;
             }}
           />
           <FormField
             name="accounts"
             render={({ field }) => {
-              return <SelectAccountsPopup field={field} />;
+              return <SelectAccountsPopup verticalLabel field={field} />;
             }}
           />
-          <FormInput name="certiricateNo" label="证件号码:" placeholder="请输入证件号码" />
+
           <FormSelect
             name="accountType"
             label="CRM账户类型:"
             placeholder="请选择"
+            verticalLabel
             options={crmAccountTypeOptions}
           />
-          <FormSelect name="tags" label="标签名称:" placeholder="请选择" options={tagsOptions} />
-          <div className="col-span-1 flex justify-center gap-4 sm:col-span-2 md:col-span-4">
-            <button
-              type="submit"
-              className="flex h-9 cursor-pointer items-center gap-2 border-blue-500 bg-blue-500 px-4 text-sm text-white"
-            >
-              <Search className="size-3.5" />
-              <span>搜索</span>
-            </button>
-            <button
+          <FormSelect
+            name="tags"
+            verticalLabel
+            label="标签名称:"
+            placeholder="请选择"
+            options={tagsOptions}
+          />
+          <div className="flex justify-end gap-4">
+            <RrhButton
               type="reset"
-              className="flex h-9 cursor-pointer items-center gap-2 border border-blue-500 bg-white px-4 text-sm text-blue-500"
+              className="flex h-9 items-center gap-2 border border-[#1E1E1E] bg-white !px-6 text-sm text-[#1E1E1E]"
             >
               <RefreshCcw className="size-3.5" />
               <span>重置</span>
-            </button>
+            </RrhButton>
+            <RrhButton
+              type="submit"
+              className="flex h-9 items-center gap-2 border-[#1E1E1E] bg-[#1E1E1E] !px-6 text-sm text-white"
+            >
+              <Search className="size-3.5" />
+              <span>搜索</span>
+            </RrhButton>
           </div>
         </form>
       </Form>

@@ -6,6 +6,8 @@ import { cn } from '@/lib/utils';
 import {
   CircleChevronLeft,
   Download,
+  Ellipsis,
+  Funnel,
   Menu,
   RefreshCcw,
   Search,
@@ -13,8 +15,10 @@ import {
   Users,
 } from 'lucide-react';
 import { FC, useRef, useState } from 'react';
-import { CRMForm, CRMFormRef } from './components/CRMAccountsForm';
+import { CRMAccountsForm, CRMFormRef } from './components/CRMAccountsForm';
 import { AddUserDialog } from './components/AddUserDialog';
+import { Button } from '@/components/ui/button';
+import { RrhDrawer } from '@/components/common/RrhDrawer';
 
 const TagItem: FC<TagUserItem & { setTags: (id: string) => void; className?: string }> = ({
   userCount,
@@ -94,20 +98,6 @@ export const CRMAccounts = () => {
 
   return (
     <div>
-      <div
-        className={cn(
-          'overflow-hidden transition-all duration-300 ease-in-out',
-          formShow ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0',
-        )}
-      >
-        <CRMForm
-          ref={formRef}
-          tagsUserList={tagUserCountList?.data || []}
-          setParams={setParams}
-          setOtherParams={setOtherParams}
-          setTags={setTags}
-        />
-      </div>
       <div className="mt-4 flex items-center gap-4">
         <TagItem
           tagName="总计(客户)"
@@ -161,8 +151,6 @@ export const CRMAccounts = () => {
       <div className="mt-4">
         <div className="mb-4 flex justify-between">
           <div className="flex gap-4">
-            <AddUserDialog />
-
             <button className="flex h-9 cursor-pointer items-center gap-1 border px-4 text-sm leading-normal">
               <Download className="size-3.5" />
               <span>导出</span>
@@ -180,13 +168,37 @@ export const CRMAccounts = () => {
               <span>生命周期&用户标签</span>
             </button>
           </div>
-          <div className="flex items-center">
-            <button className="cursor-pointer border p-2" onClick={() => setFormShow(!formShow)}>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              className="size-8 cursor-pointer"
+              onClick={() => setFormShow(!formShow)}
+            >
               <Search className="size-3.5" />
-            </button>
-            <button className="cursor-pointer border-y border-r p-2" onClick={reset}>
+            </Button>
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
-            </button>
+            </Button>
+
+            <Button variant="ghost" className="size-8 cursor-pointer">
+              <Ellipsis />
+            </Button>
+            <RrhDrawer
+              Trigger={<Funnel className="size-4" />}
+              title="Filter"
+              direction="right"
+              footerShow={false}
+            >
+              <CRMAccountsForm
+                ref={formRef}
+                tagsUserList={tagUserCountList?.data || []}
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+                setTags={setTags}
+              />
+            </RrhDrawer>
+
+            <AddUserDialog />
           </div>
         </div>
         <CRMTable

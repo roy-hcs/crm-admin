@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CrmSelect } from '../common/CrmSelect';
+import { RrhSelect } from '../common/RrhSelect';
 import { FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import mobileZone from '@/data/mzone.json';
 import { FieldPath, FieldValues } from 'react-hook-form';
@@ -42,7 +42,7 @@ export function FormPhoneInput<T extends FieldValues>({
                   <span>{mzone.replace(/-.*/, '')}</span>
                   <ChevronDown className="size-3.5" />
                 </div>
-                <CrmSelect
+                <RrhSelect
                   options={mobileZoneOptions}
                   value={mzone}
                   showRowValue={true}
