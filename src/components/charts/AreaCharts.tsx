@@ -45,13 +45,13 @@ interface AreaChartProps {
 }
 
 export const AreaChart: FC<AreaChartProps> = ({
-  title = 'Area Chart',
+  // title = 'Area Chart',
   labels,
   datasets,
   height = 300,
-  stacked = false,
-  xAxisLabel = '',
-  yAxisLabel = '',
+  // stacked = false,
+  // xAxisLabel = '',
+  // yAxisLabel = '',
   options = {},
 }) => {
   const areaOptions: ChartOptions<'line'> = {
@@ -59,11 +59,13 @@ export const AreaChart: FC<AreaChartProps> = ({
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const,
+        // position: 'top' as const,
+        display: false,
       },
       title: {
-        display: !!title,
-        text: title,
+        // display: !!title,
+        // text: title,
+        display: false,
       },
       tooltip: {
         mode: 'index',
@@ -76,16 +78,19 @@ export const AreaChart: FC<AreaChartProps> = ({
     },
     scales: {
       x: {
-        title: {
-          display: true,
-          text: xAxisLabel,
+        grid: {
+          display: false, // 不显示纵向网格线
         },
       },
       y: {
-        stacked: stacked,
-        title: {
+        grid: {
           display: true,
-          text: yAxisLabel,
+          color: '#E5E7EB',
+          dash: [6, 6],
+          lineWidth: 1,
+        } as never,
+        border: {
+          display: false, //关闭y轴线
         },
       },
     },

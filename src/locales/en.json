@@ -13,5 +13,48 @@
   "Enter your email below to sign in your account": "Enter your email below to sign in to your account",
   "Enter your mobile below to sign in your account": "Enter your mobile below to sign in to your account",
   "Login with": "Login with {{method}}",
-  "forget": "Forget?"
+  "forget": "Forget?",
+  "home": {
+    "CRMUserCount": "Number of CRM users",
+    "CustomerTrading": "Customer Transactions",
+    "DataOverview": "Data Overview",
+    "DataUpdateTime": "Data update time",
+    "GrossLoss": "Loss (Today)",
+    "NewDemoAccount": "Added a demo account (today)",
+    "NewRealAccount": "Add a real account (today)",
+    "PendingDeposit": "Deposit to be reviewed",
+    "PendingDepositToday": "Deposit to be reviewed (today)",
+    "PendingWithdrawal": "Deduction pending trial",
+    "AccountOverview": "Account opening overview",
+    "AuditedDepositToday": "Reviewed deposit (today)",
+    "AuditedWithdrawalAll": "Money has been reviewed",
+    "InTransitFunds": "On-the-go funds preview",
+    "Net": "net worth",
+    "NetProfit": "Profit (Today)",
+    "NetProfitToday": "Net profit (today)",
+    "NewCRMUser": "Newly registered CRM account (Today)",
+    "PendingWithdrawalAll": "Payment to be reviewed",
+    "PositionProfitLoss": "Close position profit and loss",
+    "TodayDeposit": "Deposit today",
+    "TodayWithdraw": "Gold is out today",
+    "TradingAccountCount": "Number of transaction accounts",
+    "TradingOrder": "Transaction order",
+    "TradingPairOverview": "Trading symbol overview",
+    "TradingVolume": "Trading volume",
+    "WithDrawReport": "Overview of deposit and withdrawal funds",
+    "nav": {
+      "Deposit": "Deposit",
+      "InternalTransfer": "Internal transfer",
+      "OpenPositions": "Holding a position",
+      "OrderHistory": "Order History",
+      "PendingOrder": "Pending orders",
+      "TAFlow": "TA flowing water",
+      "WalletFlow": "Wallet flow",
+      "Withdrawal": "Withdrawal"
+    }
+  },
+  "common": {
+    "NoData": "No data yet",
+    "loading": "loading..."
+  }
 }

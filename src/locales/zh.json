@@ -13,5 +13,48 @@
   "Enter your email below to sign in your account": "在下面输入您的邮箱以登录您的账户",
   "Enter your mobile below to sign in your account": "在下面输入您的手机以登录您的账户",
   "Login with": "使用 {{method}} 登录",
-  "forget": "忘记密码？"
+  "forget": "忘记密码？",
+  "common": {
+    "loading": "加载中...",
+    "NoData": "暂无数据"
+  },
+  "home": {
+    "DataOverview": "数据总览",
+    "DataUpdateTime": "数据更新时间",
+    "TodayDeposit": "今日入金",
+    "TodayWithdraw": "今日出金",
+    "CRMUserCount": "CRM用户数",
+    "TradingAccountCount": "交易账户数",
+    "PendingDeposit": "入金待审",
+    "PendingWithdrawal": "出金待审",
+    "nav": {
+      "Deposit": "入金",
+      "Withdrawal": "出金",
+      "InternalTransfer": "内部转账",
+      "WalletFlow": "钱包流水",
+      "OrderHistory": "订单历史",
+      "OpenPositions": "持仓",
+      "PendingOrder": "待处理订单",
+      "TAFlow": "TA流水"
+    },
+    "TradingPairOverview": "交易品种概览",
+    "WithDrawReport": "出入金总览",
+    "Net": "净值",
+    "NewCRMUser": "新注册CRM账号(今日)",
+    "NewRealAccount": "新增真实账号(今日)",
+    "NewDemoAccount": "新增模拟账号(今日)",
+    "AccountOverview": "账户开通概览",
+    "CustomerTrading": "客户交易",
+    "PositionProfitLoss": "平仓盈亏",
+    "TradingVolume": "交易量",
+    "TradingOrder": "交易订单",
+    "NetProfit": "盈利(今日)",
+    "GrossLoss": "亏损(今日)",
+    "NetProfitToday": "净盈利(今日)",
+    "InTransitFunds": "在途资金预览",
+    "AuditedDepositToday": "已审入金(今日)",
+    "PendingDepositToday": "待审入金(今日)",
+    "AuditedWithdrawalAll": "已审出金",
+    "PendingWithdrawalAll": "待审出金"
+  }
 }

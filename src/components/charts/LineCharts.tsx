@@ -30,23 +30,19 @@ interface LineChartProps {
   options?: ChartOptions<'line'>;
 }
 
-export const LineChart: FC<LineChartProps> = ({
-  title = 'Line Chart',
-  labels,
-  datasets,
-  height = 300,
-  options = {},
-}) => {
+export const LineChart: FC<LineChartProps> = ({ labels, datasets, height = 300, options = {} }) => {
   const lineOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const,
+        // position: 'top' as const,
+        display: false,
       },
       title: {
-        display: !!title,
-        text: title,
+        // display: !!title,
+        // text: title,
+        display: false,
       },
       tooltip: {
         mode: 'index',
@@ -56,6 +52,24 @@ export const LineChart: FC<LineChartProps> = ({
     hover: {
       mode: 'nearest',
       intersect: true,
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false, // 不显示纵向网格线
+        },
+      },
+      y: {
+        grid: {
+          display: true,
+          color: '#E5E7EB',
+          dash: [6, 6],
+          lineWidth: 1,
+        } as never,
+        border: {
+          display: false, //关闭y轴线
+        },
+      },
     },
     ...options,
   };
