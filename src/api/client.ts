@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 
 // TODO: need to update production API according to the environment
 export const API_BASE_URL =
-  process.env.NODE_ENV === 'production' ? 'https://api.example.com' : '/api';
+  process.env.NODE_ENV === 'production' ? import.meta.env.VITE_API_URL : '/api';
 export async function fetchWithAuth<T>(
   url: string,
   options: RequestInit = {},

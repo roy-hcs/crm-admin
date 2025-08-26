@@ -49,7 +49,7 @@ export function FormDateRangeInput<T extends FieldValues>({
                   id={name}
                   variant={'outline'}
                   className={cn(
-                    'line-clamp-1 w-full justify-start rounded-none text-left font-normal text-ellipsis',
+                    'line-clamp-1 w-full justify-start text-left font-normal text-ellipsis',
                   )}
                   disabled={disabled}
                 >

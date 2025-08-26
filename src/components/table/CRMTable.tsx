@@ -1,7 +1,7 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { DataTable } from './DataTable';
 import { CrmUserItem } from '@/api/hooks/system/types';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Ellipsis } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Switch } from '../ui/switch';
 import { Alert } from '../common/Alert';
@@ -9,6 +9,8 @@ import { useCallback, useState } from 'react';
 import { useChangeUserStatus } from '@/api/hooks/system/system';
 import { useQueryClient } from '@tanstack/react-query';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useTranslation } from 'react-i18next';
+import { RrhDropdown } from '../common/RrhDropdown';
 
 const StatusCell = ({ row }: { row: Row<CrmUserItem> }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +31,7 @@ const StatusCell = ({ row }: { row: Row<CrmUserItem> }) => {
   return (
     <>
       <Switch
-        className="cursor-pointer bg-white data-[state=checked]:bg-blue-500"
+        className="cursor-pointer bg-white data-[state=checked]:bg-[#1E1E1E]"
         checked={row.original.status === 1}
         onClick={() => setIsOpen(true)}
       />
@@ -68,12 +70,13 @@ export const CRMTable = ({
   isAsc: 'asc' | 'desc';
   setIsAsc: (isAsc: 'asc' | 'desc') => void;
 }) => {
+  const { t } = useTranslation();
   const crmColumns: ColumnDef<CrmUserItem>[] = [
     {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-blue-500"
+          className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-[#1E1E1E]"
           checked={
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && 'indeterminate')
@@ -84,7 +87,7 @@ export const CRMTable = ({
       ),
       cell: ({ row }) => (
         <Checkbox
-          className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-blue-500"
+          className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-[#1E1E1E]"
           checked={row.getIsSelected()}
           onCheckedChange={value => row.toggleSelected(!!value)}
           aria-label="Select row"
@@ -94,8 +97,13 @@ export const CRMTable = ({
       enableHiding: false,
     },
     {
+      id: 'No.',
+      header: t('Index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
       id: 'userName',
-      header: 'userName',
+      header: t('User Name'),
       accessorFn: row => row.userName,
       cell: ({ row }) => (
         <div>
@@ -106,12 +114,12 @@ export const CRMTable = ({
     },
     {
       accessorKey: 'status',
-      header: 'Status',
+      header: t('Status'),
       cell: ({ row }) => <StatusCell row={row} />,
     },
     {
       id: 'mobile',
-      header: 'Mobile',
+      header: t('Mobile'),
       cell: ({ row }) => (
         <div className="max-w-25 whitespace-pre-wrap">
           <span>{row.original.mzone ? `+${row.original.mzone} ` : ''}</span>
@@ -121,19 +129,19 @@ export const CRMTable = ({
     },
     {
       accessorKey: 'accountTypeStr',
-      header: 'CRM Account Type',
+      header: t('CRM Account Type'),
     },
     {
       accessorKey: 'role',
-      header: 'Role',
+      header: t('Role'),
     },
     {
       accessorKey: 'crmRebateLevel',
-      header: 'Level',
+      header: t('Level'),
     },
     {
       id: 'tags',
-      header: 'Tags Name',
+      header: t('Tags Name'),
       accessorFn: row => row.tags,
       cell: ({ row }) => {
         const tagsString = row.original.tags || '';
@@ -142,9 +150,9 @@ export const CRMTable = ({
         const length = tags.length;
         if (length === 0) return <div>-</div>;
         return (
-          <div className="flex max-w-50 flex-wrap gap-1">
+          <div className="flex max-w-50 flex-wrap items-center gap-1">
             {tags.slice(0, 3).map((tag, index) => (
-              <span key={index} className="rounded-md bg-blue-500 p-1 text-white">
+              <span key={index} className="border-[#E2E8F0 rounded-md border p-1 text-[#1E1E1E]">
                 {tag}
               </span>
             ))}
@@ -158,7 +166,7 @@ export const CRMTable = ({
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>latestFollowupTime</div>
+            <div>{t('Latest Followup Time')}</div>
             <button
               className="gap-.5 flex cursor-pointer flex-col"
               onClick={() => setIsAsc(isAsc === 'asc' ? 'desc' : 'asc')}
@@ -180,14 +188,14 @@ export const CRMTable = ({
     },
     {
       accessorKey: 'createTime',
-      header: 'Register Time',
+      header: t('Register Time'),
       cell: ({ row }) => {
         return <div className="max-w-25 whitespace-pre-wrap">{row.original.createTime}</div>;
       },
     },
     {
       id: 'upper',
-      header: 'Upper',
+      header: t('Upper'),
       accessorFn: row => row.nameOne + row.nameTwo,
       cell: ({ row }) => {
         if (!row.original.nameOne && !row.original.nameTwo) return <div>-</div>;
@@ -201,11 +209,11 @@ export const CRMTable = ({
     },
     {
       accessorKey: 'inviterEmail',
-      header: 'Upper Email',
+      header: t('Upper Email'),
     },
     {
       accessorKey: 'mtone',
-      header: 'Real Account',
+      header: t('Real Account'),
       cell: ({ row }) => {
         const account = row.original.mtone || '-';
         return (
@@ -217,7 +225,7 @@ export const CRMTable = ({
     },
     {
       accessorKey: 'mttwo',
-      header: 'Demo Account',
+      header: t('Demo Account'),
       cell: ({ row }) => {
         const account = row.original.mttwo || '-';
         return (
@@ -229,11 +237,23 @@ export const CRMTable = ({
     },
     {
       id: 'operation',
-      header: 'Operation',
+      header: t('Operation'),
       cell: () => (
         <div>
-          <button className="btn btn-primary">Edit</button>
-          <button className="btn btn-secondary">View</button>
+          <RrhDropdown
+            Trigger={<Ellipsis />}
+            dropdownList={[
+              { label: t('Edit'), value: 'edit' },
+              { label: t('View'), value: 'view' },
+            ]}
+            callToAction={action => {
+              if (action === 'edit') {
+                // Handle edit action
+              } else if (action === 'view') {
+                // Handle view action
+              }
+            }}
+          />
         </div>
       ),
     },
@@ -251,5 +271,5 @@ export const CRMTable = ({
       thCls="text-center text-[13px]"
       tdCls="text-center text-xs"
     />
-  ); // Replace with actual data
+  );
 };

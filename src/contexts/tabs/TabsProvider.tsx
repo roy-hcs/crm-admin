@@ -5,7 +5,7 @@ import { TabsContext } from './tabs-context';
 
 export function TabsProvider({ children }: { children: React.ReactNode }) {
   const [tabs, setTabs] = useState<TabItem[]>([
-    { key: 'dashboard', title: 'Dashboard', path: '/', closable: false },
+    { key: 'dashboard', title: '平台概览', path: '/', closable: false },
   ]);
   const [activeTabKey, setActiveTabKey] = useState('dashboard');
   const location = useLocation();
