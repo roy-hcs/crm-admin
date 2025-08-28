@@ -58,12 +58,12 @@ export function DataTablePagination<TData>({
     <div className={cn('flex items-center justify-between px-2', className)}>
       <div className="text-muted-foreground flex-1 text-sm">
         {/* Show total count provided by API */}
-        {totalCount !== undefined && <span>{t('total records', { count: totalCount })}</span>}
+        {totalCount !== undefined && <span>{t('common.TotalRecords', { count: totalCount })}</span>}
       </div>
       <div className="flex items-center space-x-6 lg:space-x-8">
         {pageSizeSelectorShow && (
           <div className="flex items-center space-x-2">
-            <p className="text-sm font-medium">{t('Rows per page')}</p>
+            <p className="text-sm font-medium">{t('common.RowsPerPage')}</p>
             <RrhSelect
               options={[
                 { label: '10', value: '10' },
@@ -90,7 +90,7 @@ export function DataTablePagination<TData>({
           >
             <span className="sr-only">Go to previous page</span>
             <ChevronLeft />
-            <span>{t('Previous')}</span>
+            <span>{t('common.Previous')}</span>
           </Button>
           {pageArr?.map((item, index) => {
             if (typeof item === 'string') {
@@ -127,7 +127,7 @@ export function DataTablePagination<TData>({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            <span>{t('Next')}</span>
+            <span>{t('common.Next')}</span>
             <span className="sr-only">Go to next page</span>
             <ChevronRight />
           </Button>

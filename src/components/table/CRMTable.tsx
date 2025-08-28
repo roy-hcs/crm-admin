@@ -16,14 +16,14 @@ const StatusCell = ({ row }: { row: Row<CrmUserItem> }) => {
   const [isOpen, setIsOpen] = useState(false);
   const changeStatusMutation = useChangeUserStatus();
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const onConfirm = useCallback(async () => {
     const res = await changeStatusMutation.mutateAsync({
       id: row.original.id,
-      status: row.original.status === 1 ? 0 : 1, // Toggle status
+      status: row.original.status === 1 ? 0 : 1,
     });
     if (res.code === 0) {
-      // get table list with current filters
       queryClient.invalidateQueries({ queryKey: ['crmUser'] });
     }
   }, [changeStatusMutation, queryClient, row.original.id, row.original.status]);
@@ -39,10 +39,14 @@ const StatusCell = ({ row }: { row: Row<CrmUserItem> }) => {
         trigger={null}
         open={isOpen}
         onOpenChange={setIsOpen}
-        cancelText="取消"
-        confirmText={'确认'}
-        title={'系统提示'}
-        content={row.original.status === 1 ? '确认要停用该账户吗？' : '确认要启用该账户吗？'}
+        cancelText={t('common.Cancel')}
+        confirmText={t('common.Confirm')}
+        title={t('common.SystemPrompt')}
+        content={
+          row.original.status === 1
+            ? t('CRMAccountPage.ConfirmDisableAccount')
+            : t('CRMAccountPage.ConfirmEnableAccount')
+        }
         onConfirm={onConfirm}
       />
     </>
@@ -76,7 +80,7 @@ export const CRMTable = ({
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-[#1E1E1E]"
+          className="data-[state=checked]:border-[#1E1E1E] data-[state=checked]:bg-[#1E1E1E]"
           checked={
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && 'indeterminate')
@@ -87,7 +91,7 @@ export const CRMTable = ({
       ),
       cell: ({ row }) => (
         <Checkbox
-          className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-[#1E1E1E]"
+          className="data-[state=checked]:border-[#1E1E1E] data-[state=checked]:bg-[#1E1E1E]"
           checked={row.getIsSelected()}
           onCheckedChange={value => row.toggleSelected(!!value)}
           aria-label="Select row"
@@ -98,12 +102,12 @@ export const CRMTable = ({
     },
     {
       id: 'No.',
-      header: t('Index'),
+      header: t('CRMAccountPage.Index'),
       cell: ({ row }) => <div>{row.index + 1}</div>,
     },
     {
       id: 'userName',
-      header: t('User Name'),
+      header: t('CRMAccountPage.UserName'),
       accessorFn: row => row.userName,
       cell: ({ row }) => (
         <div>
@@ -114,12 +118,12 @@ export const CRMTable = ({
     },
     {
       accessorKey: 'status',
-      header: t('Status'),
+      header: t('CRMAccountPage.Status'),
       cell: ({ row }) => <StatusCell row={row} />,
     },
     {
       id: 'mobile',
-      header: t('Mobile'),
+      header: t('CRMAccountPage.Mobile'),
       cell: ({ row }) => (
         <div className="max-w-25 whitespace-pre-wrap">
           <span>{row.original.mzone ? `+${row.original.mzone} ` : ''}</span>
@@ -129,23 +133,32 @@ export const CRMTable = ({
     },
     {
       accessorKey: 'accountTypeStr',
-      header: t('CRM Account Type'),
+      header: t('CRMAccountPage.CRMAccountType'),
     },
     {
       accessorKey: 'role',
-      header: t('Role'),
+      header: t('CRMAccountPage.Role'),
     },
     {
       accessorKey: 'crmRebateLevel',
-      header: t('Level'),
+      header: t('CRMAccountPage.Level'),
+      cell: ({ row }) => {
+        const crmRebateLevel = row.original.crmRebateLevel;
+        return crmRebateLevel ? (
+          <div>
+            {crmRebateLevel?.levelName}({crmRebateLevel?.level} {t('CRMAccountPage.Level')})
+          </div>
+        ) : (
+          '-'
+        );
+      },
     },
     {
       id: 'tags',
-      header: t('Tags Name'),
+      header: t('CRMAccountPage.TagsName'),
       accessorFn: row => row.tags,
       cell: ({ row }) => {
         const tagsString = row.original.tags || '';
-        // Only split if we have non-empty string
         const tags = tagsString.trim() ? tagsString.split(',') : [];
         const length = tags.length;
         if (length === 0) return <div>-</div>;
@@ -166,7 +179,7 @@ export const CRMTable = ({
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>{t('Latest Followup Time')}</div>
+            <div>{t('CRMAccountPage.LatestFollowupTime')}</div>
             <button
               className="gap-.5 flex cursor-pointer flex-col"
               onClick={() => setIsAsc(isAsc === 'asc' ? 'desc' : 'asc')}
@@ -188,14 +201,14 @@ export const CRMTable = ({
     },
     {
       accessorKey: 'createTime',
-      header: t('Register Time'),
+      header: t('CRMAccountPage.RegisterTime'),
       cell: ({ row }) => {
         return <div className="max-w-25 whitespace-pre-wrap">{row.original.createTime}</div>;
       },
     },
     {
       id: 'upper',
-      header: t('Upper'),
+      header: t('CRMAccountPage.Upper'),
       accessorFn: row => row.nameOne + row.nameTwo,
       cell: ({ row }) => {
         if (!row.original.nameOne && !row.original.nameTwo) return <div>-</div>;
@@ -209,11 +222,11 @@ export const CRMTable = ({
     },
     {
       accessorKey: 'inviterEmail',
-      header: t('Upper Email'),
+      header: t('CRMAccountPage.UpperEmail'),
     },
     {
       accessorKey: 'mtone',
-      header: t('Real Account'),
+      header: t('CRMAccountPage.RealAccount'),
       cell: ({ row }) => {
         const account = row.original.mtone || '-';
         return (
@@ -225,7 +238,7 @@ export const CRMTable = ({
     },
     {
       accessorKey: 'mttwo',
-      header: t('Demo Account'),
+      header: t('CRMAccountPage.DemoAccount'),
       cell: ({ row }) => {
         const account = row.original.mttwo || '-';
         return (
@@ -237,14 +250,14 @@ export const CRMTable = ({
     },
     {
       id: 'operation',
-      header: t('Operation'),
+      header: t('common.Operation'),
       cell: () => (
         <div>
           <RrhDropdown
-            Trigger={<Ellipsis />}
+            Trigger={<Ellipsis className="size-4" />}
             dropdownList={[
-              { label: t('Edit'), value: 'edit' },
-              { label: t('View'), value: 'view' },
+              { label: t('common.Edit'), value: 'edit' },
+              { label: t('common.View'), value: 'view' },
             ]}
             callToAction={action => {
               if (action === 'edit') {

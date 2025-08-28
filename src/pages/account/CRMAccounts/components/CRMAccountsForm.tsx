@@ -13,7 +13,6 @@ import Dialog from '@/components/common/Dialog';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { AccountDialog } from './AccountDialog';
 import { useCustomerRelationsPostList } from '@/api/hooks/system/system';
-import { Cascader, CascaderProps } from 'antd';
 import { RefreshCcw, Search } from 'lucide-react';
 import { FormInput } from '@/components/form/FormInput';
 import { FormProvider } from '@/contexts/form';
@@ -23,11 +22,13 @@ import { crmAccountTypeOptions, roleOptions, statusOptions } from '@/lib/const';
 import { cn } from '@/lib/utils';
 import { RrhButton } from '@/components/common/RrhButton';
 import { Input } from '@/components/ui/input';
+import { useTranslation } from 'react-i18next';
+import { RrhCascader } from '@/components/common/RrhCascader';
 
 interface CascaderOption {
   value: string;
   label: string;
-  isLeaf: boolean;
+  isLeaf?: boolean;
   children?: CascaderOption[];
   loading?: boolean;
 }
@@ -61,6 +62,7 @@ const SelectAccountsPopup = ({
   const { data: relations, isLoading } = useCustomerRelationsPostList(
     selectedId ? { userId: selectedId } : null,
   );
+  const { t } = useTranslation();
 
   const updateOptionChildren = useCallback(
     (
@@ -84,13 +86,16 @@ const SelectAccountsPopup = ({
     [],
   );
 
-  const loadData = (selectedOptions: CascaderOption[]) => {
+  const loadData = (selectedOptions: CascaderOption[]): Promise<void> => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
-    // Mark as loading
     targetOption.loading = true;
     setOptions(options => updateOptionChildren(options, targetOption.value, []));
-    // Set selectedId to trigger data fetch
-    setSelectedId(targetOption.value);
+    return new Promise<void>(resolve => {
+      setSelectedId(targetOption.value);
+      setTimeout(() => {
+        resolve();
+      }, 100);
+    });
   };
 
   useEffect(() => {
@@ -127,25 +132,27 @@ const SelectAccountsPopup = ({
     e.preventDefault();
     e.stopPropagation();
   };
-  const onChange: CascaderProps<CascaderOption>['onChange'] = (value, selectedOptions) => {
+  const onChange = (value: string[], selectedOptions: CascaderOption[]) => {
     setSelectedOptionId(value[value.length - 1]);
     setSelectedOptionLabel(selectedOptions?.[selectedOptions.length - 1]?.label || '');
   };
 
   return (
     <FormItem className={cn('flex text-sm', verticalLabel ? 'flex-col items-start gap-2' : '')}>
-      <FormLabel className="basis-3/12 text-[#757F8D]">账户范围:</FormLabel>
+      <FormLabel className="basis-3/12 text-[#757F8D]">
+        {t('CRMAccountPage.AccountRange')}:
+      </FormLabel>
       <FormControl className="basis-9/12">
         <Dialog
-          title="请选择上级范围"
+          title={t('CRMAccountPage.SelectSuperiorRange')}
           className="flex min-h-1/2 min-w-1/2 flex-col"
           trigger={
             <div className="h-9 w-full shrink-0 basis-9/12 cursor-pointer rounded-md border p-2 text-[#757F8D]">
-              {selectedOptionLabel ? selectedOptionLabel : '请选择'}
+              {selectedOptionLabel ? selectedOptionLabel : t('common.pleaseSelect')}
             </div>
           }
-          cancelText="取消"
-          confirmText="确认"
+          cancelText={t('common.Cancel')}
+          confirmText={t('common.Confirm')}
           onConfirm={() => {
             field.onChange(selectedOptionId);
           }}
@@ -167,7 +174,7 @@ const SelectAccountsPopup = ({
                   type="button"
                   className="flex h-9 cursor-pointer items-center gap-1 border bg-[#1E1E1E] px-6 text-white"
                 >
-                  选择
+                  {t('common.select')}
                 </RrhButton>
               }
               onConfirm={() => {
@@ -178,20 +185,17 @@ const SelectAccountsPopup = ({
               type="reset"
               className="flex h-9 cursor-pointer items-center gap-1 border bg-white px-6 text-[#1E1E1E]"
             >
-              重置
+              {t('common.Reset')}
             </RrhButton>
           </form>
           <div className="flex-1">
-            {/* TODO: use regular ul li instead of Cascader here may be better */}
-            <Cascader
+            <RrhCascader
               options={options}
               loadData={loadData}
               onChange={onChange}
-              notFoundContent={isLoading ? '加载中...' : '无数据'}
+              notFoundContent={isLoading ? t('common.loading') : t('common.NoData')}
               displayRender={labels => labels[labels.length - 1]}
               changeOnSelect
-              // add this to make sure the children options can unfold normally
-              getPopupContainer={triggerNode => triggerNode.parentNode as HTMLElement}
             />
           </div>
         </Dialog>
@@ -247,6 +251,8 @@ export const CRMAccountsForm = forwardRef<
     },
   }));
 
+  const { t } = useTranslation();
+
   const onSubmit = (data: FormData) => {
     setParams({
       threeCons: data.name,
@@ -266,6 +272,7 @@ export const CRMAccountsForm = forwardRef<
     setTags(data.tags);
   };
   const onReset = () => {
+    form.reset();
     setParams({
       threeCons: '',
       regEndTime: '',
@@ -300,29 +307,39 @@ export const CRMAccountsForm = forwardRef<
           <FormInput
             verticalLabel
             name="name"
-            label="姓名/账户ID:"
-            placeholder="请输入姓名/账户ID"
+            label={t('CRMAccountPage.NameOrAccountId')}
+            placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.NameOrAccountId') })}
           />
-          <FormInput verticalLabel name="email" label="邮箱:" placeholder="请输入邮箱" />
+          <FormInput
+            verticalLabel
+            name="email"
+            label={t('loginPage.email')}
+            placeholder={t('common.pleaseInput', { field: t('loginPage.email') })}
+          />
           <FormInput
             verticalLabel
             name="certiricateNo"
-            label="证件号码:"
-            placeholder="请输入证件号码"
+            label={t('CRMAccountPage.ID')}
+            placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.ID') })}
           />
-          <FormInput verticalLabel name="mobile" label="手机号:" placeholder="请输入手机号码" />
+          <FormInput
+            verticalLabel
+            name="mobile"
+            label={t('CRMAccountPage.Mobile')}
+            placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.Mobile') })}
+          />
           <FormSelect
             verticalLabel
             name="status"
-            label="状态:"
-            placeholder="请选择"
+            label={t('CRMAccountPage.Status')}
+            placeholder={t('common.pleaseSelect')}
             options={statusOptions}
           />
           <FormSelect
             verticalLabel
             name="role"
-            label="角色:"
-            placeholder="请选择"
+            label={t('CRMAccountPage.Role')}
+            placeholder={t('common.pleaseSelect')}
             options={roleOptions}
           />
 
@@ -330,7 +347,9 @@ export const CRMAccountsForm = forwardRef<
             name="regStartTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">注册时间:</FormLabel>
+                <FormLabel className="basis-3/12 text-[#757F8D]">
+                  {t('CRMAccountPage.RegisterTime')}
+                </FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="regStartTime" control={form.control} />
                 </FormControl>
@@ -354,16 +373,16 @@ export const CRMAccountsForm = forwardRef<
 
           <FormSelect
             name="accountType"
-            label="CRM账户类型:"
-            placeholder="请选择"
+            label={t('CRMAccountPage.CRMAccountType')}
+            placeholder={t('common.pleaseSelect')}
             verticalLabel
             options={crmAccountTypeOptions}
           />
           <FormSelect
             name="tags"
             verticalLabel
-            label="标签名称:"
-            placeholder="请选择"
+            label={t('CRMAccountPage.TagsName')}
+            placeholder={t('common.pleaseSelect')}
             options={tagsOptions}
           />
           <div className="flex justify-end gap-4">
@@ -372,14 +391,14 @@ export const CRMAccountsForm = forwardRef<
               className="flex h-9 items-center gap-2 border border-[#1E1E1E] bg-white !px-6 text-sm text-[#1E1E1E]"
             >
               <RefreshCcw className="size-3.5" />
-              <span>重置</span>
+              <span>{t('common.Reset')}</span>
             </RrhButton>
             <RrhButton
               type="submit"
               className="flex h-9 items-center gap-2 border-[#1E1E1E] bg-[#1E1E1E] !px-6 text-sm text-white"
             >
               <Search className="size-3.5" />
-              <span>搜索</span>
+              <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
         </form>

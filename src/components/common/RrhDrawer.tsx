@@ -19,6 +19,9 @@ export const RrhDrawer: FC<
     cancelText?: string;
     direction?: 'left' | 'right' | 'top' | 'bottom';
     footerShow?: boolean;
+    open?: boolean;
+    setOpen?: (open: boolean) => void;
+    asChild?: boolean;
   }>
 > = ({
   Trigger,
@@ -29,10 +32,15 @@ export const RrhDrawer: FC<
   cancelText,
   children,
   footerShow = true,
+  open,
+  setOpen,
+  asChild,
 }) => {
   return (
-    <Drawer direction={direction}>
-      <DrawerTrigger className="cursor-pointer">{Trigger}</DrawerTrigger>
+    <Drawer direction={direction} open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild={asChild} className="cursor-pointer">
+        {Trigger}
+      </DrawerTrigger>
       <DrawerContent className="flex flex-col">
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
