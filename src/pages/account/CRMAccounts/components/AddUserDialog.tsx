@@ -16,42 +16,29 @@ import { colorPreferenceOptions, crmAccountTypeOptions, roleOptions } from '@/li
 import { FormPhoneInput } from '@/components/form/FormPhoneInput';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-
-// the data form needs to collect
-// {
-//     "deptId=",
-//     "lastName=chen",
-//     "name=roy",
-//     "fullName=",
-//     "mzone=86",
-//     "mobile=15705958081",
-//     "email=680%40qq.com",
-//     "inviter=",
-//     "pwd=LYubfUaY%2FrmxDSMz16TxCBuKKxcW6aPZ3JyBqdGsoopvuVkOL1MdIRic6OpkRwILbromw5GT8ZaBhvySZqtldVWhTFYkFiLcTj12uRkx4cIAOQWse1liS7OAefcIRSqfy1NyV2TRiIqd7pVh7N9a1VvewkJE6q9yiJIpVDGnSqI%3D",
-//     "preferenceLanguage=zh-CN",
-//     "accountType=1",
-//     "roleId=131",
-//     "colorPreference=1",
-//     "source=3",
-//     "status=1"
-// }
+import { TFunction } from 'i18next';
+import { RrhButton } from '@/components/common/RrhButton';
 
 // create a zod schema for the form data
-const addUserSchema = {
-  lastName: z.string().min(1, '姓不能为空'),
-  name: z.string().min(1, '名不能为空'),
-  mobile: z
-    .string()
-    .min(1, '手机号码不能为空')
-    .regex(/^\d{11}$/, '手机号码格式不正确'),
-  email: z.string().email('请输入有效的邮箱地址').optional(),
-  inviter: z.string().optional(),
-  pwd: z.string().min(1, '密码不能为空'),
-  preferenceLanguage: z.string().min(1, '语言不能为空'),
-  accountType: z.string().min(1, '账户类型不能为空'),
-  roleId: z.string().min(1, '角色不能为空'),
-  colorPreference: z.string().min(1, '颜色不能为空'),
-  status: z.string().min(1, '状态不能为空'),
+const addUserSchema = (t: TFunction<'translation', undefined>) => {
+  return {
+    lastName: z.string().min(1, t('rules.required', { field: t('rules.lastName') })),
+    name: z.string().min(1, t('rules.required', { field: t('rules.firstName') })),
+    mobile: z
+      .string()
+      .min(1, t('rules.required', { field: t('rules.mobile') }))
+      .regex(/^\d{11}$/, t('rules.pattern', { field: t('rules.mobile') })),
+    email: z.string().email(t('rules.email')).optional(),
+    inviter: z.string().optional(),
+    pwd: z.string().min(1, t('rules.required', { field: t('rules.pwd') })),
+    preferenceLanguage: z
+      .string()
+      .min(1, t('rules.required', { field: t('rules.preferenceLanguage') })),
+    accountType: z.string().min(1, t('rules.required', { field: t('rules.accountType') })),
+    roleId: z.string().min(1, t('rules.required', { field: t('rules.roleId') })),
+    colorPreference: z.string().min(1, t('rules.required', { field: t('rules.colorPreference') })),
+    status: z.string().min(1, t('rules.required', { field: t('rules.status') })),
+  };
 };
 
 export const AddUserDialog = () => {
@@ -68,7 +55,7 @@ export const AddUserDialog = () => {
   const { t } = useTranslation();
 
   const form = useForm({
-    resolver: zodResolver(z.object(addUserSchema)),
+    resolver: zodResolver(z.object(addUserSchema(t))),
     defaultValues: {
       lastName: '',
       name: '',
@@ -102,8 +89,8 @@ export const AddUserDialog = () => {
     }
   };
   const onCancel = () => {
-    // Reset the form when the dialog is closed
     form.reset();
+    setOpen(false);
   };
 
   return (
@@ -114,13 +101,13 @@ export const AddUserDialog = () => {
           className="flex cursor-pointer items-center gap-1 border px-4 text-sm text-[#1E1E1E]"
         >
           <Plus className="size-3.5" />
-          <span>{t('Add Client')}</span>
+          <span>{t('CRMAccountPage.AddClient')}</span>
         </Button>
       }
-      title={t('Add Client')}
+      title={t('CRMAccountPage.AddClient')}
       className="flex min-h-1/2 min-w-1/2 flex-col"
-      cancelText={t('Cancel')}
-      confirmText="确认"
+      cancelText={t('common.Cancel')}
+      confirmText={t('common.Confirm')}
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
@@ -134,87 +121,87 @@ export const AddUserDialog = () => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="grid grid-cols-1 gap-x-8 gap-y-2 md:grid-cols-2"
             >
-              <FormInput name="lastName" label="姓:" placeholder="请输入姓" />
-              <FormInput name="name" label="名:" placeholder="请输入名" />
-              <FormInput name="mobile" label="手机号码:" placeholder="请输入手机号码" />
+              <FormInput
+                name="lastName"
+                label={`${t('CRMAccountPage.lastName')}:`}
+                placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.lastName') })}
+              />
+              <FormInput
+                name="name"
+                label={`${t('CRMAccountPage.firstName')}:`}
+                placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.firstName') })}
+              />
               <FormPhoneInput
                 name="mobile"
-                label="手机号码:"
-                placeholder="请输入手机号码"
+                label={`${t('CRMAccountPage.Mobile')}:`}
+                placeholder={`${t('CRMAccountPage.Mobile')}`}
                 className="col-span-1 md:col-span-2"
               />
-              {/* <FormField
-                name="mobile"
-                render={({ field }) => (
-                  <FormItem className="flex">
-                    <FormLabel className="basis-3/12">手机号码:</FormLabel>
-                    <div className="flex basis-9/12 items-center">
-                      <RrhSelect
-                        options={mobileZoneOptions}
-                        value={mzone}
-                        showRowValue={true}
-                        onValueChange={setMzone}
-                        className="basis-2/12 rounded-none"
-                      />
-                      <input
-                        type="text"
-                        {...field}
-                        placeholder="请输入手机号码"
-                        className="h-9 w-full basis-10/12 border-y border-r px-2 text-sm"
-                      />
-                    </div>
-                  </FormItem>
-                )}
-              /> */}
-              <FormInput name="email" label="邮箱:" placeholder="请输入邮箱" />
+              <FormInput
+                name="email"
+                label={`${t('loginPage.email')}:`}
+                placeholder={`${t('common.pleaseInput', { field: t('loginPage.email') })}`}
+              />
               <FormField
                 name="inviter"
                 render={({ field }) => {
                   return <SelectUpperPopup field={field} />;
                 }}
               />
-              <FormInput name="pwd" label="密码:" placeholder="请输入密码" />
-              <FormInput name="preferenceLanguage" label="语言:" placeholder="请选择语言" />
+              <FormInput
+                name="pwd"
+                label={`${t('loginPage.password')}:`}
+                placeholder={`${t('common.pleaseInput', { field: t('loginPage.password') })}`}
+              />
+              <FormInput
+                name="preferenceLanguage"
+                label={`${t('rules.preferenceLanguage')}:`}
+                placeholder={`${t('common.pleaseInput', { field: t('rules.preferenceLanguage') })}`}
+              />
               <FormSelect
                 name="roleId"
-                label="账户类型:"
-                placeholder="请选择账户类型"
+                label={`${t('CRMAccountPage.CRMAccountType')}:`}
+                placeholder={`${t('common.pleaseSelect')}`}
                 options={crmAccountTypeOptions}
               />
               <FormSelect
                 name="roleId"
-                label="角色:"
-                placeholder="请选择角色"
+                label={`${t('CRMAccountPage.Role')}:`}
+                placeholder={`${t('common.pleaseSelect')}`}
                 options={roleOptions}
               />
               <FormSelect
                 name="roleId"
-                label="涨跌颜色偏好:"
-                placeholder="请选择涨跌颜色偏好"
+                label={`${t('CRMAccountPage.ColorPreferences')}:`}
+                placeholder={t('common.pleaseSelect')}
                 options={colorPreferenceOptions}
               />
               <FormField
                 name="status"
                 render={({ field }) => (
-                  <FormItem className="flex">
-                    <FormLabel className="basis-3/12">状态:</FormLabel>
-                    <div className="basis-9/12">
-                      <Switch
-                        checked={field.value === '1'}
-                        onCheckedChange={checked => field.onChange(checked ? '1' : '0')}
-                      />
+                  <FormItem>
+                    <div className="flex h-9 items-center">
+                      <FormLabel className="basis-3/12 text-[#757F8D]">
+                        {t('CRMAccountPage.status')}:
+                      </FormLabel>
+                      <div className="flex basis-9/12 items-center">
+                        <Switch
+                          checked={field.value === '1'}
+                          onCheckedChange={checked => field.onChange(checked ? '1' : '0')}
+                        />
+                      </div>
                     </div>
                   </FormItem>
                 )}
                 control={form.control}
               />
-              <div className="col-span-full flex justify-end">
-                <button type="button" className="px-4 py-2" onClick={onCancel}>
-                  取消
-                </button>
-                <button type="submit" className="px-4 py-2">
-                  确认
-                </button>
+              <div className="col-span-full flex justify-end gap-4">
+                <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
+                  {t('common.Cancel')}
+                </RrhButton>
+                <RrhButton type="submit" className="px-4 py-2">
+                  {t('common.Confirm')}
+                </RrhButton>
               </div>
             </form>
           </Form>

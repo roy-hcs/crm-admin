@@ -37,7 +37,7 @@ export const CRMTableSimple = ({
             row.toggleSelected(true);
             onRowSelect?.(row.original);
           }}
-          className="h-4 w-4 cursor-pointer accent-blue-500"
+          className="h-4 w-4 cursor-pointer accent-[#1E1E1E]"
           aria-label="Select row"
         />
       ),
@@ -70,7 +70,7 @@ export const CRMTableSimple = ({
       header: 'Level',
       cell: ({ row }) => (
         <div className="max-w-25 whitespace-pre-wrap">
-          <span>{row.original.crmRebateLevel || '-'}</span>
+          <span>{row.original.crmRebateLevel?.levelName || '-'}</span>
         </div>
       ),
     },

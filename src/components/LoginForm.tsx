@@ -27,23 +27,35 @@ import Pkcs7 from 'crypto-js/pad-pkcs7';
 import md5 from 'blueimp-md5';
 import Hex from 'crypto-js/enc-hex';
 import { useLogin, useLoginConfig } from '@/api/hooks/users/users';
+import { TFunction } from 'i18next';
 
-// TODO: warn text should support i18n
-const emailSchema = z.object({
-  username: z.string().min(1, 'email is required').email('Please enter a valid email address'),
-  password: z.string().min(1, 'Password is required'),
-  rememberMe: z.boolean(),
-  type: z.number().min(1, 'type is required'),
-});
+const emailSchema = (t: TFunction<'translation', undefined>) => {
+  return z.object({
+    username: z
+      .string()
+      .min(1, t('rules.required', { field: t('loginPage.email') }))
+      .email(t('rules.pattern', { field: t('loginPage.email') })),
+    password: z.string().min(1, t('rules.required', { field: t('loginPage.password') })),
+    rememberMe: z.boolean(),
+    type: z.number().min(1, 'type is required'),
+  });
+};
 
-const phoneSchema = z.object({
-  username: z.string().min(1, 'phone is required'),
-  password: z.string().min(1, 'Password is required'),
-  rememberMe: z.boolean(),
-  type: z.number().min(1, 'type is required'),
-});
+const phoneSchema = (t: TFunction<'translation', undefined>) => {
+  return z.object({
+    username: z.string().min(1, t('rules.required', { field: t('loginPage.mobile') })),
+    password: z.string().min(1, t('rules.required', { field: t('loginPage.password') })),
+    rememberMe: z.boolean(),
+    type: z.number().min(1, t('rules.required', { field: 'type' })),
+  });
+};
 
-type LoginFormValues = z.infer<typeof emailSchema | typeof phoneSchema>;
+type LoginFormValues = {
+  username: string;
+  password: string;
+  rememberMe: boolean;
+  type: number;
+};
 
 export const LoginForm = ({
   loginType,
@@ -61,7 +73,7 @@ export const LoginForm = ({
   const { t } = useTranslation();
 
   const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginType === 2 ? emailSchema : phoneSchema),
+    resolver: zodResolver(loginType === 2 ? emailSchema(t) : phoneSchema(t)),
     defaultValues: {
       username: '',
       password: '',
@@ -96,15 +108,14 @@ export const LoginForm = ({
       submittedValues.password = encryptPassword(values.password, secretKey);
       // submittedValues.googleCode = '';
       const res = await loginMutation.mutateAsync(submittedValues);
-      console.log(res, 'login data');
       if (res.code === 0 && res.data) {
         localStorage.setItem('publicKey', res.data?.pubKey);
         navigate('/');
       } else {
-        toast.error(res.msg || 'Login failed');
+        toast.error(res.msg || t('loginPage.LoginFailedPleaseTryAgainLater'));
       }
     } catch (error) {
-      toast.error('Login failed, please try again later.');
+      toast.error(t('loginPage.LoginFailedPleaseTryAgainLater'));
       console.error('Login failed:', error);
     }
   };
@@ -119,12 +130,16 @@ export const LoginForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="capitalize">
-                  {loginType === 1 ? t('mobile') : t('email')}
+                  {loginType === 1 ? t('loginPage.mobile') : t('loginPage.email')}
                 </FormLabel>
                 <FormControl>
                   {loginType === 1 ? (
                     <div className="relative">
-                      <Input placeholder="Enter your cellphone" {...field} className="flex-1" />
+                      <Input
+                        placeholder={t('loginPage.EnterYourCellphone')}
+                        {...field}
+                        className="flex-1"
+                      />
                       <CountryCode
                         value={countryCode}
                         onValueChange={setCountryCode}
@@ -133,7 +148,7 @@ export const LoginForm = ({
                       />
                     </div>
                   ) : (
-                    <Input placeholder="Enter your username" {...field} />
+                    <Input placeholder={t('loginPage.EnterYourUserName')} {...field} />
                   )}
                 </FormControl>
                 <FormMessage />
@@ -147,9 +162,9 @@ export const LoginForm = ({
             render={({ field }) => (
               <FormItem>
                 <div className="flex justify-between">
-                  <FormLabel className="capitalize">{t('password')}</FormLabel>
+                  <FormLabel className="capitalize">{t('loginPage.password')}</FormLabel>
                   <button type="button" className="cursor-pointer text-sm">
-                    {t('forget')}
+                    {t('loginPage.forgetPWD')}
                   </button>
                 </div>
                 <FormControl>
@@ -185,7 +200,7 @@ export const LoginForm = ({
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>Remember me</FormLabel>
+                  <FormLabel>{t('loginPage.RememberMe')}</FormLabel>
                 </div>
               </FormItem>
             )}
@@ -197,7 +212,7 @@ export const LoginForm = ({
             className="w-full cursor-pointer"
             disabled={loginMutation.isPending}
           >
-            {loginMutation.isPending ? t('logging in...') : t('login')}
+            {loginMutation.isPending ? t('loginPage.logging') : t('loginPage.login')}
           </Button>
           <Button
             type="button"
@@ -205,11 +220,15 @@ export const LoginForm = ({
             disabled={loginMutation.isPending}
             onClick={() => setLoginType(loginType === 1 ? 2 : 1)}
           >
-            {t('Login with', { method: loginType === 1 ? 'email' : 'mobile' })}
+            {t('loginPage.LoginWith', {
+              method: loginType === 1 ? 'loginPage.email' : 'loginPage.mobile',
+            })}
           </Button>
 
           {loginMutation.isError && (
-            <div className="mt-2 text-red-500">Login failed: {String(loginMutation.error)}</div>
+            <div className="mt-2 text-red-500">
+              {t('loginPage.loginFailed')} {String(loginMutation.error)}
+            </div>
           )}
         </form>
       </Form>

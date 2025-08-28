@@ -139,7 +139,11 @@ export type CrmUserItem = {
   roleId: string | null;
   rebateLevelId: string | null;
   rebateAccountId: string;
-  crmRebateLevel: string | null;
+  crmRebateLevel: {
+    id: string;
+    level: string;
+    levelName: string;
+  } | null;
   userInfo: string | null;
   applySource: string | null;
   account: string | null;
