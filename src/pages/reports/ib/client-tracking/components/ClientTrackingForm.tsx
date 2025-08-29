@@ -7,6 +7,7 @@ import { FormSelect } from '@/components/form/FormSelect';
 import { FormMonthPicker } from '@/components/form/FormMonthPicker';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { RebateLevelOptions } from '@/lib/const';
 export interface ClientTrackingFormRef {
   onReset: () => void;
@@ -28,6 +29,7 @@ export const ClientTrackingForm = forwardRef<
     }) => void;
   }
 >(({ setParams }, ref) => {
+  const { t } = useTranslation();
   const form = useForm<ClientTrackingFormValues>({
     defaultValues: {
       userName: '',
@@ -38,7 +40,6 @@ export const ClientTrackingForm = forwardRef<
   });
   useImperativeHandle(ref, () => ({
     onReset: () => {
-      console.log(ref, 'ref');
       form.reset();
     },
   }));
@@ -72,21 +73,26 @@ export const ClientTrackingForm = forwardRef<
           <FormInput
             verticalLabel
             name="userName"
-            label="姓名/账户ID:"
-            placeholder="请输入姓名/账户ID"
+            label={t('CRMAccountPage.NameOrAccountId')}
+            placeholder={t('ib.CustomerTracking.nameOrAccountId')}
           />
-          <FormInput verticalLabel name="email" label="邮箱:" placeholder="请输入邮箱" />
+          <FormInput
+            verticalLabel
+            name="email"
+            label={t('ib.CustomerTracking.email') + ':'}
+            placeholder={t('ib.CustomerTracking.enteremail')}
+          />
           <FormMonthPicker
             control={form.control}
             name="statisticMonth"
-            label="时间:"
-            placeholder="请选择月份"
+            label={t('ib.CustomerTracking.time') + ':'}
+            placeholder={t('ib.CustomerTracking.enterstatisticMonthStr')}
           />
           <FormSelect
             verticalLabel
             name="level"
-            label="返佣等级:"
-            placeholder="请选择"
+            label={t('ib.CustomerTracking.levelName') + ':'}
+            placeholder={t('common.pleaseSelect')}
             options={RebateLevelOptions}
           />
           <div className="flex justify-end gap-4">
@@ -95,14 +101,14 @@ export const ClientTrackingForm = forwardRef<
               className="flex h-9 items-center gap-2 border border-[#1E1E1E] bg-white !px-6 text-sm text-[#1E1E1E]"
             >
               <RefreshCcw className="size-3.5" />
-              <span>重置</span>
+              <span>{t('common.Reset')}</span>
             </RrhButton>
             <RrhButton
               type="submit"
               className="flex h-9 items-center gap-2 border-[#1E1E1E] bg-[#1E1E1E] !px-6 text-sm text-white"
             >
               <Search className="size-3.5" />
-              <span>搜索</span>
+              <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
         </form>

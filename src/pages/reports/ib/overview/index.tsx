@@ -6,8 +6,10 @@ import { OverviewForm, OverviewFormRef } from './components/ClientTrackingForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { OverviewTable } from './components/OverviewTable';
 import { Input } from '@/components/ui/input';
+import { useTranslation } from 'react-i18next';
 
 export function OverviewPage() {
+  const { t } = useTranslation();
   const formRef = useRef<OverviewFormRef>(null);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc'>('asc');
   const [formShow, setFormShow] = useState(true);
@@ -45,7 +47,7 @@ export function OverviewPage() {
   return (
     <div>
       {/* 页面名称 */}
-      <div className="text-xl leading-5 font-semibold text-[#1e1e1e]">iB数据总览</div>
+      <div className="text-xl leading-5 font-semibold text-[#1e1e1e]">{t('ib.overview.title')}</div>
       {/* 页面简介 */}
       {/* <div className="mt-2 mb-6 text-sm leading-4.5 font-normal text-[#1e1e1e]">
         View all of your account's information

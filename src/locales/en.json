@@ -130,5 +130,52 @@
     "required": "{{field}} cannot be empty",
     "roleId": "Role",
     "status": "state"
+  },
+  "ib": {
+    "CustomerTracking": {
+      "Index": "Serial number",
+      "allFirstDeposit": "First deposit (all)",
+      "depositClient": "Number of deposit users",
+      "depositFirstStr": "First deposit amount",
+      "depositTotalStr": "Accumulated amount of money",
+      "email": "Mail",
+      "enteremail": "Please enter your email address",
+      "enterstatisticMonthStr": "Please select a month",
+      "kycProved": "kyc by",
+      "levelName": "Rebate level",
+      "nameOrAccountId": "Please enter your name/account ID",
+      "netTotalStr": "Net deposit",
+      "newClient": "Added customers",
+      "newFirstDeposit": "First deposit (new)",
+      "statisticMonthStr": "month",
+      "taCreateLive": "Number of users creating a transaction account",
+      "time": "time",
+      "title": "IB Customer Tracking",
+      "tradeClient": "Number of transaction users",
+      "userName": "Agent name",
+      "withdrawTotalStr": "Accumulated amount of funds"
+    },
+    "overview": {
+      "Index": "Serial number",
+      "accountNumber": "Number of transaction accounts",
+      "balance": "Balance (current)",
+      "commission": "Processing fee",
+      "depositAmount": "Deposit (statistics)",
+      "depositUserNumber": "Number of CRM accounts (deposit)",
+      "email": "Mail",
+      "netDeposit": "Net deposit",
+      "profitAndLoss": "Profit and loss",
+      "rebateLevelId": "Rebate level",
+      "rebateOnCommission": "Commission rebate",
+      "rebateOnDeposit": "Deposit Rebate",
+      "rebateOnTrade": "Transaction rebate",
+      "serverId": "server",
+      "swaps": "Inventory fee",
+      "title": "IB data overview",
+      "userName": "Agent name",
+      "userNumber": "Number of CRM accounts",
+      "volume": "Trading volume",
+      "withdrawAmount": "Withdrawal (statistics)"
+    }
   }
 }

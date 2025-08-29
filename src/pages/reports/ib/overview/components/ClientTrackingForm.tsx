@@ -17,6 +17,7 @@ import {
 import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { RebateLevelOptions, serverOptions } from '@/lib/const';
+import { useTranslation } from 'react-i18next';
 export interface OverviewFormRef {
   onReset: () => void;
 }
@@ -40,6 +41,7 @@ export const OverviewForm = forwardRef<
     }) => void;
   }
 >(({ setParams }, ref) => {
+  const { t } = useTranslation();
   const form = useForm<ClientTrackingFormValues>({
     defaultValues: {
       serverId: '',
@@ -54,7 +56,6 @@ export const OverviewForm = forwardRef<
   });
   useImperativeHandle(ref, () => ({
     onReset: () => {
-      console.log(ref, 'ref');
       form.reset();
     },
   }));
@@ -92,22 +93,29 @@ export const OverviewForm = forwardRef<
           <FormSelect
             verticalLabel
             name="serverId"
-            label="服务器:"
-            placeholder="请选择"
+            label={t('ib.overview.serverId')}
+            placeholder={t('common.pleaseSelect')}
             options={serverOptions}
           />
           <FormInput
             verticalLabel
             name="userName"
-            label="姓名/账户ID:"
-            placeholder="请输入姓名/账户ID"
+            label={t('CRMAccountPage.NameOrAccountId')}
+            placeholder={t('ib.CustomerTracking.nameOrAccountId')}
           />
-          <FormInput verticalLabel name="email" label="邮箱:" placeholder="请输入邮箱" />
+          <FormInput
+            verticalLabel
+            name="email"
+            label={t('ib.CustomerTracking.email') + ':'}
+            placeholder={t('ib.CustomerTracking.enteremail')}
+          />
           <FormField
             name="beginTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">时间:</FormLabel>
+                <FormLabel className="basis-3/12 text-[#757F8D]">
+                  {t('ib.CustomerTracking.time') + ':'}
+                </FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="beginTime" control={form.control} />
                 </FormControl>
@@ -118,8 +126,8 @@ export const OverviewForm = forwardRef<
           <FormSelect
             verticalLabel
             name="level"
-            label="返佣等级:"
-            placeholder="请选择"
+            label={t('ib.CustomerTracking.levelName') + ':'}
+            placeholder={t('common.pleaseSelect')}
             options={RebateLevelOptions}
           />
           <div className="flex justify-end gap-4">
@@ -128,14 +136,14 @@ export const OverviewForm = forwardRef<
               className="flex h-9 items-center gap-2 border border-[#1E1E1E] bg-white !px-6 text-sm text-[#1E1E1E]"
             >
               <RefreshCcw className="size-3.5" />
-              <span>重置</span>
+              <span>{t('common.Reset')}</span>
             </RrhButton>
             <RrhButton
               type="submit"
               className="flex h-9 items-center gap-2 border-[#1E1E1E] bg-[#1E1E1E] !px-6 text-sm text-white"
             >
               <Search className="size-3.5" />
-              <span>搜索</span>
+              <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
         </form>

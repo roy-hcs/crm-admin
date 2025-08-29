@@ -49,12 +49,12 @@ export const ClientTrackingTable = ({
     },
     {
       id: 'No.',
-      header: t('Index'),
+      header: t('ib.CustomerTracking.Index'),
       cell: ({ row }) => <div>{row.index + 1}</div>,
     },
     {
       id: 'userName',
-      header: t('User Name'),
+      header: t('ib.CustomerTracking.userName'),
       accessorFn: row => row.userName,
       cell: ({ row }) => (
         <div>
@@ -65,7 +65,7 @@ export const ClientTrackingTable = ({
     },
     {
       id: 'levelName',
-      header: '返佣等级',
+      header: t('ib.CustomerTracking.levelName'),
       cell: ({ row }) => (
         <div className="max-w-25 whitespace-pre-wrap">
           <span>{row.original.levelName}</span>
@@ -75,62 +75,62 @@ export const ClientTrackingTable = ({
     },
     {
       id: 'statisticMonthStr',
-      header: '月份',
+      header: t('ib.CustomerTracking.statisticMonthStr'),
       accessorFn: row => row.statisticMonthStr,
     },
     {
       accessorKey: 'allFirstDeposit',
-      header: '首次入金数(全部)',
+      header: t('ib.CustomerTracking.allFirstDeposit'),
       accessorFn: row => row.allFirstDeposit,
     },
     {
       accessorKey: 'newClient',
-      header: '新增客户',
+      header: t('ib.CustomerTracking.newClient'),
       accessorFn: row => row.newClient,
     },
     {
       accessorKey: 'kycProved',
-      header: 'kyc通过',
+      header: t('ib.CustomerTracking.kycProved'),
       accessorFn: row => row.kycProved,
     },
     {
       accessorKey: 'taCreateLive',
-      header: '创建交易账号用户数',
+      header: t('ib.CustomerTracking.taCreateLive'),
       accessorFn: row => row.taCreateLive,
     },
     {
       accessorKey: 'newFirstDeposit',
-      header: '首次入金数(新)',
+      header: t('ib.CustomerTracking.newFirstDeposit'),
       accessorFn: row => row.newFirstDeposit,
     },
     {
       accessorKey: 'depositClient',
-      header: '入金用户数',
+      header: t('ib.CustomerTracking.depositClient'),
       accessorFn: row => row.depositClient,
     },
     {
       accessorKey: 'tradeClient',
-      header: '交易用户数',
+      header: t('ib.CustomerTracking.tradeClient'),
       accessorFn: row => row.tradeClient,
     },
     {
       accessorKey: 'depositFirstStr',
-      header: '首次入金金额',
+      header: t('ib.CustomerTracking.depositFirstStr'),
       accessorFn: row => row.depositFirstStr,
     },
     {
       accessorKey: 'depositTotalStr',
-      header: '累计入金金额',
+      header: t('ib.CustomerTracking.depositTotalStr'),
       accessorFn: row => row.depositTotalStr,
     },
     {
       accessorKey: 'withdrawTotalStr',
-      header: '累计出金金额',
+      header: t('ib.CustomerTracking.withdrawTotalStr'),
       accessorFn: row => row.withdrawTotalStr,
     },
     {
       accessorKey: 'netTotalStr',
-      header: '净入金',
+      header: t('ib.CustomerTracking.netTotalStr'),
       accessorFn: row => row.netTotalStr,
     },
   ];
