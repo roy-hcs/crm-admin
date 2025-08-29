@@ -7,7 +7,8 @@ import { SettingPage } from './pages/SettingPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { SalesReportPage } from './pages/SalesReportPage';
 import { CRMAccounts } from './pages/account/CRMAccounts/CRMAccounts';
-
+import { ClientTrackingPage } from '@/pages/reports/ib/client-tracking';
+import { OverviewPage } from './pages/reports/ib/overview';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -36,6 +37,16 @@ export const router = createBrowserRouter([
       {
         path: '/account/crm-accounts',
         element: <CRMAccounts />,
+      },
+      // ib客户追踪
+      {
+        path: '/reports/ib/client-tracking',
+        element: <ClientTrackingPage />,
+      },
+      // ib数据总览
+      {
+        path: '/reports/ib/overview',
+        element: <OverviewPage />,
       },
       // Add more routes that should use MainLayout here
       {
