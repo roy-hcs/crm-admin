@@ -74,7 +74,7 @@ const Dialog: React.FC<DialogProps> = ({
           <DialogFooter className="gap-2 sm:justify-end">
             <DialogClose>
               <div
-                className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-blue-500"
+                className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-[#1E1E1E]"
                 onClick={handleCancel}
               >
                 {cancelText}
@@ -87,7 +87,7 @@ const Dialog: React.FC<DialogProps> = ({
                   handleConfirm?.(e);
                 }}
                 className={cn(
-                  'rounded-sm border bg-blue-500 px-4 py-2 text-white',
+                  'rounded-sm border bg-[#1E1E1E] px-4 py-2 text-white',
                   isConfirmDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
                 )}
               >

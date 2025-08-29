@@ -1,9 +1,12 @@
 import { useCrmUser } from '@/api/hooks/system/system';
 import { CrmUserItem } from '@/api/hooks/system/types';
 import Dialog from '@/components/common/Dialog';
+import { RrhButton } from '@/components/common/RrhButton';
 import { CRMTableSimple } from '@/components/table/CRMTableSimple';
+import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const AccountDialog = ({
   title,
@@ -31,6 +34,7 @@ export const AccountDialog = ({
     inviter: '',
     accounts: '',
   });
+  const { t } = useTranslation();
   const { data: crmUsers, isLoading: crmUsersLoading } = useCrmUser(
     {
       pageSize,
@@ -63,22 +67,22 @@ export const AccountDialog = ({
       title={title}
       className="min-w-1/2"
       trigger={trigger}
-      cancelText="取消"
-      confirmText="确认"
+      cancelText={t('common.Cancel')}
+      confirmText={t('common.Confirm')}
       onConfirm={() => onConfirm(selectedUser?.id || '')}
     >
       <form className="flex items-center gap-4 text-sm" onSubmit={onSubmit}>
-        <label>姓/名/账号ID/手机/邮箱:</label>
-        <input
+        <label>{t('CRMAccountPage.keyWordOfSearchSuperior')}:</label>
+        <Input
           type="text"
           value={search}
           className="h-9 border px-2"
           onChange={e => setSearch(e.target.value)}
         />
-        <button type="submit" className="flex h-9 items-center gap-1 bg-blue-500 px-2 text-white">
+        <RrhButton type="submit">
           <Search className="h-4 w-4" />
-          <span>搜索</span>
-        </button>
+          <span>{t('common.Search')}</span>
+        </RrhButton>
       </form>
       <CRMTableSimple
         pageCount={Math.ceil(+(crmUsers?.total || 0) / pageSize)}

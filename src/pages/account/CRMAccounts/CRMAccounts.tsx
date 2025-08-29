@@ -10,7 +10,6 @@ import {
   Funnel,
   Menu,
   RefreshCcw,
-  Search,
   Settings,
   Users,
 } from 'lucide-react';
@@ -19,6 +18,8 @@ import { CRMAccountsForm, CRMFormRef } from './components/CRMAccountsForm';
 import { AddUserDialog } from './components/AddUserDialog';
 import { Button } from '@/components/ui/button';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
+import { RrhButton } from '@/components/common/RrhButton';
+import { useTranslation } from 'react-i18next';
 
 const TagItem: FC<TagUserItem & { setTags: (id: string) => void; className?: string }> = ({
   userCount,
@@ -40,7 +41,7 @@ const TagItem: FC<TagUserItem & { setTags: (id: string) => void; className?: str
 
 export const CRMAccounts = () => {
   const formRef = useRef<CRMFormRef>(null);
-  const [formShow, setFormShow] = useState(true);
+  const [actionBtnsShow, setActionBtnsShow] = useState(false);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc'>('asc');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -55,6 +56,7 @@ export const CRMAccounts = () => {
     accounts: '',
   });
 
+  const { t } = useTranslation();
   const [otherParams, setOtherParams] = useState({
     status: '',
     role: '',
@@ -108,7 +110,7 @@ export const CRMAccounts = () => {
         />
         {tagUserCountListLoading ? (
           <div className="flex h-full basis-full animate-pulse items-center justify-center">
-            数据加载中
+            {t('common.loading')}
           </div>
         ) : (
           <EmblaCarousel
@@ -151,40 +153,45 @@ export const CRMAccounts = () => {
       <div className="mt-4">
         <div className="mb-4 flex justify-between">
           <div className="flex gap-4">
-            <button className="flex h-9 cursor-pointer items-center gap-1 border px-4 text-sm leading-normal">
-              <Download className="size-3.5" />
-              <span>导出</span>
-            </button>
-            <button className="flex h-9 cursor-pointer items-center gap-1 border px-4 text-sm leading-normal">
-              <Menu className="size-3.5" />
-              <span>批量设置角色</span>
-            </button>
-            <button className="flex h-9 cursor-pointer items-center gap-1 border px-4 text-sm leading-normal">
-              <Users className="size-3.5" />
-              <span>用户统计</span>
-            </button>
-            <button className="flex h-9 cursor-pointer items-center gap-1 border px-4 text-sm leading-normal">
-              <Settings className="size-3.5" />
-              <span>生命周期&用户标签</span>
-            </button>
+            {actionBtnsShow && (
+              <>
+                <RrhButton variant="outline">
+                  <Download className="size-3.5" />
+                  <span>{t('CRMAccountPage.Export')}</span>
+                </RrhButton>
+                <RrhButton variant="outline">
+                  <Menu className="size-3.5" />
+                  <span>{t('CRMAccountPage.SetRolesInBatches')}</span>
+                </RrhButton>
+                <RrhButton variant="outline">
+                  <Users className="size-3.5" />
+                  <span>{t('CRMAccountPage.UserStatistics')}</span>
+                </RrhButton>
+                <RrhButton variant="outline">
+                  <Settings className="size-3.5" />
+                  <span>{t('CRMAccountPage.LifecycleAndUserTags')}</span>
+                </RrhButton>
+              </>
+            )}
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              className="size-8 cursor-pointer"
-              onClick={() => setFormShow(!formShow)}
-            >
-              <Search className="size-3.5" />
-            </Button>
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </Button>
-
-            <Button variant="ghost" className="size-8 cursor-pointer">
+            <Button
+              variant="ghost"
+              className="size-8 cursor-pointer"
+              onClick={() => setActionBtnsShow(!actionBtnsShow)}
+            >
               <Ellipsis />
             </Button>
             <RrhDrawer
-              Trigger={<Funnel className="size-4" />}
+              asChild
+              Trigger={
+                <Button variant="ghost" className="size-8">
+                  <Funnel className="size-4" />
+                </Button>
+              }
               title="Filter"
               direction="right"
               footerShow={false}

@@ -17,12 +17,12 @@ export function LoginPage() {
         <LanguageSwitcher showLabel={false} className="absolute top-2 right-1" />
         <div>
           <h2 className="text-center text-2xl leading-normal font-bold text-gray-900">
-            {t('Welcome  back')}
+            {t('loginPage.WelcomeBack')}
           </h2>
           <p className="text-sm leading-5">
             {loginType === 2
-              ? t('Enter your email below to sign in your account')
-              : t('Enter your mobile below to sign in your account')}
+              ? t('loginPage.EnterYourEmailBelowToSignInYourAccount')
+              : t('loginPage.EnterYourMobileBelowToSignInYourAccount')}
           </p>
         </div>
         <LoginForm loginType={loginType} setLoginType={setLoginType} />

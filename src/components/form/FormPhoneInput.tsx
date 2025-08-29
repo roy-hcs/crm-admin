@@ -6,6 +6,7 @@ import { FieldPath, FieldValues } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 import { useCrmFormContext } from '@/contexts/form';
 import { ChevronDown } from 'lucide-react';
+import { Input } from '../ui/input';
 
 interface FormInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -35,10 +36,10 @@ export function FormPhoneInput<T extends FieldValues>({
       render={({ field }) => (
         <FormItem>
           <div className={cn('flex items-center text-sm', className)}>
-            <FormLabel className="basis-3/12">{label}</FormLabel>
+            <FormLabel className="basis-3/12 text-[#757F8D]">{label}</FormLabel>
             <div className="flex basis-9/12 items-center">
               <div className="relative basis-3/12">
-                <div className="flex h-9 flex-nowrap items-center gap-1 border px-1">
+                <div className="flex h-9 flex-nowrap items-center gap-1 rounded-l-lg border px-1">
                   <span>{mzone.replace(/-.*/, '')}</span>
                   <ChevronDown className="size-3.5" />
                 </div>
@@ -47,14 +48,14 @@ export function FormPhoneInput<T extends FieldValues>({
                   value={mzone}
                   showRowValue={true}
                   onValueChange={setMzone}
-                  className="absolute inset-0 basis-3/12 cursor-pointer rounded-none opacity-0"
+                  className="absolute inset-0 basis-3/12 cursor-pointer opacity-0"
                 />
               </div>
-              <input
+              <Input
                 type="text"
                 {...field}
                 placeholder={placeholder}
-                className="h-9 w-full basis-9/12 border-y border-r px-2 text-sm"
+                className="h-9 w-full basis-9/12 rounded-l-none border-y border-r border-l-0 px-2 text-sm"
               />
             </div>
           </div>
