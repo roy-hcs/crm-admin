@@ -31,7 +31,7 @@ export const RebateLevelOptions = [
 
 // 服务器列表
 export const serverOptions = [
-  { label: '服务器1', value: '1' },
+  { label: '服务器1', value: 'c2966f08bdb24d1b9762aa372bce5090' },
   { label: '服务器2', value: '2' },
   { label: '服务器3', value: '3' },
 ];

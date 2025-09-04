@@ -1,4 +1,4 @@
-import { overviewItem } from '@/api/hooks/report/types';
+import { OverviewItem } from '@/api/hooks/report/types';
 import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { useTranslation } from 'react-i18next';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -12,7 +12,7 @@ export const OverviewTable = ({
   onPageSizeChange,
   loading = false,
 }: {
-  data: overviewItem[];
+  data: OverviewItem[];
   pageCount: number;
   pageIndex: number;
   pageSize: number;
@@ -21,7 +21,7 @@ export const OverviewTable = ({
   loading?: boolean;
 }) => {
   const { t } = useTranslation();
-  const Columns: CRMColumnDef<overviewItem, unknown>[] = [
+  const Columns: CRMColumnDef<OverviewItem, unknown>[] = [
     {
       id: 'select',
       size: 50,

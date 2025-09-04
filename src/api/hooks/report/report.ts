@@ -1,16 +1,16 @@
 import { apiFormPostCustom } from '@/api/client';
 import { useQuery } from '@tanstack/react-query';
 import {
-  clientTrackingParams,
+  ClientTrackingParams,
   AgencyClientTrackingResponse,
-  overviewParams,
-  overviewResponse,
+  OverviewParams,
+  OverviewResponse,
 } from './types';
 
 /**
  * 获取ib报表-ib客户追踪
  */
-export function useAgencyClientTrackingList(params: clientTrackingParams) {
+export function useAgencyClientTrackingList(params: ClientTrackingParams) {
   return useQuery({
     queryKey: ['agencyClientTrackingList', params],
     queryFn: () =>
@@ -18,22 +18,17 @@ export function useAgencyClientTrackingList(params: clientTrackingParams) {
         '/system/statistics/agencyClientTrackingList',
         params || {},
       ),
-    // 重置为相同参数时，如果缓存仍新鲜（全局 staleTime=60s），不会自动请求。
-    // 这里将该查询的 staleTime 设为 0，确保切换到任何参数都会重新请求。
-    staleTime: 0,
   });
 }
 
 /**
  * 获取ib报表-ib数据总览
  */
-export function useAgencyOverviewList(params: overviewParams) {
+export function useAgencyOverviewList(params: OverviewParams, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['agencyOverviewList', params],
     queryFn: () =>
-      apiFormPostCustom<overviewResponse>('/system/statistics/agencyOverviewList', params || {}),
-    // 重置为相同参数时，如果缓存仍新鲜（全局 staleTime=60s），不会自动请求。
-    // 这里将该查询的 staleTime 设为 0，确保切换到任何参数都会重新请求。
-    staleTime: 0,
+      apiFormPostCustom<OverviewResponse>('/system/statistics/agencyOverviewList', params || {}),
+    enabled: options?.enabled ?? true,
   });
 }

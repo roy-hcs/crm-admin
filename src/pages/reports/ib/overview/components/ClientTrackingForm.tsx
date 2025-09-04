@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/form';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
-import { RebateLevelOptions, serverOptions } from '@/lib/const';
+import { RebateLevelOptions } from '@/lib/const';
 import { useTranslation } from 'react-i18next';
 export interface OverviewFormRef {
   onReset: () => void;
@@ -39,12 +39,14 @@ export const OverviewForm = forwardRef<
       endTime: string;
       level: string;
     }) => void;
+    serverOptions: { label: string; value: string }[];
+    initialServerId?: string;
   }
->(({ setParams }, ref) => {
+>(({ setParams, serverOptions, initialServerId }, ref) => {
   const { t } = useTranslation();
   const form = useForm<ClientTrackingFormValues>({
     defaultValues: {
-      serverId: '',
+      serverId: initialServerId || '',
       userName: '',
       email: '',
       beginTime: {
@@ -54,6 +56,12 @@ export const OverviewForm = forwardRef<
       level: '',
     },
   });
+
+  // 当父级提供初始 serverId 或服务器列表加载完成后自动填充
+  if (!form.getValues('serverId') && (initialServerId || serverOptions[0])) {
+    const auto = initialServerId || serverOptions[0]?.value || '';
+    if (auto) form.setValue('serverId', auto, { shouldDirty: false, shouldTouch: false });
+  }
   useImperativeHandle(ref, () => ({
     onReset: () => {
       form.reset();
@@ -71,15 +79,22 @@ export const OverviewForm = forwardRef<
     });
   };
   const onReset = () => {
+    const first = serverOptions[0]?.value || '';
     setParams({
-      serverId: '',
+      serverId: first,
       userName: '',
       email: '',
       beginTime: '',
       endTime: '',
       level: '',
     });
-    form.reset();
+    form.reset({
+      serverId: first,
+      userName: '',
+      email: '',
+      beginTime: { from: '', to: '' },
+      level: '',
+    });
   };
 
   return (

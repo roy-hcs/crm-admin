@@ -1,5 +1,5 @@
 // ib客户追踪
-export type clientTrackingParams = {
+export type ClientTrackingParams = {
   pageSize: number;
   pageNum: number;
   isAsc?: string;
@@ -36,7 +36,7 @@ export type AgencyClientTrackingResponse = {
   rows: AgencyClientTrackingItem[];
 };
 // ib数据总览
-export type overviewParams = {
+export type OverviewParams = {
   pageSize: number;
   pageNum: number;
   isAsc?: string;
@@ -50,7 +50,7 @@ export type overviewParams = {
   orderByColumn?: string;
   serverId?: string;
 };
-export type overviewItem = {
+export type OverviewItem = {
   rebateLevelId: string | null;
   username: string | null;
   email: string | null;
@@ -69,9 +69,9 @@ export type overviewItem = {
   rebateOnCommission: string | null;
   rebateOnDeposit: string | null;
 };
-export type overviewResponse = {
+export type OverviewResponse = {
   code: number;
   msg: string;
   total: string;
-  rows: overviewItem[];
+  rows: OverviewItem[];
 };

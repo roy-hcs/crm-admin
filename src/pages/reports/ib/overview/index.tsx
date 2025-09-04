@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { useAgencyOverviewList } from '@/api/hooks/report/report';
+import { useServerList } from '@/api/hooks/system/server';
 import { OverviewForm, OverviewFormRef } from './components/ClientTrackingForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { OverviewTable } from './components/OverviewTable';
@@ -21,15 +22,26 @@ export function OverviewPage() {
     beginTime: '',
     endTime: '',
     level: '',
-    serverId: 'c2966f08bdb24d1b9762aa372bce5090',
+    serverId: '',
   });
+  const { data: serverList, isLoading: serverLoading } = useServerList();
+
+  // 自动选择第一台服务器
+  if (!params.serverId && serverList && serverList.length) {
+    // 只在还没选中时设置，避免无限循环
+    setParams(prev => (prev.serverId ? prev : { ...prev, serverId: serverList[0].value }));
+  }
+
   const { data: AgencyClientTracking, isLoading: AgencyClientTrackingLoading } =
-    useAgencyOverviewList({
-      pageSize,
-      pageNum: pageNum + 1,
-      ...params,
-      isAsc,
-    });
+    useAgencyOverviewList(
+      {
+        pageSize,
+        pageNum: pageNum + 1,
+        ...params,
+        isAsc,
+      },
+      { enabled: !!params.serverId },
+    );
 
   const reset = () => {
     setParams({
@@ -84,7 +96,12 @@ export function OverviewPage() {
               direction="right"
               footerShow={false}
             >
-              <OverviewForm ref={formRef} setParams={setParams} />
+              <OverviewForm
+                ref={formRef}
+                setParams={setParams}
+                serverOptions={serverList || []}
+                initialServerId={params.serverId}
+              />
             </RrhDrawer>
           </div>
         </div>
@@ -95,7 +112,7 @@ export function OverviewPage() {
           pageSize={pageSize}
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
-          loading={AgencyClientTrackingLoading}
+          loading={AgencyClientTrackingLoading || serverLoading}
         />
       </div>
     </div>
