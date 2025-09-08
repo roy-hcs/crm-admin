@@ -21,3 +21,17 @@ export const colorPreferenceOptions = [
   { label: '绿涨红跌', value: '1' },
   { label: '红涨绿跌', value: '2' },
 ];
+
+// 返佣等级列表
+export const RebateLevelOptions = [
+  { label: '等级1', value: '1' },
+  { label: '等级2', value: '2' },
+  { label: '等级3', value: '3' },
+];
+
+// 服务器列表
+export const serverOptions = [
+  { label: '服务器1', value: 'c2966f08bdb24d1b9762aa372bce5090' },
+  { label: '服务器2', value: '2' },
+  { label: '服务器3', value: '3' },
+];
