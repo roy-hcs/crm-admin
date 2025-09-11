@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+// for latest version (4.1) tailwind, custom style doesn't config in this file, need to use @theme to define them in css file
 module.exports = {
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
@@ -56,9 +57,6 @@ module.exports = {
       },
       boxShadow: {
         card: '0 2px 6px 0 rgba(0, 0, 0, 0.05)',
-      },
-      fontFamily: {
-        sans: ['Inter var', 'sans-serif'],
       },
     },
   },
