@@ -65,6 +65,17 @@ export type ServerListResponse = {
   total: string;
   rows: ServerItem[];
 };
+export type RebateLevelItem = {
+  id: string;
+  level: string;
+  levelName: string;
+};
+export type RebateLevelListResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: RebateLevelItem[];
+};
 
 export type RegCountReportItem = Record<string, [number, number, number]>;
 
@@ -183,4 +194,9 @@ export type CustomRelationsItem = {
   id: string;
   hasChildren: boolean;
   parentName: string;
+};
+
+export type CrmRebateTradersItem = {
+  ruleName: string;
+  id: string;
 };

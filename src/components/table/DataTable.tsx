@@ -31,7 +31,7 @@ interface DataTableProps<TData, TValue> {
 
 const TableRowSkeleton = ({ columns }: { columns: number }) => {
   return (
-    <TableRow className="h-16 animate-pulse">
+    <TableRow className="h-12 animate-pulse">
       {Array.from({ length: columns }).map((_, index) => (
         <TableCell key={index}>
           <div className="h-4 w-full rounded-md bg-gray-200 dark:bg-gray-700"></div>

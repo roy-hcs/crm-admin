@@ -49,9 +49,10 @@ export type OverviewParams = {
   drirectFlag?: string;
   orderByColumn?: string;
   serverId?: string;
+  serverType?: string;
 };
 export type OverviewItem = {
-  rebateLevelId: string | null;
+  rebateLevel: string | null;
   username: string | null;
   email: string | null;
   userNumber: string | null;
@@ -74,4 +75,51 @@ export type OverviewResponse = {
   msg: string;
   total: string;
   rows: OverviewItem[];
+};
+// 交易佣金报表
+export type TradingParams = {
+  pageSize: number;
+  pageNum: number;
+  isAsc?: string;
+  rebateType?: string;
+  serverId?: string;
+  serverGroupList?: string;
+  serverGroup?: string;
+  mtOrder?: string;
+  trderAccount?: string;
+  taderType?: string;
+  conditionName?: string;
+  rebateTraderIdList?: string;
+  accounts?: string;
+  orderByColumn?: string;
+  params: {
+    startTraderTime?: string;
+    endTraderTime?: string;
+    beginVerifyTime?: string;
+    endVerifyTime?: string;
+    accounts?: string;
+  };
+};
+export type TradingItem = {
+  serverName: string | null;
+  mtOrder: string | null;
+  login: string | null;
+  symbol: string | null;
+  volume: string | null;
+  traderTime: string | null;
+  userName: string | null;
+  showId: string | null;
+  rebateTotalAmt: string | null;
+  rebateAccountName: string | null;
+  rebateTime: string | null;
+  rebateTraderName: string | null;
+  currency: string | null;
+  rebateFixedAmt: string | null;
+  rebatePointsAmt: string | null;
+};
+export type TradingResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: TradingItem[];
 };

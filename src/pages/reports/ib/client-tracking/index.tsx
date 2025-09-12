@@ -47,9 +47,9 @@ export function ClientTrackingPage() {
         {t('ib.CustomerTracking.title')}
       </div>
       {/* 页面简介 */}
-      {/* <div className="mt-2 mb-6 text-sm leading-4.5 font-normal text-[#1e1e1e]">
+      <div className="mt-2 mb-6 text-sm leading-4.5 font-normal text-[#1e1e1e]">
         View all of your account's information
-      </div> */}
+      </div>
       {/* 表格 */}
       <div className="mt-2">
         <div className="mb-3.5 flex justify-between">

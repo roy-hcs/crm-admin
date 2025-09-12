@@ -1,9 +1,11 @@
 import { apiFormPost, apiFormPostCustom, apiGet, FormValue } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
+  CrmRebateTradersItem,
   CrmUserParams,
   CrmUserResponse,
   CustomRelationsItem,
+  RebateLevelListResponse,
   RegCountReportItem,
   ServerListResponse,
   SumReport,
@@ -45,6 +47,13 @@ export function useServerList(params: Record<string, FormValue> = {}) {
   });
 }
 
+export function useRebateLevelList(params: Record<string, FormValue> = {}) {
+  return useQuery({
+    queryKey: ['rebateLevelList', params],
+    queryFn: () =>
+      apiFormPostCustom<RebateLevelListResponse>('/system/crmRebateLevel/list', params),
+  });
+}
 export function useRegCountReport(type: string) {
   return useQuery({
     queryKey: ['regCountReport', type],
@@ -98,5 +107,31 @@ export function useChangeUserStatus() {
   return useMutation({
     mutationFn: (params: { id: string; status: number }) =>
       apiFormPost('/system/crmUser/changeStatus', params),
+  });
+}
+
+/**
+ * 获取组别列表
+ */
+export function useGroupList(serverId: string, options?: { enabled?: boolean }) {
+  return useQuery({
+    queryKey: ['groupList', serverId],
+    queryFn: () => apiFormPostCustom<string[]>(`/system/crmDealAccount/getGroup/${serverId}`, {}),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+/**
+ * 获取命中规则列表
+ * type: 1-交易返佣，2-手续费返佣， 3-入金返佣
+ */
+export function useGetCrmRebateTraders(type: string) {
+  return useQuery({
+    queryKey: ['getCrmRebateTraders', type],
+    queryFn: () =>
+      apiFormPostCustom<CrmRebateTradersItem[]>(
+        `/system/crmRebateCommissionRule/getCrmRebateTraders?type=${type}`,
+        {},
+      ),
   });
 }

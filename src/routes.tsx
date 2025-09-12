@@ -9,6 +9,7 @@ import { SalesReportPage } from './pages/SalesReportPage';
 import { CRMAccounts } from './pages/account/CRMAccounts/CRMAccounts';
 import { ClientTrackingPage } from '@/pages/reports/ib/client-tracking';
 import { OverviewPage } from './pages/reports/ib/overview';
+import { TradingPage } from './pages/reports/commission/trading';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -37,6 +38,11 @@ export const router = createBrowserRouter([
       {
         path: '/account/crm-accounts',
         element: <CRMAccounts />,
+      },
+      // 佣金报表
+      {
+        path: '/reports/commission/trading',
+        element: <TradingPage />,
       },
       // ib客户追踪
       {

@@ -1,10 +1,8 @@
 import { forwardRef, useImperativeHandle } from 'react';
-// import { Form } from '@/components/ui/form';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
-// import { FormMonthPicker } from '@/components/form/FormMonthPicker';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import {
   Form,
@@ -16,8 +14,9 @@ import {
 } from '@/components/ui/form';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
-import { RebateLevelOptions } from '@/lib/const';
+// import { RebateLevelOptions } from '@/lib/const';
 import { useTranslation } from 'react-i18next';
+import { RebateLevelItem, ServerItem } from '@/api/hooks/system/types';
 export interface OverviewFormRef {
   onReset: () => void;
 }
@@ -39,10 +38,12 @@ export const OverviewForm = forwardRef<
       endTime: string;
       level: string;
     }) => void;
-    serverOptions: { label: string; value: string }[];
+    setServerId: (id: string) => void;
+    serverOptions: ServerItem[];
+    rebateLevelOptions: RebateLevelItem[];
     initialServerId?: string;
   }
->(({ setParams, serverOptions, initialServerId }, ref) => {
+>(({ setParams, serverOptions, initialServerId, rebateLevelOptions }, ref) => {
   const { t } = useTranslation();
   const form = useForm<ClientTrackingFormValues>({
     defaultValues: {
@@ -59,7 +60,7 @@ export const OverviewForm = forwardRef<
 
   // 当父级提供初始 serverId 或服务器列表加载完成后自动填充
   if (!form.getValues('serverId') && (initialServerId || serverOptions[0])) {
-    const auto = initialServerId || serverOptions[0]?.value || '';
+    const auto = initialServerId || serverOptions[0]?.id || '';
     if (auto) form.setValue('serverId', auto, { shouldDirty: false, shouldTouch: false });
   }
   useImperativeHandle(ref, () => ({
@@ -79,7 +80,7 @@ export const OverviewForm = forwardRef<
     });
   };
   const onReset = () => {
-    const first = serverOptions[0]?.value || '';
+    const first = serverOptions[0]?.id || '';
     setParams({
       serverId: first,
       userName: '',
@@ -110,7 +111,7 @@ export const OverviewForm = forwardRef<
             name="serverId"
             label={t('ib.overview.serverId')}
             placeholder={t('common.pleaseSelect')}
-            options={serverOptions}
+            options={serverOptions.map(item => ({ label: item.serverName, value: item.id }))}
           />
           <FormInput
             verticalLabel
@@ -143,7 +144,7 @@ export const OverviewForm = forwardRef<
             name="level"
             label={t('ib.CustomerTracking.levelName') + ':'}
             placeholder={t('common.pleaseSelect')}
-            options={RebateLevelOptions}
+            options={rebateLevelOptions.map(item => ({ label: item.levelName, value: item.id }))}
           />
           <div className="flex justify-end gap-4">
             <RrhButton

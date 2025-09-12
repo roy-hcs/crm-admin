@@ -2,8 +2,8 @@ import { useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { useAgencyOverviewList } from '@/api/hooks/report/report';
-import { useServerList } from '@/api/hooks/system/server';
-import { OverviewForm, OverviewFormRef } from './components/ClientTrackingForm';
+import { useServerList, useRebateLevelList } from '@/api/hooks/system/system';
+import { OverviewForm, OverviewFormRef } from './components/OverviewForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { OverviewTable } from './components/OverviewTable';
 import { Input } from '@/components/ui/input';
@@ -13,7 +13,7 @@ export function OverviewPage() {
   const { t } = useTranslation();
   const formRef = useRef<OverviewFormRef>(null);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc'>('asc');
-  const [formShow, setFormShow] = useState(true);
+  const [serverId, setServerId] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [params, setParams] = useState({
@@ -22,14 +22,15 @@ export function OverviewPage() {
     beginTime: '',
     endTime: '',
     level: '',
-    serverId: '',
   });
-  const { data: serverList, isLoading: serverLoading } = useServerList();
 
+  const { data: server, isLoading: serverLoading } = useServerList();
+  const { data: rebateLevel, isLoading: rebateLevelLoading } = useRebateLevelList();
+  console.log(rebateLevel, rebateLevelLoading);
   // 自动选择第一台服务器
-  if (!params.serverId && serverList && serverList.length) {
+  if (!serverId && server?.code === 0 && server?.rows?.length) {
     // 只在还没选中时设置，避免无限循环
-    setParams(prev => (prev.serverId ? prev : { ...prev, serverId: serverList[0].value }));
+    setServerId(server.rows[0].id);
   }
 
   const { data: AgencyClientTracking, isLoading: AgencyClientTrackingLoading } =
@@ -39,8 +40,9 @@ export function OverviewPage() {
         pageNum: pageNum + 1,
         ...params,
         isAsc,
+        serverType: '4',
       },
-      { enabled: !!params.serverId },
+      { enabled: !!serverId },
     );
 
   const reset = () => {
@@ -50,7 +52,6 @@ export function OverviewPage() {
       beginTime: '',
       endTime: '',
       level: '',
-      serverId: '',
     });
     setPageNum(0);
     setPageSize(10);
@@ -59,62 +60,62 @@ export function OverviewPage() {
   return (
     <div>
       {/* 页面名称 */}
-      <div className="text-xl leading-5 font-semibold text-[#1e1e1e]">{t('ib.overview.title')}</div>
+      <div className="text-xl leading-8 font-semibold text-[#1e1e1e]">{t('ib.overview.title')}</div>
       {/* 页面简介 */}
-      {/* <div className="mt-2 mb-6 text-sm leading-4.5 font-normal text-[#1e1e1e]">
+      <div className="text-sm leading-6 font-normal text-[#1e1e1e]">
         View all of your account's information
-      </div> */}
-      {/* 表格 */}
-      <div className="mt-2">
-        <div className="mb-3.5 flex justify-between">
-          <div>
-            <Input
-              placeholder="Filter emails..."
-              // value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
-              // onChange={event => table.getColumn('email')?.setFilterValue(event.target.value)}
-              className="max-w-sm"
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              className="size-8 cursor-pointer"
-              onClick={() => setFormShow(!formShow)}
-            >
-              <Search className="size-3.5" />
-            </Button>
-            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-              <RefreshCcw className="size-3.5" />
-            </Button>
-
-            <Button variant="ghost" className="size-8 cursor-pointer">
-              <Ellipsis />
-            </Button>
-            <RrhDrawer
-              Trigger={<Funnel className="size-4" />}
-              title="Filter"
-              direction="right"
-              footerShow={false}
-            >
-              <OverviewForm
-                ref={formRef}
-                setParams={setParams}
-                serverOptions={serverList || []}
-                initialServerId={params.serverId}
-              />
-            </RrhDrawer>
-          </div>
-        </div>
-        <OverviewTable
-          data={AgencyClientTracking?.rows || []}
-          pageCount={Math.ceil(+(AgencyClientTracking?.total || 0) / pageSize)}
-          pageIndex={pageNum}
-          pageSize={pageSize}
-          onPageChange={setPageNum}
-          onPageSizeChange={setPageSize}
-          loading={AgencyClientTrackingLoading || serverLoading}
-        />
       </div>
+      {/* 表格 */}
+      <div className="mt-3.5 mb-3.5 flex justify-between">
+        <div className="w-67 max-w-sm">
+          <Input
+            placeholder="Filter emails..."
+            className="h-9"
+            rightIcon={<Search className="size-4" />}
+            onLeftIconClick={() => {
+              // 触发查询逻辑, 这里简单调用一次刷新
+              setPageNum(0);
+            }}
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+            <RefreshCcw className="size-3.5" />
+          </Button>
+
+          <Button variant="ghost" className="size-8 cursor-pointer">
+            <Ellipsis />
+          </Button>
+          <RrhDrawer
+            Trigger={
+              <Button variant="ghost" className="size-8 cursor-pointer">
+                <Funnel className="size-4" />
+              </Button>
+            }
+            title="Filter"
+            direction="right"
+            footerShow={false}
+          >
+            <OverviewForm
+              ref={formRef}
+              setParams={setParams}
+              serverOptions={server?.rows || []}
+              rebateLevelOptions={rebateLevel?.rows || []}
+              setServerId={setServerId}
+              initialServerId={serverId}
+            />
+          </RrhDrawer>
+        </div>
+      </div>
+      <OverviewTable
+        data={AgencyClientTracking?.rows || []}
+        pageCount={Math.ceil(+(AgencyClientTracking?.total || 0) / pageSize)}
+        pageIndex={pageNum}
+        pageSize={pageSize}
+        onPageChange={setPageNum}
+        onPageSizeChange={setPageSize}
+        loading={AgencyClientTrackingLoading || serverLoading}
+      />
     </div>
   );
 }

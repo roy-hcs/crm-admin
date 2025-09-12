@@ -5,6 +5,8 @@ import {
   AgencyClientTrackingResponse,
   OverviewParams,
   OverviewResponse,
+  TradingParams,
+  TradingResponse,
 } from './types';
 
 /**
@@ -29,6 +31,18 @@ export function useAgencyOverviewList(params: OverviewParams, options?: { enable
     queryKey: ['agencyOverviewList', params],
     queryFn: () =>
       apiFormPostCustom<OverviewResponse>('/system/statistics/agencyOverviewList', params || {}),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+/**
+ * 获取佣金报表-交易佣金报表
+ */
+export function useRebateList(params: TradingParams, options?: { enabled?: boolean }) {
+  return useQuery({
+    queryKey: ['rebateList', params],
+    queryFn: () =>
+      apiFormPostCustom<TradingResponse>('/system/statistics/rebateList', params || {}),
     enabled: options?.enabled ?? true,
   });
 }
