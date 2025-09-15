@@ -161,8 +161,8 @@ export const OverviewTable = ({
       onPageChange={onPageChange}
       onPageSizeChange={onPageSizeChange}
       loading={loading}
-      thCls="text-left text-[13px]"
-      tdCls="text-left text-xs"
+      thCls="text-left"
+      tdCls="text-left"
     />
   );
 };

@@ -6,7 +6,7 @@ import { useServerList, useRebateLevelList } from '@/api/hooks/system/system';
 import { OverviewForm, OverviewFormRef } from './components/OverviewForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { OverviewTable } from './components/OverviewTable';
-import { Input } from '@/components/ui/input';
+import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 
 export function OverviewPage() {
@@ -68,8 +68,8 @@ export function OverviewPage() {
       {/* 表格 */}
       <div className="mt-3.5 mb-3.5 flex justify-between">
         <div className="w-67 max-w-sm">
-          <Input
-            placeholder="Filter emails..."
+          <RrhInputWithIcon
+            placeholder="Last Name/First Name/Email"
             className="h-9"
             rightIcon={<Search className="size-4" />}
             onLeftIconClick={() => {
@@ -82,7 +82,6 @@ export function OverviewPage() {
           <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
           </Button>
-
           <Button variant="ghost" className="size-8 cursor-pointer">
             <Ellipsis />
           </Button>

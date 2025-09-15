@@ -5,7 +5,7 @@ import { useDailyRebateList } from '@/api/hooks/report/report';
 import { MyForm, FormRef } from './components/MyForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { MyTable } from './components/MyTable';
-import { Input } from '@/components/ui/input';
+import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 export function WeeklyRebatePage() {
   const { t } = useTranslation();
@@ -53,7 +53,7 @@ export function WeeklyRebatePage() {
       </div>
       <div className="mt-3.5 mb-3.5 flex justify-between">
         <div className="w-67 max-w-sm">
-          <Input
+          <RrhInputWithIcon
             placeholder="Last Name/First Name/Email"
             className="h-9"
             rightIcon={<Search className="size-4" />}

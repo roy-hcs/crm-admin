@@ -205,7 +205,11 @@ export function DataTable<TData, TValue>({
             ) : table.getRowModel().rows?.length ? (
               // Show actual data when not loading
               table.getRowModel().rows.map(row => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                  className="h-12"
+                >
                   {row.getVisibleCells().map(cell => {
                     const pinState = table.getState().columnPinning || { left: [], right: [] };
                     const leftPinned = pinState.left ?? [];

@@ -41,11 +41,11 @@ type FormData = {
   rebateTraderId: string;
 };
 
-export interface ClientTrackingFormRef {
+export interface FormRef {
   onReset: () => void;
 }
-export const ClientTrackingForm = forwardRef<
-  ClientTrackingFormRef,
+export const MyForm = forwardRef<
+  FormRef,
   {
     setParams: (params: {
       startTraderTime: string;
@@ -84,25 +84,15 @@ export const ClientTrackingForm = forwardRef<
     const { t } = useTranslation();
     const form = useForm({
       defaultValues: {
-        // 服务器
         serverId: initialServerId || '',
-        // 交易时间
         tradingTime: { from: '', to: '' },
-        // 返佣时间
         rebateTime: { from: '', to: '' },
-        // 账户范围
         accounts: '',
-        // 组别
         serverGroup: '',
-        // 交易订单号
         mtOrder: '',
-        // 交易账号
         trderAccount: '',
-        // 交易品种
         taderType: '',
-        // 返佣对象
         conditionName: '',
-        // 命中规则
         rebateTraderId: '',
       },
     });
@@ -155,23 +145,14 @@ export const ClientTrackingForm = forwardRef<
       });
       form.reset({
         serverId: initialServerId || '',
-        // 交易时间
         tradingTime: { from: '', to: '' },
-        // 返佣时间
         rebateTime: { from: '', to: '' },
-        // 账户范围
         accounts: '',
-        // 组别
         serverGroup: '',
-        // 交易订单号
         mtOrder: '',
-        // 交易账号
         trderAccount: '',
-        // 交易品种
         taderType: '',
-        // 返佣对象
         conditionName: '',
-        // 命中规则
         rebateTraderId: '',
       });
     };

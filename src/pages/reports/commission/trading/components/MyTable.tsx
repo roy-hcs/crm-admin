@@ -2,7 +2,7 @@ import { TradingItem } from '@/api/hooks/report/types';
 import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { useTranslation } from 'react-i18next';
 
-export const TradingTable = ({
+export const MyTable = ({
   data,
   pageCount,
   pageIndex,
@@ -118,8 +118,8 @@ export const TradingTable = ({
       onPageChange={onPageChange}
       onPageSizeChange={onPageSizeChange}
       loading={loading}
-      thCls="text-left text-[13px]"
-      tdCls="text-left text-xs"
+      thCls="text-left"
+      tdCls="text-left"
     />
   );
 };

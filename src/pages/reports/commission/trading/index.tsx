@@ -2,15 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { useRebateList } from '@/api/hooks/report/report';
-import { ClientTrackingForm, ClientTrackingFormRef } from './components/ClientTrackingForm';
+import { MyForm, FormRef } from './components/MyForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
-import { TradingTable } from './components/TradingTable';
-import { Input } from '@/components/ui/input';
+import { MyTable } from './components/MyTable';
+import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { useServerList, useGroupList, useGetCrmRebateTraders } from '@/api/hooks/system/system';
 export function TradingPage() {
   const { t } = useTranslation();
-  const formRef = useRef<ClientTrackingFormRef>(null);
+  const formRef = useRef<FormRef>(null);
   // serverId
   const [serverId, setServerId] = useState('');
   // 分页
@@ -102,7 +102,7 @@ export function TradingPage() {
       </div>
       <div className="mt-3.5 mb-3.5 flex justify-between">
         <div className="w-67 max-w-sm">
-          <Input
+          <RrhInputWithIcon
             placeholder="Last Name/First Name/Email"
             className="h-9"
             rightIcon={<Search className="size-4" />}
@@ -129,7 +129,7 @@ export function TradingPage() {
             direction="right"
             footerShow={false}
           >
-            <ClientTrackingForm
+            <MyForm
               ref={formRef}
               setParams={setParams}
               setServerId={setServerId}
@@ -142,7 +142,7 @@ export function TradingPage() {
           </RrhDrawer>
         </div>
       </div>
-      <TradingTable
+      <MyTable
         data={AgencyClientTracking?.rows || []}
         pageCount={Math.ceil(+(AgencyClientTracking?.total || 0) / pageSize)}
         pageIndex={pageNum}
