@@ -31,7 +31,7 @@ interface DataTableProps<TData, TValue> {
 
 const TableRowSkeleton = ({ columns }: { columns: number }) => {
   return (
-    <TableRow className="h-16 animate-pulse">
+    <TableRow className="h-12 animate-pulse">
       {Array.from({ length: columns }).map((_, index) => (
         <TableCell key={index}>
           <div className="h-4 w-full rounded-md bg-gray-200 dark:bg-gray-700"></div>
@@ -205,7 +205,11 @@ export function DataTable<TData, TValue>({
             ) : table.getRowModel().rows?.length ? (
               // Show actual data when not loading
               table.getRowModel().rows.map(row => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                  className="h-12"
+                >
                   {row.getVisibleCells().map(cell => {
                     const pinState = table.getState().columnPinning || { left: [], right: [] };
                     const leftPinned = pinState.left ?? [];

@@ -47,7 +47,7 @@ type FormData = {
   tags: string;
 };
 
-const SelectAccountsPopup = ({
+export const SelectAccountsPopup = ({
   field,
   verticalLabel = false,
 }: {

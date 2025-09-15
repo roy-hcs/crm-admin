@@ -35,3 +35,16 @@ export const serverOptions = [
   { label: '服务器2', value: '2' },
   { label: '服务器3', value: '3' },
 ];
+
+// 返佣类型
+export const RebateTypeOptions = [
+  { label: '交易返佣', value: '1' },
+  { label: '手续费返佣', value: '2' },
+  { label: '入金返佣', value: '3' },
+];
+
+// 返佣状态
+export const RebateStatusOptions = [
+  { label: '成功', value: '1' },
+  { label: '失败', value: '0' },
+];

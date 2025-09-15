@@ -1,55 +1,56 @@
 import { useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { useAgencyClientTrackingList } from '@/api/hooks/report/report';
-import { ClientTrackingForm, ClientTrackingFormRef } from './components/ClientTrackingForm';
+import { useDailyRebateList } from '@/api/hooks/report/report';
+import { MyForm, FormRef } from './components/MyForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
-import { ClientTrackingTable } from './components/ClientTrackingTable';
+import { MyTable } from './components/MyTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-
-export function ClientTrackingPage() {
+export function DailyRebatePage() {
   const { t } = useTranslation();
-  const formRef = useRef<ClientTrackingFormRef>(null);
-  const [isAsc, setIsAsc] = useState<'asc' | 'desc'>('asc');
+  const formRef = useRef<FormRef>(null);
+  // 分页
   const [pageNum, setPageNum] = useState(0);
+  // 每页条数
   const [pageSize, setPageSize] = useState(10);
+  // 特殊参数
   const [params, setParams] = useState({
-    userName: '',
-    email: '',
-    statisticMonth: '',
-    level: '',
+    beginTime: '',
+    endTime: '',
+    account: '',
   });
-  const { data: AgencyClientTracking, isLoading: AgencyClientTrackingLoading } =
-    useAgencyClientTrackingList({
-      pageSize,
-      pageNum: pageNum + 1,
-      ...params,
-      isAsc,
-    });
+  // 普通参数
+  const [commonParams, setCommonParams] = useState({
+    settleStyle: '1', // 日结
+    rebateType: '',
+    rebateStatus: '',
+    id: '',
+  });
+  const { data: data, isLoading: loading } = useDailyRebateList({
+    params,
+    pageSize,
+    ...commonParams,
+    pageNum: pageNum + 1,
+    // 下面是固定参数
+    isAsc: 'asc',
+    orderByColumn: '',
+  });
 
   const reset = () => {
     setParams({
-      userName: '',
-      email: '',
-      statisticMonth: '',
-      level: '',
+      beginTime: '',
+      endTime: '',
+      account: '',
     });
     setPageNum(0);
     setPageSize(10);
-    setIsAsc('asc');
   };
   return (
     <div>
-      {/* 页面名称 */}
       <div className="text-xl leading-8 font-semibold text-[#1e1e1e]">
-        {t('ib.CustomerTracking.title')}
+        {t('commission.daily-rebate.title')}
       </div>
-      {/* 页面简介 */}
-      <div className="text-sm leading-6 font-normal text-[#1e1e1e]">
-        View all of your account's information
-      </div>
-      {/* 表格 */}
       <div className="mt-3.5 mb-3.5 flex justify-between">
         <div className="w-67 max-w-sm">
           <RrhInputWithIcon
@@ -70,23 +71,27 @@ export function ClientTrackingPage() {
             <Ellipsis />
           </Button>
           <RrhDrawer
-            Trigger={<Funnel className="size-4" />}
+            Trigger={
+              <Button variant="ghost" className="size-8 cursor-pointer">
+                <Funnel className="size-4" />
+              </Button>
+            }
             title="Filter"
             direction="right"
             footerShow={false}
           >
-            <ClientTrackingForm ref={formRef} setParams={setParams} />
+            <MyForm ref={formRef} setParams={setParams} setCommonParams={setCommonParams} />
           </RrhDrawer>
         </div>
       </div>
-      <ClientTrackingTable
-        data={AgencyClientTracking?.rows || []}
-        pageCount={Math.ceil(+(AgencyClientTracking?.total || 0) / pageSize)}
+      <MyTable
+        data={data?.rows || []}
+        pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}
         pageSize={pageSize}
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
-        loading={AgencyClientTrackingLoading}
+        loading={loading}
       />
     </div>
   );

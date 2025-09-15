@@ -1,8 +1,6 @@
 import { AgencyClientTrackingItem } from '@/api/hooks/report/types';
-import { DataTable } from '@/components/table/DataTable';
+import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { useTranslation } from 'react-i18next';
-import { ColumnDef } from '@tanstack/react-table';
-import { Checkbox } from '@/components/ui/checkbox';
 
 export const ClientTrackingTable = ({
   data,
@@ -22,33 +20,11 @@ export const ClientTrackingTable = ({
   loading?: boolean;
 }) => {
   const { t } = useTranslation();
-  const crmColumns: ColumnDef<AgencyClientTrackingItem>[] = [
+  const crmColumns: CRMColumnDef<AgencyClientTrackingItem, unknown>[] = [
     {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-[#1E1E1E]"
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-[#1E1E1E]"
-          checked={row.getIsSelected()}
-          onCheckedChange={value => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
+      fixed: true,
       id: 'No.',
+      size: 50,
       header: t('ib.CustomerTracking.Index'),
       cell: ({ row }) => <div>{row.index + 1}</div>,
     },
@@ -144,8 +120,8 @@ export const ClientTrackingTable = ({
       onPageChange={onPageChange}
       onPageSizeChange={onPageSizeChange}
       loading={loading}
-      thCls="text-center text-[13px]"
-      tdCls="text-center text-xs"
+      thCls="text-center"
+      tdCls="text-center"
     />
   );
 };
