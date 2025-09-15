@@ -177,5 +177,48 @@
       "volume": "Trading volume",
       "withdrawAmount": "Withdrawal (statistics)"
     }
+  },
+  "commission": {
+    "daily-rebate": {
+      "account": "Rebate Account",
+      "id": "Settlement order number",
+      "rebateStatus": "Rebate status",
+      "rebateTotalAmt": "Rebate amount",
+      "rebateType": "Rebate Type",
+      "relatedCount": "Related rebate record",
+      "settleTime": "Settlement date",
+      "title": "Daily rebate report",
+      "updateTime": "Rebate time",
+      "userName": "Rebate object",
+      "volume": "Trading volume"
+    },
+    "deposits": {
+      "title": "Deposit Commission Report"
+    },
+    "fees": {
+      "title": "Processing fee and commission report"
+    },
+    "trading": {
+      "conditionName": "Rebate object",
+      "login": "Trading account",
+      "mtOrder": "Transaction order number",
+      "rebateAccountName": "Rebate Account",
+      "rebateTime": "Rebate time",
+      "rebateTotalAmt": "Rebate amount",
+      "rebateTraderId": "Hit Rules",
+      "rebateTraderName": "Rebate rules",
+      "serverGroup": "Group",
+      "serverName": "server",
+      "symbol": "Trading Types",
+      "taderType": "Trading Types",
+      "title": "Transaction Commission Report",
+      "traderTime": "Trading time",
+      "trderAccount": "Trading account",
+      "userName": "Rebate object",
+      "volume": "Trading volume"
+    },
+    "weekly-rebate": {
+      "title": "Weekly commission rebate statement"
+    }
   }
 }

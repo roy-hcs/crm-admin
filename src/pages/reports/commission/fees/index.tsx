@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { useRebateList } from '@/api/hooks/report/report';
-import { ClientTrackingForm, ClientTrackingFormRef } from './components/ClientTrackingForm';
+import { MyForm, ClientTrackingFormRef } from './components/MyForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
-import { TradingTable } from './components/TradingTable';
+import { MyTable } from './components/MyTable';
 import { Input } from '@/components/ui/input';
 import { useTranslation } from 'react-i18next';
 import { useServerList, useGroupList, useGetCrmRebateTraders } from '@/api/hooks/system/system';
-export function TradingPage() {
+export function FeesPage() {
   const { t } = useTranslation();
   const formRef = useRef<ClientTrackingFormRef>(null);
   // serverId
@@ -66,6 +66,7 @@ export function TradingPage() {
     }));
     setPageNum(0);
   }, [serverId]);
+
   const { data: AgencyClientTracking, isLoading: AgencyClientTrackingLoading } = useRebateList(
     {
       params,
@@ -79,7 +80,7 @@ export function TradingPage() {
       // 下面是固定参数
       isAsc: 'asc',
       orderByColumn: '',
-      rebateType: '1',
+      rebateType: '2',
     },
     { enabled: !!serverId },
   );
@@ -98,7 +99,7 @@ export function TradingPage() {
   return (
     <div>
       <div className="text-xl leading-8 font-semibold text-[#1e1e1e]">
-        {t('commission.trading.title')}
+        {t('commission.fees.title')}
       </div>
       <div className="mt-3.5 mb-3.5 flex justify-between">
         <div className="w-67 max-w-sm">
@@ -129,7 +130,7 @@ export function TradingPage() {
             direction="right"
             footerShow={false}
           >
-            <ClientTrackingForm
+            <MyForm
               ref={formRef}
               setParams={setParams}
               setServerId={setServerId}
@@ -142,7 +143,7 @@ export function TradingPage() {
           </RrhDrawer>
         </div>
       </div>
-      <TradingTable
+      <MyTable
         data={AgencyClientTracking?.rows || []}
         pageCount={Math.ceil(+(AgencyClientTracking?.total || 0) / pageSize)}
         pageIndex={pageNum}

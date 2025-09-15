@@ -7,6 +7,8 @@ import {
   OverviewResponse,
   TradingParams,
   TradingResponse,
+  DailyRebateParams,
+  DailyRebateResponse,
 } from './types';
 
 /**
@@ -36,7 +38,7 @@ export function useAgencyOverviewList(params: OverviewParams, options?: { enable
 }
 
 /**
- * 获取佣金报表-交易佣金报表
+ * 获取佣金报表-交易佣金报表 手续费 入金 通用接口
  */
 export function useRebateList(params: TradingParams, options?: { enabled?: boolean }) {
   return useQuery({
@@ -44,5 +46,16 @@ export function useRebateList(params: TradingParams, options?: { enabled?: boole
     queryFn: () =>
       apiFormPostCustom<TradingResponse>('/system/statistics/rebateList', params || {}),
     enabled: options?.enabled ?? true,
+  });
+}
+
+/**
+ * 获取佣金报表-日结佣金报表
+ */
+export function useDailyRebateList(params: DailyRebateParams) {
+  return useQuery({
+    queryKey: ['dailyRebateList', params],
+    queryFn: () =>
+      apiFormPostCustom<DailyRebateResponse>('/system/rebateSettle/list', params || {}),
   });
 }

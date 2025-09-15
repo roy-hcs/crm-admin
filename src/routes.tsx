@@ -10,6 +10,10 @@ import { CRMAccounts } from './pages/account/CRMAccounts/CRMAccounts';
 import { ClientTrackingPage } from '@/pages/reports/ib/client-tracking';
 import { OverviewPage } from './pages/reports/ib/overview';
 import { TradingPage } from './pages/reports/commission/trading';
+import { FeesPage } from './pages/reports/commission/fees';
+import { DepositsPage } from './pages/reports/commission/deposits';
+import { DailyRebatePage } from './pages/reports/commission/daily-rebate';
+import { WeeklyRebatePage } from './pages/reports/commission/weekly-rebate';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -43,6 +47,26 @@ export const router = createBrowserRouter([
       {
         path: '/reports/commission/trading',
         element: <TradingPage />,
+      },
+      // 手续费佣金报表
+      {
+        path: '/reports/commission/fees',
+        element: <FeesPage />,
+      },
+      // 入金佣金报表
+      {
+        path: '/reports/commission/deposits',
+        element: <DepositsPage />,
+      },
+      // 日结返佣
+      {
+        path: '/reports/commission/daily-rebate',
+        element: <DailyRebatePage />,
+      },
+      // 周结返佣
+      {
+        path: '/reports/commission/weekly-rebate',
+        element: <WeeklyRebatePage />,
       },
       // ib客户追踪
       {

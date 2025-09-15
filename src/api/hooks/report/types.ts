@@ -123,3 +123,42 @@ export type TradingResponse = {
   total: string;
   rows: TradingItem[];
 };
+
+// 日结返佣报表
+export type DailyRebateParams = {
+  pageSize: number;
+  pageNum: number;
+  isAsc?: string;
+  orderByColumn?: string;
+  settleStyle?: string;
+  rebateType?: string;
+  rebateStatus?: string;
+  id?: string;
+  params: {
+    beginTime?: string;
+    endTime?: string;
+    account?: string;
+  };
+};
+export type DailyRebateItem = {
+  settleTime: string | null;
+  lastName: string | null;
+  name: string | null;
+  userName: string | null;
+  showId: string | null;
+  rebateType: string | null;
+  relatedRecord: string | null;
+  volume: string | null;
+  rebateTotalAmt: string | null;
+  rebateStatus: string | null;
+  updateTime: string | null;
+  relatedCount: string | null;
+  id: string | null;
+  account: string | null;
+};
+export type DailyRebateResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: DailyRebateItem[];
+};
