@@ -1,10 +1,12 @@
-import { apiFormPost, apiFormPostCustom, apiGet, FormValue } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom, FormValue } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   CrmRebateTradersItem,
   CrmUserParams,
   CrmUserResponse,
   CustomRelationsItem,
+  DealAccountGroupListResponse,
+  GetGroupByServerResponse,
   RebateLevelListResponse,
   RegCountReportItem,
   ServerListResponse,
@@ -133,5 +135,22 @@ export function useGetCrmRebateTraders(type: string) {
         `/system/crmRebateCommissionRule/getCrmRebateTraders?type=${type}`,
         {},
       ),
+  });
+}
+
+export function useGetGroupByServer(params: { serverId: string }) {
+  return useQuery({
+    queryKey: ['getGroupByServer', params],
+    queryFn: () =>
+      apiFormPostCustom<GetGroupByServerResponse>('/system/mtServerGroup/getGroupByServer', params),
+    enabled: !!params.serverId,
+  });
+}
+
+export function useGetDealAccountGroupList() {
+  return useQuery({
+    queryKey: ['getDealAccountGroupList'],
+    queryFn: () =>
+      apiGetCustom<DealAccountGroupListResponse>('/system/crmDealAccount/getDealAccountGroupList'),
   });
 }

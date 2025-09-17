@@ -70,7 +70,7 @@ export function FormDateRangeInput<T extends FieldValues>({
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
+              <PopoverContent className="bg-background w-auto p-0" align="start">
                 <Calendar
                   mode="range"
                   defaultMonth={field.value?.from}

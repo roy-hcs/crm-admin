@@ -75,7 +75,12 @@
     "pleaseSelect": "请选择",
     "pleaseInput": "请输入{{field}}",
     "SomethingWentWrongPleaseTryAgainLater": "发生错误。请稍后再试。",
-    "select": "选择"
+    "select": "选择",
+    "pageOf": "第 {{current}} 页，共 {{total}} 页",
+    "live": "真实",
+    "demo": "模拟",
+    "subordinate": "下级",
+    "close": "关闭"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -220,5 +225,33 @@
     "roleId": "角色",
     "colorPreference": "颜色",
     "status": "状态"
+  },
+  "tradingHistoryPage": {
+    "tradingHistoryDetail": "交易历史详情",
+    "tradingHistory": "交易历史"
+  },
+  "table": {
+    "server": "服务器",
+    "groups": "组别",
+    "transactionType": "交易类型",
+    "symbol": "交易品种",
+    "orderNumber": "订单号",
+    "fullName": "姓名",
+    "firstNameOrLastName": "姓/名",
+    "tradingAccount": "交易账号",
+    "accountGroup": "账户组",
+    "accountScope": "账户范围",
+    "openTime": "开仓时间",
+    "closeTime": "平仓时间",
+    "volume": "交易量",
+    "index": "序号",
+    "openPrice": "开仓价",
+    "closePrice": "平仓价",
+    "profitAndLoss": "盈亏",
+    "swap": "隔夜利息",
+    "commission": "手续费",
+    "comment": "注释",
+    "export": "导出",
+    "batchDelete": "批量删除"
   }
 }

@@ -57,7 +57,12 @@
     "Search": "search",
     "pleaseInput": "Please enter {field}",
     "pleaseSelect": "Please select",
-    "select": "choose"
+    "select": "choose",
+    "pageOf": "Page {{current}} of {{total}}",
+    "close": "closure",
+    "demo": "simulation",
+    "live": "reality",
+    "subordinate": "Next level"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -220,5 +225,33 @@
     "weekly-rebate": {
       "title": "Weekly commission rebate statement"
     }
+  },
+  "table": {
+    "accountGroup": "Account Group",
+    "accountScope": "Account scope",
+    "batchDelete": "Batch Delete",
+    "closePrice": "Close position price",
+    "closeTime": "Closed time",
+    "comment": "Comments",
+    "commission": "Processing fee",
+    "export": "Export",
+    "firstNameOrLastName": "Name",
+    "fullName": "Name",
+    "groups": "Group",
+    "index": "Serial number",
+    "openPrice": "Opening price",
+    "openTime": "Opening time",
+    "orderNumber": "Order number",
+    "profitAndLoss": "Profit and loss",
+    "server": "server",
+    "swap": "Overnight interest",
+    "symbol": "Trading Types",
+    "tradingAccount": "Trading account",
+    "transactionType": "Transaction Type",
+    "volume": "Trading volume"
+  },
+  "tradingHistoryPage": {
+    "tradingHistory": "Transaction history",
+    "tradingHistoryDetail": "Details of transaction history"
   }
 }

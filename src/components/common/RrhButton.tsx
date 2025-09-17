@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import { PropsWithChildren, forwardRef } from 'react';
 import { Button } from '../ui/button';
 import { ButtonHTMLAttributes } from 'react';
 import { VariantProps } from 'class-variance-authority';
@@ -9,14 +9,12 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
   };
-export const RrhButton: FC<PropsWithChildren<ButtonProps>> = ({
-  children,
-  className,
-  ...props
-}) => {
-  return (
-    <Button className={cn('cursor-pointer', className)} {...props}>
-      {children}
-    </Button>
-  );
-};
+export const RrhButton = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
+  ({ children, className, ...props }, ref) => {
+    return (
+      <Button ref={ref} className={cn('cursor-pointer px-4 py-2', className)} {...props}>
+        {children}
+      </Button>
+    );
+  },
+);

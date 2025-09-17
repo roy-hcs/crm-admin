@@ -162,3 +162,90 @@ export type DailyRebateResponse = {
   total: string;
   rows: DailyRebateItem[];
 };
+
+export type TradingHistoryParams = {
+  serverType: number | string;
+  serverId?: string;
+  serverGroupList?: string;
+  serverGroup?: string;
+  type?: number | string;
+  symbol?: string;
+  breedGroup?: string;
+  ticket?: string;
+  login?: string;
+  accountGroupList?: string;
+  accounts?: string;
+  positionID?: string;
+  entry?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+  params: {
+    selectOther?: string;
+    historyFuzzyName?: string;
+    accounts?: string;
+    historyDealBJStartTime?: string;
+    historyDealBJEndTime?: string;
+    historyCloseStartTime?: string;
+    historyCloseEndTime?: string;
+  };
+};
+
+// generated type according to the above json
+export type TradingHistoryItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  login: string | null;
+  serverId: string | null;
+  server: string | null;
+  deal: string | null;
+  ticket: number | null;
+  symbol: string | null;
+  digits: number | null;
+  type: number | null;
+  volume: number | null;
+  sl: number | null;
+  tp: number | null;
+  swaps: number | null;
+  profit: number | null;
+  comment: string | null;
+  commission: number | null;
+  matchRuleType: string | null;
+  entry: string | null;
+  serverType: number | null;
+  accountGroupList: string[] | null;
+  positionID: string | null;
+  accounts: string | null;
+  accountIds: string | null;
+  breedGroup: string | null;
+  id: string | null;
+  uuid: string | null;
+  name: string | null;
+  currency: string | null;
+  openTime: string | null;
+  openPrice: number | null;
+  closeTime: string | null;
+  closePrice: number | null;
+  time: string | null;
+  price: number | null;
+  lotSize: number | null;
+  dealTime: string | null;
+  traderCount: number | null;
+  primId: string | null;
+  openDate: string | null;
+};
+
+export type TradingHistoryListResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  priceSum: number;
+  rebateTotalAmtStr: string;
+  rows: TradingHistoryItem[];
+  serverType: string;
+};

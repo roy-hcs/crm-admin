@@ -5,18 +5,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { FC, PropsWithChildren } from 'react';
+import { ReactNode } from 'react';
 
-export const RrhSelect: FC<
-  PropsWithChildren<{
-    options: { label: string; value: string | number }[];
-    onValueChange?: (value: string) => void;
-    value?: string;
-    placeholder?: string;
-    className?: string;
-    showRowValue?: boolean;
-  }>
-> = ({ options, value, onValueChange, placeholder, showRowValue = true, className }) => {
+export type BaseOption = { label: string; value: string | number };
+export const RrhSelect = <T extends BaseOption>({
+  options,
+  value,
+  onValueChange,
+  placeholder,
+  showRowValue = true,
+  className,
+  renderItem,
+}: {
+  options: T[];
+  value?: string;
+  onValueChange?: (value: string) => void;
+  placeholder?: string;
+  className?: string;
+  showRowValue?: boolean;
+  renderItem?: (option: T) => ReactNode;
+}) => {
   return (
     <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger className={className}>
@@ -26,10 +34,10 @@ export const RrhSelect: FC<
           <SelectValue placeholder={placeholder} />
         )}
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="bg-background">
         {options.map(option => (
           <SelectItem key={option.value} value={option.value.toString()}>
-            <div>{option.label}</div>
+            {renderItem ? renderItem(option) : <div>{option.label}</div>}
           </SelectItem>
         ))}
       </SelectContent>

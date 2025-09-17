@@ -25,8 +25,7 @@ export function OverviewPage() {
   });
 
   const { data: server, isLoading: serverLoading } = useServerList();
-  const { data: rebateLevel, isLoading: rebateLevelLoading } = useRebateLevelList();
-  console.log(rebateLevel, rebateLevelLoading);
+  const { data: rebateLevel } = useRebateLevelList();
   // 自动选择第一台服务器
   if (!serverId && server?.code === 0 && server?.rows?.length) {
     // 只在还没选中时设置，避免无限循环
@@ -38,6 +37,7 @@ export function OverviewPage() {
       {
         pageSize,
         pageNum: pageNum + 1,
+        serverId,
         ...params,
         isAsc,
         serverType: '4',
@@ -86,6 +86,7 @@ export function OverviewPage() {
             <Ellipsis />
           </Button>
           <RrhDrawer
+            asChild
             Trigger={
               <Button variant="ghost" className="size-8 cursor-pointer">
                 <Funnel className="size-4" />

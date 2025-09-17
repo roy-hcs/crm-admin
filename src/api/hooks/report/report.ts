@@ -9,6 +9,8 @@ import {
   TradingResponse,
   DailyRebateParams,
   DailyRebateResponse,
+  TradingHistoryParams,
+  TradingHistoryListResponse,
 } from './types';
 
 /**
@@ -57,5 +59,16 @@ export function useDailyRebateList(params: DailyRebateParams) {
     queryKey: ['dailyRebateList', params],
     queryFn: () =>
       apiFormPostCustom<DailyRebateResponse>('/system/rebateSettle/list', params || {}),
+  });
+}
+export function useTradingHistoryList(params: TradingHistoryParams, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['tradingHistory', params],
+    queryFn: () =>
+      apiFormPostCustom<TradingHistoryListResponse>(
+        '/system/statistics/getHistoryList',
+        params || {},
+      ),
+    enabled: options.enabled,
   });
 }

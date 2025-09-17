@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/command';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ChevronRight, Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface CascaderOption {
   value: string;
@@ -32,13 +33,10 @@ export const RrhCascader: React.FC<CascaderProps> = ({
   options,
   loadData,
   onChange,
-  placeholder,
   notFoundContent,
-  displayRender,
   changeOnSelect = false,
   className,
 }) => {
-  const [open, setOpen] = useState(false);
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<CascaderOption[]>([]);
   const [menus, setMenus] = useState<CascaderOption[][]>([options]);
@@ -90,7 +88,6 @@ export const RrhCascader: React.FC<CascaderProps> = ({
         setSelectedValues(newSelectedValues);
         setSelectedOptions(newSelectedOptions);
         onChange?.(newSelectedValues, newSelectedOptions);
-        setOpen(false);
       } else if (loadData && !option.loading) {
         option.loading = true;
         const newMenus = menus.slice(0, menuIndex + 1);
@@ -106,52 +103,26 @@ export const RrhCascader: React.FC<CascaderProps> = ({
         });
       } else {
         onChange?.(newSelectedValues, newSelectedOptions);
-        setOpen(false);
       }
     },
     [selectedValues, selectedOptions, menus, changeOnSelect, loadData, onChange],
   );
 
-  const renderDisplayText = useCallback(() => {
-    if (selectedOptions.length === 0) {
-      return placeholder;
-    }
-
-    const labels = selectedOptions.map(opt => opt.label);
-
-    if (displayRender) {
-      return displayRender(labels);
-    }
-
-    return labels.join(' / ');
-  }, [selectedOptions, displayRender, placeholder]);
-
   return (
-    <div className={`relative ${className}`}>
-      <div
-        className="border-input focus-visible:ring-ring flex h-9 w-full cursor-pointer items-center rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:ring-1 focus-visible:outline-none"
-        onClick={() => setOpen(!open)}
-      >
-        <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
-          {renderDisplayText()}
-        </span>
-      </div>
-
-      {open && (
-        <div className="bg-popover text-popover-foreground absolute z-50 mt-1 min-w-[200px] rounded-md border shadow-md">
-          <div className="flex max-h-64 overflow-hidden">
-            {menus.map((menu, index) => (
-              <MenuPanel
-                key={index}
-                options={menu}
-                selectedValue={selectedValues[index]}
-                onSelect={option => handleSelect(option, index)}
-                notFoundContent={notFoundContent}
-              />
-            ))}
-          </div>
+    <div className={cn('relative', className)}>
+      <div className="bg-popover text-popover-foreground absolute z-50 mt-1 min-w-50 rounded-md border shadow-md">
+        <div className="scrollbar-thin flex max-h-64 max-w-[calc(50vw-48px)] overflow-x-auto overflow-y-hidden">
+          {menus.map((menu, index) => (
+            <MenuPanel
+              key={index}
+              options={menu}
+              selectedValue={selectedValues[index]}
+              onSelect={option => handleSelect(option, index)}
+              notFoundContent={notFoundContent}
+            />
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 };
@@ -170,9 +141,16 @@ const MenuPanel: React.FC<MenuPanelProps> = ({
   notFoundContent,
 }) => {
   const parentRef = useRef<HTMLDivElement>(null);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
+  const filteredOptions = options.filter(
+    option =>
+      option.value.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      option.label.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   const rowVirtualizer = useVirtualizer({
-    count: options.length,
+    count: filteredOptions.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 32,
     overscan: 5,
@@ -180,30 +158,34 @@ const MenuPanel: React.FC<MenuPanelProps> = ({
 
   return (
     <div className="border-r last:border-r-0">
-      <Command className="w-[200px]">
-        <CommandList ref={parentRef} className="max-h-64 overflow-auto">
-          {options.length === 0 ? (
+      <div className="p-2">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          className="border-input focus:ring-ring w-full rounded-md border px-3 py-1 text-sm shadow-sm transition-colors focus:ring-1 focus:outline-none"
+        />
+      </div>
+      <Command className="bg-background min-w-50">
+        <CommandList ref={parentRef} className="scrollbar-thin max-h-64 overflow-auto">
+          {filteredOptions.length === 0 ? (
             <CommandEmpty>{notFoundContent}</CommandEmpty>
           ) : (
             <CommandGroup>
               <div
+                className="relative w-full"
                 style={{
                   height: `${rowVirtualizer.getTotalSize()}px`,
-                  width: '100%',
-                  position: 'relative',
                 }}
               >
                 {rowVirtualizer.getVirtualItems().map(virtualItem => {
-                  const option = options[virtualItem.index];
+                  const option = filteredOptions[virtualItem.index];
 
                   return (
                     <div
                       key={option.value}
+                      className="absolute top-0 left-0 w-full"
                       style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
                         height: `${virtualItem.size}px`,
                         transform: `translateY(${virtualItem.start}px)`,
                       }}
@@ -211,7 +193,10 @@ const MenuPanel: React.FC<MenuPanelProps> = ({
                       <CommandItem
                         value={option.value}
                         onSelect={() => onSelect(option)}
-                        className={`flex justify-between ${selectedValue === option.value ? 'bg-accent' : ''}`}
+                        className={cn(
+                          'flex cursor-pointer justify-between',
+                          selectedValue === option.value ? 'bg-slate-100' : '',
+                        )}
                       >
                         <span>{option.label}</span>
                         <div className="flex items-center">

@@ -1,12 +1,13 @@
 import * as React from 'react';
+import { Input } from '@/components/ui/input';
 
 import { cn } from '@/lib/utils';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  onLeftIconClick?: () => void;
-  onRightIconClick?: () => void;
+  onLeftIconClick?: (value: string) => void;
+  onRightIconClick?: (value: string) => void;
   wrapperClassName?: string;
 }
 
@@ -21,26 +22,56 @@ const RrhInputWithIcon = React.forwardRef<HTMLInputElement, InputProps>(
       onLeftIconClick,
       onRightIconClick,
       wrapperClassName,
+      onKeyDown,
       ...props
     },
     ref,
   ) => {
     const hasLeft = !!leftIcon;
     const hasRight = !!rightIcon;
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    // Combine refs
+    const combinedRef = (node: HTMLInputElement) => {
+      inputRef.current = node;
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        ref.current = node;
+      }
+    };
+
+    // Handle icon clicks with current input value
+    const handleLeftIconClick = () => {
+      if (onLeftIconClick && inputRef.current) {
+        onLeftIconClick(inputRef.current.value);
+      }
+    };
+
+    const handleRightIconClick = () => {
+      if (onRightIconClick && inputRef.current) {
+        onRightIconClick(inputRef.current.value);
+      }
+    };
+
+    // Handle Enter key press
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (onKeyDown) {
+        onKeyDown(e);
+      }
+
+      // Trigger right icon click when Enter is pressed
+      if (e.key === 'Enter' && onRightIconClick && inputRef.current) {
+        e.preventDefault();
+        onRightIconClick(inputRef.current.value);
+      }
+    };
 
     const inputElement = (
-      <input
-        ref={ref}
+      <Input
+        ref={combinedRef}
         type={type}
-        data-slot="input"
-        className={cn(
-          'file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-          'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
-          'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
-          hasLeft && 'pl-8',
-          hasRight && 'pr-8',
-          className,
-        )}
+        className={cn(hasLeft && 'pl-8', hasRight && 'pr-8', className)}
+        onKeyDown={handleKeyDown}
         {...props}
       />
     );
@@ -55,7 +86,7 @@ const RrhInputWithIcon = React.forwardRef<HTMLInputElement, InputProps>(
               'text-muted-foreground absolute left-2 inline-flex items-center justify-center',
               onLeftIconClick && 'hover:text-foreground cursor-pointer',
             )}
-            onClick={onLeftIconClick}
+            onClick={handleLeftIconClick}
           >
             {leftIcon}
           </span>
@@ -67,7 +98,7 @@ const RrhInputWithIcon = React.forwardRef<HTMLInputElement, InputProps>(
               'text-muted-foreground absolute right-2 inline-flex items-center justify-center',
               onRightIconClick && 'hover:text-foreground cursor-pointer',
             )}
-            onClick={onRightIconClick}
+            onClick={handleRightIconClick}
           >
             {rightIcon}
           </span>
