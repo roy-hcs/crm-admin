@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -28,6 +27,7 @@ import md5 from 'blueimp-md5';
 import Hex from 'crypto-js/enc-hex';
 import { useLogin, useLoginConfig } from '@/api/hooks/users/users';
 import { TFunction } from 'i18next';
+import { RrhButton } from './common/RrhButton';
 
 const emailSchema = (t: TFunction<'translation', undefined>) => {
   return z.object({
@@ -207,14 +207,14 @@ export const LoginForm = ({
           />
           <FormHiddenInput name="type" value={loginType} control={form.control} />
 
-          <Button
+          <RrhButton
             type="submit"
             className="w-full cursor-pointer"
             disabled={loginMutation.isPending}
           >
             {loginMutation.isPending ? t('loginPage.logging') : t('loginPage.login')}
-          </Button>
-          <Button
+          </RrhButton>
+          <RrhButton
             type="button"
             className="w-full cursor-pointer capitalize"
             disabled={loginMutation.isPending}
@@ -223,7 +223,7 @@ export const LoginForm = ({
             {t('loginPage.LoginWith', {
               method: loginType === 1 ? 'loginPage.email' : 'loginPage.mobile',
             })}
-          </Button>
+          </RrhButton>
 
           {loginMutation.isError && (
             <div className="mt-2 text-red-500">

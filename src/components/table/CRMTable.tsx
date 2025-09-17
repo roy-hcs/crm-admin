@@ -31,7 +31,7 @@ const StatusCell = ({ row }: { row: Row<CrmUserItem> }) => {
   return (
     <>
       <Switch
-        className="cursor-pointer bg-white data-[state=checked]:bg-[#1E1E1E]"
+        className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
         checked={row.original.status === 1}
         onClick={() => setIsOpen(true)}
       />
@@ -80,7 +80,7 @@ export const CRMTable = ({
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          className="data-[state=checked]:border-[#1E1E1E] data-[state=checked]:bg-[#1E1E1E]"
+          className="data-[state=checked]:border-slate-700"
           checked={
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && 'indeterminate')
@@ -91,7 +91,7 @@ export const CRMTable = ({
       ),
       cell: ({ row }) => (
         <Checkbox
-          className="data-[state=checked]:border-[#1E1E1E] data-[state=checked]:bg-[#1E1E1E]"
+          className="data-[state=checked]:border-slate-700"
           checked={row.getIsSelected()}
           onCheckedChange={value => row.toggleSelected(!!value)}
           aria-label="Select row"
@@ -165,7 +165,7 @@ export const CRMTable = ({
         return (
           <div className="flex max-w-50 flex-wrap items-center gap-1">
             {tags.slice(0, 3).map((tag, index) => (
-              <span key={index} className="border-[#E2E8F0 rounded-md border p-1 text-[#1E1E1E]">
+              <span key={index} className="rounded-md border border-[#E2E8F0] p-1 text-slate-700">
                 {tag}
               </span>
             ))}

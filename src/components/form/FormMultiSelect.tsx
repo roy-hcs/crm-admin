@@ -1,10 +1,11 @@
 import { FieldPath, FieldValues } from 'react-hook-form';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { BaseOption, RrhSelect } from '../common/RrhSelect';
+import { BaseOption, RrhMultiSelect } from '../common/RrhMultiSelect';
 import { useCrmFormContext } from '@/contexts/form';
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
-interface FormSelectProps<T extends FieldValues, O extends BaseOption = BaseOption> {
+
+interface FormMultiSelectProps<T extends FieldValues, O extends BaseOption = BaseOption> {
   name: FieldPath<T>;
   label: string;
   options: O[];
@@ -15,7 +16,7 @@ interface FormSelectProps<T extends FieldValues, O extends BaseOption = BaseOpti
   showRowValue?: boolean;
 }
 
-export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOption>({
+export function FormMultiSelect<T extends FieldValues, O extends BaseOption = BaseOption>({
   options,
   name,
   label,
@@ -24,7 +25,7 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
   className,
   renderItem,
   showRowValue = true,
-}: FormSelectProps<T, O>) {
+}: FormMultiSelectProps<T, O>) {
   const { form } = useCrmFormContext<T>();
   return (
     <FormField
@@ -40,10 +41,10 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
             )}
           >
             <FormLabel className="shrink-0 basis-3/12">{label}</FormLabel>
-            <FormControl className={cn('grow-0', verticalLabel ? 'basis-full' : 'basis-9/12')}>
-              <RrhSelect<O>
+            <FormControl className={cn('grow-0', verticalLabel ? 'w-full' : 'basis-9/12')}>
+              <RrhMultiSelect<O>
                 options={options}
-                value={field.value}
+                value={field.value || []}
                 onValueChange={field.onChange}
                 className="w-full"
                 placeholder={placeholder}

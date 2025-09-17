@@ -15,7 +15,6 @@ interface DataTablePaginationProps<TData> {
 
 export function DataTablePagination<TData>({
   table,
-  totalCount,
   pageSizeSelectorShow,
   className,
 }: DataTablePaginationProps<TData>) {
@@ -56,9 +55,8 @@ export function DataTablePagination<TData>({
 
   return (
     <div className={cn('flex items-center justify-between px-2', className)}>
-      <div className="text-muted-foreground flex-1 text-sm">
-        {/* Show total count provided by API */}
-        {totalCount !== undefined && <span>{t('common.TotalRecords', { count: totalCount })}</span>}
+      <div className="text-muted-foreground text-sm">
+        {t('common.pageOf', { current: activePage, total: effectiveLastPage })}
       </div>
       <div className="flex items-center space-x-6 lg:space-x-8">
         {pageSizeSelectorShow && (
@@ -90,7 +88,7 @@ export function DataTablePagination<TData>({
           >
             <span className="sr-only">Go to previous page</span>
             <ChevronLeft />
-            <span>{t('common.Previous')}</span>
+            <span className="hidden md:block">{t('common.Previous')}</span>
           </Button>
           {pageArr?.map((item, index) => {
             if (typeof item === 'string') {
@@ -99,7 +97,7 @@ export function DataTablePagination<TData>({
                   variant="ghost"
                   disabled
                   key={`${index}item`}
-                  className="flex size-8 justify-center hover:bg-transparent"
+                  className="hidden size-8 justify-center hover:bg-transparent md:flex"
                 >
                   {item}
                 </Button>
@@ -110,7 +108,7 @@ export function DataTablePagination<TData>({
                 variant={activePage === item ? 'outline' : 'ghost'}
                 size="icon"
                 className={cn(
-                  'h-8 w-auto min-w-8 p-1',
+                  'hidden h-8 w-auto min-w-8 p-1 md:block',
                   activePage === item ? '' : 'cursor-pointer',
                 )}
                 onClick={() => table.setPageIndex(item - 1)}
@@ -127,7 +125,7 @@ export function DataTablePagination<TData>({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            <span>{t('common.Next')}</span>
+            <span className="hidden md:block">{t('common.Next')}</span>
             <span className="sr-only">Go to next page</span>
             <ChevronRight />
           </Button>

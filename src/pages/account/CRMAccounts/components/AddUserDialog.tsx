@@ -1,4 +1,3 @@
-import Dialog from '@/components/common/Dialog';
 import { FormInput } from '@/components/form/FormInput';
 import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
@@ -18,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { TFunction } from 'i18next';
 import { RrhButton } from '@/components/common/RrhButton';
+import { RrhDialog } from '@/components/common/RrhDialog';
 
 // create a zod schema for the form data
 const addUserSchema = (t: TFunction<'translation', undefined>) => {
@@ -94,7 +94,7 @@ export const AddUserDialog = () => {
   };
 
   return (
-    <Dialog
+    <RrhDialog
       trigger={
         <Button
           variant="outline"
@@ -207,6 +207,6 @@ export const AddUserDialog = () => {
           </Form>
         </FormProvider>
       </div>
-    </Dialog>
+    </RrhDialog>
   );
 };

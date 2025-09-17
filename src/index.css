@@ -23,27 +23,128 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   width: 100%;
   height: 100%;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
   /* Light theme colors by default */
   color-scheme: light;
   color: #334155; /* slate 700 */
   background-color: #ffffff;
   
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  --radius: 0.625rem;
+  /* ShadCN UI theme variables */
   --background: #ffffff;
   --foreground: #252525;
+  --card: #ffffff;
+  --card-foreground: #252525;
+  --popover: #ffffff;
+  --popover-foreground: #252525;
+  --primary: #111827;
+  --primary-foreground: #ffffff;
+  --secondary: #f3f4f6;
+  --secondary-foreground: #1f2937;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --accent: #f3f4f6;
+  --accent-foreground: #1f2937;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
   --border: #ebebeb;
-  --sidebar-border: #ebebeb;
+  --input: #ebebeb;
   --ring: #b4b4b4;
+  
+  /* Chart colors */
+  --chart-1: #3b82f6;
+  --chart-2: #0ea5e9;
+  --chart-3: #3730a3;
+  --chart-4: #f59e0b;
+  --chart-5: #ef4444;
+  
+  /* Sidebar specific colors */
+  --sidebar: #fbfbfb;
+  --sidebar-foreground: #252525;
+  --sidebar-primary: #0ea5e9;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f3f4f6;
+  --sidebar-accent-foreground: #1f2937;
+  --sidebar-border: #ebebeb;
+  --sidebar-ring: #b4b4b4;
+  
+  /* Border radius variables - critical for ShadCN components */
+  --radius: 0.625rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  
+  /* These variables are needed for proper component rendering */
+  --cell-size: 2.25rem; /* Calendar cell size */
+  --day-size: 40px; /* Calendar day size */
+  --day-margin: 2px; /* Calendar day margin */
+  
+  /* Ring related variables needed by shadcn components */
+  --ring-offset-width: 0px;
+  --ring-offset-color: #fff;
+  --ring-color: rgb(59, 130, 246);
+  --ring-offset-shadow: 0 0 #0000;
+  --ring-shadow: 0 0 #0000;
 }
+
+/* Dark mode overrides - activated when .dark class is applied to html */
+.dark {
+  color-scheme: dark;
+  color: #f9fafb; 
+  background-color: #111827; 
+  
+  /* ShadCN UI dark theme variables */
+  --background: #252525;
+  --foreground: #fbfbfb;
+  --card: #1e1e1e;
+  --card-foreground: #fbfbfb;
+  --popover: #1e1e1e;
+  --popover-foreground: #fbfbfb;
+  --primary: #0ea5e9;
+  --primary-foreground: #ffffff;
+  --secondary: #1f2937;
+  --secondary-foreground: #f9fafb;
+  --muted: #1f2937;
+  --muted-foreground: #9ca3af;
+  --accent: #1f2937;
+  --accent-foreground: #f9fafb;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: #8e8e8e;
+  
+  /* Chart colors - dark theme */
+  --chart-1: #8b5cf6;
+  --chart-2: #06b6d4;
+  --chart-3: #ef4444;
+  --chart-4: #a855f7;
+  --chart-5: #f97316;
+  
+  /* Sidebar specific colors - dark theme */
+  --sidebar: #333333;
+  --sidebar-foreground: #fbfbfb;
+  --sidebar-primary: #8b5cf6;
+  --sidebar-primary-foreground: #fbfbfb;
+  --sidebar-accent: #444444;
+  --sidebar-accent-foreground: #fbfbfb;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: #8e8e8e;
+}
+
+/* Uncomment if you need specific button styling in dark mode
+.dark button {
+  background-color: #1f2937; 
+} */
 
 html {
   overflow: hidden;
@@ -71,33 +172,49 @@ body {
   }
 }
 
-@theme {
+/* Theme mapping to ensure CSS variables are correctly used by Tailwind */
+@theme inline {
+  /* Font family settings */
   --font-sans: 'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif';
+  
+  /* Core colors for consistency */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-border: var(--border);
   --color-ring: var(--ring);
+  
+  /* Component specific colors */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-input: var(--input);
+  
+  /* Chart colors mapping */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  
+  /* Sidebar specific mappings */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
-}
-
-.dark {
-  --background: #252525;
-  --foreground: #fbfbfb;
-  --border: rgba(255, 255, 255, 0.1);
-  --ring: #8e8e8e;
-  --sidebar-border: rgba(255, 255, 255, 0.1);
-  --sidebar-ring: #8e8e8e;
-}
-
-/* Dark mode overrides - activated when .dark class is applied to html */
-.dark {
-  color-scheme: dark;
-  color: #f9fafb; 
-  background-color: #111827; 
-}
-
-.dark button {
-  background-color: #1f2937; 
+  --color-sidebar-ring: var(--sidebar-ring);
 }
  
 
@@ -108,11 +225,44 @@ body {
   body{
     @apply font-sans text-sm font-normal border-border outline-ring/50;
   }
+  
+  /* Calendar component specific styles - required for proper rendering */
+  .rdp {
+    --rdp-cell-size: 40px; /* Base cell size */
+    --rdp-accent-color: var(--primary); /* Selected date color */
+    --rdp-background-color: var(--accent); /* Hover date background */
+    --rdp-accent-color-dark: var(--primary); /* Dark theme selected */
+    --rdp-background-color-dark: var(--accent); /* Dark theme hover */
+    margin: 1em;
+  }
+  
+  /* Fix selected day styles */
+  .rdp-day_selected, 
+  .rdp-day_selected:focus-visible, 
+  .rdp-day_selected:hover {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+  
+  /* Fix range styles */
+  .rdp-day_range_middle {
+    background-color: var(--accent);
+  }
+  
+  /* Fix hover styles for days */
+  .rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+    background-color: var(--muted);
+  }
 }
 
 @layer utilities {
   .text-title {
     @apply text-2xl font-semibold text-slate-900;
+    /* TODO: 之后可能需要实现用户自定义文字颜色，此时需要使用如下代码 */
+    /* color: var(--text-title); */
+    /* @dark .text-title {
+      @apply text-slate-100;
+    } */
   }
   .text-subtitle {
     @apply text-base font-normal;
@@ -128,5 +278,26 @@ body {
   }
   .text-subtle {
     @apply text-xs font-normal;
+  }
+  
+  /* Additional utility classes for theme colors */
+  .bg-theme-primary {
+    @apply bg-primary;
+  }
+  
+  .text-theme-primary {
+    @apply text-primary;
+  }
+  
+  .border-theme-primary {
+    @apply border-primary;
+  }
+  
+  .bg-theme-surface {
+    @apply bg-background dark:bg-background;
+  }
+  
+  .text-theme-body {
+    @apply text-foreground dark:text-foreground;
   }
 }

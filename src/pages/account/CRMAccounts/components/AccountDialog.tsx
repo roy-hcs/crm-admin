@@ -1,6 +1,6 @@
 import { useCrmUser } from '@/api/hooks/system/system';
 import { CrmUserItem } from '@/api/hooks/system/types';
-import Dialog from '@/components/common/Dialog';
+import { RrhDialog } from '@/components/common/RrhDialog';
 import { RrhButton } from '@/components/common/RrhButton';
 import { CRMTableSimple } from '@/components/table/CRMTableSimple';
 import { Input } from '@/components/ui/input';
@@ -63,7 +63,7 @@ export const AccountDialog = ({
   };
 
   return (
-    <Dialog
+    <RrhDialog
       title={title}
       className="min-w-1/2"
       trigger={trigger}
@@ -94,6 +94,6 @@ export const AccountDialog = ({
         loading={crmUsersLoading}
         onRowSelect={handleRowSelect}
       />
-    </Dialog>
+    </RrhDialog>
   );
 };

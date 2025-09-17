@@ -8,7 +8,6 @@ export function TabNavigation() {
   const navigate = useNavigate();
   const { tabs, activeTab, removeTab, setActiveTab, closeAllTabs, closeOtherTabs } = useTabStore();
   const [showDropdown, setShowDropdown] = useState(false);
-  console.log(tabs, 'tabs info--');
   const handleTabClick = (tab: TabItem) => {
     setActiveTab(tab.key);
     navigate(tab.path);

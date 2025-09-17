@@ -1,5 +1,11 @@
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import React from 'react';
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+  RowData,
+} from '@tanstack/react-table';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   Table,
@@ -10,13 +16,27 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { DataTablePagination } from './DataTablePagination';
+import { useTranslation } from 'react-i18next';
 
-// Extend ColumnDef to accept an optional `fixed` flag similar to Element UI
-export type CRMColumnDef<TData, TValue> = ColumnDef<TData, TValue> & {
-  fixed?: boolean | 'left' | 'right';
-};
+export type FixedColumnPosition = boolean | 'left' | 'right';
 
-interface DataTableProps<TData, TValue> {
+interface WithAccessorKey {
+  accessorKey?: string;
+}
+
+export type CRMColumnDef<TData extends RowData, TValue> = ColumnDef<TData, TValue> &
+  WithAccessorKey & {
+    fixed?: FixedColumnPosition;
+    width?: number | string;
+    minWidth?: number | string;
+  };
+
+interface PinnedStyleResult {
+  className: string;
+  style: React.CSSProperties;
+}
+
+interface DataTableProps<TData extends RowData, TValue> {
   columns: CRMColumnDef<TData, TValue>[];
   data: TData[];
   pageCount: number;
@@ -27,6 +47,70 @@ interface DataTableProps<TData, TValue> {
   thCls?: string;
   tdCls?: string;
   loading?: boolean;
+}
+
+function useFixedColumns<TData extends RowData>(
+  columns: CRMColumnDef<TData, unknown>[],
+  tableRef: React.RefObject<HTMLTableElement | null>,
+) {
+  const [canScroll, setCanScroll] = useState({
+    left: false,
+    right: false,
+  });
+
+  const columnPinning = useMemo(() => {
+    const left: string[] = [];
+    const right: string[] = [];
+
+    columns.forEach(col => {
+      const fixed = col.fixed;
+      // Get column identifier - try id first, then accessorKey, or accessorFn's debug name
+      const id = col.id || col.accessorKey || '';
+
+      if (!id || !fixed) return;
+
+      if (fixed === 'right') {
+        right.push(id);
+      } else {
+        // Both true and 'left' values will pin to left
+        left.push(id);
+      }
+    });
+
+    return { left, right };
+  }, [columns]);
+
+  // Set up scroll event listener for shadow effects
+  useEffect(() => {
+    const scrollContainer = tableRef.current?.parentElement;
+    if (!scrollContainer) return;
+
+    const updateScrollState = () => {
+      setCanScroll({
+        left: scrollContainer.scrollLeft > 0,
+        right:
+          scrollContainer.scrollLeft + scrollContainer.clientWidth < scrollContainer.scrollWidth,
+      });
+    };
+
+    // Initial update
+    updateScrollState();
+
+    // Listen for scroll events
+    scrollContainer.addEventListener('scroll', updateScrollState, { passive: true });
+
+    // Watch for size changes with ResizeObserver
+    const resizeObserver = new ResizeObserver(updateScrollState);
+    resizeObserver.observe(scrollContainer);
+
+    // Cleanup
+    return () => {
+      scrollContainer.removeEventListener('scroll', updateScrollState);
+      resizeObserver.disconnect();
+    };
+  }, [tableRef]);
+
+  return { columnPinning, canScroll };
 }
 
 const TableRowSkeleton = ({ columns }: { columns: number }) => {
@@ -41,7 +125,7 @@ const TableRowSkeleton = ({ columns }: { columns: number }) => {
   );
 };
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData, TValue>({
   columns,
   data,
   pageCount,
@@ -53,34 +137,29 @@ export function DataTable<TData, TValue>({
   tdCls,
   loading = false,
 }: DataTableProps<TData, TValue>) {
-  // Derive pinning from custom `fixed` on column defs: true|'left' -> left, 'right' -> right
-  const columnPinning = React.useMemo(() => {
-    type MaybeFixed = {
-      id?: string;
-      accessorKey?: string;
-      fixed?: boolean | 'left' | 'right';
-    };
-    const left: string[] = [];
-    const right: string[] = [];
-    (columns as unknown as MaybeFixed[]).forEach(col => {
-      const fixed = col?.fixed;
-      const id = (col?.id ?? col?.accessorKey) as string | undefined;
-      if (!id || fixed == null || fixed === false) return;
-      if (fixed === 'right') right.push(String(id));
-      else left.push(String(id)); // true | 'left' -> left
-    });
-    return { left, right };
-  }, [columns]);
+  const tableRef = useRef<HTMLTableElement>(null);
+  const { t } = useTranslation();
 
-  const pagination = {
-    pageIndex,
-    pageSize,
-  };
+  // Set up pagination state
+  const pagination = useMemo(
+    () => ({
+      pageIndex,
+      pageSize,
+    }),
+    [pageIndex, pageSize],
+  );
 
+  // Get fixed column handling utilities
+  const { columnPinning, canScroll } = useFixedColumns<TData>(
+    columns as CRMColumnDef<TData, unknown>[],
+    tableRef,
+  );
+
+  // Initialize the table
   const table = useReactTable({
     data,
     columns,
-    pageCount: pageCount,
+    pageCount,
     state: {
       pagination,
       // Enable TanStack's column pinning by providing state derived from columns
@@ -92,8 +171,8 @@ export function DataTable<TData, TValue>({
         if (newState.pageIndex !== pagination.pageIndex) {
           onPageChange(newState.pageIndex);
         }
-        if (newState.pageSize !== pagination.pageSize) {
-          onPageSizeChange?.(newState.pageSize);
+        if (newState.pageSize !== pagination.pageSize && onPageSizeChange) {
+          onPageSizeChange(newState.pageSize);
         }
       }
     },
@@ -101,90 +180,105 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  // Compute sticky offsets for pinned columns based on visible column sizes
-  const leafCols = table.getVisibleLeafColumns();
-  const leftOffsetMap = React.useMemo(() => {
-    const map: Record<string, number> = {};
-    let acc = 0;
-    leafCols.forEach(col => {
-      map[col.id] = acc;
-      acc += (typeof col.getSize === 'function' ? col.getSize() : 0) || 0;
-    });
-    return map;
-  }, [leafCols]);
-  const rightOffsetMap = React.useMemo(() => {
-    const map: Record<string, number> = {};
-    let acc = 0;
-    for (let i = leafCols.length - 1; i >= 0; i--) {
-      const col = leafCols[i];
-      map[col.id] = acc;
-      acc += (typeof col.getSize === 'function' ? col.getSize() : 0) || 0;
-    }
-    return map;
-  }, [leafCols]);
+  // Set column pinning state in the table
+  useEffect(() => {
+    table.setColumnPinning(columnPinning);
+  }, [table, columnPinning]);
 
-  // Track horizontal scroll to toggle shadows for pinned columns
-  const tableRef = React.useRef<HTMLTableElement | null>(null);
-  const [canScroll, setCanScroll] = React.useState({ left: false, right: false });
-  React.useEffect(() => {
-    // the scroll container is the parent of <table>
-    const el = tableRef.current?.parentElement;
-    if (!el) return;
-    const update = () => {
-      setCanScroll({
-        left: el.scrollLeft > 0,
-        right: el.scrollLeft + el.clientWidth < el.scrollWidth,
+  // Calculate column offsets for fixed positioning
+  const calculateOffsets = useMemo(() => {
+    const leftOffsets: Record<string, number> = {};
+    const rightOffsets: Record<string, number> = {};
+
+    let leftAcc = 0;
+    table.getLeftHeaderGroups()[0].headers.forEach(header => {
+      leftOffsets[header.id] = leftAcc;
+      leftAcc += header.getSize();
+    });
+
+    let rightAcc = 0;
+    table
+      .getRightHeaderGroups()[0]
+      .headers.reverse()
+      .forEach(header => {
+        rightOffsets[header.id] = rightAcc;
+        rightAcc += header.getSize();
       });
+
+    return { leftOffsets, rightOffsets };
+  }, [table]);
+
+  const getPinnedStyles = (
+    columnId: string,
+    pinDirection: FixedColumnPosition | null,
+    isHeader: boolean,
+  ): PinnedStyleResult => {
+    if (!pinDirection) {
+      return { className: '', style: {} };
+    }
+    // Base sticky style for headers and cells
+    const baseClass = isHeader ? 'sticky top-0 z-20 bg-background' : 'sticky z-10 bg-background';
+
+    // Find column definition for width properties
+    const columnDef = columns.find(col => col.id === columnId || col.accessorKey === columnId) as
+      | CRMColumnDef<TData, TValue>
+      | undefined;
+
+    // Get column width preferences
+    const width = columnDef?.width;
+    const minWidth = columnDef?.minWidth;
+
+    // Get current column size from table
+    const column = table.getColumn(columnId);
+    const size = column?.getSize();
+
+    // Position styles
+    const style: React.CSSProperties = {
+      width: width || size,
+      minWidth: minWidth || size,
     };
-    update();
-    el.addEventListener('scroll', update, { passive: true });
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => {
-      el.removeEventListener('scroll', update);
-      ro.disconnect();
-    };
-  }, []);
+
+    if (pinDirection === 'left' || pinDirection === true) {
+      const isLeftBoundary = columnPinning.left[columnPinning.left.length - 1] === columnId;
+      const shadowClass =
+        canScroll.left && isLeftBoundary ? 'shadow-[8px_0_8px_-6px_rgba(0,0,0,0.28)] border-r' : '';
+
+      style.left = calculateOffsets.leftOffsets[columnId];
+      return {
+        className: `${baseClass} ${shadowClass}`,
+        style,
+      };
+    } else if (pinDirection === 'right') {
+      const isRightBoundary = columnPinning.right[0] === columnId;
+      const shadowClass =
+        canScroll.right && isRightBoundary
+          ? 'shadow-[-8px_0_8px_-6px_rgba(0,0,0,0.28)] border-l'
+          : '';
+
+      style.right = calculateOffsets.rightOffsets[columnId];
+      return {
+        className: `${baseClass} ${shadowClass}`,
+        style,
+      };
+    }
+    return { className: '', style: {} };
+  };
 
   return (
     <div>
-      <div className="relative rounded-md border">
+      <div className="relative overflow-auto rounded-md border">
         <Table ref={tableRef}>
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map(header => {
-                  const pinState = table.getState().columnPinning || { left: [], right: [] };
-                  const leftPinned = pinState.left ?? [];
-                  const rightPinned = pinState.right ?? [];
-                  const pinned = header.column.getIsPinned?.() as false | 'left' | 'right';
-                  const baseSticky = 'sticky z-20 bg-background';
-                  const isLeftBoundary =
-                    pinned === 'left' && leftPinned[leftPinned.length - 1] === header.column.id;
-                  const isRightBoundary = pinned === 'right' && rightPinned[0] === header.column.id;
-                  const leftShade =
-                    canScroll.left && isLeftBoundary
-                      ? 'shadow-[8px_0_8px_-6px_rgba(0,0,0,0.28)] border-r'
-                      : '';
-                  const rightShade =
-                    canScroll.right && isRightBoundary
-                      ? 'shadow-[-8px_0_8px_-6px_rgba(0,0,0,0.28)] border-l'
-                      : '';
-                  const stickyCls = pinned
-                    ? `${baseSticky} ${pinned === 'left' ? leftShade : rightShade}`
-                    : '';
-                  const colId = header.column.id;
-                  const size = typeof header.getSize === 'function' ? header.getSize() : undefined;
-                  const style: React.CSSProperties = {
-                    width: size,
-                    minWidth: size,
-                    left: pinned === 'left' ? leftOffsetMap[colId] : undefined,
-                    right: pinned === 'right' ? rightOffsetMap[colId] : undefined,
-                  };
+                  const pinDirection = header.column.getIsPinned() as FixedColumnPosition;
+                  const { className, style } = getPinnedStyles(header.id, pinDirection, true);
+
                   return (
                     <TableHead
                       key={header.id}
-                      className={`${thCls ?? ''} ${stickyCls}`}
+                      className={`${thCls || ''} ${className}`}
                       style={style}
                     >
                       {header.isPlaceholder
@@ -198,12 +292,10 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {loading ? (
-              // Show skeleton rows when loading
               Array.from({ length: pageSize || 5 }).map((_, index) => (
                 <TableRowSkeleton key={`skeleton-${index}`} columns={columns.length} />
               ))
             ) : table.getRowModel().rows?.length ? (
-              // Show actual data when not loading
               table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
@@ -211,38 +303,17 @@ export function DataTable<TData, TValue>({
                   className="h-12"
                 >
                   {row.getVisibleCells().map(cell => {
-                    const pinState = table.getState().columnPinning || { left: [], right: [] };
-                    const leftPinned = pinState.left ?? [];
-                    const rightPinned = pinState.right ?? [];
-                    const pinned = cell.column.getIsPinned?.() as false | 'left' | 'right';
-                    const baseSticky = 'sticky z-10 bg-background';
-                    const isLeftBoundary =
-                      pinned === 'left' && leftPinned[leftPinned.length - 1] === cell.column.id;
-                    const isRightBoundary = pinned === 'right' && rightPinned[0] === cell.column.id;
-                    const leftShade =
-                      canScroll.left && isLeftBoundary
-                        ? 'shadow-[8px_0_8px_-6px_rgba(0,0,0,0.28)] border-r'
-                        : '';
-                    const rightShade =
-                      canScroll.right && isRightBoundary
-                        ? 'shadow-[-8px_0_8px_-6px_rgba(0,0,0,0.28)] border-l'
-                        : '';
-                    const stickyCls = pinned
-                      ? `${baseSticky} ${pinned === 'left' ? leftShade : rightShade}`
-                      : '';
-                    const colId = cell.column.id;
-                    const size =
-                      typeof cell.column.getSize === 'function' ? cell.column.getSize() : undefined;
-                    const style: React.CSSProperties = {
-                      width: size,
-                      minWidth: size,
-                      left: pinned === 'left' ? leftOffsetMap[colId] : undefined,
-                      right: pinned === 'right' ? rightOffsetMap[colId] : undefined,
-                    };
+                    const pinDirection = cell.column.getIsPinned() as FixedColumnPosition;
+                    const { className, style } = getPinnedStyles(
+                      cell.column.id,
+                      pinDirection,
+                      false,
+                    );
+
                     return (
                       <TableCell
                         key={cell.id}
-                        className={`${tdCls ?? ''} ${stickyCls}`}
+                        className={`${tdCls || ''} ${className}`}
                         style={style}
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -252,10 +323,9 @@ export function DataTable<TData, TValue>({
                 </TableRow>
               ))
             ) : (
-              // Show empty state when not loading and no data
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
+                  {t('common.NoData')}
                 </TableCell>
               </TableRow>
             )}

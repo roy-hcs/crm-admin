@@ -305,8 +305,7 @@ const SymbolReportPieChart: FC<{ serverList: ServerItem[] }> = ({ serverList }) 
 const WithDrawReportAreaChart: FC = () => {
   const { t } = useTranslation();
   const [type, setType] = useState('1');
-  const { data, isLoading } = useFundFlowReport(type);
-  console.log(data, 'WithDrawReportAreaChart');
+  const { isLoading } = useFundFlowReport(type);
   return (
     <div className="bg-card mb-6 rounded-lg border p-6">
       <div className="flex items-center justify-between">

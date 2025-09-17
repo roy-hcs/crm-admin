@@ -15,8 +15,8 @@ import { FormSelect } from '@/components/form/FormSelect';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { SelectAccountsPopup } from '@/pages/account/CRMAccounts/components/CRMAccountsForm';
 import { CrmRebateTradersItem, ServerItem } from '@/api/hooks/system/types';
+import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 
 type FormData = {
   // 交易时间
@@ -124,7 +124,7 @@ export const MyForm = forwardRef<
         endTraderTime: data.tradingTime.to,
         beginVerifyTime: data.rebateTime.from,
         endVerifyTime: data.rebateTime.to,
-        accounts: data.accounts,
+        accounts: JSON.parse(data.accounts || '{"id": "", "label": ""}').id || '',
       });
       setCommonParams({
         trderAccount: data.trderAccount,
@@ -268,7 +268,7 @@ export const MyForm = forwardRef<
             <FormField
               name="accounts"
               render={({ field }) => {
-                return <SelectAccountsPopup verticalLabel field={field} />;
+                return <RrhSelectAccountsPopup verticalLabel field={field} />;
               }}
             />
             <div className="flex justify-end gap-4">

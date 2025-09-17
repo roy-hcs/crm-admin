@@ -16,15 +16,15 @@ export const RrhDropdown = ({
 }) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="hover:bg-accent flex cursor-pointer items-center rounded-sm p-2">
+      <DropdownMenuTrigger className="flex cursor-pointer items-center rounded-sm p-2">
         {Trigger}
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="bg-background">
         {dropdownList.map(item => (
           <DropdownMenuItem
             key={item.label}
             onClick={() => callToAction(item.value)}
-            className="hover:bg-accent w-auto cursor-pointer"
+            className="w-auto cursor-pointer"
           >
             {item.label}
           </DropdownMenuItem>

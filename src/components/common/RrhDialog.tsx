@@ -26,9 +26,10 @@ interface DialogProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   footerShow?: boolean;
+  confirmShow?: boolean;
 }
 
-const Dialog: React.FC<DialogProps> = ({
+export const RrhDialog: React.FC<DialogProps> = ({
   title,
   description,
   trigger,
@@ -42,6 +43,7 @@ const Dialog: React.FC<DialogProps> = ({
   open,
   onOpenChange,
   footerShow = true,
+  confirmShow = true,
 }) => {
   const handleCancel = () => {
     onCancel?.();
@@ -58,7 +60,7 @@ const Dialog: React.FC<DialogProps> = ({
   return (
     <ShadcnDialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className={className}>
+      <DialogContent className={className} showCloseButton={false}>
         <DialogClose className="data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none">
           <X className="h-4 w-4 cursor-pointer" />
           <span className="sr-only">Close</span>
@@ -80,25 +82,25 @@ const Dialog: React.FC<DialogProps> = ({
                 {cancelText}
               </div>
             </DialogClose>
-            <DialogClose>
-              <div
-                onClick={e => {
-                  if (isConfirmDisabled) return;
-                  handleConfirm?.(e);
-                }}
-                className={cn(
-                  'rounded-sm border bg-[#1E1E1E] px-4 py-2 text-white',
-                  isConfirmDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
-                )}
-              >
-                {confirmText}
-              </div>
-            </DialogClose>
+            {confirmShow && (
+              <DialogClose>
+                <div
+                  onClick={e => {
+                    if (isConfirmDisabled) return;
+                    handleConfirm?.(e);
+                  }}
+                  className={cn(
+                    'rounded-sm border bg-[#1E1E1E] px-4 py-2 text-white',
+                    isConfirmDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+                  )}
+                >
+                  {confirmText}
+                </div>
+              </DialogClose>
+            )}
           </DialogFooter>
         )}
       </DialogContent>
     </ShadcnDialog>
   );
 };
-
-export default Dialog;

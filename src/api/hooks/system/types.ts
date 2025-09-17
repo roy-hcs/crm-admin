@@ -200,3 +200,23 @@ export type CrmRebateTradersItem = {
   ruleName: string;
   id: string;
 };
+
+export type GetGroupByServerResponse = string[];
+
+export type DealAccountGroup = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string;
+  name: string;
+  sort: number;
+  num: number | null;
+  flag: boolean;
+  delFlag: boolean;
+  relatedRebateRuleCount: number | null;
+};
+
+export type DealAccountGroupListResponse = DealAccountGroup[];

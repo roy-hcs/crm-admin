@@ -33,7 +33,8 @@ interface MenuItem {
 }
 
 interface SidebarProps {
-  open: boolean;
+  open?: boolean;
+  cls?: string;
 }
 
 type MenuItemLevel = 0 | 1 | 2 | 3 | 4;
@@ -118,7 +119,7 @@ function CollapsedMenuItem({ item }: { item: MenuItem }) {
   );
 }
 
-export function Sidebar({ open }: SidebarProps) {
+export function Sidebar({ open = true, cls }: SidebarProps) {
   // TODO: need to display different menu list according to different roles
   const menuItems: MenuItem[] = [
     {
@@ -709,10 +710,11 @@ export function Sidebar({ open }: SidebarProps) {
   ];
 
   return (
-    <aside
+    <div
       className={cn(
         'bg-card text-sidebar-foreground border-sidebar-border border-r transition-all duration-300',
         open ? 'w-64' : 'w-16',
+        cls,
       )}
     >
       <div className="border-sidebar-border flex h-16 items-center justify-center border-b">
@@ -738,6 +740,6 @@ export function Sidebar({ open }: SidebarProps) {
           </div>
         )}
       </nav>
-    </aside>
+    </div>
   );
 }

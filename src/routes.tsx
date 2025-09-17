@@ -14,6 +14,7 @@ import { FeesPage } from './pages/reports/commission/fees';
 import { DepositsPage } from './pages/reports/commission/deposits';
 import { DailyRebatePage } from './pages/reports/commission/daily-rebate';
 import { WeeklyRebatePage } from './pages/reports/commission/weekly-rebate';
+import { TradingHistoryPage } from './pages/reports/trading/history/TradingHistory';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -67,6 +68,10 @@ export const router = createBrowserRouter([
       {
         path: '/reports/commission/weekly-rebate',
         element: <WeeklyRebatePage />,
+      },
+      {
+        path: '/reports/trading/history',
+        element: <TradingHistoryPage />,
       },
       // ib客户追踪
       {

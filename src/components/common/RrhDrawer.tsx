@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/drawer';
 import { Button } from '../ui/button';
 import { FC, PropsWithChildren } from 'react';
+import { cn } from '@/lib/utils';
 export const RrhDrawer: FC<
   PropsWithChildren<{
     Trigger: React.ReactNode;
@@ -18,6 +19,7 @@ export const RrhDrawer: FC<
     submitText?: string;
     cancelText?: string;
     direction?: 'left' | 'right' | 'top' | 'bottom';
+    headerShow?: boolean;
     footerShow?: boolean;
     open?: boolean;
     setOpen?: (open: boolean) => void;
@@ -31,6 +33,7 @@ export const RrhDrawer: FC<
   direction,
   cancelText,
   children,
+  headerShow = true,
   footerShow = true,
   open,
   setOpen,
@@ -42,7 +45,7 @@ export const RrhDrawer: FC<
         {Trigger}
       </DrawerTrigger>
       <DrawerContent className="flex flex-col">
-        <DrawerHeader>
+        <DrawerHeader className={cn(headerShow ? 'block' : 'hidden')}>
           <DrawerTitle>{title}</DrawerTitle>
           <DrawerDescription>{description}</DrawerDescription>
         </DrawerHeader>

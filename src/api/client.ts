@@ -79,6 +79,9 @@ export type ApiPostData = Record<string, unknown> | unknown[] | string | number 
 export async function apiGet<T = null>(url: string, options?: RequestInit) {
   return fetchWithAuth<ApiResponse<T>>(url, { ...options, method: 'GET' });
 }
+export async function apiGetCustom<T = null>(url: string, options?: RequestInit) {
+  return fetchWithAuth<T>(url, { ...options, method: 'GET' });
+}
 
 export async function apiPost<T = null, D extends ApiPostData = Record<string, unknown>>(
   url: string,
