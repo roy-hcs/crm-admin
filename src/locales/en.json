@@ -271,6 +271,20 @@
       "serialNumTable": "Trading flow number",
       "title": "Wallet flow",
       "wallet": "wallet"
+    },
+    "paymentOrders": {
+      "account": "Deposit account",
+      "channelId": "Payment Channel",
+      "channelName": "Payment Channel",
+      "createTime": "Order time",
+      "depositAmount": "Deposit amount",
+      "orderId": "Order number",
+      "orderStatus": "Order Status",
+      "orderTime": "Order time",
+      "payAmount": "Payment amount",
+      "receiptAmount": "Amount of payment",
+      "title": "Pay order",
+      "userName": "Name/Account ID"
     }
   }
 }

@@ -301,3 +301,39 @@ export type WalletTransactionResponse = {
   total: string;
   rows: WalletTransactionItem[];
 };
+// 支付订单
+export type PaymentOrderListParams = {
+  params: {
+    userName?: string;
+    account?: string;
+    accounts?: string;
+    operationStart?: string;
+    operationEnd?: string;
+  };
+  channelId?: string;
+  orderStatus?: string;
+  orderId?: string;
+  accounts?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+};
+export type PaymentOrderItem = {
+  id: string | null;
+  orderId: string | null;
+  account: string | null;
+  depositAmount: string | null;
+  payAmount: string | null;
+  receiptAmount: string | null;
+  orderStatus: string | null;
+  createTime: string | null;
+  channelName: string | null;
+  userName: string | null;
+};
+export type PaymentOrderListResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: PaymentOrderItem[];
+};

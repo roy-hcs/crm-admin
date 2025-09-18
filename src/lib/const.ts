@@ -48,3 +48,11 @@ export const RebateStatusOptions = [
   { label: '成功', value: '1' },
   { label: '失败', value: '0' },
 ];
+
+// 订单状态
+export const OrderStatusOptions = [
+  { label: '待支付', value: '0' },
+  { label: '已完成', value: '1' },
+  { label: '已取消', value: '2' },
+  { label: '已超时', value: '3' },
+];

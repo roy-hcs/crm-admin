@@ -17,6 +17,7 @@ import {
   WithDrawReportItem,
   CurrencyListResponse,
   DictTypeResponse,
+  ChannelListResponse,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -173,5 +174,15 @@ export function useCurrencyList() {
   return useQuery({
     queryKey: ['CurrencyList'],
     queryFn: () => apiFormPostCustom<CurrencyListResponse>(`/system/currency/list`, {}),
+  });
+}
+
+/**
+ * 获取支付通道
+ */
+export function useChannelList() {
+  return useQuery({
+    queryKey: ['getChannelList'],
+    queryFn: () => apiGet<ChannelListResponse>(`/system/userOrder/getChannelList`, {}),
   });
 }

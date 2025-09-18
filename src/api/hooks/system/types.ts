@@ -256,3 +256,10 @@ export type DictTypeItem = {
 
 // 如果接口当前直接返回数组：
 export type DictTypeResponse = DictTypeItem[];
+
+// 支付通道
+export type PaymentChannelItem = {
+  id: string;
+  channelName: string;
+};
+export type ChannelListResponse = PaymentChannelItem[];

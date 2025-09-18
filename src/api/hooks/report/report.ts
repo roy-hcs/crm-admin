@@ -13,6 +13,8 @@ import {
   TradingHistoryListResponse,
   crmUserDealDetailParams,
   WalletTransactionResponse,
+  PaymentOrderListParams,
+  PaymentOrderListResponse,
 } from './types';
 
 /**
@@ -83,5 +85,16 @@ export function useWalletTransactionList(params: crmUserDealDetailParams) {
     queryKey: ['walletTransactionList', params],
     queryFn: () =>
       apiFormPostCustom<WalletTransactionResponse>('/system/crmUserDealDetail/list', params || {}),
+  });
+}
+
+/**
+ * 获取支付订单
+ */
+export function usePaymentOrderList(params: PaymentOrderListParams) {
+  return useQuery({
+    queryKey: ['paymentOrderList', params],
+    queryFn: () =>
+      apiFormPostCustom<PaymentOrderListResponse>('/system/userOrder/list', params || {}),
   });
 }
