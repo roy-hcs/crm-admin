@@ -220,5 +220,24 @@
     "weekly-rebate": {
       "title": "Weekly commission rebate statement"
     }
+  },
+  "financial": {
+    "walletTransactions": {
+      "account": "Name/Account ID",
+      "amount": "Change amount",
+      "inMethod": "Operation method",
+      "lastName": "Name",
+      "mtOrder": "Transaction order number",
+      "operationTime": "Operation time",
+      "operationTimeTable": "Change time",
+      "operationType": "Operation Type",
+      "postAmount": "Changeable amount",
+      "preAmount": "Amount before change",
+      "remark": "Remark",
+      "serialNum": "serial number",
+      "serialNumTable": "Trading flow number",
+      "title": "Wallet flow",
+      "wallet": "wallet"
+    }
   }
 }

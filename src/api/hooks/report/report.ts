@@ -9,6 +9,8 @@ import {
   TradingResponse,
   DailyRebateParams,
   DailyRebateResponse,
+  crmUserDealDetailParams,
+  WalletTransactionResponse,
 } from './types';
 
 /**
@@ -57,5 +59,16 @@ export function useDailyRebateList(params: DailyRebateParams) {
     queryKey: ['dailyRebateList', params],
     queryFn: () =>
       apiFormPostCustom<DailyRebateResponse>('/system/rebateSettle/list', params || {}),
+  });
+}
+
+/**
+ * 获取钱包流水
+ */
+export function useWalletTransactionList(params: crmUserDealDetailParams) {
+  return useQuery({
+    queryKey: ['walletTransactionList', params],
+    queryFn: () =>
+      apiFormPostCustom<WalletTransactionResponse>('/system/crmUserDealDetail/list', params || {}),
   });
 }

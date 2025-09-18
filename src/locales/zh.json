@@ -206,6 +206,25 @@
       "title": "周结返佣报表"
     }
   },
+  "financial": {
+    "walletTransactions": {
+      "title": "钱包流水",
+      "wallet": "钱包",
+      "account": "姓名/账户ID",
+      "operationType": "操作类型",
+      "inMethod": "操作方式",
+      "serialNum": "流水号",
+      "operationTime": "操作时间",
+      "mtOrder": "交易订单号",
+      "lastName": "姓名",
+      "preAmount": "变动前金额",
+      "amount": "变动金额",
+      "postAmount": "变动后金额",
+      "operationTimeTable": "变动时间",
+      "serialNumTable": "交易流水号",
+      "remark": "备注"
+    }
+  },
   "rules": {
     "required": "{{field}}不能为空",
     "pattern": "请输入有效的{{field}}",

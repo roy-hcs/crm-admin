@@ -162,3 +162,56 @@ export type DailyRebateResponse = {
   total: string;
   rows: DailyRebateItem[];
 };
+
+// 资金报表- 钱包流水
+export type crmUserDealDetailParams = {
+  pageSize: number;
+  pageNum: number;
+  isAsc?: string;
+  orderByColumn?: string;
+  operationType?: string;
+  serialNum?: string;
+  accounts?: string;
+  mtOrder?: string;
+  params: {
+    account?: string;
+    operationType?: string;
+    inMethod?: string;
+    selectOther?: string;
+    currencyId?: string;
+    operationStart?: string;
+    operationEnd?: string;
+    accounts?: string;
+  };
+};
+export type WalletTransactionItem = {
+  id: string | null;
+  lastName: string | null;
+  name: string | null;
+  showId: string | null;
+  operationType: number | null;
+  operationTypeTxt: string | null;
+  operationMethodTxt: string | null;
+  currency: string | null;
+  preAmountTxt: string | null;
+  amountTxt: string | null;
+  afterAmountTxt: string | null;
+  operationTime: string | null;
+  serialNum: string | null;
+  rebateId: string | null;
+  dealServerId: string | null;
+  walletId: string | null;
+  dealAccount: string | null;
+  preAmount: string | null;
+  amount: string | null;
+  operationMethod: number | null;
+  mtOrder: string | null;
+  remark: string | null;
+  postAmount: string | null;
+};
+export type WalletTransactionResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: WalletTransactionItem[];
+};

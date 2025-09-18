@@ -200,3 +200,39 @@ export type CrmRebateTradersItem = {
   ruleName: string;
   id: string;
 };
+
+// 钱包货币
+export type CurrencyItem = {
+  id: string;
+  currencyAbbr: string;
+};
+export type CurrencyListResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: CurrencyItem[];
+};
+
+// 操作类型 / 操作方式 - 单条字典项
+export type DictTypeItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  dictCode: string; // 接口返回为字符串
+  dictSort: string; // 同上，如需数字可改成 number | string
+  dictLabel: string;
+  dictValue: string;
+  dictType: string;
+  cssClass: string | null;
+  listClass: string | null;
+  isDefault: 'Y' | 'N' | string;
+  status: string;
+  flag: boolean;
+  globalizationKey: string;
+};
+
+// 如果接口当前直接返回数组：
+export type DictTypeResponse = DictTypeItem[];
