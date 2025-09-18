@@ -11,6 +11,8 @@ import {
   DailyRebateResponse,
   TradingHistoryParams,
   TradingHistoryListResponse,
+  PositionOrderParams,
+  PositionOrderResponse,
 } from './types';
 
 /**
@@ -69,6 +71,15 @@ export function useTradingHistoryList(params: TradingHistoryParams, options: { e
         '/system/statistics/getHistoryList',
         params || {},
       ),
+    enabled: options.enabled,
+  });
+}
+
+export function usePositionOrderList(params: PositionOrderParams, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['positionOrder', params],
+    queryFn: () =>
+      apiFormPostCustom<PositionOrderResponse>('/system/statistics/positionList/1', params || {}),
     enabled: options.enabled,
   });
 }

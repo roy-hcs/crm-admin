@@ -192,7 +192,6 @@ export type TradingHistoryParams = {
   };
 };
 
-// generated type according to the above json
 export type TradingHistoryItem = {
   createBy: string | null;
   createTime: string | null;
@@ -248,4 +247,83 @@ export type TradingHistoryListResponse = {
   rebateTotalAmtStr: string;
   rows: TradingHistoryItem[];
   serverType: string;
+};
+
+export type PositionOrderParams = {
+  server?: string;
+  serverGroupList?: string;
+  type?: number | string;
+  accountGroupList?: string;
+  accounts?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+  params: {
+    random?: string;
+    positionFuzzyName?: string;
+    positionFuzzyLogin?: string;
+    positionFuzzySymbol?: string;
+    positionFuzzyTicket?: string;
+    accounts?: string;
+    positionDealBJStartTime?: string;
+    positionDealBJEndTime?: string;
+  };
+};
+
+export type PositionOrderItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: {
+    currency: string | null;
+    accountName: string | null;
+    accountGroupId: string | null;
+  };
+  uuid: string | null;
+  login: string | null;
+  server: string | null;
+  deal: string | null;
+  ticket: number | null;
+  symbol: string | null;
+  digits: number | null;
+  type: number | null;
+  entry: string | null;
+  volume: number | null;
+  time: string | null;
+  dealDate: string | null;
+  price: number | null;
+  sl: number | null;
+  tp: number | null;
+  commission: number | null;
+  swaps: number | null;
+  profit: number | null;
+  comment: string | null;
+  positionID: number | null;
+  priceCur: number | null;
+  rateprofit: number | null;
+  ratemargin: number | null;
+  synTime: string | null;
+  serverType: number | null;
+  accounts: string | null;
+  accountIds: string | null;
+  accountGroupList: string | null;
+  currency: string | null;
+  lotSize: number | null;
+};
+
+export type PositionOrderResponse = {
+  code: number;
+  msg: string | null;
+  total: string;
+  rows: PositionOrderItem[];
+  totalList: {
+    currency: string;
+    totalCommission: number;
+    totalProfit: number;
+    totalSwaps: number;
+    totalVolume: number;
+  }[];
 };

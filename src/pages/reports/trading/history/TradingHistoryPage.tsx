@@ -30,7 +30,13 @@ export const TradingHistoryPage = () => {
     accountGroupList: '',
     accounts: '',
     positionID: '',
+    entry: '',
   });
+
+  const formRef = useRef<TradingHistoryRef>(null);
+  const [pageNum, setPageNum] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const { t } = useTranslation();
 
   const { data: serverList, isLoading: serverListLoading } = useServerList();
   useEffect(() => {
@@ -45,11 +51,10 @@ export const TradingHistoryPage = () => {
   const { data, isLoading } = useTradingHistoryList(
     {
       breedGroup: '',
-      entry: '',
       orderByColumn: '',
       isAsc: 'asc',
-      pageNum: 1,
-      pageSize: 10,
+      pageNum: pageNum + 1,
+      pageSize,
       ...otherParams,
       params: {
         ...params,
@@ -59,10 +64,6 @@ export const TradingHistoryPage = () => {
       enabled: otherParams.serverId !== '' && otherParams.serverType !== '',
     },
   );
-  const formRef = useRef<TradingHistoryRef>(null);
-  const [pageNum, setPageNum] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const { t } = useTranslation();
 
   return (
     <div>

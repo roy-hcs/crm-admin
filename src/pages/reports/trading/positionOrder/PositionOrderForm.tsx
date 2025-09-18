@@ -1,93 +1,73 @@
+import { PositionOrderParams } from '@/api/hooks/report/types';
+import { useGetDealAccountGroupList, useGetGroupByServer } from '@/api/hooks/system/system';
+import { ServerItem } from '@/api/hooks/system/types';
+import { RrhButton } from '@/components/common/RrhButton';
+import { BaseOption } from '@/components/common/RrhMultiSelect';
+import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
+import FormDateRangeInput from '@/components/form/FormDateRangeInput';
+import { FormInput } from '@/components/form/FormInput';
+import { FormMultiSelect } from '@/components/form/FormMultiSelect';
+import { FormSelect } from '@/components/form/FormSelect';
 import {
-  Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
+  Form,
 } from '@/components/ui/form';
-import { useForm } from 'react-hook-form';
-import FormDateRangeInput from '@/components/form/FormDateRangeInput';
-import { forwardRef, useImperativeHandle } from 'react';
-import { RefreshCcw, Search } from 'lucide-react';
-import { FormInput } from '@/components/form/FormInput';
-import { FormProvider } from '@/contexts/form';
-import { FormSelect } from '@/components/form/FormSelect';
-import { RrhButton } from '@/components/common/RrhButton';
-import { useTranslation } from 'react-i18next';
-import { ServerItem } from '@/api/hooks/system/types';
-import { BaseOption } from '@/components/common/RrhSelect';
-import { useGetDealAccountGroupList, useGetGroupByServer } from '@/api/hooks/system/system';
-import { FormMultiSelect } from '@/components/form/FormMultiSelect';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { serverMap } from '@/lib/constant';
+import { RefreshCcw, Search } from 'lucide-react';
+import { forwardRef, useImperativeHandle } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FormProvider } from '@/contexts/form';
+import { useForm } from 'react-hook-form';
 
 type FormData = {
   serverId: string;
   serverGroupList: string[];
-  type: string;
-  symbol: string;
-  ticket: string;
+  type: number | string;
   name: string;
   login: string;
-  accountGroupList: string[];
+  symbol: string;
+  ticket: string;
   accounts: string;
-  positionID: string;
-  entry: string;
+  accountGroupList: string[];
   openTime: { from: string; to: string };
-  closeTime: { from: string; to: string };
 };
 
-export interface TradingHistoryRef {
+export interface PositionOrderRef {
   onReset: () => void;
 }
 
-export const TradingHistoryForm = forwardRef<
-  TradingHistoryRef,
+export const PositionOrderForm = forwardRef<
+  PositionOrderRef,
   {
     serverList: ServerItem[];
     serverListLoading: boolean;
+    setParams: (params: PositionOrderParams['params']) => void;
     setOtherParams: (params: {
-      serverType: string;
-      serverId: string;
-      serverGroupList: string;
-      serverGroup: string;
-      type: string;
-      symbol: string;
-      ticket: string;
-      login: string;
-      accountGroupList: string;
-      accounts: string;
-      positionID: string;
-      entry: string;
-    }) => void;
-    setParams: (params: {
-      selectOther: string;
-      historyDealBJStartTime: string;
-      historyDealBJEndTime: string;
-      historyCloseStartTime: string;
-      historyCloseEndTime: string;
-      accounts: string;
-      historyFuzzyName: string;
+      server?: string;
+      type?: number | string;
+      accountGroupList?: string;
+      accounts?: string;
+      serverGroupList?: string;
     }) => void;
   }
->(({ setOtherParams, setParams, serverList, serverListLoading }, ref) => {
+>(({ serverList, serverListLoading, setOtherParams, setParams }, ref) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
       serverId: '',
       serverGroupList: [],
       type: '',
-      symbol: '',
-      ticket: '',
       name: '',
       login: '',
+      symbol: '',
+      ticket: '',
       accounts: '',
-      positionID: '',
-      entry: '',
       accountGroupList: [],
       openTime: { from: '', to: '' },
-      closeTime: { from: '', to: '' },
     },
   });
   useImperativeHandle(ref, () => ({
@@ -95,7 +75,6 @@ export const TradingHistoryForm = forwardRef<
       form.reset();
     },
   }));
-
   if (!form.getValues('serverId') && serverList.length && !serverListLoading) {
     form.setValue('serverId', serverList[0].id, { shouldDirty: false, shouldTouch: false });
   }
@@ -107,82 +86,49 @@ export const TradingHistoryForm = forwardRef<
   const { data: dealAccountGroupListData } = useGetDealAccountGroupList();
 
   const selectedServer = serverList.find(item => item.id === form.watch('serverId'));
-
   const onSubmit = (data: FormData) => {
-    const selectedServer = serverList.find(item => item.id === data.serverId);
-    if (!selectedServer) return;
-    // 需要一个函数来处理selectOther的值，当data中除了serverId之外，任意一个字段值不为空（其中openTime和closeTime对应from和to有值）时，selectOther值为‘1’，否则为‘0’
     const selectedAccounts = JSON.parse(data.accounts || '{"id": "", "label": ""}') as {
       id: string;
       label: string;
     };
-    setParams({
-      selectOther: Object.keys(data).some(key => {
-        if (key === 'accountGroupList' || key === 'serverGroupList') {
-          return data[key] && data[key].length > 0;
-        }
-        if (key === 'openTime' || key === 'closeTime') {
-          return data[key].from || data[key].to;
-        }
-        if (key !== 'serverId') {
-          return data[key as keyof FormData];
-        }
-        return false;
-      })
-        ? '1'
-        : '0',
-      historyDealBJStartTime: data.openTime.from,
-      historyDealBJEndTime: data.openTime.to,
-      historyCloseStartTime: data.closeTime.from,
-      historyCloseEndTime: data.closeTime.to,
-      accounts: selectedAccounts.label,
-      historyFuzzyName: data.name,
-    });
     setOtherParams({
-      serverType: selectedServer.serviceType.toString(),
-      serverId: selectedServer.id,
+      server: data.serverId,
       serverGroupList: data.serverGroupList.join(','),
-      serverGroup:
-        data.serverGroupList.length > 0
-          ? data.serverGroupList[data.serverGroupList.length - 1]
-          : '',
       type: data.type,
-      symbol: data.symbol,
-      ticket: data.ticket,
-      login: data.login,
       accountGroupList: data.accountGroupList.join(','),
       accounts: selectedAccounts.id,
-      positionID: data.positionID || '',
-      entry: data.entry || '',
+    });
+    setParams({
+      random: new Date().getTime() + '' + Math.floor(Math.random() * 100 + 1),
+      positionFuzzyName: data.name,
+      positionFuzzyLogin: data.login,
+      positionFuzzySymbol: data.symbol,
+      positionFuzzyTicket: data.ticket,
+      accounts: selectedAccounts.label,
+      positionDealBJStartTime: data.openTime.from,
+      positionDealBJEndTime: data.openTime.to,
     });
   };
   const onReset = () => {
-    form.reset();
-    setParams({
-      selectOther: '',
-      historyDealBJStartTime: '',
-      historyDealBJEndTime: '',
-      historyCloseStartTime: '',
-      historyCloseEndTime: '',
-      historyFuzzyName: '',
-      accounts: '',
-    });
     setOtherParams({
-      serverType: '',
-      serverId: '',
+      server: form.watch('serverId') || '',
       serverGroupList: '',
-      serverGroup: '',
       type: '',
-      symbol: '',
-      ticket: '',
-      login: '',
       accountGroupList: '',
       accounts: '',
-      positionID: '',
-      entry: '',
     });
+    setParams({
+      random: new Date().getTime() + '' + Math.floor(Math.random() * 100 + 1),
+      positionFuzzyName: '',
+      positionFuzzyLogin: '',
+      positionFuzzySymbol: '',
+      positionFuzzyTicket: '',
+      accounts: '',
+      positionDealBJStartTime: '',
+      positionDealBJEndTime: '',
+    });
+    form.reset();
   };
-
   return (
     <FormProvider form={form}>
       <Form {...form}>
@@ -312,37 +258,6 @@ export const TradingHistoryForm = forwardRef<
               </FormItem>
             )}
           />
-          {selectedServer?.serviceType !== 1 && (
-            <FormField
-              name="closeTime"
-              render={() => (
-                <FormItem className="flex flex-col gap-2 text-sm">
-                  <FormLabel className="basis-3/12 text-[#757F8D]">
-                    {t('table.closeTime')}
-                  </FormLabel>
-                  <FormControl className="basis-9/12">
-                    <FormDateRangeInput name="closeTime" control={form.control} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
-          {selectedServer?.serviceType === 1 && (
-            <FormSelect
-              verticalLabel
-              name="entry"
-              label={t('table.entry')}
-              placeholder={t('common.pleaseSelect')}
-              showRowValue={false}
-              options={[
-                { label: 'in', value: 0 },
-                { label: 'out', value: 1 },
-                { label: 'in/out', value: 2 },
-                { label: 'out by', value: 3 },
-              ]}
-            />
-          )}
 
           <div className="flex justify-end gap-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>

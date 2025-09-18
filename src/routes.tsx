@@ -14,7 +14,8 @@ import { FeesPage } from './pages/reports/commission/fees';
 import { DepositsPage } from './pages/reports/commission/deposits';
 import { DailyRebatePage } from './pages/reports/commission/daily-rebate';
 import { WeeklyRebatePage } from './pages/reports/commission/weekly-rebate';
-import { TradingHistoryPage } from './pages/reports/trading/history/TradingHistory';
+import { TradingHistoryPage } from './pages/reports/trading/history/TradingHistoryPage';
+import { PositionOrderPage } from './pages/reports/trading/positionOrder/PositionOrderPage';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -72,6 +73,10 @@ export const router = createBrowserRouter([
       {
         path: '/reports/trading/history',
         element: <TradingHistoryPage />,
+      },
+      {
+        path: '/reports/trading/open-positions',
+        element: <PositionOrderPage />,
       },
       // ib客户追踪
       {
