@@ -46,7 +46,7 @@
     "logging": "正在登录...",
     "EnterYourEmailBelowToSignInYourAccount": "在下面输入您的邮箱以登录您的账户",
     "EnterYourMobileBelowToSignInYourAccount": "在下面输入您的手机以登录您的账户",
-    "LoginWith": "使用 {{method}} 登录",
+    "LoginWith": "使用{{method}}登录",
     "forgetPWD": "忘记密码？",
     "WelcomeBack": "欢迎回来",
     "EnterYourCellphone": "请输入您的手机号码",
@@ -235,6 +235,9 @@
     "positionOrder": "持仓订单",
     "positionCost": "持仓成本"
   },
+  "limitOrderPage": {
+    "limitOrder": "限价订单"
+  },
   "table": {
     "server": "服务器",
     "groups": "组别",
@@ -264,6 +267,9 @@
     "positionID": "订单关联ID",
     "takeProfitPrice": "止盈价格",
     "stopLossPrice": "止损价格",
-    "total": "合计"
+    "total": "合计",
+    "orderPlacementTime": "挂单时间",
+    "orderPlacementPrice": "挂单价格",
+    "time": "时间"
   }
 }

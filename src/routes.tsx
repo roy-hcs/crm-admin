@@ -16,6 +16,7 @@ import { DailyRebatePage } from './pages/reports/commission/daily-rebate';
 import { WeeklyRebatePage } from './pages/reports/commission/weekly-rebate';
 import { TradingHistoryPage } from './pages/reports/trading/history/TradingHistoryPage';
 import { PositionOrderPage } from './pages/reports/trading/positionOrder/PositionOrderPage';
+import { LimitOrderPage } from './pages/reports/trading/limitOrder/LimitOrderPage';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -77,6 +78,10 @@ export const router = createBrowserRouter([
       {
         path: '/reports/trading/open-positions',
         element: <PositionOrderPage />,
+      },
+      {
+        path: '/reports/trading/limit-orders',
+        element: <LimitOrderPage />,
       },
       // ib客户追踪
       {

@@ -327,3 +327,25 @@ export type PositionOrderResponse = {
     totalVolume: number;
   }[];
 };
+
+export type LimitOrderListResponse = PositionOrderResponse;
+export type LimitOrderListItem = PositionOrderItem;
+export type LimitOrderListParams = {
+  server?: string;
+  serverGroupList?: string;
+  accounts?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+  params: {
+    positionFuzzyType?: number | string;
+    positionFuzzyName?: string;
+    positionFuzzyLogin?: string;
+    positionFuzzySymbol?: string;
+    positionFuzzyTicket?: string;
+    accounts?: string;
+    positionDealBJStartTime?: string;
+    positionDealBJEndTime?: string;
+  };
+};

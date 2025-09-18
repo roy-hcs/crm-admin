@@ -13,6 +13,8 @@ import {
   TradingHistoryListResponse,
   PositionOrderParams,
   PositionOrderResponse,
+  LimitOrderListResponse,
+  LimitOrderListParams,
 } from './types';
 
 /**
@@ -80,6 +82,15 @@ export function usePositionOrderList(params: PositionOrderParams, options: { ena
     queryKey: ['positionOrder', params],
     queryFn: () =>
       apiFormPostCustom<PositionOrderResponse>('/system/statistics/positionList/1', params || {}),
+    enabled: options.enabled,
+  });
+}
+
+export function useLimitOrderList(params: LimitOrderListParams, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['limitOrderList', params],
+    queryFn: () =>
+      apiFormPostCustom<LimitOrderListResponse>('/system/statistics/positionList/2', params || {}),
     enabled: options.enabled,
   });
 }

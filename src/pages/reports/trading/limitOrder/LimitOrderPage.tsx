@@ -1,5 +1,5 @@
-import { usePositionOrderList } from '@/api/hooks/report/report';
-import { PositionOrderParams } from '@/api/hooks/report/types';
+import { useLimitOrderList } from '@/api/hooks/report/report';
+import { LimitOrderListParams } from '@/api/hooks/report/types';
 import { useServerList } from '@/api/hooks/system/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
@@ -7,13 +7,13 @@ import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Funnel, Search } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PositionOrderForm, PositionOrderRef } from './PositionOrderForm';
-import { PositionOrderTable } from './PositionOrderTable';
+import { LimitOrderForm, LimitOrderRef } from './LimitOrderForm';
+import { LimitOrderTable } from './LimitOrderTable';
 import { TableCell } from '@/components/ui/table';
 
-export const PositionOrderPage = () => {
-  const [params, setParams] = useState<PositionOrderParams['params']>({
-    random: new Date().getTime() + '' + Math.floor(Math.random() * 100 + 1),
+export const LimitOrderPage = () => {
+  const [params, setParams] = useState<LimitOrderListParams['params']>({
+    positionFuzzyType: '',
     positionFuzzyName: '',
     positionFuzzyLogin: '',
     positionFuzzySymbol: '',
@@ -22,14 +22,12 @@ export const PositionOrderPage = () => {
     positionDealBJStartTime: '',
     positionDealBJEndTime: '',
   });
-  const [otherParams, setOtherParams] = useState<Omit<PositionOrderParams, 'params'>>({
+  const [otherParams, setOtherParams] = useState<Omit<LimitOrderListParams, 'params'>>({
     server: '',
     serverGroupList: '',
-    type: '',
-    accountGroupList: '',
     accounts: '',
   });
-  const formRef = useRef<PositionOrderRef>(null);
+  const formRef = useRef<LimitOrderRef>(null);
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
@@ -45,7 +43,7 @@ export const PositionOrderPage = () => {
   const selectedServer = useMemo(() => {
     return serverList?.rows?.find(item => otherParams.server === item.id);
   }, [otherParams.server, serverList?.rows]);
-  const { data: positionOrderList, isLoading: positionOrderListLoading } = usePositionOrderList(
+  const { data: positionOrderList, isLoading: positionOrderListLoading } = useLimitOrderList(
     {
       pageSize,
       pageNum: pageNum + 1,
@@ -61,7 +59,7 @@ export const PositionOrderPage = () => {
 
   return (
     <div>
-      <h1 className="text-title">{t('positionOrderPage.positionOrder')}</h1>
+      <h1 className="text-title">{t('limitOrderPage.limitOrder')}</h1>
       <div className="my-3.5 flex items-center justify-between">
         <RrhInputWithIcon
           placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
@@ -73,8 +71,6 @@ export const PositionOrderPage = () => {
           }}
         />
         <div className="flex justify-end gap-2">
-          <RrhButton variant="outline">{t('table.export')}</RrhButton>
-          <RrhButton variant="outline">{t('positionOrderPage.positionCost')}</RrhButton>
           <RrhDrawer
             headerShow={false}
             asChild
@@ -86,7 +82,7 @@ export const PositionOrderPage = () => {
               </RrhButton>
             }
           >
-            <PositionOrderForm
+            <LimitOrderForm
               ref={formRef}
               serverListLoading={serverListLoading}
               serverList={serverList?.rows || []}
@@ -96,7 +92,7 @@ export const PositionOrderPage = () => {
           </RrhDrawer>
         </div>
       </div>
-      <PositionOrderTable
+      <LimitOrderTable
         data={positionOrderList?.rows || []}
         pageCount={Math.ceil(+(positionOrderList?.total || 0) / pageSize)}
         pageIndex={pageNum}

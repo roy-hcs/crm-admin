@@ -1,4 +1,4 @@
-import { PositionOrderItem } from '@/api/hooks/report/types';
+import { LimitOrderListItem } from '@/api/hooks/report/types';
 import { ServerItem } from '@/api/hooks/system/types';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
@@ -11,22 +11,20 @@ import { useTranslation } from 'react-i18next';
 const formatVolume = (serverType: number | undefined, volume: number, lotSize: number) => {
   if (serverType == 1) {
     //MT5
-    return (volume / 10000.0).toFixed(4);
+    return (volume / 10000).toFixed(2);
+  } else if (serverType == 2) {
+    return (volume / 100).toFixed(2);
   } else if (serverType == 4) {
-    //XForce
     return (volume / (lotSize || 1.0)).toFixed(2);
-  } else if (serverType == 5) {
-    //XOH
-    return volume.toFixed(4);
   } else {
-    return (volume / 100.0).toFixed(4);
+    return volume.toFixed(2);
   }
 };
-const PositionOrderDetails = ({
+const LimitOrderDetails = ({
   data,
   serviceType,
 }: {
-  data: PositionOrderItem;
+  data: LimitOrderListItem;
   serviceType: number | undefined;
 }) => {
   const { t } = useTranslation();
@@ -43,26 +41,11 @@ const PositionOrderDetails = ({
       value:
         data.volume && data.lotSize ? formatVolume(serviceType, data.volume, data.lotSize) : '-',
     },
-    { label: t('table.openPrice'), value: data.price },
-    { label: t('table.openTime'), value: data.time },
+    { label: t('table.orderPlacementPrice'), value: (data.price || 0).toFixed(data.digits || 2) },
+    { label: t('table.orderPlacementTime'), value: data.time },
     // UI上存在以下字段，但接口返回数据中似乎没有相关数据，暂时隐藏
     // { label: t('table.takeProfitPrice'), value: data.takeProfitPrice },
     // { label: t('table.stopLossPrice'), value: data.stopLossPrice },
-
-    {
-      label: t('table.profitAndLoss'),
-      value: data.profit !== null ? `${data.profit.toFixed(2)} ${data.currency}` : '-',
-    },
-
-    {
-      label: t('table.commission'),
-      value: data.commission !== null ? `${data.commission.toFixed(2)} ${data.currency}` : '-',
-    },
-    {
-      label: t('table.swap'),
-      value: data.swaps !== null ? `${data.swaps.toFixed(2)} ${data.currency}` : '-',
-    },
-    { label: t('table.comment'), value: data.comment },
     { label: t('table.orderNumber'), value: data.ticket?.toString() || '-' },
   ];
   return (
@@ -78,8 +61,7 @@ const PositionOrderDetails = ({
     </div>
   );
 };
-
-export const PositionOrderTable = ({
+export const LimitOrderTable = ({
   data,
   pageCount,
   pageIndex,
@@ -90,7 +72,7 @@ export const PositionOrderTable = ({
   CustomRow,
   selectedServer,
 }: {
-  data: PositionOrderItem[];
+  data: LimitOrderListItem[];
   pageCount: number;
   pageIndex: number;
   pageSize: number;
@@ -101,8 +83,8 @@ export const PositionOrderTable = ({
   selectedServer: ServerItem | undefined;
 }) => {
   const { t } = useTranslation();
-  const serverType = selectedServer?.serviceType;
-  const tradingHistoryColumns: ColumnDef<PositionOrderItem>[] = [
+  const serviceType = selectedServer?.serviceType;
+  const tradingHistoryColumns: ColumnDef<LimitOrderListItem>[] = [
     {
       id: 'No.',
       header: t('CRMAccountPage.Index'),
@@ -134,9 +116,8 @@ export const PositionOrderTable = ({
       header: t('table.volume'),
       cell: ({ row }) => {
         const rowData = row.original;
-
         return rowData.volume && rowData.lotSize ? (
-          <div>{formatVolume(serverType, rowData.volume, rowData.lotSize)}</div>
+          <div>{formatVolume(serviceType, rowData.volume, rowData.lotSize)} </div>
         ) : (
           <div>-</div>
         );
@@ -144,45 +125,21 @@ export const PositionOrderTable = ({
     },
     {
       id: 'openPrice',
-      header: t('table.openPrice'),
-      accessorFn: row => row.price,
+      header: t('table.orderPlacementPrice'),
+      cell: ({ row }) => {
+        return <div>{(row.original.price || 0).toFixed(row.original.digits || 2)}</div>;
+      },
     },
     {
       id: 'openTime',
-      header: t('table.openTime'),
+      header: t('table.orderPlacementTime'),
       accessorFn: row => row.time,
     },
     {
       id: 'currentPrice',
       header: t('table.currentPrice'),
-      accessorFn: row => row.priceCur,
-    },
-    {
-      id: 'profit',
-      header: t('table.profitAndLoss'),
       cell: ({ row }) => {
-        const rowData = row.original;
-        return rowData.profit !== null ? (
-          <div>
-            {rowData.profit.toFixed(2)} {rowData.currency}
-          </div>
-        ) : (
-          <div>-</div>
-        );
-      },
-    },
-    {
-      id: 'swaps',
-      header: t('table.swap'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        return rowData.swaps !== null ? (
-          <div>
-            {rowData.swaps.toFixed(2)} {rowData.currency}
-          </div>
-        ) : (
-          <div>-</div>
-        );
+        return <div>{(row.original.priceCur || 0).toFixed(row.original.digits || 2)}</div>;
       },
     },
     {
@@ -207,7 +164,7 @@ export const PositionOrderTable = ({
               confirmShow={false}
               title={t('tradingHistoryPage.tradingHistoryDetail')}
             >
-              <PositionOrderDetails data={row.original} serviceType={selectedServer?.serviceType} />
+              <LimitOrderDetails data={row.original} serviceType={selectedServer?.serviceType} />
             </RrhDialog>
           </div>
         );

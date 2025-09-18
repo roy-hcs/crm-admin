@@ -1,4 +1,4 @@
-import { PositionOrderParams } from '@/api/hooks/report/types';
+import { LimitOrderListParams } from '@/api/hooks/report/types';
 import { useGetDealAccountGroupList, useGetGroupByServer } from '@/api/hooks/system/system';
 import { ServerItem } from '@/api/hooks/system/types';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -36,16 +36,16 @@ type FormData = {
   openTime: { from: string; to: string };
 };
 
-export interface PositionOrderRef {
+export interface LimitOrderRef {
   onReset: () => void;
 }
 
-export const PositionOrderForm = forwardRef<
-  PositionOrderRef,
+export const LimitOrderForm = forwardRef<
+  LimitOrderRef,
   {
     serverList: ServerItem[];
     serverListLoading: boolean;
-    setParams: (params: PositionOrderParams['params']) => void;
+    setParams: (params: LimitOrderListParams['params']) => void;
     setOtherParams: (params: {
       server?: string;
       type?: number | string;
@@ -93,12 +93,10 @@ export const PositionOrderForm = forwardRef<
     setOtherParams({
       server: data.serverId,
       serverGroupList: data.serverGroupList.join(','),
-      type: data.type,
-      accountGroupList: data.accountGroupList.join(','),
       accounts: selectedAccounts.id,
     });
     setParams({
-      random: new Date().getTime() + '' + Math.floor(Math.random() * 100 + 1),
+      positionFuzzyType: data.type,
       positionFuzzyName: data.name,
       positionFuzzyLogin: data.login,
       positionFuzzySymbol: data.symbol,
@@ -117,7 +115,7 @@ export const PositionOrderForm = forwardRef<
       accounts: '',
     });
     setParams({
-      random: new Date().getTime() + '' + Math.floor(Math.random() * 100 + 1),
+      positionFuzzyType: '',
       positionFuzzyName: '',
       positionFuzzyLogin: '',
       positionFuzzySymbol: '',
@@ -134,6 +132,14 @@ export const PositionOrderForm = forwardRef<
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
+          onKeyDown={e => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              if (e.target instanceof HTMLTextAreaElement) return;
+
+              e.preventDefault();
+              form.handleSubmit(onSubmit)();
+            }
+          }}
           className="flex flex-col gap-4 overflow-auto p-4"
         >
           <FormSelect<
@@ -239,7 +245,9 @@ export const PositionOrderForm = forwardRef<
             name="openTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">{t('table.time')}</FormLabel>
+                <FormLabel className="basis-3/12 text-[#757F8D]">
+                  {t('table.orderPlacementTime')}
+                </FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="openTime" control={form.control} />
                 </FormControl>
