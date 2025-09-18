@@ -15,7 +15,7 @@ import { FormSelect } from '@/components/form/FormSelect';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { SelectAccountsPopup } from '@/pages/account/CRMAccounts/components/CRMAccountsForm';
+import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { CurrencyItem, DictTypeItem } from '@/api/hooks/system/types';
 import { useDictType } from '@/api/hooks/system/system';
 
@@ -195,7 +195,7 @@ export const WalletTransactionsForm = forwardRef<
           <FormField
             name="accounts"
             render={({ field }) => {
-              return <SelectAccountsPopup verticalLabel field={field} />;
+              return <RrhSelectAccountsPopup verticalLabel field={field} />;
             }}
           />
           <FormInput
