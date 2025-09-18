@@ -11,6 +11,8 @@ import {
   DailyRebateResponse,
   TradingHistoryParams,
   TradingHistoryListResponse,
+  crmUserDealDetailParams,
+  WalletTransactionResponse,
 } from './types';
 
 /**
@@ -70,5 +72,16 @@ export function useTradingHistoryList(params: TradingHistoryParams, options: { e
         params || {},
       ),
     enabled: options.enabled,
+  });
+}
+
+/**
+ * 获取钱包流水
+ */
+export function useWalletTransactionList(params: crmUserDealDetailParams) {
+  return useQuery({
+    queryKey: ['walletTransactionList', params],
+    queryFn: () =>
+      apiFormPostCustom<WalletTransactionResponse>('/system/crmUserDealDetail/list', params || {}),
   });
 }

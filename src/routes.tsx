@@ -15,6 +15,7 @@ import { DepositsPage } from './pages/reports/commission/deposits';
 import { DailyRebatePage } from './pages/reports/commission/daily-rebate';
 import { WeeklyRebatePage } from './pages/reports/commission/weekly-rebate';
 import { TradingHistoryPage } from './pages/reports/trading/history/TradingHistory';
+import { WalletTransactionsPage } from './pages/reports/financial/walletTransactions';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -43,6 +44,11 @@ export const router = createBrowserRouter([
       {
         path: '/account/crm-accounts',
         element: <CRMAccounts />,
+      },
+      // 资金报表
+      {
+        path: '/reports/financial/wallet-transactions',
+        element: <WalletTransactionsPage />,
       },
       // 佣金报表
       {

@@ -15,6 +15,8 @@ import {
   SymbolReportResponse,
   TagUserItem,
   WithDrawReportItem,
+  CurrencyListResponse,
+  DictTypeResponse,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -152,5 +154,24 @@ export function useGetDealAccountGroupList() {
     queryKey: ['getDealAccountGroupList'],
     queryFn: () =>
       apiGetCustom<DealAccountGroupListResponse>('/system/crmDealAccount/getDealAccountGroupList'),
+  });
+}
+/**
+ * 获取操作类型 操作方式
+ */
+export function useDictType(type: string) {
+  return useQuery({
+    queryKey: ['DictType', type],
+    queryFn: () => apiGet<DictTypeResponse>(`/system/dict/type?dictType=${type}`, {}),
+  });
+}
+
+/**
+ * 获取钱包货币
+ */
+export function useCurrencyList() {
+  return useQuery({
+    queryKey: ['CurrencyList'],
+    queryFn: () => apiFormPostCustom<CurrencyListResponse>(`/system/currency/list`, {}),
   });
 }
