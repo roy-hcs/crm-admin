@@ -424,3 +424,71 @@ export type AccountStatisticSumResponse = {
   msg: string | null;
   data: AccountStatisticSumItem[];
 };
+
+export type SystemFundOperationRecordListRes = {
+  code: number;
+  msg: string | null;
+  rows: SystemFundOperationRecordItem[];
+  total: string;
+};
+
+export type SystemFundOperationRecordItem = {
+  id: string | null;
+  orderNumber: string | null;
+  crmUserId: string | null;
+  crmName: string | null;
+  crmShowId: string | null;
+  accountType: number | null;
+  accountId: string | null;
+  currency: string | null;
+  serverId: string | null;
+  server: string | null;
+  type: number | null;
+  amount: number | null;
+  comment: string | null;
+  operName: string | null;
+  operIp: string | null;
+  operAddress: string | null;
+  operTime: string | null;
+  serverOrder: string | null;
+  annotation: string | null;
+  params: Record<string, string> | null;
+};
+
+export type SystemFundOperationRecordListParams = {
+  type?: number | string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+  params: {
+    name?: string;
+    login?: string;
+    ticket?: string;
+    operationStart?: string;
+    operationEnd?: string;
+    operName?: string;
+  };
+};
+
+export type SystemFundOperationRecordSumRes = {
+  code: number;
+  msg: string | null;
+  data: {
+    amount: number | null;
+    currency: string | null;
+    type: string | null;
+  }[];
+};
+
+export type SystemFundOperationRecordSumParams = {
+  type?: number | string;
+  params: {
+    name?: string;
+    login?: string;
+    ticket?: string;
+    operationStart?: string;
+    operationEnd?: string;
+    operName?: string;
+  };
+};

@@ -51,6 +51,7 @@
     "WelcomeBack": "欢迎回来",
     "EnterYourCellphone": "请输入您的手机号码",
     "EnterYourUserName": "请输入您的用户名",
+    "EnterYourPassword": "请输入您的密码",
     "LoginFailedPleaseTryAgainLater": "登录失败，请稍后再试",
     "loginFailed": "登录失败：",
     "RememberMe": "记住我"
@@ -242,6 +243,9 @@
   "accountStatisticPage": {
     "accountStatistic": "交易账号交易历史统计"
   },
+  "systemFundOperationsPage": {
+    "title": "系统资金操作记录"
+  },
   "table": {
     "server": "服务器",
     "groups": "组别",
@@ -282,6 +286,30 @@
     "currentBalance": "当前余额",
     "statisticTime": "统计时间",
     "clickToGetSum": "点击查看数据合计",
-    "exportAllDataTip": "确定导出所有{{field}}吗？"
+    "exportAllDataTip": "确定导出所有{{field}}吗？",
+    "CRMAccount": "CRM账户",
+    "fundAccount": "资金账号",
+    "way": "方式",
+    "amount": "金额",
+    "remarks": "备注",
+    "operationPerson": "操作人员",
+    "operationIP": "操作IP",
+    "operationTime": "操作时间",
+    "tradingServerOrderNumber": "交易服务器订单号",
+    "Deposit": "入金",
+    "Withdrawal": "出金",
+    "SystemDeposit": "系统入金",
+    "SystemWithdrawal": "系统出金",
+    "SystemCreditDeposit": "系统信用额入金",
+    "SystemCreditWithdrawal": "系统信用额出金",
+    "RebateDeposit": "返佣入金",
+    "InternalTransferIn": "内部转账入金",
+    "InternalTransferOut": "内部转账出金",
+    "DemoAccountDeposit": "模拟账户入金",
+    "DemoAccountWithdrawal": "模拟账户出金",
+    "Charge": "费用",
+    "nameOrId": "姓名/账户ID",
+    "depositWay": "入金方式",
+    "balance": "余额"
   }
 }

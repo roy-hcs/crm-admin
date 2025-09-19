@@ -18,6 +18,7 @@ import { TradingHistoryPage } from './pages/reports/trading/history/TradingHisto
 import { PositionOrderPage } from './pages/reports/trading/positionOrder/PositionOrderPage';
 import { LimitOrderPage } from './pages/reports/trading/limitOrder/LimitOrderPage';
 import { StatisticPage } from './pages/reports/trading/statistic/StatisticPage';
+import { SystemFundOperationsPage } from './pages/reports/financial/systemFundOperations/SystemFundOperationsPage';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -87,6 +88,10 @@ export const router = createBrowserRouter([
       {
         path: '/reports/trading/account-history-stats',
         element: <StatisticPage />,
+      },
+      {
+        path: '/reports/financial/system-fund-operations',
+        element: <SystemFundOperationsPage />,
       },
       // ib客户追踪
       {

@@ -19,6 +19,10 @@ import {
   AccountStatisticListParams,
   AccountStatisticSumResponse,
   AccountStatisticSumParams,
+  SystemFundOperationRecordListParams,
+  SystemFundOperationRecordListRes,
+  SystemFundOperationRecordSumParams,
+  SystemFundOperationRecordSumRes,
 } from './types';
 
 /**
@@ -128,5 +132,30 @@ export function useExportAccountStatisticList() {
   return useMutation({
     mutationFn: (params: AccountStatisticListParams) =>
       apiFormPost('/system/statistics/account-export', params),
+  });
+}
+
+export function useSystemFundOperationRecordList(
+  params: SystemFundOperationRecordListParams,
+  options: { enabled: boolean },
+) {
+  return useQuery({
+    queryKey: ['systemFundOperationRecordList', params],
+    queryFn: () =>
+      apiFormPostCustom<SystemFundOperationRecordListRes>(
+        '/system/statistics/systemFundOperRecordList',
+        params || {},
+      ),
+    enabled: options.enabled,
+  });
+}
+
+export function useSystemFundOperationRecordSum() {
+  return useMutation({
+    mutationFn: (params: SystemFundOperationRecordSumParams) =>
+      apiFormPostCustom<SystemFundOperationRecordSumRes>(
+        '/system/statistics/systemFundOperRecordSum',
+        params,
+      ),
   });
 }
