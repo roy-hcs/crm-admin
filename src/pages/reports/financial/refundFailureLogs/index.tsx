@@ -1,36 +1,31 @@
 import { useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { usePaymentOrderList } from '@/api/hooks/report/report';
-import { PaymentOrdersForm, PaymentOrdersFormRef } from './components/PaymentOrdersForm';
+import { useRefundFailLogList } from '@/api/hooks/report/report';
+import { RefundFailureLogsForm, RefundFailureLogsFormRef } from './components/PaymentOrdersForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
-import { PaymentOrdersTable } from './components/PaymentOrdersTable';
+import { RefundFailureLogsTable } from './components/RefundFailureLogsTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-export function PaymentOrdersPage() {
+export function RefundFailureLogsPage() {
   const { t } = useTranslation();
-  const formRef = useRef<PaymentOrdersFormRef>(null);
+  const formRef = useRef<RefundFailureLogsFormRef>(null);
   // 分页
   const [pageNum, setPageNum] = useState(0);
   // 每页条数
   const [pageSize, setPageSize] = useState(10);
   // 特殊参数
   const [params, setParams] = useState({
-    userName: '',
-    account: '',
-    accounts: '',
-    operationStart: '',
-    operationEnd: '',
+    beginTime: '',
+    endTime: '',
   });
   // 普通参数
   const [commonParams, setCommonParams] = useState({
-    channelId: '',
-    orderStatus: '',
-    orderId: '',
-    accounts: '',
+    userId: '',
+    status: '',
+    refundAccount: '',
   });
-
-  const { data: data, isLoading: loading } = usePaymentOrderList({
+  const { data: data, isLoading: loading } = useRefundFailLogList({
     params,
     pageSize,
     ...commonParams,
@@ -41,17 +36,13 @@ export function PaymentOrdersPage() {
   });
   const reset = () => {
     setParams({
-      userName: '',
-      account: '',
-      accounts: '',
-      operationStart: '',
-      operationEnd: '',
+      beginTime: '',
+      endTime: '',
     });
     setCommonParams({
-      channelId: '',
-      orderStatus: '',
-      orderId: '',
-      accounts: '',
+      userId: '',
+      status: '',
+      refundAccount: '',
     });
     setPageNum(0);
     setPageSize(10);
@@ -59,7 +50,7 @@ export function PaymentOrdersPage() {
   return (
     <div>
       <div className="text-xl leading-8 font-semibold text-neutral-950">
-        {t('financial.paymentOrders.title')}
+        {t('financial.refundFailLog.title')}
       </div>
       <div className="mt-3.5 mb-3.5 flex justify-between">
         <div className="w-67 max-w-sm">
@@ -90,7 +81,7 @@ export function PaymentOrdersPage() {
             direction="right"
             footerShow={false}
           >
-            <PaymentOrdersForm
+            <RefundFailureLogsForm
               ref={formRef}
               setParams={setParams}
               setCommonParams={setCommonParams}
@@ -98,7 +89,7 @@ export function PaymentOrdersPage() {
           </RrhDrawer>
         </div>
       </div>
-      <PaymentOrdersTable
+      <RefundFailureLogsTable
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}

@@ -56,3 +56,9 @@ export const OrderStatusOptions = [
   { label: '已取消', value: '2' },
   { label: '已超时', value: '3' },
 ];
+
+// 状态
+export const StatusOptions = [
+  { label: '未处理', value: '0' },
+  { label: '已处理', value: '1' },
+];

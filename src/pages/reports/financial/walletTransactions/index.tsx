@@ -10,7 +10,6 @@ import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { WalletTransactionsTable } from './components/WalletTransactionsTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-import { useCurrencyList } from '@/api/hooks/system/system';
 export function WalletTransactionsPage() {
   const { t } = useTranslation();
   const formRef = useRef<WalletTransactionsFormRef>(null);
@@ -40,18 +39,16 @@ export function WalletTransactionsPage() {
   // params[accounts]
   // aaa-下级
   // 获取钱包
-  const { data: currencyList, isLoading: currencyListLoading } = useCurrencyList();
   // 获取钱包流水列表
-  const { data: AgencyClientTracking, isLoading: AgencyClientTrackingLoading } =
-    useWalletTransactionList({
-      params,
-      pageSize,
-      ...commonParams,
-      pageNum: pageNum + 1,
-      // 下面是固定参数
-      isAsc: 'asc',
-      orderByColumn: '',
-    });
+  const { data: data, isLoading: loading } = useWalletTransactionList({
+    params,
+    pageSize,
+    ...commonParams,
+    pageNum: pageNum + 1,
+    // 下面是固定参数
+    isAsc: 'asc',
+    orderByColumn: '',
+  });
 
   const reset = () => {
     setParams({
@@ -68,7 +65,7 @@ export function WalletTransactionsPage() {
   };
   return (
     <div>
-      <div className="text-xl leading-8 font-semibold text-[#1e1e1e]">
+      <div className="text-xl leading-8 font-semibold text-neutral-950">
         {t('financial.walletTransactions.title')}
       </div>
       <div className="mt-3.5 mb-3.5 flex justify-between">
@@ -104,19 +101,18 @@ export function WalletTransactionsPage() {
               ref={formRef}
               setParams={setParams}
               setCommonParams={setCommonParams}
-              currencyList={currencyList?.rows || []}
             />
           </RrhDrawer>
         </div>
       </div>
       <WalletTransactionsTable
-        data={AgencyClientTracking?.rows || []}
-        pageCount={Math.ceil(+(AgencyClientTracking?.total || 0) / pageSize)}
+        data={data?.rows || []}
+        pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}
         pageSize={pageSize}
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
-        loading={AgencyClientTrackingLoading || currencyListLoading}
+        loading={loading}
       />
     </div>
   );

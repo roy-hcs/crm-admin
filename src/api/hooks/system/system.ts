@@ -160,10 +160,11 @@ export function useGetDealAccountGroupList() {
 /**
  * 获取操作类型 操作方式
  */
-export function useDictType(type: string) {
+export function useDictType(type: string, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['DictType', type],
     queryFn: () => apiGet<DictTypeResponse>(`/system/dict/type?dictType=${type}`, {}),
+    enabled: options?.enabled ?? true,
   });
 }
 

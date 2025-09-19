@@ -337,3 +337,109 @@ export type PaymentOrderListResponse = {
   total: string;
   rows: PaymentOrderItem[];
 };
+
+// 交易账号资金流水
+export type CrmUserDealListParams = {
+  params: {
+    ticket?: string;
+    historyFuzzyName?: string;
+    login?: string;
+    comment?: string;
+    accounts?: string;
+    operationStart?: string;
+    operationEnd?: string;
+    fuzzyCrmAccount?: string;
+  };
+  serverId?: string;
+  opeTypeList?: string;
+  opeType?: string;
+  serverGroupList?: string;
+  serverGroup?: string;
+  accountGroupList?: string;
+  accounts?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+};
+export type CrmUserDealItem = {
+  server: string | null;
+  symbol: string | null;
+  open_time: string | null;
+  login: string | null;
+  type: string | null;
+  swaps: string | null;
+  uuid: string | null;
+  close_price: number | null;
+  balance: number | null;
+  sl: number | null;
+  commission: number | null;
+  lot_size: number | null;
+  currency: string | null;
+  id: string | null;
+  open_price: number | null;
+  crmLastName: string | null;
+  profit: number | null;
+  crmShowId: string | null;
+  ticket: number | null;
+  time_stamp: string | null;
+  close_time: string | null;
+  server_id: string | null;
+  volume: number | null;
+  name: string | null;
+  digits: number | null;
+  comment: string | null;
+  time: string | null;
+  order_num: string | null;
+  tp: number | null;
+  server_type: string | null;
+  crmName: string | null;
+};
+export type CrmUserDealListResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: CrmUserDealItem[];
+};
+// 资金回退失败日志
+export type RefundFailLogListParams = {
+  params: {
+    beginTime?: string;
+    endTime?: string;
+  };
+  userId?: string;
+  status?: string;
+  refundAccount?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+};
+export type RefundFailLogItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: string | null;
+  id: string | null;
+  userId: string | null;
+  operType: string | null;
+  operTime: string | null;
+  refundAmount: string | null;
+  refundCurrency: string | null;
+  serverName: string | null;
+  login: string | null;
+  walletId: string | null;
+  status: string | null;
+  lastName: string | null;
+  showId: string | null;
+  name: string | null;
+  refundAccount: string | null;
+};
+export type RefundFailLogListResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: RefundFailLogItem[];
+};

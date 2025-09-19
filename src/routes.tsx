@@ -17,6 +17,8 @@ import { WeeklyRebatePage } from './pages/reports/commission/weekly-rebate';
 import { TradingHistoryPage } from './pages/reports/trading/history/TradingHistory';
 import { WalletTransactionsPage } from './pages/reports/financial/walletTransactions';
 import { PaymentOrdersPage } from './pages/reports/financial/paymentOrders';
+import { TradingAccountTransactionsPage } from './pages/reports/financial/tradingAccountTransactions';
+import { RefundFailureLogsPage } from './pages/reports/financial/refundFailureLogs';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -55,6 +57,16 @@ export const router = createBrowserRouter([
       {
         path: '/reports/financial/payment-orders',
         element: <PaymentOrdersPage />,
+      },
+      // 交易账号资金流水
+      {
+        path: '/reports/financial/trading-account-transactions',
+        element: <TradingAccountTransactionsPage />,
+      },
+      // 资金回退失败日志
+      {
+        path: '/reports/financial/refund-failure-logs',
+        element: <RefundFailureLogsPage />,
       },
       // 佣金报表
       {

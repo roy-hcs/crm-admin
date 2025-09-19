@@ -62,7 +62,11 @@
     "close": "closure",
     "demo": "simulation",
     "live": "reality",
-    "subordinate": "Next level"
+    "subordinate": "Next level",
+    "operType": "Operation Type",
+    "operationTime": "Operation time",
+    "status": "state",
+    "tips": "The data on this page will have a slight delay. \nFor instant data, please wait 1-2 minutes before refreshing the page for query."
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -285,6 +289,23 @@
       "receiptAmount": "Amount of payment",
       "title": "Pay order",
       "userName": "Name/Account ID"
+    },
+    "refundFailLog": {
+      "refundAccount": "Return the account",
+      "refundAmount": "Refund amount",
+      "title": "Fund Recovery Failed Log"
+    },
+    "tradingAccountTransactions": {
+      "comment": "Comments",
+      "crmLastName": "Attached to CRM account",
+      "login": "Trading account",
+      "name": "Name",
+      "order_num": "CRM Order Number",
+      "profit": "Change amount",
+      "ticket": "Order number",
+      "time": "time",
+      "title": "Transaction account capital flow",
+      "type": "Operation Type"
     }
   }
 }

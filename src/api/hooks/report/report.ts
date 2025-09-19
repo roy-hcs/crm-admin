@@ -15,6 +15,10 @@ import {
   WalletTransactionResponse,
   PaymentOrderListParams,
   PaymentOrderListResponse,
+  CrmUserDealListParams,
+  CrmUserDealListResponse,
+  RefundFailLogListParams,
+  RefundFailLogListResponse,
 } from './types';
 
 /**
@@ -96,5 +100,28 @@ export function usePaymentOrderList(params: PaymentOrderListParams) {
     queryKey: ['paymentOrderList', params],
     queryFn: () =>
       apiFormPostCustom<PaymentOrderListResponse>('/system/userOrder/list', params || {}),
+  });
+}
+
+/**
+ * 获取交易账号资金流水
+ */
+export function useCrmUserDealList(params: CrmUserDealListParams, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['crmUserDealList', params],
+    queryFn: () =>
+      apiFormPostCustom<CrmUserDealListResponse>('/system/crmUserDeal/list', params || {}),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 获取资金回退失败日志
+ */
+export function useRefundFailLogList(params: RefundFailLogListParams) {
+  return useQuery({
+    queryKey: ['refundFailLogList', params],
+    queryFn: () =>
+      apiFormPostCustom<RefundFailLogListResponse>('/system/refundFailLog/list', params || {}),
   });
 }

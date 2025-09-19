@@ -16,8 +16,9 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
-import { PaymentChannelItem } from '@/api/hooks/system/types';
 import { OrderStatusOptions } from '@/lib/const';
+import { useChannelList } from '@/api/hooks/system/system';
+import { PaymentChannelItem } from '@/api/hooks/system/types';
 
 type FormData = {
   userName: string;
@@ -48,9 +49,11 @@ export const PaymentOrdersForm = forwardRef<
       orderId: string;
       accounts: string;
     }) => void;
-    channelList: PaymentChannelItem[];
   }
->(({ setParams, setCommonParams, channelList }, ref) => {
+>(({ setParams, setCommonParams }, ref) => {
+  const { data: response } = useChannelList();
+  // 统一归一化为数组
+  const channelList: PaymentChannelItem[] = Array.isArray(response) ? response : [];
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
@@ -99,15 +102,7 @@ export const PaymentOrdersForm = forwardRef<
       orderId: '',
       accounts: '',
     });
-    form.reset({
-      userName: '',
-      account: '',
-      accounts: '',
-      operationTime: { from: '', to: '' },
-      channelId: '',
-      orderStatus: '',
-      orderId: '',
-    });
+    form.reset();
   };
 
   return (

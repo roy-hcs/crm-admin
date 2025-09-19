@@ -80,7 +80,11 @@
     "live": "真实",
     "demo": "模拟",
     "subordinate": "下级",
-    "close": "关闭"
+    "close": "关闭",
+    "tips": " 此页面的数据会有稍许延时。即时的数据，请稍等1-2分钟后刷新页面查询。",
+    "operationTime": "操作时间",
+    "status": "状态",
+    "operType": "操作类型"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -242,6 +246,23 @@
       "receiptAmount": "到款金额",
       "channelName": "支付通道",
       "createTime": "订单时间"
+    },
+    "tradingAccountTransactions": {
+      "title": "交易账号资金流水",
+      "login": "交易账号",
+      "name": "姓名",
+      "crmLastName": "归属CRM账号",
+      "type": "操作类型",
+      "profit": "变动金额",
+      "time": "时间",
+      "ticket": "订单号",
+      "order_num": "CRM订单号",
+      "comment": "注释"
+    },
+    "refundFailLog": {
+      "title": "资金回退失败日志",
+      "refundAccount": "回退账户",
+      "refundAmount": "回退金额"
     }
   },
   "rules": {
