@@ -10,3 +10,10 @@ export const transactionTypeMap: Record<number, string> = {
   0: 'Buy',
   1: 'Sell',
 };
+
+export const entryMap: Record<number, string> = {
+  0: 'in',
+  1: 'out',
+  2: 'in/out',
+  3: 'out by',
+};

@@ -5,12 +5,13 @@ import {
   useReactTable,
   RowData,
 } from '@tanstack/react-table';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -47,6 +48,8 @@ interface DataTableProps<TData extends RowData, TValue> {
   thCls?: string;
   tdCls?: string;
   loading?: boolean;
+  CustomRow?: ReactElement;
+  CustomFooter?: ReactElement;
 }
 
 function useFixedColumns<TData extends RowData>(
@@ -136,6 +139,8 @@ export function DataTable<TData extends RowData, TValue>({
   thCls,
   tdCls,
   loading = false,
+  CustomFooter,
+  CustomRow,
 }: DataTableProps<TData, TValue>) {
   const tableRef = useRef<HTMLTableElement>(null);
   const { t } = useTranslation();
@@ -329,6 +334,8 @@ export function DataTable<TData extends RowData, TValue>({
                 </TableCell>
               </TableRow>
             )}
+            {CustomRow && <TableRow>{CustomRow}</TableRow>}
+            {CustomFooter && <TableFooter>{CustomFooter}</TableFooter>}
           </TableBody>
         </Table>
       </div>

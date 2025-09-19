@@ -1,16 +1,37 @@
-import { TradingHistoryItem } from '@/api/hooks/report/types';
+import { PositionOrderItem } from '@/api/hooks/report/types';
+import { ServerItem } from '@/api/hooks/system/types';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { DataTable } from '@/components/table/DataTable';
-import { Checkbox } from '@/components/ui/checkbox';
 import { transactionTypeMap } from '@/lib/constant';
 import { ColumnDef } from '@tanstack/react-table';
+import { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const TradingHistoryDetails = ({ data }: { data: TradingHistoryItem }) => {
+const formatVolume = (serverType: number | undefined, volume: number, lotSize: number) => {
+  if (serverType == 1) {
+    //MT5
+    return (volume / 10000.0).toFixed(4);
+  } else if (serverType == 4) {
+    //XForce
+    return (volume / (lotSize || 1.0)).toFixed(2);
+  } else if (serverType == 5) {
+    //XOH
+    return volume.toFixed(4);
+  } else {
+    return (volume / 100.0).toFixed(4);
+  }
+};
+const PositionOrderDetails = ({
+  data,
+  serviceType,
+}: {
+  data: PositionOrderItem;
+  serviceType: number | undefined;
+}) => {
   const { t } = useTranslation();
   const detailsData = [
-    { label: t('table.fullName'), value: data.name },
+    { label: t('table.fullName'), value: data.params.accountName },
     { label: t('table.tradingAccount'), value: data.login },
     {
       label: t('table.transactionType'),
@@ -19,17 +40,20 @@ const TradingHistoryDetails = ({ data }: { data: TradingHistoryItem }) => {
     { label: t('table.symbol'), value: data.symbol },
     {
       label: t('table.volume'),
-      value: data.traderCount && data.lotSize ? (data.traderCount / data.lotSize).toFixed(2) : '-',
+      value:
+        data.volume && data.lotSize ? formatVolume(serviceType, data.volume, data.lotSize) : '-',
     },
+    { label: t('table.openPrice'), value: data.price },
+    { label: t('table.openTime'), value: data.time },
+    // UI上存在以下字段，但接口返回数据中似乎没有相关数据，暂时隐藏
+    // { label: t('table.takeProfitPrice'), value: data.takeProfitPrice },
+    // { label: t('table.stopLossPrice'), value: data.stopLossPrice },
+
     {
       label: t('table.profitAndLoss'),
       value: data.profit !== null ? `${data.profit.toFixed(2)} ${data.currency}` : '-',
     },
 
-    { label: t('table.openPrice'), value: data.openPrice },
-    { label: t('table.openTime'), value: data.openTime },
-    { label: t('table.closePrice'), value: data.closePrice },
-    { label: t('table.closeTime'), value: data.closeTime },
     {
       label: t('table.commission'),
       value: data.commission !== null ? `${data.commission.toFixed(2)} ${data.currency}` : '-',
@@ -38,8 +62,8 @@ const TradingHistoryDetails = ({ data }: { data: TradingHistoryItem }) => {
       label: t('table.swap'),
       value: data.swaps !== null ? `${data.swaps.toFixed(2)} ${data.currency}` : '-',
     },
-    { label: t('table.orderNumber'), value: data.ticket?.toString() || '-' },
     { label: t('table.comment'), value: data.comment },
+    { label: t('table.orderNumber'), value: data.ticket?.toString() || '-' },
   ];
   return (
     <div className="grid grid-cols-2 gap-4 p-4">
@@ -54,7 +78,8 @@ const TradingHistoryDetails = ({ data }: { data: TradingHistoryItem }) => {
     </div>
   );
 };
-export const TradingHistoryTable = ({
+
+export const PositionOrderTable = ({
   data,
   pageCount,
   pageIndex,
@@ -62,41 +87,22 @@ export const TradingHistoryTable = ({
   onPageChange,
   onPageSizeChange,
   loading = false,
+  CustomRow,
+  selectedServer,
 }: {
-  data: TradingHistoryItem[];
+  data: PositionOrderItem[];
   pageCount: number;
   pageIndex: number;
   pageSize: number;
   onPageChange: (pageIndex: number) => void;
   onPageSizeChange: (pageSize: number) => void;
   loading?: boolean;
+  CustomRow: ReactElement;
+  selectedServer: ServerItem | undefined;
 }) => {
   const { t } = useTranslation();
-  const tradingHistoryColumns: ColumnDef<TradingHistoryItem>[] = [
-    {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          className="data-[state=checked]:border-slate-700"
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          className="data-[state=checked]:border-slate-700"
-          checked={row.getIsSelected()}
-          onCheckedChange={value => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
+  const serverType = selectedServer?.serviceType;
+  const tradingHistoryColumns: ColumnDef<PositionOrderItem>[] = [
     {
       id: 'No.',
       header: t('CRMAccountPage.Index'),
@@ -105,17 +111,12 @@ export const TradingHistoryTable = ({
     {
       id: 'userName',
       header: t('CRMAccountPage.UserName'),
-      accessorFn: row => row.name,
+      accessorFn: row => row.params.accountName,
     },
     {
       id: 'login',
       header: t('table.tradingAccount'),
       accessorFn: row => row.login,
-    },
-    {
-      id: 'ticket',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.ticket,
     },
     {
       id: 'type',
@@ -133,8 +134,9 @@ export const TradingHistoryTable = ({
       header: t('table.volume'),
       cell: ({ row }) => {
         const rowData = row.original;
-        return rowData.traderCount && rowData.lotSize ? (
-          <div>{(rowData.traderCount / rowData.lotSize).toFixed(2)}</div>
+
+        return rowData.volume && rowData.lotSize ? (
+          <div>{formatVolume(serverType, rowData.volume, rowData.lotSize)}</div>
         ) : (
           <div>-</div>
         );
@@ -143,22 +145,17 @@ export const TradingHistoryTable = ({
     {
       id: 'openPrice',
       header: t('table.openPrice'),
-      accessorFn: row => row.openPrice,
+      accessorFn: row => row.price,
     },
     {
       id: 'openTime',
       header: t('table.openTime'),
-      accessorFn: row => row.openTime,
+      accessorFn: row => row.time,
     },
     {
-      id: 'closePrice',
-      header: t('table.closePrice'),
-      accessorFn: row => row.closePrice,
-    },
-    {
-      id: 'closeTime',
-      header: t('table.closeTime'),
-      accessorFn: row => row.closeTime,
+      id: 'currentPrice',
+      header: t('table.currentPrice'),
+      accessorFn: row => row.priceCur,
     },
     {
       id: 'profit',
@@ -168,20 +165,6 @@ export const TradingHistoryTable = ({
         return rowData.profit !== null ? (
           <div>
             {rowData.profit.toFixed(2)} {rowData.currency}
-          </div>
-        ) : (
-          <div>-</div>
-        );
-      },
-    },
-    {
-      id: 'commission',
-      header: t('table.commission'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        return rowData.commission !== null ? (
-          <div>
-            {rowData.commission.toFixed(2)} {rowData.currency}
           </div>
         ) : (
           <div>-</div>
@@ -203,6 +186,11 @@ export const TradingHistoryTable = ({
       },
     },
     {
+      id: 'ticket',
+      header: t('table.orderNumber'),
+      accessorFn: row => row.ticket,
+    },
+    {
       id: 'comment',
       header: t('table.comment'),
       accessorFn: row => row.comment,
@@ -211,22 +199,15 @@ export const TradingHistoryTable = ({
       id: 'operate',
       header: t('common.Operation'),
       cell: ({ row }) => {
-        const onClick = (data: TradingHistoryItem) => {
-          console.log('Operate on row:', data);
-        };
         return (
           <div>
             <RrhDialog
-              trigger={
-                <RrhButton variant="ghost" onClick={() => onClick(row.original)}>
-                  {t('common.View')}
-                </RrhButton>
-              }
+              trigger={<RrhButton variant="ghost">{t('common.View')}</RrhButton>}
               cancelText={t('common.close')}
               confirmShow={false}
               title={t('tradingHistoryPage.tradingHistoryDetail')}
             >
-              <TradingHistoryDetails data={row.original} />
+              <PositionOrderDetails data={row.original} serviceType={selectedServer?.serviceType} />
             </RrhDialog>
           </div>
         );
@@ -243,6 +224,7 @@ export const TradingHistoryTable = ({
       onPageChange={onPageChange}
       onPageSizeChange={onPageSizeChange}
       loading={loading}
+      CustomRow={CustomRow}
     />
   );
 };

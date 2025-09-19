@@ -221,7 +221,7 @@ export const LoginForm = ({
             onClick={() => setLoginType(loginType === 1 ? 2 : 1)}
           >
             {t('loginPage.LoginWith', {
-              method: loginType === 1 ? 'loginPage.email' : 'loginPage.mobile',
+              method: loginType === 1 ? t('loginPage.email') : t('loginPage.mobile'),
             })}
           </RrhButton>
 
