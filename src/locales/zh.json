@@ -80,7 +80,8 @@
     "live": "真实",
     "demo": "模拟",
     "subordinate": "下级",
-    "close": "关闭"
+    "close": "关闭",
+    "systemTip": "系统提示"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -238,6 +239,9 @@
   "limitOrderPage": {
     "limitOrder": "限价订单"
   },
+  "accountStatisticPage": {
+    "accountStatistic": "交易账号交易历史统计"
+  },
   "table": {
     "server": "服务器",
     "groups": "组别",
@@ -270,6 +274,14 @@
     "total": "合计",
     "orderPlacementTime": "挂单时间",
     "orderPlacementPrice": "挂单价格",
-    "time": "时间"
+    "time": "时间",
+    "tradingOrdersTotal": "交易订单总和",
+    "closeLots": "平仓手数",
+    "openLots": "开仓手数",
+    "closedPosition": "已平仓盈亏",
+    "currentBalance": "当前余额",
+    "statisticTime": "统计时间",
+    "clickToGetSum": "点击查看数据合计",
+    "exportAllDataTip": "确定导出所有{{field}}吗？"
   }
 }

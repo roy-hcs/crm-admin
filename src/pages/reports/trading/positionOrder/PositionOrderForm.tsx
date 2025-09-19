@@ -18,7 +18,6 @@ import {
 } from '@/components/ui/form';
 import { serverMap } from '@/lib/constant';
 import { RefreshCcw, Search } from 'lucide-react';
-import { forwardRef, useImperativeHandle } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
@@ -40,21 +39,23 @@ export interface PositionOrderRef {
   onReset: () => void;
 }
 
-export const PositionOrderForm = forwardRef<
-  PositionOrderRef,
-  {
-    serverList: ServerItem[];
-    serverListLoading: boolean;
-    setParams: (params: PositionOrderParams['params']) => void;
-    setOtherParams: (params: {
-      server?: string;
-      type?: number | string;
-      accountGroupList?: string;
-      accounts?: string;
-      serverGroupList?: string;
-    }) => void;
-  }
->(({ serverList, serverListLoading, setOtherParams, setParams }, ref) => {
+export const PositionOrderForm = ({
+  serverList,
+  serverListLoading,
+  setOtherParams,
+  setParams,
+}: {
+  serverList: ServerItem[];
+  serverListLoading: boolean;
+  setParams: (params: PositionOrderParams['params']) => void;
+  setOtherParams: (params: {
+    server?: string;
+    type?: number | string;
+    accountGroupList?: string;
+    accounts?: string;
+    serverGroupList?: string;
+  }) => void;
+}) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
@@ -70,11 +71,6 @@ export const PositionOrderForm = forwardRef<
       openTime: { from: '', to: '' },
     },
   });
-  useImperativeHandle(ref, () => ({
-    onReset: () => {
-      form.reset();
-    },
-  }));
   if (!form.getValues('serverId') && serverList.length && !serverListLoading) {
     form.setValue('serverId', serverList[0].id, { shouldDirty: false, shouldTouch: false });
   }
@@ -262,4 +258,4 @@ export const PositionOrderForm = forwardRef<
       </Form>
     </FormProvider>
   );
-});
+};

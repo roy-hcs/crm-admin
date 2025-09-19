@@ -4,10 +4,10 @@ import { useServerList } from '@/api/hooks/system/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
-import { Funnel, Search } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Funnel, RefreshCcw, Search } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LimitOrderForm, LimitOrderRef } from './LimitOrderForm';
+import { LimitOrderForm } from './LimitOrderForm';
 import { LimitOrderTable } from './LimitOrderTable';
 import { TableCell } from '@/components/ui/table';
 
@@ -27,7 +27,6 @@ export const LimitOrderPage = () => {
     serverGroupList: '',
     accounts: '',
   });
-  const formRef = useRef<LimitOrderRef>(null);
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
@@ -56,6 +55,24 @@ export const LimitOrderPage = () => {
     },
     { enabled: otherParams.server !== '' },
   );
+  const reset = () => {
+    setParams({
+      positionFuzzyType: '',
+      positionFuzzyName: '',
+      positionFuzzyLogin: '',
+      positionFuzzySymbol: '',
+      positionFuzzyTicket: '',
+      accounts: '',
+      positionDealBJStartTime: '',
+      positionDealBJEndTime: '',
+    });
+    setOtherParams({
+      server: '',
+      serverGroupList: '',
+      accounts: '',
+    });
+    setPageNum(0);
+  };
 
   return (
     <div>
@@ -71,6 +88,9 @@ export const LimitOrderPage = () => {
           }}
         />
         <div className="flex justify-end gap-2">
+          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+            <RefreshCcw className="size-3.5" />
+          </RrhButton>
           <RrhDrawer
             headerShow={false}
             asChild
@@ -83,7 +103,6 @@ export const LimitOrderPage = () => {
             }
           >
             <LimitOrderForm
-              ref={formRef}
               serverListLoading={serverListLoading}
               serverList={serverList?.rows || []}
               setParams={setParams}

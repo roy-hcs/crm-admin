@@ -4,10 +4,10 @@ import { useServerList } from '@/api/hooks/system/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
-import { Funnel, Search } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Funnel, RefreshCcw, Search } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PositionOrderForm, PositionOrderRef } from './PositionOrderForm';
+import { PositionOrderForm } from './PositionOrderForm';
 import { PositionOrderTable } from './PositionOrderTable';
 import { TableCell } from '@/components/ui/table';
 
@@ -29,7 +29,6 @@ export const PositionOrderPage = () => {
     accountGroupList: '',
     accounts: '',
   });
-  const formRef = useRef<PositionOrderRef>(null);
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
@@ -59,6 +58,27 @@ export const PositionOrderPage = () => {
     { enabled: otherParams.server !== '' },
   );
 
+  const reset = () => {
+    setParams({
+      random: new Date().getTime() + '' + Math.floor(Math.random() * 100 + 1),
+      positionFuzzyName: '',
+      positionFuzzyLogin: '',
+      positionFuzzySymbol: '',
+      positionFuzzyTicket: '',
+      accounts: '',
+      positionDealBJStartTime: '',
+      positionDealBJEndTime: '',
+    });
+    setOtherParams({
+      server: serverList?.rows[0].id || '',
+      serverGroupList: '',
+      type: '',
+      accountGroupList: '',
+      accounts: '',
+    });
+    setPageNum(0);
+  };
+
   return (
     <div>
       <h1 className="text-title">{t('positionOrderPage.positionOrder')}</h1>
@@ -75,6 +95,9 @@ export const PositionOrderPage = () => {
         <div className="flex justify-end gap-2">
           <RrhButton variant="outline">{t('table.export')}</RrhButton>
           <RrhButton variant="outline">{t('positionOrderPage.positionCost')}</RrhButton>
+          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+            <RefreshCcw className="size-3.5" />
+          </RrhButton>
           <RrhDrawer
             headerShow={false}
             asChild
@@ -87,7 +110,6 @@ export const PositionOrderPage = () => {
             }
           >
             <PositionOrderForm
-              ref={formRef}
               serverListLoading={serverListLoading}
               serverList={serverList?.rows || []}
               setParams={setParams}

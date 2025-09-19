@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 interface DialogProps {
   title?: string;
@@ -34,8 +35,8 @@ export const RrhDialog: React.FC<DialogProps> = ({
   description,
   trigger,
   children,
-  cancelText = 'Cancel',
-  confirmText = 'Confirm',
+  cancelText,
+  confirmText,
   isConfirmDisabled = false,
   className = '',
   onCancel,
@@ -56,6 +57,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
     if (!onOpenChange) return;
     onOpenChange(false);
   };
+  const { t } = useTranslation();
 
   return (
     <ShadcnDialog open={open} onOpenChange={onOpenChange}>
@@ -79,7 +81,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
                 className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-[#1E1E1E]"
                 onClick={handleCancel}
               >
-                {cancelText}
+                {cancelText || t('common.Cancel')}
               </div>
             </DialogClose>
             {confirmShow && (
@@ -94,7 +96,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
                     isConfirmDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
                   )}
                 >
-                  {confirmText}
+                  {confirmText || t('common.Confirm')}
                 </div>
               </DialogClose>
             )}

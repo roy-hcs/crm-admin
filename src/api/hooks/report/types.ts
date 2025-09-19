@@ -349,3 +349,78 @@ export type LimitOrderListParams = {
     positionDealBJEndTime?: string;
   };
 };
+
+export type AccountStatisticListParams = {
+  server?: string;
+  accountGroupList?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+  params: {
+    serverGroupList?: number | string;
+    fuzzyAccount?: string;
+    fuzzyName?: string;
+    statisticStartTime?: string;
+    statisticEndTime?: string;
+  };
+};
+
+export type AccountStatisticListItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  name: string | null;
+  login: string | null;
+  countOrder: number | null;
+  countHistory: number | null;
+  countPosition: number | null;
+  countVolume: number | null;
+  historyVolume: number | null;
+  positionVolume: number | null;
+  countCommission: number | null;
+  countSwaps: number | null;
+  countProfit: number | null;
+  balance: number | null;
+  currency: string | null;
+  serviceType: number | null;
+};
+
+export type AccountStatisticListResponse = {
+  code: number;
+  msg: string | null;
+  rows: AccountStatisticListItem[];
+  total: string;
+};
+
+export type AccountStatisticSumParams = {
+  server?: string;
+  accountGroupList?: string;
+  params: {
+    serverGroupList?: number | string;
+    fuzzyAccount?: string;
+    fuzzyName?: string;
+    statisticStartTime?: string;
+    statisticEndTime?: string;
+  };
+};
+
+export type AccountStatisticSumItem = {
+  balanceTotal: number | null;
+  countCommissionTotal: number | null;
+  countOrderTotal: number | null;
+  countProfitTotal: number | null;
+  countSwapsTotal: number | null;
+  currency: string | null;
+  historyVolumeTotal: number | null;
+  positionVolumeTotal: number | null;
+};
+
+export type AccountStatisticSumResponse = {
+  code: number;
+  msg: string | null;
+  data: AccountStatisticSumItem[];
+};

@@ -8,7 +8,6 @@ import {
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
-import { forwardRef, useImperativeHandle } from 'react';
 import { RefreshCcw, Search } from 'lucide-react';
 import { FormInput } from '@/components/form/FormInput';
 import { FormProvider } from '@/contexts/form';
@@ -38,40 +37,38 @@ type FormData = {
   closeTime: { from: string; to: string };
 };
 
-export interface TradingHistoryRef {
-  onReset: () => void;
-}
-
-export const TradingHistoryForm = forwardRef<
-  TradingHistoryRef,
-  {
-    serverList: ServerItem[];
-    serverListLoading: boolean;
-    setOtherParams: (params: {
-      serverType: string;
-      serverId: string;
-      serverGroupList: string;
-      serverGroup: string;
-      type: string;
-      symbol: string;
-      ticket: string;
-      login: string;
-      accountGroupList: string;
-      accounts: string;
-      positionID: string;
-      entry: string;
-    }) => void;
-    setParams: (params: {
-      selectOther: string;
-      historyDealBJStartTime: string;
-      historyDealBJEndTime: string;
-      historyCloseStartTime: string;
-      historyCloseEndTime: string;
-      accounts: string;
-      historyFuzzyName: string;
-    }) => void;
-  }
->(({ setOtherParams, setParams, serverList, serverListLoading }, ref) => {
+export const TradingHistoryForm = ({
+  setOtherParams,
+  setParams,
+  serverList,
+  serverListLoading,
+}: {
+  serverList: ServerItem[];
+  serverListLoading: boolean;
+  setOtherParams: (params: {
+    serverType: string;
+    serverId: string;
+    serverGroupList: string;
+    serverGroup: string;
+    type: string;
+    symbol: string;
+    ticket: string;
+    login: string;
+    accountGroupList: string;
+    accounts: string;
+    positionID: string;
+    entry: string;
+  }) => void;
+  setParams: (params: {
+    selectOther: string;
+    historyDealBJStartTime: string;
+    historyDealBJEndTime: string;
+    historyCloseStartTime: string;
+    historyCloseEndTime: string;
+    accounts: string;
+    historyFuzzyName: string;
+  }) => void;
+}) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
@@ -90,11 +87,6 @@ export const TradingHistoryForm = forwardRef<
       closeTime: { from: '', to: '' },
     },
   });
-  useImperativeHandle(ref, () => ({
-    onReset: () => {
-      form.reset();
-    },
-  }));
 
   if (!form.getValues('serverId') && serverList.length && !serverListLoading) {
     form.setValue('serverId', serverList[0].id, { shouldDirty: false, shouldTouch: false });
@@ -358,4 +350,4 @@ export const TradingHistoryForm = forwardRef<
       </Form>
     </FormProvider>
   );
-});
+};

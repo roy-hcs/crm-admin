@@ -1,5 +1,5 @@
-import { apiFormPostCustom } from '@/api/client';
-import { useQuery } from '@tanstack/react-query';
+import { apiFormPost, apiFormPostCustom } from '@/api/client';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   ClientTrackingParams,
   AgencyClientTrackingResponse,
@@ -15,6 +15,10 @@ import {
   PositionOrderResponse,
   LimitOrderListResponse,
   LimitOrderListParams,
+  AccountStatisticListResponse,
+  AccountStatisticListParams,
+  AccountStatisticSumResponse,
+  AccountStatisticSumParams,
 } from './types';
 
 /**
@@ -92,5 +96,37 @@ export function useLimitOrderList(params: LimitOrderListParams, options: { enabl
     queryFn: () =>
       apiFormPostCustom<LimitOrderListResponse>('/system/statistics/positionList/2', params || {}),
     enabled: options.enabled,
+  });
+}
+
+export function useAccountStatisticList(
+  params: AccountStatisticListParams,
+  options: { enabled: boolean },
+) {
+  return useQuery({
+    queryKey: ['accountStatisticList', params],
+    queryFn: () =>
+      apiFormPostCustom<AccountStatisticListResponse>(
+        '/system/statistics/accountStatisticList',
+        params || {},
+      ),
+    enabled: options.enabled,
+  });
+}
+
+export function useAccountStaticsSum() {
+  return useMutation({
+    mutationFn: (params: AccountStatisticSumParams) =>
+      apiFormPostCustom<AccountStatisticSumResponse>(
+        '/system/statistics/accountStaticsSum',
+        params,
+      ),
+  });
+}
+
+export function useExportAccountStatisticList() {
+  return useMutation({
+    mutationFn: (params: AccountStatisticListParams) =>
+      apiFormPost('/system/statistics/account-export', params),
   });
 }

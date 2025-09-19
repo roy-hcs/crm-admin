@@ -1,9 +1,8 @@
-import { LimitOrderListParams } from '@/api/hooks/report/types';
+import { AccountStatisticListParams } from '@/api/hooks/report/types';
 import { useGetDealAccountGroupList, useGetGroupByServer } from '@/api/hooks/system/system';
 import { ServerItem } from '@/api/hooks/system/types';
 import { RrhButton } from '@/components/common/RrhButton';
 import { BaseOption } from '@/components/common/RrhMultiSelect';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { FormInput } from '@/components/form/FormInput';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
@@ -25,17 +24,13 @@ import { useForm } from 'react-hook-form';
 type FormData = {
   serverId: string;
   serverGroupList: string[];
-  type: number | string;
   name: string;
   login: string;
-  symbol: string;
-  ticket: string;
-  accounts: string;
   accountGroupList: string[];
-  openTime: { from: string; to: string };
+  statisticTime: { from: string; to: string };
 };
 
-export const LimitOrderForm = ({
+export const StatisticForm = ({
   serverList,
   serverListLoading,
   setOtherParams,
@@ -43,28 +38,19 @@ export const LimitOrderForm = ({
 }: {
   serverList: ServerItem[];
   serverListLoading: boolean;
-  setParams: (params: LimitOrderListParams['params']) => void;
-  setOtherParams: (params: {
-    server?: string;
-    type?: number | string;
-    accountGroupList?: string;
-    accounts?: string;
-    serverGroupList?: string;
-  }) => void;
+  setParams: (params: AccountStatisticListParams['params']) => void;
+  setOtherParams: (params: { server?: string; accountGroupList?: string }) => void;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
       serverId: '',
       serverGroupList: [],
-      type: '',
       name: '',
       login: '',
-      symbol: '',
-      ticket: '',
       accounts: '',
       accountGroupList: [],
-      openTime: { from: '', to: '' },
+      statisticTime: { from: '', to: '' },
     },
   });
   if (!form.getValues('serverId') && serverList.length && !serverListLoading) {
@@ -78,43 +64,29 @@ export const LimitOrderForm = ({
   const { data: dealAccountGroupListData } = useGetDealAccountGroupList();
 
   const onSubmit = (data: FormData) => {
-    const selectedAccounts = JSON.parse(data.accounts || '{"id": "", "label": ""}') as {
-      id: string;
-      label: string;
-    };
     setOtherParams({
       server: data.serverId,
-      serverGroupList: data.serverGroupList.join(','),
-      accounts: selectedAccounts.id,
+      accountGroupList: data.accountGroupList.join(','),
     });
     setParams({
-      positionFuzzyType: data.type,
-      positionFuzzyName: data.name,
-      positionFuzzyLogin: data.login,
-      positionFuzzySymbol: data.symbol,
-      positionFuzzyTicket: data.ticket,
-      accounts: selectedAccounts.label,
-      positionDealBJStartTime: data.openTime.from,
-      positionDealBJEndTime: data.openTime.to,
+      serverGroupList: data.serverGroupList.join(','),
+      fuzzyAccount: data.login,
+      fuzzyName: data.name,
+      statisticStartTime: data.statisticTime.from,
+      statisticEndTime: data.statisticTime.to,
     });
   };
   const onReset = () => {
     setOtherParams({
       server: form.watch('serverId') || '',
-      serverGroupList: '',
-      type: '',
       accountGroupList: '',
-      accounts: '',
     });
     setParams({
-      positionFuzzyType: '',
-      positionFuzzyName: '',
-      positionFuzzyLogin: '',
-      positionFuzzySymbol: '',
-      positionFuzzyTicket: '',
-      accounts: '',
-      positionDealBJStartTime: '',
-      positionDealBJEndTime: '',
+      serverGroupList: '',
+      fuzzyAccount: '',
+      fuzzyName: '',
+      statisticStartTime: '',
+      statisticEndTime: '',
     });
     form.reset();
   };
@@ -177,36 +149,6 @@ export const LimitOrderForm = ({
                 })) || []
             }
           />
-          <FormSelect
-            verticalLabel
-            name="type"
-            label={t('table.transactionType')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={[
-              { label: 'buy', value: 0 },
-              { label: 'sell', value: 1 },
-            ]}
-          />
-          <FormInput
-            verticalLabel
-            name="symbol"
-            label={t('table.symbol')}
-            placeholder={t('common.pleaseInput', { field: t('table.symbol') })}
-          />
-          <FormInput
-            verticalLabel
-            name="ticket"
-            type="number"
-            label={t('table.orderNumber')}
-            placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
-          />
-          <FormInput
-            verticalLabel
-            name="name"
-            label={t('table.fullName')}
-            placeholder={t('common.pleaseInput', { field: t('table.firstNameOrLastName') })}
-          />
 
           <FormInput
             verticalLabel
@@ -214,6 +156,29 @@ export const LimitOrderForm = ({
             label={t('table.tradingAccount')}
             placeholder={t('common.pleaseInput', { field: t('table.tradingAccount') })}
           />
+
+          <FormInput
+            verticalLabel
+            name="name"
+            label={t('table.fullName')}
+            placeholder={t('common.pleaseInput', { field: t('table.firstNameOrLastName') })}
+          />
+
+          <FormField
+            name="statisticTime"
+            render={() => (
+              <FormItem className="flex flex-col gap-2 text-sm">
+                <FormLabel className="basis-3/12 text-[#757F8D]">
+                  {t('table.statisticTime')}
+                </FormLabel>
+                <FormControl className="basis-9/12">
+                  <FormDateRangeInput name="statisticTime" control={form.control} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormMultiSelect
             verticalLabel
             name="accountGroupList"
@@ -225,27 +190,6 @@ export const LimitOrderForm = ({
                 value: item.id,
               })) || []
             }
-          />
-          <FormField
-            name="accounts"
-            render={({ field }) => {
-              return <RrhSelectAccountsPopup verticalLabel field={field} />;
-            }}
-          />
-
-          <FormField
-            name="openTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">
-                  {t('table.orderPlacementTime')}
-                </FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="openTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
           />
 
           <div className="flex justify-end gap-4">
