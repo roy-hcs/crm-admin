@@ -1,5 +1,5 @@
-import { apiFormPostCustom } from '@/api/client';
-import { useQuery } from '@tanstack/react-query';
+import { apiFormPost, apiFormPostCustom, apiGetCustom } from '@/api/client';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   ClientTrackingParams,
   AgencyClientTrackingResponse,
@@ -23,6 +23,23 @@ import {
   TradingAccountFundsStatsResponse,
   DataStatisticsParams,
   DataStatisticsResponse,
+  PositionOrderParams,
+  PositionOrderResponse,
+  LimitOrderListResponse,
+  LimitOrderListParams,
+  AccountStatisticListResponse,
+  AccountStatisticListParams,
+  AccountStatisticSumResponse,
+  AccountStatisticSumParams,
+  SystemFundOperationRecordListParams,
+  SystemFundOperationRecordListRes,
+  SystemFundOperationRecordSumParams,
+  SystemFundOperationRecordSumRes,
+  WalletBalanceRes,
+  WalletBalanceParams,
+  WalletBalanceSumParams,
+  WalletBalanceSumRes,
+  CurrencyListRes,
 } from './types';
 
 /**
@@ -119,6 +136,39 @@ export function useCrmUserDealList(params: CrmUserDealListParams, options: { ena
   });
 }
 
+export function usePositionOrderList(params: PositionOrderParams, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['positionOrder', params],
+    queryFn: () =>
+      apiFormPostCustom<PositionOrderResponse>('/system/statistics/positionList/1', params || {}),
+    enabled: options.enabled,
+  });
+}
+
+export function useLimitOrderList(params: LimitOrderListParams, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['limitOrderList', params],
+    queryFn: () =>
+      apiFormPostCustom<LimitOrderListResponse>('/system/statistics/positionList/2', params || {}),
+    enabled: options.enabled,
+  });
+}
+
+export function useAccountStatisticList(
+  params: AccountStatisticListParams,
+  options: { enabled: boolean },
+) {
+  return useQuery({
+    queryKey: ['accountStatisticList', params],
+    queryFn: () =>
+      apiFormPostCustom<AccountStatisticListResponse>(
+        '/system/statistics/accountStatisticList',
+        params || {},
+      ),
+    enabled: options.enabled,
+  });
+}
+
 /**
  * 获取资金回退失败日志
  */
@@ -160,5 +210,85 @@ export function useDataStatistics(params: DataStatisticsParams, options?: { enab
         params || {},
       ),
     enabled: options?.enabled ?? true,
+  });
+}
+export function useAccountStaticsSum() {
+  return useMutation({
+    mutationFn: (params: AccountStatisticSumParams) =>
+      apiFormPostCustom<AccountStatisticSumResponse>(
+        '/system/statistics/accountStaticsSum',
+        params,
+      ),
+  });
+}
+
+export function useExportAccountStatisticList() {
+  return useMutation({
+    mutationFn: (params: AccountStatisticListParams) =>
+      apiFormPost('/system/statistics/account-export', params),
+  });
+}
+
+export function useSystemFundOperationRecordList(
+  params: SystemFundOperationRecordListParams,
+  options: { enabled: boolean },
+) {
+  return useQuery({
+    queryKey: ['systemFundOperationRecordList', params],
+    queryFn: () =>
+      apiFormPostCustom<SystemFundOperationRecordListRes>(
+        '/system/statistics/systemFundOperRecordList',
+        params || {},
+      ),
+    enabled: options.enabled,
+  });
+}
+
+export function useSystemFundOperationRecordSum() {
+  return useMutation({
+    mutationFn: (params: SystemFundOperationRecordSumParams) =>
+      apiFormPostCustom<SystemFundOperationRecordSumRes>(
+        '/system/statistics/systemFundOperRecordSum',
+        params,
+      ),
+  });
+}
+
+export function useWalletBalanceList(
+  params: WalletBalanceParams,
+  options: { enabled?: boolean } = {},
+) {
+  return useQuery({
+    queryKey: ['walletBalanceList', params],
+    queryFn: () =>
+      apiFormPostCustom<WalletBalanceRes>(
+        '/system/crmUserWallet/walletOverview/list',
+        params || {},
+      ),
+    enabled: options.enabled ?? true,
+  });
+}
+
+export function useWalletBalanceSum() {
+  return useMutation({
+    mutationFn: (params: WalletBalanceSumParams) =>
+      apiFormPostCustom<WalletBalanceSumRes>(
+        '/system/crmUserWallet/walletOverview/listSum',
+        params,
+      ),
+  });
+}
+
+export function useCurrencyList() {
+  return useQuery({
+    queryKey: ['currencyList'],
+    queryFn: () => apiFormPostCustom<CurrencyListRes>('/system/currency/list', {}),
+  });
+}
+
+export function useAllCurrencies() {
+  return useQuery({
+    queryKey: ['allCurrencies'],
+    queryFn: () => apiGetCustom<string[]>('/system/crmUserWallet/getAllWalletCurrencies'),
   });
 }

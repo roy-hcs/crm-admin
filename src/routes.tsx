@@ -14,13 +14,18 @@ import { FeesPage } from './pages/reports/commission/fees';
 import { DepositsPage } from './pages/reports/commission/deposits';
 import { DailyRebatePage } from './pages/reports/commission/daily-rebate';
 import { WeeklyRebatePage } from './pages/reports/commission/weekly-rebate';
-import { TradingHistoryPage } from './pages/reports/trading/history/TradingHistory';
 import { WalletTransactionsPage } from './pages/reports/financial/walletTransactions';
 import { PaymentOrdersPage } from './pages/reports/financial/paymentOrders';
 import { TradingAccountTransactionsPage } from './pages/reports/financial/tradingAccountTransactions';
 import { RefundFailureLogsPage } from './pages/reports/financial/refundFailureLogs';
 import { TradingAccountFundsStatsPage } from './pages/reports/financial/tradingAccountFundsStats';
 import { TradingAccountDataStatsPage } from './pages/reports/financial/tradingAccountDataStats';
+import { TradingHistoryPage } from './pages/reports/trading/history/TradingHistoryPage';
+import { PositionOrderPage } from './pages/reports/trading/positionOrder/PositionOrderPage';
+import { LimitOrderPage } from './pages/reports/trading/limitOrder/LimitOrderPage';
+import { StatisticPage } from './pages/reports/trading/statistic/StatisticPage';
+import { SystemFundOperationsPage } from './pages/reports/financial/systemFundOperations/SystemFundOperationsPage';
+import { WalletBalancePage } from './pages/reports/financial/walletBalance/WalletBalancePage';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -108,6 +113,26 @@ export const router = createBrowserRouter([
       {
         path: '/reports/trading/history',
         element: <TradingHistoryPage />,
+      },
+      {
+        path: '/reports/trading/open-positions',
+        element: <PositionOrderPage />,
+      },
+      {
+        path: '/reports/trading/limit-orders',
+        element: <LimitOrderPage />,
+      },
+      {
+        path: '/reports/trading/account-history-stats',
+        element: <StatisticPage />,
+      },
+      {
+        path: '/reports/financial/wallet-balance-overview',
+        element: <WalletBalancePage />,
+      },
+      {
+        path: '/reports/financial/system-fund-operations',
+        element: <SystemFundOperationsPage />,
       },
       // ib客户追踪
       {

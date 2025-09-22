@@ -171,7 +171,7 @@ export const LoginForm = ({
                   <div className="relative">
                     <Input
                       type={showPWD ? 'text' : 'password'}
-                      placeholder="Enter your password"
+                      placeholder={t('loginPage.EnterYourPassword')}
                       {...field}
                     />
                     <button
@@ -221,7 +221,7 @@ export const LoginForm = ({
             onClick={() => setLoginType(loginType === 1 ? 2 : 1)}
           >
             {t('loginPage.LoginWith', {
-              method: loginType === 1 ? 'loginPage.email' : 'loginPage.mobile',
+              method: loginType === 1 ? t('loginPage.email') : t('loginPage.mobile'),
             })}
           </RrhButton>
 

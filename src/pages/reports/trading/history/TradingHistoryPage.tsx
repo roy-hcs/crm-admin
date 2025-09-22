@@ -1,9 +1,9 @@
 import { useTradingHistoryList } from '@/api/hooks/report/report';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { Funnel, Search } from 'lucide-react';
-import { TradingHistoryForm, TradingHistoryRef } from './TradingHistoryForm';
-import { useEffect, useRef, useState } from 'react';
+import { Funnel, RefreshCcw, Search } from 'lucide-react';
+import { TradingHistoryForm } from './TradingHistoryForm';
+import { useEffect, useState } from 'react';
 import { useServerList } from '@/api/hooks/system/system';
 import { TradingHistoryTable } from './TradingHistoryTable';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +30,12 @@ export const TradingHistoryPage = () => {
     accountGroupList: '',
     accounts: '',
     positionID: '',
+    entry: '',
   });
+
+  const [pageNum, setPageNum] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const { t } = useTranslation();
 
   const { data: serverList, isLoading: serverListLoading } = useServerList();
   useEffect(() => {
@@ -45,11 +50,10 @@ export const TradingHistoryPage = () => {
   const { data, isLoading } = useTradingHistoryList(
     {
       breedGroup: '',
-      entry: '',
       orderByColumn: '',
       isAsc: 'asc',
-      pageNum: 1,
-      pageSize: 10,
+      pageNum: pageNum + 1,
+      pageSize,
       ...otherParams,
       params: {
         ...params,
@@ -59,10 +63,31 @@ export const TradingHistoryPage = () => {
       enabled: otherParams.serverId !== '' && otherParams.serverType !== '',
     },
   );
-  const formRef = useRef<TradingHistoryRef>(null);
-  const [pageNum, setPageNum] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const { t } = useTranslation();
+  const reset = () => {
+    setParams({
+      selectOther: '',
+      historyDealBJStartTime: '',
+      historyDealBJEndTime: '',
+      historyCloseStartTime: '',
+      historyCloseEndTime: '',
+      accounts: '',
+    });
+    setOtherParams({
+      serverType: serverList?.rows[0].serviceType.toString() || '',
+      serverId: serverList?.rows[0].id || '',
+      serverGroupList: '',
+      serverGroup: '',
+      type: '',
+      symbol: '',
+      ticket: '',
+      login: '',
+      accountGroupList: '',
+      accounts: '',
+      positionID: '',
+      entry: '',
+    });
+    setPageNum(0);
+  };
 
   return (
     <div>
@@ -80,6 +105,9 @@ export const TradingHistoryPage = () => {
         <div className="flex justify-end gap-2">
           <RrhButton variant="outline">{t('table.export')}</RrhButton>
           <RrhButton variant="outline">{t('table.batchDelete')}</RrhButton>
+          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+            <RefreshCcw className="size-3.5" />
+          </RrhButton>
           <RrhDrawer
             headerShow={false}
             asChild
@@ -92,11 +120,11 @@ export const TradingHistoryPage = () => {
             }
           >
             <TradingHistoryForm
-              ref={formRef}
               serverListLoading={serverListLoading}
               serverList={serverList?.rows || []}
               setParams={setParams}
               setOtherParams={setOtherParams}
+              loading={isLoading}
             />
           </RrhDrawer>
         </div>

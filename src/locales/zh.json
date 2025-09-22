@@ -46,11 +46,12 @@
     "logging": "正在登录...",
     "EnterYourEmailBelowToSignInYourAccount": "在下面输入您的邮箱以登录您的账户",
     "EnterYourMobileBelowToSignInYourAccount": "在下面输入您的手机以登录您的账户",
-    "LoginWith": "使用 {{method}} 登录",
+    "LoginWith": "使用{{method}}登录",
     "forgetPWD": "忘记密码？",
     "WelcomeBack": "欢迎回来",
     "EnterYourCellphone": "请输入您的手机号码",
     "EnterYourUserName": "请输入您的用户名",
+    "EnterYourPassword": "请输入您的密码",
     "LoginFailedPleaseTryAgainLater": "登录失败，请稍后再试",
     "loginFailed": "登录失败：",
     "RememberMe": "记住我"
@@ -85,7 +86,8 @@
     "operationTime": "操作时间",
     "statisticTime": "统计时间",
     "status": "状态",
-    "operType": "操作类型"
+    "operType": "操作类型",
+    "systemTip": "系统提示"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -331,6 +333,26 @@
     "tradingHistoryDetail": "交易历史详情",
     "tradingHistory": "交易历史"
   },
+  "positionOrderPage": {
+    "positionOrderDetail": "持仓订单详情",
+    "positionOrder": "持仓订单",
+    "positionCost": "持仓成本"
+  },
+  "limitOrderPage": {
+    "limitOrder": "限价订单"
+  },
+  "accountStatisticPage": {
+    "accountStatistic": "交易账号交易历史统计"
+  },
+  "systemFundOperationsPage": {
+    "title": "系统资金操作记录"
+  },
+  "walletBalancePage": {
+    "title": "钱包余额总览",
+    "timeFilterTipOne": "1.只选择开始时间，查询数据为该时点，用户各钱包余额数据",
+    "timeFilterTipTwo": "2.选择开始时间-结束时间，查询数据为时间段，用户各钱包变动金额合计",
+    "timeFilter": "时间筛选"
+  },
   "table": {
     "server": "服务器",
     "groups": "组别",
@@ -346,13 +368,56 @@
     "closeTime": "平仓时间",
     "volume": "交易量",
     "index": "序号",
-    "openPrice": "开仓价",
-    "closePrice": "平仓价",
+    "openPrice": "开仓价格",
+    "closePrice": "平仓价格",
+    "currentPrice": "当前价格",
     "profitAndLoss": "盈亏",
     "swap": "隔夜利息",
     "commission": "手续费",
     "comment": "注释",
     "export": "导出",
-    "batchDelete": "批量删除"
+    "batchDelete": "批量删除",
+    "tradingTime": "交易时间",
+    "entry": "开仓/平仓",
+    "positionID": "订单关联ID",
+    "takeProfitPrice": "止盈价格",
+    "stopLossPrice": "止损价格",
+    "total": "合计",
+    "orderPlacementTime": "挂单时间",
+    "orderPlacementPrice": "挂单价格",
+    "time": "时间",
+    "tradingOrdersTotal": "交易订单总和",
+    "closeLots": "平仓手数",
+    "openLots": "开仓手数",
+    "closedPosition": "已平仓盈亏",
+    "currentBalance": "当前余额",
+    "statisticTime": "统计时间",
+    "clickToGetSum": "点击查看数据合计",
+    "exportAllDataTip": "确定导出所有{{field}}吗？",
+    "CRMAccount": "CRM账户",
+    "fundAccount": "资金账号",
+    "way": "方式",
+    "amount": "金额",
+    "remarks": "备注",
+    "operationPerson": "操作人员",
+    "operationIP": "操作IP",
+    "operationTime": "操作时间",
+    "tradingServerOrderNumber": "交易服务器订单号",
+    "Deposit": "入金",
+    "Withdrawal": "出金",
+    "SystemDeposit": "系统入金",
+    "SystemWithdrawal": "系统出金",
+    "SystemCreditDeposit": "系统信用额入金",
+    "SystemCreditWithdrawal": "系统信用额出金",
+    "RebateDeposit": "返佣入金",
+    "InternalTransferIn": "内部转账入金",
+    "InternalTransferOut": "内部转账出金",
+    "DemoAccountDeposit": "模拟账户入金",
+    "DemoAccountWithdrawal": "模拟账户出金",
+    "Charge": "费用",
+    "nameOrId": "姓名/账户ID",
+    "depositWay": "入金方式",
+    "balance": "余额",
+    "email": "邮箱"
   }
 }

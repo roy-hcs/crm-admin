@@ -192,7 +192,6 @@ export type TradingHistoryParams = {
   };
 };
 
-// generated type according to the above json
 export type TradingHistoryItem = {
   createBy: string | null;
   createTime: string | null;
@@ -362,6 +361,28 @@ export type CrmUserDealListParams = {
   orderByColumn?: string;
   isAsc?: 'asc' | 'desc';
 };
+
+export type PositionOrderParams = {
+  server?: string;
+  serverGroupList?: string;
+  type?: number | string;
+  accountGroupList?: string;
+  accounts?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+  params: {
+    random?: string;
+    positionFuzzyName?: string;
+    positionFuzzyLogin?: string;
+    positionFuzzySymbol?: string;
+    positionFuzzyTicket?: string;
+    accounts?: string;
+    positionDealBJStartTime?: string;
+    positionDealBJEndTime?: string;
+  };
+};
 export type CrmUserDealItem = {
   server: string | null;
   symbol: string | null;
@@ -401,6 +422,7 @@ export type CrmUserDealListResponse = {
   total: string;
   rows: CrmUserDealItem[];
 };
+
 // 资金回退失败日志
 export type RefundFailLogListParams = {
   params: {
@@ -414,6 +436,101 @@ export type RefundFailLogListParams = {
   pageNum?: number;
   orderByColumn?: string;
   isAsc?: 'asc' | 'desc';
+};
+
+export type PositionOrderItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: {
+    currency: string | null;
+    accountName: string | null;
+    accountGroupId: string | null;
+  };
+  uuid: string | null;
+  login: string | null;
+  server: string | null;
+  deal: string | null;
+  ticket: number | null;
+  symbol: string | null;
+  digits: number | null;
+  type: number | null;
+  entry: string | null;
+  volume: number | null;
+  time: string | null;
+  dealDate: string | null;
+  price: number | null;
+  sl: number | null;
+  tp: number | null;
+  commission: number | null;
+  swaps: number | null;
+  profit: number | null;
+  comment: string | null;
+  positionID: number | null;
+  priceCur: number | null;
+  rateprofit: number | null;
+  ratemargin: number | null;
+  synTime: string | null;
+  serverType: number | null;
+  accounts: string | null;
+  accountIds: string | null;
+  accountGroupList: string | null;
+  currency: string | null;
+  lotSize: number | null;
+};
+
+export type PositionOrderResponse = {
+  code: number;
+  msg: string | null;
+  total: string;
+  rows: PositionOrderItem[];
+  totalList: {
+    currency: string;
+    totalCommission: number;
+    totalProfit: number;
+    totalSwaps: number;
+    totalVolume: number;
+  }[];
+};
+
+export type LimitOrderListResponse = PositionOrderResponse;
+export type LimitOrderListItem = PositionOrderItem;
+export type LimitOrderListParams = {
+  server?: string;
+  serverGroupList?: string;
+  accounts?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+  params: {
+    positionFuzzyType?: number | string;
+    positionFuzzyName?: string;
+    positionFuzzyLogin?: string;
+    positionFuzzySymbol?: string;
+    positionFuzzyTicket?: string;
+    accounts?: string;
+    positionDealBJStartTime?: string;
+    positionDealBJEndTime?: string;
+  };
+};
+
+export type AccountStatisticListParams = {
+  server?: string;
+  accountGroupList?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+  params: {
+    serverGroupList?: number | string;
+    fuzzyAccount?: string;
+    fuzzyName?: string;
+    statisticStartTime?: string;
+    statisticEndTime?: string;
+  };
 };
 export type RefundFailLogItem = {
   createBy: string | null;
@@ -436,6 +553,29 @@ export type RefundFailLogItem = {
   showId: string | null;
   name: string | null;
   refundAccount: string | null;
+};
+
+export type AccountStatisticListItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  name: string | null;
+  login: string | null;
+  countOrder: number | null;
+  countHistory: number | null;
+  countPosition: number | null;
+  countVolume: number | null;
+  historyVolume: number | null;
+  positionVolume: number | null;
+  countCommission: number | null;
+  countSwaps: number | null;
+  countProfit: number | null;
+  balance: number | null;
+  currency: string | null;
+  serviceType: number | null;
 };
 export type RefundFailLogListResponse = {
   code: number;
@@ -461,6 +601,91 @@ export type TradingAccountFundsStatsParams = {
   pageNum?: number;
   orderByColumn?: string;
   isAsc?: 'asc' | 'desc';
+};
+
+export type AccountStatisticListResponse = {
+  code: number;
+  msg: string | null;
+  rows: AccountStatisticListItem[];
+  total: string;
+};
+
+export type AccountStatisticSumParams = {
+  server?: string;
+  accountGroupList?: string;
+  params: {
+    serverGroupList?: number | string;
+    fuzzyAccount?: string;
+    fuzzyName?: string;
+    statisticStartTime?: string;
+    statisticEndTime?: string;
+    accounts?: string;
+  };
+  serverGroup?: string;
+  accounts?: string;
+};
+
+export type AccountStatisticSumItem = {
+  balanceTotal: number | null;
+  countCommissionTotal: number | null;
+  countOrderTotal: number | null;
+  countProfitTotal: number | null;
+  countSwapsTotal: number | null;
+  currency: string | null;
+  historyVolumeTotal: number | null;
+  positionVolumeTotal: number | null;
+};
+
+export type AccountStatisticSumResponse = {
+  code: number;
+  msg: string | null;
+  data: AccountStatisticSumItem[];
+};
+
+export type SystemFundOperationRecordListRes = {
+  code: number;
+  msg: string | null;
+  rows: SystemFundOperationRecordItem[];
+  total: string;
+};
+
+export type SystemFundOperationRecordItem = {
+  id: string | null;
+  orderNumber: string | null;
+  crmUserId: string | null;
+  crmName: string | null;
+  crmShowId: string | null;
+  accountType: number | null;
+  accountId: string | null;
+  currency: string | null;
+  serverId: string | null;
+  server: string | null;
+  type: number | null;
+  amount: number | null;
+  comment: string | null;
+  operName: string | null;
+  operIp: string | null;
+  operAddress: string | null;
+  operTime: string | null;
+  serverOrder: string | null;
+  annotation: string | null;
+  params: Record<string, string> | null;
+};
+
+export type SystemFundOperationRecordListParams = {
+  type?: number | string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+  params: {
+    name?: string;
+    login?: string;
+    ticket?: string;
+    operationStart?: string;
+    operationEnd?: string;
+    operName?: string;
+  };
 };
 export type TradingAccountFundsStatsItem = {
   createBy: string | null;
@@ -551,6 +776,59 @@ export type DataStatisticsParams = {
   isAsc?: 'asc' | 'desc';
 };
 
+export type SystemFundOperationRecordSumRes = {
+  code: number;
+  msg: string | null;
+  data: {
+    amount: number | null;
+    currency: string | null;
+    type: string | null;
+  }[];
+};
+
+export type SystemFundOperationRecordSumParams = {
+  type?: number | string;
+  params: {
+    name?: string;
+    login?: string;
+    ticket?: string;
+    operationStart?: string;
+    operationEnd?: string;
+    operName?: string;
+  };
+};
+
+export type WalletBalanceRes = {
+  code: number;
+  msg: string | null;
+  rows: WalletBalanceItem[];
+  total: string;
+};
+
+export type WalletBalanceItem = {
+  email: string | null;
+  lastName: string | null;
+  name: string | null;
+  showId: string | null;
+  [key: string]: number | string | null;
+};
+
+export type WalletBalanceParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+  accounts: string;
+  params: {
+    fuzzyName?: string;
+    email?: string;
+    currencyList?: string;
+    timeStart?: string;
+    timeEnd?: string;
+    accounts?: string;
+  };
+};
+
 export type DataStatisticsItem = {
   createBy?: string;
   createTime?: string;
@@ -619,4 +897,61 @@ export type DataStatisticsResponse = {
   msg: string;
   total: string;
   rows: DataStatisticsItem[];
+  accounts: string;
+  params: {
+    fuzzyName?: string;
+    email?: string;
+    currencyList?: string;
+    timeStart?: string;
+    timeEnd?: string;
+    accounts?: string;
+  };
+};
+
+export type WalletBalanceSumRes = {
+  code: number;
+  msg: string | null;
+  data: {
+    currency: string | null;
+    totalAmount: number | null;
+  }[];
+};
+
+export type WalletBalanceSumParams = {
+  accounts: string;
+  params: {
+    fuzzyName?: string;
+    email?: string;
+    currencyList?: string;
+    timeStart?: string;
+    timeEnd?: string;
+    accounts?: string;
+  };
+};
+
+export type CurrencyListItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: string | null;
+  currencyNameChn: string | null;
+  currencyNameEng: string | null;
+  currencyAbbr: string | null;
+  currencyRemark: string | null;
+  status: number | null;
+  isDefault: number | null;
+  currencyType: number | null;
+  decimalPrecision: number | null;
+  sort: string | null;
+  network: string | null;
+};
+
+export type CurrencyListRes = {
+  code: number;
+  msg: string | null;
+  rows: CurrencyListItem[];
+  total: string;
 };
