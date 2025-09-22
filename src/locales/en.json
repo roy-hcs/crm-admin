@@ -62,7 +62,12 @@
     "close": "closure",
     "demo": "simulation",
     "live": "reality",
-    "subordinate": "Next level"
+    "subordinate": "Next level",
+    "operType": "Operation Type",
+    "operationTime": "Operation time",
+    "status": "state",
+    "tips": "The data on this page will have a slight delay. \nFor instant data, please wait 1-2 minutes before refreshing the page for query.",
+    "statisticTime": "Statistics time"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -253,5 +258,101 @@
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
     "tradingHistoryDetail": "Details of transaction history"
+  },
+  "financial": {
+    "walletTransactions": {
+      "account": "Name/Account ID",
+      "amount": "Change amount",
+      "inMethod": "Operation method",
+      "lastName": "Name",
+      "mtOrder": "Transaction order number",
+      "operationTime": "Operation time",
+      "operationTimeTable": "Change time",
+      "operationType": "Operation Type",
+      "postAmount": "Changeable amount",
+      "preAmount": "Amount before change",
+      "remark": "Remark",
+      "serialNum": "serial number",
+      "serialNumTable": "Trading flow number",
+      "title": "Wallet flow",
+      "wallet": "wallet"
+    },
+    "paymentOrders": {
+      "account": "Deposit account",
+      "channelId": "Payment Channel",
+      "channelName": "Payment Channel",
+      "createTime": "Order time",
+      "depositAmount": "Deposit amount",
+      "orderId": "Order number",
+      "orderStatus": "Order Status",
+      "orderTime": "Order time",
+      "payAmount": "Payment amount",
+      "receiptAmount": "Amount of payment",
+      "title": "Pay order",
+      "userName": "Name/Account ID"
+    },
+    "refundFailLog": {
+      "refundAccount": "Return the account",
+      "refundAmount": "Refund amount",
+      "title": "Fund Recovery Failed Log"
+    },
+    "tradingAccountTransactions": {
+      "comment": "Comments",
+      "crmLastName": "Attached to CRM account",
+      "login": "Trading account",
+      "name": "Name",
+      "order_num": "CRM Order Number",
+      "profit": "Change amount",
+      "ticket": "Order number",
+      "time": "time",
+      "title": "Transaction account capital flow",
+      "type": "Operation Type"
+    },
+    "tradingAccountDataStats": {
+      "advanceScale": "Prepayment ratio",
+      "balance": "balance",
+      "commission": "Processing fee",
+      "credit": "Credit",
+      "directBroker": "Direct Agent",
+      "directBrokerName": "Direct Agent",
+      "negativeBalance": "Total withdrawal",
+      "netDeposit": "Net deposit",
+      "netProfit": "Net profit amount of account",
+      "netProfitRatio": "Net profit ratio of account",
+      "netWorth": "net worth",
+      "positiveBalance": "Total deposit",
+      "profitLoss": "Total profit and loss of closing positions",
+      "profitPosition": "Total profit and loss of holdings",
+      "rebateCommissionAmount": "Commission rebate",
+      "rebateDepositAmount": "Deposit Rebate",
+      "rebateTraderAmount": "Transaction rebate",
+      "riskScale": "Risk rate",
+      "swaps": "Inventory fee",
+      "swapsPosition": "Total inventory fee for holding",
+      "title": "Trading account data statistics",
+      "usableAdvance": "Prepayment available",
+      "usedAdvance": "Prepayment",
+      "userLevel": "Rebate level of the owner",
+      "username": "Account ownership",
+      "volumeLoss": "Total lots of closed positions",
+      "volumePosition": "Total lots of positions"
+    },
+    "tradingAccountFundsStats": {
+      "balance": "Balance",
+      "commissionInputAmountCount": "Rebate deposit",
+      "creditInputAmountCount": "System credit deposit",
+      "creditOutAmountCount": "System credit withdrawal",
+      "currentbalance": "Current balance",
+      "fuzzyAccount": "Trading account",
+      "inputAmountCount": "Deposit",
+      "insideTransferInputAmountCount": "Internal transfer deposit",
+      "insideTransferOutAmountCount": "Internal transfer and withdrawal",
+      "negativeBalanceCount": "Balance",
+      "outAmountCount": "Withdrawal",
+      "profitLoss": "Closed position profit and loss",
+      "sysInputAmountCount": "System deposit",
+      "sysOutAmountCount": "System withdrawal",
+      "title": "Trading account funds statistics"
+    }
   }
 }

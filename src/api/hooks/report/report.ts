@@ -11,6 +11,18 @@ import {
   DailyRebateResponse,
   TradingHistoryParams,
   TradingHistoryListResponse,
+  crmUserDealDetailParams,
+  WalletTransactionResponse,
+  PaymentOrderListParams,
+  PaymentOrderListResponse,
+  CrmUserDealListParams,
+  CrmUserDealListResponse,
+  RefundFailLogListParams,
+  RefundFailLogListResponse,
+  TradingAccountFundsStatsParams,
+  TradingAccountFundsStatsResponse,
+  DataStatisticsParams,
+  DataStatisticsResponse,
   PositionOrderParams,
   PositionOrderResponse,
   LimitOrderListResponse,
@@ -90,6 +102,40 @@ export function useTradingHistoryList(params: TradingHistoryParams, options: { e
   });
 }
 
+/**
+ * 获取钱包流水
+ */
+export function useWalletTransactionList(params: crmUserDealDetailParams) {
+  return useQuery({
+    queryKey: ['walletTransactionList', params],
+    queryFn: () =>
+      apiFormPostCustom<WalletTransactionResponse>('/system/crmUserDealDetail/list', params || {}),
+  });
+}
+
+/**
+ * 获取支付订单
+ */
+export function usePaymentOrderList(params: PaymentOrderListParams) {
+  return useQuery({
+    queryKey: ['paymentOrderList', params],
+    queryFn: () =>
+      apiFormPostCustom<PaymentOrderListResponse>('/system/userOrder/list', params || {}),
+  });
+}
+
+/**
+ * 获取交易账号资金流水
+ */
+export function useCrmUserDealList(params: CrmUserDealListParams, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['crmUserDealList', params],
+    queryFn: () =>
+      apiFormPostCustom<CrmUserDealListResponse>('/system/crmUserDeal/list', params || {}),
+    enabled: options.enabled,
+  });
+}
+
 export function usePositionOrderList(params: PositionOrderParams, options: { enabled: boolean }) {
   return useQuery({
     queryKey: ['positionOrder', params],
@@ -123,6 +169,49 @@ export function useAccountStatisticList(
   });
 }
 
+/**
+ * 获取资金回退失败日志
+ */
+export function useRefundFailLogList(params: RefundFailLogListParams) {
+  return useQuery({
+    queryKey: ['refundFailLogList', params],
+    queryFn: () =>
+      apiFormPostCustom<RefundFailLogListResponse>('/system/refundFailLog/list', params || {}),
+  });
+}
+
+/**
+ * 获取交易账号资金统计
+ */
+export function useTradingAccountFundsStats(
+  params: TradingAccountFundsStatsParams,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['tradingAccountFundsStats', params],
+    queryFn: () =>
+      apiFormPostCustom<TradingAccountFundsStatsResponse>(
+        '/system/statistics/dealStatisticList',
+        params || {},
+      ),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+/**
+ * 获取交易账号数据统计
+ */
+export function useDataStatistics(params: DataStatisticsParams, options?: { enabled?: boolean }) {
+  return useQuery({
+    queryKey: ['dataStatistics', params],
+    queryFn: () =>
+      apiFormPostCustom<DataStatisticsResponse>(
+        '/system/statistics/dealDataStatisticList',
+        params || {},
+      ),
+    enabled: options?.enabled ?? true,
+  });
+}
 export function useAccountStaticsSum() {
   return useMutation({
     mutationFn: (params: AccountStatisticSumParams) =>

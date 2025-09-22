@@ -17,27 +17,18 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { CrmRebateTradersItem, ServerItem } from '@/api/hooks/system/types';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
-
+import { serverMap } from '@/lib/constant';
+import { BaseOption } from '@/components/common/RrhSelect';
 type FormData = {
-  // 交易时间
   tradingTime: { from: string; to: string };
-  // 返佣时间
   rebateTime: { from: string; to: string };
-  // 账户范围
   accounts: string;
-  // 服务器
   serverId: string;
-  // 组别
   serverGroup: string;
-  // 交易订单号
   mtOrder: string;
-  // 交易账号
   trderAccount: string;
-  // 交易品种
   taderType: string;
-  // 返佣对象
   conditionName: string;
-  // 命中规则
   rebateTraderId: string;
 };
 
@@ -143,18 +134,7 @@ export const MyForm = forwardRef<
         rebateTraderId: '',
         serverGroup: '',
       });
-      form.reset({
-        serverId: initialServerId || '',
-        tradingTime: { from: '', to: '' },
-        rebateTime: { from: '', to: '' },
-        accounts: '',
-        serverGroup: '',
-        mtOrder: '',
-        trderAccount: '',
-        taderType: '',
-        conditionName: '',
-        rebateTraderId: '',
-      });
+      form.reset();
     };
 
     return (
@@ -165,12 +145,36 @@ export const MyForm = forwardRef<
             onReset={onReset}
             className="flex flex-col gap-4 overflow-auto p-4"
           >
-            <FormSelect
+            <FormSelect<
+              Record<string, string>,
+              BaseOption & {
+                serviceProperty: number;
+                serviceType: number;
+              }
+            >
               verticalLabel
               name="serverId"
-              label={t('ib.overview.serverId')}
+              label={t('table.server')}
               placeholder={t('common.pleaseSelect')}
-              options={serverOptions.map(item => ({ label: item.serverName, value: item.id }))}
+              showRowValue={false}
+              options={serverOptions.map(item => ({
+                label: item.serverName,
+                value: item.id,
+                serviceProperty: item.serviceProperty,
+                serviceType: item.serviceType,
+              }))}
+              renderItem={option => {
+                return (
+                  <div>
+                    {/* TODO: 优化样式 */}
+                    <span>
+                      {option.serviceProperty === 1 ? t('common.live') : t('common.demo')}
+                    </span>
+                    {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
+                    <span>{option.label}</span>
+                  </div>
+                );
+              }}
             />
             <FormSelect
               verticalLabel
@@ -253,17 +257,11 @@ export const MyForm = forwardRef<
               }}
             />
             <div className="flex justify-end gap-4">
-              <RrhButton
-                type="reset"
-                className="flex h-9 items-center gap-2 border border-[#1E1E1E] bg-white !px-6 text-sm text-[#1E1E1E]"
-              >
+              <RrhButton type="reset" variant={'outline'} onClick={onReset}>
                 <RefreshCcw className="size-3.5" />
                 <span>{t('common.Reset')}</span>
               </RrhButton>
-              <RrhButton
-                type="submit"
-                className="flex h-9 items-center gap-2 border-[#1E1E1E] bg-[#1E1E1E] !px-6 text-sm text-white"
-              >
+              <RrhButton type="submit">
                 <Search className="size-3.5" />
                 <span>{t('common.Search')}</span>
               </RrhButton>

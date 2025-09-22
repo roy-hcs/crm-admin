@@ -14,6 +14,12 @@ import { FeesPage } from './pages/reports/commission/fees';
 import { DepositsPage } from './pages/reports/commission/deposits';
 import { DailyRebatePage } from './pages/reports/commission/daily-rebate';
 import { WeeklyRebatePage } from './pages/reports/commission/weekly-rebate';
+import { WalletTransactionsPage } from './pages/reports/financial/walletTransactions';
+import { PaymentOrdersPage } from './pages/reports/financial/paymentOrders';
+import { TradingAccountTransactionsPage } from './pages/reports/financial/tradingAccountTransactions';
+import { RefundFailureLogsPage } from './pages/reports/financial/refundFailureLogs';
+import { TradingAccountFundsStatsPage } from './pages/reports/financial/tradingAccountFundsStats';
+import { TradingAccountDataStatsPage } from './pages/reports/financial/tradingAccountDataStats';
 import { TradingHistoryPage } from './pages/reports/trading/history/TradingHistoryPage';
 import { PositionOrderPage } from './pages/reports/trading/positionOrder/PositionOrderPage';
 import { LimitOrderPage } from './pages/reports/trading/limitOrder/LimitOrderPage';
@@ -48,6 +54,36 @@ export const router = createBrowserRouter([
       {
         path: '/account/crm-accounts',
         element: <CRMAccounts />,
+      },
+      // 资金报表
+      {
+        path: '/reports/financial/wallet-transactions',
+        element: <WalletTransactionsPage />,
+      },
+      // 支付订单
+      {
+        path: '/reports/financial/payment-orders',
+        element: <PaymentOrdersPage />,
+      },
+      // 交易账号资金流水
+      {
+        path: '/reports/financial/trading-account-transactions',
+        element: <TradingAccountTransactionsPage />,
+      },
+      // 资金回退失败日志
+      {
+        path: '/reports/financial/refund-failure-logs',
+        element: <RefundFailureLogsPage />,
+      },
+      // 交易账号资金统计
+      {
+        path: '/reports/financial/trading-account-funds-stats',
+        element: <TradingAccountFundsStatsPage />,
+      },
+      // 交易账号数据统计
+      {
+        path: '/reports/financial/trading-account-data-stats',
+        element: <TradingAccountDataStatsPage />,
       },
       // 佣金报表
       {

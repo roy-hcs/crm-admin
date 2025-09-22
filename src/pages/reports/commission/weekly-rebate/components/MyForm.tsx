@@ -152,17 +152,11 @@ export const MyForm = forwardRef<
             })}
           />
           <div className="flex justify-end gap-4">
-            <RrhButton
-              type="reset"
-              className="flex h-9 items-center gap-2 border border-[#1E1E1E] bg-white !px-6 text-sm text-[#1E1E1E]"
-            >
+            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
             </RrhButton>
-            <RrhButton
-              type="submit"
-              className="flex h-9 items-center gap-2 border-[#1E1E1E] bg-[#1E1E1E] !px-6 text-sm text-white"
-            >
+            <RrhButton type="submit">
               <Search className="size-3.5" />
               <span>{t('common.Search')}</span>
             </RrhButton>

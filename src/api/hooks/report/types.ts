@@ -248,6 +248,119 @@ export type TradingHistoryListResponse = {
   rows: TradingHistoryItem[];
   serverType: string;
 };
+// 资金报表- 钱包流水
+export type crmUserDealDetailParams = {
+  pageSize: number;
+  pageNum: number;
+  isAsc?: string;
+  orderByColumn?: string;
+  operationType?: string;
+  serialNum?: string;
+  accounts?: string;
+  mtOrder?: string;
+  params: {
+    account?: string;
+    operationType?: string;
+    inMethod?: string;
+    selectOther?: string;
+    currencyId?: string;
+    operationStart?: string;
+    operationEnd?: string;
+    accounts?: string;
+  };
+};
+export type WalletTransactionItem = {
+  id: string | null;
+  lastName: string | null;
+  name: string | null;
+  showId: string | null;
+  operationType: number | null;
+  operationTypeTxt: string | null;
+  operationMethodTxt: string | null;
+  currency: string | null;
+  preAmountTxt: string | null;
+  amountTxt: string | null;
+  afterAmountTxt: string | null;
+  operationTime: string | null;
+  serialNum: string | null;
+  rebateId: string | null;
+  dealServerId: string | null;
+  walletId: string | null;
+  dealAccount: string | null;
+  preAmount: string | null;
+  amount: string | null;
+  operationMethod: number | null;
+  mtOrder: string | null;
+  remark: string | null;
+  postAmount: string | null;
+};
+export type WalletTransactionResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: WalletTransactionItem[];
+};
+// 支付订单
+export type PaymentOrderListParams = {
+  params: {
+    userName?: string;
+    account?: string;
+    accounts?: string;
+    operationStart?: string;
+    operationEnd?: string;
+  };
+  channelId?: string;
+  orderStatus?: string;
+  orderId?: string;
+  accounts?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+};
+export type PaymentOrderItem = {
+  id: string | null;
+  orderId: string | null;
+  account: string | null;
+  depositAmount: string | null;
+  payAmount: string | null;
+  receiptAmount: string | null;
+  orderStatus: string | null;
+  createTime: string | null;
+  channelName: string | null;
+  userName: string | null;
+};
+export type PaymentOrderListResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: PaymentOrderItem[];
+};
+
+// 交易账号资金流水
+export type CrmUserDealListParams = {
+  params: {
+    ticket?: string;
+    historyFuzzyName?: string;
+    login?: string;
+    comment?: string;
+    accounts?: string;
+    operationStart?: string;
+    operationEnd?: string;
+    fuzzyCrmAccount?: string;
+  };
+  serverId?: string;
+  opeTypeList?: string;
+  opeType?: string;
+  serverGroupList?: string;
+  serverGroup?: string;
+  accountGroupList?: string;
+  accounts?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+};
 
 export type PositionOrderParams = {
   server?: string;
@@ -269,6 +382,60 @@ export type PositionOrderParams = {
     positionDealBJStartTime?: string;
     positionDealBJEndTime?: string;
   };
+};
+export type CrmUserDealItem = {
+  server: string | null;
+  symbol: string | null;
+  open_time: string | null;
+  login: string | null;
+  type: string | null;
+  swaps: string | null;
+  uuid: string | null;
+  close_price: number | null;
+  balance: number | null;
+  sl: number | null;
+  commission: number | null;
+  lot_size: number | null;
+  currency: string | null;
+  id: string | null;
+  open_price: number | null;
+  crmLastName: string | null;
+  profit: number | null;
+  crmShowId: string | null;
+  ticket: number | null;
+  time_stamp: string | null;
+  close_time: string | null;
+  server_id: string | null;
+  volume: number | null;
+  name: string | null;
+  digits: number | null;
+  comment: string | null;
+  time: string | null;
+  order_num: string | null;
+  tp: number | null;
+  server_type: string | null;
+  crmName: string | null;
+};
+export type CrmUserDealListResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: CrmUserDealItem[];
+};
+
+// 资金回退失败日志
+export type RefundFailLogListParams = {
+  params: {
+    beginTime?: string;
+    endTime?: string;
+  };
+  userId?: string;
+  status?: string;
+  refundAccount?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
 };
 
 export type PositionOrderItem = {
@@ -365,6 +532,28 @@ export type AccountStatisticListParams = {
     statisticEndTime?: string;
   };
 };
+export type RefundFailLogItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: string | null;
+  id: string | null;
+  userId: string | null;
+  operType: string | null;
+  operTime: string | null;
+  refundAmount: string | null;
+  refundCurrency: string | null;
+  serverName: string | null;
+  login: string | null;
+  walletId: string | null;
+  status: string | null;
+  lastName: string | null;
+  showId: string | null;
+  name: string | null;
+  refundAccount: string | null;
+};
 
 export type AccountStatisticListItem = {
   createBy: string | null;
@@ -388,6 +577,31 @@ export type AccountStatisticListItem = {
   currency: string | null;
   serviceType: number | null;
 };
+export type RefundFailLogListResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: RefundFailLogItem[];
+};
+// 交易账号资金统计
+export type TradingAccountFundsStatsParams = {
+  params: {
+    serverGroupList?: string;
+    fuzzyAccount?: string;
+    fuzzyName?: string;
+    statisticStartTime?: string;
+    statisticEndTime?: string;
+    accounts?: string;
+  };
+  serverGroup?: string;
+  accounts?: string;
+  accountGroupList?: string;
+  server?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+};
 
 export type AccountStatisticListResponse = {
   code: number;
@@ -405,7 +619,10 @@ export type AccountStatisticSumParams = {
     fuzzyName?: string;
     statisticStartTime?: string;
     statisticEndTime?: string;
+    accounts?: string;
   };
+  serverGroup?: string;
+  accounts?: string;
 };
 
 export type AccountStatisticSumItem = {
@@ -470,6 +687,94 @@ export type SystemFundOperationRecordListParams = {
     operName?: string;
   };
 };
+export type TradingAccountFundsStatsItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: string | null;
+  userId: string | null;
+  username: string | null;
+  directBroker: string | null;
+  directBrokerName: string | null;
+  name: string | null;
+  login: string | null;
+  serviceType: string | null;
+  userLevel: string | null;
+  positiveBalance: string | null;
+  positiveBalanceCount: string | null;
+  inputAmount: string | null;
+  inputAmountCount: string | null;
+  sysInputAmount: string | null;
+  sysInputAmountCount: string | null;
+  commissionInputAmount: string | null;
+  commissionInputAmountCount: string | null;
+  insideTransferInputAmount: string | null;
+  insideTransferInputAmountCount: string | null;
+  negativeBalance: string | null;
+  negativeBalanceCount: string | null;
+  outAmount: string | null;
+  outAmountCount: string | null;
+  sysOutAmount: string | null;
+  sysOutAmountCount: string | null;
+  insideTransferOutAmount: string | null;
+  insideTransferOutAmountCount: string | null;
+  creditInputAmount: string | null;
+  creditInputAmountCount: string | null;
+  creditOutAmount: string | null;
+  creditOutAmountCount: string | null;
+  profitLoss: string | null;
+  balance: string | null;
+  currency: string | null;
+  netWorth: string | null;
+  credit: string | null;
+  usedAdvance: string | null;
+  usableAdvance: string | null;
+  advanceScale: string | null;
+  riskScale: string | null;
+  commission: string | null;
+  swaps: string | null;
+  volumeLoss: string | null;
+  volumePosition: string | null;
+  profitPosition: string | null;
+  netProfit: string | null;
+  netProfitRatio: string | null;
+  swapsPosition: string | null;
+  rebateTraderAmount: string | null;
+  rebateCommissionAmount: string | null;
+  rebateDepositAmount: string | null;
+  pammDepositCount: string | null;
+  pammDepositAmount: string | null;
+  pammWithdrawalCount: string | null;
+  pammWithdrawalAmount: string | null;
+};
+
+export type TradingAccountFundsStatsResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: TradingAccountFundsStatsItem[];
+};
+// 交易账号数据统计
+export type DataStatisticsParams = {
+  params: {
+    serverGroupList?: string;
+    fuzzyAccount?: string;
+    fuzzyName?: string;
+    statisticStartTime?: string;
+    statisticEndTime?: string;
+    accounts?: string;
+  };
+  serverGroup?: string;
+  accounts?: string;
+  accountGroupList?: string;
+  server?: string;
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+};
 
 export type SystemFundOperationRecordSumRes = {
   code: number;
@@ -513,6 +818,85 @@ export type WalletBalanceParams = {
   pageNum?: number;
   orderByColumn?: string;
   isAsc?: 'asc' | 'desc';
+  accounts: string;
+  params: {
+    fuzzyName?: string;
+    email?: string;
+    currencyList?: string;
+    timeStart?: string;
+    timeEnd?: string;
+    accounts?: string;
+  };
+};
+
+export type DataStatisticsItem = {
+  createBy?: string;
+  createTime?: string;
+  updateBy?: string;
+  updateTime?: string;
+  remark?: string;
+  params?: string;
+  userId?: string;
+  username?: string;
+  directBroker?: string;
+  directBrokerName?: string;
+  name?: string;
+  login?: string;
+  serviceType?: string;
+  userLevel?: string;
+  positiveBalance?: string;
+  positiveBalanceCount?: string;
+  inputAmount?: string;
+  inputAmountCount?: string;
+  sysInputAmount?: string;
+  sysInputAmountCount?: string;
+  commissionInputAmount?: string;
+  commissionInputAmountCount?: string;
+  insideTransferInputAmount?: string;
+  insideTransferInputAmountCount?: string;
+  negativeBalance?: string;
+  negativeBalanceCount?: string;
+  outAmount?: string;
+  outAmountCount?: string;
+  sysOutAmount?: string;
+  sysOutAmountCount?: string;
+  insideTransferOutAmount?: string;
+  insideTransferOutAmountCount?: string;
+  creditInputAmount?: string;
+  creditInputAmountCount?: string;
+  creditOutAmount?: string;
+  creditOutAmountCount?: string;
+  profitLoss?: string;
+  balance?: string;
+  currency?: string;
+  netWorth?: string;
+  credit?: string;
+  usedAdvance?: string;
+  usableAdvance?: string;
+  advanceScale?: string;
+  riskScale?: string;
+  commission?: string;
+  swaps?: string;
+  volumeLoss?: string;
+  volumePosition?: string;
+  profitPosition?: string;
+  netProfit?: string;
+  netProfitRatio?: string;
+  swapsPosition?: string;
+  rebateTraderAmount?: string;
+  rebateCommissionAmount?: string;
+  rebateDepositAmount?: string;
+  pammDepositCount?: string;
+  pammDepositAmount?: string;
+  pammWithdrawalCount?: string;
+  pammWithdrawalAmount?: string;
+};
+
+export type DataStatisticsResponse = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: DataStatisticsItem[];
   accounts: string;
   params: {
     fuzzyName?: string;

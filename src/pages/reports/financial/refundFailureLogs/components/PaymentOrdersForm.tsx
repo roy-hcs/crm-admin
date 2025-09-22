@@ -15,49 +15,32 @@ import { FormSelect } from '@/components/form/FormSelect';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { RebateTypeOptions, RebateStatusOptions } from '@/lib/const';
+import { StatusOptions } from '@/lib/const';
 
 type FormData = {
-  // 结算日期
-  settlementTime: { from: string; to: string };
-  // 返佣账户
-  account: string;
-  // 返佣类型
-  rebateType: string;
-  // 返佣状态
-  rebateStatus: string;
-  // 结算订单号
-  id: string;
+  operationTime: { from: string; to: string };
+  userId: string;
+  status: string;
+  refundAccount: string;
 };
 
-export interface FormRef {
+export interface RefundFailureLogsFormRef {
   onReset: () => void;
 }
-export const MyForm = forwardRef<
-  FormRef,
+export const RefundFailureLogsForm = forwardRef<
+  RefundFailureLogsFormRef,
   {
-    setParams: (params: { beginTime: string; endTime: string; account: string }) => void;
-    setCommonParams: (params: {
-      settleStyle: string;
-      rebateType: string;
-      rebateStatus: string;
-      id: string;
-    }) => void;
+    setParams: (params: { beginTime: string; endTime: string }) => void;
+    setCommonParams: (params: { userId: string; status: string; refundAccount: string }) => void;
   }
 >(({ setParams, setCommonParams }, ref) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      // 结算日期
-      settlementTime: { from: '', to: '' },
-      // 返佣账户
-      account: '',
-      // 返佣类型
-      rebateType: '',
-      // 返佣状态
-      rebateStatus: '',
-      // 结算订单号
-      id: '',
+      userId: '',
+      status: '',
+      refundAccount: '',
+      operationTime: { from: '', to: '' },
     },
   });
 
@@ -69,35 +52,30 @@ export const MyForm = forwardRef<
 
   const onSubmit = (data: FormData) => {
     setParams({
-      beginTime: data.settlementTime.from,
-      endTime: data.settlementTime.to,
-      account: data.account,
+      beginTime: data.operationTime?.from || '',
+      endTime: data.operationTime?.to || '',
     });
     setCommonParams({
-      settleStyle: '1',
-      rebateType: data.rebateType,
-      rebateStatus: data.rebateStatus,
-      id: data.id,
+      userId: data.userId,
+      status: data.status,
+      refundAccount: data.refundAccount,
     });
   };
   const onReset = () => {
     setParams({
       beginTime: '',
       endTime: '',
-      account: '',
     });
     setCommonParams({
-      settleStyle: '1',
-      rebateType: '',
-      rebateStatus: '',
-      id: '',
+      userId: '',
+      status: '',
+      refundAccount: '',
     });
     form.reset({
-      settlementTime: { from: '', to: '' },
-      account: '',
-      rebateType: '',
-      rebateStatus: '',
-      id: '',
+      userId: '',
+      status: '',
+      refundAccount: '',
+      operationTime: { from: '', to: '' },
     });
   };
 
@@ -109,15 +87,30 @@ export const MyForm = forwardRef<
           onReset={onReset}
           className="flex flex-col gap-4 overflow-auto p-4"
         >
+          <FormInput
+            verticalLabel
+            name="userId"
+            label={t('financial.paymentOrders.userName')}
+            placeholder={t('common.pleaseInput', {
+              field: t('financial.paymentOrders.userName'),
+            })}
+          />
+          <FormSelect
+            verticalLabel
+            name="status"
+            label={t('common.status')}
+            placeholder={t('common.pleaseSelect')}
+            options={StatusOptions}
+          />
           <FormField
-            name="settlementTime"
+            name="operationTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
                 <FormLabel className="basis-3/12 text-[#757F8D]">
-                  {t('commission.daily-rebate.settleTime')}
+                  {t('common.operationTime')}
                 </FormLabel>
                 <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="settlementTime" control={form.control} />
+                  <FormDateRangeInput name="operationTime" control={form.control} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -125,30 +118,10 @@ export const MyForm = forwardRef<
           />
           <FormInput
             verticalLabel
-            name="mtOrder"
-            label={t('commission.daily-rebate.account')}
-            placeholder={t('common.pleaseInput', { field: t('commission.daily-rebate.account') })}
-          />
-          <FormSelect
-            verticalLabel
-            name="rebateTraderId"
-            label={t('commission.daily-rebate.rebateType')}
-            placeholder={t('common.pleaseSelect')}
-            options={RebateTypeOptions}
-          />
-          <FormSelect
-            verticalLabel
-            name="rebateStatus"
-            label={t('commission.daily-rebate.rebateStatus')}
-            placeholder={t('common.pleaseSelect')}
-            options={RebateStatusOptions}
-          />
-          <FormInput
-            verticalLabel
-            name="id"
-            label={t('commission.daily-rebate.id')}
+            name="refundAccount"
+            label={t('financial.refundFailLog.refundAccount')}
             placeholder={t('common.pleaseInput', {
-              field: t('commission.daily-rebate.id'),
+              field: t('financial.refundFailLog.refundAccount'),
             })}
           />
           <div className="flex justify-end gap-4">
