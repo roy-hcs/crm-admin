@@ -177,9 +177,7 @@ export const CRMAccountsForm = forwardRef<
             name="regStartTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">
-                  {t('CRMAccountPage.RegisterTime')}
-                </FormLabel>
+                <FormLabel className="basis-3/12">{t('CRMAccountPage.RegisterTime')}</FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="regStartTime" control={form.control} />
                 </FormControl>

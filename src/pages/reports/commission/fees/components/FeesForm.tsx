@@ -35,7 +35,7 @@ type FormData = {
 export interface ClientTrackingFormRef {
   onReset: () => void;
 }
-export const MyForm = forwardRef<
+export const FeesForm = forwardRef<
   ClientTrackingFormRef,
   {
     setParams: (params: {
@@ -208,9 +208,7 @@ export const MyForm = forwardRef<
               name="tradingTime"
               render={() => (
                 <FormItem className="flex flex-col gap-2 text-sm">
-                  <FormLabel className="basis-3/12 text-[#757F8D]">
-                    {t('commission.trading.traderTime')}
-                  </FormLabel>
+                  <FormLabel className="basis-3/12">{t('commission.trading.traderTime')}</FormLabel>
                   <FormControl className="basis-9/12">
                     <FormDateRangeInput name="tradingTime" control={form.control} />
                   </FormControl>
@@ -230,9 +228,7 @@ export const MyForm = forwardRef<
               name="rebateTime"
               render={() => (
                 <FormItem className="flex flex-col gap-2 text-sm">
-                  <FormLabel className="basis-3/12 text-[#757F8D]">
-                    {t('commission.trading.rebateTime')}
-                  </FormLabel>
+                  <FormLabel className="basis-3/12">{t('commission.trading.rebateTime')}</FormLabel>
                   <FormControl className="basis-9/12">
                     <FormDateRangeInput name="rebateTime" control={form.control} />
                   </FormControl>

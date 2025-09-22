@@ -3,7 +3,7 @@ import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { useTranslation } from 'react-i18next';
 import { RebateTypeOptions, RebateStatusOptions } from '@/lib/const';
 
-export const MyTable = ({
+export const WeeklyRebateTable = ({
   data,
   pageCount,
   pageIndex,

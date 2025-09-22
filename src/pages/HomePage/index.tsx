@@ -699,7 +699,7 @@ export function HomePage() {
         <div className="flex">
           <div className="text-xl font-semibold text-[#1E1E1E]">{t('home.DataOverview')}</div>
         </div>
-        <div className="text-xs font-normal text-[#757F8D]">
+        <div className="text-xs font-normal">
           {t('home.DataUpdateTime')}: {now}
         </div>
       </div>

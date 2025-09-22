@@ -8,7 +8,9 @@ import { FormMonthPicker } from '@/components/form/FormMonthPicker';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { RebateLevelOptions } from '@/lib/const';
+// import { RebateLevelOptions } from '@/lib/const';
+import { useRebateLevelList } from '@/api/hooks/system/system';
+
 export interface ClientTrackingFormRef {
   onReset: () => void;
 }
@@ -30,6 +32,7 @@ export const ClientTrackingForm = forwardRef<
   }
 >(({ setParams }, ref) => {
   const { t } = useTranslation();
+  const { data: rebateLevel } = useRebateLevelList();
   const form = useForm<ClientTrackingFormValues>({
     defaultValues: {
       userName: '',
@@ -93,7 +96,11 @@ export const ClientTrackingForm = forwardRef<
             name="level"
             label={t('ib.CustomerTracking.levelName') + ':'}
             placeholder={t('common.pleaseSelect')}
-            options={RebateLevelOptions}
+            showRowValue={false}
+            options={(rebateLevel?.rows || []).map(item => ({
+              label: item.levelName,
+              value: item.id,
+            }))}
           />
           <div className="flex justify-end gap-4">
             <RrhButton type="reset" variant={'outline'} onClick={onReset}>

@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { useRebateList } from '@/api/hooks/report/report';
-import { MyForm, ClientTrackingFormRef } from './components/MyForm';
+import { DepositsForm, ClientTrackingFormRef } from './components/DepositsForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
-import { MyTable } from './components/MyTable';
+import { DepositsTable } from './components/DepositsTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { useServerList, useGroupList, useGetCrmRebateTraders } from '@/api/hooks/system/system';
@@ -130,7 +130,7 @@ export function DepositsPage() {
             direction="right"
             footerShow={false}
           >
-            <MyForm
+            <DepositsForm
               ref={formRef}
               setParams={setParams}
               setServerId={setServerId}
@@ -143,7 +143,7 @@ export function DepositsPage() {
           </RrhDrawer>
         </div>
       </div>
-      <MyTable
+      <DepositsTable
         data={AgencyClientTracking?.rows || []}
         pageCount={Math.ceil(+(AgencyClientTracking?.total || 0) / pageSize)}
         pageIndex={pageNum}

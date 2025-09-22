@@ -296,7 +296,7 @@ export const TradingHistoryForm = ({
             name="openTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">
+                <FormLabel className="basis-3/12">
                   {selectedServer?.serviceType === 1 ? t('table.tradingTime') : t('table.openTime')}
                 </FormLabel>
                 <FormControl className="basis-9/12">
@@ -311,9 +311,7 @@ export const TradingHistoryForm = ({
               name="closeTime"
               render={() => (
                 <FormItem className="flex flex-col gap-2 text-sm">
-                  <FormLabel className="basis-3/12 text-[#757F8D]">
-                    {t('table.closeTime')}
-                  </FormLabel>
+                  <FormLabel className="basis-3/12">{t('table.closeTime')}</FormLabel>
                   <FormControl className="basis-9/12">
                     <FormDateRangeInput name="closeTime" control={form.control} />
                   </FormControl>

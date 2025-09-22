@@ -161,7 +161,7 @@ export const PaymentOrdersForm = forwardRef<
             name="operationTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">
+                <FormLabel className="basis-3/12">
                   {t('financial.paymentOrders.orderTime')}
                 </FormLabel>
                 <FormControl className="basis-9/12">

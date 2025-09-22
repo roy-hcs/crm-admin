@@ -33,7 +33,7 @@ type FormData = {
 export interface FormRef {
   onReset: () => void;
 }
-export const MyForm = forwardRef<
+export const DailyRebateForm = forwardRef<
   FormRef,
   {
     setParams: (params: { beginTime: string; endTime: string; account: string }) => void;
@@ -113,7 +113,7 @@ export const MyForm = forwardRef<
             name="settlementTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">
+                <FormLabel className="basis-3/12">
                   {t('commission.daily-rebate.settleTime')}
                 </FormLabel>
                 <FormControl className="basis-9/12">

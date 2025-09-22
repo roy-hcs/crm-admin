@@ -181,9 +181,7 @@ export const AddUserDialog = () => {
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex h-9 items-center">
-                      <FormLabel className="basis-3/12 text-[#757F8D]">
-                        {t('CRMAccountPage.status')}:
-                      </FormLabel>
+                      <FormLabel className="basis-3/12">{t('CRMAccountPage.status')}:</FormLabel>
                       <div className="flex basis-9/12 items-center">
                         <Switch
                           checked={field.value === '1'}
