@@ -19,6 +19,8 @@ import { WalletTransactionsPage } from './pages/reports/financial/walletTransact
 import { PaymentOrdersPage } from './pages/reports/financial/paymentOrders';
 import { TradingAccountTransactionsPage } from './pages/reports/financial/tradingAccountTransactions';
 import { RefundFailureLogsPage } from './pages/reports/financial/refundFailureLogs';
+import { TradingAccountFundsStatsPage } from './pages/reports/financial/tradingAccountFundsStats';
+import { TradingAccountDataStatsPage } from './pages/reports/financial/tradingAccountDataStats';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -67,6 +69,16 @@ export const router = createBrowserRouter([
       {
         path: '/reports/financial/refund-failure-logs',
         element: <RefundFailureLogsPage />,
+      },
+      // 交易账号资金统计
+      {
+        path: '/reports/financial/trading-account-funds-stats',
+        element: <TradingAccountFundsStatsPage />,
+      },
+      // 交易账号数据统计
+      {
+        path: '/reports/financial/trading-account-data-stats',
+        element: <TradingAccountDataStatsPage />,
       },
       // 佣金报表
       {

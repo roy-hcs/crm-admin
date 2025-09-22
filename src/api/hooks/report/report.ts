@@ -19,6 +19,10 @@ import {
   CrmUserDealListResponse,
   RefundFailLogListParams,
   RefundFailLogListResponse,
+  TradingAccountFundsStatsParams,
+  TradingAccountFundsStatsResponse,
+  DataStatisticsParams,
+  DataStatisticsResponse,
 } from './types';
 
 /**
@@ -123,5 +127,38 @@ export function useRefundFailLogList(params: RefundFailLogListParams) {
     queryKey: ['refundFailLogList', params],
     queryFn: () =>
       apiFormPostCustom<RefundFailLogListResponse>('/system/refundFailLog/list', params || {}),
+  });
+}
+
+/**
+ * 获取交易账号资金统计
+ */
+export function useTradingAccountFundsStats(
+  params: TradingAccountFundsStatsParams,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['tradingAccountFundsStats', params],
+    queryFn: () =>
+      apiFormPostCustom<TradingAccountFundsStatsResponse>(
+        '/system/statistics/dealStatisticList',
+        params || {},
+      ),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+/**
+ * 获取交易账号数据统计
+ */
+export function useDataStatistics(params: DataStatisticsParams, options?: { enabled?: boolean }) {
+  return useQuery({
+    queryKey: ['dataStatistics', params],
+    queryFn: () =>
+      apiFormPostCustom<DataStatisticsResponse>(
+        '/system/statistics/dealDataStatisticList',
+        params || {},
+      ),
+    enabled: options?.enabled ?? true,
   });
 }
