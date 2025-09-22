@@ -3,12 +3,14 @@ import { useForm } from 'react-hook-form';
 import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
+import { BaseOption } from '@/components/common/RrhSelect';
 import { FormSelect } from '@/components/form/FormSelect';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { useDictType, useGetGroupByServer } from '@/api/hooks/system/system';
 import { DictTypeItem } from '@/api/hooks/system/types';
 import { useGetDealAccountGroupList } from '@/api/hooks/system/system';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
+import { serverMap } from '@/lib/constant';
 
 import {
   Form,
@@ -162,12 +164,34 @@ export const TradingAccountTransactionsForm = forwardRef<
           onReset={onReset}
           className="flex flex-col gap-4 overflow-auto p-4"
         >
-          <FormSelect
+          <FormSelect<
+            Record<string, string>,
+            BaseOption & {
+              serviceProperty: number;
+              serviceType: number;
+            }
+          >
             verticalLabel
             name="serverId"
-            label={t('ib.overview.serverId')}
+            label={t('table.server')}
             placeholder={t('common.pleaseSelect')}
-            options={serverOptions.map(item => ({ label: item.serverName, value: item.id }))}
+            showRowValue={false}
+            options={serverOptions.map(item => ({
+              label: item.serverName,
+              value: item.id,
+              serviceProperty: item.serviceProperty,
+              serviceType: item.serviceType,
+            }))}
+            renderItem={option => {
+              return (
+                <div>
+                  {/* TODO: 优化样式 */}
+                  <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
+                  {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
+                  <span>{option.label}</span>
+                </div>
+              );
+            }}
           />
           <FormSelect
             verticalLabel

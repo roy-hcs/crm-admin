@@ -14,9 +14,10 @@ import {
 } from '@/components/ui/form';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
-// import { RebateLevelOptions } from '@/lib/const';
 import { useTranslation } from 'react-i18next';
 import { RebateLevelItem, ServerItem } from '@/api/hooks/system/types';
+import { serverMap } from '@/lib/constant';
+import { BaseOption } from '@/components/common/RrhSelect';
 export interface OverviewFormRef {
   onReset: () => void;
 }
@@ -89,13 +90,7 @@ export const OverviewForm = forwardRef<
       endTime: '',
       level: '',
     });
-    form.reset({
-      serverId: first,
-      userName: '',
-      email: '',
-      beginTime: { from: '', to: '' },
-      level: '',
-    });
+    form.reset();
   };
 
   return (
@@ -106,12 +101,34 @@ export const OverviewForm = forwardRef<
           onReset={onReset}
           className="flex flex-col gap-4 overflow-auto p-4"
         >
-          <FormSelect
+          <FormSelect<
+            Record<string, string>,
+            BaseOption & {
+              serviceProperty: number;
+              serviceType: number;
+            }
+          >
             verticalLabel
             name="serverId"
-            label={t('ib.overview.serverId')}
+            label={t('table.server')}
             placeholder={t('common.pleaseSelect')}
-            options={serverOptions.map(item => ({ label: item.serverName, value: item.id }))}
+            showRowValue={false}
+            options={serverOptions.map(item => ({
+              label: item.serverName,
+              value: item.id,
+              serviceProperty: item.serviceProperty,
+              serviceType: item.serviceType,
+            }))}
+            renderItem={option => {
+              return (
+                <div>
+                  {/* TODO: 优化样式 */}
+                  <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
+                  {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
+                  <span>{option.label}</span>
+                </div>
+              );
+            }}
           />
           <FormInput
             verticalLabel

@@ -8,6 +8,8 @@ import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { useGetGroupByServer } from '@/api/hooks/system/system';
 import { useGetDealAccountGroupList } from '@/api/hooks/system/system';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
+import { serverMap } from '@/lib/constant';
+import { BaseOption } from '@/components/common/RrhSelect';
 
 import {
   Form,
@@ -136,12 +138,34 @@ export const TradingAccountDataStatsForm = forwardRef<
           onReset={onReset}
           className="flex flex-col gap-4 overflow-auto p-4"
         >
-          <FormSelect
+          <FormSelect<
+            Record<string, string>,
+            BaseOption & {
+              serviceProperty: number;
+              serviceType: number;
+            }
+          >
             verticalLabel
             name="serverId"
-            label={t('ib.overview.serverId')}
+            label={t('table.server')}
             placeholder={t('common.pleaseSelect')}
-            options={serverOptions.map(item => ({ label: item.serverName, value: item.id }))}
+            showRowValue={false}
+            options={serverOptions.map(item => ({
+              label: item.serverName,
+              value: item.id,
+              serviceProperty: item.serviceProperty,
+              serviceType: item.serviceType,
+            }))}
+            renderItem={option => {
+              return (
+                <div>
+                  {/* TODO: 优化样式 */}
+                  <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
+                  {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
+                  <span>{option.label}</span>
+                </div>
+              );
+            }}
           />
           <FormMultiSelect
             verticalLabel
