@@ -171,7 +171,7 @@ export const LoginForm = ({
                   <div className="relative">
                     <Input
                       type={showPWD ? 'text' : 'password'}
-                      placeholder="Enter your password"
+                      placeholder={t('loginPage.EnterYourPassword')}
                       {...field}
                     />
                     <button

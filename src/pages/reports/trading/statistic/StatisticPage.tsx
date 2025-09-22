@@ -128,6 +128,7 @@ export const StatisticPage = () => {
               serverList={serverList?.rows || []}
               setParams={setParams}
               setOtherParams={setOtherParams}
+              loading={accountStatisticDataLoading}
             />
           </RrhDrawer>
         </div>

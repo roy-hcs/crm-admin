@@ -107,6 +107,7 @@ export const LimitOrderPage = () => {
               serverList={serverList?.rows || []}
               setParams={setParams}
               setOtherParams={setOtherParams}
+              loading={positionOrderListLoading}
             />
           </RrhDrawer>
         </div>

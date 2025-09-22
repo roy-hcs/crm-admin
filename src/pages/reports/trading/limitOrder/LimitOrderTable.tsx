@@ -84,7 +84,7 @@ export const LimitOrderTable = ({
 }) => {
   const { t } = useTranslation();
   const serviceType = selectedServer?.serviceType;
-  const tradingHistoryColumns: ColumnDef<LimitOrderListItem>[] = [
+  const limitOrderColumns: ColumnDef<LimitOrderListItem>[] = [
     {
       id: 'No.',
       header: t('CRMAccountPage.Index'),
@@ -173,7 +173,7 @@ export const LimitOrderTable = ({
   ];
   return (
     <DataTable
-      columns={tradingHistoryColumns}
+      columns={limitOrderColumns}
       data={data}
       pageCount={pageCount}
       pageSize={pageSize}

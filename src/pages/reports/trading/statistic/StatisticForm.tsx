@@ -35,11 +35,13 @@ export const StatisticForm = ({
   serverListLoading,
   setOtherParams,
   setParams,
+  loading,
 }: {
   serverList: ServerItem[];
   serverListLoading: boolean;
   setParams: (params: AccountStatisticListParams['params']) => void;
   setOtherParams: (params: { server?: string; accountGroupList?: string }) => void;
+  loading: boolean;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
@@ -197,7 +199,7 @@ export const StatisticForm = ({
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
             </RrhButton>
-            <RrhButton type="submit">
+            <RrhButton type="submit" loading={loading}>
               <Search className="size-3.5" />
               <span>{t('common.Search')}</span>
             </RrhButton>

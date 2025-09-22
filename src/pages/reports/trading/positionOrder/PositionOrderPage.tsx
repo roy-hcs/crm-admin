@@ -114,6 +114,7 @@ export const PositionOrderPage = () => {
               serverList={serverList?.rows || []}
               setParams={setParams}
               setOtherParams={setOtherParams}
+              loading={positionOrderListLoading}
             />
           </RrhDrawer>
         </div>

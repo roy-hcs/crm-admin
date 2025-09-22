@@ -38,7 +38,7 @@ export const StatisticTable = ({
 }) => {
   const { t } = useTranslation();
   const serviceType = selectedServer?.serviceType;
-  const tradingHistoryColumns: ColumnDef<AccountStatisticListItem>[] = [
+  const statisticColumns: ColumnDef<AccountStatisticListItem>[] = [
     {
       id: 'No.',
       header: t('CRMAccountPage.Index'),
@@ -118,7 +118,7 @@ export const StatisticTable = ({
   ];
   return (
     <DataTable
-      columns={tradingHistoryColumns}
+      columns={statisticColumns}
       data={data}
       pageCount={pageCount}
       pageSize={pageSize}
