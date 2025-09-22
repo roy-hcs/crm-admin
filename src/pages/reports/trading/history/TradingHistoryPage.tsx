@@ -124,6 +124,7 @@ export const TradingHistoryPage = () => {
               serverList={serverList?.rows || []}
               setParams={setParams}
               setOtherParams={setOtherParams}
+              loading={isLoading}
             />
           </RrhDrawer>
         </div>

@@ -1,4 +1,4 @@
-import { apiFormPost, apiFormPostCustom } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGetCustom } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   ClientTrackingParams,
@@ -23,6 +23,11 @@ import {
   SystemFundOperationRecordListRes,
   SystemFundOperationRecordSumParams,
   SystemFundOperationRecordSumRes,
+  WalletBalanceRes,
+  WalletBalanceParams,
+  WalletBalanceSumParams,
+  WalletBalanceSumRes,
+  CurrencyListRes,
 } from './types';
 
 /**
@@ -157,5 +162,44 @@ export function useSystemFundOperationRecordSum() {
         '/system/statistics/systemFundOperRecordSum',
         params,
       ),
+  });
+}
+
+export function useWalletBalanceList(
+  params: WalletBalanceParams,
+  options: { enabled?: boolean } = {},
+) {
+  return useQuery({
+    queryKey: ['walletBalanceList', params],
+    queryFn: () =>
+      apiFormPostCustom<WalletBalanceRes>(
+        '/system/crmUserWallet/walletOverview/list',
+        params || {},
+      ),
+    enabled: options.enabled ?? true,
+  });
+}
+
+export function useWalletBalanceSum() {
+  return useMutation({
+    mutationFn: (params: WalletBalanceSumParams) =>
+      apiFormPostCustom<WalletBalanceSumRes>(
+        '/system/crmUserWallet/walletOverview/listSum',
+        params,
+      ),
+  });
+}
+
+export function useCurrencyList() {
+  return useQuery({
+    queryKey: ['currencyList'],
+    queryFn: () => apiFormPostCustom<CurrencyListRes>('/system/currency/list', {}),
+  });
+}
+
+export function useAllCurrencies() {
+  return useQuery({
+    queryKey: ['allCurrencies'],
+    queryFn: () => apiGetCustom<string[]>('/system/crmUserWallet/getAllWalletCurrencies'),
   });
 }

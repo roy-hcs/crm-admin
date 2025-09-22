@@ -102,7 +102,7 @@ export const PositionOrderTable = ({
 }) => {
   const { t } = useTranslation();
   const serverType = selectedServer?.serviceType;
-  const tradingHistoryColumns: ColumnDef<PositionOrderItem>[] = [
+  const positionOrderColumns: ColumnDef<PositionOrderItem>[] = [
     {
       id: 'No.',
       header: t('CRMAccountPage.Index'),
@@ -216,7 +216,7 @@ export const PositionOrderTable = ({
   ];
   return (
     <DataTable
-      columns={tradingHistoryColumns}
+      columns={positionOrderColumns}
       data={data}
       pageCount={pageCount}
       pageSize={pageSize}

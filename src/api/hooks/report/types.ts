@@ -492,3 +492,82 @@ export type SystemFundOperationRecordSumParams = {
     operName?: string;
   };
 };
+
+export type WalletBalanceRes = {
+  code: number;
+  msg: string | null;
+  rows: WalletBalanceItem[];
+  total: string;
+};
+
+export type WalletBalanceItem = {
+  email: string | null;
+  lastName: string | null;
+  name: string | null;
+  showId: string | null;
+  [key: string]: number | string | null;
+};
+
+export type WalletBalanceParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+  accounts: string;
+  params: {
+    fuzzyName?: string;
+    email?: string;
+    currencyList?: string;
+    timeStart?: string;
+    timeEnd?: string;
+    accounts?: string;
+  };
+};
+
+export type WalletBalanceSumRes = {
+  code: number;
+  msg: string | null;
+  data: {
+    currency: string | null;
+    totalAmount: number | null;
+  }[];
+};
+
+export type WalletBalanceSumParams = {
+  accounts: string;
+  params: {
+    fuzzyName?: string;
+    email?: string;
+    currencyList?: string;
+    timeStart?: string;
+    timeEnd?: string;
+    accounts?: string;
+  };
+};
+
+export type CurrencyListItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: string | null;
+  currencyNameChn: string | null;
+  currencyNameEng: string | null;
+  currencyAbbr: string | null;
+  currencyRemark: string | null;
+  status: number | null;
+  isDefault: number | null;
+  currencyType: number | null;
+  decimalPrecision: number | null;
+  sort: string | null;
+  network: string | null;
+};
+
+export type CurrencyListRes = {
+  code: number;
+  msg: string | null;
+  rows: CurrencyListItem[];
+  total: string;
+};

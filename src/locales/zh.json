@@ -246,6 +246,12 @@
   "systemFundOperationsPage": {
     "title": "系统资金操作记录"
   },
+  "walletBalancePage": {
+    "title": "钱包余额总览",
+    "timeFilterTipOne": "1.只选择开始时间，查询数据为该时点，用户各钱包余额数据",
+    "timeFilterTipTwo": "2.选择开始时间-结束时间，查询数据为时间段，用户各钱包变动金额合计",
+    "timeFilter": "时间筛选"
+  },
   "table": {
     "server": "服务器",
     "groups": "组别",
@@ -310,6 +316,7 @@
     "Charge": "费用",
     "nameOrId": "姓名/账户ID",
     "depositWay": "入金方式",
-    "balance": "余额"
+    "balance": "余额",
+    "email": "邮箱"
   }
 }

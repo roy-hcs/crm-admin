@@ -42,6 +42,7 @@ export const TradingHistoryForm = ({
   setParams,
   serverList,
   serverListLoading,
+  loading,
 }: {
   serverList: ServerItem[];
   serverListLoading: boolean;
@@ -68,6 +69,7 @@ export const TradingHistoryForm = ({
     accounts: string;
     historyFuzzyName: string;
   }) => void;
+  loading: boolean;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
@@ -341,7 +343,7 @@ export const TradingHistoryForm = ({
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
             </RrhButton>
-            <RrhButton type="submit">
+            <RrhButton type="submit" loading={loading}>
               <Search className="size-3.5" />
               <span>{t('common.Search')}</span>
             </RrhButton>

@@ -29,9 +29,11 @@ type FormData = {
 export const SystemFundOperationsForm = ({
   setOtherParams,
   setParams,
+  loading,
 }: {
   setParams: (params: SystemFundOperationRecordListParams['params']) => void;
   setOtherParams: (params: { type?: number | string }) => void;
+  loading: boolean;
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
@@ -146,7 +148,7 @@ export const SystemFundOperationsForm = ({
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
             </RrhButton>
-            <RrhButton type="submit">
+            <RrhButton type="submit" loading={loading}>
               <Search className="size-3.5" />
               <span>{t('common.Search')}</span>
             </RrhButton>

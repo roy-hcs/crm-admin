@@ -40,6 +40,7 @@ export const LimitOrderForm = ({
   serverListLoading,
   setOtherParams,
   setParams,
+  loading,
 }: {
   serverList: ServerItem[];
   serverListLoading: boolean;
@@ -51,6 +52,7 @@ export const LimitOrderForm = ({
     accounts?: string;
     serverGroupList?: string;
   }) => void;
+  loading: boolean;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
@@ -253,7 +255,7 @@ export const LimitOrderForm = ({
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
             </RrhButton>
-            <RrhButton type="submit">
+            <RrhButton type="submit" loading={loading}>
               <Search className="size-3.5" />
               <span>{t('common.Search')}</span>
             </RrhButton>

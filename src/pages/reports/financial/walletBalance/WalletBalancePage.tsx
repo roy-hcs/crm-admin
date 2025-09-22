@@ -1,96 +1,102 @@
+import {
+  useAllCurrencies,
+  useCurrencyList,
+  useWalletBalanceList,
+  useWalletBalanceSum,
+} from '@/api/hooks/report/report';
+import { WalletBalanceParams } from '@/api/hooks/report/types';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SystemFundOperationsForm } from './SystemFundOperationsForm';
 import { TableCell } from '@/components/ui/table';
-import { SystemFundOperationsTable } from './SystemFundOperationsTable';
-import { SystemFundOperationRecordListParams } from '@/api/hooks/report/types';
-import {
-  useSystemFundOperationRecordList,
-  useSystemFundOperationRecordSum,
-} from '@/api/hooks/report/report';
+import { WalletBalanceTable } from './WalletBalanceTable';
+import { WalletBalanceForm } from './WalletBalanceForm';
 
-export const SystemFundOperationsPage = () => {
-  const [params, setParams] = useState<SystemFundOperationRecordListParams['params']>({
-    name: '',
-    login: '',
-    ticket: '',
-    operationStart: '',
-    operationEnd: '',
-    operName: '',
+export const WalletBalancePage = () => {
+  const [params, setParams] = useState<WalletBalanceParams['params']>({
+    fuzzyName: '',
+    email: '',
+    timeStart: '',
+    timeEnd: '',
+    accounts: '',
   });
-  const [otherParams, setOtherParams] = useState<
-    Omit<SystemFundOperationRecordListParams, 'params'>
-  >({
-    type: '',
+  const [otherParams, setOtherParams] = useState<Omit<WalletBalanceParams, 'params'>>({
+    accounts: '',
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
-
-  const { data: systemFunOperationRecordList, isLoading: systemFunOperationRecordListLoading } =
-    useSystemFundOperationRecordList(
-      {
-        pageSize,
-        pageNum: pageNum + 1,
-        orderByColumn: '',
-        isAsc: 'asc',
-        ...otherParams,
-        params: {
-          ...params,
-        },
-      },
-      { enabled: true },
-    );
-
-  const {
-    mutate: getOperationRecordSum,
-    data: sumData,
-    isPending,
-  } = useSystemFundOperationRecordSum();
-
-  const [sumShow, setSumShow] = useState(false);
-  const getSumData = () => {
-    setSumShow(true);
-    getOperationRecordSum({
+  const { data: allCurrencies } = useAllCurrencies();
+  const { data: walletBalanceList, isLoading: walletBalanceListLoading } = useWalletBalanceList(
+    {
+      pageSize,
+      pageNum: pageNum + 1,
+      orderByColumn: '',
+      isAsc: 'asc',
       ...otherParams,
       params: {
         ...params,
+        currencyList: allCurrencies?.join(',') || '',
+      },
+    },
+    { enabled: !!allCurrencies },
+  );
+  const { data: currencyList } = useCurrencyList();
+
+  const { mutate: getWalletSum, data: sumData, isPending } = useWalletBalanceSum();
+  const [sumShow, setSumShow] = useState(false);
+  const getSumData = () => {
+    const knownFields = ['email', 'lastName', 'name', 'showId'];
+    const currencyKeys: string[] = [];
+    walletBalanceList?.rows.forEach(item => {
+      Object.keys(item).forEach(key => {
+        if (!knownFields.includes(key)) {
+          currencyKeys.push(key);
+        }
+      });
+    });
+    setSumShow(true);
+    getWalletSum({
+      ...otherParams,
+      params: {
+        ...params,
+        currencyList: allCurrencies?.join(',') || '',
       },
     });
   };
-
   useEffect(() => {
     setSumShow(false);
-  }, [systemFunOperationRecordList]);
+  }, [walletBalanceList]);
+
   const reset = () => {
-    setParams({
-      name: '',
-      login: '',
-      ticket: '',
-      operationStart: '',
-      operationEnd: '',
-      operName: '',
-    });
+    setParams(pre => ({
+      ...pre,
+      fuzzyName: '',
+      email: '',
+      timeStart: '',
+      timeEnd: '',
+      accounts: '',
+    }));
     setOtherParams({
-      type: '',
+      accounts: '',
     });
     setPageNum(0);
+    setSumShow(false);
   };
 
   return (
     <div>
-      <h1 className="text-title">{t('systemFundOperationsPage.title')}</h1>
+      <h1 className="text-title">{t('walletBalancePage.title')}</h1>
       <div className="my-3.5 flex items-center justify-between">
         <RrhInputWithIcon
           placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
           className="h-9"
           rightIcon={<Search className="size-4 cursor-pointer" />}
           onRightIconClick={e => {
-            setParams(prev => ({ ...prev, ticket: e }));
+            setParams(prev => ({ ...prev, positionFuzzyTicket: e }));
             setPageNum(1);
           }}
         />
@@ -109,27 +115,28 @@ export const SystemFundOperationsPage = () => {
               </RrhButton>
             }
           >
-            <SystemFundOperationsForm
+            <WalletBalanceForm
               setParams={setParams}
               setOtherParams={setOtherParams}
-              loading={systemFunOperationRecordListLoading}
+              loading={walletBalanceListLoading}
             />
           </RrhDrawer>
         </div>
       </div>
-      <SystemFundOperationsTable
-        data={systemFunOperationRecordList?.rows || []}
-        pageCount={Math.ceil(+(systemFunOperationRecordList?.total || 0) / pageSize)}
+      <WalletBalanceTable
+        data={walletBalanceList?.rows || []}
+        pageCount={Math.ceil(+(walletBalanceList?.total || 0) / pageSize)}
         pageIndex={pageNum}
         pageSize={pageSize}
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
-        loading={systemFunOperationRecordListLoading}
+        loading={walletBalanceListLoading}
+        currencyList={currencyList?.rows || []}
         CustomRow={
           <>
-            <TableCell colSpan={1}>{t('table.total')}</TableCell>
+            <TableCell colSpan={5}>{t('table.total')}</TableCell>
             {!sumShow && (
-              <TableCell colSpan={9}>
+              <TableCell colSpan={5}>
                 <RrhButton variant="ghost" onClick={getSumData}>
                   {t('table.clickToGetSum')}
                 </RrhButton>
@@ -137,17 +144,14 @@ export const SystemFundOperationsPage = () => {
             )}
             {sumShow ? (
               isPending ? (
-                <TableCell colSpan={9}>{t('common.loading')}</TableCell>
+                <TableCell>{t('common.loading')}</TableCell>
               ) : (
                 <>
-                  <TableCell colSpan={9}>
-                    {sumData?.data.map((item, index) => {
+                  <TableCell>
+                    {sumData?.data?.map(item => {
                       return (
-                        <div
-                          key={`${item.currency}-${index}`}
-                          className="flex flex-col items-center"
-                        >
-                          {t('table.balance')} {item.amount} {item.currency}
+                        <div key={item.currency}>
+                          {(item.totalAmount || 0).toFixed(2)} {item.currency}
                         </div>
                       );
                     })}

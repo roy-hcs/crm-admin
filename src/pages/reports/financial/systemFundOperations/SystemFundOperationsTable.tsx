@@ -25,7 +25,7 @@ export const SystemFundOperationsTable = ({
   CustomRow: ReactElement;
 }) => {
   const { t } = useTranslation();
-  const tradingHistoryColumns: ColumnDef<SystemFundOperationRecordItem>[] = [
+  const systemFundOperationsColumns: ColumnDef<SystemFundOperationRecordItem>[] = [
     {
       id: 'orderNumber',
       header: t('table.orderNumber'),
@@ -101,7 +101,7 @@ export const SystemFundOperationsTable = ({
   ];
   return (
     <DataTable
-      columns={tradingHistoryColumns}
+      columns={systemFundOperationsColumns}
       data={data}
       pageCount={pageCount}
       pageSize={pageSize}
