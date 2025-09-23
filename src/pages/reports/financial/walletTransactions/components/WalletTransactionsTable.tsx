@@ -1,5 +1,6 @@
 import { WalletTransactionItem } from '@/api/hooks/report/types';
 import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
+import { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const WalletTransactionsTable = ({
@@ -10,6 +11,7 @@ export const WalletTransactionsTable = ({
   onPageChange,
   onPageSizeChange,
   loading = false,
+  CustomRow,
 }: {
   data: WalletTransactionItem[];
   pageCount: number;
@@ -18,6 +20,7 @@ export const WalletTransactionsTable = ({
   onPageChange: (pageIndex: number) => void;
   onPageSizeChange: (pageSize: number) => void;
   loading?: boolean;
+  CustomRow: ReactElement;
 }) => {
   const { t } = useTranslation();
   const Columns: CRMColumnDef<WalletTransactionItem, unknown>[] = [
@@ -113,6 +116,7 @@ export const WalletTransactionsTable = ({
       loading={loading}
       thCls="text-left"
       tdCls="text-left"
+      CustomRow={CustomRow}
     />
   );
 };

@@ -1,7 +1,9 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { useWalletTransactionList } from '@/api/hooks/report/report';
+import { TableCell } from '@/components/ui/table';
+import { RrhButton } from '@/components/common/RrhButton';
+import { useWalletTransactionList, useWalletTransactionSum } from '@/api/hooks/report/report';
 import {
   WalletTransactionsForm,
   WalletTransactionsFormRef,
@@ -34,11 +36,6 @@ export function WalletTransactionsPage() {
     accounts: '',
     mtOrder: '',
   });
-  // accounts
-  // 827cd42a233f41c59fe9f75ae7771801
-  // params[accounts]
-  // aaa-下级
-  // 获取钱包
   // 获取钱包流水列表
   const { data: data, isLoading: loading } = useWalletTransactionList({
     params,
@@ -49,6 +46,25 @@ export function WalletTransactionsPage() {
     isAsc: 'asc',
     orderByColumn: '',
   });
+
+  // 获取合计数据接口
+  const { mutate: getSum, data: sumData, isPending } = useWalletTransactionSum();
+  // 合计状态
+  const [sumShow, setSumShow] = useState(false);
+  // 点击获取合计数
+  const getSumData = () => {
+    setSumShow(true);
+    getSum({
+      ...commonParams,
+      params: {
+        ...params,
+      },
+    });
+  };
+  // 列表数据变化重置合计状态
+  useEffect(() => {
+    setSumShow(false);
+  }, [data]);
 
   const reset = () => {
     setParams({
@@ -113,6 +129,35 @@ export function WalletTransactionsPage() {
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
         loading={loading}
+        CustomRow={
+          <>
+            <TableCell colSpan={6}>{t('table.total')}</TableCell>
+            {!sumShow && (
+              <TableCell colSpan={6}>
+                <RrhButton variant="ghost" onClick={getSumData}>
+                  {t('table.clickToGetSum')}
+                </RrhButton>
+              </TableCell>
+            )}
+            {sumShow ? (
+              isPending ? (
+                <TableCell>{t('common.loading')}</TableCell>
+              ) : (
+                <>
+                  <TableCell>
+                    {sumData?.data?.map((i, index) => {
+                      return (
+                        <div key={index}>
+                          {(Number(i.totalAmount) || 0).toFixed(2)} {i.currency}
+                        </div>
+                      );
+                    })}
+                  </TableCell>
+                </>
+              )
+            ) : null}
+          </>
+        }
       />
     </div>
   );

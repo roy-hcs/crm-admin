@@ -929,6 +929,35 @@ export type WalletBalanceSumParams = {
   };
 };
 
+export type WalletTransactionSumParams = {
+  operationType?: string;
+  serialNum?: string;
+  accounts?: string;
+  mtOrder?: string;
+  params: {
+    account?: string;
+    operationType?: string;
+    inMethod?: string;
+    selectOther?: string;
+    currencyId?: string;
+    operationStart?: string;
+    operationEnd?: string;
+    accounts?: string;
+  };
+};
+
+export type WalletTransactionSumItem = {
+  currency: string | null;
+  totalAmount: number | null;
+};
+
+export type WalletTransactionSumRes = {
+  code: number;
+  msg: string;
+  total: string;
+  data: WalletTransactionSumItem[];
+};
+
 export type CurrencyListItem = {
   createBy: string | null;
   createTime: string | null;
