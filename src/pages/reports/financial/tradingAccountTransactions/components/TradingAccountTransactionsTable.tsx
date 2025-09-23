@@ -22,7 +22,6 @@ export const TradingAccountTransactionsTable = ({
   const { t } = useTranslation();
   const Columns: CRMColumnDef<CrmUserDealItem, unknown>[] = [
     {
-      fixed: true,
       id: 'No.',
       size: 50,
       header: t('ib.overview.Index'),
@@ -30,19 +29,19 @@ export const TradingAccountTransactionsTable = ({
     },
     {
       id: 'login',
-      fixed: true,
+
       header: t('financial.tradingAccountTransactions.login'),
       accessorFn: row => row.login,
     },
     {
       id: 'name',
-      fixed: true,
+
       header: t('financial.tradingAccountTransactions.name'),
       accessorFn: row => row.name,
     },
     {
       id: 'crmLastName',
-      fixed: true,
+
       header: t('financial.tradingAccountTransactions.crmLastName'),
 
       cell: ({ row }) => {
