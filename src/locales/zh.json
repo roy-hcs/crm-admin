@@ -56,6 +56,7 @@
     "loginFailed": "登录失败：",
     "RememberMe": "记住我"
   },
+
   "common": {
     "loading": "加载中...",
     "NoData": "暂无数据",
@@ -87,7 +88,35 @@
     "statisticTime": "统计时间",
     "status": "状态",
     "operType": "操作类型",
-    "systemTip": "系统提示"
+    "systemTip": "系统提示",
+    "enable": "启用",
+    "disable": "停用",
+    "role": {
+      "crmUser": "CRM用户",
+      "mam": "MAM",
+      "reward": "奖励",
+      "message": "消息管理",
+      "walletTest": "钱包测试"
+    },
+    "processStatus": { "unhandled": "未处理", "handled": "已处理" },
+    "order": {
+      "status": {
+        "pendingPay": "待支付",
+        "completed": "已完成",
+        "canceled": "已取消",
+        "timeout": "已超时"
+      }
+    },
+    "rebate": {
+      "type": {
+        "trade": "交易返佣",
+        "fee": "手续费返佣",
+        "deposit": "入金返佣"
+      },
+      "status": { "success": "成功", "fail": "失败" }
+    },
+    "colorPreference": { "greenUp": "绿涨红跌", "redUp": "红涨绿跌" },
+    "account": { "type": { "user": "用户", "agent": "代理" } }
   },
   "home": {
     "DataOverview": "数据总览",

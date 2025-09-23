@@ -55,7 +55,7 @@ export const DailyRebateTable = ({
       cell: ({ row }) => {
         const find = RebateTypeOptions.find(item => item.value === row.original.rebateType);
         if (find) {
-          return find.label;
+          return t(find.label);
         }
         return '--';
       },
@@ -91,7 +91,7 @@ export const DailyRebateTable = ({
           item => String(item.value) === String(row.original.rebateStatus),
         );
         if (find) {
-          return find.label;
+          return t(find.label);
         }
         return '--';
       },

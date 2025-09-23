@@ -38,14 +38,13 @@ export const TradingAccountTransactionsTable = ({
       id: 'name',
       fixed: true,
       header: t('financial.tradingAccountTransactions.name'),
-      size: 180,
       accessorFn: row => row.name,
     },
     {
       id: 'crmLastName',
       fixed: true,
       header: t('financial.tradingAccountTransactions.crmLastName'),
-      size: 180,
+
       cell: ({ row }) => {
         if (row?.original?.crmLastName || row?.original?.crmName || row?.original?.crmShowId) {
           return (

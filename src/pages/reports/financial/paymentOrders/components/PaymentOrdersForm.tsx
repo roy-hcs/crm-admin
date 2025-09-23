@@ -141,7 +141,7 @@ export const PaymentOrdersForm = forwardRef<
             name="orderStatus"
             label={t('financial.paymentOrders.orderStatus')}
             placeholder={t('common.pleaseSelect')}
-            options={OrderStatusOptions}
+            options={OrderStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
           />
           <FormInput
             verticalLabel

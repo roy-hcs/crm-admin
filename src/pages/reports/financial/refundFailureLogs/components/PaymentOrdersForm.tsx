@@ -100,7 +100,7 @@ export const RefundFailureLogsForm = forwardRef<
             name="status"
             label={t('common.status')}
             placeholder={t('common.pleaseSelect')}
-            options={StatusOptions}
+            options={StatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
           />
           <FormField
             name="operationTime"

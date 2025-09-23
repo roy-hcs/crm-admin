@@ -162,19 +162,19 @@ export const AddUserDialog = () => {
                 name="roleId"
                 label={`${t('CRMAccountPage.CRMAccountType')}:`}
                 placeholder={`${t('common.pleaseSelect')}`}
-                options={crmAccountTypeOptions}
+                options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
               />
               <FormSelect
                 name="roleId"
                 label={`${t('CRMAccountPage.Role')}:`}
                 placeholder={`${t('common.pleaseSelect')}`}
-                options={roleOptions}
+                options={roleOptions.map(i => ({ label: t(i.label), value: i.value }))}
               />
               <FormSelect
                 name="roleId"
                 label={`${t('CRMAccountPage.ColorPreferences')}:`}
                 placeholder={t('common.pleaseSelect')}
-                options={colorPreferenceOptions}
+                options={colorPreferenceOptions.map(i => ({ label: t(i.label), value: i.value }))}
               />
               <FormField
                 name="status"

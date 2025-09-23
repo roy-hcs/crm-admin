@@ -134,14 +134,14 @@ export const DailyRebateForm = forwardRef<
             name="rebateTraderId"
             label={t('commission.daily-rebate.rebateType')}
             placeholder={t('common.pleaseSelect')}
-            options={RebateTypeOptions}
+            options={RebateTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
           />
           <FormSelect
             verticalLabel
             name="rebateStatus"
             label={t('commission.daily-rebate.rebateStatus')}
             placeholder={t('common.pleaseSelect')}
-            options={RebateStatusOptions}
+            options={RebateStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
           />
           <FormInput
             verticalLabel

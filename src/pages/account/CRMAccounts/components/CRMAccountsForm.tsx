@@ -163,14 +163,14 @@ export const CRMAccountsForm = forwardRef<
             name="status"
             label={t('CRMAccountPage.Status')}
             placeholder={t('common.pleaseSelect')}
-            options={statusOptions}
+            options={statusOptions.map(i => ({ label: t(i.label), value: i.value }))}
           />
           <FormSelect
             verticalLabel
             name="role"
             label={t('CRMAccountPage.Role')}
             placeholder={t('common.pleaseSelect')}
-            options={roleOptions}
+            options={roleOptions.map(i => ({ label: t(i.label), value: i.value }))}
           />
 
           <FormField
@@ -204,7 +204,7 @@ export const CRMAccountsForm = forwardRef<
             label={t('CRMAccountPage.CRMAccountType')}
             placeholder={t('common.pleaseSelect')}
             verticalLabel
-            options={crmAccountTypeOptions}
+            options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
           />
           <FormSelect
             name="tags"
