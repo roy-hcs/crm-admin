@@ -25,7 +25,7 @@ export const SelectUpperPopup = ({
           verticalLabel ? 'flex-col items-start gap-2' : '',
         )}
       >
-        <FormLabel className="basis-3/12 text-[#757F8D]">{t('CRMAccountPage.Superior')}:</FormLabel>
+        <FormLabel className="basis-3/12">{t('CRMAccountPage.Superior')}:</FormLabel>
         <FormControl>
           <AccountDialog
             trigger={

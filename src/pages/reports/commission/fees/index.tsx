@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { useRebateList } from '@/api/hooks/report/report';
-import { MyForm, ClientTrackingFormRef } from './components/MyForm';
+import { FeesForm, ClientTrackingFormRef } from './components/FeesForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
-import { MyTable } from './components/MyTable';
+import { FeesTable } from './components/FeesTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { useServerList, useGroupList, useGetCrmRebateTraders } from '@/api/hooks/system/system';
@@ -130,7 +130,7 @@ export function FeesPage() {
             direction="right"
             footerShow={false}
           >
-            <MyForm
+            <FeesForm
               ref={formRef}
               setParams={setParams}
               setServerId={setServerId}
@@ -143,7 +143,7 @@ export function FeesPage() {
           </RrhDrawer>
         </div>
       </div>
-      <MyTable
+      <FeesTable
         data={AgencyClientTracking?.rows || []}
         pageCount={Math.ceil(+(AgencyClientTracking?.total || 0) / pageSize)}
         pageIndex={pageNum}

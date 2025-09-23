@@ -31,7 +31,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'login',
 
       header: t('financial.tradingAccountTransactions.name'),
-      size: 180,
+
       accessorFn: row => row.login,
     },
     {
@@ -44,7 +44,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'username',
 
       header: t('financial.tradingAccountDataStats.username'),
-      size: 180,
+
       cell: ({ row }) => {
         if (row?.original?.username) {
           return row.original.username;
@@ -56,7 +56,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'userLevel',
 
       header: t('financial.tradingAccountDataStats.userLevel'),
-      size: 180,
+
       cell: ({ row }) => {
         if (row?.original?.userLevel) {
           return row.original.userLevel;
@@ -68,7 +68,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'directBrokerName',
 
       header: t('financial.tradingAccountDataStats.directBrokerName'),
-      size: 180,
+
       cell: ({ row }) => {
         if (row?.original?.directBrokerName) {
           return row.original.directBrokerName;
@@ -80,7 +80,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'positiveBalance',
 
       header: t('financial.tradingAccountDataStats.positiveBalance'),
-      size: 180,
+
       cell: ({ row }) => {
         if (row?.original?.positiveBalanceCount || row?.original?.positiveBalance) {
           return (
@@ -98,7 +98,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'negativeBalance',
 
       header: t('financial.tradingAccountDataStats.negativeBalance'),
-      size: 180,
+
       cell: ({ row }) => {
         if (row?.original?.negativeBalanceCount || row?.original?.negativeBalance) {
           return (
@@ -116,7 +116,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'netDeposit',
 
       header: t('financial.tradingAccountDataStats.netDeposit'),
-      size: 180,
+
       cell: ({ row }) => {
         if (row?.original?.positiveBalance || row?.original?.negativeBalance) {
           return (
@@ -134,7 +134,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'balance',
 
       header: t('financial.tradingAccountDataStats.balance'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -148,7 +148,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'netWorth',
 
       header: t('financial.tradingAccountDataStats.netWorth'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -162,7 +162,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'credit',
 
       header: t('financial.tradingAccountDataStats.credit'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -176,7 +176,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'usedAdvance',
 
       header: t('financial.tradingAccountDataStats.usedAdvance'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -190,7 +190,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'usableAdvance',
 
       header: t('financial.tradingAccountDataStats.usableAdvance'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -204,7 +204,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'advanceScale',
 
       header: t('financial.tradingAccountDataStats.advanceScale'),
-      size: 180,
+
       cell: ({ row }) => {
         if (row?.original?.advanceScale) {
           return `${row?.original?.advanceScale}%`;
@@ -216,7 +216,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'riskScale',
 
       header: t('financial.tradingAccountDataStats.riskScale'),
-      size: 180,
+
       cell: ({ row }) => {
         if (row?.original?.riskScale) {
           return `${row?.original?.riskScale}%`;
@@ -228,7 +228,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'profitPosition',
 
       header: t('financial.tradingAccountDataStats.profitPosition'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -242,14 +242,14 @@ export const TradingAccountDataStatsTable = ({
       id: 'profitPosition',
 
       header: t('financial.tradingAccountDataStats.volumePosition'),
-      size: 180,
+
       accessorFn: row => row.volumePosition || 0,
     },
     {
       id: 'swapsPosition',
 
       header: t('financial.tradingAccountDataStats.swapsPosition'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -263,7 +263,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'profitLoss',
 
       header: t('financial.tradingAccountDataStats.profitLoss'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -277,14 +277,14 @@ export const TradingAccountDataStatsTable = ({
       id: 'volumeLoss',
 
       header: t('financial.tradingAccountDataStats.volumeLoss'),
-      size: 180,
+
       accessorFn: row => row.volumeLoss || 0,
     },
     {
       id: 'commission',
 
       header: t('financial.tradingAccountDataStats.commission'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -298,7 +298,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'swaps',
 
       header: t('financial.tradingAccountDataStats.swaps'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -312,7 +312,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'netProfit',
 
       header: t('financial.tradingAccountDataStats.netProfit'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -326,7 +326,7 @@ export const TradingAccountDataStatsTable = ({
       id: 'netProfitRatio',
 
       header: t('financial.tradingAccountDataStats.netProfitRatio'),
-      size: 180,
+
       cell: ({ row }) => {
         if (row?.original?.netProfitRatio) {
           return `${row?.original?.netProfitRatio}%`;
@@ -338,21 +338,21 @@ export const TradingAccountDataStatsTable = ({
       id: 'rebateTraderAmount',
 
       header: t('financial.tradingAccountDataStats.rebateTraderAmount'),
-      size: 180,
+
       accessorFn: row => row.rebateTraderAmount || 0,
     },
     {
       id: 'rebateCommissionAmount',
 
       header: t('financial.tradingAccountDataStats.rebateCommissionAmount'),
-      size: 180,
+
       accessorFn: row => row.rebateCommissionAmount || 0,
     },
     {
       id: 'rebateDepositAmount',
 
       header: t('financial.tradingAccountDataStats.rebateDepositAmount'),
-      size: 180,
+
       accessorFn: row => row.rebateDepositAmount || 0,
     },
   ];

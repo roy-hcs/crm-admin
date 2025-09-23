@@ -162,28 +162,26 @@ export const AddUserDialog = () => {
                 name="roleId"
                 label={`${t('CRMAccountPage.CRMAccountType')}:`}
                 placeholder={`${t('common.pleaseSelect')}`}
-                options={crmAccountTypeOptions}
+                options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
               />
               <FormSelect
                 name="roleId"
                 label={`${t('CRMAccountPage.Role')}:`}
                 placeholder={`${t('common.pleaseSelect')}`}
-                options={roleOptions}
+                options={roleOptions.map(i => ({ label: t(i.label), value: i.value }))}
               />
               <FormSelect
                 name="roleId"
                 label={`${t('CRMAccountPage.ColorPreferences')}:`}
                 placeholder={t('common.pleaseSelect')}
-                options={colorPreferenceOptions}
+                options={colorPreferenceOptions.map(i => ({ label: t(i.label), value: i.value }))}
               />
               <FormField
                 name="status"
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex h-9 items-center">
-                      <FormLabel className="basis-3/12 text-[#757F8D]">
-                        {t('CRMAccountPage.status')}:
-                      </FormLabel>
+                      <FormLabel className="basis-3/12">{t('CRMAccountPage.status')}:</FormLabel>
                       <div className="flex basis-9/12 items-center">
                         <Switch
                           checked={field.value === '1'}

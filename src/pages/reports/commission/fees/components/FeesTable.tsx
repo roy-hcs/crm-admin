@@ -2,7 +2,7 @@ import { TradingItem } from '@/api/hooks/report/types';
 import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { useTranslation } from 'react-i18next';
 
-export const MyTable = ({
+export const FeesTable = ({
   data,
   pageCount,
   pageIndex,

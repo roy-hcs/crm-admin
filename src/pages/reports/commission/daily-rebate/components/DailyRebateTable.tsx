@@ -3,7 +3,7 @@ import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { useTranslation } from 'react-i18next';
 import { RebateTypeOptions, RebateStatusOptions } from '@/lib/const';
 
-export const MyTable = ({
+export const DailyRebateTable = ({
   data,
   pageCount,
   pageIndex,
@@ -55,7 +55,7 @@ export const MyTable = ({
       cell: ({ row }) => {
         const find = RebateTypeOptions.find(item => item.value === row.original.rebateType);
         if (find) {
-          return find.label;
+          return t(find.label);
         }
         return '--';
       },
@@ -91,7 +91,7 @@ export const MyTable = ({
           item => String(item.value) === String(row.original.rebateStatus),
         );
         if (find) {
-          return find.label;
+          return t(find.label);
         }
         return '--';
       },

@@ -127,7 +127,7 @@ export const SystemFundOperationsForm = ({
             name="operationTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">{t('table.time')}</FormLabel>
+                <FormLabel className="basis-3/12">{t('table.time')}</FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="operationTime" control={form.control} />
                 </FormControl>

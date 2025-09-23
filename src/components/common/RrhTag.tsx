@@ -1,6 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { OrderStatusOptions } from '@/lib/const';
+import { useTranslation } from 'react-i18next';
 
 type RrhTagProps = {
   status: string;
@@ -14,6 +15,7 @@ const statusColorMap: Record<string, string> = {
 };
 
 export const RrhTag: React.FC<RrhTagProps> = ({ status }) => {
+  const { t } = useTranslation();
   const statusOption = OrderStatusOptions.find(option => option.value === status);
   const dotColor = statusColorMap[status] ?? 'bg-slate-400';
   return (
@@ -25,7 +27,7 @@ export const RrhTag: React.FC<RrhTagProps> = ({ status }) => {
       >
         <div className={cn('h-2 w-2 rounded-full', dotColor)}></div>
         <div className={cn('text-xs leading-4 font-normal text-slate-700')}>
-          {statusOption?.label ?? ''}
+          {t(statusOption?.label || '')}
         </div>
       </div>
     </div>

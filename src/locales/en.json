@@ -67,7 +67,50 @@
     "operationTime": "Operation time",
     "status": "state",
     "tips": "The data on this page will have a slight delay. \nFor instant data, please wait 1-2 minutes before refreshing the page for query.",
-    "statisticTime": "Statistics time"
+    "statisticTime": "Statistics time",
+    "account": {
+      "type": {
+        "agent": "acting",
+        "user": "user"
+      }
+    },
+    "colorPreference": {
+      "greenUp": "Green rises red falls",
+      "redUp": "Red rises green falls"
+    },
+    "disable": "Disable",
+    "enable": "Enable",
+    "order": {
+      "status": {
+        "canceled": "Canceled",
+        "completed": "Completed",
+        "pendingPay": "To be paid",
+        "timeout": "Timed out"
+      }
+    },
+    "processStatus": {
+      "handled": "Processed",
+      "unhandled": "Not processed"
+    },
+    "rebate": {
+      "status": {
+        "fail": "fail",
+        "success": "success"
+      },
+      "type": {
+        "deposit": "Deposit Rebate",
+        "fee": "Commission rebate",
+        "trade": "Transaction rebate"
+      }
+    },
+    "role": {
+      "crmUser": "CRM Users",
+      "mam": "MAM",
+      "message": "Message management",
+      "reward": "award",
+      "walletTest": "Wallet Test"
+    },
+    "systemTip": "System prompts"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -124,7 +167,8 @@
     "EnterYourUserName": "Please enter your username",
     "LoginFailedPleaseTryAgainLater": "Login failed, please try again later",
     "RememberMe": "Remember me",
-    "loginFailed": "Login failed:"
+    "loginFailed": "Login failed:",
+    "EnterYourPassword": "Please enter your password"
   },
   "rules": {
     "accountType": "Account Type",
@@ -253,7 +297,50 @@
     "symbol": "Trading Types",
     "tradingAccount": "Trading account",
     "transactionType": "Transaction Type",
-    "volume": "Trading volume"
+    "volume": "Trading volume",
+    "CRMAccount": "CRM Account",
+    "Charge": "cost",
+    "DemoAccountDeposit": "Demo account deposit",
+    "DemoAccountWithdrawal": "Demo account withdrawal",
+    "Deposit": "Deposit",
+    "InternalTransferIn": "Internal transfer deposit",
+    "InternalTransferOut": "Internal transfer and withdrawal",
+    "RebateDeposit": "Rebate deposit",
+    "SystemCreditDeposit": "System credit deposit",
+    "SystemCreditWithdrawal": "System credit withdrawal",
+    "SystemDeposit": "System deposit",
+    "SystemWithdrawal": "System withdrawal",
+    "Withdrawal": "Withdrawal",
+    "amount": "Amount",
+    "balance": "Balance",
+    "clickToGetSum": "Click to view the total data",
+    "closeLots": "Lots closed",
+    "closedPosition": "Closed position profit and loss",
+    "currentBalance": "Current balance",
+    "currentPrice": "Current Price",
+    "depositWay": "Deposit method",
+    "email": "Mail",
+    "entry": "Opening/closing positions",
+    "exportAllDataTip": "Are you sure to export all {{field}}?",
+    "fundAccount": "Fund account",
+    "nameOrId": "Name/Account ID",
+    "openLots": "Number of opening lots",
+    "operationIP": "Operation IP",
+    "operationPerson": "Operator",
+    "operationTime": "Operation time",
+    "orderPlacementPrice": "Pending order price",
+    "orderPlacementTime": "Pending order time",
+    "positionID": "Order Association ID",
+    "remarks": "Remark",
+    "statisticTime": "Statistics time",
+    "stopLossPrice": "Stop loss price",
+    "takeProfitPrice": "Take profit price",
+    "time": "time",
+    "total": "total",
+    "tradingOrdersTotal": "Sum of transaction orders",
+    "tradingServerOrderNumber": "Transaction server order number",
+    "tradingTime": "Trading time",
+    "way": "Way"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -354,5 +441,25 @@
       "sysOutAmountCount": "System withdrawal",
       "title": "Trading account funds statistics"
     }
+  },
+  "accountStatisticPage": {
+    "accountStatistic": "Trading account transaction history statistics"
+  },
+  "limitOrderPage": {
+    "limitOrder": "Limit order"
+  },
+  "positionOrderPage": {
+    "positionCost": "Position cost",
+    "positionOrder": "Position Order",
+    "positionOrderDetail": "Details of position orders"
+  },
+  "systemFundOperationsPage": {
+    "title": "System fund operation record"
+  },
+  "walletBalancePage": {
+    "timeFilter": "Time filtering",
+    "timeFilterTipOne": "1. Only select the start time, query data as this point, and user wallet balance data",
+    "timeFilterTipTwo": "2. Select the start time-end time, query data as a time period, and the total amount of changes in each wallet of the user",
+    "title": "Wallet balance overview"
   }
 }

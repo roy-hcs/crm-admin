@@ -1,64 +1,50 @@
 export const statusOptions = [
-  { label: '启用', value: '1' },
-  { label: '停用', value: '0' },
+  { label: 'common.enable', value: '1' },
+  { label: 'common.disable', value: '0' },
 ];
 
 export const crmAccountTypeOptions = [
-  { label: '用户', value: '1' },
-  { label: '代理', value: '2' },
+  { label: 'common.account.type.user', value: '1' },
+  { label: 'common.account.type.agent', value: '2' },
 ];
 
 // TODO: get this data from API later
 export const roleOptions = [
-  { label: 'CRM用户', value: '131' },
-  { label: 'MAM', value: '198' },
-  { label: '奖励', value: '197' },
-  { label: '消息管理', value: '196' },
-  { label: '钱包测试', value: '195' },
+  { label: 'common.role.crmUser', value: '131' },
+  { label: 'common.role.mam', value: '198' },
+  { label: 'common.role.reward', value: '197' },
+  { label: 'common.role.message', value: '196' },
+  { label: 'common.role.walletTest', value: '195' },
 ];
 
 export const colorPreferenceOptions = [
-  { label: '绿涨红跌', value: '1' },
-  { label: '红涨绿跌', value: '2' },
-];
-
-// 返佣等级列表
-export const RebateLevelOptions = [
-  { label: '等级1', value: '1' },
-  { label: '等级2', value: '2' },
-  { label: '等级3', value: '3' },
-];
-
-// 服务器列表
-export const serverOptions = [
-  { label: '服务器1', value: 'c2966f08bdb24d1b9762aa372bce5090' },
-  { label: '服务器2', value: '2' },
-  { label: '服务器3', value: '3' },
+  { label: 'common.colorPreference.greenUp', value: '1' },
+  { label: 'common.colorPreference.redUp', value: '2' },
 ];
 
 // 返佣类型
 export const RebateTypeOptions = [
-  { label: '交易返佣', value: '1' },
-  { label: '手续费返佣', value: '2' },
-  { label: '入金返佣', value: '3' },
+  { label: 'common.rebate.type.trade', value: '1' },
+  { label: 'common.rebate.type.fee', value: '2' },
+  { label: 'common.rebate.type.deposit', value: '3' },
 ];
 
 // 返佣状态
 export const RebateStatusOptions = [
-  { label: '成功', value: '1' },
-  { label: '失败', value: '0' },
+  { label: 'common.rebate.status.success', value: '1' },
+  { label: 'common.rebate.status.fail', value: '0' },
 ];
 
 // 订单状态
 export const OrderStatusOptions = [
-  { label: '待支付', value: '0' },
-  { label: '已完成', value: '1' },
-  { label: '已取消', value: '2' },
-  { label: '已超时', value: '3' },
+  { label: 'common.order.status.pendingPay', value: '0' },
+  { label: 'common.order.status.completed', value: '1' },
+  { label: 'common.order.status.canceled', value: '2' },
+  { label: 'common.order.status.timeout', value: '3' },
 ];
 
 // 状态
 export const StatusOptions = [
-  { label: '未处理', value: '0' },
-  { label: '已处理', value: '1' },
+  { label: 'common.processStatus.unhandled', value: '0' },
+  { label: 'common.processStatus.handled', value: '1' },
 ];

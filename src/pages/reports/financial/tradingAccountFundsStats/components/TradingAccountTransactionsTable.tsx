@@ -22,7 +22,6 @@ export const TradingAccountTransactionsTable = ({
   const { t } = useTranslation();
   const Columns: CRMColumnDef<TradingAccountFundsStatsItem, unknown>[] = [
     {
-      fixed: true,
       id: 'No.',
       size: 50,
       header: t('ib.overview.Index'),
@@ -30,22 +29,22 @@ export const TradingAccountTransactionsTable = ({
     },
     {
       id: 'name',
-      fixed: true,
+
       header: t('financial.tradingAccountTransactions.name'),
-      size: 180,
+
       accessorFn: row => row.name,
     },
     {
       id: 'login',
-      fixed: true,
+
       header: t('financial.tradingAccountTransactions.login'),
       accessorFn: row => row.login,
     },
     {
       id: 'balance',
-      fixed: true,
+
       header: t('financial.tradingAccountFundsStats.balance'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -59,9 +58,9 @@ export const TradingAccountTransactionsTable = ({
     },
     {
       id: 'inputAmountCount',
-      fixed: true,
+
       header: t('financial.tradingAccountFundsStats.inputAmountCount'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -75,9 +74,9 @@ export const TradingAccountTransactionsTable = ({
     },
     {
       id: 'sysInputAmountCount',
-      fixed: true,
+
       header: t('financial.tradingAccountFundsStats.sysInputAmountCount'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -91,9 +90,9 @@ export const TradingAccountTransactionsTable = ({
     },
     {
       id: 'commissionInputAmountCount',
-      fixed: true,
+
       header: t('financial.tradingAccountFundsStats.commissionInputAmountCount'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -108,9 +107,9 @@ export const TradingAccountTransactionsTable = ({
     },
     {
       id: 'insideTransferInputAmountCount',
-      fixed: true,
+
       header: t('financial.tradingAccountFundsStats.insideTransferInputAmountCount'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -125,9 +124,9 @@ export const TradingAccountTransactionsTable = ({
     },
     {
       id: 'negativeBalanceCount',
-      fixed: true,
+
       header: t('financial.tradingAccountFundsStats.negativeBalanceCount'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -141,9 +140,9 @@ export const TradingAccountTransactionsTable = ({
     },
     {
       id: 'outAmountCount',
-      fixed: true,
+
       header: t('financial.tradingAccountFundsStats.outAmountCount'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -155,9 +154,9 @@ export const TradingAccountTransactionsTable = ({
     },
     {
       id: 'sysOutAmountCount',
-      fixed: true,
+
       header: t('financial.tradingAccountFundsStats.sysOutAmountCount'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -171,9 +170,9 @@ export const TradingAccountTransactionsTable = ({
     },
     {
       id: 'insideTransferOutAmountCount',
-      fixed: true,
+
       header: t('financial.tradingAccountFundsStats.insideTransferOutAmountCount'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -188,9 +187,9 @@ export const TradingAccountTransactionsTable = ({
     },
     {
       id: 'creditInputAmountCount',
-      fixed: true,
+
       header: t('financial.tradingAccountFundsStats.creditInputAmountCount'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -204,9 +203,9 @@ export const TradingAccountTransactionsTable = ({
     },
     {
       id: 'creditOutAmountCount',
-      fixed: true,
+
       header: t('financial.tradingAccountFundsStats.creditOutAmountCount'),
-      size: 180,
+
       cell: ({ row }) => {
         return (
           <div>
@@ -220,16 +219,16 @@ export const TradingAccountTransactionsTable = ({
     },
     {
       id: 'profitLoss',
-      fixed: true,
+
       header: t('financial.tradingAccountFundsStats.profitLoss'),
-      size: 180,
+
       accessorFn: row => row.profitLoss || `0${row.currency}`,
     },
     {
       id: 'balance',
-      fixed: true,
+
       header: t('financial.tradingAccountFundsStats.currentbalance'),
-      size: 180,
+
       accessorFn: row => row.balance || `0${row.currency}`,
     },
   ];

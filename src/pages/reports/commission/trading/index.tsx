@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { useRebateList } from '@/api/hooks/report/report';
-import { MyForm, FormRef } from './components/MyForm';
+import { TradingForm, FormRef } from './components/TradingForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
-import { MyTable } from './components/MyTable';
+import { TradingTable } from './components/TradingTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { useServerList, useGroupList, useGetCrmRebateTraders } from '@/api/hooks/system/system';
@@ -129,7 +129,7 @@ export function TradingPage() {
             direction="right"
             footerShow={false}
           >
-            <MyForm
+            <TradingForm
               ref={formRef}
               setParams={setParams}
               setServerId={setServerId}
@@ -142,7 +142,7 @@ export function TradingPage() {
           </RrhDrawer>
         </div>
       </div>
-      <MyTable
+      <TradingTable
         data={AgencyClientTracking?.rows || []}
         pageCount={Math.ceil(+(AgencyClientTracking?.total || 0) / pageSize)}
         pageIndex={pageNum}

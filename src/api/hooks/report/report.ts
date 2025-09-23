@@ -40,6 +40,8 @@ import {
   WalletBalanceSumParams,
   WalletBalanceSumRes,
   CurrencyListRes,
+  WalletTransactionSumParams,
+  WalletTransactionSumRes,
 } from './types';
 
 /**
@@ -110,6 +112,16 @@ export function useWalletTransactionList(params: crmUserDealDetailParams) {
     queryKey: ['walletTransactionList', params],
     queryFn: () =>
       apiFormPostCustom<WalletTransactionResponse>('/system/crmUserDealDetail/list', params || {}),
+  });
+}
+
+/**
+ * 获取钱包流水合计
+ */
+export function useWalletTransactionSum() {
+  return useMutation({
+    mutationFn: (params: WalletTransactionSumParams) =>
+      apiFormPostCustom<WalletTransactionSumRes>('/system/crmUserDealDetail/listSum', params),
   });
 }
 

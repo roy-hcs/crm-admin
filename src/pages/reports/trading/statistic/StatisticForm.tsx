@@ -170,9 +170,7 @@ export const StatisticForm = ({
             name="statisticTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">
-                  {t('table.statisticTime')}
-                </FormLabel>
+                <FormLabel className="basis-3/12">{t('table.statisticTime')}</FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="statisticTime" control={form.control} />
                 </FormControl>

@@ -33,7 +33,7 @@ type FormData = {
 export interface FormRef {
   onReset: () => void;
 }
-export const MyForm = forwardRef<
+export const DailyRebateForm = forwardRef<
   FormRef,
   {
     setParams: (params: { beginTime: string; endTime: string; account: string }) => void;
@@ -113,7 +113,7 @@ export const MyForm = forwardRef<
             name="settlementTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">
+                <FormLabel className="basis-3/12">
                   {t('commission.daily-rebate.settleTime')}
                 </FormLabel>
                 <FormControl className="basis-9/12">
@@ -134,14 +134,14 @@ export const MyForm = forwardRef<
             name="rebateTraderId"
             label={t('commission.daily-rebate.rebateType')}
             placeholder={t('common.pleaseSelect')}
-            options={RebateTypeOptions}
+            options={RebateTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
           />
           <FormSelect
             verticalLabel
             name="rebateStatus"
             label={t('commission.daily-rebate.rebateStatus')}
             placeholder={t('common.pleaseSelect')}
-            options={RebateStatusOptions}
+            options={RebateStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
           />
           <FormInput
             verticalLabel

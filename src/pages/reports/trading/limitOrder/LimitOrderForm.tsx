@@ -239,9 +239,7 @@ export const LimitOrderForm = ({
             name="openTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">
-                  {t('table.orderPlacementTime')}
-                </FormLabel>
+                <FormLabel className="basis-3/12">{t('table.orderPlacementTime')}</FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="openTime" control={form.control} />
                 </FormControl>

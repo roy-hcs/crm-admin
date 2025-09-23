@@ -2,9 +2,9 @@ import { useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { useDailyRebateList } from '@/api/hooks/report/report';
-import { MyForm, FormRef } from './components/MyForm';
+import { DailyRebateForm, FormRef } from './components/DailyRebateForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
-import { MyTable } from './components/MyTable';
+import { DailyRebateTable } from './components/DailyRebateTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 export function DailyRebatePage() {
@@ -80,11 +80,15 @@ export function DailyRebatePage() {
             direction="right"
             footerShow={false}
           >
-            <MyForm ref={formRef} setParams={setParams} setCommonParams={setCommonParams} />
+            <DailyRebateForm
+              ref={formRef}
+              setParams={setParams}
+              setCommonParams={setCommonParams}
+            />
           </RrhDrawer>
         </div>
       </div>
-      <MyTable
+      <DailyRebateTable
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}

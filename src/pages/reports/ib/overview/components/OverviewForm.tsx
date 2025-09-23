@@ -146,9 +146,7 @@ export const OverviewForm = forwardRef<
             name="beginTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">
-                  {t('ib.CustomerTracking.time') + ':'}
-                </FormLabel>
+                <FormLabel className="basis-3/12">{t('ib.CustomerTracking.time') + ':'}</FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="beginTime" control={form.control} />
                 </FormControl>
@@ -161,6 +159,7 @@ export const OverviewForm = forwardRef<
             name="level"
             label={t('ib.CustomerTracking.levelName') + ':'}
             placeholder={t('common.pleaseSelect')}
+            showRowValue={false}
             options={rebateLevelOptions.map(item => ({ label: item.levelName, value: item.id }))}
           />
           <div className="flex justify-end gap-4">
