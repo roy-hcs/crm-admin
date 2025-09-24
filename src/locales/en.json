@@ -110,7 +110,8 @@
       "reward": "award",
       "walletTest": "Wallet Test"
     },
-    "systemTip": "System prompts"
+    "systemTip": "System prompts",
+    "delete": "delete"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -354,7 +355,16 @@
     "refuse": "reject",
     "reviewing": "Under review",
     "status": "state",
-    "submitTime": "Submission time"
+    "submitTime": "Submission time",
+    "batchAudit": "Bulk audit",
+    "rebateAmount": "Rebate amount",
+    "rebateBase": "Rebate base",
+    "rebateRatio": "Rebate ratio",
+    "rebateUser": "Rebate object",
+    "serverOrWallet": "Server/Wallet",
+    "targetRule": "Hit Rules",
+    "tradeAccount": "Trading account",
+    "tradingOrderNumber": "Transaction order number"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -478,5 +488,8 @@
   },
   "reviewAgent": {
     "title": "Agent audit"
+  },
+  "depositRebateReview": {
+    "title": "Deposit Rebate Review"
   }
 }

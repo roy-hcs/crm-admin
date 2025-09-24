@@ -90,6 +90,7 @@
     "systemTip": "系统提示",
     "enable": "启用",
     "disable": "停用",
+    "delete": "删除",
     "role": {
       "crmUser": "CRM用户",
       "mam": "MAM",
@@ -398,6 +399,9 @@
   "reviewAgent": {
     "title": "代理审核"
   },
+  "depositRebateReview": {
+    "title": "入金返佣审核"
+  },
   "table": {
     "server": "服务器",
     "groups": "组别",
@@ -477,6 +481,15 @@
     "submitTime": "提交时间",
     "currentAuditor": "当前审核人",
     "finishTime": "完结时间",
-    "audit": "审核"
+    "audit": "审核",
+    "batchAudit": "批量审核",
+    "tradingOrderNumber": "交易订单号",
+    "tradeAccount": "交易账号",
+    "rebateUser": "返佣对象",
+    "serverOrWallet": "服务器/钱包",
+    "rebateBase": "返佣基数",
+    "rebateRatio": "返佣比例",
+    "rebateAmount": "返佣金额",
+    "targetRule": "命中规则"
   }
 }

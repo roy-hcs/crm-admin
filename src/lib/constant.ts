@@ -45,3 +45,10 @@ export const reviewStatusMap: Record<number, string> = {
   2: 'pending',
   3: 'reviewing',
 };
+
+export const depositRebateStatusMap: Record<number | string, string> = {
+  2: 'refuse',
+  1: 'pass',
+  0: 'pending',
+  '-1': 'reviewing',
+};
