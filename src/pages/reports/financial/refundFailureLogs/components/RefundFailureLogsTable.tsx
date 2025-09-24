@@ -1,6 +1,6 @@
 import { RefundFailLogItem } from '@/api/hooks/report/types';
 import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
-import { RrhTag } from '@/components/common/RrhTag';
+import { RrhOrderStatusTag } from '@/components/common/RrhOrderStatusTag';
 import { Ellipsis } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
@@ -81,7 +81,7 @@ export const RefundFailureLogsTable = ({
     {
       id: 'status',
       header: t('common.status'),
-      cell: ({ row }) => <RrhTag status={String(row.original.status)} />,
+      cell: ({ row }) => <RrhOrderStatusTag status={String(row.original.status)} />,
     },
     {
       id: 'operation',

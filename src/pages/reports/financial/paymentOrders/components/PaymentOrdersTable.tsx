@@ -1,6 +1,6 @@
 import { PaymentOrderItem } from '@/api/hooks/report/types';
 import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
-import { RrhTag } from '@/components/common/RrhTag';
+import { RrhOrderStatusTag } from '@/components/common/RrhOrderStatusTag';
 import { Ellipsis } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
@@ -66,7 +66,7 @@ export const PaymentOrdersTable = ({
     {
       id: 'orderStatus',
       header: t('financial.paymentOrders.orderStatus'),
-      cell: ({ row }) => <RrhTag status={String(row.original.orderStatus)} />,
+      cell: ({ row }) => <RrhOrderStatusTag status={String(row.original.orderStatus)} />,
     },
     {
       id: 'channelName',

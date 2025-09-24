@@ -56,7 +56,6 @@
     "loginFailed": "登录失败：",
     "RememberMe": "记住我"
   },
-
   "common": {
     "loading": "加载中...",
     "NoData": "暂无数据",
@@ -98,7 +97,10 @@
       "message": "消息管理",
       "walletTest": "钱包测试"
     },
-    "processStatus": { "unhandled": "未处理", "handled": "已处理" },
+    "processStatus": {
+      "unhandled": "未处理",
+      "handled": "已处理"
+    },
     "order": {
       "status": {
         "pendingPay": "待支付",
@@ -113,10 +115,21 @@
         "fee": "手续费返佣",
         "deposit": "入金返佣"
       },
-      "status": { "success": "成功", "fail": "失败" }
+      "status": {
+        "success": "成功",
+        "fail": "失败"
+      }
     },
-    "colorPreference": { "greenUp": "绿涨红跌", "redUp": "红涨绿跌" },
-    "account": { "type": { "user": "用户", "agent": "代理" } }
+    "colorPreference": {
+      "greenUp": "绿涨红跌",
+      "redUp": "红涨绿跌"
+    },
+    "account": {
+      "type": {
+        "user": "用户",
+        "agent": "代理"
+      }
+    }
   },
   "home": {
     "DataOverview": "数据总览",
@@ -382,6 +395,9 @@
     "timeFilterTipTwo": "2.选择开始时间-结束时间，查询数据为时间段，用户各钱包变动金额合计",
     "timeFilter": "时间筛选"
   },
+  "reviewAgent": {
+    "title": "代理审核"
+  },
   "table": {
     "server": "服务器",
     "groups": "组别",
@@ -447,6 +463,20 @@
     "nameOrId": "姓名/账户ID",
     "depositWay": "入金方式",
     "balance": "余额",
-    "email": "邮箱"
+    "email": "邮箱",
+    "mobile": "手机号",
+    "applySource": "申请来源",
+    "invitationRegistration": "邀请注册",
+    "customerApplication": "客户申请",
+    "officialWebsiteRegistration": "官网注册",
+    "status": "状态",
+    "refuse": "拒绝",
+    "pass": "通过",
+    "pending": "待审",
+    "reviewing": "审核中",
+    "submitTime": "提交时间",
+    "currentAuditor": "当前审核人",
+    "finishTime": "完结时间",
+    "audit": "审核"
   }
 }
