@@ -1,35 +1,29 @@
-import React from 'react';
 import { cn } from '@/lib/utils';
-import { OrderStatusOptions } from '@/lib/const';
-import { useTranslation } from 'react-i18next';
+import { FC, PropsWithChildren } from 'react';
 
-type RrhTagProps = {
-  status: string;
+export type RrhTagProps = {
+  type: 'success' | 'error' | 'warning' | 'info' | 'default';
+  className?: string;
 };
 
-const statusColorMap: Record<string, string> = {
-  '0': 'bg-amber-600',
-  '1': 'bg-emerald-600',
-  '2': 'bg-slate-400',
-  '3': 'bg-red-600',
-};
-
-export const RrhTag: React.FC<RrhTagProps> = ({ status }) => {
-  const { t } = useTranslation();
-  const statusOption = OrderStatusOptions.find(option => option.value === status);
-  const dotColor = statusColorMap[status] ?? 'bg-slate-400';
+export const RrhTag: FC<PropsWithChildren<RrhTagProps>> = ({ children, type, className }) => {
   return (
-    <div className="inline-block">
+    <div
+      className={cn(
+        'flex flex-nowrap items-center gap-1 rounded-md border border-slate-200 px-2 py-0.5 text-xs leading-4 text-slate-700',
+        className,
+      )}
+    >
       <div
-        className={cn(
-          'border-r-md flex items-center gap-1 rounded-md border border-l-slate-200 px-2 py-0.5',
-        )}
-      >
-        <div className={cn('h-2 w-2 rounded-full', dotColor)}></div>
-        <div className={cn('text-xs leading-4 font-normal text-slate-700')}>
-          {t(statusOption?.label || '')}
-        </div>
-      </div>
+        className={cn('size-2 rounded-full', {
+          'bg-emerald-600': type === 'success',
+          'bg-red-600': type === 'error',
+          'bg-amber-600': type === 'warning',
+          'bg-blue-600': type === 'info',
+          'bg-slate-400': type === 'default',
+        })}
+      ></div>
+      <div>{children}</div>
     </div>
   );
 };

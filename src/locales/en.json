@@ -110,7 +110,8 @@
       "reward": "award",
       "walletTest": "Wallet Test"
     },
-    "systemTip": "System prompts"
+    "systemTip": "System prompts",
+    "delete": "delete"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -340,7 +341,30 @@
     "tradingOrdersTotal": "Sum of transaction orders",
     "tradingServerOrderNumber": "Transaction server order number",
     "tradingTime": "Trading time",
-    "way": "Way"
+    "way": "Way",
+    "applySource": "Source of application",
+    "audit": "Review",
+    "currentAuditor": "Current reviewer",
+    "customerApplication": "Client application",
+    "finishTime": "Finishing time",
+    "invitationRegistration": "Invite to register",
+    "mobile": "Phone number",
+    "officialWebsiteRegistration": "Official website registration",
+    "pass": "pass",
+    "pending": "Pending trial",
+    "refuse": "reject",
+    "reviewing": "Under review",
+    "status": "state",
+    "submitTime": "Submission time",
+    "batchAudit": "Bulk audit",
+    "rebateAmount": "Rebate amount",
+    "rebateBase": "Rebate base",
+    "rebateRatio": "Rebate ratio",
+    "rebateUser": "Rebate object",
+    "serverOrWallet": "Server/Wallet",
+    "targetRule": "Hit Rules",
+    "tradeAccount": "Trading account",
+    "tradingOrderNumber": "Transaction order number"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -461,5 +485,11 @@
     "timeFilterTipOne": "1. Only select the start time, query data as this point, and user wallet balance data",
     "timeFilterTipTwo": "2. Select the start time-end time, query data as a time period, and the total amount of changes in each wallet of the user",
     "title": "Wallet balance overview"
+  },
+  "reviewAgent": {
+    "title": "Agent audit"
+  },
+  "depositRebateReview": {
+    "title": "Deposit Rebate Review"
   }
 }

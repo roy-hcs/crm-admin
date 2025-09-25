@@ -26,6 +26,8 @@ import { LimitOrderPage } from './pages/reports/trading/limitOrder/LimitOrderPag
 import { StatisticPage } from './pages/reports/trading/statistic/StatisticPage';
 import { SystemFundOperationsPage } from './pages/reports/financial/systemFundOperations/SystemFundOperationsPage';
 import { WalletBalancePage } from './pages/reports/financial/walletBalance/WalletBalancePage';
+import { ReviewAgentPage } from './pages/review/agent/ReviewAgentPage';
+import { ReviewDepositRebatePage } from './pages/review/depositRebate/ReviewDepositRebatePage';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -143,6 +145,14 @@ export const router = createBrowserRouter([
       {
         path: '/reports/ib/overview',
         element: <OverviewPage />,
+      },
+      {
+        path: '/review/agent',
+        element: <ReviewAgentPage />,
+      },
+      {
+        path: '/review/deposit-rebate',
+        element: <ReviewDepositRebatePage />,
       },
       // Add more routes that should use MainLayout here
       {
