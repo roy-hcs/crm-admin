@@ -7,7 +7,7 @@ import { depositRebateStatusMap } from '@/lib/constant';
 import { ColumnDef } from '@tanstack/react-table';
 import { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-export const ReviewDepositRebateTable = ({
+export const ReviewTradingRebateTable = ({
   data,
   pageCount,
   pageIndex,
@@ -27,7 +27,7 @@ export const ReviewDepositRebateTable = ({
   CustomRow: ReactElement;
 }) => {
   const { t } = useTranslation();
-  const ReviewDepositRebateColumns: ColumnDef<RebateCommissionItem>[] = [
+  const TradingRebateColumns: ColumnDef<RebateCommissionItem>[] = [
     {
       id: 'select',
       header: ({ table }) => (
@@ -59,7 +59,7 @@ export const ReviewDepositRebateTable = ({
     },
     {
       id: 'serverName',
-      header: t('table.serverOrWallet'),
+      header: t('table.server'),
       accessorFn: row => row.serverName,
     },
     {
@@ -73,9 +73,26 @@ export const ReviewDepositRebateTable = ({
       accessorFn: row => row.login,
     },
     {
+      id: 'symbol',
+      header: t('table.symbol'),
+      accessorFn: row => row.symbol,
+    },
+    {
+      id: 'volume',
+      header: t('table.volume'),
+      accessorFn: row => parseFloat(row.volume).toFixed(2),
+    },
+    {
       id: 'traderTime',
       header: t('table.tradingTime'),
       accessorFn: row => row.traderTimeStr,
+      cell: ({ row }) => (
+        <div>
+          {row.original.traderTimeStr.split(' ').map(item => {
+            return <div key={item}>{item}</div>;
+          })}
+        </div>
+      ),
     },
     {
       id: 'rebateUser',
@@ -88,30 +105,24 @@ export const ReviewDepositRebateTable = ({
       ),
     },
     {
-      id: 'commissionBase',
-      header: t('table.rebateBase'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        if (rowData.model == 1) {
-          return rowData.trderCount + ' ' + rowData.amtUnit;
-        } else {
-          return rowData.commissionBase + ' ' + rowData.amtUnit;
-        }
-      },
-    },
-    {
-      id: 'percentage',
-      header: t('table.rebateRatio'),
-      cell: ({ row }) => <div>{row.original.percentage} %</div>,
-    },
-    {
       id: 'rebateTotalAmt',
       header: t('table.rebateAmount'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.rebateFixedAmt} {row.original.amtUnit}
-        </div>
-      ),
+      cell: ({ row }) => {
+        const currency = ` ${row.original.amtUnit}`;
+        return (
+          <div>
+            <div>
+              {row.original.rebateFixedAmt}
+              {currency}
+            </div>
+            <div>
+              (
+              {`${row.original.rebateFixedAmt + currency} + ${row.original.rebatePointsAmt + currency}`}
+              )
+            </div>
+          </div>
+        );
+      },
     },
     {
       id: 'status',
@@ -177,7 +188,7 @@ export const ReviewDepositRebateTable = ({
   ];
   return (
     <DataTable
-      columns={ReviewDepositRebateColumns}
+      columns={TradingRebateColumns}
       data={data}
       pageCount={pageCount}
       pageSize={pageSize}

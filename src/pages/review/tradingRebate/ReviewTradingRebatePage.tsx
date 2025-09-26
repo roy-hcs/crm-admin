@@ -10,22 +10,25 @@ import {
   useRebateCommissionListSum,
   useRebateCommissionRuleList,
 } from '@/api/hooks/review/review';
-import { ReviewDepositRebateForm } from './ReviewDepositRebateForm';
-import { ReviewDepositRebateTable } from './ReviewDepositRebateTable';
 import { TableCell } from '@/components/ui/table';
+import { ReviewTradingRebateForm } from './ReviewTradingRebateForm';
+import { ReviewTradingRebateTable } from './ReviewTradingRebateTable';
 
-export const ReviewDepositRebatePage = () => {
+export const ReviewTradingRebatePage = () => {
   const [params, setParams] = useState<RebateCommissionListParams['params']>({
     startTraderTime: '',
     endTraderTime: '',
     beginTime: '',
     endTime: '',
   });
-  const [otherParams, setOtherParams] = useState<Omit<RebateCommissionListParams, 'params'>>({
+  const [otherParams, setOtherParams] = useState<
+    Omit<RebateCommissionListParams & { taderType?: string }, 'params'>
+  >({
     serverId: '',
     serverGroupList: '',
     mtOrder: '',
     trderAccount: '',
+    taderType: '',
     rebateStatus: '',
     id: '',
     rebateTraderId: '',
@@ -40,7 +43,7 @@ export const ReviewDepositRebatePage = () => {
   const [enabled, setEnabled] = useState(false);
 
   const { data: serverList, isLoading: serverListLoading } = useServerList();
-  const { data: rebateRuleList } = useRebateCommissionRuleList(3);
+  const { data: rebateRuleList } = useRebateCommissionRuleList(2);
 
   useEffect(() => {
     if (serverList && serverList.rows && serverList.rows.length > 0) {
@@ -51,7 +54,6 @@ export const ReviewDepositRebatePage = () => {
       }));
     }
   }, [serverList]);
-  // 该页面存在特殊的服务器选项‘钱包’，选择钱包时，serverId传空，但此时依然允许发起请求，所以修改enabled的逻辑，改为监听serverId变化，一次有值后允许发起请求，不再拦截。主要是为了避免初次加载时发起serverId为空的请求
   useEffect(() => {
     if (otherParams.serverId) {
       setEnabled(true);
@@ -64,7 +66,7 @@ export const ReviewDepositRebatePage = () => {
       pageNum: pageNum + 1,
       pageSize,
       ...otherParams,
-      rebateType: 3,
+      rebateType: 1,
       params: {
         ...params,
       },
@@ -79,7 +81,7 @@ export const ReviewDepositRebatePage = () => {
     setSumShow(true);
     getRebateSum({
       ...otherParams,
-      rebateType: 3,
+      rebateType: 1,
       params: {
         ...params,
       },
@@ -108,12 +110,11 @@ export const ReviewDepositRebatePage = () => {
       conditionName: '',
     });
     setPageNum(0);
-    setSumShow(false);
   };
 
   return (
     <div>
-      <h1 className="text-title">{t('depositRebateReview.title')}</h1>
+      <h1 className="text-title">{t('tradingRebateReview.title')}</h1>
       <div className="my-3.5 flex justify-end gap-2">
         <RrhButton variant="outline">{t('table.export')}</RrhButton>
         <RrhButton variant="outline">{t('table.batchDelete')}</RrhButton>
@@ -132,7 +133,7 @@ export const ReviewDepositRebatePage = () => {
             </RrhButton>
           }
         >
-          <ReviewDepositRebateForm
+          <ReviewTradingRebateForm
             serverListLoading={serverListLoading}
             serverList={serverList?.rows || []}
             setParams={setParams}
@@ -143,7 +144,7 @@ export const ReviewDepositRebatePage = () => {
         </RrhDrawer>
       </div>
 
-      <ReviewDepositRebateTable
+      <ReviewTradingRebateTable
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}
@@ -153,7 +154,7 @@ export const ReviewDepositRebatePage = () => {
         loading={isLoading}
         CustomRow={
           <>
-            <TableCell colSpan={7}>{t('table.total')}</TableCell>
+            <TableCell colSpan={6}>{t('table.total')}</TableCell>
             {!sumShow && (
               <TableCell colSpan={5}>
                 <RrhButton variant="ghost" onClick={getSumData}>
@@ -166,16 +167,11 @@ export const ReviewDepositRebatePage = () => {
                 <TableCell>{t('common.loading')}</TableCell>
               ) : (
                 <>
-                  <TableCell colSpan={2}>
-                    {sumData?.data[0]?.totalList.map(item => {
-                      return (
-                        <div key={item.amtUnit}>
-                          {item.commissionBase} {item.amtUnit}
-                        </div>
-                      );
-                    })}
+                  <TableCell colSpan={1} className="text-center">
+                    {sumData?.data[0]?.totalVolume}
                   </TableCell>
-                  <TableCell colSpan={2}>
+                  <TableCell colSpan={2}></TableCell>
+                  <TableCell colSpan={1} className="text-center">
                     {sumData?.data[0]?.totalList.map(item => {
                       return (
                         <div key={item.amtUnit}>

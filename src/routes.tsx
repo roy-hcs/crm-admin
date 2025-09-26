@@ -28,6 +28,10 @@ import { SystemFundOperationsPage } from './pages/reports/financial/systemFundOp
 import { WalletBalancePage } from './pages/reports/financial/walletBalance/WalletBalancePage';
 import { ReviewAgentPage } from './pages/review/agent/ReviewAgentPage';
 import { ReviewDepositRebatePage } from './pages/review/depositRebate/ReviewDepositRebatePage';
+import { ReviewFeeRebatePage } from './pages/review/feeRebate/ReviewFeeRebatePage';
+import { ReviewTradingRebatePage } from './pages/review/tradingRebate/ReviewTradingRebatePage';
+import { ReviewWithdrawalPage } from './pages/review/withdrawal/ReviewWithdrawalPage';
+import { ReviewInternalTransferPage } from './pages/review/internalTransfer/ReviewInternalTransferPage';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -153,6 +157,22 @@ export const router = createBrowserRouter([
       {
         path: '/review/deposit-rebate',
         element: <ReviewDepositRebatePage />,
+      },
+      {
+        path: '/review/fee-rebate',
+        element: <ReviewFeeRebatePage />,
+      },
+      {
+        path: '/review/trading-rebate',
+        element: <ReviewTradingRebatePage />,
+      },
+      {
+        path: '/review/internal-transfer',
+        element: <ReviewInternalTransferPage />,
+      },
+      {
+        path: '/review/withdrawal',
+        element: <ReviewWithdrawalPage />,
       },
       // Add more routes that should use MainLayout here
       {

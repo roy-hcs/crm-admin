@@ -1,5 +1,11 @@
+export type BasicParams = {
+  pageNum?: number;
+  pageSize?: number;
+  orderByColumn?: string;
+  isAsc?: string;
+};
+
 export type AgentApplyItem = {
-  // generate type according to above json
   createBy: string;
   createTime: string;
   updateBy: string | null;
@@ -45,11 +51,7 @@ export type AgentApplyListRes = {
   total: string;
 };
 
-export type AgentApplyListParams = {
-  pageNum?: number;
-  pageSize?: number;
-  orderByColumn?: string;
-  isAsc?: string;
+export type AgentApplyListParams = BasicParams & {
   name?: string;
   mobile?: string | number;
   email?: string;
@@ -130,11 +132,7 @@ export type RebateCommissionListRes = {
   total: string;
 };
 
-export type RebateCommissionListParams = {
-  pageNum?: number;
-  pageSize?: number;
-  orderByColumn?: string;
-  isAsc?: string;
+export type RebateCommissionListParams = BasicParams & {
   serverId?: string;
   rebateType?: string | number;
   serverGroup?: string;
@@ -189,4 +187,174 @@ export type RebateCommissionRuleItem = {
   ruleAndModel: string;
   traderServers: string | null;
   traderLanguages: string | null;
+};
+
+export type RebateCommissionListSumItem = {
+  totalVolume: string;
+  totalList: {
+    amtUnit: string;
+    commissionBase: string;
+    rebateFixedAmt: string;
+    rebateTotalAmt: string;
+  }[];
+};
+
+export type RebateCommissionListSumRes = {
+  code: number;
+  msg: string;
+  data: RebateCommissionListSumItem[];
+};
+
+export type InternalTransferListParams = BasicParams & {
+  userId?: string;
+  status?: number | string;
+  verifyUserName?: string;
+  dealTicket?: string | number;
+  params: {
+    fuzzyStartTime?: string;
+    fuzzyEndTime?: string;
+    fuzzyOutAccount?: string;
+    fuzzyInAccount?: string;
+  };
+};
+
+export type InternalTransferItem = {
+  orderComment: string;
+  verifyStep: number;
+  verifyUser: string | null;
+  remark: string | null;
+  verifyTime: string | null;
+  outAccount: string;
+  type: number;
+  vUserName: string | null;
+  subTime: string;
+  inMoney: number;
+  rate: number;
+  inAccount: string;
+  isNeedDeposit: string | null;
+  userLastName: string;
+  userShowId: string;
+  id: string;
+  currencyPair: string;
+  inServer: string;
+  dealTicket: string | null;
+  vUserLastName: string | null;
+  verifyUserName: string | null;
+  inUnit: string;
+  outMoney: number;
+  userName: string;
+  userId: string;
+  outAliasName: string;
+  outUnit: string;
+  outStatus: number;
+  outServer: string;
+  inAliasName: string;
+  status: number;
+};
+export type InternalTransferListRes = {
+  code: number;
+  msg: string;
+  rows: InternalTransferItem[];
+  total: string;
+};
+
+export type WithdrawItem = {
+  orderComment: string;
+  accountMobile: string | null;
+  orderId: string | null;
+  fee: string;
+  verifyStep: number;
+  feeCurrency: string;
+  verifyUser: string | null;
+  verifyTime: string | null;
+  vUserName: string | null;
+  subTime: string;
+  serverId: string;
+  cardNo: string;
+  operator: string | null;
+  accountBank: string;
+  balance: number;
+  expectWithdraw: number;
+  userLastName: string;
+  userShowId: string;
+  subRemark: string | null;
+  id: string;
+  swift: string | null;
+  operTime: string | null;
+  walletId: string | null;
+  aliasName: string;
+  method: number;
+  targetCurrency: string;
+  vUserLastName: string | null;
+  creditDeducted: number;
+  withdrawCurrency: string;
+  withdrawBankAddress: string | null;
+  roleName: string;
+  exceptionFlag: string | null;
+  factWithdraw: string | null;
+  status: number;
+  exceptionRemark: string | null;
+  customChannelJson: string | null;
+  withdrawBank: string | null;
+  accountName: string;
+  orderNum: string;
+  remark: string | null;
+  login: string;
+  rate: number;
+  withdrawUser: string | null;
+  userEmail: string;
+  bsbCode: string;
+  ifscCode: string;
+  channelId: string | null;
+  abnCode: string | null;
+  branchBank: string;
+  currencyPair: string;
+  factWithdrawScale: number;
+  dealTicket: string;
+  verifyUserName: string | null;
+  userName: string;
+  userId: string;
+  withdrawAccount: string | null;
+  accountEmail: string | null;
+  isWithdraw: number;
+  operatorType: string | null;
+  withdrawAddress: string | null;
+  withdraw: string;
+  walletCurrency?: string;
+};
+export type WithdrawListRes = {
+  code: number;
+  msg: string;
+  rows: WithdrawItem[];
+  total: string;
+};
+export type WithdrawListParams = BasicParams & {
+  userId?: string;
+  status?: number | string;
+  verifyUserName?: string;
+  dealTicket?: string | number;
+  method?: string;
+  login?: string;
+  orderNum?: string;
+  exceptionFlag?: string | number;
+  accounts?: string;
+  params: {
+    beginTime?: string;
+    endTime?: string;
+    outMoneyAccount?: string;
+    accounts?: string;
+    finishBeginTime?: string;
+    finishEndTime?: string;
+  };
+};
+
+export type WithdrawListSumRes = {
+  code: number;
+  msg: string;
+  data: {
+    currency: string;
+    sumFee: string;
+    sumWithdraw: string;
+    sumFactWithdraw: string;
+  }[];
 };

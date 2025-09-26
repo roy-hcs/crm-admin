@@ -7,7 +7,7 @@ import { depositRebateStatusMap } from '@/lib/constant';
 import { ColumnDef } from '@tanstack/react-table';
 import { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-export const ReviewDepositRebateTable = ({
+export const ReviewFeeRebateTable = ({
   data,
   pageCount,
   pageIndex,
@@ -27,7 +27,7 @@ export const ReviewDepositRebateTable = ({
   CustomRow: ReactElement;
 }) => {
   const { t } = useTranslation();
-  const ReviewDepositRebateColumns: ColumnDef<RebateCommissionItem>[] = [
+  const FeeRebateColumns: ColumnDef<RebateCommissionItem>[] = [
     {
       id: 'select',
       header: ({ table }) => (
@@ -71,6 +71,16 @@ export const ReviewDepositRebateTable = ({
       id: 'login',
       header: t('table.tradingAccount'),
       accessorFn: row => row.login,
+    },
+    {
+      id: 'symbol',
+      header: t('table.symbol'),
+      accessorFn: row => row.symbol,
+    },
+    {
+      id: 'volume',
+      header: t('table.volume'),
+      accessorFn: row => parseFloat(row.volume).toFixed(2),
     },
     {
       id: 'traderTime',
@@ -177,7 +187,7 @@ export const ReviewDepositRebateTable = ({
   ];
   return (
     <DataTable
-      columns={ReviewDepositRebateColumns}
+      columns={FeeRebateColumns}
       data={data}
       pageCount={pageCount}
       pageSize={pageSize}
