@@ -263,3 +263,24 @@ export type PaymentChannelItem = {
   channelName: string;
 };
 export type ChannelListResponse = PaymentChannelItem[];
+
+// 信息类型
+export type InfoTypeItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: string | null;
+  dictCode: string | null;
+  dictSort: string | null;
+  dictLabel: string | null;
+  dictValue: string | null;
+  dictType: string | null;
+  cssClass: string | null;
+  listClass: string | null;
+  isDefault: string | null;
+  status: string | null;
+  flag: string | null;
+  globalizationKey: string | null;
+};

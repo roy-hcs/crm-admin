@@ -26,6 +26,8 @@ import { LimitOrderPage } from './pages/reports/trading/limitOrder/LimitOrderPag
 import { StatisticPage } from './pages/reports/trading/statistic/StatisticPage';
 import { SystemFundOperationsPage } from './pages/reports/financial/systemFundOperations/SystemFundOperationsPage';
 import { WalletBalancePage } from './pages/reports/financial/walletBalance/WalletBalancePage';
+import { SettingsPage } from './pages/review/settings';
+import { InFormationPage } from './pages/review/InFormation';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -143,6 +145,16 @@ export const router = createBrowserRouter([
       {
         path: '/reports/ib/overview',
         element: <OverviewPage />,
+      },
+      // 审核-审核设置
+      {
+        path: '/review/settings',
+        element: <SettingsPage />,
+      },
+      // 审核-信息审核
+      {
+        path: '/review/information',
+        element: <InFormationPage />,
       },
       // Add more routes that should use MainLayout here
       {
