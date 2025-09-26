@@ -91,6 +91,8 @@
     "enable": "启用",
     "disable": "停用",
     "delete": "删除",
+    "normal": "正常",
+    "abnormal": "异常",
     "role": {
       "crmUser": "CRM用户",
       "mam": "MAM",
@@ -402,6 +404,18 @@
   "depositRebateReview": {
     "title": "入金返佣审核"
   },
+  "feeRebateReview": {
+    "title": "手续费返佣审核"
+  },
+  "tradingRebateReview": {
+    "title": "交易返佣审核"
+  },
+  "internalTransferReview": {
+    "title": "内部转账审核"
+  },
+  "withdrawalReview": {
+    "title": "出金审核"
+  },
   "table": {
     "server": "服务器",
     "groups": "组别",
@@ -490,6 +504,26 @@
     "rebateBase": "返佣基数",
     "rebateRatio": "返佣比例",
     "rebateAmount": "返佣金额",
-    "targetRule": "命中规则"
+    "targetRule": "命中规则",
+    "transferInAccount": "转入账号",
+    "transferOutAccount": "转出账号",
+    "tradeServerOrderNumber": "交易服务器订单号",
+    "myWallet": "我的钱包",
+    "transferAmount": "转账金额",
+    "submitAuditTime": "提交审核时间",
+    "nameOrLastNameOrId": "姓/名/账户ID",
+    "withdrawMethods": "出金方式",
+    "bankTransfer": "银行汇款",
+    "quickPayment": "快捷支付",
+    "cryptocurrency": "加密货币",
+    "internationalTransfer": "国际电汇",
+    "reviewStatus": "审核状态",
+    "withdrawAccount": "出金账户",
+    "wallet": "钱包",
+    "cancel": "取消",
+    "payID": "PayID",
+    "withdrawAmount": "出金金额",
+    "amountOfReceipt": "到账金额",
+    "role": "角色"
   }
 }

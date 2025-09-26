@@ -52,3 +52,26 @@ export const depositRebateStatusMap: Record<number | string, string> = {
   0: 'pending',
   '-1': 'reviewing',
 };
+
+export const internalTransferReviewStatusMap: Record<number | string, string> = {
+  2: 'pending',
+  1: 'pass',
+  0: 'refuse',
+  '-1': 'reviewing',
+};
+
+export const withdrawalReviewStatusMap: Record<number | string, string> = {
+  2: 'pending',
+  1: 'pass',
+  0: 'refuse',
+  '-1': 'reviewing',
+  '-2': 'cancel',
+};
+
+export const withdrawOrDepositMethodsMap: Record<number, string> = {
+  1: 'internationalTransfer',
+  2: 'bankTransfer',
+  3: 'systemWithdrawal',
+  4: 'quickPayment',
+  13: 'payID',
+};
