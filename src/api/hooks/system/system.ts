@@ -18,6 +18,7 @@ import {
   CurrencyListResponse,
   DictTypeResponse,
   ChannelListResponse,
+  InfoTypeItem,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -185,5 +186,15 @@ export function useChannelList() {
   return useQuery({
     queryKey: ['getChannelList'],
     queryFn: () => apiGet<ChannelListResponse>(`/system/userOrder/getChannelList`, {}),
+  });
+}
+
+/***
+ * 获取信息类型
+ */
+export function useInfoTypeList() {
+  return useQuery({
+    queryKey: ['getInfoTypeList'],
+    queryFn: () => apiGet<InfoTypeItem[]>(`/system/crmInfoVerify/getInfoVerifyType`, {}),
   });
 }

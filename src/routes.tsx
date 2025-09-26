@@ -33,6 +33,11 @@ import { ReviewTradingRebatePage } from './pages/review/tradingRebate/ReviewTrad
 import { ReviewWithdrawalPage } from './pages/review/withdrawal/ReviewWithdrawalPage';
 import { ReviewInternalTransferPage } from './pages/review/internalTransfer/ReviewInternalTransferPage';
 import { ReviewDepositPage } from './pages/review/deposit/ReviewDepositPage';
+import { SettingsPage } from './pages/review/settings';
+import { InFormationPage } from './pages/review/InFormation';
+import { AccountOpeningPage } from './pages/review/AccountOpening';
+import { BindingPage } from './pages/review/binding';
+import { LeveragePage } from './pages/review/leverage';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -178,6 +183,31 @@ export const router = createBrowserRouter([
       {
         path: '/review/deposit',
         element: <ReviewDepositPage />,
+      },
+      // 审核-审核设置
+      {
+        path: '/review/settings',
+        element: <SettingsPage />,
+      },
+      // 审核-信息审核
+      {
+        path: '/review/information',
+        element: <InFormationPage />,
+      },
+      // 审核-开户审核
+      {
+        path: '/review/account-opening',
+        element: <AccountOpeningPage />,
+      },
+      // 审核-绑定审核
+      {
+        path: '/review/binding',
+        element: <BindingPage />,
+      },
+      // 审核-杠杠审核
+      {
+        path: '/review/leverage',
+        element: <LeveragePage />,
       },
       // Add more routes that should use MainLayout here
       {

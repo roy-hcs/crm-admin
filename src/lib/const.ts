@@ -48,3 +48,11 @@ export const StatusOptions = [
   { label: 'common.processStatus.unhandled', value: '0' },
   { label: 'common.processStatus.handled', value: '1' },
 ];
+
+// 审核状态
+export const VerifyStatusOptions = [
+  { label: 'common.verifyStatus.pending', value: '2' },
+  { label: 'common.verifyStatus.underReview', value: '-1' },
+  { label: 'common.verifyStatus.approved', value: '1' },
+  { label: 'common.verifyStatus.rejected', value: '0' },
+];

@@ -84,6 +84,7 @@
     "close": "关闭",
     "tips": " 此页面的数据会有稍许延时。即时的数据，请稍等1-2分钟后刷新页面查询。",
     "operationTime": "操作时间",
+    "subTime": "提交时间",
     "statisticTime": "统计时间",
     "status": "状态",
     "operType": "操作类型",
@@ -125,15 +126,18 @@
         "fail": "失败"
       }
     },
-    "colorPreference": {
-      "greenUp": "绿涨红跌",
-      "redUp": "红涨绿跌"
-    },
     "account": {
       "type": {
         "user": "用户",
         "agent": "代理"
       }
+    },
+    "colorPreference": { "greenUp": "绿涨红跌", "redUp": "红涨绿跌" },
+    "verifyStatus": {
+      "pending": "待审核",
+      "underReview": "审核中",
+      "approved": "通过",
+      "rejected": "拒绝"
     }
   },
   "home": {
@@ -539,5 +543,20 @@
     "payAmount": "收款金额",
     "depositAmount": "入金金额",
     "directAgent": "直属代理"
+  },
+  "review": {
+    "settings": {
+      "title": "审核设置",
+      "nameText": "名称",
+      "sort": "排序",
+      "indexReviewCount": "首页待审合计数展示",
+      "val": "导航栏待审合计数展示"
+    },
+    "information": {
+      "title": "信息审核",
+      "infoType": "信息类型",
+      "verifyUserName": "当前审核人",
+      "verifyTime": "完结时间"
+    }
   }
 }
