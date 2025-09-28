@@ -4,9 +4,9 @@ import { CrmInfoVerifyItem } from '@/api/hooks/review/types';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { ChevronDown, ChevronUp, Ellipsis } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { RrhTag } from '@/components/common/RrhTag';
 import { VerifyStatusOptions } from '@/lib/const';
 import { InfoTypeItem } from '@/api/hooks/system/types';
+import { RrhOrderStatusTag } from '@/components/common/RrhOrderStatusTag';
 
 export const InFormationTable = ({
   data,
@@ -126,7 +126,7 @@ export const InFormationTable = ({
       },
       accessorKey: 'status',
       cell: ({ row }) => (
-        <RrhTag status={String(row.original.status)} options={VerifyStatusOptions} />
+        <RrhOrderStatusTag status={String(row.original.status)} options={VerifyStatusOptions} />
       ),
     },
     {

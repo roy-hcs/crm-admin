@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { LeverageVerifyListItem } from '@/api/hooks/review/types';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { ChevronDown, ChevronUp, Ellipsis } from 'lucide-react';
-import { RrhTag } from '@/components/common/RrhTag';
 import { VerifyStatusOptions } from '@/lib/const';
 import { cn } from '@/lib/utils';
+import { RrhOrderStatusTag } from '@/components/common/RrhOrderStatusTag';
 
 export const LeverageTable = ({
   data,
@@ -170,7 +170,7 @@ export const LeverageTable = ({
       },
       accessorKey: 'status',
       cell: ({ row }) => (
-        <RrhTag status={String(row.original.status)} options={VerifyStatusOptions} />
+        <RrhOrderStatusTag status={String(row.original.status)} options={VerifyStatusOptions} />
       ),
     },
     {
