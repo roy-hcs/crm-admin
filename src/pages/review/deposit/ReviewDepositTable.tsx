@@ -1,14 +1,13 @@
-import { WithdrawItem } from '@/api/hooks/review/types';
+import { DepositListItem } from '@/api/hooks/review/types';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhTag } from '@/components/common/RrhTag';
 import { DataTable } from '@/components/table/DataTable';
-import { Checkbox } from '@/components/ui/checkbox';
-import { withdrawalReviewStatusMap } from '@/lib/constant';
+import { depositMethodsMap, withdrawalReviewStatusMap } from '@/lib/constant';
 import { ColumnDef } from '@tanstack/react-table';
 import { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const ReviewWithdrawalTable = ({
+export const ReviewDepositTable = ({
   data,
   pageCount,
   pageIndex,
@@ -17,9 +16,9 @@ export const ReviewWithdrawalTable = ({
   onPageSizeChange,
   loading = false,
   CustomRow,
-  withdrawMethodList,
+  channelList,
 }: {
-  data: WithdrawItem[];
+  data: DepositListItem[];
   pageCount: number;
   pageIndex: number;
   pageSize: number;
@@ -27,34 +26,10 @@ export const ReviewWithdrawalTable = ({
   onPageSizeChange: (pageSize: number) => void;
   loading?: boolean;
   CustomRow: ReactElement;
-  withdrawMethodList: { id: string; name: string }[];
+  channelList: { id: number; channelName: string }[];
 }) => {
   const { t } = useTranslation();
-  const ReviewWithdrawalTable: ColumnDef<WithdrawItem>[] = [
-    {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          className="data-[state=checked]:border-slate-700"
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          className="data-[state=checked]:border-slate-700"
-          checked={row.getIsSelected()}
-          onCheckedChange={value => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
+  const ReviewDepositTableColumns: ColumnDef<DepositListItem>[] = [
     {
       id: 'No.',
       header: t('CRMAccountPage.Index'),
@@ -64,19 +39,6 @@ export const ReviewWithdrawalTable = ({
       id: 'orderNumber',
       header: t('table.orderNumber'),
       accessorFn: row => row.orderNum,
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      accessorFn: row => row.status,
-      cell: ({ row }) => {
-        const status = row.original.exceptionFlag;
-        return (
-          <RrhTag type={Number(status) === 1 ? 'error' : 'success'}>
-            {Number(status) === 1 ? t('common.abnormal') : t('common.normal')}
-          </RrhTag>
-        );
-      },
     },
     {
       id: 'userName',
@@ -91,21 +53,29 @@ export const ReviewWithdrawalTable = ({
       ),
     },
     {
-      id: 'email',
-      header: t('table.email'),
-      accessorFn: row => row.userEmail,
-    },
-    {
-      id: 'withdrawMethods',
-      header: t('table.withdrawMethods'),
+      id: 'depositMethods',
+      header: t('table.depositMethods'),
       cell: ({ row }) => {
         const method = row.original.method;
-        return method ? withdrawMethodList?.find(item => item.id === method.toString())?.name : '-';
+        return method ? t(`table.${depositMethodsMap[method]}`) : '-';
       },
     },
     {
-      id: 'withdrawAccount',
-      header: t('table.withdrawAccount'),
+      id: 'channel',
+      header: t('table.paymentChannel'),
+      cell: ({ row }) => {
+        if (row.original.method === 5) {
+          return (
+            channelList.find(channel => `${channel.id}` === row.original.channelId)?.channelName ||
+            '-'
+          );
+        }
+        return '-';
+      },
+    },
+    {
+      id: 'depositAccount',
+      header: t('table.depositAccount'),
       cell: ({ row }) => {
         if (row.original.login) {
           return row.original.aliasName ? (
@@ -124,15 +94,6 @@ export const ReviewWithdrawalTable = ({
           );
         }
       },
-    },
-    {
-      id: 'balance',
-      header: t('table.balance'),
-      cell: ({ row }) => (
-        <div className="text-center">
-          {row.original.balance} {row.original.withdrawCurrency}
-        </div>
-      ),
     },
     {
       id: 'reviewStatus',
@@ -154,11 +115,20 @@ export const ReviewWithdrawalTable = ({
       },
     },
     {
-      id: 'withdrawAmount',
-      header: t('table.withdrawAmount'),
+      id: 'payAmount',
+      header: t('table.payAmount'),
       cell: ({ row }) => (
         <div className="text-center">
-          {row.original.withdraw} {row.original.walletCurrency}
+          {row.original.deposit} {row.original.depositCurrency}
+        </div>
+      ),
+    },
+    {
+      id: 'depositAmount',
+      header: t('table.depositAmount'),
+      cell: ({ row }) => (
+        <div className="text-center">
+          {row.original.factDeposit} {row.original.feeCurrency}
         </div>
       ),
     },
@@ -175,13 +145,31 @@ export const ReviewWithdrawalTable = ({
       id: 'amountOfReceipt',
       header: t('table.amountOfReceipt'),
       cell: ({ row }) =>
-        row.original.factWithdraw ? (
+        row.original.receiptAmount ? (
           <div className="text-center">
-            {row.original.factWithdraw} {row.original.targetCurrency}
+            {row.original.receiptAmount} {row.original.receiptCurrency}
           </div>
         ) : (
           <div>-</div>
         ),
+    },
+    {
+      id: 'exchangeRate',
+      header: t('common.exchangeRate'),
+      cell: ({ row }) =>
+        row.original.rate ? (
+          <div className="text-center">
+            <div>{row.original.rate.toFixed(5)}</div>
+            <div>{row.original.currencyPair}</div>
+          </div>
+        ) : (
+          <div>-</div>
+        ),
+    },
+    {
+      id: 'directAgent',
+      header: t('table.directAgent'),
+      accessorFn: row => row.directBroker,
     },
     {
       id: 'role',
@@ -189,20 +177,24 @@ export const ReviewWithdrawalTable = ({
       accessorFn: row => row.roleName,
     },
     {
-      id: 'submitAuditTime',
-      header: t('table.submitAuditTime'),
+      id: 'submitTime',
+      header: t('table.submitTime'),
       accessorFn: row => row.subTime,
     },
     {
       id: 'currentAuditor',
       header: t('table.currentAuditor'),
       cell: ({ row }) => {
-        if (row.original.vUserLastName && row.original.status !== 2) {
-          return (
-            <div>
-              {row.original.vUserLastName} {row.original.vUserName}
-            </div>
-          );
+        if (row.original.status !== 2) {
+          if (row.original.vUserLastName) {
+            return (
+              <div>
+                {row.original.vUserLastName} {row.original.vUserName}
+              </div>
+            );
+          } else {
+            return <div>{t('common.system')}</div>;
+          }
         } else {
           return <div>-</div>;
         }
@@ -220,6 +212,17 @@ export const ReviewWithdrawalTable = ({
       accessorFn: row => row.dealTicket,
     },
     {
+      id: 'paymentOrderNumber',
+      header: t('table.paymentOrderNumber'),
+      cell: ({ row }) => {
+        if (row.original.method === 5) {
+          return row.original.orderId;
+        } else {
+          return '-';
+        }
+      },
+    },
+    {
       id: 'operate',
       header: t('common.Operation'),
       cell: ({ row }) => {
@@ -234,7 +237,7 @@ export const ReviewWithdrawalTable = ({
   ];
   return (
     <DataTable
-      columns={ReviewWithdrawalTable}
+      columns={ReviewDepositTableColumns}
       data={data}
       pageCount={pageCount}
       pageSize={pageSize}

@@ -93,6 +93,8 @@
     "delete": "删除",
     "normal": "正常",
     "abnormal": "异常",
+    "exchangeRate": "汇率",
+    "system": "系统",
     "role": {
       "crmUser": "CRM用户",
       "mam": "MAM",
@@ -416,6 +418,9 @@
   "withdrawalReview": {
     "title": "出金审核"
   },
+  "depositReview": {
+    "title": "入金审核"
+  },
   "table": {
     "server": "服务器",
     "groups": "组别",
@@ -524,6 +529,15 @@
     "payID": "PayID",
     "withdrawAmount": "出金金额",
     "amountOfReceipt": "到账金额",
-    "role": "角色"
+    "role": "角色",
+    "depositMethods": "入金方式",
+    "thirdPayment": "第三方支付",
+    "depositAccount": "入金账户",
+    "paymentCurrency": "收款货币",
+    "paymentChannel": "支付通道",
+    "paymentOrderNumber": "支付订单号",
+    "payAmount": "收款金额",
+    "depositAmount": "入金金额",
+    "directAgent": "直属代理"
   }
 }

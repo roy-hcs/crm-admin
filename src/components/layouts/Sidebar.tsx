@@ -526,6 +526,10 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
           path: '/review/leverage',
         },
         {
+          title: '入金审核',
+          path: '/review/deposit',
+        },
+        {
           title: '出金审核',
           path: '/review/withdrawal',
         },

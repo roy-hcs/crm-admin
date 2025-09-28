@@ -32,6 +32,7 @@ import { ReviewFeeRebatePage } from './pages/review/feeRebate/ReviewFeeRebatePag
 import { ReviewTradingRebatePage } from './pages/review/tradingRebate/ReviewTradingRebatePage';
 import { ReviewWithdrawalPage } from './pages/review/withdrawal/ReviewWithdrawalPage';
 import { ReviewInternalTransferPage } from './pages/review/internalTransfer/ReviewInternalTransferPage';
+import { ReviewDepositPage } from './pages/review/deposit/ReviewDepositPage';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -173,6 +174,10 @@ export const router = createBrowserRouter([
       {
         path: '/review/withdrawal',
         element: <ReviewWithdrawalPage />,
+      },
+      {
+        path: '/review/deposit',
+        element: <ReviewDepositPage />,
       },
       // Add more routes that should use MainLayout here
       {

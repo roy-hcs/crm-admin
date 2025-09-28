@@ -1,15 +1,21 @@
-import { apiFormPostCustom } from '@/api/client';
+import { apiFormPostCustom, apiGetCustom } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AgentApplyListParams,
   AgentApplyListRes,
   BasicParams,
+  CurrencyListRes,
+  DepositListParams,
+  DepositListRes,
+  DepositListSumRes,
   InternalTransferListParams,
   InternalTransferListRes,
+  OutMoneyMethodListRes,
   RebateCommissionListParams,
   RebateCommissionListRes,
   RebateCommissionListSumRes,
   RebateCommissionRuleItem,
+  ThirdPaymentListRes,
   WithdrawListParams,
   WithdrawListRes,
   WithdrawListSumRes,
@@ -82,5 +88,40 @@ export function useWithdrawListSum() {
   return useMutation({
     mutationFn: (params: Omit<WithdrawListParams, keyof BasicParams>) =>
       apiFormPostCustom<WithdrawListSumRes>(`/system/crmWithdrawVerify/listSum`, params),
+  });
+}
+
+export function useDepositList(params: DepositListParams, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['depositList', params],
+    queryFn: () => apiFormPostCustom<DepositListRes>(`/system/crmDepositVerify/list`, params),
+    enabled: options.enabled,
+  });
+}
+
+export function useDepositListSum() {
+  return useMutation({
+    mutationFn: (params: Omit<DepositListParams, keyof BasicParams>) =>
+      apiFormPostCustom<DepositListSumRes>(`/system/crmDepositVerify/listSum`, params),
+  });
+}
+
+export function useThirdPaymentList() {
+  return useQuery({
+    queryKey: ['thirdPaymentList'],
+    queryFn: () => apiFormPostCustom<ThirdPaymentListRes>(`/system/thirdPaymentSetting/list`, {}),
+  });
+}
+export function useOutMoneyMethodList() {
+  return useQuery({
+    queryKey: ['outMoneyMethodList'],
+    queryFn: () => apiGetCustom<OutMoneyMethodListRes>(`/system/inOutMoneySetting/outMoneyMethod`),
+  });
+}
+
+export function useCurrencyList() {
+  return useQuery({
+    queryKey: ['currencyList'],
+    queryFn: () => apiFormPostCustom<CurrencyListRes>(`/system/currency/list`, {}),
   });
 }

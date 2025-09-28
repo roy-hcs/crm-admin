@@ -154,7 +154,9 @@ export const ReviewFeeRebatePage = () => {
         loading={isLoading}
         CustomRow={
           <>
-            <TableCell colSpan={6}>{t('table.total')}</TableCell>
+            <TableCell colSpan={6} className="text-center">
+              {t('table.total')}
+            </TableCell>
             {!sumShow && (
               <TableCell colSpan={5}>
                 <RrhButton variant="ghost" onClick={getSumData}>

@@ -71,7 +71,6 @@ export const AddUserDialog = () => {
     },
   });
   const onSubmit = async (data: { [key: string]: string }) => {
-    console.log('on submit---', data);
     try {
       setIsSubmitting(true);
       // Make your API request here
