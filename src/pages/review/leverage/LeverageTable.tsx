@@ -1,14 +1,13 @@
 import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { useTranslation } from 'react-i18next';
-import { CrmInfoVerifyItem } from '@/api/hooks/review/types';
+import { LeverageVerifyListItem } from '@/api/hooks/review/types';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { ChevronDown, ChevronUp, Ellipsis } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { RrhTag } from '@/components/common/RrhTag';
 import { VerifyStatusOptions } from '@/lib/const';
-import { InfoTypeItem } from '@/api/hooks/system/types';
+import { cn } from '@/lib/utils';
 
-export const InFormationTable = ({
+export const LeverageTable = ({
   data,
   pageCount,
   pageIndex,
@@ -18,25 +17,29 @@ export const InFormationTable = ({
   loading = false,
   isAsc,
   setIsAsc,
-  orderByColumn,
   setOrderByColumn,
-  infoTypeList,
 }: {
-  data: CrmInfoVerifyItem[];
+  data: LeverageVerifyListItem[];
   pageCount: number;
   pageIndex: number;
   pageSize: number;
   onPageChange: (pageIndex: number) => void;
   onPageSizeChange: (pageSize: number) => void;
   loading?: boolean;
-  isAsc: 'asc' | 'desc';
-  setIsAsc: (isAsc: 'asc' | 'desc') => void;
-  orderByColumn: 'infoType' | 'status' | 'subTime' | 'verifyTime';
-  setOrderByColumn: (orderByColumn: 'infoType' | 'status' | 'subTime' | 'verifyTime') => void;
-  infoTypeList: InfoTypeItem[];
+  isAsc: 'asc' | 'desc' | '';
+  setIsAsc: (isAsc: 'asc' | 'desc' | '') => void;
+  setOrderByColumn: (
+    orderByColumn:
+      | 'status desc,subTime desc'
+      | 'currentLever'
+      | 'targetLever'
+      | 'status'
+      | 'subTime'
+      | 'verifyTime',
+  ) => void;
 }) => {
   const { t } = useTranslation();
-  const baseColumns: CRMColumnDef<CrmInfoVerifyItem, unknown>[] = [
+  const baseColumns: CRMColumnDef<LeverageVerifyListItem, unknown>[] = [
     {
       fixed: true,
       id: 'No',
@@ -46,55 +49,96 @@ export const InFormationTable = ({
     {
       id: 'name',
       header: t('table.fullName'),
-      accessorFn: row => `${row.userLastName} ${row.userName}`,
       cell: ({ row }) => {
-        return !row.original.userLastName && !row.original.userShowId ? (
-          <div className="text-center">-</div>
-        ) : (
-          <div>
-            <div>{row.original.userLastName}</div>
-            <div>{row.original.userShowId}</div>
-          </div>
-        );
+        if (row?.original?.userLastName || row?.original?.userShowId || row?.original?.userName) {
+          return (
+            <div>
+              <div>
+                {(row?.original?.userLastName || '') + ' ' + (row?.original?.userName || '')}
+              </div>
+              <div>{row?.original?.userShowId}</div>
+            </div>
+          );
+        } else {
+          return <div className="text-center">-</div>;
+        }
       },
     },
   ];
-  const commonColumns: CRMColumnDef<CrmInfoVerifyItem, unknown>[] = [
+  const commonColumns: CRMColumnDef<LeverageVerifyListItem, unknown>[] = [
     {
-      id: 'infoType',
+      id: 'aliasName',
+      header: t('common.server'),
+      accessorKey: 'aliasName',
+      cell: ({ row }) => row.original.aliasName || '-',
+    },
+    {
+      id: 'login',
+      header: t('table.tradingAccount'),
+      accessorKey: 'login',
+      cell: ({ row }) => row.original.login || '-',
+    },
+    {
+      id: 'currentLever',
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>{t('review.information.infoType')}</div>
+            <div>{t('review.leverage.currentLever')}</div>
             <button
               className="gap-.5 flex cursor-pointer flex-col"
               onClick={() => {
                 setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('infoType');
+                setOrderByColumn('currentLever');
               }}
             >
-              {orderByColumn === 'infoType' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
+              {isAsc === '' ? (
                 <>
                   <ChevronUp className={cn('h-3 w-3')} />
                   <ChevronDown className={cn('h-3 w-3')} />
+                </>
+              ) : (
+                <>
+                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
+                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
                 </>
               )}
             </button>
           </div>
         );
       },
-      accessorKey: 'infoType',
-      cell: ({ row }) => {
-        const infoType = infoTypeList.find(
-          item => Number(item.dictValue) === Number(row.original.infoType),
+      accessorKey: 'currentLever',
+      cell: ({ row }) => (row.original.currentLever ? `1:${row.original.currentLever}` : '-'),
+    },
+    {
+      id: 'targetLever',
+      header: () => {
+        return (
+          <div className="flex items-center justify-between gap-2">
+            <div>{t('review.leverage.targetLever')}</div>
+            <button
+              className="gap-.5 flex cursor-pointer flex-col"
+              onClick={() => {
+                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
+                setOrderByColumn('targetLever');
+              }}
+            >
+              {isAsc === '' ? (
+                <>
+                  <ChevronUp className={cn('h-3 w-3')} />
+                  <ChevronDown className={cn('h-3 w-3')} />
+                </>
+              ) : (
+                <>
+                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
+                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
+                </>
+              )}
+            </button>
+          </div>
         );
-        return <div>{infoType ? infoType.dictLabel : '-'}</div>;
       },
+      accessorKey: 'targetLever',
+      cell: ({ row }) => (row.original.targetLever ? `1:${row.original.targetLever}` : '-'),
     },
     {
       id: 'status',
@@ -109,15 +153,15 @@ export const InFormationTable = ({
                 setOrderByColumn('status');
               }}
             >
-              {orderByColumn === 'status' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
+              {isAsc === '' ? (
                 <>
                   <ChevronUp className={cn('h-3 w-3')} />
                   <ChevronDown className={cn('h-3 w-3')} />
+                </>
+              ) : (
+                <>
+                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
+                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
                 </>
               )}
             </button>
@@ -142,15 +186,15 @@ export const InFormationTable = ({
                 setOrderByColumn('subTime');
               }}
             >
-              {orderByColumn === 'subTime' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
+              {isAsc === '' ? (
                 <>
                   <ChevronUp className={cn('h-3 w-3')} />
                   <ChevronDown className={cn('h-3 w-3')} />
+                </>
+              ) : (
+                <>
+                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
+                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
                 </>
               )}
             </button>
@@ -171,7 +215,7 @@ export const InFormationTable = ({
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>{t('review.information.verifyTime')}</div>
+            <div>{t('common.verifyTime')}</div>
             <button
               className="gap-.5 flex cursor-pointer flex-col"
               onClick={() => {
@@ -179,15 +223,15 @@ export const InFormationTable = ({
                 setOrderByColumn('verifyTime');
               }}
             >
-              {orderByColumn === 'verifyTime' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
+              {isAsc === '' ? (
                 <>
                   <ChevronUp className={cn('h-3 w-3')} />
                   <ChevronDown className={cn('h-3 w-3')} />
+                </>
+              ) : (
+                <>
+                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
+                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
                 </>
               )}
             </button>
@@ -220,7 +264,10 @@ export const InFormationTable = ({
       ),
     },
   ];
-  const Columns: CRMColumnDef<CrmInfoVerifyItem, unknown>[] = [...baseColumns, ...commonColumns];
+  const Columns: CRMColumnDef<LeverageVerifyListItem, unknown>[] = [
+    ...baseColumns,
+    ...commonColumns,
+  ];
   return (
     <DataTable
       columns={Columns}

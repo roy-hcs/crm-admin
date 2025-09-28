@@ -28,6 +28,9 @@ import { SystemFundOperationsPage } from './pages/reports/financial/systemFundOp
 import { WalletBalancePage } from './pages/reports/financial/walletBalance/WalletBalancePage';
 import { SettingsPage } from './pages/review/settings';
 import { InFormationPage } from './pages/review/InFormation';
+import { AccountOpeningPage } from './pages/review/AccountOpening';
+import { BindingPage } from './pages/review/binding';
+import { LeveragePage } from './pages/review/leverage';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -155,6 +158,21 @@ export const router = createBrowserRouter([
       {
         path: '/review/information',
         element: <InFormationPage />,
+      },
+      // 审核-开户审核
+      {
+        path: '/review/account-opening',
+        element: <AccountOpeningPage />,
+      },
+      // 审核-绑定审核
+      {
+        path: '/review/binding',
+        element: <BindingPage />,
+      },
+      // 审核-杠杠审核
+      {
+        path: '/review/leverage',
+        element: <LeveragePage />,
       },
       // Add more routes that should use MainLayout here
       {

@@ -1,38 +1,35 @@
 import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { InFormationForm } from './InFormationForm';
+import { AccountOpeningForm } from './AccountOpeningForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
-import { InFormationTable } from './InFormationTable';
+import { AccountOpeningTable } from './AccountOpeningTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-import { useCrmInfoVerifyList } from '@/api/hooks/review/review';
+import { useCrmNewLoginVerifyList } from '@/api/hooks/review/review';
 import { RrhButton } from '@/components/common/RrhButton';
-import { CrmInfoVerifyListParams } from '@/api/hooks/review/types';
-import { useInfoTypeList } from '@/api/hooks/system/system';
-import { InfoTypeItem } from '@/api/hooks/system/types';
-export function InFormationPage() {
+import { CrmNewLoginVerifyListParams } from '@/api/hooks/review/types';
+export function AccountOpeningPage() {
   const { t } = useTranslation();
-  const { data: useInfoTyperesponse, isLoading: useInfoTypeloading } = useInfoTypeList();
-  const infoTypeList: InfoTypeItem[] = Array.isArray(useInfoTyperesponse)
-    ? useInfoTyperesponse
-    : [];
-  const [isAsc, setIsAsc] = useState<'asc' | 'desc'>('asc');
+  const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('');
   const [orderByColumn, setOrderByColumn] = useState<
-    'infoType' | 'status' | 'subTime' | 'verifyTime'
-  >('status');
+    'status desc,subTime desc' | 'lever' | 'status' | 'subTime' | 'verifyTime'
+  >('status desc,subTime desc');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [params, setParams] = useState<CrmInfoVerifyListParams['params']>({
+  const [params, setParams] = useState<CrmNewLoginVerifyListParams['params']>({
+    server: '',
+    serverType: '',
+    serverProperty: '',
     beginTime: '',
     endTime: '',
   });
   const [commonParams, setCommonParams] = useState({
     userId: '',
-    infoType: '',
     status: '',
+    source: '',
     verifyUserName: '',
   });
-  const { data: data, isLoading: loading } = useCrmInfoVerifyList({
+  const { data: data, isLoading: loading } = useCrmNewLoginVerifyList({
     params,
     pageSize,
     ...commonParams,
@@ -44,15 +41,15 @@ export function InFormationPage() {
     setParams(pre => ({ ...pre, beginTime: '', endTime: '' }));
     setCommonParams({
       userId: '',
-      infoType: '',
       status: '',
+      source: '',
       verifyUserName: '',
     });
     setPageNum(0);
   };
   return (
     <div>
-      <h1 className="text-title"> {t('review.information.title')}</h1>
+      <h1 className="text-title"> {t('review.accountOpening.title')}</h1>
       <div className="my-3.5 flex items-center justify-between">
         <RrhInputWithIcon
           placeholder={t('common.pleaseInput', { field: t('review.information.verifyUserName') })}
@@ -78,15 +75,11 @@ export function InFormationPage() {
               </RrhButton>
             }
           >
-            <InFormationForm
-              setParams={setParams}
-              setCommonParams={setCommonParams}
-              infoTypeList={infoTypeList}
-            />
+            <AccountOpeningForm setParams={setParams} setCommonParams={setCommonParams} />
           </RrhDrawer>
         </div>
       </div>
-      <InFormationTable
+      <AccountOpeningTable
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}
@@ -95,10 +88,8 @@ export function InFormationPage() {
         onPageSizeChange={setPageSize}
         isAsc={isAsc}
         setIsAsc={setIsAsc}
-        orderByColumn={orderByColumn}
         setOrderByColumn={setOrderByColumn}
-        infoTypeList={infoTypeList}
-        loading={loading || useInfoTypeloading}
+        loading={loading}
       />
     </div>
   );

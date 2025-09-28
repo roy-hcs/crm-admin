@@ -87,6 +87,7 @@
     "operationTime": "操作时间",
     "subTime": "提交时间",
     "statisticTime": "统计时间",
+    "verifyTime": "完结时间",
     "status": "状态",
     "operType": "操作类型",
     "systemTip": "系统提示",
@@ -123,7 +124,12 @@
       "underReview": "审核中",
       "approved": "通过",
       "rejected": "拒绝"
-    }
+    },
+    "serverType": "交易平台",
+    "type": "类型",
+    "server": "服务器",
+    "accountType": "账号类型",
+    "level": "杠杆"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -469,6 +475,19 @@
       "infoType": "信息类型",
       "verifyUserName": "当前审核人",
       "verifyTime": "完结时间"
+    },
+    "accountOpening": {
+      "title": "开户审核",
+      "source": "推广邀请码"
+    },
+    "binding": {
+      "title": "绑定审核",
+      "source": "推广邀请码"
+    },
+    "leverage": {
+      "title": "杠杆审核",
+      "currentLever": "当前杠杆",
+      "targetLever": "目标杠杆"
     }
   }
 }

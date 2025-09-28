@@ -1,14 +1,14 @@
 import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { useTranslation } from 'react-i18next';
-import { CrmInfoVerifyItem } from '@/api/hooks/review/types';
+import { CrmNewLoginVerifyItem } from '@/api/hooks/review/types';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { ChevronDown, ChevronUp, Ellipsis } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { serverMap } from '@/lib/constant';
 import { RrhTag } from '@/components/common/RrhTag';
 import { VerifyStatusOptions } from '@/lib/const';
-import { InfoTypeItem } from '@/api/hooks/system/types';
+import { cn } from '@/lib/utils';
 
-export const InFormationTable = ({
+export const AccountOpeningTable = ({
   data,
   pageCount,
   pageIndex,
@@ -18,25 +18,23 @@ export const InFormationTable = ({
   loading = false,
   isAsc,
   setIsAsc,
-  orderByColumn,
   setOrderByColumn,
-  infoTypeList,
 }: {
-  data: CrmInfoVerifyItem[];
+  data: CrmNewLoginVerifyItem[];
   pageCount: number;
   pageIndex: number;
   pageSize: number;
   onPageChange: (pageIndex: number) => void;
   onPageSizeChange: (pageSize: number) => void;
   loading?: boolean;
-  isAsc: 'asc' | 'desc';
-  setIsAsc: (isAsc: 'asc' | 'desc') => void;
-  orderByColumn: 'infoType' | 'status' | 'subTime' | 'verifyTime';
-  setOrderByColumn: (orderByColumn: 'infoType' | 'status' | 'subTime' | 'verifyTime') => void;
-  infoTypeList: InfoTypeItem[];
+  isAsc: 'asc' | 'desc' | '';
+  setIsAsc: (isAsc: 'asc' | 'desc' | '') => void;
+  setOrderByColumn: (
+    orderByColumn: 'status desc,subTime desc' | 'lever' | 'status' | 'subTime' | 'verifyTime',
+  ) => void;
 }) => {
   const { t } = useTranslation();
-  const baseColumns: CRMColumnDef<CrmInfoVerifyItem, unknown>[] = [
+  const baseColumns: CRMColumnDef<CrmNewLoginVerifyItem, unknown>[] = [
     {
       fixed: true,
       id: 'No',
@@ -46,55 +44,88 @@ export const InFormationTable = ({
     {
       id: 'name',
       header: t('table.fullName'),
-      accessorFn: row => `${row.userLastName} ${row.userName}`,
       cell: ({ row }) => {
-        return !row.original.userLastName && !row.original.userShowId ? (
-          <div className="text-center">-</div>
-        ) : (
-          <div>
-            <div>{row.original.userLastName}</div>
-            <div>{row.original.userShowId}</div>
-          </div>
-        );
+        if (row?.original?.userLastName || row?.original?.userShowId || row?.original?.userName) {
+          return (
+            <div>
+              <div>
+                {(row?.original?.userLastName || '') + ' ' + (row?.original?.userName || '')}
+              </div>
+              <div>{row?.original?.userShowId}</div>
+            </div>
+          );
+        } else {
+          return <div className="text-center">-</div>;
+        }
       },
     },
   ];
-  const commonColumns: CRMColumnDef<CrmInfoVerifyItem, unknown>[] = [
+  const commonColumns: CRMColumnDef<CrmNewLoginVerifyItem, unknown>[] = [
     {
-      id: 'infoType',
+      id: 'serverProperty',
+      header: t('common.serverType'),
+      accessorKey: 'serverProperty',
+      cell: ({ row }) => {
+        if (row?.original?.serverProperty || row?.original?.serverType) {
+          return (
+            <div>
+              {row?.original?.serverType && serverMap[Number(row?.original?.serverType)]}
+              {row?.original?.serverProperty === 1 ? t('common.live') : t('common.demo')}
+            </div>
+          );
+        } else {
+          return <div className="text-center">-</div>;
+        }
+      },
+    },
+    {
+      id: 'aliasName',
+      header: t('common.server'),
+      accessorKey: 'aliasName',
+      cell: ({ row }) => row.original.aliasName || '-',
+    },
+    {
+      id: 'staName',
+      header: t('common.accountType'),
+      accessorKey: 'staName',
+      cell: ({ row }) => row.original.staName || '-',
+    },
+    {
+      id: 'lever',
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>{t('review.information.infoType')}</div>
+            <div>{t('common.level')}</div>
             <button
               className="gap-.5 flex cursor-pointer flex-col"
               onClick={() => {
                 setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('infoType');
+                setOrderByColumn('lever');
               }}
             >
-              {orderByColumn === 'infoType' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
+              {isAsc === '' ? (
                 <>
                   <ChevronUp className={cn('h-3 w-3')} />
                   <ChevronDown className={cn('h-3 w-3')} />
+                </>
+              ) : (
+                <>
+                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
+                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
                 </>
               )}
             </button>
           </div>
         );
       },
-      accessorKey: 'infoType',
-      cell: ({ row }) => {
-        const infoType = infoTypeList.find(
-          item => Number(item.dictValue) === Number(row.original.infoType),
-        );
-        return <div>{infoType ? infoType.dictLabel : '-'}</div>;
-      },
+      accessorKey: 'lever',
+      cell: ({ row }) => (row.original.lever ? `1:${row.original.lever}` : '-'),
+    },
+    {
+      id: 'source',
+      header: t('review.accountOpening.source'),
+      accessorKey: 'source',
+      cell: ({ row }) => row.original.source || '-',
     },
     {
       id: 'status',
@@ -109,15 +140,15 @@ export const InFormationTable = ({
                 setOrderByColumn('status');
               }}
             >
-              {orderByColumn === 'status' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
+              {isAsc === '' ? (
                 <>
                   <ChevronUp className={cn('h-3 w-3')} />
                   <ChevronDown className={cn('h-3 w-3')} />
+                </>
+              ) : (
+                <>
+                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
+                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
                 </>
               )}
             </button>
@@ -142,15 +173,15 @@ export const InFormationTable = ({
                 setOrderByColumn('subTime');
               }}
             >
-              {orderByColumn === 'subTime' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
+              {isAsc === '' ? (
                 <>
                   <ChevronUp className={cn('h-3 w-3')} />
                   <ChevronDown className={cn('h-3 w-3')} />
+                </>
+              ) : (
+                <>
+                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
+                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
                 </>
               )}
             </button>
@@ -171,7 +202,7 @@ export const InFormationTable = ({
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>{t('review.information.verifyTime')}</div>
+            <div>{t('common.verifyTime')}</div>
             <button
               className="gap-.5 flex cursor-pointer flex-col"
               onClick={() => {
@@ -179,15 +210,15 @@ export const InFormationTable = ({
                 setOrderByColumn('verifyTime');
               }}
             >
-              {orderByColumn === 'verifyTime' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
+              {isAsc === '' ? (
                 <>
                   <ChevronUp className={cn('h-3 w-3')} />
                   <ChevronDown className={cn('h-3 w-3')} />
+                </>
+              ) : (
+                <>
+                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
+                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
                 </>
               )}
             </button>
@@ -220,7 +251,10 @@ export const InFormationTable = ({
       ),
     },
   ];
-  const Columns: CRMColumnDef<CrmInfoVerifyItem, unknown>[] = [...baseColumns, ...commonColumns];
+  const Columns: CRMColumnDef<CrmNewLoginVerifyItem, unknown>[] = [
+    ...baseColumns,
+    ...commonColumns,
+  ];
   return (
     <DataTable
       columns={Columns}

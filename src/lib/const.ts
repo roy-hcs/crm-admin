@@ -56,3 +56,9 @@ export const VerifyStatusOptions = [
   { label: 'common.verifyStatus.approved', value: '1' },
   { label: 'common.verifyStatus.rejected', value: '0' },
 ];
+
+// 类型
+export const typeOptions = [
+  { label: 'common.live', value: '1' },
+  { label: 'common.demo', value: '2' },
+];

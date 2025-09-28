@@ -110,7 +110,20 @@
       "reward": "award",
       "walletTest": "Wallet Test"
     },
-    "systemTip": "System prompts"
+    "systemTip": "System prompts",
+    "accountType": "Account Type",
+    "level": "lever",
+    "server": "server",
+    "serverType": "Trading platform",
+    "subTime": "Submission time",
+    "type": "type",
+    "verifyStatus": {
+      "approved": "pass",
+      "pending": "Pending review",
+      "rejected": "reject",
+      "underReview": "Under review"
+    },
+    "verifyTime": "Finishing time"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -461,5 +474,33 @@
     "timeFilterTipOne": "1. Only select the start time, query data as this point, and user wallet balance data",
     "timeFilterTipTwo": "2. Select the start time-end time, query data as a time period, and the total amount of changes in each wallet of the user",
     "title": "Wallet balance overview"
+  },
+  "review": {
+    "accountOpening": {
+      "source": "Promotion invitation code",
+      "title": "Account opening review"
+    },
+    "binding": {
+      "source": "Promotion invitation code",
+      "title": "Binding audit"
+    },
+    "information": {
+      "infoType": "Information Type",
+      "title": "Information audit",
+      "verifyTime": "Finishing time",
+      "verifyUserName": "Current reviewer"
+    },
+    "leverage": {
+      "currentLever": "Current leverage",
+      "targetLever": "Target leverage",
+      "title": "Leverage Review"
+    },
+    "settings": {
+      "indexReviewCount": "Home page to be reviewed total count display",
+      "nameText": "name",
+      "sort": "Sort",
+      "title": "Review Settings",
+      "val": "Display of total count of navigation bar to be reviewed"
+    }
   }
 }

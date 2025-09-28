@@ -15,35 +15,42 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Dispatch, SetStateAction } from 'react';
-import { CrmInfoVerifyListParams } from '@/api/hooks/review/types';
+import { CrmNewLoginVerifyListParams } from '@/api/hooks/review/types';
+import { typeOptions, VerifyStatusOptions } from '@/lib/const';
+import { useServerList } from '@/api/hooks/system/system';
+import { BaseOption } from '@/components/common/RrhSelect';
+import { serverMap } from '@/lib/constant';
 
-import { VerifyStatusOptions } from '@/lib/const';
-import { InfoTypeItem } from '@/api/hooks/system/types';
 type FormData = {
   time: { from: string; to: string };
+  server: string;
+  serverType: string;
+  serverProperty: string;
   userId: string;
-  infoType: string;
   status: string;
+  login: string;
   verifyUserName: string;
 };
-export const InFormationForm = ({
+export const BindingForm = ({
   setParams,
   setCommonParams,
-  infoTypeList,
 }: {
-  setParams: Dispatch<SetStateAction<CrmInfoVerifyListParams['params']>>;
+  setParams: Dispatch<SetStateAction<CrmNewLoginVerifyListParams['params']>>;
   setCommonParams: Dispatch<
-    SetStateAction<{ userId: string; infoType: string; status: string; verifyUserName: string }>
+    SetStateAction<{ userId: string; status: string; login: string; verifyUserName: string }>
   >;
-  infoTypeList: InfoTypeItem[];
 }) => {
+  const { data: server } = useServerList();
+  const serverOptions = server?.rows || [];
   const { t } = useTranslation();
-
   const form = useForm({
     defaultValues: {
+      server: '',
+      serverType: '',
+      serverProperty: '',
       userId: '',
-      infoType: '',
       status: '',
+      login: '',
       verifyUserName: '',
       time: { from: '', to: '' },
     },
@@ -51,25 +58,31 @@ export const InFormationForm = ({
   const onSubmit = (data: FormData) => {
     setParams(pre => ({
       ...pre,
+      server: data.server,
+      serverType: data.serverType,
+      serverProperty: data.serverProperty,
       beginTime: data.time.from,
       endTime: data.time.to,
     }));
     setCommonParams({
       userId: data.userId,
-      infoType: data.infoType,
       status: data.status,
+      login: data.login,
       verifyUserName: data.verifyUserName,
     });
   };
   const onReset = () => {
     setParams({
+      server: '',
+      serverType: '',
+      serverProperty: '',
       beginTime: '',
       endTime: '',
     });
     setCommonParams({
       userId: '',
-      infoType: '',
       status: '',
+      login: '',
       verifyUserName: '',
     });
     form.reset();
@@ -98,16 +111,62 @@ export const InFormationForm = ({
               field: t('financial.paymentOrders.userName'),
             })}
           />
-          <FormSelect
+          <FormInput
             verticalLabel
-            name="infoType"
-            label={t('review.information.infoType')}
+            name="login"
+            label={t('table.tradingAccount')}
+            placeholder={t('common.pleaseInput', {
+              field: t('table.tradingAccount'),
+            })}
+          />
+
+          <FormSelect<
+            Record<string, string>,
+            BaseOption & {
+              serviceProperty: number;
+              serviceType: number;
+            }
+          >
+            verticalLabel
+            name="serverId"
+            label={t('table.server')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
-            options={infoTypeList.map(item => ({
-              label: item.dictLabel || '',
-              value: Number(item.dictValue),
+            options={serverOptions.map(item => ({
+              label: item.serverName,
+              value: item.id,
+              serviceProperty: item.serviceProperty,
+              serviceType: item.serviceType,
             }))}
+            renderItem={option => {
+              return (
+                <div>
+                  {/* TODO: 优化样式 */}
+                  <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
+                  {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
+                  <span>{option.label}</span>
+                </div>
+              );
+            }}
+          />
+          <FormSelect
+            verticalLabel
+            name="serverProperty"
+            label={t('common.type')}
+            placeholder={t('common.pleaseSelect')}
+            showRowValue={false}
+            options={typeOptions.map(i => ({
+              label: t(i.label),
+              value: i.value,
+            }))}
+          />
+          <FormSelect
+            verticalLabel
+            name="status"
+            label={t('common.status')}
+            placeholder={t('common.pleaseSelect')}
+            showRowValue={false}
+            options={VerifyStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
           />
           <FormField
             name="time"
@@ -121,14 +180,6 @@ export const InFormationForm = ({
               </FormItem>
             )}
           />
-          <FormSelect
-            verticalLabel
-            name="status"
-            label={t('common.status')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={VerifyStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
-          />
           <FormInput
             verticalLabel
             name="verifyUserName"
@@ -137,7 +188,6 @@ export const InFormationForm = ({
               field: t('review.information.verifyUserName'),
             })}
           />
-
           <div className="flex justify-end gap-4">
             <RrhButton type="reset" variant={'outline'} onClick={onReset}>
               <RefreshCcw className="size-3.5" />
