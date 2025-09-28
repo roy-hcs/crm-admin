@@ -153,7 +153,9 @@ export const ReviewDepositRebatePage = () => {
         loading={isLoading}
         CustomRow={
           <>
-            <TableCell colSpan={7}>{t('table.total')}</TableCell>
+            <TableCell colSpan={5} className="text-center">
+              {t('table.total')}
+            </TableCell>
             {!sumShow && (
               <TableCell colSpan={5}>
                 <RrhButton variant="ghost" onClick={getSumData}>
@@ -166,7 +168,8 @@ export const ReviewDepositRebatePage = () => {
                 <TableCell>{t('common.loading')}</TableCell>
               ) : (
                 <>
-                  <TableCell colSpan={2}>
+                  <TableCell colSpan={2} />
+                  <TableCell colSpan={1} className="text-center">
                     {sumData?.data[0]?.totalList.map(item => {
                       return (
                         <div key={item.amtUnit}>
@@ -175,7 +178,8 @@ export const ReviewDepositRebatePage = () => {
                       );
                     })}
                   </TableCell>
-                  <TableCell colSpan={2}>
+                  <TableCell colSpan={1} />
+                  <TableCell colSpan={1} className="text-center">
                     {sumData?.data[0]?.totalList.map(item => {
                       return (
                         <div key={item.amtUnit}>

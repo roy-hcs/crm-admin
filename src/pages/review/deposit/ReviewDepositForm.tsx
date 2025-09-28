@@ -14,51 +14,56 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
-import { WithdrawListParams } from '@/api/hooks/review/types';
+import { DepositListParams, ThirdPaymentItem } from '@/api/hooks/review/types';
 import { Dispatch, SetStateAction } from 'react';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
+import { CurrencyItem } from '@/api/hooks/system/types';
 
 type FormData = {
   name: string;
-  withdrawWay: string;
+  depositMethods: string;
   tradeAccount: string;
   orderNumber: string;
   verifyStatus: string | number;
   submitTime: { from: string; to: string };
   verifyUserName: string;
-  status: string | number;
-  tradeServerOrderNumber: string;
-  outAccountType: string;
+  inAccountType: string;
   accounts: string;
-  finishTime: { from: string; to: string };
+  currency: string;
+  tradeServerOrderNumber: string;
+  payOrderNum: string;
+  channel: string;
 };
 
-export const ReviewWithdrawalForm = ({
+export const ReviewDepositForm = ({
   setOtherParams,
   setParams,
   loading,
-  withdrawMethodList,
+  currencyList,
+  thirdPaymentList,
 }: {
-  setParams: Dispatch<SetStateAction<WithdrawListParams['params']>>;
-  setOtherParams: Dispatch<SetStateAction<Omit<WithdrawListParams, 'params'>>>;
+  setParams: Dispatch<SetStateAction<DepositListParams['params']>>;
+  setOtherParams: Dispatch<SetStateAction<Omit<DepositListParams, 'params'>>>;
+  currencyList: CurrencyItem[];
+  thirdPaymentList: ThirdPaymentItem[];
   loading: boolean;
-  withdrawMethodList: { id: string; name: string }[];
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
       name: '',
-      withdrawWay: '',
+      depositMethods: '',
       tradeAccount: '',
       orderNumber: '',
       verifyStatus: '',
       submitTime: { from: '', to: '' },
       verifyUserName: '',
-      status: '',
+      inAccountType: '',
       tradeServerOrderNumber: '',
-      outAccountType: '',
+      currency: '',
       accounts: '',
-      finishTime: { from: '', to: '' },
+      payOrderNum: '',
+      channel: '',
     },
   });
 
@@ -72,21 +77,22 @@ export const ReviewWithdrawalForm = ({
       status: data.verifyStatus,
       verifyUserName: data.verifyUserName,
       dealTicket: data.tradeServerOrderNumber,
-      method: data.withdrawWay,
+      method: data.depositMethods,
       login: data.tradeAccount,
       orderNum: data.orderNumber,
-      exceptionFlag: data.status,
+      orderId: data.payOrderNum,
+      channelId: data.channel,
+      depositCurrency: data.currency,
       accounts: selectedAccounts.id,
     });
     setParams({
       beginTime: data.submitTime.from,
       endTime: data.submitTime.to,
-      outMoneyAccount: data.outAccountType,
+      inMoneyAccount: data.inAccountType,
       accounts: selectedAccounts.label,
-      finishBeginTime: data.finishTime.from,
-      finishEndTime: data.finishTime.to,
     });
   };
+  const depositMethod = form.watch('depositMethods');
   const onReset = () => {
     setOtherParams({
       userId: '',
@@ -96,16 +102,16 @@ export const ReviewWithdrawalForm = ({
       method: '',
       login: '',
       orderNum: '',
-      exceptionFlag: '',
+      orderId: '',
+      channelId: '',
+      depositCurrency: '',
       accounts: '',
     });
     setParams({
       beginTime: '',
       endTime: '',
-      outMoneyAccount: '',
+      inMoneyAccount: '',
       accounts: '',
-      finishBeginTime: '',
-      finishEndTime: '',
     });
     form.reset();
   };
@@ -133,14 +139,18 @@ export const ReviewWithdrawalForm = ({
           />
           <FormSelect
             verticalLabel
-            name="withdrawMethods"
-            label={t('table.withdrawMethods')}
+            name="depositMethods"
+            label={t('table.depositMethods')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
-            options={withdrawMethodList.map(item => ({
-              label: item.name,
-              value: item.id,
-            }))}
+            options={[
+              { label: t('table.internationalTransfer'), value: '1' },
+              { label: t('table.bankTransfer'), value: '2' },
+              { label: t('table.thirdPayment'), value: '5' },
+              { label: t('table.cryptocurrency'), value: '6' },
+              { label: t('table.quickPayment'), value: '7' },
+              { label: t('table.payID'), value: '13' },
+            ]}
           />
           <FormInput
             verticalLabel
@@ -157,7 +167,7 @@ export const ReviewWithdrawalForm = ({
           <FormSelect
             verticalLabel
             name="verifyStatus"
-            label={t('table.reviewStatus')}
+            label={t('table.status')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={[
@@ -165,7 +175,6 @@ export const ReviewWithdrawalForm = ({
               { label: t('table.reviewing'), value: '-1' },
               { label: t('table.pass'), value: '1' },
               { label: t('table.refuse'), value: '0' },
-              { label: t('common.Cancel'), value: '-2' },
             ]}
           />
           <FormField
@@ -186,16 +195,48 @@ export const ReviewWithdrawalForm = ({
             label={t('table.currentAuditor')}
             placeholder={t('common.pleaseInput', { field: t('table.currentAuditor') })}
           />
+
           <FormSelect
             verticalLabel
-            name="outAccountType"
-            label={t('table.status')}
+            name="inAccountType"
+            label={t('table.depositAccount')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={[
-              { label: t('common.normal'), value: '0' },
-              { label: t('common.abnormal'), value: '1' },
+              { label: t('table.tradeAccount'), value: '1' },
+              { label: t('table.wallet'), value: '2' },
             ]}
+          />
+
+          <FormField
+            name="accounts"
+            render={({ field }) => {
+              return <RrhSelectAccountsPopup verticalLabel field={field} />;
+            }}
+          />
+          {depositMethod === '5' && (
+            <FormSelect
+              verticalLabel
+              name="channel"
+              label={t('table.paymentChannel')}
+              placeholder={t('common.pleaseSelect')}
+              showRowValue={false}
+              options={thirdPaymentList.map(item => ({
+                label: item.channelName,
+                value: item.id,
+              }))}
+            />
+          )}
+          <FormSelect
+            verticalLabel
+            name="currency"
+            label={t('table.paymentCurrency')}
+            placeholder={t('common.pleaseSelect')}
+            showRowValue={false}
+            options={currencyList.map(currency => ({
+              label: currency.currencyAbbr,
+              value: currency.currencyAbbr,
+            }))}
           />
 
           <FormInput
@@ -204,34 +245,11 @@ export const ReviewWithdrawalForm = ({
             label={t('table.tradeServerOrderNumber')}
             placeholder={t('common.pleaseInput', { field: t('table.tradeServerOrderNumber') })}
           />
-          <FormSelect
+          <FormInput
             verticalLabel
-            name="outAccountType"
-            label={t('table.withdrawAccount')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={[
-              { label: t('table.tradeAccount'), value: '1' },
-              { label: t('table.wallet'), value: '2' },
-            ]}
-          />
-          <FormField
-            name="accounts"
-            render={({ field }) => {
-              return <RrhSelectAccountsPopup verticalLabel field={field} />;
-            }}
-          />
-          <FormField
-            name="finishTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">{t('table.submitTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="finishTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            name="payOrderNum"
+            label={t('table.paymentOrderNumber')}
+            placeholder={t('common.pleaseInput', { field: t('table.paymentOrderNumber') })}
           />
 
           <div className="flex justify-end gap-4">

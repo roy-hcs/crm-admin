@@ -358,3 +358,159 @@ export type WithdrawListSumRes = {
     sumFactWithdraw: string;
   }[];
 };
+
+export type DepositListParams = BasicParams & {
+  userId?: string;
+  status?: number | string;
+  verifyUserName?: string;
+  dealTicket?: string | number;
+  method?: string;
+  login?: string;
+  orderNum?: string;
+  orderId?: string;
+  channelId?: string;
+  depositCurrency?: string;
+  accounts?: string;
+  params: {
+    beginTime?: string;
+    endTime?: string;
+    inMoneyAccount?: string;
+    accounts?: string;
+  };
+};
+export type DepositListRes = {
+  code: number;
+  msg: string;
+  rows: DepositListItem[];
+  total: string;
+};
+export type DepositListSumRes = {
+  code: number;
+  msg: string;
+  data: {
+    currency: string;
+    sumDeposit: number;
+    sumFee: number;
+    type: string;
+  }[];
+};
+export type DepositListItem = {
+  factDeposit: number;
+  orderComment: string;
+  orderId: string | null;
+  directBroker: string;
+  voucher: string;
+  fee: string;
+  verifyStep: number;
+  feeCurrency: string;
+  orderNum: string;
+  verifyUser: string | null;
+  remark: string | null;
+  verifyTime: string | null;
+  login: string;
+  vUserName: string | null;
+  serverId: string;
+  subTime: string;
+  receiptAmount: string | null;
+  rate: number;
+  isNeedDeposit: string | null;
+  userLastName: string;
+  expectDeposit: number;
+  userShowId: string;
+  subRemark: string | null;
+  id: string;
+  depositCurrency: string;
+  channelId: string;
+  walletId: string | null;
+  aliasName: string;
+  currencyPair: string;
+  method: number;
+  receiptCurrency: string | null;
+  walletCurrency: string | null;
+  dealTicket: string | null;
+  vUserLastName: string | null;
+  verifyUserName: string | null;
+  userName: string;
+  userId: string;
+  roleName: string;
+  depositScale: number;
+  deposit: string;
+  factDepositScale: number;
+  status: number;
+};
+
+export type ThirdPaymentListRes = {
+  code: number;
+  msg: string;
+  rows: ThirdPaymentItem[];
+};
+export type CurrencyItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string;
+  currencyNameChn: string;
+  currencyNameEng: string;
+  currencyAbbr: string;
+  currencyRemark: string | null;
+  status: number;
+  isDefault: number;
+  currencyType: number;
+  decimalPrecision: number;
+  sort: string;
+  network: string | null;
+};
+
+export type OutMoneyMethodListRes = {
+  code: number;
+  msg: string;
+  data: { name: string; id: string }[];
+};
+
+export type CurrencyListRes = {
+  code: number;
+  msg: string;
+  rows: CurrencyItem[];
+};
+
+export type ThirdPaymentItem = {
+  createBy: string;
+  createTime: string;
+  updateBy: string;
+  updateTime: string;
+  remark: string;
+  params: Record<string, unknown>;
+  id: number;
+  channelName: string;
+  payWay: string | null;
+  mchId: string | null;
+  apiUrl: string | null;
+  enterSecret: string | null;
+  backSecret: string | null;
+  payType: number;
+  currency: string;
+  status: boolean;
+  sort: number;
+  minDeposit: number | null;
+  maxDeposit: number;
+  commissionMod: number;
+  commissionRate: number;
+  minCommission: number | null;
+  maxCommission: number | null;
+  fixCommission: number | null;
+  needVerify: number;
+  delFlag: boolean;
+  payJoinType: number;
+  payUrl: string;
+  payKey: string;
+  inRemark: string;
+  amountDigits: number;
+  roleIds: string | null;
+  inRemarkType: number;
+  logo: string;
+  digitsCompensate: boolean;
+  restrictCurrency: number;
+};

@@ -75,3 +75,12 @@ export const withdrawOrDepositMethodsMap: Record<number, string> = {
   4: 'quickPayment',
   13: 'payID',
 };
+
+export const depositMethodsMap: Record<number, string> = {
+  1: 'internationalTransfer',
+  2: 'bankTransfer',
+  5: 'thirdPayment',
+  6: 'cryptocurrency',
+  7: 'quickPayment',
+  13: 'payID',
+};

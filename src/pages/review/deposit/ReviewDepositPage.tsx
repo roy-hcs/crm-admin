@@ -3,26 +3,21 @@ import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Funnel, RefreshCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { WithdrawListParams } from '@/api/hooks/review/types';
-import {
-  useOutMoneyMethodList,
-  useWithdrawList,
-  useWithdrawListSum,
-} from '@/api/hooks/review/review';
+import { DepositListParams } from '@/api/hooks/review/types';
+import { useDepositList, useDepositListSum, useThirdPaymentList } from '@/api/hooks/review/review';
 import { TableCell } from '@/components/ui/table';
-import { ReviewWithdrawalForm } from './ReviewWithdrawalForm';
-import { ReviewWithdrawalTable } from './ReviewWithdrawalTable';
+import { ReviewDepositForm } from './ReviewDepositForm';
+import { ReviewDepositTable } from './ReviewDepositTable';
+import { useCurrencyList } from '@/api/hooks/system/system';
 
-export const ReviewWithdrawalPage = () => {
-  const [params, setParams] = useState<WithdrawListParams['params']>({
+export const ReviewDepositPage = () => {
+  const [params, setParams] = useState<DepositListParams['params']>({
     beginTime: '',
     endTime: '',
-    outMoneyAccount: '',
+    inMoneyAccount: '',
     accounts: '',
-    finishBeginTime: '',
-    finishEndTime: '',
   });
-  const [otherParams, setOtherParams] = useState<Omit<WithdrawListParams, 'params'>>({
+  const [otherParams, setOtherParams] = useState<Omit<DepositListParams, 'params'>>({
     userId: '',
     status: '',
     verifyUserName: '',
@@ -30,16 +25,18 @@ export const ReviewWithdrawalPage = () => {
     method: '',
     login: '',
     orderNum: '',
-    exceptionFlag: '',
+    orderId: '',
+    channelId: '',
+    depositCurrency: '',
     accounts: '',
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
+  const { data: thirdPaymentList } = useThirdPaymentList();
+  const { data: currencyList } = useCurrencyList();
 
-  const { data: outMoneyMethodList } = useOutMoneyMethodList();
-
-  const { data: withdrawList, isLoading: withdrawListLoading } = useWithdrawList(
+  const { data: depositList, isLoading: depositListLoading } = useDepositList(
     {
       pageSize,
       pageNum: pageNum + 1,
@@ -53,11 +50,11 @@ export const ReviewWithdrawalPage = () => {
     { enabled: true },
   );
 
-  const { mutate: getWithdrawSum, data: sumData, isPending } = useWithdrawListSum();
+  const { mutate: getDepositSum, data: sumData, isPending } = useDepositListSum();
   const [sumShow, setSumShow] = useState(false);
   const getSumData = () => {
     setSumShow(true);
-    getWithdrawSum({
+    getDepositSum({
       ...otherParams,
       params: {
         ...params,
@@ -66,15 +63,13 @@ export const ReviewWithdrawalPage = () => {
   };
   useEffect(() => {
     setSumShow(false);
-  }, [withdrawList]);
+  }, [depositList]);
   const reset = () => {
     setParams({
       beginTime: '',
       endTime: '',
-      outMoneyAccount: '',
+      inMoneyAccount: '',
       accounts: '',
-      finishBeginTime: '',
-      finishEndTime: '',
     });
     setOtherParams({
       userId: '',
@@ -84,7 +79,9 @@ export const ReviewWithdrawalPage = () => {
       method: '',
       login: '',
       orderNum: '',
-      exceptionFlag: '',
+      orderId: '',
+      channelId: '',
+      depositCurrency: '',
       accounts: '',
     });
     setPageNum(0);
@@ -93,9 +90,8 @@ export const ReviewWithdrawalPage = () => {
 
   return (
     <div>
-      <h1 className="text-title">{t('withdrawalReview.title')}</h1>
+      <h1 className="text-title">{t('depositReview.title')}</h1>
       <div className="my-3.5 flex justify-end gap-2">
-        <RrhButton onClick={reset}>{t('table.batchAudit')}</RrhButton>
         <RrhButton variant="outline">{t('table.export')}</RrhButton>
         <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
           <RefreshCcw className="size-3.5" />
@@ -111,23 +107,24 @@ export const ReviewWithdrawalPage = () => {
             </RrhButton>
           }
         >
-          <ReviewWithdrawalForm
+          <ReviewDepositForm
             setParams={setParams}
             setOtherParams={setOtherParams}
-            loading={withdrawListLoading}
-            withdrawMethodList={outMoneyMethodList?.data || []}
+            loading={depositListLoading}
+            currencyList={currencyList?.rows || []}
+            thirdPaymentList={thirdPaymentList?.rows || []}
           />
         </RrhDrawer>
       </div>
-      <ReviewWithdrawalTable
-        data={withdrawList?.rows || []}
-        pageCount={Math.ceil(+(withdrawList?.total || 0) / pageSize)}
+      <ReviewDepositTable
+        data={depositList?.rows || []}
+        pageCount={Math.ceil(+(depositList?.total || 0) / pageSize)}
         pageIndex={pageNum}
         pageSize={pageSize}
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
-        loading={withdrawListLoading}
-        withdrawMethodList={outMoneyMethodList?.data || []}
+        loading={depositListLoading}
+        channelList={thirdPaymentList?.rows || []}
         CustomRow={
           <>
             <TableCell colSpan={5} className="text-center">
@@ -147,31 +144,37 @@ export const ReviewWithdrawalPage = () => {
                 <>
                   <TableCell colSpan={5}></TableCell>
                   <TableCell colSpan={1} className="text-center">
-                    {sumData?.data.map(item => {
-                      return item.sumWithdraw ? (
-                        <div key={item.currency}>
-                          {item.sumWithdraw} {item.currency}
-                        </div>
-                      ) : null;
-                    })}
+                    {sumData?.data
+                      .filter(item => item.type === '1')
+                      .map(item => {
+                        return item.sumDeposit ? (
+                          <div key={item.currency}>
+                            {item.sumDeposit} {item.currency}
+                          </div>
+                        ) : null;
+                      })}
                   </TableCell>
                   <TableCell colSpan={1} className="text-center">
-                    {sumData?.data.map(item => {
-                      return item.sumFee ? (
-                        <div key={item.currency}>
-                          {item.sumFee} {item.currency}
-                        </div>
-                      ) : null;
-                    })}
+                    {sumData?.data
+                      .filter(item => item.type === '2')
+                      .map(item => {
+                        return item.sumDeposit ? (
+                          <div key={item.currency}>
+                            {item.sumDeposit} {item.currency}
+                          </div>
+                        ) : null;
+                      })}
                   </TableCell>
                   <TableCell colSpan={1} className="text-center">
-                    {sumData?.data.map(item => {
-                      return item.sumFactWithdraw ? (
-                        <div key={item.currency}>
-                          {item.sumFactWithdraw} {item.currency}
-                        </div>
-                      ) : null;
-                    })}
+                    {sumData?.data
+                      .filter(item => item.type === '2')
+                      .map(item => {
+                        return item.sumFee ? (
+                          <div key={item.currency}>
+                            {item.sumFee} {item.currency}
+                          </div>
+                        ) : null;
+                      })}
                   </TableCell>
                 </>
               )

@@ -111,7 +111,11 @@
       "walletTest": "Wallet Test"
     },
     "systemTip": "System prompts",
-    "delete": "delete"
+    "delete": "delete",
+    "abnormal": "abnormal",
+    "exchangeRate": "exchange rate",
+    "normal": "normal",
+    "system": "system"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -364,7 +368,36 @@
     "serverOrWallet": "Server/Wallet",
     "targetRule": "Hit Rules",
     "tradeAccount": "Trading account",
-    "tradingOrderNumber": "Transaction order number"
+    "tradingOrderNumber": "Transaction order number",
+    "amountOfReceipt": "Amount of receipt",
+    "bankTransfer": "Bank remittance",
+    "cancel": "Cancel",
+    "cryptocurrency": "Cryptocurrency",
+    "depositAccount": "Deposit account",
+    "depositAmount": "Deposit amount",
+    "depositMethods": "Deposit method",
+    "directAgent": "Direct Agent",
+    "internationalTransfer": "International Telecom",
+    "myWallet": "My wallet",
+    "nameOrLastNameOrId": "Last name/name/account ID",
+    "payAmount": "Payment amount",
+    "payID": "PayID",
+    "paymentChannel": "Payment Channel",
+    "paymentCurrency": "Payment currency",
+    "paymentOrderNumber": "Pay order number",
+    "quickPayment": "Quick payment",
+    "reviewStatus": "Review status",
+    "role": "Role",
+    "submitAuditTime": "Submit review time",
+    "thirdPayment": "Third-party payment",
+    "tradeServerOrderNumber": "Transaction server order number",
+    "transferAmount": "Transfer amount",
+    "transferInAccount": "Transfer to account",
+    "transferOutAccount": "Transfer account",
+    "wallet": "wallet",
+    "withdrawAccount": "Withdrawal account",
+    "withdrawAmount": "Amount of withdrawal",
+    "withdrawMethods": "How to withdraw money"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -491,5 +524,20 @@
   },
   "depositRebateReview": {
     "title": "Deposit Rebate Review"
+  },
+  "depositReview": {
+    "title": "Deposit review"
+  },
+  "feeRebateReview": {
+    "title": "Processing fee rebate review"
+  },
+  "internalTransferReview": {
+    "title": "Internal transfer review"
+  },
+  "tradingRebateReview": {
+    "title": "Transaction rebate review"
+  },
+  "withdrawalReview": {
+    "title": "Withdrawal review"
   }
 }
