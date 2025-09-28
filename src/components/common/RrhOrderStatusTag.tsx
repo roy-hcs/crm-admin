@@ -2,9 +2,13 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { OrderStatusOptions } from '@/lib/const';
 import { useTranslation } from 'react-i18next';
-
+type Option = {
+  label: string;
+  value: string;
+};
 type RrhTagProps = {
   status: string;
+  options?: Option[];
 };
 
 const statusColorMap: Record<string, string> = {
@@ -14,9 +18,12 @@ const statusColorMap: Record<string, string> = {
   '3': 'bg-red-600',
 };
 
-export const RrhOrderStatusTag: React.FC<RrhTagProps> = ({ status }) => {
+export const RrhOrderStatusTag: React.FC<RrhTagProps> = ({
+  status,
+  options = OrderStatusOptions,
+}) => {
   const { t } = useTranslation();
-  const statusOption = OrderStatusOptions.find(option => option.value === status);
+  const statusOption = options.find(option => option.value === status);
   const dotColor = statusColorMap[status] ?? 'bg-slate-400';
   return (
     <div className="inline-block">

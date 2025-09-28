@@ -115,7 +115,20 @@
     "abnormal": "abnormal",
     "exchangeRate": "exchange rate",
     "normal": "normal",
-    "system": "system"
+    "system": "system",
+    "accountType": "Account Type",
+    "level": "lever",
+    "server": "server",
+    "serverType": "Trading platform",
+    "subTime": "Submission time",
+    "type": "type",
+    "verifyStatus": {
+      "approved": "pass",
+      "pending": "Pending review",
+      "rejected": "reject",
+      "underReview": "Under review"
+    },
+    "verifyTime": "Finishing time"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -539,5 +552,33 @@
   },
   "withdrawalReview": {
     "title": "Withdrawal review"
+  },
+  "review": {
+    "accountOpening": {
+      "source": "Promotion invitation code",
+      "title": "Account opening review"
+    },
+    "binding": {
+      "source": "Promotion invitation code",
+      "title": "Binding audit"
+    },
+    "information": {
+      "infoType": "Information Type",
+      "title": "Information audit",
+      "verifyTime": "Finishing time",
+      "verifyUserName": "Current reviewer"
+    },
+    "leverage": {
+      "currentLever": "Current leverage",
+      "targetLever": "Target leverage",
+      "title": "Leverage Review"
+    },
+    "settings": {
+      "indexReviewCount": "Home page to be reviewed total count display",
+      "nameText": "name",
+      "sort": "Sort",
+      "title": "Review Settings",
+      "val": "Display of total count of navigation bar to be reviewed"
+    }
   }
 }
