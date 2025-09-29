@@ -33,7 +33,7 @@ const TagItem: FC<TagUserItem & { setTags: (id: string) => void; className?: str
     <div
       onClick={() => setTags(id)}
       className={cn(
-        'bg-background group/tag border-border relative min-w-27.5 cursor-pointer rounded-lg border p-3',
+        'bg-card group/tag border-border relative min-w-27.5 cursor-pointer rounded-lg border p-3',
         className,
       )}
     >

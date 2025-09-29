@@ -764,23 +764,25 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
   return (
     <div
       className={cn(
-        'bg-card text-sidebar-foreground border-sidebar-border border-r transition-all duration-300',
+        'dark:bg-card text-sidebar-foreground border-sidebar-border h-full border-r bg-slate-50 transition-all duration-300',
         open ? 'w-64' : 'w-16',
         cls,
       )}
     >
-      <div className="px-4 pt-6 pb-2">
-        <RrhLogo />
+      <div className="px-4 pt-6 pb-5">
+        <Link to="/">
+          <RrhLogo />
+        </Link>
       </div>
 
-      <nav className="px-2 text-slate-900">
+      <nav className="text-third px-2">
         {open ? (
           <Accordion
             type="single"
             collapsible
             className="scrollbar-none h-[calc(100vh-84px)] space-y-1 overflow-auto"
           >
-            <div className="text-muted px-2 pt-3 pb-2 text-xs">Main</div>
+            <div className="text-muted px-2 pb-2 text-xs">Main</div>
             {menuItems.slice(0, 4).map((item, index) => (
               <AccordionMenuItem key={index} item={item} level={0} />
             ))}

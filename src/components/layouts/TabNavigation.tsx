@@ -47,7 +47,9 @@ export function TabNavigation() {
             key={tab.key}
             className={cn(
               'flex cursor-pointer items-center rounded border px-3 py-1.5 text-xs font-semibold text-nowrap select-none',
-              activeTab === tab.key ? 'bg-background text-third shadow' : 'bg-accent text-muted',
+              activeTab === tab.key
+                ? 'bg-background text-third shadow'
+                : 'bg-accent text-muted dark:text-third/50',
             )}
             onClick={() => handleTabClick(tab)}
           >
