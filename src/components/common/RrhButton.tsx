@@ -1,4 +1,4 @@
-import { PropsWithChildren, forwardRef } from 'react';
+import { PropsWithChildren, ReactElement, forwardRef } from 'react';
 import { Button } from '../ui/button';
 import { ButtonHTMLAttributes } from 'react';
 import { VariantProps } from 'class-variance-authority';
@@ -10,17 +10,19 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
     loading?: boolean;
+    Icon?: ReactElement;
   };
 export const RrhButton = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
-  ({ children, className, loading, ...props }, ref) => {
+  ({ children, className, loading, Icon, ...props }, ref) => {
     return (
       <Button
         ref={ref}
-        className={cn('cursor-pointer px-4 py-2', className)}
+        className={cn('cursor-pointer px-3 py-2', className)}
         {...props}
         disabled={loading || props.disabled}
       >
         {loading && <LoaderCircle className="animate-spin" />}
+        {Icon && !loading && Icon}
         {children}
       </Button>
     );

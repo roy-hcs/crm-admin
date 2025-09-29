@@ -10,6 +10,7 @@ import {
   Funnel,
   Menu,
   RefreshCcw,
+  Search,
   Settings,
   Users,
 } from 'lucide-react';
@@ -31,10 +32,14 @@ const TagItem: FC<TagUserItem & { setTags: (id: string) => void; className?: str
   return (
     <div
       onClick={() => setTags(id)}
-      className={cn('cursor-pointer rounded-lg bg-blue-200 p-2', className)}
+      className={cn(
+        'bg-background group/tag border-border relative min-w-27.5 cursor-pointer rounded-lg border p-3',
+        className,
+      )}
     >
-      <div className="text-[15px]">{tagName}</div>
-      <div className="text-lg font-bold">{userCount}</div>
+      <div className="mb-1 text-xs">{tagName}</div>
+      <div className="text-third font-medium">{userCount}</div>
+      <Search className="absolute top-2 right-2 hidden size-3 group-hover/tag:block" />
     </div>
   );
 };
@@ -100,7 +105,11 @@ export const CRMAccounts = () => {
 
   return (
     <div>
-      <div className="mt-4 flex items-center gap-4">
+      <div className="-mx-6 border-b px-6 pt-2 pb-4">
+        <h1 className="text-title">{t('CRMAccountPage.title')}</h1>
+        <div>{t('CRMAccountPage.desc')}</div>
+      </div>
+      <div className="group/swiper mt-4 flex items-center gap-4">
         <TagItem
           tagName="总计(客户)"
           userCount={crmUsers?.total || '0'}
@@ -122,20 +131,21 @@ export const CRMAccounts = () => {
               <button
                 onClick={onClick}
                 disabled={disabled}
-                className="h-full cursor-pointer bg-white disabled:cursor-not-allowed"
+                className="bg-background hidden h-full cursor-pointer group-hover/swiper:block disabled:cursor-not-allowed"
               >
-                <CircleChevronLeft />
+                <CircleChevronLeft className="text-muted" />
               </button>
             )}
             NextButton={({ onClick, disabled }) => (
               <button
                 onClick={onClick}
                 disabled={disabled}
-                className="h-full cursor-pointer bg-white disabled:cursor-not-allowed"
+                className="bg-background hidden h-full cursor-pointer group-hover/swiper:block disabled:cursor-not-allowed"
               >
-                <CircleChevronLeft className="rotate-180" />
+                <CircleChevronLeft className="text-muted rotate-180" />
               </button>
             )}
+            wrapperCls="gap-1"
           >
             {tagUserCountList?.data.map(item => (
               <TagItem

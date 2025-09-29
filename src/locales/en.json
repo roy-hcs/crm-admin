@@ -35,7 +35,9 @@
     "UserStatistics": "User statistics",
     "firstName": "name",
     "keyWordOfSearchSuperior": "Last name/name/account ID/mobile phone/email",
-    "lastName": "surname"
+    "lastName": "surname",
+    "desc": "Manage and view CRM account information",
+    "title": "CRM Account"
   },
   "common": {
     "AnErrorOccurred": "An error occurred",

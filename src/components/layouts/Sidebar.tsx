@@ -14,6 +14,7 @@ import {
   TicketIcon,
   BarChart3,
   Copy,
+  ChevronRight,
 } from 'lucide-react';
 
 import {
@@ -24,6 +25,8 @@ import {
 } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 import { useTabStore } from '@/store/tabStore';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { RrhLogo } from '../common/RrhLogo';
 
 interface MenuItem {
   title: string;
@@ -44,16 +47,23 @@ interface AccordionMenuItemProps {
   level: MenuItemLevel;
 }
 
+function checkHasActiveChild(item: MenuItem, currentPath: string): boolean {
+  if (item.path === currentPath) return true;
+  if (!item.children) return false;
+  return item.children.some(child => checkHasActiveChild(child, currentPath));
+}
+
 function AccordionMenuItem({ item, level }: AccordionMenuItemProps) {
   const location = useLocation();
   const isActive = item.path === location.pathname;
+  const hasActiveChild = checkHasActiveChild(item, location.pathname);
   const hasChildren = item.children && item.children.length > 0;
   const navigate = useNavigate();
   const { addTab } = useTabStore();
-  const handleClick = (path?: string) => {
-    if (path) {
-      addTab({ key: path, title: item.title, path, closable: true });
-      navigate(path);
+  const handleClick = (item: MenuItem) => {
+    if (item.path) {
+      addTab({ key: item.path, title: item.title, path: item.path, closable: true });
+      navigate(item.path);
     }
   };
 
@@ -61,13 +71,13 @@ function AccordionMenuItem({ item, level }: AccordionMenuItemProps) {
     return (
       <div className="my-1">
         <button
-          onClick={() => handleClick(item.path)}
+          onClick={() => handleClick(item)}
           className={cn(
-            'flex w-full cursor-pointer items-center rounded-md p-2 text-sm',
+            'flex w-full cursor-pointer items-center rounded-md py-1.5 pr-2 pl-10 text-sm',
             isActive ? 'text-sidebar-accent-foreground bg-accent' : 'hover:bg-accent',
           )}
         >
-          {item.icon && <span className="mr-3">{item.icon}</span>}
+          {item.icon && <span className="mr-2">{item.icon}</span>}
           <span>{item.title}</span>
         </button>
       </div>
@@ -76,24 +86,62 @@ function AccordionMenuItem({ item, level }: AccordionMenuItemProps) {
 
   return (
     <AccordionItem value={`item-${level}-${item.title}`} className="border-none">
-      <AccordionTrigger
-        className={cn(
-          'hover:bg-accent cursor-pointer rounded-md p-2 hover:no-underline',
-          isActive ? 'bg-card text-sidebar-accent-foreground' : '',
-        )}
-      >
-        <div className="flex items-center">
-          {item.icon && <span className="mr-3">{item.icon}</span>}
-          <span>{item.title}</span>
-        </div>
-      </AccordionTrigger>
-      <AccordionContent className="pt-1 pb-0">
-        <div className={cn('pl-2', level === 0 ? 'ml-4' : 'ml-2')}>
-          {item.children?.map((child, index) => (
-            <AccordionMenuItem key={index} item={child} level={(level + 1) as MenuItemLevel} />
-          ))}
-        </div>
-      </AccordionContent>
+      {level < 1 ? (
+        <>
+          <AccordionTrigger
+            className={cn(
+              'hover:bg-accent cursor-pointer rounded-md py-1.5 pr-2 pl-4 hover:no-underline',
+              isActive ? 'bg-accent text-sidebar-accent-foreground' : '',
+            )}
+          >
+            <div className="flex items-center">
+              {item.icon && <span className="mr-2">{item.icon}</span>}
+              <span>{item.title}</span>
+            </div>
+          </AccordionTrigger>
+          <AccordionContent className="pb-0">
+            {item.children?.map((child, index) => (
+              <AccordionMenuItem key={index} item={child} level={(level + 1) as MenuItemLevel} />
+            ))}
+          </AccordionContent>
+        </>
+      ) : (
+        <>
+          <Popover>
+            <PopoverTrigger className="w-full">
+              <div
+                className={cn(
+                  'hover:bg-accent flex w-full cursor-pointer items-center justify-between rounded-md py-1.5 pr-2 pl-10',
+                  hasActiveChild ? 'text-sidebar-accent-foreground bg-accent' : '',
+                )}
+              >
+                <span>{item.title}</span>
+                <ChevronRight className="text-muted-foreground size-4" />
+              </div>
+            </PopoverTrigger>
+            <PopoverContent side="right" className="w-auto min-w-37.5 px-1 py-1.5">
+              <ul className="">
+                {item.children?.map((child, index) => {
+                  const isChildActive = child.path === location.pathname;
+                  return (
+                    <li
+                      key={index}
+                      className={cn(
+                        'mb-1 cursor-pointer rounded-md py-1.5 pr-2 pl-4 last:mb-0',
+                        isChildActive ? 'bg-accent' : 'hover:bg-accent',
+                      )}
+                      onClick={() => handleClick(child)}
+                    >
+                      {child.icon && <span className="mr-2">{child.icon}</span>}
+                      <span>{child.title}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </PopoverContent>
+          </Popover>
+        </>
+      )}
     </AccordionItem>
   );
 }
@@ -106,7 +154,7 @@ function CollapsedMenuItem({ item }: { item: MenuItem }) {
     <div
       title={item.title}
       className={cn(
-        'flex justify-center rounded-md p-2',
+        'flex justify-center rounded-md py-1.5 pr-2 pl-4',
         isActive ? 'bg-card text-sidebar-accent-foreground' : 'hover:bg-accent',
       )}
     >
@@ -124,7 +172,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
   const menuItems: MenuItem[] = [
     {
       title: '工作台',
-      icon: <Layout className="h-5 w-5" />,
+      icon: <Layout className="size-4" />,
       children: [
         {
           title: '平台概览',
@@ -138,7 +186,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
     },
     {
       title: '系统管理',
-      icon: <Shield className="h-5 w-5" />,
+      icon: <Shield className="size-4" />,
       children: [
         {
           title: '管理员账户',
@@ -185,7 +233,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
     },
     {
       title: '设置',
-      icon: <Settings className="h-5 w-5" />,
+      icon: <Settings className="size-4" />,
       children: [
         {
           title: '交易平台设置',
@@ -313,7 +361,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
     },
     {
       title: '账户管理',
-      icon: <Users className="h-5 w-5" />,
+      icon: <Users className="size-4" />,
       children: [
         {
           title: '个人中心',
@@ -343,7 +391,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
     },
     {
       title: '报表',
-      icon: <FileBarChart className="h-5 w-5" />,
+      icon: <FileBarChart className="size-4" />,
       children: [
         {
           title: '资金报表',
@@ -445,7 +493,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
     },
     {
       title: '营销管理',
-      icon: <GiftIcon className="h-5 w-5" />,
+      icon: <GiftIcon className="size-4" />,
       children: [
         {
           title: '奖励配置',
@@ -463,7 +511,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
     },
     {
       title: '积分商城',
-      icon: <ShoppingBag className="h-5 w-5" />,
+      icon: <ShoppingBag className="size-4" />,
       children: [
         {
           title: '积分商城设置',
@@ -493,7 +541,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
     },
     {
       title: '消息管理',
-      icon: <MessageCircle className="h-5 w-5" />,
+      icon: <MessageCircle className="size-4" />,
       children: [
         {
           title: '消息管理',
@@ -503,7 +551,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
     },
     {
       title: '审核',
-      icon: <ClipboardCheck className="h-5 w-5" />,
+      icon: <ClipboardCheck className="size-4" />,
       children: [
         {
           title: '审核设置',
@@ -557,7 +605,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
     },
     {
       title: '资金管理',
-      icon: <Wallet className="h-5 w-5" />,
+      icon: <Wallet className="size-4" />,
       children: [
         {
           title: '钱包余额调整',
@@ -571,7 +619,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
     },
     {
       title: '返佣管理',
-      icon: <Percent className="h-5 w-5" />,
+      icon: <Percent className="size-4" />,
       children: [
         {
           title: '基础设置',
@@ -605,7 +653,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
     },
     {
       title: '工单管理',
-      icon: <TicketIcon className="h-5 w-5" />,
+      icon: <TicketIcon className="size-4" />,
       children: [
         {
           title: '工单列表',
@@ -619,7 +667,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
     },
     {
       title: 'PAMM管理',
-      icon: <BarChart3 className="h-5 w-5" />,
+      icon: <BarChart3 className="size-4" />,
       children: [
         {
           title: 'PAMM设置',
@@ -679,7 +727,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
     },
     {
       title: 'CopyTrading',
-      icon: <Copy className="h-5 w-5" />,
+      icon: <Copy className="size-4" />,
       children: [
         {
           title: 'Dashboard',
@@ -721,18 +769,27 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
         cls,
       )}
     >
-      <div className="border-sidebar-border flex h-16 items-center justify-center border-b">
-        <h1 className={cn('text-xl font-bold', !open && 'sr-only')}>CRM Admin</h1>
-        {!open && <span className="text-xl font-bold">CA</span>}
+      <div className="px-4 pt-6 pb-2">
+        <RrhLogo />
       </div>
 
-      <nav className="mt-5 px-2">
+      <nav className="px-2 text-slate-900">
         {open ? (
           <Accordion
-            type="multiple"
-            className="scrollbar-thin h-[calc(100vh-84px)] space-y-1 overflow-auto"
+            type="single"
+            collapsible
+            className="scrollbar-none h-[calc(100vh-84px)] space-y-1 overflow-auto"
           >
-            {menuItems.map((item, index) => (
+            <div className="text-muted px-2 pt-3 pb-2 text-xs">Main</div>
+            {menuItems.slice(0, 4).map((item, index) => (
+              <AccordionMenuItem key={index} item={item} level={0} />
+            ))}
+            <div className="text-muted px-2 pt-3 pb-2 text-xs">Marketing</div>
+            {menuItems.slice(4, 8).map((item, index) => (
+              <AccordionMenuItem key={index} item={item} level={0} />
+            ))}
+            <div className="text-muted px-2 pt-3 pb-2 text-xs">Others</div>
+            {menuItems.slice(8).map((item, index) => (
               <AccordionMenuItem key={index} item={item} level={0} />
             ))}
           </Accordion>
