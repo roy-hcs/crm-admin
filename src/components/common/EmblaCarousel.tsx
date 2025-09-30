@@ -10,8 +10,9 @@ export const EmblaCarousel: FC<
     btnsContainCls?: string;
     options?: EmblaOptionsType;
     plugins?: EmblaPluginType[];
+    wrapperCls?: string;
   }>
-> = ({ PreButton, NextButton, btnsContainCls, options, plugins, children }) => {
+> = ({ PreButton, NextButton, btnsContainCls, options, plugins, children, wrapperCls }) => {
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
   const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
   const [emblaRef, emblaApi] = useEmblaCarousel(options, plugins);
@@ -39,7 +40,7 @@ export const EmblaCarousel: FC<
 
   return (
     <div className="embla relative overflow-hidden px-6" ref={emblaRef}>
-      <div className="embla__container flex gap-4">{children}</div>
+      <div className={cn('embla__container flex', wrapperCls)}>{children}</div>
       <div
         className={cn(
           'absolute top-1/2 right-0 flex h-full -translate-y-1/2 transform justify-between',

@@ -1,5 +1,7 @@
 {
   "CRMAccountPage": {
+    "title": "CRM账户",
+    "desc": "管理和查看CRM账户信息",
     "Index": "序号",
     "UserName": "姓名",
     "Status": "状态",
@@ -133,7 +135,10 @@
         "agent": "代理"
       }
     },
-    "colorPreference": { "greenUp": "绿涨红跌", "redUp": "红涨绿跌" },
+    "colorPreference": {
+      "greenUp": "绿涨红跌",
+      "redUp": "红涨绿跌"
+    },
     "verifyStatus": {
       "pending": "待审核",
       "underReview": "审核中",

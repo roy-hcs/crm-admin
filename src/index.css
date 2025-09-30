@@ -42,6 +42,7 @@
   --background: #ffffff;
   --foreground: #252525;
   --card: #ffffff;
+  --component: #F8FAFC; /* slate 50 */
   --card-foreground: #252525;
   --popover: #ffffff;
   --popover-foreground: #252525;
@@ -49,13 +50,15 @@
   --primary-foreground: #ffffff;
   --secondary: #f3f4f6;
   --secondary-foreground: #1f2937;
-  --muted: #f3f4f6;
+  --third: #0F172A; /* slate 900 */
+  --third-foreground: #f9fafb;
+  --muted: #64748B; /* slate 500 */
   --muted-foreground: #6b7280;
-  --accent: #f3f4f6;
+  --accent: #f1f5f9; /* slate 100 */
   --accent-foreground: #1f2937;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #ebebeb;
+  --border: #E2E8F0; /* slate 200 */
   --input: #ebebeb;
   --ring: #b4b4b4;
   
@@ -99,46 +102,49 @@
 /* Dark mode overrides - activated when .dark class is applied to html */
 .dark {
   color-scheme: dark;
-  color: #f9fafb; 
-  background-color: #111827; 
+  color: #e2e8f0; 
+  background-color: #0f172a; 
   
   /* ShadCN UI dark theme variables */
-  --background: #252525;
-  --foreground: #fbfbfb;
-  --card: #1e1e1e;
-  --card-foreground: #fbfbfb;
-  --popover: #1e1e1e;
-  --popover-foreground: #fbfbfb;
-  --primary: #0ea5e9;
+  --background: #0f172a;
+  --foreground: #e2e8f0;
+  --card: #1e293b;
+  --component: #1e293b;
+  --card-foreground: #f1f5f9;
+  --popover: #1e293b;
+  --popover-foreground: #f1f5f9;
+  --primary: #3b82f6;
   --primary-foreground: #ffffff;
-  --secondary: #1f2937;
-  --secondary-foreground: #f9fafb;
-  --muted: #1f2937;
-  --muted-foreground: #9ca3af;
-  --accent: #1f2937;
-  --accent-foreground: #f9fafb;
+  --secondary: #334155;
+  --secondary-foreground: #e2e8f0;
+  --third: #e2e8f0;
+  --third-foreground: #0f172a;
+  --muted: #475569;
+  --muted-foreground: #94a3b8;
+  --accent: #334155;
+  --accent-foreground: #e2e8f0;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: rgba(255, 255, 255, 0.1);
-  --input: rgba(255, 255, 255, 0.1);
-  --ring: #8e8e8e;
+  --border: #334155;
+  --input: #1e293b;
+  --ring: #64748b;
   
   /* Chart colors - dark theme */
-  --chart-1: #8b5cf6;
-  --chart-2: #06b6d4;
-  --chart-3: #ef4444;
-  --chart-4: #a855f7;
-  --chart-5: #f97316;
+  --chart-1: #60a5fa;
+  --chart-2: #22d3ee;
+  --chart-3: #fb7185;
+  --chart-4: #c084fc;
+  --chart-5: #fb923c;
   
   /* Sidebar specific colors - dark theme */
-  --sidebar: #333333;
-  --sidebar-foreground: #fbfbfb;
-  --sidebar-primary: #8b5cf6;
-  --sidebar-primary-foreground: #fbfbfb;
-  --sidebar-accent: #444444;
-  --sidebar-accent-foreground: #fbfbfb;
-  --sidebar-border: rgba(255, 255, 255, 0.1);
-  --sidebar-ring: #8e8e8e;
+  --sidebar: #1e293b;
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-primary: #3b82f6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #334155;
+  --sidebar-accent-foreground: #e2e8f0;
+  --sidebar-border: #334155;
+  --sidebar-ring: #64748b;
 }
 
 /* Uncomment if you need specific button styling in dark mode
@@ -185,6 +191,7 @@ body {
   
   /* Component specific colors */
   --color-card: var(--card);
+  --color-component: var(--component);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
@@ -192,6 +199,8 @@ body {
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-third: var(--third);
+  --color-third-foreground: var(--third-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
@@ -257,9 +266,9 @@ body {
 
 @layer utilities {
   .text-title {
-    @apply text-2xl font-semibold text-slate-900;
+    @apply text-2xl font-semibold;
     /* TODO: 之后可能需要实现用户自定义文字颜色，此时需要使用如下代码 */
-    /* color: var(--text-title); */
+    color: var(--text-third);
     /* @dark .text-title {
       @apply text-slate-100;
     } */

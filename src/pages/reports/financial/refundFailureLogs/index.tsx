@@ -72,6 +72,7 @@ export function RefundFailureLogsPage() {
             <Ellipsis />
           </Button>
           <RrhDrawer
+            asChild
             Trigger={
               <Button variant="ghost" className="size-8 cursor-pointer">
                 <Funnel className="size-4" />

@@ -102,12 +102,12 @@ const DataOverviewCard: FC = () => {
     <div className="mb-6 rounded-lg">
       <div className="grid gap-4 sm:grid-cols-[1fr] lg:grid-cols-[1fr_1fr] xl:grid-cols-[1fr_1fr_1fr_1fr]">
         {/* 今日入金 */}
-        <div className="grid grid-cols-1 rounded-lg border px-3 py-4">
+        <div className="bg-card grid grid-cols-1 rounded-lg border px-3 py-4">
           <div className="relative">
-            <div className="text-sm text-[#1E1E1E]">{t('home.TodayDeposit')}</div>
+            <div className="text-sm">{t('home.TodayDeposit')}</div>
             <div className="mt-2 mb-2">
               <span
-                className="mr-1 text-xl font-semibold text-[#1E1E1E]"
+                className="mr-1 text-xl font-semibold"
                 style={{
                   verticalAlign: 'bottom',
                   lineHeight: '24px',
@@ -117,7 +117,7 @@ const DataOverviewCard: FC = () => {
               >
                 {todayData[0]}
               </span>
-              <span className="text-xs font-normal text-[#1E1E1E]">USD</span>
+              <span className="text-xs font-normal">USD</span>
             </div>
             <div
               className={cn(
@@ -141,12 +141,12 @@ const DataOverviewCard: FC = () => {
           </div>
         </div>
         {/* 今日出金 */}
-        <div className="grid grid-cols-1 rounded-lg border px-3 py-4">
+        <div className="bg-card grid grid-cols-1 rounded-lg border px-3 py-4">
           <div className="relative">
-            <div className="text-sm text-[#1E1E1E]">{t('home.TodayWithdraw')}</div>
+            <div className="text-sm">{t('home.TodayWithdraw')}</div>
             <div className="mt-2 mb-2">
               <span
-                className="mr-1 text-xl font-semibold text-[#1E1E1E]"
+                className="mr-1 text-xl font-semibold"
                 style={{
                   verticalAlign: 'bottom',
                   lineHeight: '24px',
@@ -156,7 +156,7 @@ const DataOverviewCard: FC = () => {
               >
                 {todayData[1]}
               </span>
-              <span className="text-xs font-normal text-[#1E1E1E]">USD</span>
+              <span className="text-xs font-normal">USD</span>
             </div>
             <div
               className={cn(
@@ -183,20 +183,20 @@ const DataOverviewCard: FC = () => {
         <div className="grid gap-4">
           {sumData.slice(0, 2).map((it, index) => {
             return (
-              <div className="rounded-lg border px-3 py-4" key={index}>
+              <div className="bg-card rounded-lg border px-3 py-4" key={index}>
                 <div className="mb-2 flex items-center justify-between">
                   <div>
-                    <span className="text-sm text-[#1E1E1E]">{t(it.title)}</span>
+                    <span className="text-sm">{t(it.title)}</span>
                   </div>
                   <div>
-                    <ChevronRight className="h-4 w-4 text-[#1E1E1E]" />
+                    <ChevronRight className="h-4 w-4" />
                   </div>
                 </div>
                 <div>
-                  <span className="mr-1 align-bottom text-xl leading-6 font-semibold text-[#1E1E1E]">
+                  <span className="mr-1 align-bottom text-xl leading-6 font-semibold">
                     {it.value}
                   </span>
-                  <span className="text-xs font-normal text-[#1E1E1E]">USD</span>
+                  <span className="text-xs font-normal">USD</span>
                 </div>
               </div>
             );
@@ -206,20 +206,20 @@ const DataOverviewCard: FC = () => {
         <div className="grid gap-4">
           {sumData.slice(2, 4).map((it, index) => {
             return (
-              <div className="rounded-lg border px-3 py-4" key={index}>
+              <div className="bg-card rounded-lg border px-3 py-4" key={index}>
                 <div className="mb-2 flex items-center justify-between">
                   <div>
-                    <span className="text-sm text-[#1E1E1E]">{t(it.title)}</span>
+                    <span className="text-sm">{t(it.title)}</span>
                   </div>
                   <div>
-                    <ChevronRight className="h-4 w-4 text-[#1E1E1E]" />
+                    <ChevronRight className="h-4 w-4" />
                   </div>
                 </div>
                 <div>
-                  <span className="mr-1 align-bottom text-xl leading-6 font-semibold text-[#1E1E1E]">
+                  <span className="mr-1 align-bottom text-xl leading-6 font-semibold">
                     {it.value}
                   </span>
-                  <span className="text-xs font-normal text-[#1E1E1E]">USD</span>
+                  <span className="text-xs font-normal">USD</span>
                 </div>
               </div>
             );
@@ -249,10 +249,10 @@ const NavList: FC = () => {
         <Link
           key={item.label}
           to={item.to}
-          className="flex items-center gap-2 rounded-lg bg-[#F6F7F9] px-4 py-2 text-sm transition hover:bg-[#F6F7F9]"
+          className="bg-component hover:bg-component/80 flex items-center gap-2 rounded-lg px-4 py-2 text-sm transition"
         >
           <item.icon className="mr-2 size-6" />
-          <span className="text-sm font-normal text-[#1E1E1E]">{t(item.label)}</span>
+          <span className="text-sm font-normal">{t(item.label)}</span>
         </Link>
       ))}
     </div>
@@ -287,12 +287,12 @@ const SymbolReportPieChart: FC<{ serverList: ServerItem[] }> = ({ serverList }) 
     <div className="bg-card mb-6 rounded-lg border p-6">
       <div className="flex items-center justify-between">
         <div className="h-[24px]">
-          <span className="inline-block text-xl leading-6 font-semibold text-[#1E1E1E]">
+          <span className="inline-block text-xl leading-6 font-semibold">
             {t('home.TradingPairOverview')}
           </span>
         </div>
         <div onClick={() => setType('2')}>
-          <EllipsisVertical className="h-4 w-4 text-[#1E1E1E]" />
+          <EllipsisVertical className="h-4 w-4" />
         </div>
       </div>
       <div className="mt-12 min-h-75">
@@ -310,12 +310,12 @@ const WithDrawReportAreaChart: FC = () => {
     <div className="bg-card mb-6 rounded-lg border p-6">
       <div className="flex items-center justify-between">
         <div className="h-[24px]">
-          <span className="inline-block text-xl leading-6 font-semibold text-[#1E1E1E]">
+          <span className="inline-block text-xl leading-6 font-semibold">
             {t('home.WithDrawReport')}
           </span>
         </div>
         <div onClick={() => setType('2')}>
-          <EllipsisVertical className="h-4 w-4 text-[#1E1E1E]" />
+          <EllipsisVertical className="h-4 w-4" />
         </div>
       </div>
       <div className="mt-7 min-h-75">
@@ -355,32 +355,26 @@ const RegCountReportLineChart: FC<{ serverList: ServerItem[] }> = () => {
     <div className="bg-card mb-6 rounded-lg border p-6">
       <div className="flex items-center justify-between">
         <div className="h-[24px]">
-          <span className="inline-block text-xl leading-6 font-semibold text-[#1E1E1E]">
+          <span className="inline-block text-xl leading-6 font-semibold">
             {t('home.AccountOverview')}
           </span>
         </div>
         <div onClick={() => setType('2')}>
-          <EllipsisVertical className="h-4 w-4 text-[#1E1E1E]" />
+          <EllipsisVertical className="h-4 w-4" />
         </div>
       </div>
       <div className="mt-6.5 mb-9 flex gap-20 px-6">
         <div>
-          <div className="mb-1 h-4 text-xs leading-4 font-normal text-[#1e1e1e]">
-            {t('home.NewCRMUser')}
-          </div>
-          <div className="h-5 text-base leading-5 font-semibold text-[#1e1e1e]">5</div>
+          <div className="mb-1 h-4 text-xs leading-4 font-normal">{t('home.NewCRMUser')}</div>
+          <div className="h-5 text-base leading-5 font-semibold">5</div>
         </div>
         <div>
-          <div className="mb-1 h-4 text-xs leading-4 font-normal text-[#1e1e1e]">
-            {t('home.NewRealAccount')}
-          </div>
-          <div className="h-5 text-base leading-5 font-semibold text-[#1e1e1e]">5</div>
+          <div className="mb-1 h-4 text-xs leading-4 font-normal">{t('home.NewRealAccount')}</div>
+          <div className="h-5 text-base leading-5 font-semibold">5</div>
         </div>
         <div>
-          <div className="mb-1 h-4 text-xs leading-4 font-normal text-[#1e1e1e]">
-            {t('home.NewDemoAccount')}
-          </div>
-          <div className="h-5 text-base leading-5 font-semibold text-[#1e1e1e]">5</div>
+          <div className="mb-1 h-4 text-xs leading-4 font-normal">{t('home.NewDemoAccount')}</div>
+          <div className="h-5 text-base leading-5 font-semibold">5</div>
         </div>
       </div>
       <div className="min-h-75">
@@ -421,23 +415,23 @@ const CustomerTransactionOverview: FC = () => {
       {/* 标题 */}
       <div className="flex items-center justify-between">
         <div className="h-[24px]">
-          <span className="inline-block text-xl leading-6 font-semibold text-[#1E1E1E]">
+          <span className="inline-block text-xl leading-6 font-semibold">
             {t('home.CustomerTrading')}
           </span>
         </div>
         <div className="flex gap-4" onClick={() => setType('2')}>
           <div>
-            <ServerCog className="h-4 w-4 text-[#1E1E1E]" />
+            <ServerCog className="h-4 w-4" />
           </div>
           <div>
-            <EllipsisVertical className="h-4 w-4 text-[#1E1E1E]" />
+            <EllipsisVertical className="h-4 w-4" />
           </div>
         </div>
       </div>
       {/* tabs */}
       <div className="mt-3">
         <Tabs defaultValue="account" className="w-full">
-          <TabsList>
+          <TabsList className="dark:bg-accent bg-slate-100">
             <TabsTrigger value="account">{t('home.PositionProfitLoss')}</TabsTrigger>
             <TabsTrigger value="volume">{t('home.TradingVolume')}</TabsTrigger>
             <TabsTrigger value="order">{t('home.TradingOrder')}</TabsTrigger>
@@ -446,22 +440,18 @@ const CustomerTransactionOverview: FC = () => {
             {/* 数据概览 */}
             <div className="mb-6 flex gap-20 px-6">
               <div>
-                <div className="mb-1 h-4 text-xs leading-4 font-normal text-[#1e1e1e]">
-                  {t('home.NetProfit')}
-                </div>
-                <div className="h-5 text-base leading-5 font-semibold text-[#1e1e1e]">5</div>
+                <div className="mb-1 h-4 text-xs leading-4 font-normal">{t('home.NetProfit')}</div>
+                <div className="h-5 text-base leading-5 font-semibold">5</div>
               </div>
               <div>
-                <div className="mb-1 h-4 text-xs leading-4 font-normal text-[#1e1e1e]">
-                  {t('home.GrossLoss')}
-                </div>
-                <div className="h-5 text-base leading-5 font-semibold text-[#1e1e1e]">5</div>
+                <div className="mb-1 h-4 text-xs leading-4 font-normal">{t('home.GrossLoss')}</div>
+                <div className="h-5 text-base leading-5 font-semibold">5</div>
               </div>
               <div>
-                <div className="mb-1 h-4 text-xs leading-4 font-normal text-[#1e1e1e]">
+                <div className="mb-1 h-4 text-xs leading-4 font-normal">
                   {t('home.NetProfitToday')}
                 </div>
-                <div className="h-5 text-base leading-5 font-semibold text-[#1e1e1e]">5</div>
+                <div className="h-5 text-base leading-5 font-semibold">5</div>
               </div>
             </div>
             {/* 图表 */}
@@ -533,26 +523,26 @@ const DepositAllReportBarChart: FC = () => {
       {/* 标题 */}
       <div className="flex items-center justify-between">
         <div className="h-[24px]">
-          <span className="inline-block text-xl leading-6 font-semibold text-[#1E1E1E]">
+          <span className="inline-block text-xl leading-6 font-semibold">
             {t('home.InTransitFunds')}
           </span>
         </div>
         <div onClick={() => setType('2')}>
-          <EllipsisVertical className="h-4 w-4 text-[#1E1E1E]" />
+          <EllipsisVertical className="h-4 w-4" />
         </div>
       </div>
       <div className="mt-6.5 mb-9 flex gap-20 px-6">
         <div>
-          <div className="mb-1 h-4 text-xs leading-4 font-normal text-[#1e1e1e]">
+          <div className="mb-1 h-4 text-xs leading-4 font-normal">
             {t('home.AuditedDepositToday')}
           </div>
-          <div className="h-5 text-base leading-5 font-semibold text-[#1e1e1e]">0.00(USD)</div>
+          <div className="h-5 text-base leading-5 font-semibold">0.00(USD)</div>
         </div>
         <div>
-          <div className="mb-1 h-4 text-xs leading-4 font-normal text-[#1e1e1e]">
+          <div className="mb-1 h-4 text-xs leading-4 font-normal">
             {t('home.PendingDepositToday')}
           </div>
-          <div className="h-5 text-base leading-5 font-semibold text-[#1e1e1e]">0.00(USD)</div>
+          <div className="h-5 text-base leading-5 font-semibold">0.00(USD)</div>
         </div>
       </div>
       <div className="min-h-75">
@@ -603,14 +593,10 @@ const Step: FC = () => {
       status: 'complete',
       content: (
         <div className="mb-3 rounded-lg border-[0.5px] border-[#EB575780] bg-[#EB57571A] p-3">
-          <div className="mb-1 text-sm leading-3.5 font-medium text-[#1e1e1e]">
-            Abnormal server connection
-          </div>
-          <div className="text-xs leading-3 font-normal text-[#1e1e1e]">
-            服务器：ABC Limited-Live
-          </div>
-          <div className="text-xs leading-3 font-normal text-[#1e1e1e]">备注： </div>
-          <div className="text-xs leading-3 font-normal text-[#1e1e1e]">原因：No connection</div>
+          <div className="mb-1 text-sm leading-3.5 font-medium">Abnormal server connection</div>
+          <div className="text-xs leading-3 font-normal">服务器：ABC Limited-Live</div>
+          <div className="text-xs leading-3 font-normal">备注： </div>
+          <div className="text-xs leading-3 font-normal">原因：No connection</div>
         </div>
       ),
     },
@@ -630,7 +616,7 @@ const Step: FC = () => {
         <div>
           <TriangleAlert className="h-4 w-4 text-[#EB5757]" />
         </div>
-        <span className="inline-block text-xl leading-5 font-semibold text-[#1E1E1E]">
+        <span className="inline-block text-xl leading-5 font-semibold">
           Abnormal transaction server
         </span>
       </div>
@@ -668,10 +654,10 @@ const Todo: FC = () => {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <span className="text-xl leading-5 font-semibold text-[#1E1E1E]">代办</span>
+          <span className="text-xl leading-5 font-semibold">代办</span>
         </div>
         <div>
-          <PenLine className="h-4 w-4 text-[#1E1E1E]" />
+          <PenLine className="h-4 w-4" />
         </div>
       </div>
       <div className="mt-6">
@@ -697,7 +683,7 @@ export function HomePage() {
       {/* 标题 */}
       <div className="mb-3 flex items-center justify-between">
         <div className="flex">
-          <div className="text-xl font-semibold text-[#1E1E1E]">{t('home.DataOverview')}</div>
+          <div className="text-xl font-semibold">{t('home.DataOverview')}</div>
         </div>
         <div className="text-xs font-normal">
           {t('home.DataUpdateTime')}: {now}
@@ -723,11 +709,11 @@ export function HomePage() {
         </div>
         <div className="lg:flex lg:gap-6 xl:block xl:gap-0">
           {/* 开户步骤进度条 */}
-          <div className="bg-background mb-6 w-[296px] rounded-lg border py-4">
+          <div className="bg-card mb-6 w-[296px] rounded-lg border py-4">
             <Step />
           </div>
           {/* 代办 */}
-          <div className="bg-background w-[296px] rounded-lg border p-6">
+          <div className="bg-card w-[296px] rounded-lg border p-6">
             <Todo />
           </div>
         </div>

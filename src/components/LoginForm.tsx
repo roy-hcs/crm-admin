@@ -123,12 +123,12 @@ export const LoginForm = ({
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="username"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="mb-4">
                 <FormLabel className="capitalize">
                   {loginType === 1 ? t('loginPage.mobile') : t('loginPage.email')}
                 </FormLabel>
@@ -160,7 +160,7 @@ export const LoginForm = ({
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="mb-4">
                 <div className="flex justify-between">
                   <FormLabel className="capitalize">{t('loginPage.password')}</FormLabel>
                   <button type="button" className="cursor-pointer text-sm">
@@ -192,7 +192,7 @@ export const LoginForm = ({
             control={form.control}
             name="rememberMe"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-y-0 space-x-3">
+              <FormItem className="mb-4 flex flex-row items-start space-y-0 space-x-3">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -209,12 +209,13 @@ export const LoginForm = ({
 
           <RrhButton
             type="submit"
-            className="w-full cursor-pointer"
+            className="mb-3 w-full cursor-pointer"
             disabled={loginMutation.isPending}
           >
             {loginMutation.isPending ? t('loginPage.logging') : t('loginPage.login')}
           </RrhButton>
           <RrhButton
+            variant="outline"
             type="button"
             className="w-full cursor-pointer capitalize"
             disabled={loginMutation.isPending}

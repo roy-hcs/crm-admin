@@ -222,7 +222,9 @@ export function DataTable<TData extends RowData, TValue>({
       return { className: '', style: {} };
     }
     // Base sticky style for headers and cells
-    const baseClass = isHeader ? 'sticky top-0 z-20 bg-background' : 'sticky z-10 bg-background';
+    const baseClass = isHeader
+      ? 'sticky top-0 z-20 bg-background hover:bg-accent/50 data-[state=selected]:bg-accent'
+      : 'sticky z-10 bg-background hover:bg-accent/50 data-[state=selected]:bg-accent';
 
     // Find column definition for width properties
     const columnDef = columns.find(col => col.id === columnId || col.accessorKey === columnId) as
@@ -275,7 +277,10 @@ export function DataTable<TData extends RowData, TValue>({
         <Table ref={tableRef}>
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
-              <TableRow key={headerGroup.id}>
+              <TableRow
+                key={headerGroup.id}
+                className="data-[state=selected]:bg-accent hover:bg-accent/50"
+              >
                 {headerGroup.headers.map(header => {
                   const pinDirection = header.column.getIsPinned() as FixedColumnPosition;
                   const { className, style } = getPinnedStyles(header.id, pinDirection, true);
@@ -305,7 +310,7 @@ export function DataTable<TData extends RowData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  className="h-12"
+                  className="data-[state=selected]:bg-accent hover:bg-accent/50 h-12"
                 >
                   {row.getVisibleCells().map(cell => {
                     const pinDirection = cell.column.getIsPinned() as FixedColumnPosition;
@@ -328,13 +333,17 @@ export function DataTable<TData extends RowData, TValue>({
                 </TableRow>
               ))
             ) : (
-              <TableRow>
+              <TableRow className="data-[state=selected]:bg-accent hover:bg-accent/50">
                 <TableCell colSpan={columns.length} className="h-24 text-center">
                   {t('common.NoData')}
                 </TableCell>
               </TableRow>
             )}
-            {CustomRow && <TableRow>{CustomRow}</TableRow>}
+            {CustomRow && (
+              <TableRow className="data-[state=selected]:bg-accent hover:bg-accent/50">
+                {CustomRow}
+              </TableRow>
+            )}
             {CustomFooter && <TableFooter>{CustomFooter}</TableFooter>}
           </TableBody>
         </Table>

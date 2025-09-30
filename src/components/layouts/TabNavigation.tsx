@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { X, MoreHorizontal } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTabStore, type TabItem } from '../../store/tabStore';
 import { cn } from '@/lib/utils';
+import { RrhButton } from '../common/RrhButton';
 
 export function TabNavigation() {
   const navigate = useNavigate();
-  const { tabs, activeTab, removeTab, setActiveTab, closeAllTabs, closeOtherTabs } = useTabStore();
-  const [showDropdown, setShowDropdown] = useState(false);
+  const { tabs, activeTab, removeTab, setActiveTab } = useTabStore();
+  // const [showDropdown, setShowDropdown] = useState(false);
   const handleTabClick = (tab: TabItem) => {
     setActiveTab(tab.key);
     navigate(tab.path);
@@ -29,45 +29,52 @@ export function TabNavigation() {
     removeTab(key);
   };
 
-  const handleTabActions = (action: 'closeAll' | 'closeOthers') => {
-    if (action === 'closeAll') {
-      closeAllTabs();
-      navigate('/');
-    } else if (action === 'closeOthers') {
-      closeOtherTabs(activeTab);
-    }
-    setShowDropdown(false);
-  };
+  // const handleTabActions = (action: 'closeAll' | 'closeOthers') => {
+  //   if (action === 'closeAll') {
+  //     closeAllTabs();
+  //     navigate('/');
+  //   } else if (action === 'closeOthers') {
+  //     closeOtherTabs(activeTab);
+  //   }
+  //   setShowDropdown(false);
+  // };
 
   return (
-    <div className="bg-background relative flex w-full items-center border-b py-0.5">
-      <div className="flex flex-1 items-center gap-0.5 overflow-x-auto px-0.5">
+    <div className="bg-background relative flex w-full items-center">
+      <div className="flex flex-1 items-center gap-0.5 overflow-x-auto px-0.5 py-1">
         {tabs.map(tab => (
           <div
             key={tab.key}
             className={cn(
-              'flex cursor-pointer items-center border px-2 py-1 text-xs select-none',
-              activeTab === tab.key ? 'bg-primary text-primary-foreground' : 'hover:bg-muted',
+              'flex cursor-pointer items-center rounded border px-3 py-1.5 text-xs font-semibold text-nowrap select-none',
+              activeTab === tab.key
+                ? 'bg-background text-third shadow'
+                : 'bg-accent text-muted dark:text-third/50',
             )}
             onClick={() => handleTabClick(tab)}
           >
             <span>{tab.title}</span>
-            {tab.closable && (
-              <button
+            {tab.closable && activeTab === tab.key && (
+              <RrhButton
+                variant="ghost"
                 onClick={e => handleCloseTab(e, tab.key)}
-                className="hover:bg-primary-foreground hover:text-primary ml-2 cursor-pointer rounded-full"
+                className="ml-5 h-3 rounded-full !p-0"
               >
                 <X className="h-3 w-3" />
-              </button>
+              </RrhButton>
             )}
           </div>
         ))}
       </div>
       {/* TODO: not sure whether keep it or not */}
-      <div className="relative px-2">
-        <button onClick={() => setShowDropdown(!showDropdown)} className="hover:bg-muted px-2 py-1">
+      {/* <div className="relative px-2">
+        <RrhButton
+          variant="ghost"
+          onClick={() => setShowDropdown(!showDropdown)}
+          className="!px-2 !py-1"
+        >
           <MoreHorizontal className="h-4 w-4" />
-        </button>
+        </RrhButton>
 
         {showDropdown && (
           <div className="bg-popover absolute right-0 z-10 mt-2 w-48 rounded-md border shadow-lg">
@@ -87,7 +94,7 @@ export function TabNavigation() {
             </div>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

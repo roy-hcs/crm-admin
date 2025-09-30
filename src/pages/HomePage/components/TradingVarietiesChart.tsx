@@ -95,8 +95,8 @@ export default function TradingVarietiesChart() {
                 marginRight: 10,
               }}
             ></span>
-            <div style={{ width: 110, color: '#222' }}>{item.name}</div>
-            <div style={{ color: '#222' }}>{item.volume}</div>
+            <div style={{ width: 110 }}>{item.name}</div>
+            <div>{item.volume}</div>
           </div>
         ))}
       </div>

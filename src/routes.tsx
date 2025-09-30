@@ -6,6 +6,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { SettingPage } from './pages/SettingPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { SalesReportPage } from './pages/SalesReportPage';
+import { AppError } from './components/common/AppError';
 import { CRMAccounts } from './pages/account/CRMAccounts/CRMAccounts';
 import { ClientTrackingPage } from '@/pages/reports/ib/client-tracking';
 import { OverviewPage } from './pages/reports/ib/overview';
@@ -44,6 +45,7 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
+    errorElement: <AppError />,
     children: [
       // All pages that should use MainLayout
       // TODO: Need to organize routes better
@@ -220,10 +222,12 @@ export const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />,
+    errorElement: <AppError />,
   },
   // Global catch-all route for 404
   {
     path: '*',
     element: <NotFoundPage />,
+    errorElement: <AppError />,
   },
 ]);

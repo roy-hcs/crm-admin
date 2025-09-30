@@ -165,7 +165,7 @@ export const CRMTable = ({
         return (
           <div className="flex max-w-50 flex-wrap items-center gap-1">
             {tags.slice(0, 3).map((tag, index) => (
-              <span key={index} className="rounded-md border border-[#E2E8F0] p-1 text-slate-700">
+              <span key={index} className="border-border rounded-md border p-1">
                 {tag}
               </span>
             ))}
