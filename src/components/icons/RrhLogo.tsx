@@ -10,7 +10,7 @@ export const RrhLogo: FC<SVGProps<SVGSVGElement>> = props => {
       fill="none"
       {...props}
     >
-      <g clip-path="url(#clip0_5103_61767)">
+      <g clipPath="url(#clip0_5103_61767)">
         <path
           d="M38.0415 5.75V10.4813H32.8473V5.75H30.8789V17.25H32.8473V12.4152H38.0415V17.25H40.0099V5.75H38.0415Z"
           fill="#020F2C"

@@ -98,9 +98,7 @@ export function FeesPage() {
   };
   return (
     <div>
-      <div className="text-xl leading-8 font-semibold text-[#1e1e1e]">
-        {t('commission.fees.title')}
-      </div>
+      <div className="text-xl leading-8 font-semibold">{t('commission.fees.title')}</div>
       <div className="mt-3.5 mb-3.5 flex justify-between">
         <div className="w-67 max-w-sm">
           <RrhInputWithIcon
@@ -121,6 +119,7 @@ export function FeesPage() {
             <Ellipsis />
           </Button>
           <RrhDrawer
+            asChild
             Trigger={
               <Button variant="ghost" className="size-8 cursor-pointer">
                 <Funnel className="size-4" />

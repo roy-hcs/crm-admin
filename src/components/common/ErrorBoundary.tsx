@@ -18,17 +18,23 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    // Log to help with debugging
+    console.log('ErrorBoundary: getDerivedStateFromError called with:', error);
     return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    // TODO: if we have record error service, we can log the error here
-    console.error('ErrorBoundary caught an error', error, errorInfo);
+    // Log detailed error info for debugging
+    console.error('ErrorBoundary caught an error:', {
+      error,
+      errorInfo,
+      componentStack: errorInfo.componentStack,
+    });
   }
 
   render(): ReactNode {
     if (this.state.hasError) {
-      // TODO: custom fallback UI
+      console.log('ErrorBoundary: Rendering fallback UI');
       return this.props.fallback || <AppError />;
     }
 

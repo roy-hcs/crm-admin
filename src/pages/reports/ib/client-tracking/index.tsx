@@ -70,6 +70,7 @@ export function ClientTrackingPage() {
             <Ellipsis />
           </Button>
           <RrhDrawer
+            asChild
             Trigger={<Funnel className="size-4" />}
             title="Filter"
             direction="right"

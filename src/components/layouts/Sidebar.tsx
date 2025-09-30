@@ -26,7 +26,8 @@ import {
 import { cn } from '@/lib/utils';
 import { useTabStore } from '@/store/tabStore';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { RrhLogo } from '../common/RrhLogo';
+import { RrhLogo } from '../icons/RrhLogo';
+import { RrhPureLogo } from '../icons/RrhPureLogo';
 
 interface MenuItem {
   title: string;
@@ -764,14 +765,15 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
   return (
     <div
       className={cn(
-        'dark:bg-card text-sidebar-foreground border-sidebar-border h-full border-r bg-slate-50 transition-all duration-300',
+        'bg-component text-sidebar-foreground border-sidebar-border h-full border-r transition-all duration-300',
         open ? 'w-64' : 'w-16',
         cls,
       )}
     >
       <div className="px-4 pt-6 pb-5">
         <Link to="/">
-          <RrhLogo />
+          <RrhLogo className="dark:hidden" />
+          <RrhPureLogo logoColor="white" className="hidden w-23 dark:block" />
         </Link>
       </div>
 
