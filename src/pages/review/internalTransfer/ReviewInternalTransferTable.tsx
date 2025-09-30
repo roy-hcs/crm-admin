@@ -139,7 +139,7 @@ export const ReviewInternalTransferTable = ({
         // TODO: need to add view detail page later
         return (
           <RrhButton variant="ghost">
-            {row.original.status === 2 ? t('common.View') : t('table.audit')}
+            {row.original.status === 2 ? t('table.audit') : t('common.View')}
           </RrhButton>
         );
       },

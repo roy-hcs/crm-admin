@@ -41,7 +41,7 @@ export function TabNavigation() {
 
   return (
     <div className="bg-background relative flex w-full items-center">
-      <div className="flex flex-1 items-center gap-0.5 overflow-x-auto px-0.5 py-1">
+      <div className="scrollbar-thin flex flex-1 items-center gap-0.5 overflow-x-auto px-0.5 py-1">
         {tabs.map(tab => (
           <div
             key={tab.key}

@@ -5,9 +5,9 @@ import { toast } from 'sonner';
 // 测试环境使用的baseUrl是基于http的，部署到vercel后，前端是https的，会有混合内容的问题
 // 现在的解决方法是通过vite的proxy把请求代理到后端，后端再请求真正的API
 // 生产环境需要确认一下API地址
-// export const API_BASE_URL = '/api';
-export const API_BASE_URL =
-  process.env.NODE_ENV === 'production' ? import.meta.env.VITE_API_URL : '/api';
+export const API_BASE_URL = '/api';
+// export const API_BASE_URL =
+//   process.env.NODE_ENV === 'production' ? import.meta.env.VITE_API_URL : '/api';
 export async function fetchWithAuth<T>(
   url: string,
   options: RequestInit = {},

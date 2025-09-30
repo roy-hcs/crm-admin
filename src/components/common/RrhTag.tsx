@@ -10,7 +10,7 @@ export const RrhTag: FC<PropsWithChildren<RrhTagProps>> = ({ children, type, cla
   return (
     <div
       className={cn(
-        'inline-flex flex-nowrap items-center gap-1 rounded-md border border-slate-200 px-2 py-0.5 text-xs leading-4 text-slate-700',
+        'inline-flex flex-nowrap items-center gap-1 rounded-md border border-slate-200 px-2 py-0.5 text-xs leading-4',
         className,
       )}
     >

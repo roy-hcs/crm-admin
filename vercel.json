@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "http://admin-1.hcs55.com:38080/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

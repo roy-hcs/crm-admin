@@ -42,6 +42,7 @@ export const InFormationTable = ({
       id: 'No',
       header: t('table.index'),
       cell: ({ row }) => <div>{row.index + 1}</div>,
+      size: 50,
     },
     {
       id: 'name',
