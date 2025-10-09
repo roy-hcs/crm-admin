@@ -149,7 +149,10 @@
     "type": "类型",
     "server": "服务器",
     "accountType": "账号类型",
-    "level": "杠杆"
+    "level": "杠杆",
+    "accountCount": "账户数",
+    "totalAccount": "总帐号",
+    "todayAccount": "今日账号"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -189,6 +192,9 @@
     "PendingDepositToday": "待审入金(今日)",
     "AuditedWithdrawalAll": "已审出金",
     "PendingWithdrawalAll": "待审出金"
+  },
+  "workBench": {
+    "title": "数据概览"
   },
   "ib": {
     "CustomerTracking": {

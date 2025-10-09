@@ -19,6 +19,7 @@ import {
   DictTypeResponse,
   ChannelListResponse,
   InfoTypeItem,
+  MtServiceUpdateRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -196,5 +197,20 @@ export function useInfoTypeList() {
   return useQuery({
     queryKey: ['getInfoTypeList'],
     queryFn: () => apiGet<InfoTypeItem[]>(`/system/crmInfoVerify/getInfoVerifyType`, {}),
+  });
+}
+
+export function useMtServiceUpdate(
+  params: {
+    server: string;
+  },
+  options?: { enabled?: boolean },
+) {
+  const { server } = params;
+  return useQuery({
+    queryKey: ['MtServiceUpdate', server],
+    queryFn: () =>
+      apiFormPostCustom<MtServiceUpdateRes>(`/system/mtService/updateSta`, params || {}),
+    enabled: options?.enabled ?? true,
   });
 }

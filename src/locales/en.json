@@ -130,7 +130,10 @@
       "rejected": "reject",
       "underReview": "Under review"
     },
-    "verifyTime": "Finishing time"
+    "verifyTime": "Finishing time",
+    "accountCount": "Number of accounts",
+    "todayAccount": "Today's account",
+    "totalAccount": "general account"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -582,5 +585,8 @@
       "title": "Review Settings",
       "val": "Display of total count of navigation bar to be reviewed"
     }
+  },
+  "workBench": {
+    "title": "Data overview"
   }
 }

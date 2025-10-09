@@ -284,3 +284,10 @@ export type InfoTypeItem = {
   flag: string | null;
   globalizationKey: string | null;
 };
+
+// 数据概览
+export type MtServiceUpdateRes = {
+  allAccount: number;
+  todayAccount: number;
+  count: number[];
+};

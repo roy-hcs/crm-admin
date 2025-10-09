@@ -39,6 +39,7 @@ import { InFormationPage } from './pages/review/InFormation';
 import { AccountOpeningPage } from './pages/review/AccountOpening';
 import { BindingPage } from './pages/review/binding';
 import { LeveragePage } from './pages/review/leverage';
+import { TradingStatsPage } from './pages/WorkBench/TradingStats';
 // Import other pages as needed
 
 export const router = createBrowserRouter([
@@ -210,6 +211,11 @@ export const router = createBrowserRouter([
       {
         path: '/review/leverage',
         element: <LeveragePage />,
+      },
+      // 交易统计
+      {
+        path: '/workbench/trading-stats',
+        element: <TradingStatsPage />,
       },
       // Add more routes that should use MainLayout here
       {
