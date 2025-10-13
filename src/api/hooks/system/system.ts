@@ -19,6 +19,9 @@ import {
   DictTypeResponse,
   ChannelListResponse,
   InfoTypeItem,
+  TclosureReportResponse,
+  ServerExceptionNoticeRes,
+  PreferencesRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -74,7 +77,15 @@ export function useDepositAllReport(type: string) {
       apiGet<Record<string, [number, number]>>(`/system/depositAllReport?type=${type}`),
   });
 }
-
+export function useTclosureReport(params: { type: string; serverId: string }) {
+  return useQuery({
+    queryKey: ['tclosureReport', params.type, params.serverId],
+    queryFn: () =>
+      apiGet<TclosureReportResponse>(
+        `/system/tclosureReport?type=${params.type}&serverId=${params.serverId}`,
+      ),
+  });
+}
 export function useSumReport() {
   return useQuery({
     queryKey: ['sumReport'],
@@ -196,5 +207,24 @@ export function useInfoTypeList() {
   return useQuery({
     queryKey: ['getInfoTypeList'],
     queryFn: () => apiGet<InfoTypeItem[]>(`/system/crmInfoVerify/getInfoVerifyType`, {}),
+  });
+}
+
+/**
+ * 获取服务器异常
+ */
+export function useServerExceptionNotice() {
+  return useQuery({
+    queryKey: ['serverExceptionNotice'],
+    queryFn: () => apiGetCustom<ServerExceptionNoticeRes | []>(`/system/serverExceptionNotice`),
+  });
+}
+/**
+ * 获取代办事项
+ */
+export function useGetPreferences() {
+  return useQuery({
+    queryKey: ['preferences'],
+    queryFn: async () => apiGetCustom<PreferencesRes | []>('/system/getPreferences'),
   });
 }

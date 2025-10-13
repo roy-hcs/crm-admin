@@ -102,7 +102,6 @@ export const PieChart: FC<PieChartProps> = ({
     value: '交易量(Lot)',
     color: '#1e1e1e', // 总计颜色
   });
-  console.log(chartData, 'PieChart', datasets, 'datasets', legendData);
   return (
     <div style={{ height: `${height}px`, width: '100%' }}>
       <div style={{ width: '100%', height: `${height}px` }} className="flex items-center">
