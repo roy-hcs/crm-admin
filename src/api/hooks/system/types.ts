@@ -1,3 +1,5 @@
+import { BasicParams } from '../review/types';
+
 export type WithDrawReportItem = {
   amount: number;
   currency: string | null;
@@ -283,4 +285,39 @@ export type InfoTypeItem = {
   status: string | null;
   flag: string | null;
   globalizationKey: string | null;
+};
+
+export type RoleItem = {
+  createBy: string | null;
+  createTime: string;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  roleId: string;
+  roleName: string;
+  roleKey: string;
+  roleSort: string;
+  roleDescribe: string;
+  userCount: number;
+  dataScope: string;
+  status: string;
+  roleSource: number;
+  userScope: string;
+  userAccount: string | null;
+  delFlag: string;
+  flag: boolean;
+  menuIds: string[] | null;
+  deptIds: string[] | null;
+};
+
+export type RoleListRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: RoleItem[];
+};
+
+export type RoleListParams = BasicParams & {
+  roleName?: string;
 };

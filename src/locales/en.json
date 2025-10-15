@@ -412,7 +412,13 @@
     "wallet": "wallet",
     "withdrawAccount": "Withdrawal account",
     "withdrawAmount": "Amount of withdrawal",
-    "withdrawMethods": "How to withdraw money"
+    "withdrawMethods": "How to withdraw money",
+    "accountRole": "Account role",
+    "accountsNumber": "Number of accounts",
+    "custom": "Customize",
+    "roleDescription": "role description",
+    "source": "source",
+    "systemDefault": "System default"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -582,5 +588,11 @@
       "title": "Review Settings",
       "val": "Display of total count of navigation bar to be reviewed"
     }
+  },
+  "rolesManagement": {
+    "administrator": "administrator",
+    "roleName": "Character name",
+    "title": "role management",
+    "users": "user"
   }
 }

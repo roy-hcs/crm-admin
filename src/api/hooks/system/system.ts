@@ -19,6 +19,8 @@ import {
   DictTypeResponse,
   ChannelListResponse,
   InfoTypeItem,
+  RoleListRes,
+  RoleListParams,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -196,5 +198,19 @@ export function useInfoTypeList() {
   return useQuery({
     queryKey: ['getInfoTypeList'],
     queryFn: () => apiGet<InfoTypeItem[]>(`/system/crmInfoVerify/getInfoVerifyType`, {}),
+  });
+}
+
+export function useRolesList(params: RoleListParams) {
+  return useQuery({
+    queryKey: ['getRolesList', params],
+    queryFn: () => apiFormPostCustom<RoleListRes>('/system/role/list', params),
+  });
+}
+
+export function useUserRoleList(params: RoleListParams) {
+  return useQuery({
+    queryKey: ['getUserRoleList', params],
+    queryFn: () => apiFormPostCustom<RoleListRes>('/system/user/role/list', params),
   });
 }

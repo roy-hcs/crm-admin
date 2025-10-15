@@ -436,6 +436,12 @@
   "depositReview": {
     "title": "入金审核"
   },
+  "rolesManagement": {
+    "title": "角色管理",
+    "administrator": "管理员",
+    "users": "用户",
+    "roleName": "角色名称"
+  },
   "table": {
     "server": "服务器",
     "groups": "组别",
@@ -553,7 +559,13 @@
     "paymentOrderNumber": "支付订单号",
     "payAmount": "收款金额",
     "depositAmount": "入金金额",
-    "directAgent": "直属代理"
+    "directAgent": "直属代理",
+    "accountRole": "账户角色",
+    "roleDescription": "角色描述",
+    "accountsNumber": "账户数",
+    "source": "来源",
+    "systemDefault": "系统默认",
+    "custom": "自定义"
   },
   "review": {
     "settings": {

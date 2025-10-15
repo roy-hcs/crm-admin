@@ -1,0 +1,82 @@
+import { RouteObject } from 'react-router-dom';
+import { ReviewAgentPage } from '@/pages/review/agent/ReviewAgentPage';
+import { ReviewDepositRebatePage } from '@/pages/review/depositRebate/ReviewDepositRebatePage';
+import { ReviewFeeRebatePage } from '@/pages/review/feeRebate/ReviewFeeRebatePage';
+import { ReviewTradingRebatePage } from '@/pages/review/tradingRebate/ReviewTradingRebatePage';
+import { ReviewWithdrawalPage } from '@/pages/review/withdrawal/ReviewWithdrawalPage';
+import { ReviewInternalTransferPage } from '@/pages/review/internalTransfer/ReviewInternalTransferPage';
+import { ReviewDepositPage } from '@/pages/review/deposit/ReviewDepositPage';
+import { SettingsPage } from '@/pages/review/settings';
+import { InFormationPage } from '@/pages/review/InFormation';
+import { AccountOpeningPage } from '@/pages/review/AccountOpening';
+import { BindingPage } from '@/pages/review/binding';
+import { LeveragePage } from '@/pages/review/leverage';
+
+/**
+ * Review routes - corresponds to "审核" menu item
+ *
+ * Routes:
+ * - /review/settings           - 审核设置 (Review Settings)
+ * - /review/information        - 信息审核 (Information Review)
+ * - /review/account-opening    - 开户审核 (Account Opening Review)
+ * - /review/binding            - 绑定审核 (Binding Review)
+ * - /review/leverage           - 杠杆审核 (Leverage Review)
+ * - /review/deposit            - 入金审核 (Deposit Review)
+ * - /review/withdrawal         - 出金审核 (Withdrawal Review)
+ * - /review/internal-transfer  - 内部转账审核 (Internal Transfer Review)
+ * - /review/trading-rebate     - 交易返佣审核 (Trading Rebate Review)
+ * - /review/fee-rebate         - 手续费返佣审核 (Fee Rebate Review)
+ * - /review/deposit-rebate     - 入金返佣审核 (Deposit Rebate Review)
+ * - /review/agent              - 代理审核 (Agent Review)
+ */
+export const reviewRoutes: RouteObject[] = [
+  // Currently developed routes
+  {
+    path: '/review/settings',
+    element: <SettingsPage />,
+  },
+  {
+    path: '/review/information',
+    element: <InFormationPage />,
+  },
+  {
+    path: '/review/account-opening',
+    element: <AccountOpeningPage />,
+  },
+  {
+    path: '/review/binding',
+    element: <BindingPage />,
+  },
+  {
+    path: '/review/leverage',
+    element: <LeveragePage />,
+  },
+  {
+    path: '/review/deposit',
+    element: <ReviewDepositPage />,
+  },
+  {
+    path: '/review/withdrawal',
+    element: <ReviewWithdrawalPage />,
+  },
+  {
+    path: '/review/internal-transfer',
+    element: <ReviewInternalTransferPage />,
+  },
+  {
+    path: '/review/trading-rebate',
+    element: <ReviewTradingRebatePage />,
+  },
+  {
+    path: '/review/fee-rebate',
+    element: <ReviewFeeRebatePage />,
+  },
+  {
+    path: '/review/deposit-rebate',
+    element: <ReviewDepositRebatePage />,
+  },
+  {
+    path: '/review/agent',
+    element: <ReviewAgentPage />,
+  },
+];
