@@ -19,6 +19,8 @@ import {
   DictTypeResponse,
   ChannelListResponse,
   InfoTypeItem,
+  RoleListRes,
+  RoleListParams,
   MtServiceUpdateRes,
   TclosureReportResponse,
   ServerExceptionNoticeRes,
@@ -211,6 +213,19 @@ export function useInfoTypeList() {
   });
 }
 
+export function useRolesList(params: RoleListParams) {
+  return useQuery({
+    queryKey: ['getRolesList', params],
+    queryFn: () => apiFormPostCustom<RoleListRes>('/system/role/list', params),
+  });
+}
+
+export function useUserRoleList(params: RoleListParams) {
+  return useQuery({
+    queryKey: ['getUserRoleList', params],
+    queryFn: () => apiFormPostCustom<RoleListRes>('/system/user/role/list', params),
+  });
+}
 export function useMtServiceUpdate(
   params: {
     server: string;
