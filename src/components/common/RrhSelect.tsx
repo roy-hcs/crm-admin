@@ -6,6 +6,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export type BaseOption = { label: string; value: string | number };
 export const RrhSelect = <T extends BaseOption>({
@@ -14,6 +15,7 @@ export const RrhSelect = <T extends BaseOption>({
   onValueChange,
   placeholder,
   showRowValue = true,
+  showi18nLabel = false,
   className,
   renderItem,
 }: {
@@ -23,8 +25,10 @@ export const RrhSelect = <T extends BaseOption>({
   placeholder?: string;
   className?: string;
   showRowValue?: boolean;
+  showi18nLabel?: boolean;
   renderItem?: (option: T) => ReactNode;
 }) => {
+  const { t } = useTranslation();
   return (
     <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger className={className}>
@@ -37,7 +41,11 @@ export const RrhSelect = <T extends BaseOption>({
       <SelectContent className="bg-background">
         {options.map(option => (
           <SelectItem key={option.value} value={option.value.toString()}>
-            {renderItem ? renderItem(option) : <div>{option.label}</div>}
+            {renderItem ? (
+              renderItem(option)
+            ) : (
+              <div>{showi18nLabel ? t(option.label) : option.label}</div>
+            )}
           </SelectItem>
         ))}
       </SelectContent>

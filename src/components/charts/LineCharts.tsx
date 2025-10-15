@@ -30,19 +30,23 @@ interface LineChartProps {
   options?: ChartOptions<'line'>;
 }
 
-export const LineChart: FC<LineChartProps> = ({ labels, datasets, height = 300, options = {} }) => {
+export const LineChart: FC<LineChartProps> = ({
+  title,
+  labels,
+  datasets,
+  height = 300,
+  options = {},
+}) => {
   const lineOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        // position: 'top' as const,
-        display: false,
+        position: 'top' as const,
       },
       title: {
-        // display: !!title,
-        // text: title,
-        display: false,
+        display: !!title,
+        text: title,
       },
       tooltip: {
         mode: 'index',
