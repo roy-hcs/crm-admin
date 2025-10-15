@@ -124,10 +124,9 @@ export const PieChart: FC<PieChartProps> = ({ title, labels, datasets, options =
               ) : (
                 <>
                   <span
-                    className="mr-1 inline-block h-3 w-3"
+                    className="mr-1 inline-block h-3 w-3 rounded-full"
                     style={{
                       background: it.color,
-                      borderRadius: '50%',
                     }}
                   />
                   <span className="text-color-home text-sm font-normal">{String(it.label)}</span>

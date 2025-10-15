@@ -99,6 +99,7 @@
   --ring-shadow: 0 0 #0000;
   /* 首页start */
   --text-home: #1e1e1e;
+  --text-DataOverview: #ffffff;
   --border-home: #eb575780;
   --bg-two: #eb57571a;
   --text-three-home: #757f8d;
@@ -128,6 +129,7 @@
   --third: #e2e8f0;
   /* 首页start */
   --text-home: #e2e8f0;
+  --text-DataOverview: #ffffff;
   --border-home: #eb575780;
   --bg-two: #eb57571a;
   --text-three-home: #757f8d;
@@ -329,6 +331,9 @@ body {
   }
   .text-color-nav-list {
     color: var(--text-home);
+  }
+  .text-color-DataOverview {
+    color: var(--text-DataOverview);
   }
   .text-two-color-step {
     color: var(--bg-three);

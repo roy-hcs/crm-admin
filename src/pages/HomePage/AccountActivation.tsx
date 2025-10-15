@@ -1,4 +1,5 @@
 import { useRegCountReport } from '@/api/hooks/system/system';
+import { LegendHeader } from '@/components/charts/LegendHeader';
 import { LineChart } from '@/components/charts/LineCharts';
 import { RrhSelect } from '@/components/common/RrhSelect';
 import { DEFAULT_TIME_RANGE, timeRangeOptions, TimeRangeType } from '@/lib/const';
@@ -65,9 +66,9 @@ export const AccountActivation = () => {
         </div>
       </div>
       <div className="mt-6.5 mb-9 flex gap-20 px-6">
-        <BuildText label={t('home.NewCRMUser')} value={todayData.crm} />
-        <BuildText label={t('home.NewRealAccount')} value={todayData.real} />
-        <BuildText label={t('home.NewDemoAccount')} value={todayData.demo} />
+        <LegendHeader label={t('home.NewCRMUser')} value={todayData.crm} />
+        <LegendHeader label={t('home.NewRealAccount')} value={todayData.real} />
+        <LegendHeader label={t('home.NewDemoAccount')} value={todayData.demo} />
       </div>
       <div className="min-h-75">
         {isLoading ? (
@@ -79,12 +80,3 @@ export const AccountActivation = () => {
     </div>
   );
 };
-
-function BuildText(props: { label: string; value: number }) {
-  return (
-    <div>
-      <div className="mb-1 h-4 text-xs leading-4 font-normal">{props.label}</div>
-      <div className="h-5 text-base leading-5 font-semibold">{props.value}</div>
-    </div>
-  );
-}

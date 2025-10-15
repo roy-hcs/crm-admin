@@ -1,5 +1,6 @@
 import { useDepositAllReport } from '@/api/hooks/system/system';
 import { BarChart } from '@/components/charts/BarCharts';
+import { LegendHeader } from '@/components/charts/LegendHeader';
 import { RrhSelect } from '@/components/common/RrhSelect';
 import { DEFAULT_TIME_RANGE, timeRangeOptions, TimeRangeType } from '@/lib/const';
 import { FC, useMemo, useState } from 'react';
@@ -54,8 +55,14 @@ export const FundsTransit: FC = () => {
         </div>
       </div>
       <div className="mt-6.5 mb-9 flex gap-20 px-6">
-        <BuildText label={t('home.AuditedDepositToday')} value={reviewData.AuditedDepositToday} />
-        <BuildText label={t('home.PendingDepositToday')} value={reviewData.PendingDepositToday} />
+        <LegendHeader
+          label={t('home.AuditedDepositToday')}
+          value={reviewData.AuditedDepositToday}
+        />
+        <LegendHeader
+          label={t('home.PendingDepositToday')}
+          value={reviewData.PendingDepositToday}
+        />
       </div>
       <div className="min-h-75">
         {isLoading ? (
@@ -92,12 +99,3 @@ export const FundsTransit: FC = () => {
     </div>
   );
 };
-
-function BuildText(props: { label: string; value: number }) {
-  return (
-    <div>
-      <div className="mb-1 h-4 text-xs leading-4 font-normal">{props.label}</div>
-      <div className="h-5 text-base leading-5 font-semibold">{props.value}</div>
-    </div>
-  );
-}

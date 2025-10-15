@@ -78,7 +78,7 @@ export const DataOverview: FC = () => {
 
   return (
     <div className="mb-6 rounded-lg">
-      <div className="grid gap-4 sm:grid-cols-[1fr] lg:grid-cols-[1fr_1fr] xl:grid-cols-[1fr_1fr_1fr_1fr]">
+      <div className="xl:4 grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
         {/* 今日入金 */}
         <div className="bg-card grid grid-cols-1 rounded-lg border px-3 py-4">
           <div className="relative">
@@ -89,7 +89,7 @@ export const DataOverview: FC = () => {
             </div>
             <div
               className={cn(
-                'inline-block min-w-10 rounded-lg px-1 py-0.5 text-center text-xs text-[#fff]',
+                'text-color-DataOverview inline-block min-w-10 rounded-lg px-1 py-0.5 text-center text-xs',
                 difference.input >= 0 ? 'bg-green-500' : 'bg-red-500',
               )}
             >
@@ -118,7 +118,7 @@ export const DataOverview: FC = () => {
             </div>
             <div
               className={cn(
-                'inline-block min-w-10 rounded-lg px-1 py-0.5 text-center text-xs text-[#fff]',
+                'text-color-DataOverview inline-block min-w-10 rounded-lg px-1 py-0.5 text-center text-xs',
                 difference.output >= 0 ? 'bg-green-500' : 'bg-red-500',
               )}
             >

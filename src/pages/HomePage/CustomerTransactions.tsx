@@ -8,6 +8,7 @@ import { ServerItem } from '@/api/hooks/system/types';
 import { DEFAULT_TIME_RANGE, timeRangeOptions, TimeRangeType } from '@/lib/const';
 import { cn } from '@/lib/utils';
 import { serverMap } from '@/lib/constant';
+import { LegendHeader } from '@/components/charts/LegendHeader';
 
 export const CustomerTransactions = ({ serverList }: { serverList: ServerItem[] }) => {
   const { t } = useTranslation();
@@ -163,9 +164,9 @@ export const CustomerTransactions = ({ serverList }: { serverList: ServerItem[] 
           </TabsList>
           <TabsContent value="account">
             <div className="mb-6 flex gap-20 px-6">
-              <BuildText label={t('home.NetProfit')} value={PositionProfitLossData.profit} />
-              <BuildText label={t('home.GrossLoss')} value={PositionProfitLossData.loss} />
-              <BuildText
+              <LegendHeader label={t('home.NetProfit')} value={PositionProfitLossData.profit} />
+              <LegendHeader label={t('home.GrossLoss')} value={PositionProfitLossData.loss} />
+              <LegendHeader
                 label={t('home.NetProfitToday')}
                 value={PositionProfitLossData.netProfit}
               />
@@ -205,11 +206,11 @@ export const CustomerTransactions = ({ serverList }: { serverList: ServerItem[] 
           </TabsContent>
           <TabsContent value="volume">
             <div className="mb-6 flex gap-20 px-6">
-              <BuildText
+              <LegendHeader
                 label={t('home.TradingVolumeThisMonth')}
                 value={TradingVolumeData.thisMonth}
               />
-              <BuildText label={t('home.TradingVolumeToday')} value={TradingVolumeData.today} />
+              <LegendHeader label={t('home.TradingVolumeToday')} value={TradingVolumeData.today} />
             </div>
             <div className="min-h-75">
               {isLoading ? (
@@ -246,8 +247,11 @@ export const CustomerTransactions = ({ serverList }: { serverList: ServerItem[] 
           </TabsContent>
           <TabsContent value="order">
             <div className="mb-6 flex gap-20 px-6">
-              <BuildText label={t('home.quantityThisMonth')} value={TradingOrderData.thisMonth} />
-              <BuildText label={t('home.quantityToday')} value={TradingOrderData.today} />
+              <LegendHeader
+                label={t('home.quantityThisMonth')}
+                value={TradingOrderData.thisMonth}
+              />
+              <LegendHeader label={t('home.quantityToday')} value={TradingOrderData.today} />
             </div>
             <div className="min-h-75">
               {isLoading ? (
@@ -287,12 +291,3 @@ export const CustomerTransactions = ({ serverList }: { serverList: ServerItem[] 
     </div>
   );
 };
-
-function BuildText(props: { label: string; value: number }) {
-  return (
-    <div>
-      <div className="mb-1 h-4 text-xs leading-4 font-normal">{props.label}</div>
-      <div className="h-5 text-base leading-5 font-semibold">{props.value}</div>
-    </div>
-  );
-}
