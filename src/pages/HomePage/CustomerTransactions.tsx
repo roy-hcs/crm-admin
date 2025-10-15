@@ -1,4 +1,4 @@
-import { useTclosureReport } from '@/api/hooks/system/system';
+import { useCustomerTransactionsReport } from '@/api/hooks/system/system';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -17,7 +17,7 @@ export const CustomerTransactions = ({ serverList }: { serverList: ServerItem[] 
   const [serverId, setServerId] = useState(initialServerId);
   const [timeRange, setTimeRange] = useState<TimeRangeType>(DEFAULT_TIME_RANGE);
 
-  const { data, isLoading } = useTclosureReport({
+  const { data, isLoading } = useCustomerTransactionsReport({
     type: timeRange,
     serverId,
   });

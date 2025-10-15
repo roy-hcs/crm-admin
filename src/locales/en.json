@@ -139,7 +139,12 @@
     "within30Days": "Within 30 days",
     "within3Months": "Within 3 months",
     "within6Months": "Within half a year",
-    "within7Days": "Within 7 days"
+    "within7Days": "Within 7 days",
+    "TradingVolume": "Trading Volume(Lot)",
+    "reason": "reason",
+    "serverError": "If the connection is not restored for a long time, please check the trading server",
+    "serverErrorTip": "Trading server exception",
+    "total": "total"
   },
   "home": {
     "AccountOverview": "Account opening overview",

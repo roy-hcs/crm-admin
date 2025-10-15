@@ -77,9 +77,9 @@ export function useDepositAllReport(type: string) {
       apiGet<Record<string, [number, number]>>(`/system/depositAllReport?type=${type}`),
   });
 }
-export function useTclosureReport(params: { type: string; serverId: string }) {
+export function useCustomerTransactionsReport(params: { type: string; serverId: string }) {
   return useQuery({
-    queryKey: ['tclosureReport', params.type, params.serverId],
+    queryKey: ['customerTransactionsReport', params.type, params.serverId],
     queryFn: () =>
       apiGet<TclosureReportResponse>(
         `/system/tclosureReport?type=${params.type}&serverId=${params.serverId}`,

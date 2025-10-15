@@ -29,7 +29,7 @@ export const NavList: FC = () => {
         <Link
           key={item.label}
           to={item.to}
-          className="bg-component hover:bg-component/80 flex items-center gap-2 rounded-lg px-4 py-2 text-sm transition"
+          className="bg-component hover:bg-component/80 text-color-nav-list flex items-center gap-2 rounded-lg px-4 py-2 text-sm transition"
         >
           <item.icon className="mr-2 size-6" />
           <span className="text-sm font-normal">{t(item.label)}</span>

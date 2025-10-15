@@ -1,20 +1,20 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin 'tailwind-scrollbar' {
-    nocompatible: true;
+  nocompatible: true;
 }
 
 @font-face {
-  font-family: 'Inter';
-  src: url('/fonts/InterVariable.woff2') format('woff2');
+  font-family: "Inter";
+  src: url("/fonts/InterVariable.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Inter';
-  src: url('/fonts/InterVariable-Italic.woff2') format('woff2');
+  font-family: "Inter";
+  src: url("/fonts/InterVariable-Italic.woff2") format("woff2");
   font-weight: 100 900;
   font-style: italic;
   font-display: swap;
@@ -23,7 +23,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   width: 100%;
@@ -37,12 +37,12 @@
   color-scheme: light;
   color: #334155; /* slate 700 */
   background-color: #ffffff;
-  
+
   /* ShadCN UI theme variables */
   --background: #ffffff;
   --foreground: #252525;
   --card: #ffffff;
-  --component: #F8FAFC; /* slate 50 */
+  --component: #f8fafc; /* slate 50 */
   --card-foreground: #252525;
   --popover: #ffffff;
   --popover-foreground: #252525;
@@ -50,25 +50,25 @@
   --primary-foreground: #ffffff;
   --secondary: #f3f4f6;
   --secondary-foreground: #1f2937;
-  --third: #0F172A; /* slate 900 */
+  --third: #0f172a; /* slate 900 */
   --third-foreground: #f9fafb;
-  --muted: #64748B; /* slate 500 */
+  --muted: #64748b; /* slate 500 */
   --muted-foreground: #6b7280;
   --accent: #f1f5f9; /* slate 100 */
   --accent-foreground: #1f2937;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #E2E8F0; /* slate 200 */
+  --border: #e2e8f0; /* slate 200 */
   --input: #ebebeb;
   --ring: #b4b4b4;
-  
+
   /* Chart colors */
   --chart-1: #3b82f6;
   --chart-2: #0ea5e9;
   --chart-3: #3730a3;
   --chart-4: #f59e0b;
   --chart-5: #ef4444;
-  
+
   /* Sidebar specific colors */
   --sidebar: #fbfbfb;
   --sidebar-foreground: #252525;
@@ -78,33 +78,41 @@
   --sidebar-accent-foreground: #1f2937;
   --sidebar-border: #ebebeb;
   --sidebar-ring: #b4b4b4;
-  
+
   /* Border radius variables - critical for ShadCN components */
   --radius: 0.625rem;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  
+
   /* These variables are needed for proper component rendering */
   --cell-size: 2.25rem; /* Calendar cell size */
   --day-size: 40px; /* Calendar day size */
   --day-margin: 2px; /* Calendar day margin */
-  
+
   /* Ring related variables needed by shadcn components */
   --ring-offset-width: 0px;
   --ring-offset-color: #fff;
   --ring-color: rgb(59, 130, 246);
   --ring-offset-shadow: 0 0 #0000;
   --ring-shadow: 0 0 #0000;
+  /* 首页start */
+  --text-home: #1e1e1e;
+  --border-home: #eb575780;
+  --bg-two: #eb57571a;
+  --text-three-home: #757f8d;
+  --bg-three: #eb5757;
+  --bg-four-home: #eb575740;
+  /* 首页end */
 }
 
 /* Dark mode overrides - activated when .dark class is applied to html */
 .dark {
   color-scheme: dark;
-  color: #e2e8f0; 
-  background-color: #0f172a; 
-  
+  color: #e2e8f0;
+  background-color: #0f172a;
+
   /* ShadCN UI dark theme variables */
   --background: #0f172a;
   --foreground: #e2e8f0;
@@ -118,6 +126,15 @@
   --secondary: #334155;
   --secondary-foreground: #e2e8f0;
   --third: #e2e8f0;
+  /* 首页start */
+  --text-home: #e2e8f0;
+  --border-home: #eb575780;
+  --bg-two: #eb57571a;
+  --text-three-home: #757f8d;
+  --bg-three: #eb5757;
+  --bg-four-home: #eb575740;
+  /* 首页end */
+
   --third-foreground: #0f172a;
   --muted: #475569;
   --muted-foreground: #94a3b8;
@@ -128,14 +145,14 @@
   --border: #334155;
   --input: #1e293b;
   --ring: #64748b;
-  
+
   /* Chart colors - dark theme */
   --chart-1: #60a5fa;
   --chart-2: #22d3ee;
   --chart-3: #fb7185;
   --chart-4: #c084fc;
   --chart-5: #fb923c;
-  
+
   /* Sidebar specific colors - dark theme */
   --sidebar: #1e293b;
   --sidebar-foreground: #e2e8f0;
@@ -156,7 +173,9 @@ html {
   overflow: hidden;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -181,14 +200,14 @@ body {
 /* Theme mapping to ensure CSS variables are correctly used by Tailwind */
 @theme inline {
   /* Font family settings */
-  --font-sans: 'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif';
-  
+  --font-sans: "Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif";
+
   /* Core colors for consistency */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-border: var(--border);
   --color-ring: var(--ring);
-  
+
   /* Component specific colors */
   --color-card: var(--card);
   --color-component: var(--component);
@@ -207,14 +226,14 @@ body {
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-input: var(--input);
-  
+
   /* Chart colors mapping */
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  
+
   /* Sidebar specific mappings */
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -225,16 +244,15 @@ body {
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
- 
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body{
-    @apply font-sans text-sm font-normal border-border outline-ring/50;
+  body {
+    @apply border-border outline-ring/50 font-sans text-sm font-normal;
   }
-  
+
   /* Calendar component specific styles - required for proper rendering */
   .rdp {
     --rdp-cell-size: 40px; /* Base cell size */
@@ -244,20 +262,20 @@ body {
     --rdp-background-color-dark: var(--accent); /* Dark theme hover */
     margin: 1em;
   }
-  
+
   /* Fix selected day styles */
-  .rdp-day_selected, 
-  .rdp-day_selected:focus-visible, 
+  .rdp-day_selected,
+  .rdp-day_selected:focus-visible,
   .rdp-day_selected:hover {
     background-color: var(--primary);
     color: var(--primary-foreground);
   }
-  
+
   /* Fix range styles */
   .rdp-day_range_middle {
     background-color: var(--accent);
   }
-  
+
   /* Fix hover styles for days */
   .rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
     background-color: var(--muted);
@@ -288,25 +306,49 @@ body {
   .text-subtle {
     @apply text-xs font-normal;
   }
-  
+
   /* Additional utility classes for theme colors */
   .bg-theme-primary {
     @apply bg-primary;
   }
-  
+
   .text-theme-primary {
     @apply text-primary;
   }
-  
+
   .border-theme-primary {
     @apply border-primary;
   }
-  
+
   .bg-theme-surface {
     @apply bg-background dark:bg-background;
   }
-  
+
   .text-theme-body {
     @apply text-foreground dark:text-foreground;
+  }
+  .text-color-nav-list {
+    color: var(--text-home);
+  }
+  .text-two-color-step {
+    color: var(--bg-three);
+  }
+  .text-three-color-step {
+    color: var(--text-three-home);
+  }
+  .border-color-step {
+    border-color: var(--border-home);
+  }
+  .bg-one-color-step {
+    background-color: var(--border-home);
+  }
+  .bg-two-color-step {
+    background-color: var(--bg-two);
+  }
+  .bg-three-color-step {
+    background-color: var(--bg-three);
+  }
+  .bg-four-color-step {
+    background-color: var(--bg-four-home);
   }
 }
