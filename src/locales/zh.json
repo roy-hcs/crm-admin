@@ -150,6 +150,9 @@
     "server": "服务器",
     "accountType": "账号类型",
     "level": "杠杆",
+    "accountCount": "账户数",
+    "totalAccount": "总帐号",
+    "todayAccount": "今日账号",
     "within7Days": "7天内",
     "within15Days": "15天内",
     "within30Days": "30天内",
@@ -208,6 +211,9 @@
     "quantity": "订单量",
     "quantityThisMonth": "订单量(本月)",
     "quantityToday": "订单量(今日)"
+  },
+  "workBench": {
+    "title": "数据概览"
   },
   "ib": {
     "CustomerTracking": {

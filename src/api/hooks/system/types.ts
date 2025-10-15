@@ -284,6 +284,13 @@ export type InfoTypeItem = {
   flag: string | null;
   globalizationKey: string | null;
 };
+
+// 数据概览
+export type MtServiceUpdateRes = {
+  allAccount: number;
+  todayAccount: number;
+  count: number[];
+};
 export interface TclosureReportItem {
   amount: number | null;
   currency: string | null;

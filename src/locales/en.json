@@ -131,6 +131,9 @@
       "underReview": "Under review"
     },
     "verifyTime": "Finishing time",
+    "accountCount": "Number of accounts",
+    "todayAccount": "Today's account",
+    "totalAccount": "general account",
     "loss": "Loss",
     "netFlow": "net inflow/outflow",
     "profit": "profit",
@@ -601,5 +604,8 @@
       "title": "Review Settings",
       "val": "Display of total count of navigation bar to be reviewed"
     }
+  },
+  "workBench": {
+    "title": "Data overview"
   }
 }
