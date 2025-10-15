@@ -133,7 +133,21 @@
     "verifyTime": "Finishing time",
     "accountCount": "Number of accounts",
     "todayAccount": "Today's account",
-    "totalAccount": "general account"
+    "totalAccount": "general account",
+    "loss": "Loss",
+    "netFlow": "net inflow/outflow",
+    "profit": "profit",
+    "within15Days": "Within 15 days",
+    "within1Year": "within one year",
+    "within30Days": "Within 30 days",
+    "within3Months": "Within 3 months",
+    "within6Months": "Within half a year",
+    "within7Days": "Within 7 days",
+    "TradingVolume": "Trading Volume(Lot)",
+    "reason": "reason",
+    "serverError": "If the connection is not restored for a long time, please check the trading server",
+    "serverErrorTip": "Trading server exception",
+    "total": "total"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -172,7 +186,12 @@
       "TAFlow": "TA flowing water",
       "WalletFlow": "Wallet flow",
       "Withdrawal": "Withdrawal"
-    }
+    },
+    "TradingVolumeThisMonth": "Transaction volume (this month)",
+    "TradingVolumeToday": "Trading volume (today)",
+    "quantity": "Order quantity",
+    "quantityThisMonth": "Order volume (this month)",
+    "quantityToday": "Order volume (today)"
   },
   "loginPage": {
     "EnterYourEmailBelowToSignInYourAccount": "Enter your email below to log in to your account",

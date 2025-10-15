@@ -152,7 +152,21 @@
     "level": "杠杆",
     "accountCount": "账户数",
     "totalAccount": "总帐号",
-    "todayAccount": "今日账号"
+    "todayAccount": "今日账号",
+    "within7Days": "7天内",
+    "within15Days": "15天内",
+    "within30Days": "30天内",
+    "within3Months": "3月内",
+    "within6Months": "半年内",
+    "within1Year": "一年内",
+    "netFlow": "净流入/流出",
+    "profit": "盈利",
+    "loss": "亏损",
+    "total": "总计",
+    "TradingVolume": "交易量(Lot)",
+    "reason": "原因",
+    "serverError": "若长时间未恢复连接，请检查交易服务器",
+    "serverErrorTip": "交易服务器异常"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -191,7 +205,12 @@
     "AuditedDepositToday": "已审入金(今日)",
     "PendingDepositToday": "待审入金(今日)",
     "AuditedWithdrawalAll": "已审出金",
-    "PendingWithdrawalAll": "待审出金"
+    "PendingWithdrawalAll": "待审出金",
+    "TradingVolumeThisMonth": "交易量(本月)",
+    "TradingVolumeToday": "交易量(今日)",
+    "quantity": "订单量",
+    "quantityThisMonth": "订单量(本月)",
+    "quantityToday": "订单量(今日)"
   },
   "workBench": {
     "title": "数据概览"

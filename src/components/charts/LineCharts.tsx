@@ -31,9 +31,9 @@ interface LineChartProps {
 }
 
 export const LineChart: FC<LineChartProps> = ({
+  title,
   labels,
   datasets,
-  title,
   height = 300,
   options = {},
 }) => {

@@ -20,6 +20,9 @@ import {
   ChannelListResponse,
   InfoTypeItem,
   MtServiceUpdateRes,
+  TclosureReportResponse,
+  ServerExceptionNoticeRes,
+  PreferencesRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -75,7 +78,15 @@ export function useDepositAllReport(type: string) {
       apiGet<Record<string, [number, number]>>(`/system/depositAllReport?type=${type}`),
   });
 }
-
+export function useCustomerTransactionsReport(params: { type: string; serverId: string }) {
+  return useQuery({
+    queryKey: ['customerTransactionsReport', params.type, params.serverId],
+    queryFn: () =>
+      apiGet<TclosureReportResponse>(
+        `/system/tclosureReport?type=${params.type}&serverId=${params.serverId}`,
+      ),
+  });
+}
 export function useSumReport() {
   return useQuery({
     queryKey: ['sumReport'],
@@ -212,5 +223,24 @@ export function useMtServiceUpdate(
     queryFn: () =>
       apiFormPostCustom<MtServiceUpdateRes>(`/system/mtService/updateSta`, params || {}),
     enabled: options?.enabled ?? true,
+  });
+}
+
+/**
+ * 获取服务器异常
+ */
+export function useServerExceptionNotice() {
+  return useQuery({
+    queryKey: ['serverExceptionNotice'],
+    queryFn: () => apiGetCustom<ServerExceptionNoticeRes | []>(`/system/serverExceptionNotice`),
+  });
+}
+/**
+ * 获取代办事项
+ */
+export function useGetPreferences() {
+  return useQuery({
+    queryKey: ['preferences'],
+    queryFn: async () => apiGetCustom<PreferencesRes | []>('/system/getPreferences'),
   });
 }

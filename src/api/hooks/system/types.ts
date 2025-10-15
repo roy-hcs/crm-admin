@@ -291,3 +291,58 @@ export type MtServiceUpdateRes = {
   todayAccount: number;
   count: number[];
 };
+export interface TclosureReportItem {
+  amount: number | null;
+  currency: string | null;
+  statisticDate: string; // "2025-10-06"
+  usdAmount: number | null;
+  rate: number | null;
+  symbol: string | null;
+  count: number | null;
+  type: string | null;
+  serverId: string | null;
+  intDate: number | null; // 20251006
+  profit: number;
+  loss: number;
+  netProfit: number;
+  volume: number;
+  quantity: number;
+}
+
+export interface TclosureReportMonthSummary {
+  volume: number;
+  quantity: number;
+}
+
+export interface TclosureReportResponse {
+  sumThisMonth: TclosureReportMonthSummary;
+  data: TclosureReportItem[];
+}
+
+export type ServerExceptionNoticeItem = {
+  id: number;
+  code: number;
+  server: string;
+  vhost: string;
+  time: string;
+  createTime: string;
+  reason: string;
+  manager: string;
+};
+export type ServerExceptionNoticeRes = ServerExceptionNoticeItem[];
+export type PreferencesItem = {
+  createBy: string;
+  createTime: string;
+  updateBy: string;
+  updateTime: string;
+  remark: string;
+  params: Record<string, unknown>;
+  id: string;
+  nameText: string;
+  code: string;
+  indexReviewCount: string;
+  val: string;
+  sort: string;
+  groupCode: string;
+};
+export type PreferencesRes = PreferencesItem[];

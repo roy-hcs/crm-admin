@@ -62,3 +62,16 @@ export const typeOptions = [
   { label: 'common.live', value: '1' },
   { label: 'common.demo', value: '2' },
 ];
+
+// 选择时间范围
+export const timeRangeOptions = [
+  { label: 'common.within7Days', value: '1' },
+  { label: 'common.within15Days', value: '2' },
+  { label: 'common.within30Days', value: '3' },
+  { label: 'common.within3Months', value: '4' },
+  { label: 'common.within6Months', value: '5' },
+  { label: 'common.within1Year', value: '6' },
+];
+
+export const DEFAULT_TIME_RANGE = '1';
+export type TimeRangeType = '1' | '2' | '3' | '4' | '5' | '6';
