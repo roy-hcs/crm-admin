@@ -13,9 +13,7 @@ import { RouteObject } from 'react-router-dom';
  */
 export const pointsMallRoutes: RouteObject[] = [
   // TODO: Add routes as pages are developed
-  // Currently empty - will be populated as pages are developed
-  
-  /* Uncomment when pages are ready
+  /*
   {
     path: '/points-mall/settings',
     element: <PointsMallSettingsPage />,

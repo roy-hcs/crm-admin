@@ -8,6 +8,7 @@ import {
 } from 'chart.js';
 import type { FC } from 'react';
 import { Pie } from 'react-chartjs-2';
+import { useTranslation } from 'react-i18next';
 
 // Register the components we need
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -21,17 +22,12 @@ interface PieChartProps {
     borderColor?: string[];
     borderWidth?: number;
   }[];
-  height?: number;
   options?: ChartOptions<'pie'>;
 }
 
-export const PieChart: FC<PieChartProps> = ({
-  title,
-  labels,
-  datasets,
-  height = 300,
-  options = {},
-}) => {
+export const PieChart: FC<PieChartProps> = ({ title, labels, datasets, options = {} }) => {
+  const { t } = useTranslation();
+
   const pieOptions: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
@@ -98,59 +94,55 @@ export const PieChart: FC<PieChartProps> = ({
       : '#36A2EB',
   }));
   legendData?.unshift({
-    label: '总计',
-    value: '交易量(Lot)',
-    color: '#1e1e1e', // 总计颜色
+    label: t('common.total'),
+    value: t('common.TradingVolume'),
+    color: '', // 总计颜色
   });
-  console.log(chartData, 'PieChart', datasets, 'datasets', legendData);
   return (
-    <div style={{ height: `${height}px`, width: '100%' }}>
-      <div style={{ width: '100%', height: `${height}px` }} className="flex items-center">
-        {/* 图表区域靠左 */}
-        <div className="ml-11.5 h-55 w-61.5">
-          <Pie
-            options={{
-              ...pieOptions,
-              plugins: { ...pieOptions.plugins, legend: { display: false } },
-            }}
-            data={chartData}
-          />
-        </div>
-        {/* legend区域靠右，超出高度滚动 */}
-        <div className="ml-40 h-58.5 overflow-y-auto">
-          {/* 手动渲染 legend */}
-          {legendData?.map((it, idx) => (
-            <div className="mb-3.75 flex" key={idx}>
-              <div className="h-5 w-43.5">
-                {idx === 0 ? (
-                  // 总计
-                  <div className="h-5 text-sm leading-5 font-medium text-[#1e1e1e]">
-                    {String(it.label)}
-                  </div>
-                ) : (
-                  <>
-                    <span
-                      className="mr-1 inline-block h-3 w-3"
-                      style={{
-                        background: it.color,
-                        borderRadius: '50%',
-                      }}
-                    />
-                    <span className="text-sm font-normal text-[#1e1e1e]">{String(it.label)}</span>
-                  </>
-                )}
-              </div>
-              <div className="h-5">
-                {idx === 0 ? (
-                  // 交易量(Lot)
-                  <div className="h-5 text-sm leading-5 font-medium">{String(it.value)}</div>
-                ) : (
-                  <span className="text-sm font-normal text-[#1e1e1e]">{String(it.value)}</span>
-                )}
-              </div>
+    <div className="flex h-full w-full items-center">
+      {/* 图表区域靠左 */}
+      <div className="ml-11.5 h-55 w-61.5">
+        <Pie
+          options={{
+            ...pieOptions,
+            plugins: { ...pieOptions.plugins, legend: { display: false } },
+          }}
+          data={chartData}
+        />
+      </div>
+      {/* legend区域靠右，超出高度滚动 */}
+      <div className="ml-40 h-58.5 overflow-y-auto">
+        {/* 手动渲染 legend */}
+        {legendData?.map((it, idx) => (
+          <div className="mb-3.75 flex" key={idx}>
+            <div className="h-5 w-43.5">
+              {idx === 0 ? (
+                // 总计
+                <div className="text-color-home h-5 text-sm leading-5 font-medium">
+                  {String(it.label)}
+                </div>
+              ) : (
+                <>
+                  <span
+                    className="mr-1 inline-block h-3 w-3 rounded-full"
+                    style={{
+                      background: it.color,
+                    }}
+                  />
+                  <span className="text-color-home text-sm font-normal">{String(it.label)}</span>
+                </>
+              )}
             </div>
-          ))}
-        </div>
+            <div className="h-5">
+              {idx === 0 ? (
+                // 交易量(Lot)
+                <div className="h-5 text-sm leading-5 font-medium">{String(it.value)}</div>
+              ) : (
+                <span className="text-color-home text-sm font-normal">{String(it.value)}</span>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

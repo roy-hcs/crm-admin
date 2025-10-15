@@ -1,6 +1,6 @@
 import { RouteObject } from 'react-router-dom';
 import { HomePage } from '@/pages/HomePage';
-import { SalesReportPage } from '@/pages/SalesReportPage';
+import { TradingStatsPage } from '@/pages/WorkBench/TradingStats';
 
 /**
  * Workbench routes - corresponds to "工作台" menu item
@@ -16,6 +16,6 @@ export const workbenchRoutes: RouteObject[] = [
   },
   {
     path: '/workbench/trading-stats',
-    element: <SalesReportPage />, // Temporarily mapped to SalesReportPage - replace when proper page is created
+    element: <TradingStatsPage />, // Temporarily mapped to SalesReportPage - replace when proper page is created
   },
 ];

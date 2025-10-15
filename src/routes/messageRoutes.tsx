@@ -8,9 +8,7 @@ import { RouteObject } from 'react-router-dom';
  */
 export const messageRoutes: RouteObject[] = [
   // TODO: Add routes as pages are developed
-  // Currently empty - will be populated as pages are developed
-  
-  /* Uncomment when pages are ready
+  /*
   {
     path: '/message/management',
     element: <MessageManagementPage />,
