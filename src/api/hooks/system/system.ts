@@ -259,7 +259,7 @@ export function useServerExceptionNotice() {
 export function useGetPreferences() {
   return useQuery({
     queryKey: ['preferences'],
-    queryFn: async () => apiGetCustom<PreferencesRes | []>('/system/getPreferences'),
+    queryFn: () => apiGetCustom<PreferencesRes | []>('/system/getPreferences'),
   });
 }
 
@@ -311,6 +311,6 @@ export function useUserList(params: UserListParams) {
 export function useRoleList() {
   return useQuery({
     queryKey: ['roleList'],
-    queryFn: async () => apiFormPostCustom<RoleListRes>('/system/role/list', {}),
+    queryFn: () => apiFormPostCustom<RoleListRes>('/system/role/list', {}),
   });
 }

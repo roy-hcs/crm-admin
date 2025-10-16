@@ -49,7 +49,6 @@ export type SymbolReportResponse = {
   rows: SymbolReportRowItem[];
   code: number;
 };
-
 export type ServerItem = {
   id: string;
   serviceType: number;
@@ -405,6 +404,31 @@ export type MenuListItem = {
   globalizationKey: string | null;
 };
 
+// 角色基础类型（为 UserItem.roles / userRole.role 提供复用）
+export type Role = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  roleId: string | null;
+  roleName: string | null;
+  roleKey: string | null;
+  roleSort: string | null;
+  roleDescribe: string | null;
+  userCount: number | null;
+  dataScope: string | null;
+  status: string | null;
+  roleSource: string | null;
+  userScope: string | null;
+  userAccount: string | null;
+  delFlag: string | null;
+  flag: string | null;
+  menuIds: string | null;
+  deptIds: string | null;
+};
+
 export type UserItem = {
   createBy: string | null;
   createTime: string | null;
@@ -450,58 +474,16 @@ export type UserItem = {
     delFlag: string | null;
     parentName: string | null;
   };
-  userRole: {
+  /**
+   * @deprecated 与 roles 重复，优先使用 roles 数组。后续可移除。
+   */
+  userRole?: {
     userId: string | null;
     roleId: string | null;
-    role: {
-      createBy: string | null;
-      createTime: string | null;
-      updateBy: string | null;
-      updateTime: string | null;
-      remark: string | null;
-      params: Record<string, unknown>;
-      roleId: string | null;
-      roleName: string | null;
-      roleKey: string | null;
-      roleSort: string | null;
-      roleDescribe: string | null;
-      userCount: number | null;
-      dataScope: string | null;
-      status: string | null;
-      roleSource: string | null;
-      userScope: string | null;
-      userAccount: string | null;
-      delFlag: string | null;
-      flag: string | null;
-      menuIds: string | null;
-      deptIds: string | null;
-    };
-  };
-  roles: [
-    {
-      createBy: string | null;
-      createTime: string | null;
-      updateBy: string | null;
-      updateTime: string | null;
-      remark: string | null;
-      params: Record<string, unknown>;
-      roleId: string | null;
-      roleName: string | null;
-      roleKey: string | null;
-      roleSort: string | null;
-      roleDescribe: string | null;
-      userCount: number | null;
-      dataScope: string | null;
-      status: string | null;
-      roleSource: string | null;
-      userScope: string | null;
-      userAccount: string | null;
-      delFlag: string | null;
-      flag: string | null;
-      menuIds: string | null;
-      deptIds: string | null;
-    },
-  ];
+    role: Role | null;
+  } | null;
+  /** 用户拥有的角色列表；空数组表示无角色 */
+  roles: Role[];
   roleIds: string | null;
   postIds: string | null;
   googleKey: string | null;
