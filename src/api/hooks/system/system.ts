@@ -25,6 +25,7 @@ import {
   TclosureReportResponse,
   ServerExceptionNoticeRes,
   PreferencesRes,
+  MenuListItem,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -257,5 +258,37 @@ export function useGetPreferences() {
   return useQuery({
     queryKey: ['preferences'],
     queryFn: async () => apiGetCustom<PreferencesRes | []>('/system/getPreferences'),
+  });
+}
+
+export function useMenuList(menuName?: string, visible?: number) {
+  return useQuery({
+    queryKey: ['menuList', { menuName, visible }],
+    queryFn: () => {
+      const params = new URLSearchParams();
+      if (menuName !== undefined) params.append('menuName', menuName);
+      if (visible !== undefined) params.append('visible', String(visible));
+
+      const queryString = params.toString();
+      const url = `/system/menu/list${queryString ? `?${queryString}` : ''}`;
+
+      return apiGetCustom<MenuListItem[]>(url);
+    },
+  });
+}
+
+export function useUserMenuList(menuName?: string, visible?: number) {
+  return useQuery({
+    queryKey: ['userMenuList', { menuName, visible }],
+    queryFn: () => {
+      const params = new URLSearchParams();
+      if (menuName !== undefined) params.append('menuName', menuName);
+      if (visible !== undefined) params.append('visible', String(visible));
+
+      const queryString = params.toString();
+      const url = `/system/user/menu/list${queryString ? `?${queryString}` : ''}`;
+
+      return apiGetCustom<MenuListItem[]>(url);
+    },
   });
 }

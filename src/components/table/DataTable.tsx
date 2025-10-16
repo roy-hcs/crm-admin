@@ -1,11 +1,12 @@
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
   RowData,
+  getExpandedRowModel,
+  ExpandedState,
 } from '@tanstack/react-table';
-import { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, forwardRef, useImperativeHandle } from 'react';
 
 import {
   Table,
@@ -19,336 +20,233 @@ import {
 import { DataTablePagination } from './DataTablePagination';
 import { useTranslation } from 'react-i18next';
 
-export type FixedColumnPosition = boolean | 'left' | 'right';
+// Import extracted types and hooks
+import type { DataTableProps, DataTableRef, FixedColumnPosition, CRMColumnDef } from './types';
 
-interface WithAccessorKey {
-  accessorKey?: string;
-}
+// Re-export types for backward compatibility
+export type { DataTableRef, CRMColumnDef, TreeConfig, FixedColumnPosition } from './types';
+import { useFixedColumns } from './hooks/useFixedColumns';
+import { useTreeData } from './hooks/useTreeData';
+import { usePinnedStyles } from './hooks/usePinnedStyles';
+import { TableRowSkeleton } from './components/TableRowSkeleton';
+import { TreeExpandButton } from './components/TreeExpandButton';
 
-export type CRMColumnDef<TData extends RowData, TValue> = ColumnDef<TData, TValue> &
-  WithAccessorKey & {
-    fixed?: FixedColumnPosition;
-    width?: number | string;
-    minWidth?: number | string;
-  };
+// Types are now imported from './types'
+// Hooks and components are now imported from separate files
 
-interface PinnedStyleResult {
-  className: string;
-  style: React.CSSProperties;
-}
+// Generic forwardRef function that preserves generic types
+function createDataTable<TData extends RowData, TValue>() {
+  return forwardRef<DataTableRef, DataTableProps<TData, TValue>>(function DataTable(
+    {
+      columns,
+      data,
+      pageCount = 0,
+      pageIndex = 0,
+      pageSize = 10,
+      onPageChange,
+      onPageSizeChange,
+      thCls,
+      tdCls,
+      loading = false,
+      CustomFooter,
+      CustomRow,
+      treeConfig,
+    }: DataTableProps<TData, TValue>,
+    ref: React.Ref<DataTableRef>,
+  ) {
+    const tableRef = useRef<HTMLTableElement>(null);
+    const { t } = useTranslation();
 
-interface DataTableProps<TData extends RowData, TValue> {
-  columns: CRMColumnDef<TData, TValue>[];
-  data: TData[];
-  pageCount: number;
-  pageIndex: number;
-  pageSize: number;
-  onPageChange: (pageIndex: number) => void;
-  onPageSizeChange?: (pageSize: number) => void;
-  thCls?: string;
-  tdCls?: string;
-  loading?: boolean;
-  CustomRow?: ReactElement;
-  CustomFooter?: ReactElement;
-}
+    // Set up pagination state
+    const pagination = useMemo(
+      () => ({
+        pageIndex,
+        pageSize,
+      }),
+      [pageIndex, pageSize],
+    );
 
-function useFixedColumns<TData extends RowData>(
-  columns: CRMColumnDef<TData, unknown>[],
-  tableRef: React.RefObject<HTMLTableElement | null>,
-) {
-  const [canScroll, setCanScroll] = useState({
-    left: false,
-    right: false,
-  });
+    // Use extracted hooks
+    const { expanded, setExpanded, getRowId, processedData, getSubRows } = useTreeData(
+      data,
+      treeConfig,
+    );
+    const fixedColumnsResult = useFixedColumns(columns as CRMColumnDef<TData, unknown>[], tableRef);
+    const { columnPinning } = fixedColumnsResult;
 
-  const columnPinning = useMemo(() => {
-    const left: string[] = [];
-    const right: string[] = [];
-
-    columns.forEach(col => {
-      const fixed = col.fixed;
-      // Get column identifier - try id first, then accessorKey, or accessorFn's debug name
-      const id = col.id || col.accessorKey || '';
-
-      if (!id || !fixed) return;
-
-      if (fixed === 'right') {
-        right.push(id);
-      } else {
-        // Both true and 'left' values will pin to left
-        left.push(id);
-      }
+    // Initialize the table
+    const table = useReactTable({
+      data: processedData,
+      columns,
+      pageCount,
+      getRowId: treeConfig?.enabled ? getRowId : undefined,
+      state: {
+        pagination,
+        expanded: treeConfig?.enabled ? expanded : undefined,
+        // Enable TanStack's column pinning by providing state derived from columns
+        columnPinning,
+      },
+      onPaginationChange: updater => {
+        if (typeof updater === 'function') {
+          const newState = updater(pagination);
+          if (newState.pageIndex !== pagination.pageIndex) {
+            onPageChange?.(newState.pageIndex);
+          }
+          if (newState.pageSize !== pagination.pageSize && onPageSizeChange) {
+            onPageSizeChange(newState.pageSize);
+          }
+        }
+      },
+      onExpandedChange: treeConfig?.enabled
+        ? updater => {
+            const newExpanded = typeof updater === 'function' ? updater(expanded) : updater;
+            setExpanded(newExpanded);
+            treeConfig.onExpandedChange?.(newExpanded);
+          }
+        : undefined,
+      manualPagination: true,
+      getCoreRowModel: getCoreRowModel(),
+      getExpandedRowModel: treeConfig?.enabled ? getExpandedRowModel() : undefined,
+      getSubRows: treeConfig?.enabled ? getSubRows : undefined,
     });
 
-    return { left, right };
-  }, [columns]);
+    // Use pinned styles hook
+    const { getPinnedStyles } = usePinnedStyles(table, columns, fixedColumnsResult);
 
-  // Set up scroll event listener for shadow effects
-  useEffect(() => {
-    const scrollContainer = tableRef.current?.parentElement;
-    if (!scrollContainer) return;
+    // Set column pinning state in the table
+    useEffect(() => {
+      table.setColumnPinning(columnPinning);
+    }, [table, columnPinning]);
 
-    const updateScrollState = () => {
-      setCanScroll({
-        left: scrollContainer.scrollLeft > 0,
-        right:
-          scrollContainer.scrollLeft + scrollContainer.clientWidth < scrollContainer.scrollWidth,
-      });
-    };
+    // Expose methods via ref
+    useImperativeHandle(
+      ref,
+      () => ({
+        expandAll: () => {
+          if (treeConfig?.enabled) {
+            table.toggleAllRowsExpanded(true);
+          }
+        },
+        collapseAll: () => {
+          if (treeConfig?.enabled) {
+            table.toggleAllRowsExpanded(false);
+          }
+        },
+        toggleExpandAll: () => {
+          if (treeConfig?.enabled) {
+            const isAllExpanded = table.getIsAllRowsExpanded();
+            table.toggleAllRowsExpanded(!isAllExpanded);
+          }
+        },
+        isAllExpanded: () => (treeConfig?.enabled ? table.getIsAllRowsExpanded() : false),
+        getExpandedRows: () => expanded,
+        setExpandedRows: (newExpanded: ExpandedState) => {
+          setExpanded(newExpanded);
+          treeConfig?.onExpandedChange?.(newExpanded);
+        },
+      }),
+      [table, treeConfig, expanded, setExpanded],
+    );
 
-    // Initial update
-    updateScrollState();
-
-    // Listen for scroll events
-    scrollContainer.addEventListener('scroll', updateScrollState, { passive: true });
-
-    // Watch for size changes with ResizeObserver
-    const resizeObserver = new ResizeObserver(updateScrollState);
-    resizeObserver.observe(scrollContainer);
-
-    // Cleanup
-    return () => {
-      scrollContainer.removeEventListener('scroll', updateScrollState);
-      resizeObserver.disconnect();
-    };
-  }, [tableRef]);
-
-  return { columnPinning, canScroll };
-}
-
-const TableRowSkeleton = ({ columns }: { columns: number }) => {
-  return (
-    <TableRow className="h-12 animate-pulse">
-      {Array.from({ length: columns }).map((_, index) => (
-        <TableCell key={index}>
-          <div className="h-4 w-full rounded-md bg-gray-200 dark:bg-gray-700"></div>
-        </TableCell>
-      ))}
-    </TableRow>
-  );
-};
-
-export function DataTable<TData extends RowData, TValue>({
-  columns,
-  data,
-  pageCount,
-  pageIndex,
-  pageSize,
-  onPageChange,
-  onPageSizeChange,
-  thCls,
-  tdCls,
-  loading = false,
-  CustomFooter,
-  CustomRow,
-}: DataTableProps<TData, TValue>) {
-  const tableRef = useRef<HTMLTableElement>(null);
-  const { t } = useTranslation();
-
-  // Set up pagination state
-  const pagination = useMemo(
-    () => ({
-      pageIndex,
-      pageSize,
-    }),
-    [pageIndex, pageSize],
-  );
-
-  // Get fixed column handling utilities
-  const { columnPinning, canScroll } = useFixedColumns<TData>(
-    columns as CRMColumnDef<TData, unknown>[],
-    tableRef,
-  );
-
-  // Initialize the table
-  const table = useReactTable({
-    data,
-    columns,
-    pageCount,
-    state: {
-      pagination,
-      // Enable TanStack's column pinning by providing state derived from columns
-      columnPinning,
-    },
-    onPaginationChange: updater => {
-      if (typeof updater === 'function') {
-        const newState = updater(pagination);
-        if (newState.pageIndex !== pagination.pageIndex) {
-          onPageChange(newState.pageIndex);
-        }
-        if (newState.pageSize !== pagination.pageSize && onPageSizeChange) {
-          onPageSizeChange(newState.pageSize);
-        }
-      }
-    },
-    manualPagination: true,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
-  // Set column pinning state in the table
-  useEffect(() => {
-    table.setColumnPinning(columnPinning);
-  }, [table, columnPinning]);
-
-  // Calculate column offsets for fixed positioning
-  const calculateOffsets = useMemo(() => {
-    const leftOffsets: Record<string, number> = {};
-    const rightOffsets: Record<string, number> = {};
-
-    let leftAcc = 0;
-    table.getLeftHeaderGroups()[0].headers.forEach(header => {
-      leftOffsets[header.id] = leftAcc;
-      leftAcc += header.getSize();
-    });
-
-    let rightAcc = 0;
-    table
-      .getRightHeaderGroups()[0]
-      .headers.reverse()
-      .forEach(header => {
-        rightOffsets[header.id] = rightAcc;
-        rightAcc += header.getSize();
-      });
-
-    return { leftOffsets, rightOffsets };
-  }, [table]);
-
-  const getPinnedStyles = (
-    columnId: string,
-    pinDirection: FixedColumnPosition | null,
-    isHeader: boolean,
-  ): PinnedStyleResult => {
-    if (!pinDirection) {
-      return { className: '', style: {} };
-    }
-    // Base sticky style for headers and cells
-    const baseClass = isHeader
-      ? 'sticky top-0 z-20 bg-background hover:bg-accent/50 data-[state=selected]:bg-accent'
-      : 'sticky z-10 bg-background hover:bg-accent/50 data-[state=selected]:bg-accent';
-
-    // Find column definition for width properties
-    const columnDef = columns.find(col => col.id === columnId || col.accessorKey === columnId) as
-      | CRMColumnDef<TData, TValue>
-      | undefined;
-
-    // Get column width preferences
-    const width = columnDef?.width;
-    const minWidth = columnDef?.minWidth;
-
-    // Get current column size from table
-    const column = table.getColumn(columnId);
-    const size = column?.getSize();
-
-    // Position styles
-    const style: React.CSSProperties = {
-      width: width || size,
-      minWidth: minWidth || size,
-    };
-
-    if (pinDirection === 'left' || pinDirection === true) {
-      const isLeftBoundary = columnPinning.left[columnPinning.left.length - 1] === columnId;
-      const shadowClass =
-        canScroll.left && isLeftBoundary ? 'shadow-[8px_0_8px_-6px_rgba(0,0,0,0.28)] border-r' : '';
-
-      style.left = calculateOffsets.leftOffsets[columnId];
-      return {
-        className: `${baseClass} ${shadowClass}`,
-        style,
-      };
-    } else if (pinDirection === 'right') {
-      const isRightBoundary = columnPinning.right[0] === columnId;
-      const shadowClass =
-        canScroll.right && isRightBoundary
-          ? 'shadow-[-8px_0_8px_-6px_rgba(0,0,0,0.28)] border-l'
-          : '';
-
-      style.right = calculateOffsets.rightOffsets[columnId];
-      return {
-        className: `${baseClass} ${shadowClass}`,
-        style,
-      };
-    }
-    return { className: '', style: {} };
-  };
-
-  return (
-    <div>
-      <div className="relative overflow-auto rounded-md border">
-        <Table ref={tableRef}>
-          <TableHeader>
-            {table.getHeaderGroups().map(headerGroup => (
-              <TableRow
-                key={headerGroup.id}
-                className="data-[state=selected]:bg-accent hover:bg-accent/50"
-              >
-                {headerGroup.headers.map(header => {
-                  const pinDirection = header.column.getIsPinned() as FixedColumnPosition;
-                  const { className, style } = getPinnedStyles(header.id, pinDirection, true);
-
-                  return (
-                    <TableHead
-                      key={header.id}
-                      className={`${thCls || ''} ${className}`}
-                      style={style}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {loading ? (
-              Array.from({ length: pageSize || 5 }).map((_, index) => (
-                <TableRowSkeleton key={`skeleton-${index}`} columns={columns.length} />
-              ))
-            ) : table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(row => (
+    return (
+      <div>
+        <div className="relative overflow-auto rounded-md border">
+          <Table ref={tableRef}>
+            <TableHeader>
+              {table.getHeaderGroups().map(headerGroup => (
                 <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                  className="data-[state=selected]:bg-accent hover:bg-accent/50 h-12"
+                  key={headerGroup.id}
+                  className="data-[state=selected]:bg-accent hover:bg-accent/50"
                 >
-                  {row.getVisibleCells().map(cell => {
-                    const pinDirection = cell.column.getIsPinned() as FixedColumnPosition;
-                    const { className, style } = getPinnedStyles(
-                      cell.column.id,
-                      pinDirection,
-                      false,
-                    );
+                  {headerGroup.headers.map(header => {
+                    const pinDirection = header.column.getIsPinned() as FixedColumnPosition;
+                    const { className, style } = getPinnedStyles(header.id, pinDirection, true);
 
                     return (
-                      <TableCell
-                        key={cell.id}
-                        className={`${tdCls || ''} ${className}`}
+                      <TableHead
+                        key={header.id}
+                        className={`${thCls || ''} ${className}`}
                         style={style}
                       >
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
                     );
                   })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow className="data-[state=selected]:bg-accent hover:bg-accent/50">
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  {t('common.NoData')}
-                </TableCell>
-              </TableRow>
-            )}
-            {CustomRow && (
-              <TableRow className="data-[state=selected]:bg-accent hover:bg-accent/50">
-                {CustomRow}
-              </TableRow>
-            )}
-            {CustomFooter && <TableFooter>{CustomFooter}</TableFooter>}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {loading ? (
+                Array.from({ length: pageSize || 5 }).map((_, index) => (
+                  <TableRowSkeleton key={`skeleton-${index}`} columns={columns.length} />
+                ))
+              ) : table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map(row => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                    className="data-[state=selected]:bg-accent hover:bg-accent/50 h-12"
+                  >
+                    {row.getVisibleCells().map((cell, cellIndex) => {
+                      const pinDirection = cell.column.getIsPinned() as FixedColumnPosition;
+                      const { className, style } = getPinnedStyles(
+                        cell.column.id,
+                        pinDirection,
+                        false,
+                      );
+
+                      const isFirstColumn = cellIndex === 0;
+                      const isTreeMode = treeConfig?.enabled;
+                      const rowDepth = row.depth;
+
+                      return (
+                        <TableCell
+                          key={cell.id}
+                          className={`${tdCls || ''} ${className}`}
+                          style={style}
+                        >
+                          {isTreeMode && isFirstColumn ? (
+                            <div className="flex items-center">
+                              <TreeExpandButton row={row} depth={rowDepth} />
+                              <div className="flex-1">
+                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                              </div>
+                            </div>
+                          ) : (
+                            flexRender(cell.column.columnDef.cell, cell.getContext())
+                          )}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow className="data-[state=selected]:bg-accent hover:bg-accent/50">
+                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                    {t('common.NoData')}
+                  </TableCell>
+                </TableRow>
+              )}
+              {CustomRow && (
+                <TableRow className="data-[state=selected]:bg-accent hover:bg-accent/50">
+                  {CustomRow}
+                </TableRow>
+              )}
+              {CustomFooter && <TableFooter>{CustomFooter}</TableFooter>}
+            </TableBody>
+          </Table>
+        </div>
+        {pageCount > 1 && (
+          <DataTablePagination className="mt-4" table={table} totalCount={pageCount * pageSize} />
+        )}
       </div>
-      <DataTablePagination className="mt-4" table={table} totalCount={pageCount * pageSize} />
-    </div>
-  );
+    );
+  });
 }
+
+// Export a properly typed DataTable that preserves generic types
+export const DataTable = createDataTable() as <TData extends RowData, TValue>(
+  props: DataTableProps<TData, TValue> & { ref?: React.Ref<DataTableRef> },
+) => React.ReactElement;

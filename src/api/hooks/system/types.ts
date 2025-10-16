@@ -382,3 +382,25 @@ export type PreferencesItem = {
   groupCode: string;
 };
 export type PreferencesRes = PreferencesItem[];
+
+export type MenuListItem = {
+  createBy: string;
+  createTime: string;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  menuId: string;
+  menuName: string;
+  parentName: string | null;
+  parentId: string | null;
+  orderNum: string;
+  url: string;
+  target: string;
+  menuType: string;
+  visible: string;
+  perms: string;
+  icon: string;
+  children: MenuListItem[];
+  globalizationKey: string | null;
+};
