@@ -95,6 +95,7 @@
     "enable": "启用",
     "disable": "停用",
     "delete": "删除",
+    "add": "新增",
     "normal": "正常",
     "abnormal": "异常",
     "exchangeRate": "汇率",
@@ -467,6 +468,13 @@
     "users": "用户",
     "roleName": "角色名称"
   },
+  "menuManagement": {
+    "title": "菜单管理",
+    "managementBackend": "管理后台",
+    "userFrontend": "用户前台",
+    "menuName": "菜单名称",
+    "menuStatus": "菜单状态"
+  },
   "table": {
     "server": "服务器",
     "groups": "组别",
@@ -590,7 +598,19 @@
     "accountsNumber": "账户数",
     "source": "来源",
     "systemDefault": "系统默认",
-    "custom": "自定义"
+    "custom": "自定义",
+    "sort": "排序",
+    "requestUrl": "请求地址",
+    "visible": "可见",
+    "interLink": "内链",
+    "outerLink": "外链",
+    "category": "目录",
+    "menu": "菜单",
+    "button": "按钮",
+    "show": "显示",
+    "hide": "隐藏",
+    "all": "所有",
+    "scope": "权限"
   },
   "review": {
     "settings": {

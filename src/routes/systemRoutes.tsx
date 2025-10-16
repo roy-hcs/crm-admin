@@ -1,5 +1,6 @@
 import { RouteObject } from 'react-router-dom';
 import { RolesPage } from '@/pages/system/roles/RolesPage';
+import { MenusPage } from '@/pages/system/menus/MenusPage';
 // Import other system pages as they are developed
 
 /**
@@ -22,16 +23,16 @@ export const systemRoutes: RouteObject[] = [
     path: '/system/roles',
     element: <RolesPage />,
   },
+  {
+    path: '/system/menus',
+    element: <MenusPage />,
+  },
 
   // Routes to be developed - commented out until pages are created
   /*
   {
     path: '/system/admin-accounts',
     element: <AdminAccountsPage />,
-  },
-  {
-    path: '/system/menus',
-    element: <MenusPage />,
   },
   {
     path: '/system/logs/admin-operations',
