@@ -261,7 +261,7 @@ export function useGetPreferences() {
   });
 }
 
-export function useMenuList(menuName?: string, visible?: number) {
+export function useMenuList(menuName?: string, visible?: string) {
   return useQuery({
     queryKey: ['menuList', { menuName, visible }],
     queryFn: () => {
@@ -277,7 +277,7 @@ export function useMenuList(menuName?: string, visible?: number) {
   });
 }
 
-export function useUserMenuList(menuName?: string, visible?: number) {
+export function useUserMenuList(menuName?: string, visible?: string) {
   return useQuery({
     queryKey: ['userMenuList', { menuName, visible }],
     queryFn: () => {

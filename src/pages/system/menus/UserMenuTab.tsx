@@ -11,9 +11,13 @@ import { useDataTableTreeControl } from '@/components/table/useDataTableTreeCont
 
 export const UserMenuTab = () => {
   const [menuName, setMenuName] = useState('');
+  const [menuState, setMenuState] = useState('');
   const { t } = useTranslation();
 
-  const { data: userMenuList, isLoading: userMenuListLoading } = useUserMenuList(menuName);
+  const { data: userMenuList, isLoading: userMenuListLoading } = useUserMenuList(
+    menuName,
+    menuState,
+  );
 
   const treeMenuData = useMemo(() => {
     if (!userMenuList || userMenuList.length === 0) return [];
@@ -27,6 +31,7 @@ export const UserMenuTab = () => {
   }, [userMenuList]);
   const reset = () => {
     setMenuName('');
+    setMenuState('');
   };
   const tableRef = useRef<DataTableRef>(null);
   const treeControl = useDataTableTreeControl(tableRef);
@@ -52,7 +57,7 @@ export const UserMenuTab = () => {
               </RrhButton>
             }
           >
-            <MenuForm setMenuName={setMenuName} setMenuState={() => {}} />
+            <MenuForm setMenuName={setMenuName} setMenuState={setMenuState} />
           </RrhDrawer>
         </div>
         <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={toggleExpand}>
