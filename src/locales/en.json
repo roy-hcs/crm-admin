@@ -147,7 +147,12 @@
     "reason": "reason",
     "serverError": "If the connection is not restored for a long time, please check the trading server",
     "serverErrorTip": "Trading server exception",
-    "total": "total"
+    "total": "total",
+    "notBind": "Not bound",
+    "onlineStatus": {
+      "offline": "Offline",
+      "online": "online"
+    }
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -619,5 +624,9 @@
   },
   "workBench": {
     "title": "Data overview"
+  },
+  "menuManagement": {
+    "managementBackend": "Management background",
+    "menuName": "Menu name"
   }
 }

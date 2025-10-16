@@ -404,3 +404,134 @@ export type MenuListItem = {
   children: MenuListItem[];
   globalizationKey: string | null;
 };
+
+export type UserItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  userId: string | null;
+  deptId: string | null;
+  parentId: string | null;
+  roleId: string | null;
+  loginName: string | null;
+  userName: string | null;
+  userLastName: string | null;
+  email: string | null;
+  mzone: string | null;
+  phonenumber: string | null;
+  sex: string | null;
+  avatar: string | null;
+  password: string | null;
+  salt: string | null;
+  status: string | null;
+  delFlag: string | null;
+  loginIp: string | null;
+  loginDate: string | null;
+  chatId: string | null;
+  dept: {
+    createBy: string | null;
+    createTime: string | null;
+    updateBy: string | null;
+    updateTime: string | null;
+    remark: string | null;
+    params: Record<string, unknown>;
+    deptId: string | null;
+    parentId: string | null;
+    ancestors: string | null;
+    deptName: string | null;
+    orderNum: string | null;
+    leader: string | null;
+    phone: string | null;
+    email: string | null;
+    status: string | null;
+    delFlag: string | null;
+    parentName: string | null;
+  };
+  userRole: {
+    userId: string | null;
+    roleId: string | null;
+    role: {
+      createBy: string | null;
+      createTime: string | null;
+      updateBy: string | null;
+      updateTime: string | null;
+      remark: string | null;
+      params: Record<string, unknown>;
+      roleId: string | null;
+      roleName: string | null;
+      roleKey: string | null;
+      roleSort: string | null;
+      roleDescribe: string | null;
+      userCount: number | null;
+      dataScope: string | null;
+      status: string | null;
+      roleSource: string | null;
+      userScope: string | null;
+      userAccount: string | null;
+      delFlag: string | null;
+      flag: string | null;
+      menuIds: string | null;
+      deptIds: string | null;
+    };
+  };
+  roles: [
+    {
+      createBy: string | null;
+      createTime: string | null;
+      updateBy: string | null;
+      updateTime: string | null;
+      remark: string | null;
+      params: Record<string, unknown>;
+      roleId: string | null;
+      roleName: string | null;
+      roleKey: string | null;
+      roleSort: string | null;
+      roleDescribe: string | null;
+      userCount: number | null;
+      dataScope: string | null;
+      status: string | null;
+      roleSource: string | null;
+      userScope: string | null;
+      userAccount: string | null;
+      delFlag: string | null;
+      flag: string | null;
+      menuIds: string | null;
+      deptIds: string | null;
+    },
+  ];
+  roleIds: string | null;
+  postIds: string | null;
+  googleKey: string | null;
+  boundGoogle: number | null;
+  onlineStatus: number | null;
+  admin: boolean | null;
+  wholeName: string | null;
+};
+export type UserListRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: UserItem[];
+};
+
+export type UserListParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+
+  userName?: string;
+  roleId?: string;
+  status?: string;
+  phonenumber?: string;
+  email?: string;
+  onlineStatus?: string;
+
+  params: {
+    beginTime?: string;
+    endTime?: string;
+  };
+};
