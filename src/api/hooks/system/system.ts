@@ -26,6 +26,8 @@ import {
   ServerExceptionNoticeRes,
   PreferencesRes,
   MenuListItem,
+  UserListParams,
+  UserListRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -257,7 +259,7 @@ export function useServerExceptionNotice() {
 export function useGetPreferences() {
   return useQuery({
     queryKey: ['preferences'],
-    queryFn: async () => apiGetCustom<PreferencesRes | []>('/system/getPreferences'),
+    queryFn: () => apiGetCustom<PreferencesRes | []>('/system/getPreferences'),
   });
 }
 
@@ -290,5 +292,25 @@ export function useUserMenuList(menuName?: string, visible?: number) {
 
       return apiGetCustom<MenuListItem[]>(url);
     },
+  });
+}
+
+/**
+ * 系统管理-管理员账户
+ */
+export function useUserList(params: UserListParams) {
+  return useQuery({
+    queryKey: ['userList', params],
+    queryFn: () => apiFormPostCustom<UserListRes>(`/system/user/list`, params || {}),
+  });
+}
+
+/**
+ * 获取角色列表
+ */
+export function useRoleList() {
+  return useQuery({
+    queryKey: ['roleList'],
+    queryFn: () => apiFormPostCustom<RoleListRes>('/system/role/list', {}),
   });
 }
