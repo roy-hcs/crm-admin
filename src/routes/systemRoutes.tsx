@@ -3,6 +3,7 @@ import { RolesPage } from '@/pages/system/roles/RolesPage';
 import { MenusPage } from '@/pages/system/menus/MenusPage';
 import { CRMUserOperationsLogsPage } from '@/pages/system/logsPage/userOperation/CRMUserOperationsLogsPage';
 import { EmailLogsPage } from '@/pages/system/logsPage/email/EmailLogsPage';
+import { PaymentLogsPage } from '@/pages/system/logsPage/payment/PaymentLogsPage';
 // Import other system pages as they are developed
 
 /**
@@ -37,6 +38,10 @@ export const systemRoutes: RouteObject[] = [
     path: '/system/logs/email',
     element: <EmailLogsPage />,
   },
+  {
+    path: '/system/logs/payment',
+    element: <PaymentLogsPage />,
+  },
 
   // Routes to be developed - commented out until pages are created
   /*
@@ -57,9 +62,6 @@ export const systemRoutes: RouteObject[] = [
     element: <CRMUserLoginLogsPage />,
   },
   
-  {
-    path: '/system/logs/payment',
-    element: <PaymentLogsPage />,
-  },
+  
   */
 ];

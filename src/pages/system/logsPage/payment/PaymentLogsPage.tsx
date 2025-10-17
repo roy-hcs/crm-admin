@@ -3,31 +3,31 @@ import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Funnel, RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useEmailList } from '@/api/hooks/system/system';
-import { EmailListParams } from '@/api/hooks/system/types';
+import { useUserOrderLogList } from '@/api/hooks/system/system';
+import { UserOrderLogListParams } from '@/api/hooks/system/types';
 import { BasicParams } from '@/api/hooks/review/types';
-import { EmailLogsForm } from './EmailLogsForm';
-import { EmailLogsTable } from './EmailLogsTable';
-import dayjs from 'dayjs';
+import { PaymentLogsForm } from './PaymentLogsForm';
+import { PaymentLogsTable } from './PaymentLogsTable';
+import { useThirdPaymentList } from '@/api/hooks/review/review';
 
-export const EmailLogsPage = () => {
-  const [params, setParams] = useState<EmailListParams['params']>({
-    sendEndTime: '',
-    sendStartTime: dayjs(new Date()).format('YYYY-MM-DD'),
+export const PaymentLogsPage = () => {
+  const [params, setParams] = useState<UserOrderLogListParams['params']>({
+    operationEnd: '',
+    operationStart: '',
   });
   const [otherParams, setOtherParams] = useState<
-    Omit<EmailListParams, 'params' | keyof BasicParams>
+    Omit<UserOrderLogListParams, 'params' | keyof BasicParams>
   >({
-    title: '',
-    acceptEmail: '',
-    status: '',
+    orderId: '',
+    channelName: '',
+    payResult: '',
   });
 
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
 
-  const { data, isLoading } = useEmailList({
+  const { data, isLoading } = useUserOrderLogList({
     orderByColumn: '',
     isAsc: 'asc',
     pageNum: pageNum + 1,
@@ -37,24 +37,27 @@ export const EmailLogsPage = () => {
       ...params,
     },
   });
+
+  const { data: thirdPaymentList } = useThirdPaymentList();
   const reset = () => {
     setParams({
-      sendEndTime: '',
-      sendStartTime: '',
+      operationEnd: '',
+      operationStart: '',
+      userName: '',
     });
     setOtherParams({
-      title: '',
-      acceptEmail: '',
-      status: '',
+      orderId: '',
+      channelName: '',
+      payResult: '',
     });
     setPageNum(0);
   };
 
   return (
     <div>
-      <h1 className="text-title">{t('emailLogsPage.title')}</h1>
+      <h1 className="text-title">{t('paymentLogsPage.title')}</h1>
       <div className="my-3.5 flex items-center justify-end gap-2">
-        <RrhButton variant="outline">{t('emailLogsPage.reSendFailedEmailConfig')}</RrhButton>
+        <RrhButton variant="outline">{t('table.export')}</RrhButton>
         <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
           <RefreshCcw className="size-3.5" />
         </RrhButton>
@@ -69,15 +72,16 @@ export const EmailLogsPage = () => {
             </RrhButton>
           }
         >
-          <EmailLogsForm
+          <PaymentLogsForm
             setParams={setParams}
             setOtherParams={setOtherParams}
             loading={isLoading}
+            paymentMethods={thirdPaymentList?.rows || []}
           />
         </RrhDrawer>
       </div>
 
-      <EmailLogsTable
+      <PaymentLogsTable
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}

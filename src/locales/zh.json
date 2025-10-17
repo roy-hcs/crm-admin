@@ -481,7 +481,11 @@
     "title": "CRM用户操作日志"
   },
   "emailLogsPage": {
-    "title": "邮件发送日志"
+    "title": "邮件发送日志",
+    "reSendFailedEmailConfig": "失败邮件重发配置"
+  },
+  "paymentLogsPage": {
+    "title": "支付日志"
   },
   "table": {
     "server": "服务器",
@@ -636,7 +640,11 @@
     "notSend": "未发送",
     "reason": "原因",
     "failedRecord": "失败记录",
-    "reSend": "重发"
+    "reSend": "重发",
+    "orderTime": "订单时间",
+    "payResult": "支付状态",
+    "paySuccess": "支付成功",
+    "payFailed": "支付失败"
   },
   "review": {
     "settings": {

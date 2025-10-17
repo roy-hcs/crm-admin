@@ -28,6 +28,8 @@ import {
   MenuListItem,
   EmailListParams,
   EmailListRes,
+  UserOrderLogListParams,
+  UserOrderLogListRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -299,5 +301,12 @@ export function useEmailList(params: EmailListParams) {
   return useQuery({
     queryKey: ['emailList', params],
     queryFn: () => apiFormPostCustom<EmailListRes>('/system/msg/emailList', params),
+  });
+}
+
+export function useUserOrderLogList(params: UserOrderLogListParams) {
+  return useQuery({
+    queryKey: ['userOrderLogList', params],
+    queryFn: () => apiFormPostCustom<UserOrderLogListRes>('/system/crmUserOrderLog/list', params),
   });
 }
