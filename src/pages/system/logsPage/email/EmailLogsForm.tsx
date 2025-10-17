@@ -46,7 +46,6 @@ export const EmailLogsForm = ({
   });
 
   const onSubmit = (data: FormData) => {
-    console.log(data, 'submit data -----');
     setParams(pre => ({
       ...pre,
       sendStartTime: data.sendTime.from ? dayjs(data.sendTime.from).format('YYYY-MM-DD') : '',

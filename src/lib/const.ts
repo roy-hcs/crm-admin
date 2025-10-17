@@ -75,3 +75,9 @@ export const timeRangeOptions = [
 
 export const DEFAULT_TIME_RANGE = '1';
 export type TimeRangeType = '1' | '2' | '3' | '4' | '5' | '6';
+
+// 登录状态
+export const onlineStatusOptions = [
+  { label: 'common.onlineStatus.online', value: '1' },
+  { label: 'common.onlineStatus.offline', value: '0' },
+];

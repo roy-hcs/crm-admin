@@ -169,7 +169,16 @@
     "serverError": "若长时间未恢复连接，请检查交易服务器",
     "serverErrorTip": "交易服务器异常",
     "success": "成功",
-    "fail": "失败"
+    "fail": "失败",
+    "onlineStatus": {
+      "online": "在线",
+      "offline": "离线"
+    },
+    "ip": "IP",
+    "createTime": "创建时间",
+    "boundGoogle": "谷歌令牌",
+    "bind": "已绑定",
+    "notBind": "未绑定"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -672,6 +681,12 @@
       "title": "杠杆审核",
       "currentLever": "当前杠杆",
       "targetLever": "目标杠杆"
+    }
+  },
+  "system": {
+    "adminAccounts": {
+      "title": "管理员账户",
+      "roleName": "账户角色"
     }
   }
 }

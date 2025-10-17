@@ -150,7 +150,12 @@
     "total": "total",
     "add": "New",
     "fail": "fail",
-    "success": "success"
+    "success": "success",
+    "notBind": "Not bound",
+    "onlineStatus": {
+      "offline": "Offline",
+      "online": "online"
+    }
   },
   "home": {
     "AccountOverview": "Account opening overview",
