@@ -477,6 +477,12 @@
     "menuName": "菜单名称",
     "menuStatus": "菜单状态"
   },
+  "CRMUserOperationsLogsPage": {
+    "title": "CRM用户操作日志"
+  },
+  "emailLogsPage": {
+    "title": "邮件发送日志"
+  },
   "table": {
     "server": "服务器",
     "groups": "组别",
@@ -620,7 +626,17 @@
     "systemModule": "系统模块",
     "operationURL": "操作URL",
     "operationMethod": "操作方法",
-    "operationParams": "操作参数"
+    "operationParams": "操作参数",
+    "acceptEmail": "收件邮箱",
+    "title": "标题",
+    "sendTime": "发送时间",
+    "sendSuccess": "发送成功",
+    "sendFailed": "发送失败",
+    "sendEmailAddress": "发件邮箱",
+    "notSend": "未发送",
+    "reason": "原因",
+    "failedRecord": "失败记录",
+    "reSend": "重发"
   },
   "review": {
     "settings": {

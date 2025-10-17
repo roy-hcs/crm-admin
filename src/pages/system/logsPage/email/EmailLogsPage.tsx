@@ -3,30 +3,31 @@ import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Funnel, RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { UserOperationsLogsParams } from '@/api/hooks/monitor/type';
-import { useUserOperationLogs } from '@/api/hooks/monitor/monitor';
-import { useDictType } from '@/api/hooks/system/system';
-import { UserOperationsLogsTable } from './UserOperationsLogsTable';
-import { UserOperationsLogsForm } from './UserOperationsLogsForm';
+import { useEmailList } from '@/api/hooks/system/system';
+import { EmailListParams } from '@/api/hooks/system/types';
+import { BasicParams } from '@/api/hooks/review/types';
+import { EmailLogsForm } from './EmailLogsForm';
+import { EmailLogsTable } from './EmailLogsTable';
+import dayjs from 'dayjs';
 
-export const CRMUserOperationsLogsPage = () => {
-  const [params, setParams] = useState<UserOperationsLogsParams['params']>({
-    beginTime: '',
-    endTime: '',
+export const EmailLogsPage = () => {
+  const [params, setParams] = useState<EmailListParams['params']>({
+    sendEndTime: '',
+    sendStartTime: dayjs(new Date()).format('YYYY-MM-DD'),
   });
-  const [otherParams, setOtherParams] = useState<Omit<UserOperationsLogsParams, 'params'>>({
+  const [otherParams, setOtherParams] = useState<
+    Omit<EmailListParams, 'params' | keyof BasicParams>
+  >({
     title: '',
-    operName: '',
+    acceptEmail: '',
     status: '',
-    businessTypes: '',
   });
 
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
-  const { data: operationTypes } = useDictType('crm_oper_type');
 
-  const { data, isLoading } = useUserOperationLogs({
+  const { data, isLoading } = useEmailList({
     orderByColumn: '',
     isAsc: 'asc',
     pageNum: pageNum + 1,
@@ -38,21 +39,20 @@ export const CRMUserOperationsLogsPage = () => {
   });
   const reset = () => {
     setParams({
-      beginTime: '',
-      endTime: '',
+      sendEndTime: '',
+      sendStartTime: '',
     });
     setOtherParams({
       title: '',
-      operName: '',
+      acceptEmail: '',
       status: '',
-      businessTypes: '',
     });
     setPageNum(0);
   };
 
   return (
     <div>
-      <h1 className="text-title">{t('CRMUserOperationsLogsPage.title')}</h1>
+      <h1 className="text-title">{t('emailLogsPage.title')}</h1>
       <div className="my-3.5 flex items-center justify-end gap-2">
         <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
           <RefreshCcw className="size-3.5" />
@@ -68,8 +68,7 @@ export const CRMUserOperationsLogsPage = () => {
             </RrhButton>
           }
         >
-          <UserOperationsLogsForm
-            operationType={operationTypes}
+          <EmailLogsForm
             setParams={setParams}
             setOtherParams={setOtherParams}
             loading={isLoading}
@@ -77,7 +76,7 @@ export const CRMUserOperationsLogsPage = () => {
         </RrhDrawer>
       </div>
 
-      <UserOperationsLogsTable
+      <EmailLogsTable
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}
@@ -85,7 +84,6 @@ export const CRMUserOperationsLogsPage = () => {
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
         loading={isLoading}
-        operationsType={operationTypes}
       />
     </div>
   );

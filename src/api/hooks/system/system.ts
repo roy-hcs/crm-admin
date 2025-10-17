@@ -26,6 +26,8 @@ import {
   ServerExceptionNoticeRes,
   PreferencesRes,
   MenuListItem,
+  EmailListParams,
+  EmailListRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -290,5 +292,12 @@ export function useUserMenuList(menuName?: string, visible?: string) {
 
       return apiGetCustom<MenuListItem[]>(url);
     },
+  });
+}
+
+export function useEmailList(params: EmailListParams) {
+  return useQuery({
+    queryKey: ['emailList', params],
+    queryFn: () => apiFormPostCustom<EmailListRes>('/system/msg/emailList', params),
   });
 }

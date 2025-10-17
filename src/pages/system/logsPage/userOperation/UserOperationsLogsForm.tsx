@@ -54,7 +54,6 @@ export const UserOperationsLogsForm = ({
   });
 
   const onSubmit = (data: FormData) => {
-    console.log('data---', data);
     setParams(pre => ({
       ...pre,
       beginTime: data.operationTime.from ? dayjs(data.operationTime.from).format('YYYY-MM-DD') : '',

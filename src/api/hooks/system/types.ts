@@ -404,3 +404,42 @@ export type MenuListItem = {
   children: MenuListItem[];
   globalizationKey: string | null;
 };
+
+export type EmailListParams = BasicParams & {
+  acceptEmail?: string;
+  title?: string;
+  status?: string;
+  params: {
+    sendStartTime?: string;
+    sendEndTime?: string;
+  };
+};
+
+export type EmailListItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string;
+  sendEmail: string | null;
+  acceptEmail: string | null;
+  title: string;
+  type: number;
+  status: number;
+  sendTime: string;
+  isAll: string | null;
+  content: string | null;
+  source: number;
+  userType: number;
+  sendEmailStr: string;
+  acceptEmailStr: string;
+  userMsgId: string;
+};
+export type EmailListRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: EmailListItem[];
+};
