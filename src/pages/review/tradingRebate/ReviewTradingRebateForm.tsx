@@ -21,6 +21,7 @@ import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { serverMap } from '@/lib/constant';
 import { Dispatch, SetStateAction } from 'react';
 import { RebateCommissionListParams, RebateCommissionRuleItem } from '@/api/hooks/review/types';
+import dayjs from 'dayjs';
 
 type FormData = {
   serverId: string;
@@ -90,10 +91,12 @@ export const ReviewTradingRebateForm = ({
     const selectedServer = serverList.find(item => item.id === data.serverId);
     if (!selectedServer) return;
     setParams({
-      startTraderTime: data.tradingTime.from,
-      endTraderTime: data.tradingTime.to,
-      beginTime: data.submitTime.from,
-      endTime: data.submitTime.to,
+      startTraderTime: data.tradingTime.from
+        ? dayjs(data.tradingTime.from).format('YYYY-MM-DD')
+        : '',
+      endTraderTime: data.tradingTime.to ? dayjs(data.tradingTime.to).format('YYYY-MM-DD') : '',
+      beginTime: data.submitTime.from ? dayjs(data.submitTime.from).format('YYYY-MM-DD') : '',
+      endTime: data.submitTime.to ? dayjs(data.submitTime.to).format('YYYY-MM-DD') : '',
     });
     setOtherParams({
       serverId: selectedServer.id,

@@ -1,0 +1,156 @@
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import FormDateRangeInput from '@/components/form/FormDateRangeInput';
+import { RefreshCcw, Search } from 'lucide-react';
+import { FormInput } from '@/components/form/FormInput';
+import { FormProvider } from '@/contexts/form';
+import { RrhButton } from '@/components/common/RrhButton';
+import { useTranslation } from 'react-i18next';
+import { DictTypeItem } from '@/api/hooks/system/types';
+import { FormMultiSelect } from '@/components/form/FormMultiSelect';
+import { Dispatch, SetStateAction } from 'react';
+import { UserOperationsLogsParams } from '@/api/hooks/monitor/type';
+import { BasicParams } from '@/api/hooks/review/types';
+import { FormSelect } from '@/components/form/FormSelect';
+import dayjs from 'dayjs';
+
+type FormData = {
+  systemModule: string;
+  operator: string;
+  operationType: string[];
+  operationStatus: string;
+  operationTime: { from: string; to: string };
+};
+
+export const UserOperationsLogsForm = ({
+  setOtherParams,
+  setParams,
+  operationType = [],
+  loading,
+}: {
+  operationType?: DictTypeItem[];
+  setOtherParams: Dispatch<
+    SetStateAction<Omit<UserOperationsLogsParams, 'params' | keyof BasicParams>>
+  >;
+  setParams: Dispatch<SetStateAction<UserOperationsLogsParams['params']>>;
+  loading: boolean;
+}) => {
+  const { t } = useTranslation();
+  const form = useForm<FormData>({
+    defaultValues: {
+      systemModule: '',
+      operationStatus: '',
+      operationTime: { from: '', to: '' },
+      operationType: [],
+      operator: '',
+    },
+  });
+
+  const onSubmit = (data: FormData) => {
+    setParams(pre => ({
+      ...pre,
+      beginTime: data.operationTime.from ? dayjs(data.operationTime.from).format('YYYY-MM-DD') : '',
+      endTime: data.operationTime.to ? dayjs(data.operationTime.to).format('YYYY-MM-DD') : '',
+    }));
+    setOtherParams(pre => ({
+      ...pre,
+      title: data.systemModule,
+      operName: data.operator,
+      status: data.operationStatus === 'all' ? '' : data.operationStatus,
+      businessTypes: data.operationType.join(','),
+    }));
+  };
+  const onReset = () => {
+    form.reset();
+    setParams({
+      beginTime: '',
+      endTime: '',
+    });
+    setOtherParams({
+      title: '',
+      operName: '',
+      status: '',
+      businessTypes: '',
+    });
+  };
+
+  return (
+    <FormProvider form={form}>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          onReset={onReset}
+          className="flex flex-col gap-4 overflow-auto p-4"
+        >
+          <FormInput
+            verticalLabel
+            name="systemModule"
+            label={t('table.systemModule')}
+            placeholder={t('common.pleaseInput', { field: t('table.systemModule') })}
+          />
+          <FormInput
+            verticalLabel
+            name="operator"
+            label={t('table.operator')}
+            placeholder={t('common.pleaseInput', { field: t('table.operator') })}
+          />
+          <FormMultiSelect
+            verticalLabel
+            name="operationType"
+            label={t('table.operationType')}
+            placeholder={t('common.pleaseSelect')}
+            options={
+              operationType.map(item => ({
+                label: item.dictLabel,
+                value: item.dictValue,
+              })) || []
+            }
+          />
+          <FormSelect
+            verticalLabel
+            name="operationStatus"
+            label={t('table.operationStatus')}
+            placeholder={t('common.pleaseSelect')}
+            showRowValue={false}
+            options={[
+              { label: t('table.all'), value: 'all' },
+              { label: t('common.success'), value: '0' },
+              { label: t('common.fail'), value: '1' },
+            ]}
+          />
+
+          <FormField
+            name="operationTime"
+            render={() => (
+              <FormItem className="flex flex-col gap-2 text-sm">
+                <FormLabel className="basis-3/12">{t('table.operationTime')}</FormLabel>
+                <FormControl className="basis-9/12">
+                  <FormDateRangeInput name="operationTime" control={form.control} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="flex justify-end gap-4">
+            <RrhButton type="reset" variant="outline" onClick={onReset}>
+              <RefreshCcw className="size-3.5" />
+              <span>{t('common.Reset')}</span>
+            </RrhButton>
+            <RrhButton type="submit" loading={loading}>
+              <Search className="size-3.5" />
+              <span>{t('common.Search')}</span>
+            </RrhButton>
+          </div>
+        </form>
+      </Form>
+    </FormProvider>
+  );
+};

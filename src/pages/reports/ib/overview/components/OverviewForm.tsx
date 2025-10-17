@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { RebateLevelItem, ServerItem } from '@/api/hooks/system/types';
 import { serverMap } from '@/lib/constant';
 import { BaseOption } from '@/components/common/RrhSelect';
+import dayjs from 'dayjs';
 export interface OverviewFormRef {
   onReset: () => void;
 }
@@ -75,8 +76,8 @@ export const OverviewForm = forwardRef<
       serverId: data.serverId,
       userName: data.userName,
       email: data.email,
-      beginTime: data.beginTime.from,
-      endTime: data.beginTime.to,
+      beginTime: data.beginTime.from ? dayjs(data.beginTime.from).format('YYYY-MM-DD') : '',
+      endTime: data.beginTime.to ? dayjs(data.beginTime.to).format('YYYY-MM-DD') : '',
       level: data.level,
     });
   };

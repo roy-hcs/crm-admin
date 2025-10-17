@@ -15,6 +15,7 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
+import dayjs from 'dayjs';
 
 type FormData = {
   way: number | string;
@@ -56,8 +57,10 @@ export const SystemFundOperationsForm = ({
       name: data.name,
       login: data.login,
       ticket: data.serverOrder,
-      operationStart: data.operationTime.from,
-      operationEnd: data.operationTime.to,
+      operationStart: data.operationTime.from
+        ? dayjs(data.operationTime.from).format('YYYY-MM-DD')
+        : '',
+      operationEnd: data.operationTime.to ? dayjs(data.operationTime.to).format('YYYY-MM-DD') : '',
       operName: data.operator,
     });
   };

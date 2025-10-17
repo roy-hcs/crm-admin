@@ -148,6 +148,9 @@
     "serverError": "If the connection is not restored for a long time, please check the trading server",
     "serverErrorTip": "Trading server exception",
     "total": "total",
+    "add": "New",
+    "fail": "fail",
+    "success": "success",
     "notBind": "Not bound",
     "onlineStatus": {
       "offline": "Offline",
@@ -445,7 +448,37 @@
     "custom": "Customize",
     "roleDescription": "role description",
     "source": "source",
-    "systemDefault": "System default"
+    "systemDefault": "System default",
+    "acceptEmail": "Receiving email",
+    "all": "all",
+    "button": "button",
+    "category": "Table of contents",
+    "failedRecord": "Failure record",
+    "hide": "hide",
+    "interLink": "Internal link",
+    "menu": "menu",
+    "notSend": "Not sent",
+    "operationAddress": "Operation address",
+    "operationMethod": "How to operate",
+    "operationParams": "Operating parameters",
+    "operationStatus": "operating status",
+    "operationType": "Operation type",
+    "operationURL": "Operation URL",
+    "operator": "operator",
+    "outerLink": "external link",
+    "reSend": "Resend",
+    "reason": "reason",
+    "requestUrl": "Request address",
+    "scope": "Permissions",
+    "sendEmailAddress": "Sending email",
+    "sendFailed": "Sending failed",
+    "sendSuccess": "Sent successfully",
+    "sendTime": "Send time",
+    "show": "show",
+    "sort": "sort",
+    "systemModule": "system module",
+    "title": "title",
+    "visible": "visible"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -625,8 +658,17 @@
   "workBench": {
     "title": "Data overview"
   },
+  "CRMUserOperationsLogsPage": {
+    "title": "CRM user operation log"
+  },
+  "emailLogsPage": {
+    "title": "Email sending log"
+  },
   "menuManagement": {
     "managementBackend": "Management background",
-    "menuName": "Menu name"
+    "menuName": "Menu name",
+    "menuStatus": "Menu status",
+    "title": "Menu management",
+    "userFrontend": "User front desk"
   }
 }

@@ -16,6 +16,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { RebateTypeOptions, RebateStatusOptions } from '@/lib/const';
+import dayjs from 'dayjs';
 
 type FormData = {
   // 结算日期
@@ -69,8 +70,10 @@ export const WeeklyRebateForm = forwardRef<
 
   const onSubmit = (data: FormData) => {
     setParams({
-      beginTime: data.settlementTime.from,
-      endTime: data.settlementTime.to,
+      beginTime: data.settlementTime.from
+        ? dayjs(data.settlementTime.from).format('YYYY-MM-DD')
+        : '',
+      endTime: data.settlementTime.to ? dayjs(data.settlementTime.to).format('YYYY-MM-DD') : '',
       account: data.account,
     });
     setCommonParams({

@@ -19,6 +19,7 @@ import { CrmInfoVerifyListParams } from '@/api/hooks/review/types';
 
 import { VerifyStatusOptions } from '@/lib/const';
 import { InfoTypeItem } from '@/api/hooks/system/types';
+import dayjs from 'dayjs';
 type FormData = {
   time: { from: string; to: string };
   userId: string;
@@ -51,8 +52,8 @@ export const InFormationForm = ({
   const onSubmit = (data: FormData) => {
     setParams(pre => ({
       ...pre,
-      beginTime: data.time.from,
-      endTime: data.time.to,
+      beginTime: data.time.from ? dayjs(data.time.from).format('YYYY-MM-DD') : '',
+      endTime: data.time.to ? dayjs(data.time.to).format('YYYY-MM-DD') : '',
     }));
     setCommonParams({
       userId: data.userId,

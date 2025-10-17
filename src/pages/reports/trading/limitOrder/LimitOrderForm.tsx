@@ -21,6 +21,7 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
+import dayjs from 'dayjs';
 
 type FormData = {
   serverId: string;
@@ -96,8 +97,10 @@ export const LimitOrderForm = ({
       positionFuzzySymbol: data.symbol,
       positionFuzzyTicket: data.ticket,
       accounts: selectedAccounts.label,
-      positionDealBJStartTime: data.openTime.from,
-      positionDealBJEndTime: data.openTime.to,
+      positionDealBJStartTime: data.openTime.from
+        ? dayjs(data.openTime.from).format('YYYY-MM-DD')
+        : '',
+      positionDealBJEndTime: data.openTime.to ? dayjs(data.openTime.to).format('YYYY-MM-DD') : '',
     });
   };
   const onReset = () => {
