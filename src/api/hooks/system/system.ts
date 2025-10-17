@@ -28,6 +28,8 @@ import {
   MenuListItem,
   UserListParams,
   UserListRes,
+  AdminOperLogParams,
+  AdminOperLogRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -181,7 +183,7 @@ export function useGetDealAccountGroupList() {
 export function useDictType(type: string, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['DictType', type],
-    queryFn: () => apiGet<DictTypeResponse>(`/system/dict/type?dictType=${type}`, {}),
+    queryFn: () => apiGetCustom<DictTypeResponse>(`/system/dict/type?dictType=${type}`, {}),
     enabled: options?.enabled ?? true,
   });
 }
@@ -312,5 +314,15 @@ export function useRoleList() {
   return useQuery({
     queryKey: ['roleList'],
     queryFn: () => apiFormPostCustom<RoleListRes>('/system/role/list', {}),
+  });
+}
+
+/**
+ * 系统管理-日志管理-管理员操作日志
+ */
+export function useAdminOperLogList(params: AdminOperLogParams) {
+  return useQuery({
+    queryKey: ['adminOperLogList', params],
+    queryFn: () => apiFormPostCustom<AdminOperLogRes>(`/monitor/operlog/list`, params || {}),
   });
 }

@@ -81,3 +81,10 @@ export const onlineStatusOptions = [
   { label: 'common.onlineStatus.online', value: '1' },
   { label: 'common.onlineStatus.offline', value: '0' },
 ];
+
+// 操作状态
+export const adminOperationsStatusOptions = [
+  { label: 'table.all', value: '3' },
+  { label: 'common.rebate.status.success', value: '0' },
+  { label: 'common.rebate.status.fail', value: '1' },
+];
