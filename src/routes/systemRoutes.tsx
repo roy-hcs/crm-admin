@@ -1,6 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import { RolesPage } from '@/pages/system/roles/RolesPage';
 import { MenusPage } from '@/pages/system/menus/MenusPage';
+import { CRMUserOperationsLogsPage } from '@/pages/system/logsPage/userOperation/CRMUserOperationsLogsPage';
 // Import other system pages as they are developed
 
 /**
@@ -27,6 +28,10 @@ export const systemRoutes: RouteObject[] = [
     path: '/system/menus',
     element: <MenusPage />,
   },
+  {
+    path: '/system/logs/crm-user-operations',
+    element: <CRMUserOperationsLogsPage />,
+  },
 
   // Routes to be developed - commented out until pages are created
   /*
@@ -45,10 +50,6 @@ export const systemRoutes: RouteObject[] = [
   {
     path: '/system/logs/crm-user-login',
     element: <CRMUserLoginLogsPage />,
-  },
-  {
-    path: '/system/logs/crm-user-operations',
-    element: <CRMUserOperationsLogsPage />,
   },
   {
     path: '/system/logs/email',

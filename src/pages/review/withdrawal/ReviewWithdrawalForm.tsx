@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form';
 import { WithdrawListParams } from '@/api/hooks/review/types';
 import { Dispatch, SetStateAction } from 'react';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
+import dayjs from 'dayjs';
 
 type FormData = {
   name: string;
@@ -79,12 +80,12 @@ export const ReviewWithdrawalForm = ({
       accounts: selectedAccounts.id,
     });
     setParams({
-      beginTime: data.submitTime.from,
-      endTime: data.submitTime.to,
+      beginTime: data.submitTime.from ? dayjs(data.submitTime.from).format('YYYY-MM-DD') : '',
+      endTime: data.submitTime.to ? dayjs(data.submitTime.to).format('YYYY-MM-DD') : '',
       outMoneyAccount: data.outAccountType,
       accounts: selectedAccounts.label,
-      finishBeginTime: data.finishTime.from,
-      finishEndTime: data.finishTime.to,
+      finishBeginTime: data.finishTime.from ? dayjs(data.finishTime.from).format('YYYY-MM-DD') : '',
+      finishEndTime: data.finishTime.to ? dayjs(data.finishTime.to).format('YYYY-MM-DD') : '',
     });
   };
   const onReset = () => {

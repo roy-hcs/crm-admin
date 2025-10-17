@@ -179,7 +179,7 @@ export function useGetDealAccountGroupList() {
 export function useDictType(type: string, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['DictType', type],
-    queryFn: () => apiGet<DictTypeResponse>(`/system/dict/type?dictType=${type}`, {}),
+    queryFn: () => apiGetCustom<DictTypeResponse>(`/system/dict/type?dictType=${type}`, {}),
     enabled: options?.enabled ?? true,
   });
 }

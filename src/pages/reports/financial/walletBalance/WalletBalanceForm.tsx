@@ -16,6 +16,7 @@ import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { Dispatch, SetStateAction } from 'react';
+import dayjs from 'dayjs';
 
 type FormData = {
   name: string;
@@ -55,8 +56,8 @@ export const WalletBalanceForm = ({
       ...pre,
       fuzzyName: data.name,
       email: data.email,
-      timeStart: data.time.from,
-      timeEnd: data.time.to,
+      timeStart: data.time.from ? dayjs(data.time.from).format('YYYY-MM-DD') : '',
+      timeEnd: data.time.to ? dayjs(data.time.to).format('YYYY-MM-DD') : '',
       accounts: selectedAccounts.label,
     }));
   };

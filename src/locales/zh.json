@@ -167,7 +167,9 @@
     "TradingVolume": "交易量(Lot)",
     "reason": "原因",
     "serverError": "若长时间未恢复连接，请检查交易服务器",
-    "serverErrorTip": "交易服务器异常"
+    "serverErrorTip": "交易服务器异常",
+    "success": "成功",
+    "fail": "失败"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -610,7 +612,15 @@
     "show": "显示",
     "hide": "隐藏",
     "all": "所有",
-    "scope": "权限"
+    "scope": "权限",
+    "operationType": "操作类型",
+    "operator": "操作人",
+    "operationStatus": "操作状态",
+    "operationAddress": "操作地址",
+    "systemModule": "系统模块",
+    "operationURL": "操作URL",
+    "operationMethod": "操作方法",
+    "operationParams": "操作参数"
   },
   "review": {
     "settings": {

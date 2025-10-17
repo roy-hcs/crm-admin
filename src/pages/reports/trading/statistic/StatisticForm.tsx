@@ -20,6 +20,7 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
+import dayjs from 'dayjs';
 
 type FormData = {
   serverId: string;
@@ -74,8 +75,12 @@ export const StatisticForm = ({
       serverGroupList: data.serverGroupList.join(','),
       fuzzyAccount: data.login,
       fuzzyName: data.name,
-      statisticStartTime: data.statisticTime.from,
-      statisticEndTime: data.statisticTime.to,
+      statisticStartTime: data.statisticTime.from
+        ? dayjs(data.statisticTime.from).format('YYYY-MM-DD')
+        : '',
+      statisticEndTime: data.statisticTime.to
+        ? dayjs(data.statisticTime.to).format('YYYY-MM-DD')
+        : '',
     });
   };
   const onReset = () => {
