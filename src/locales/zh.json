@@ -703,6 +703,9 @@
       "name": "姓名/账号",
       "browser": "操作浏览器",
       "os": "操作系统"
+    },
+    "crmUserLogin": {
+      "title": "CRM用户登录日志"
     }
   }
 }

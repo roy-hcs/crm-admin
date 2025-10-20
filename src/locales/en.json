@@ -488,7 +488,11 @@
     "sendTime": "Send time",
     "systemModule": "system module",
     "title": "title",
-    "visible": "visible"
+    "visible": "visible",
+    "orderTime": "order time",
+    "payFailed": "Payment failed",
+    "payResult": "Payment status",
+    "paySuccess": "Payment successful"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -672,7 +676,8 @@
     "title": "CRM user operation log"
   },
   "emailLogsPage": {
-    "title": "Email sending log"
+    "title": "Email sending log",
+    "reSendFailedEmailConfig": "Failed email resending configuration"
   },
   "menuManagement": {
     "managementBackend": "Management background",
@@ -695,6 +700,12 @@
     "adminOperations": {
       "systemModule": "system module",
       "title": "Administrator operation log"
+    },
+    "crmUserLogin": {
+      "title": "CRM user login log"
     }
+  },
+  "paymentLogsPage": {
+    "title": "Payment log"
   }
 }
