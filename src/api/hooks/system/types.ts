@@ -404,6 +404,83 @@ export type MenuListItem = {
   globalizationKey: string | null;
 };
 
+export type EmailListParams = BasicParams & {
+  acceptEmail?: string;
+  title?: string;
+  status?: string;
+  params: {
+    sendStartTime?: string;
+    sendEndTime?: string;
+  };
+};
+
+export type EmailListItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string;
+  sendEmail: string | null;
+  acceptEmail: string | null;
+  title: string;
+  type: number;
+  status: number;
+  sendTime: string;
+  isAll: string | null;
+  content: string | null;
+  source: number;
+  userType: number;
+  sendEmailStr: string;
+  acceptEmailStr: string;
+  userMsgId: string;
+};
+export type EmailListRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: EmailListItem[];
+};
+
+export type UserOrderLogListParams = BasicParams & {
+  orderId?: string;
+  channelName?: string;
+  payResult?: string;
+  params: {
+    operationStart?: string;
+    operationEnd?: string;
+    userName?: string;
+  };
+};
+export type UserOrderLogItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string;
+  orderId: string;
+  userId: string;
+  logTime: string;
+  userName: string;
+  showId: string;
+  channelName: string;
+  orderStatus: number;
+  orderStatusStr: string | null;
+  payResult: number | null;
+  payResultStr: string | null;
+  code: string;
+  msg: string;
+  logType: number;
+};
+export type UserOrderLogListRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: UserOrderLogItem[];
+};
 // 角色基础类型（为 UserItem.roles / userRole.role 提供复用）
 export type Role = {
   createBy: string | null;

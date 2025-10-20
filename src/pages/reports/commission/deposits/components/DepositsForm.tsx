@@ -19,6 +19,7 @@ import { CrmRebateTradersItem, ServerItem } from '@/api/hooks/system/types';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { serverMap } from '@/lib/constant';
 import { BaseOption } from '@/components/common/RrhSelect';
+import dayjs from 'dayjs';
 type FormData = {
   tradingTime: { from: string; to: string };
   rebateTime: { from: string; to: string };
@@ -101,10 +102,14 @@ export const DepositsForm = forwardRef<
 
     const onSubmit = (data: FormData) => {
       setParams({
-        startTraderTime: data.tradingTime.from,
-        endTraderTime: data.tradingTime.to,
-        beginVerifyTime: data.rebateTime.from,
-        endVerifyTime: data.rebateTime.to,
+        startTraderTime: data.tradingTime.from
+          ? dayjs(data.tradingTime.from).format('YYYY-MM-DD')
+          : '',
+        endTraderTime: data.tradingTime.to ? dayjs(data.tradingTime.to).format('YYYY-MM-DD') : '',
+        beginVerifyTime: data.rebateTime.from
+          ? dayjs(data.rebateTime.from).format('YYYY-MM-DD')
+          : '',
+        endVerifyTime: data.rebateTime.to ? dayjs(data.rebateTime.to).format('YYYY-MM-DD') : '',
         accounts: JSON.parse(data.accounts || '{"id": "", "label": ""}').id || '',
       });
       setCommonParams({

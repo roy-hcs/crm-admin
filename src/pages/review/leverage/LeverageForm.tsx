@@ -20,6 +20,7 @@ import { VerifyStatusOptions } from '@/lib/const';
 import { useServerList } from '@/api/hooks/system/system';
 import { BaseOption } from '@/components/common/RrhSelect';
 import { serverMap } from '@/lib/constant';
+import dayjs from 'dayjs';
 
 type FormData = {
   time: { from: string; to: string };
@@ -55,8 +56,8 @@ export const LeverageForm = ({
     setParams(pre => ({
       ...pre,
       server: data.server,
-      beginTime: data.time.from,
-      endTime: data.time.to,
+      beginTime: data.time.from ? dayjs(data.time.from).format('YYYY-MM-DD HH:mm:ss') : '',
+      endTime: data.time.to ? dayjs(data.time.to).format('YYYY-MM-DD HH:mm:ss') : '',
     }));
     setCommonParams({
       userId: data.userId,

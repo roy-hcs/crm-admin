@@ -8,6 +8,7 @@ type ToolTipProps = {
   side?: 'top' | 'right' | 'bottom' | 'left';
   align?: 'start' | 'center' | 'end';
   disabled?: boolean;
+  maxWidth?: string;
 };
 
 export const ToolTip: React.FC<ToolTipProps> = ({
@@ -17,6 +18,7 @@ export const ToolTip: React.FC<ToolTipProps> = ({
   side = 'bottom',
   align = 'center',
   disabled = false,
+  maxWidth = '300px',
 }) => {
   if (disabled) {
     return <>{children}</>;
@@ -26,7 +28,12 @@ export const ToolTip: React.FC<ToolTipProps> = ({
     <TooltipProvider>
       <Tooltip delayDuration={delayDuration}>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent side={side} align={align} className="text-sm">
+        <TooltipContent
+          style={{ maxWidth }}
+          side={side}
+          align={align}
+          className="text-sm break-words whitespace-normal"
+        >
           {content}
         </TooltipContent>
       </Tooltip>

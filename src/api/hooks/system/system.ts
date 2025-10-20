@@ -26,6 +26,10 @@ import {
   ServerExceptionNoticeRes,
   PreferencesRes,
   MenuListItem,
+  EmailListParams,
+  EmailListRes,
+  UserOrderLogListParams,
+  UserOrderLogListRes,
   UserListParams,
   UserListRes,
   AdminOperLogParams,
@@ -269,7 +273,7 @@ export function useGetPreferences() {
   });
 }
 
-export function useMenuList(menuName?: string, visible?: number) {
+export function useMenuList(menuName?: string, visible?: string) {
   return useQuery({
     queryKey: ['menuList', { menuName, visible }],
     queryFn: () => {
@@ -285,7 +289,7 @@ export function useMenuList(menuName?: string, visible?: number) {
   });
 }
 
-export function useUserMenuList(menuName?: string, visible?: number) {
+export function useUserMenuList(menuName?: string, visible?: string) {
   return useQuery({
     queryKey: ['userMenuList', { menuName, visible }],
     queryFn: () => {
@@ -301,6 +305,19 @@ export function useUserMenuList(menuName?: string, visible?: number) {
   });
 }
 
+export function useEmailList(params: EmailListParams) {
+  return useQuery({
+    queryKey: ['emailList', params],
+    queryFn: () => apiFormPostCustom<EmailListRes>('/system/msg/emailList', params),
+  });
+}
+
+export function useUserOrderLogList(params: UserOrderLogListParams) {
+  return useQuery({
+    queryKey: ['userOrderLogList', params],
+    queryFn: () => apiFormPostCustom<UserOrderLogListRes>('/system/crmUserOrderLog/list', params),
+  });
+}
 /**
  * 系统管理-管理员账户
  */

@@ -1,6 +1,9 @@
 import { RouteObject } from 'react-router-dom';
 import { RolesPage } from '@/pages/system/roles/RolesPage';
 import { MenusPage } from '@/pages/system/menus/MenusPage';
+import { CRMUserOperationsLogsPage } from '@/pages/system/logsPage/userOperation/CRMUserOperationsLogsPage';
+import { EmailLogsPage } from '@/pages/system/logsPage/email/EmailLogsPage';
+import { PaymentLogsPage } from '@/pages/system/logsPage/payment/PaymentLogsPage';
 import { AdminAccountsPage } from '@/pages/system/AdminAccounts/AdminAccountsPage';
 import { AdminOperationsPage } from '@/pages/system/logs/AdminOperations/AdminAccountsPage';
 import { AdminLoginPage } from '@/pages/system/logs/AdminLogin/AdminLoginPage';
@@ -30,6 +33,18 @@ export const systemRoutes: RouteObject[] = [
   {
     path: '/system/menus',
     element: <MenusPage />,
+  },
+  {
+    path: '/system/logs/crm-user-operations',
+    element: <CRMUserOperationsLogsPage />,
+  },
+  {
+    path: '/system/logs/email',
+    element: <EmailLogsPage />,
+  },
+  {
+    path: '/system/logs/payment',
+    element: <PaymentLogsPage />,
   },
   {
     path: '/system/admin-accounts',
@@ -65,17 +80,7 @@ export const systemRoutes: RouteObject[] = [
     path: '/system/logs/crm-user-login',
     element: <CRMUserLoginLogsPage />,
   },
-  {
-    path: '/system/logs/crm-user-operations',
-    element: <CRMUserOperationsLogsPage />,
-  },
-  {
-    path: '/system/logs/email',
-    element: <EmailLogsPage />,
-  },
-  {
-    path: '/system/logs/payment',
-    element: <PaymentLogsPage />,
-  },
+  
+  
   */
 ];

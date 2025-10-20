@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { AgentApplyListParams } from '@/api/hooks/review/types';
+import dayjs from 'dayjs';
 
 type FormData = {
   name: string;
@@ -66,8 +67,8 @@ export const ReviewAgentForm = ({
       verifyUserName: data.verifyUserName,
     });
     setParams({
-      beginTime: data.submitTime.from,
-      endTime: data.submitTime.to,
+      beginTime: data.submitTime.from ? dayjs(data.submitTime.from).format('YYYY-MM-DD') : '',
+      endTime: data.submitTime.to ? dayjs(data.submitTime.to).format('YYYY-MM-DD') : '',
     });
   };
   const onReset = () => {

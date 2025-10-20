@@ -168,6 +168,8 @@
     "reason": "原因",
     "serverError": "若长时间未恢复连接，请检查交易服务器",
     "serverErrorTip": "交易服务器异常",
+    "success": "成功",
+    "fail": "失败",
     "onlineStatus": {
       "online": "在线",
       "offline": "离线"
@@ -490,6 +492,16 @@
     "menuName": "菜单名称",
     "menuStatus": "菜单状态"
   },
+  "CRMUserOperationsLogsPage": {
+    "title": "CRM用户操作日志"
+  },
+  "emailLogsPage": {
+    "title": "邮件发送日志",
+    "reSendFailedEmailConfig": "失败邮件重发配置"
+  },
+  "paymentLogsPage": {
+    "title": "支付日志"
+  },
   "table": {
     "server": "服务器",
     "groups": "组别",
@@ -625,7 +637,29 @@
     "show": "显示",
     "hide": "隐藏",
     "all": "所有",
-    "scope": "权限"
+    "scope": "权限",
+    "operationType": "操作类型",
+    "operator": "操作人",
+    "operationStatus": "操作状态",
+    "operationAddress": "操作地址",
+    "systemModule": "系统模块",
+    "operationURL": "操作URL",
+    "operationMethod": "操作方法",
+    "operationParams": "操作参数",
+    "acceptEmail": "收件邮箱",
+    "title": "标题",
+    "sendTime": "发送时间",
+    "sendSuccess": "发送成功",
+    "sendFailed": "发送失败",
+    "sendEmailAddress": "发件邮箱",
+    "notSend": "未发送",
+    "reason": "原因",
+    "failedRecord": "失败记录",
+    "reSend": "重发",
+    "orderTime": "订单时间",
+    "payResult": "支付状态",
+    "paySuccess": "支付成功",
+    "payFailed": "支付失败"
   },
   "review": {
     "settings": {

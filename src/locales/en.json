@@ -148,6 +148,8 @@
     "serverError": "If the connection is not restored for a long time, please check the trading server",
     "serverErrorTip": "Trading server exception",
     "total": "total",
+    "fail": "fail",
+    "success": "success",
     "notBind": "Not bound",
     "onlineStatus": {
       "offline": "Offline",
@@ -457,17 +459,35 @@
     "roleDescription": "role description",
     "source": "source",
     "systemDefault": "System default",
-    "all": "all",
-    "button": "button",
-    "category": "Table of contents",
-    "hide": "hide",
-    "interLink": "Internal link",
-    "menu": "menu",
     "outerLink": "external link",
     "requestUrl": "Request address",
     "scope": "Permissions",
     "show": "show",
     "sort": "sort",
+    "acceptEmail": "Receiving email",
+    "all": "all",
+    "button": "button",
+    "category": "Table of contents",
+    "failedRecord": "Failure record",
+    "hide": "hide",
+    "interLink": "Internal link",
+    "menu": "menu",
+    "notSend": "Not sent",
+    "operationAddress": "Operation address",
+    "operationMethod": "How to operate",
+    "operationParams": "Operating parameters",
+    "operationStatus": "operating status",
+    "operationType": "Operation type",
+    "operationURL": "Operation URL",
+    "operator": "operator",
+    "reSend": "Resend",
+    "reason": "reason",
+    "sendEmailAddress": "Sending email",
+    "sendFailed": "Sending failed",
+    "sendSuccess": "Sent successfully",
+    "sendTime": "Send time",
+    "systemModule": "system module",
+    "title": "title",
     "visible": "visible"
   },
   "tradingHistoryPage": {
@@ -647,6 +667,12 @@
   },
   "workBench": {
     "title": "Data overview"
+  },
+  "CRMUserOperationsLogsPage": {
+    "title": "CRM user operation log"
+  },
+  "emailLogsPage": {
+    "title": "Email sending log"
   },
   "menuManagement": {
     "managementBackend": "Management background",
