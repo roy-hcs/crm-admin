@@ -561,3 +561,81 @@ export type AdminOperLogRes = {
   total: string;
   rows: AdminOperLogItem[];
 };
+
+export type AdminLoginParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+
+  ipaddr?: string;
+  status?: string;
+  loginLocation?: string;
+
+  params: {
+    userName?: string;
+    beginTime?: string;
+    endTime?: string;
+  };
+};
+
+export type AdminLoginItem = {
+  login_location: string | null;
+  msg: string | null;
+  login_name: string | null;
+  os: string | null;
+  user_last_name: string | null;
+  login_time: string | null;
+  user_name: string | null;
+  browser: string | null;
+  info_id: string | null;
+  ipaddr: string | null;
+  status: string | null;
+};
+
+export type AdminLoginRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: AdminLoginItem[];
+};
+
+export type CrmLogininforParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+
+  ipaddr?: string;
+  userName?: string;
+  status?: string;
+  loginLocation?: string;
+
+  params: {
+    beginTime?: string;
+    endTime?: string;
+  };
+};
+export type CrmLogininforItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  infoId: string | null;
+  loginName: string | null;
+  ipaddr: string | null;
+  loginLocation: string | null;
+  browser: string | null;
+  os: string | null;
+  status: string | null;
+  loginTime: string | null;
+};
+
+export type CrmLogininforRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: CrmLogininforItem[];
+};

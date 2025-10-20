@@ -84,7 +84,7 @@ export const onlineStatusOptions = [
 
 // 操作状态
 export const adminOperationsStatusOptions = [
-  { label: 'table.all', value: '3' },
+  { label: 'table.all', value: '3' }, // value 后端需要传 空 但是组件不支持为空 所以就传3 代表全部 在接口处理的时候转换一下·
   { label: 'common.rebate.status.success', value: '0' },
   { label: 'common.rebate.status.fail', value: '1' },
 ];

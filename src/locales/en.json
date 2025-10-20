@@ -152,7 +152,18 @@
     "onlineStatus": {
       "offline": "Offline",
       "online": "online"
-    }
+    },
+    "add": "New",
+    "bind": "Bound",
+    "boundGoogle": "Google token",
+    "createTime": "creation time",
+    "ip": "IP",
+    "operIp": "Operation IP",
+    "operLocation": "operating location",
+    "operName": "operator",
+    "operObject": "Operation object",
+    "operStatus": "operating status",
+    "operTime": "Operating time"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -445,7 +456,19 @@
     "custom": "Customize",
     "roleDescription": "role description",
     "source": "source",
-    "systemDefault": "System default"
+    "systemDefault": "System default",
+    "all": "all",
+    "button": "button",
+    "category": "Table of contents",
+    "hide": "hide",
+    "interLink": "Internal link",
+    "menu": "menu",
+    "outerLink": "external link",
+    "requestUrl": "Request address",
+    "scope": "Permissions",
+    "show": "show",
+    "sort": "sort",
+    "visible": "visible"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -627,6 +650,25 @@
   },
   "menuManagement": {
     "managementBackend": "Management background",
-    "menuName": "Menu name"
+    "menuName": "Menu name",
+    "menuStatus": "Menu status",
+    "title": "Menu management",
+    "userFrontend": "User front desk"
+  },
+  "system": {
+    "adminAccounts": {
+      "roleName": "Account role",
+      "title": "Administrator account"
+    },
+    "adminLogin": {
+      "browser": "Operate the browser",
+      "name": "Name/account number",
+      "os": "operating system",
+      "title": "Administrator login log"
+    },
+    "adminOperations": {
+      "systemModule": "system module",
+      "title": "Administrator operation log"
+    }
   }
 }

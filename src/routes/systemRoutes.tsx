@@ -3,8 +3,8 @@ import { RolesPage } from '@/pages/system/roles/RolesPage';
 import { MenusPage } from '@/pages/system/menus/MenusPage';
 import { AdminAccountsPage } from '@/pages/system/AdminAccounts/AdminAccountsPage';
 import { AdminOperationsPage } from '@/pages/system/logs/AdminOperations/AdminAccountsPage';
-import { AdminLoginPage } from '@/pages/system/logs/AdminLogin/AdminAccountsPage';
-import { CrmUserLoginPage } from '@/pages/system/logs/CrmUserLogin/AdminAccountsPage';
+import { AdminLoginPage } from '@/pages/system/logs/AdminLogin/AdminLoginPage';
+import { CrmUserLoginPage } from '@/pages/system/logs/CrmUserLogin/CrmUserLoginPage';
 // Import other system pages as they are developed
 
 /**
