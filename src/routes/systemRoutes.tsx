@@ -5,9 +5,9 @@ import { CRMUserOperationsLogsPage } from '@/pages/system/logsPage/userOperation
 import { EmailLogsPage } from '@/pages/system/logsPage/email/EmailLogsPage';
 import { PaymentLogsPage } from '@/pages/system/logsPage/payment/PaymentLogsPage';
 import { AdminAccountsPage } from '@/pages/system/AdminAccounts/AdminAccountsPage';
-import { AdminOperationsPage } from '@/pages/system/logs/AdminOperations/AdminAccountsPage';
-import { AdminLoginPage } from '@/pages/system/logs/AdminLogin/AdminLoginPage';
-import { CrmUserLoginPage } from '@/pages/system/logs/CrmUserLogin/CrmUserLoginPage';
+import { AdminOperationsPage } from '@/pages/system/logsPage/AdminOperations/AdminAccountsPage';
+import { AdminLoginPage } from '@/pages/system/logsPage/AdminLogin/AdminLoginPage';
+import { CrmUserLoginPage } from '@/pages/system/logsPage/CrmUserLogin/CrmUserLoginPage';
 // Import other system pages as they are developed
 
 /**
