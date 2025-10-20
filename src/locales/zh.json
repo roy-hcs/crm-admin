@@ -178,7 +178,13 @@
     "createTime": "创建时间",
     "boundGoogle": "谷歌令牌",
     "bind": "已绑定",
-    "notBind": "未绑定"
+    "notBind": "未绑定",
+    "operObject": "操作对象",
+    "operName": "操作人员",
+    "operStatus": "操作状态",
+    "operIp": "操作IP",
+    "operLocation": "操作地点",
+    "operTime": "操作时间"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -687,6 +693,19 @@
     "adminAccounts": {
       "title": "管理员账户",
       "roleName": "账户角色"
+    },
+    "adminOperations": {
+      "title": "管理员操作日志",
+      "systemModule": "系统模块"
+    },
+    "adminLogin": {
+      "title": "管理员登录日志",
+      "name": "姓名/账号",
+      "browser": "操作浏览器",
+      "os": "操作系统"
+    },
+    "crmUserLogin": {
+      "title": "CRM用户登录日志"
     }
   }
 }

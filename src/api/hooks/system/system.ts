@@ -32,6 +32,12 @@ import {
   UserOrderLogListRes,
   UserListParams,
   UserListRes,
+  AdminOperLogParams,
+  AdminOperLogRes,
+  AdminLoginParams,
+  AdminLoginRes,
+  CrmLogininforParams,
+  CrmLogininforRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -329,5 +335,35 @@ export function useRoleList() {
   return useQuery({
     queryKey: ['roleList'],
     queryFn: () => apiFormPostCustom<RoleListRes>('/system/role/list', {}),
+  });
+}
+
+/**
+ * 系统管理-日志管理-管理员操作日志
+ */
+export function useAdminOperLogList(params: AdminOperLogParams) {
+  return useQuery({
+    queryKey: ['adminOperLogList', params],
+    queryFn: () => apiFormPostCustom<AdminOperLogRes>(`/monitor/operlog/list`, params),
+  });
+}
+
+/**
+ * 系统管理-日志管理-管理员登录日志
+ */
+export function useAdminLoginList(params: AdminLoginParams) {
+  return useQuery({
+    queryKey: ['adminLoginList', params],
+    queryFn: () => apiFormPostCustom<AdminLoginRes>(`/monitor/logininfor/list`, params),
+  });
+}
+
+/**
+ * 系统管理-日志管理-CRM用户登录日志
+ */
+export function useCrmLogininfor(params: CrmLogininforParams) {
+  return useQuery({
+    queryKey: ['crmLogininfor', params],
+    queryFn: () => apiFormPostCustom<CrmLogininforRes>(`/monitor/crmLogininfor/list`, params),
   });
 }

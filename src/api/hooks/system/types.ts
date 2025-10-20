@@ -551,9 +551,6 @@ export type UserItem = {
     delFlag: string | null;
     parentName: string | null;
   };
-  /**
-   * @deprecated 与 roles 重复，优先使用 roles 数组。后续可移除。
-   */
   userRole?: {
     userId: string | null;
     roleId: string | null;
@@ -593,4 +590,129 @@ export type UserListParams = {
     beginTime?: string;
     endTime?: string;
   };
+};
+
+export type AdminOperLogParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+
+  title?: string;
+  operName?: string;
+  status?: string;
+  businessTypes?: string;
+
+  params: {
+    beginTime?: string;
+    endTime?: string;
+  };
+};
+export type AdminOperLogItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  operId: string | null;
+  title: string | null;
+  businessType: string | null;
+  businessTypes: string | null;
+  method: string | null;
+  operatorType: string | null;
+  operName: string | null;
+  deptName: string | null;
+  operUrl: string | null;
+  operIp: string | null;
+  operLocation: string | null;
+  operParam: string | null;
+  status: string | null;
+  errorMsg: string | null;
+  operTime: string | null;
+  operObject: string | null;
+};
+export type AdminOperLogRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: AdminOperLogItem[];
+};
+
+export type AdminLoginParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+
+  ipaddr?: string;
+  status?: string;
+  loginLocation?: string;
+
+  params: {
+    userName?: string;
+    beginTime?: string;
+    endTime?: string;
+  };
+};
+
+export type AdminLoginItem = {
+  login_location: string | null;
+  msg: string | null;
+  login_name: string | null;
+  os: string | null;
+  user_last_name: string | null;
+  login_time: string | null;
+  user_name: string | null;
+  browser: string | null;
+  info_id: string | null;
+  ipaddr: string | null;
+  status: string | null;
+};
+
+export type AdminLoginRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: AdminLoginItem[];
+};
+
+export type CrmLogininforParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+
+  ipaddr?: string;
+  userName?: string;
+  status?: string;
+  loginLocation?: string;
+
+  params: {
+    beginTime?: string;
+    endTime?: string;
+  };
+};
+export type CrmLogininforItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  infoId: string | null;
+  loginName: string | null;
+  ipaddr: string | null;
+  loginLocation: string | null;
+  browser: string | null;
+  os: string | null;
+  status: string | null;
+  loginTime: string | null;
+};
+
+export type CrmLogininforRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: CrmLogininforItem[];
 };

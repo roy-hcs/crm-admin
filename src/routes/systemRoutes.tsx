@@ -5,6 +5,9 @@ import { CRMUserOperationsLogsPage } from '@/pages/system/logsPage/userOperation
 import { EmailLogsPage } from '@/pages/system/logsPage/email/EmailLogsPage';
 import { PaymentLogsPage } from '@/pages/system/logsPage/payment/PaymentLogsPage';
 import { AdminAccountsPage } from '@/pages/system/AdminAccounts/AdminAccountsPage';
+import { AdminOperationsPage } from '@/pages/system/logsPage/AdminOperations/AdminAccountsPage';
+import { AdminLoginPage } from '@/pages/system/logsPage/AdminLogin/AdminLoginPage';
+import { CrmUserLoginPage } from '@/pages/system/logsPage/CrmUserLogin/CrmUserLoginPage';
 // Import other system pages as they are developed
 
 /**
@@ -47,7 +50,18 @@ export const systemRoutes: RouteObject[] = [
     path: '/system/admin-accounts',
     element: <AdminAccountsPage />,
   },
-
+  {
+    path: '/system/logs/admin-operations',
+    element: <AdminOperationsPage />,
+  },
+  {
+    path: '/system/logs/admin-login',
+    element: <AdminLoginPage />,
+  },
+  {
+    path: '/system/logs/crm-user-login',
+    element: <CrmUserLoginPage />,
+  },
   // Routes to be developed - commented out until pages are created
   /*
   {
