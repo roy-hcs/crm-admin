@@ -148,7 +148,6 @@
     "serverError": "If the connection is not restored for a long time, please check the trading server",
     "serverErrorTip": "Trading server exception",
     "total": "total",
-    "add": "New",
     "fail": "fail",
     "success": "success",
     "notBind": "Not bound",
@@ -159,7 +158,14 @@
     "bind": "Bound",
     "boundGoogle": "Google token",
     "createTime": "creation time",
-    "ip": "IP"
+    "ip": "IP",
+    "add": "New",
+    "operIp": "Operation IP",
+    "operLocation": "operating location",
+    "operName": "operator",
+    "operObject": "Operation object",
+    "operStatus": "operating status",
+    "operTime": "Operating time"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -453,6 +459,11 @@
     "roleDescription": "role description",
     "source": "source",
     "systemDefault": "System default",
+    "outerLink": "external link",
+    "requestUrl": "Request address",
+    "scope": "Permissions",
+    "show": "show",
+    "sort": "sort",
     "acceptEmail": "Receiving email",
     "all": "all",
     "button": "button",
@@ -469,17 +480,12 @@
     "operationType": "Operation type",
     "operationURL": "Operation URL",
     "operator": "operator",
-    "outerLink": "external link",
     "reSend": "Resend",
     "reason": "reason",
-    "requestUrl": "Request address",
-    "scope": "Permissions",
     "sendEmailAddress": "Sending email",
     "sendFailed": "Sending failed",
     "sendSuccess": "Sent successfully",
     "sendTime": "Send time",
-    "show": "show",
-    "sort": "sort",
     "systemModule": "system module",
     "title": "title",
     "visible": "visible",
@@ -710,6 +716,19 @@
     "adminAccounts": {
       "roleName": "Account role",
       "title": "Administrator account"
+    },
+    "adminLogin": {
+      "browser": "Operate the browser",
+      "name": "Name/account number",
+      "os": "operating system",
+      "title": "Administrator login log"
+    },
+    "adminOperations": {
+      "systemModule": "system module",
+      "title": "Administrator operation log"
+    },
+    "crmUserLogin": {
+      "title": "CRM user login log"
     }
   }
 }
