@@ -32,6 +32,8 @@ import {
   UserOrderLogListRes,
   UserListParams,
   UserListRes,
+  BonusSettingListParams,
+  BonusSettingListRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -329,5 +331,13 @@ export function useRoleList() {
   return useQuery({
     queryKey: ['roleList'],
     queryFn: () => apiFormPostCustom<RoleListRes>('/system/role/list', {}),
+  });
+}
+
+export function useBonusSettingList(params: BonusSettingListParams) {
+  return useQuery({
+    queryKey: ['bonusSettingList', params],
+    queryFn: () =>
+      apiFormPostCustom<BonusSettingListRes>(`/system/marketing/bonusSetting/list`, params),
   });
 }

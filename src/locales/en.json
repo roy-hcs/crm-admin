@@ -155,7 +155,11 @@
     "onlineStatus": {
       "offline": "Offline",
       "online": "online"
-    }
+    },
+    "bind": "Bound",
+    "boundGoogle": "Google token",
+    "createTime": "creation time",
+    "ip": "IP"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -478,7 +482,31 @@
     "sort": "sort",
     "systemModule": "system module",
     "title": "title",
-    "visible": "visible"
+    "visible": "visible",
+    "activityDisplay": "Event display",
+    "activityName": "Activity name",
+    "allowMultipleBonusHits": "Allow multiple hit bonuses",
+    "configurationText": "Configure copywriting",
+    "convertibleCreditDeposit": "convertible credit",
+    "creditDeposit": "credit",
+    "disposable": "Disposable",
+    "fixedAmount": "fixed amount",
+    "multipleRewards": "Multiple rewards",
+    "noActivated": "Not enabled",
+    "orderTime": "order time",
+    "payFailed": "Payment failed",
+    "payResult": "Payment status",
+    "paySuccess": "Payment successful",
+    "percentage": "percentage",
+    "realDeposit": "Real deposit",
+    "rewardAmount": "Reward amount",
+    "rewardRecord": "Award record",
+    "rewardType": "Reward type",
+    "rewardValue": "reward value",
+    "rewardWay": "Incentive program",
+    "tradingVolume": "trading volume",
+    "triggerBusiness": "Trigger business",
+    "updateTime": "Update time"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -662,7 +690,8 @@
     "title": "CRM user operation log"
   },
   "emailLogsPage": {
-    "title": "Email sending log"
+    "title": "Email sending log",
+    "reSendFailedEmailConfig": "Failed email resending configuration"
   },
   "menuManagement": {
     "managementBackend": "Management background",
@@ -670,5 +699,17 @@
     "menuStatus": "Menu status",
     "title": "Menu management",
     "userFrontend": "User front desk"
+  },
+  "paymentLogsPage": {
+    "title": "Payment log"
+  },
+  "rewardConfigPage": {
+    "title": "Reward configuration"
+  },
+  "system": {
+    "adminAccounts": {
+      "roleName": "Account role",
+      "title": "Administrator account"
+    }
   }
 }

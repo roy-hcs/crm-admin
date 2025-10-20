@@ -1,3 +1,4 @@
+import { RewardConfigPage } from '@/pages/marketing/RewardConfigsPage';
 import { RouteObject } from 'react-router-dom';
 
 /**
@@ -9,12 +10,13 @@ import { RouteObject } from 'react-router-dom';
  * - /marketing/ads              - 广告管理 (Ads Management)
  */
 export const marketingRoutes: RouteObject[] = [
-  // TODO: Add routes as pages are developed
-  /*
   {
     path: '/marketing/reward-config',
     element: <RewardConfigPage />,
   },
+  // TODO: Add routes as pages are developed
+  /*
+  
   {
     path: '/marketing/reward-records',
     element: <RewardRecordsPage />,
