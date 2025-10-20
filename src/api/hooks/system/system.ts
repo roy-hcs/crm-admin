@@ -32,6 +32,8 @@ import {
   UserOrderLogListRes,
   UserListParams,
   UserListRes,
+  BonusSettingListParams,
+  BonusSettingListRes,
   AdminOperLogParams,
   AdminOperLogRes,
   AdminLoginParams,
@@ -338,6 +340,13 @@ export function useRoleList() {
   });
 }
 
+export function useBonusSettingList(params: BonusSettingListParams) {
+  return useQuery({
+    queryKey: ['bonusSettingList', params],
+    queryFn: () =>
+      apiFormPostCustom<BonusSettingListRes>(`/system/marketing/bonusSetting/list`, params),
+  });
+}
 /**
  * 系统管理-日志管理-管理员操作日志
  */

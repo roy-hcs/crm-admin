@@ -502,6 +502,9 @@
   "paymentLogsPage": {
     "title": "支付日志"
   },
+  "rewardConfigPage": {
+    "title": "奖励配置"
+  },
   "table": {
     "server": "服务器",
     "groups": "组别",
@@ -659,7 +662,27 @@
     "orderTime": "订单时间",
     "payResult": "支付状态",
     "paySuccess": "支付成功",
-    "payFailed": "支付失败"
+    "payFailed": "支付失败",
+    "activityName": "活动名称",
+    "triggerBusiness": "触发业务",
+    "rewardType": "奖励类型",
+    "rewardWay": "奖励方案",
+    "rewardAmount": "奖励金额",
+    "rewardValue": "奖励值",
+    "activityDisplay": "活动展示",
+    "rewardRecord": "奖励记录",
+    "disposable": "一次性",
+    "multipleRewards": "多次奖励",
+    "percentage": "百分比",
+    "fixedAmount": "固定金额",
+    "tradingVolume": "交易量",
+    "configurationText": "配置文案",
+    "noActivated": "未启用",
+    "updateTime": "更新时间",
+    "creditDeposit": "信用金",
+    "realDeposit": "真实入金",
+    "convertibleCreditDeposit": "可转化信用金",
+    "allowMultipleBonusHits": "允许命中多条奖励"
   },
   "review": {
     "settings": {
