@@ -778,3 +778,39 @@ export type CrmLogininforRes = {
   total: string;
   rows: CrmLogininforItem[];
 };
+
+export type AdsListParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+};
+
+export type AdsListItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string | null;
+  name: string | null;
+  position: string | null;
+  sort: string | null;
+  status: number;
+  clickCount: string | null;
+  webPicture: string | null;
+  appPicture: string | null;
+  jumpType: number | null;
+  customLink: string | null;
+  msgId: string | null;
+  crmRoleIds: string | null;
+  delFlag: string | null;
+};
+
+export type AdsListRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: AdsListItem[];
+};
