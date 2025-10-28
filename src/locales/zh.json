@@ -730,5 +730,15 @@
     "crmUserLogin": {
       "title": "CRM用户登录日志"
     }
+  },
+  "marketing": {
+    "ads": {
+      "name": "广告管理",
+      "position": "位置",
+      "clickCount": "点击量",
+      "positionType": {
+        "1": "用户端首页"
+      }
+    }
   }
 }

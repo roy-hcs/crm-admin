@@ -40,6 +40,8 @@ import {
   AdminLoginRes,
   CrmLogininforParams,
   CrmLogininforRes,
+  AdsListParams,
+  AdsListRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -374,5 +376,15 @@ export function useCrmLogininfor(params: CrmLogininforParams) {
   return useQuery({
     queryKey: ['crmLogininfor', params],
     queryFn: () => apiFormPostCustom<CrmLogininforRes>(`/monitor/crmLogininfor/list`, params),
+  });
+}
+
+/**
+ * 获取广告管理
+ */
+export function useAdsList(params: AdsListParams) {
+  return useQuery({
+    queryKey: ['adsList', params],
+    queryFn: () => apiFormPostCustom<AdsListRes>(`/system/marketing/advertise/list`, params),
   });
 }

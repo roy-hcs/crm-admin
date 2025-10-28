@@ -730,5 +730,15 @@
     "crmUserLogin": {
       "title": "CRM user login log"
     }
+  },
+  "marketing": {
+    "ads": {
+      "clickCount": "Clicks",
+      "name": "Advertising management",
+      "position": "Location",
+      "positionType": {
+        "1": "Client home page"
+      }
+    }
   }
 }
