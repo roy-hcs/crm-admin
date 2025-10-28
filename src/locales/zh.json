@@ -506,6 +506,7 @@
     "title": "奖励配置"
   },
   "table": {
+    "orderNo": "订单ID",
     "server": "服务器",
     "groups": "组别",
     "transactionType": "交易类型",
@@ -682,7 +683,9 @@
     "creditDeposit": "信用金",
     "realDeposit": "真实入金",
     "convertibleCreditDeposit": "可转化信用金",
-    "allowMultipleBonusHits": "允许命中多条奖励"
+    "allowMultipleBonusHits": "允许命中多条奖励",
+    "unlockTime": "解锁时间",
+    "unlockAmount": "解锁金额"
   },
   "review": {
     "settings": {
@@ -739,6 +742,13 @@
       "positionType": {
         "1": "用户端首页"
       }
+    },
+    "rewardRecords": {
+      "title": "奖励记录",
+      "rewardType": "奖励类型",
+      "rewardTarget": "奖励对象",
+      "amount": "奖励金额",
+      "lockStatus": "奖励锁定"
     }
   }
 }

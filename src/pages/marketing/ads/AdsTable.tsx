@@ -6,7 +6,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Ellipsis } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-export const AdminOperationsTable = ({
+export const AdsTable = ({
   data,
   pageCount,
   pageIndex,

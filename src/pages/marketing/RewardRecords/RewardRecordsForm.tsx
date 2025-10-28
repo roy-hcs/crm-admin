@@ -14,69 +14,68 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
-import { AdminOperLogParams, DictTypeItem } from '@/api/hooks/system/types';
+import { RewardRecordsListParams } from '@/api/hooks/system/types';
 import { FormSelect } from '@/components/form/FormSelect';
-import { adminOperationsStatusOptions } from '@/lib/const';
 import dayjs from 'dayjs';
 
 type FormData = {
-  title: string;
-  operName: string;
-  status: string;
-  businessTypes: string;
+  rewardId: string;
+  rewardTitle: string;
+  crmAccount: string;
+  businessType: string;
   time: { from: string; to: string };
 };
 
-export const AdminOperationsForm = ({
+export const RewardRecordsForm = ({
   setOtherParams,
   setParams,
   loading,
-  operTypeList,
+  bonusDictType,
 }: {
-  setParams: Dispatch<SetStateAction<AdminOperLogParams['params']>>;
+  setParams: Dispatch<SetStateAction<RewardRecordsListParams['params']>>;
   setOtherParams: Dispatch<
     SetStateAction<
-      Omit<AdminOperLogParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
+      Omit<RewardRecordsListParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
     >
   >;
   loading: boolean;
-  operTypeList: DictTypeItem[];
+  bonusDictType: { dictLabel: string; dictValue: string }[];
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      title: '',
-      operName: '',
-      status: '',
-      businessTypes: '',
+      rewardId: '',
+      rewardTitle: '',
+      crmAccount: '',
+      businessType: '',
       time: { from: '', to: '' },
     },
   });
 
   const onSubmit = (data: FormData) => {
     setOtherParams({
-      title: data.title,
-      operName: data.operName,
-      status: data.status === '3' ? '' : data.status,
-      businessTypes: data.businessTypes,
+      rewardId: data.rewardId,
     });
     setParams(pre => ({
       ...pre,
       beginTime: data.time.from ? dayjs(data.time.from).format('YYYY-MM-DD') : '',
       endTime: data.time.to ? dayjs(data.time.to).format('YYYY-MM-DD') : '',
+      rewardTitle: data.rewardTitle,
+      crmAccount: data.crmAccount,
+      businessType: data.businessType,
     }));
   };
   const onReset = () => {
     setOtherParams({
-      title: '',
-      operName: '',
-      status: '',
-      businessTypes: '',
+      rewardId: '',
     });
     setParams(pre => ({
       ...pre,
-      beginTime: '',
-      endTime: '',
+      rewardTitle: '',
+      crmAccount: '',
+      businessType: '',
+      bonusTimeStart: '',
+      bonusTimeEnd: '',
     }));
     form.reset();
   };
@@ -98,41 +97,29 @@ export const AdminOperationsForm = ({
         >
           <FormInput
             verticalLabel
-            name="title"
-            label={t('system.adminOperations.systemModule')}
-            placeholder={t('common.pleaseInput', {
-              field: t('system.adminOperations.systemModule'),
-            })}
+            name="rewardTitle"
+            label={t('table.activityName')}
+            placeholder={t('common.pleaseInput', { field: t('table.activityName') })}
           />
           <FormInput
             verticalLabel
-            name="operName"
-            label={t('common.operName')}
-            placeholder={t('common.pleaseInput', {
-              field: t('common.operName'),
-            })}
+            name="crmAccount"
+            label={t('table.CRMAccount')}
+            placeholder={t('common.pleaseInput', { field: t('table.CRMAccount') })}
           />
           <FormSelect
             verticalLabel
-            name="businessTypes"
-            label={t('common.operType')}
+            name="businessType"
+            label={t('table.triggerBusiness')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
-            options={operTypeList.map(i => ({ label: i.dictLabel, value: i.dictValue }))}
-          />
-          <FormSelect
-            verticalLabel
-            name="status"
-            label={t('common.operStatus')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={adminOperationsStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
+            options={bonusDictType?.map(i => ({ label: i.dictLabel, value: i.dictValue }))}
           />
           <FormField
             name="time"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('common.operTime')}</FormLabel>
+                <FormLabel className="basis-3/12">{t('table.updateTime')}</FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="time" control={form.control} />
                 </FormControl>

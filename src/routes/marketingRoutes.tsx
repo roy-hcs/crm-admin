@@ -1,5 +1,6 @@
-import { AdsPage } from '@/pages/marketing/ads/AdminAccountsPage';
+import { AdsPage } from '@/pages/marketing/ads/AdsPage';
 import { RewardConfigPage } from '@/pages/marketing/RewardConfigs/RewardConfigsPage';
+import { RewardRecordsPage } from '@/pages/marketing/RewardRecords/RewardRecordsPage';
 import { RouteObject } from 'react-router-dom';
 
 /**
@@ -14,6 +15,10 @@ export const marketingRoutes: RouteObject[] = [
   {
     path: '/marketing/reward-config',
     element: <RewardConfigPage />,
+  },
+  {
+    path: '/marketing/reward-records',
+    element: <RewardRecordsPage />,
   },
   {
     path: '/marketing/ads',
