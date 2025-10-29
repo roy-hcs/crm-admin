@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AdminOperationsTable } from './AdminOperationsTable';
+import { AdsTable } from './AdsTable';
 import { useAdsList } from '@/api/hooks/system/system';
 
 export const AdsPage = () => {
@@ -26,7 +26,7 @@ export const AdsPage = () => {
           </RrhButton>
         </div>
       </div>
-      <AdminOperationsTable
+      <AdsTable
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}

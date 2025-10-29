@@ -512,7 +512,10 @@
     "rewardWay": "Incentive program",
     "tradingVolume": "trading volume",
     "triggerBusiness": "Trigger business",
-    "updateTime": "Update time"
+    "updateTime": "Update time",
+    "orderNo": "Order ID",
+    "unlockAmount": "Unlock amount",
+    "unlockTime": "Unlock time"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -739,6 +742,13 @@
       "positionType": {
         "1": "Client home page"
       }
+    },
+    "rewardRecords": {
+      "amount": "Reward amount",
+      "lockStatus": "Rewards locked",
+      "rewardTarget": "Reward object",
+      "rewardType": "Reward type",
+      "title": "Award record"
     }
   }
 }

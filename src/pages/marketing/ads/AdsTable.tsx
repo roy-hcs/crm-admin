@@ -1,12 +1,12 @@
 import { AdsListItem } from '@/api/hooks/system/types';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
-import { CRMColumnDef, DataTable } from '@/components/table/DataTable';
+import { DataTable } from '@/components/table/DataTable';
 import { Switch } from '@/components/ui/switch';
 import { ColumnDef } from '@tanstack/react-table';
 import { Ellipsis } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-export const AdminOperationsTable = ({
+export const AdsTable = ({
   data,
   pageCount,
   pageIndex,
@@ -25,7 +25,7 @@ export const AdminOperationsTable = ({
 }) => {
   const { t } = useTranslation();
 
-  const baseColumns: ColumnDef<AdsListItem>[] = [
+  const columns: ColumnDef<AdsListItem>[] = [
     {
       id: 'No',
       header: t('table.index'),
@@ -104,11 +104,9 @@ export const AdminOperationsTable = ({
     },
   ];
 
-  const columns = [...baseColumns];
-
   return (
     <DataTable
-      columns={columns as CRMColumnDef<AdsListItem, unknown>[]}
+      columns={columns}
       data={data}
       pageCount={pageCount}
       pageSize={pageSize}

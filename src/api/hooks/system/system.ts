@@ -42,6 +42,8 @@ import {
   CrmLogininforRes,
   AdsListParams,
   AdsListRes,
+  RewardRecordsListParams,
+  RewardRecordsListRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -386,5 +388,16 @@ export function useAdsList(params: AdsListParams) {
   return useQuery({
     queryKey: ['adsList', params],
     queryFn: () => apiFormPostCustom<AdsListRes>(`/system/marketing/advertise/list`, params),
+  });
+}
+
+/**
+ * 获取奖励记录
+ */
+export function useRewardRecordsList(params: RewardRecordsListParams) {
+  return useQuery({
+    queryKey: ['rewardRecordsList', params],
+    queryFn: () =>
+      apiFormPostCustom<RewardRecordsListRes>(`/system/marketing/rewardRecord/list`, params),
   });
 }

@@ -814,3 +814,55 @@ export type AdsListRes = {
   total: string;
   rows: AdsListItem[];
 };
+
+export type RewardRecordsListParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+
+  rewardId?: string;
+
+  params: {
+    rewardTitle?: string;
+    crmAccount?: string;
+    businessType?: string;
+    bonusTimeStart?: string;
+    bonusTimeEnd?: string;
+  };
+};
+
+export type RewardRecordsListItem = {
+  recordId: string | null;
+  orderNo: string | null;
+  userId: string | null;
+  lastName: string | null;
+  name: string | null;
+  showId: string | null;
+  businessType: string | null;
+  rewardTitle: string | null;
+  targetType: string | null;
+  rewardType: string | null;
+  rewardTarget: string | null;
+  amount: string | null;
+  status: string;
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  verifyFlag: boolean | null;
+  lockStatus: string | null;
+  unlockAmount: string | null;
+  unlockTime: string | null;
+  unlockLimit: string | null;
+  unlockDeposit: string | null;
+  unlockNet: string | null;
+  unlockVolume: string | null;
+};
+
+export type RewardRecordsListRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: RewardRecordsListItem[];
+};
