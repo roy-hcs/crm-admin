@@ -505,6 +505,9 @@
   "rewardConfigPage": {
     "title": "奖励配置"
   },
+  "walletAccountsPage": {
+    "title": "钱包账户"
+  },
   "table": {
     "orderNo": "订单ID",
     "server": "服务器",
@@ -685,7 +688,8 @@
     "convertibleCreditDeposit": "可转化信用金",
     "allowMultipleBonusHits": "允许命中多条奖励",
     "unlockTime": "解锁时间",
-    "unlockAmount": "解锁金额"
+    "unlockAmount": "解锁金额",
+    "currency": "钱包币种"
   },
   "review": {
     "settings": {

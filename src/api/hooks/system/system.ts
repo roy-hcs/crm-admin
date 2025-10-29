@@ -44,6 +44,10 @@ import {
   AdsListRes,
   RewardRecordsListParams,
   RewardRecordsListRes,
+  WalletAccountsListParams,
+  WalletAccountsListRes,
+  WalletAccountsListSumRes,
+  WalletAccountsListSumParams,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -399,5 +403,25 @@ export function useRewardRecordsList(params: RewardRecordsListParams) {
     queryKey: ['rewardRecordsList', params],
     queryFn: () =>
       apiFormPostCustom<RewardRecordsListRes>(`/system/marketing/rewardRecord/list`, params),
+  });
+}
+
+/**
+ * 获取钱包账户列表
+ */
+export function useWalletAccountsList(params: WalletAccountsListParams) {
+  return useQuery({
+    queryKey: ['walletAccountsList', params],
+    queryFn: () => apiFormPostCustom<WalletAccountsListRes>(`/system/crmUserWallet/list`, params),
+  });
+}
+
+/**
+ * 获取钱包账户列表合计
+ */
+export function useWalletAccountsListSum() {
+  return useMutation({
+    mutationFn: (params: WalletAccountsListSumParams) =>
+      apiFormPostCustom<WalletAccountsListSumRes>('/system/crmUserWallet/listSum', params),
   });
 }

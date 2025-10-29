@@ -515,7 +515,8 @@
     "updateTime": "Update time",
     "orderNo": "Order ID",
     "unlockAmount": "Unlock amount",
-    "unlockTime": "Unlock time"
+    "unlockTime": "Unlock time",
+    "currency": "Wallet currency"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -750,5 +751,8 @@
       "rewardType": "Reward type",
       "title": "Award record"
     }
+  },
+  "walletAccountsPage": {
+    "title": "wallet account"
   }
 }
