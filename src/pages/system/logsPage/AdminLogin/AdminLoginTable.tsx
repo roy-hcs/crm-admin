@@ -1,6 +1,6 @@
 import { AdminLoginItem } from '@/api/hooks/system/types';
 import { RrhTag } from '@/components/common/RrhTag';
-import { CRMColumnDef, DataTable } from '@/components/table/DataTable';
+import { DataTable } from '@/components/table/DataTable';
 import { adminOperationsStatusOptions } from '@/lib/const';
 import { ColumnDef } from '@tanstack/react-table';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +24,7 @@ export const AdminLoginTable = ({
 }) => {
   const { t } = useTranslation();
 
-  const baseColumns: ColumnDef<AdminLoginItem>[] = [
+  const columns: ColumnDef<AdminLoginItem>[] = [
     {
       id: 'No',
       header: t('table.index'),
@@ -100,11 +100,9 @@ export const AdminLoginTable = ({
     },
   ];
 
-  const columns = [...baseColumns];
-
   return (
     <DataTable
-      columns={columns as CRMColumnDef<AdminLoginItem, unknown>[]}
+      columns={columns}
       data={data}
       pageCount={pageCount}
       pageSize={pageSize}

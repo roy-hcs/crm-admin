@@ -1,7 +1,7 @@
 import { RewardRecordsListItem } from '@/api/hooks/system/types';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { RrhTag } from '@/components/common/RrhTag';
-import { CRMColumnDef, DataTable } from '@/components/table/DataTable';
+import { DataTable } from '@/components/table/DataTable';
 import { depositRebateStatusMap } from '@/lib/constant';
 import { ColumnDef } from '@tanstack/react-table';
 import { Ellipsis } from 'lucide-react';
@@ -28,7 +28,7 @@ export const RewardRecordsTable = ({
 }) => {
   const { t } = useTranslation();
 
-  const baseColumns: ColumnDef<RewardRecordsListItem>[] = [
+  const columns: ColumnDef<RewardRecordsListItem>[] = [
     {
       id: 'No',
       header: t('table.index'),
@@ -184,11 +184,9 @@ export const RewardRecordsTable = ({
     },
   ];
 
-  const columns = [...baseColumns];
-
   return (
     <DataTable
-      columns={columns as CRMColumnDef<RewardRecordsListItem, unknown>[]}
+      columns={columns}
       data={data}
       pageCount={pageCount}
       pageSize={pageSize}

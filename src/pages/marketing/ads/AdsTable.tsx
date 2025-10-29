@@ -1,6 +1,6 @@
 import { AdsListItem } from '@/api/hooks/system/types';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
-import { CRMColumnDef, DataTable } from '@/components/table/DataTable';
+import { DataTable } from '@/components/table/DataTable';
 import { Switch } from '@/components/ui/switch';
 import { ColumnDef } from '@tanstack/react-table';
 import { Ellipsis } from 'lucide-react';
@@ -25,7 +25,7 @@ export const AdsTable = ({
 }) => {
   const { t } = useTranslation();
 
-  const baseColumns: ColumnDef<AdsListItem>[] = [
+  const columns: ColumnDef<AdsListItem>[] = [
     {
       id: 'No',
       header: t('table.index'),
@@ -104,11 +104,9 @@ export const AdsTable = ({
     },
   ];
 
-  const columns = [...baseColumns];
-
   return (
     <DataTable
-      columns={columns as CRMColumnDef<AdsListItem, unknown>[]}
+      columns={columns}
       data={data}
       pageCount={pageCount}
       pageSize={pageSize}

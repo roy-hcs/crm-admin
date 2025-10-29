@@ -1,6 +1,6 @@
 import { UserItem } from '@/api/hooks/system/types';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
-import { CRMColumnDef, DataTable } from '@/components/table/DataTable';
+import { DataTable } from '@/components/table/DataTable';
 import { Switch } from '@/components/ui/switch';
 import { ColumnDef } from '@tanstack/react-table';
 import { Ellipsis } from 'lucide-react';
@@ -25,7 +25,7 @@ export const AdminAccountsTable = ({
 }) => {
   const { t } = useTranslation();
 
-  const baseColumns: ColumnDef<UserItem>[] = [
+  const columns: ColumnDef<UserItem>[] = [
     {
       id: 'No',
       header: t('table.index'),
@@ -162,11 +162,9 @@ export const AdminAccountsTable = ({
     },
   ];
 
-  const columns = [...baseColumns];
-
   return (
     <DataTable
-      columns={columns as CRMColumnDef<UserItem, unknown>[]}
+      columns={columns}
       data={data}
       pageCount={pageCount}
       pageSize={pageSize}

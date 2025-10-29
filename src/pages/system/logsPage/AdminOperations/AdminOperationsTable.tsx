@@ -1,7 +1,7 @@
 import { AdminOperLogItem, DictTypeItem } from '@/api/hooks/system/types';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { RrhTag } from '@/components/common/RrhTag';
-import { CRMColumnDef, DataTable } from '@/components/table/DataTable';
+import { DataTable } from '@/components/table/DataTable';
 import { adminOperationsStatusOptions } from '@/lib/const';
 import { ColumnDef } from '@tanstack/react-table';
 import { Ellipsis } from 'lucide-react';
@@ -28,7 +28,7 @@ export const AdminOperationsTable = ({
 }) => {
   const { t } = useTranslation();
 
-  const baseColumns: ColumnDef<AdminOperLogItem>[] = [
+  const columns: ColumnDef<AdminOperLogItem>[] = [
     {
       id: 'No',
       header: t('table.index'),
@@ -125,11 +125,9 @@ export const AdminOperationsTable = ({
     },
   ];
 
-  const columns = [...baseColumns];
-
   return (
     <DataTable
-      columns={columns as CRMColumnDef<AdminOperLogItem, unknown>[]}
+      columns={columns}
       data={data}
       pageCount={pageCount}
       pageSize={pageSize}
