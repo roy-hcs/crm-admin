@@ -511,6 +511,12 @@
   "walletAccountsPage": {
     "title": "钱包账户"
   },
+  "accountGroups": {
+    "title": "账户组设置",
+    "name": "账户组名称",
+    "num": "关联账户",
+    "relatedRebateRuleCount": "关联返佣规则"
+  },
   "table": {
     "orderNo": "订单ID",
     "server": "服务器",
