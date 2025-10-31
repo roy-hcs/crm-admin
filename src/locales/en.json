@@ -517,7 +517,8 @@
     "unlockAmount": "Unlock amount",
     "unlockTime": "Unlock time",
     "creditAmount": "Credit limit",
-    "threeCons": "Account ownership"
+    "threeCons": "Account ownership",
+    "currency": "Wallet currency"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -755,5 +756,8 @@
   },
   "tradingAccounts": {
     "title": "trading account"
+  },
+  "walletAccountsPage": {
+    "title": "wallet account"
   }
 }

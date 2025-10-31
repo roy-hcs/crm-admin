@@ -867,6 +867,69 @@ export type RewardRecordsListRes = {
   rows: RewardRecordsListItem[];
 };
 
+export type WalletAccountsListParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+
+  currency?: string;
+
+  params: {
+    threeCons?: string;
+    regStartTime?: string;
+    regEndTime?: string;
+  };
+};
+
+export type WalletAccountsItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string | null;
+  crmUserId: string | null;
+  balance: string | null;
+  currency: string | null;
+  major: string | null;
+  permissionJson: string | null;
+  delFlag: string | null;
+  crmUserName: string | null;
+  crmUserShowId: string | null;
+  allIn: string | null;
+  allOut: string | null;
+  accounts: string | null;
+};
+
+export type WalletAccountsListRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: WalletAccountsItem[];
+};
+
+export type SumWalletAccountsItem = {
+  totalBalance: number;
+  currency: string | null;
+};
+
+export type WalletAccountsListSumRes = {
+  code: number;
+  msg: string;
+  data: SumWalletAccountsItem[];
+};
+
+export type WalletAccountsListSumParams = {
+  currency?: string;
+  params: {
+    threeCons?: string;
+    regStartTime?: string;
+    regEndTime?: string;
+  };
+};
+
 export type CrmDealAccountListParams = {
   pageSize?: number;
   pageNum?: number;
