@@ -3,6 +3,7 @@ import { ProfilePage } from '@/pages/ProfilePage';
 import { CRMAccounts } from '@/pages/account/CRMAccounts/CRMAccounts';
 import { TradingAccountsPage } from '@/pages/account/TradingAccounts/TradingAccountsPage';
 import { WalletAccountsPage } from '@/pages/account/WalletAccounts/WalletAccountsPage';
+import { AccountGroupsPage } from '@/pages/account/AccountGroups/AccountGroupsPage';
 // Import other account pages as they are developed
 
 /**
@@ -33,6 +34,10 @@ export const accountRoutes: RouteObject[] = [
   {
     path: '/account/wallet-accounts',
     element: <WalletAccountsPage />,
+  },
+  {
+    path: 'account/account-groups',
+    element: <AccountGroupsPage />,
   },
   // Routes to be developed - commented out until pages are created
   /*

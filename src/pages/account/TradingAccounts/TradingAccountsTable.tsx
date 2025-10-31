@@ -61,12 +61,7 @@ export const TradingAccountsTable = ({
       id: 'serverName',
       header: t('financial.tradingAccountDataStats.username'),
       cell: ({ row }) => {
-        if (
-          row.original.userId == null ||
-          row.original.userId === undefined ||
-          row.original.params['aspShowId'] === undefined ||
-          row.original.params['aspShowId'] == null
-        ) {
+        if (row.original.userId == null || row.original.params?.aspShowId == null) {
           return '-';
         }
         const aspName = String(row.original.params['aspName'] || '');
@@ -78,7 +73,7 @@ export const TradingAccountsTable = ({
           </div>
         );
       },
-      /**
+      /** 缺少弹窗功能
        *  if (null == row.userId || undefined == row.userId || undefined == row.params["aspShowId"] || null == row.params["aspShowId"]) {
                             return '-';
                         } else {
@@ -97,12 +92,7 @@ export const TradingAccountsTable = ({
       id: 'serverName',
       header: t('table.directAgent'),
       cell: ({ row }) => {
-        if (
-          null == row.original.directBroker ||
-          undefined == row.original.directBroker ||
-          undefined == row.original.params['brokerShowId'] ||
-          null == row.original.params['brokerShowId']
-        ) {
+        if (row.original.directBroker == null || row.original.params?.brokerShowId == null) {
           return '-';
         }
         const brokerName = String(row.original.params['brokerName'] || '');
@@ -114,7 +104,7 @@ export const TradingAccountsTable = ({
           </div>
         );
       },
-      /**
+      /** 缺少弹窗功能
        *  if (null == row.directBroker || undefined == row.directBroker || undefined == row.params["brokerShowId"] || null == row.params["brokerShowId"]) {
                             return '-';
                         } else {

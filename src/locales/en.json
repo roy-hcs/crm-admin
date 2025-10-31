@@ -759,5 +759,11 @@
   },
   "walletAccountsPage": {
     "title": "wallet account"
+  },
+  "accountGroups": {
+    "name": "Account group name",
+    "num": "Linked accounts",
+    "relatedRebateRuleCount": "Related commission rules",
+    "title": "Account group settings"
   }
 }

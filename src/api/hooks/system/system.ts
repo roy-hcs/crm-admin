@@ -50,6 +50,8 @@ import {
   WalletAccountsListRes,
   WalletAccountsListSumRes,
   WalletAccountsListSumParams,
+  CrmDealAccountGroupListParams,
+  CrmDealAccountGroupListRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -440,5 +442,16 @@ export function useWalletAccountsListSum() {
   return useMutation({
     mutationFn: (params: WalletAccountsListSumParams) =>
       apiFormPostCustom<WalletAccountsListSumRes>('/system/crmUserWallet/listSum', params),
+  });
+}
+
+/**
+ * 获取账户组设置列表
+ */
+export function useCrmDealAccountGroupList(params: CrmDealAccountGroupListParams) {
+  return useQuery({
+    queryKey: ['crmDealAccountGroupList', params],
+    queryFn: () =>
+      apiFormPostCustom<CrmDealAccountGroupListRes>(`/system/crmDealAccountGroup/list`, params),
   });
 }

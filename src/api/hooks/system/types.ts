@@ -1009,3 +1009,33 @@ export type CrmDealAccountListRes = {
   total: string;
   rows: CrmDealAccountListItem[];
 };
+
+export type CrmDealAccountGroupListParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+};
+
+export type CrmDealAccountItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string | null;
+  name: string | null;
+  sort: number | null;
+  num: number | null;
+  flag: boolean;
+  delFlag: boolean;
+  relatedRebateRuleCount: string | null;
+};
+
+export type CrmDealAccountGroupListRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: CrmDealAccountItem[];
+};
