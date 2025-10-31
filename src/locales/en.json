@@ -516,6 +516,8 @@
     "orderNo": "Order ID",
     "unlockAmount": "Unlock amount",
     "unlockTime": "Unlock time",
+    "creditAmount": "Credit limit",
+    "threeCons": "Account ownership",
     "currency": "Wallet currency"
   },
   "tradingHistoryPage": {
@@ -751,6 +753,9 @@
       "rewardType": "Reward type",
       "title": "Award record"
     }
+  },
+  "tradingAccounts": {
+    "title": "trading account"
   },
   "walletAccountsPage": {
     "title": "wallet account"

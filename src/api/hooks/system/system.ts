@@ -44,6 +44,8 @@ import {
   AdsListRes,
   RewardRecordsListParams,
   RewardRecordsListRes,
+  CrmDealAccountListParams,
+  CrmDealAccountListRes,
   WalletAccountsListParams,
   WalletAccountsListRes,
   WalletAccountsListSumRes,
@@ -403,6 +405,21 @@ export function useRewardRecordsList(params: RewardRecordsListParams) {
     queryKey: ['rewardRecordsList', params],
     queryFn: () =>
       apiFormPostCustom<RewardRecordsListRes>(`/system/marketing/rewardRecord/list`, params),
+  });
+}
+
+/**
+ * 获取交易账号列表
+ */
+export function useCrmDealAccountList(
+  params: CrmDealAccountListParams,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['crmDealAccountList', params],
+    queryFn: () =>
+      apiFormPostCustom<CrmDealAccountListRes>(`/system/crmDealAccount/serviceList`, params),
+    enabled: options?.enabled ?? true,
   });
 }
 
