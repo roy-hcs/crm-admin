@@ -515,7 +515,9 @@
     "updateTime": "Update time",
     "orderNo": "Order ID",
     "unlockAmount": "Unlock amount",
-    "unlockTime": "Unlock time"
+    "unlockTime": "Unlock time",
+    "creditAmount": "Credit limit",
+    "threeCons": "Account ownership"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -750,5 +752,8 @@
       "rewardType": "Reward type",
       "title": "Award record"
     }
+  },
+  "tradingAccounts": {
+    "title": "trading account"
   }
 }

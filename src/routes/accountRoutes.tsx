@@ -1,6 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { CRMAccounts } from '@/pages/account/CRMAccounts/CRMAccounts';
+import { TradingAccountsPage } from '@/pages/account/TradingAccounts/TradingAccountsPage';
 // Import other account pages as they are developed
 
 /**
@@ -24,7 +25,10 @@ export const accountRoutes: RouteObject[] = [
     path: '/account/crm-accounts',
     element: <CRMAccounts />,
   },
-
+  {
+    path: '/account/trading-accounts',
+    element: <TradingAccountsPage />,
+  },
   // Routes to be developed - commented out until pages are created
   /*
   {
