@@ -52,6 +52,7 @@ import {
   WalletAccountsListSumParams,
   CrmDealAccountGroupListParams,
   CrmDealAccountGroupListRes,
+  UserInfoRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -453,5 +454,16 @@ export function useCrmDealAccountGroupList(params: CrmDealAccountGroupListParams
     queryKey: ['crmDealAccountGroupList', params],
     queryFn: () =>
       apiFormPostCustom<CrmDealAccountGroupListRes>(`/system/crmDealAccountGroup/list`, params),
+  });
+}
+
+/**
+ * 获取用户信息
+ */
+
+export function useGetUserInfo() {
+  return useQuery({
+    queryKey: ['GetUserInfo'],
+    queryFn: () => apiGetCustom<UserInfoRes>('/system/user/profile/getUserInfo'),
   });
 }
