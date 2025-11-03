@@ -765,5 +765,10 @@
     "num": "Linked accounts",
     "relatedRebateRuleCount": "Related commission rules",
     "title": "Account group settings"
+  },
+  "profile": {
+    "gooleKey": "Google token",
+    "title": "personal data",
+    "uploadAvatar": "Upload avatar"
   }
 }
