@@ -151,3 +151,71 @@ export type PointsChangeListRes = {
   total: string;
   rows: PointsChangeItem[];
 };
+
+export type PointsBalanceParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+
+  params: {
+    fuzzyName?: string;
+    email?: string;
+    timeStart?: string;
+    timeEnd?: string;
+  };
+};
+
+export type PointsBalanceItem = {
+  lastName: string;
+  name: string;
+  showId: string;
+  email: string;
+  pointsBalance: number;
+  earnPoints: string;
+  usedPoints: string;
+  params: string | null;
+};
+
+export type PointsBalanceRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: PointsBalanceItem[];
+};
+
+export type GoodsClassificationParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+
+  searchName?: string;
+};
+
+export type GoodsClassificationItem = {
+  createBy: string;
+  createTime: string;
+  updateBy: string;
+  updateTime: string;
+  remark: string | null;
+  params: object;
+  id: number;
+  parentId: number;
+  status: number;
+  sort: number;
+  classificationName: string;
+  parentClassificationName: string | null;
+  languageList: string | null;
+  secondClassificationList: string | null;
+  language: string | null;
+  searchName: string | null;
+  classificationLanguageId: string | null;
+};
+
+export type GoodsClassificationRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: GoodsClassificationItem[];
+};

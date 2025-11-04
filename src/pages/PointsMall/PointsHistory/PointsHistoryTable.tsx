@@ -50,7 +50,6 @@ export const PointsHistoryTable = ({
         const type = operTypeList?.find(
           item => item.dictValue === String(row?.original?.businessType),
         );
-        console.log(type, 'type');
         return <div>{type ? type.dictLabel : '-'}</div>;
       },
     },

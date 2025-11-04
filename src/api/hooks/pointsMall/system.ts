@@ -1,8 +1,12 @@
-import { apiFormPost, apiFormPostCustom } from '@/api/client';
+import { apiFormPostCustom, apiPost } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   CrmDealGoodsListParams,
   CrmDealGoodsListRes,
+  GoodsClassificationParams,
+  GoodsClassificationRes,
+  PointsBalanceParams,
+  PointsBalanceRes,
   PointsChangeListParams,
   PointsChangeListRes,
   PointsHistoryListParams,
@@ -25,7 +29,7 @@ export function useCrmDealGoodsList(params: CrmDealGoodsListParams) {
 export function useChangeGoodsStatus() {
   return useMutation({
     mutationFn: (params: { id: string; status: number }) =>
-      apiFormPost('/system/points/goods/switch', params),
+      apiPost('/system/points/goods/switch', params),
   });
 }
 
@@ -46,5 +50,37 @@ export function usePointsChangeList(params: PointsChangeListParams) {
   return useQuery({
     queryKey: ['pointsChangeList', params],
     queryFn: () => apiFormPostCustom<PointsChangeListRes>(`/system/points/change/list`, params),
+  });
+}
+
+/**
+ * 获取积分余额
+ */
+export function usePointsBalance(params: PointsBalanceParams) {
+  return useQuery({
+    queryKey: ['pointsBalance', params],
+    queryFn: () =>
+      apiFormPostCustom<PointsBalanceRes>(`/system/points/balanceOverview/list`, params),
+  });
+}
+
+/**
+ * 获取商品分类列表
+ */
+export function useGoodsClassification(params: GoodsClassificationParams) {
+  return useQuery({
+    queryKey: ['goodsClassification', params],
+    queryFn: () =>
+      apiFormPostCustom<GoodsClassificationRes>(`/system/points/goodsClassification/list`, params),
+  });
+}
+
+/**
+ * 修改商品分类状态
+ */
+export function useChangeGoodsClassificationStatus() {
+  return useMutation({
+    mutationFn: (params: { id: string; status: number }) =>
+      apiPost('/system/points/goodsClassification/switch', params),
   });
 }
