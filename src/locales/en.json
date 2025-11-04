@@ -788,5 +788,36 @@
     "gooleKey": "Google token",
     "title": "personal data",
     "uploadAvatar": "Upload avatar"
+  },
+  "PointsHistory": {
+    "bonusPoints": "numerical value",
+    "businessType": "Trigger business",
+    "operTypeList": {
+      "10": "Points redemption",
+      "11": "Order deduction",
+      "12": "Order rollback",
+      "13": "other",
+      "14": "Inactive deduction"
+    },
+    "pointsBalance": "Points balance",
+    "title": "Points change record"
+  },
+  "redemptionRecords": {
+    "combinedPayment": "combination payment",
+    "exchangePoints": "Consume points",
+    "exchangeTime": "Redemption time",
+    "fuzzyGoods": "Product name/ID",
+    "goodsId": "Redeem product ID",
+    "orderNo": "Order ID",
+    "payType": "Payment type",
+    "paymentAmount": "Payment amount",
+    "pointsPayment": "Points payment",
+    "title": "Product exchange record",
+    "verifyStatus": {
+      "Canceled": "Canceled",
+      "approved": "pass",
+      "rejected": "reject",
+      "underReview": "Pending trial"
+    }
   }
 }

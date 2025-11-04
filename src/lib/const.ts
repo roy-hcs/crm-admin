@@ -88,3 +88,25 @@ export const adminOperationsStatusOptions = [
   { label: 'common.rebate.status.success', value: '0' },
   { label: 'common.rebate.status.fail', value: '1' },
 ];
+
+// 商品兑换记录审核状态
+export const pointsHistoryVerifyStatus = [
+  { label: 'redemptionRecords.verifyStatus.Canceled', value: '-1' },
+  { label: 'common.verifyStatus.rejected', value: '0' },
+  { label: 'common.verifyStatus.approved', value: '1' },
+  { label: 'common.verifyStatus.underReview', value: '2' },
+];
+
+// 商品兑换记录支付类型
+export const pointsHistoryPayType = [
+  { label: 'redemptionRecords.pointsPayment', value: '1' },
+  { label: 'redemptionRecords.combinedPayment', value: '2' },
+];
+
+// 积分变动记录触发业务
+export const PointsOperTypeList = [
+  { dictLabel: 'PointsHistory.operTypeList.11', dictValue: '11' },
+  { dictLabel: 'PointsHistory.operTypeList.12', dictValue: '12' },
+  { dictLabel: 'PointsHistory.operTypeList.13', dictValue: '13' },
+  { dictLabel: 'PointsHistory.operTypeList.14', dictValue: '14' },
+];
