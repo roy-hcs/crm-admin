@@ -1,4 +1,6 @@
+import { PointsHistoryPage } from '@/pages/PointsMall/PointsHistory/PointsHistoryPage';
 import { ProductsPage } from '@/pages/PointsMall/products/ProductsPage';
+import { RedemptionRecordsPage } from '@/pages/PointsMall/RedemptionRecords/RedemptionRecordsPage';
 import { RouteObject } from 'react-router-dom';
 
 /**
@@ -16,6 +18,14 @@ export const pointsMallRoutes: RouteObject[] = [
   {
     path: '/points-mall/products',
     element: <ProductsPage />,
+  },
+  {
+    path: '/points-mall/redemption-records',
+    element: <RedemptionRecordsPage />,
+  },
+  {
+    path: '/points-mall/points-history',
+    element: <PointsHistoryPage />,
   },
   // TODO: Add routes as pages are developed
   /*

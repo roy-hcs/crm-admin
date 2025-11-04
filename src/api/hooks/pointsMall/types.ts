@@ -52,3 +52,102 @@ export type CrmDealGoodsListRes = {
   total: string;
   rows: GoodsListItem[];
 };
+
+export type PointsHistoryListParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+
+  payType?: string;
+
+  params: {
+    fuzzyName?: string;
+    fuzzyEmail?: string;
+    fuzzyGoods?: string;
+    verifyStatus?: string;
+    exchangeTimeStart?: string;
+    exchangeTimeEnd?: string;
+    updateTimeStart?: string;
+    updateTimeEnd?: string;
+  };
+};
+
+export type PointsHistoryItem = {
+  createBy: string;
+  createTime: string;
+  updateBy: string | null;
+  updateTime: string;
+  remark: string;
+  params: object;
+  id: string;
+  orderNo: string;
+  userId: string;
+  goodsId: string;
+  goodsName: string;
+  exchangePoints: string;
+  exchangeType: number;
+  exchangeTime: string;
+  receiveName: string;
+  receivePhone: string;
+  receiveAddress: string;
+  verifyStatus: number;
+  userName: string;
+  showId: string;
+  exchangeAccountType: number;
+  exchangeAccountId: string | null;
+  pointChangeStatus: number;
+  payType: number;
+  paymentAmount: number;
+};
+
+export type PointsHistoryListRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: PointsHistoryItem[];
+};
+
+export type PointsChangeListParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc';
+
+  businessType?: string;
+
+  params: {
+    fuzzyName?: string;
+    fuzzyEmail?: string;
+    timeStart?: string;
+    timeEnd?: string;
+  };
+};
+
+export type PointsChangeItem = {
+  createBy: string;
+  createTime: string;
+  updateBy: string;
+  updateTime: string;
+  remark: string;
+  params: object;
+  id: string;
+  serialNo: string;
+  userId: string;
+  inviteSourceId: string | null;
+  businessType: number;
+  subType: string | null;
+  bonusPoints: number;
+  pointsBalance: number;
+  bonusType: number;
+  source: number;
+  userName: string;
+  showId: string;
+};
+
+export type PointsChangeListRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: PointsChangeItem[];
+};

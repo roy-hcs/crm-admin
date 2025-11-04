@@ -540,6 +540,37 @@
     "uploadAvatar": "上传头像",
     "gooleKey": "Google 令牌"
   },
+  "redemptionRecords": {
+    "title": "商品兑换记录",
+    "orderNo": "订单ID",
+    "goodsId": "兑换商品ID",
+    "payType": "支付类型",
+    "pointsPayment": "积分支付",
+    "combinedPayment": "组合支付",
+    "exchangePoints": "消耗积分",
+    "paymentAmount": "支付金额",
+    "exchangeTime": "兑换时间",
+    "fuzzyGoods": "商品名称/ID",
+    "verifyStatus": {
+      "Canceled": "已取消",
+      "rejected": "拒绝",
+      "approved": "通过",
+      "underReview": "待审"
+    }
+  },
+  "PointsHistory": {
+    "title": "积分变动记录",
+    "businessType": "触发业务",
+    "bonusPoints": "数值",
+    "pointsBalance": "积分余额",
+    "operTypeList": {
+      "10": "积分兑换",
+      "11": "订单扣除",
+      "12": "订单回退",
+      "13": "其他",
+      "14": "非活跃扣减"
+    }
+  },
   "table": {
     "orderNo": "订单ID",
     "server": "服务器",
