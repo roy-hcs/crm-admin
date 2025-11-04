@@ -535,6 +535,11 @@
       "open": "确认要启用该商品信息吗？"
     }
   },
+  "profile": {
+    "title": "个人资料",
+    "uploadAvatar": "上传头像",
+    "gooleKey": "Google 令牌"
+  },
   "table": {
     "orderNo": "订单ID",
     "server": "服务器",

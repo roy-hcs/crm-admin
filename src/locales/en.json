@@ -783,5 +783,10 @@
     "updateBy": "operator",
     "viewCount": "Views",
     "virtualGoods": "virtual goods"
+  },
+  "profile": {
+    "gooleKey": "Google token",
+    "title": "personal data",
+    "uploadAvatar": "Upload avatar"
   }
 }
