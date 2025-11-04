@@ -1,3 +1,4 @@
+import { ProductsPage } from '@/pages/PointsMall/products/ProductsPage';
 import { RouteObject } from 'react-router-dom';
 
 /**
@@ -12,6 +13,10 @@ import { RouteObject } from 'react-router-dom';
  * - /points-mall/product-categories - 商品分类列表 (Product Categories List)
  */
 export const pointsMallRoutes: RouteObject[] = [
+  {
+    path: '/points-mall/products',
+    element: <ProductsPage />,
+  },
   // TODO: Add routes as pages are developed
   /*
   {

@@ -765,5 +765,23 @@
     "num": "Linked accounts",
     "relatedRebateRuleCount": "Related commission rules",
     "title": "Account group settings"
+  },
+  "products": {
+    "confirm": {
+      "open": "Are you sure you want to enable this product information?",
+      "stop": "Are you sure you want to deactivate this product listing?"
+    },
+    "exchangeAmount": "Exchange amount",
+    "exchangeCount": "Cumulative number of exchanges",
+    "exchangePoints": "Redeem points",
+    "goodId": "Product ID",
+    "goodsName": "name",
+    "goodsType": "Product type",
+    "name": "Product name",
+    "physicalGoods": "physical goods",
+    "title": "Product list",
+    "updateBy": "operator",
+    "viewCount": "Views",
+    "virtualGoods": "virtual goods"
   }
 }

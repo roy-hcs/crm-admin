@@ -517,6 +517,24 @@
     "num": "关联账户",
     "relatedRebateRuleCount": "关联返佣规则"
   },
+  "products": {
+    "title": "商品列表",
+    "goodsName": "名称",
+    "name": "商品名称",
+    "goodId": "商品ID",
+    "exchangePoints": "兑换积分",
+    "exchangeAmount": "兑换金额",
+    "goodsType": "商品类型",
+    "physicalGoods": "实物商品",
+    "virtualGoods": "虚拟商品",
+    "viewCount": "浏览量",
+    "exchangeCount": "累计兑换数",
+    "updateBy": "操作人",
+    "confirm": {
+      "stop": "确认要停用该商品信息吗？",
+      "open": "确认要启用该商品信息吗？"
+    }
+  },
   "table": {
     "orderNo": "订单ID",
     "server": "服务器",
