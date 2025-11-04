@@ -1,4 +1,6 @@
+import { PointsBalancePage } from '@/pages/PointsMall/PointsBalance/PointsBalancePage';
 import { PointsHistoryPage } from '@/pages/PointsMall/PointsHistory/PointsHistoryPage';
+import { ProductCategoriesPage } from '@/pages/PointsMall/ProductCategories/ProductCategoriesPage';
 import { ProductsPage } from '@/pages/PointsMall/products/ProductsPage';
 import { RedemptionRecordsPage } from '@/pages/PointsMall/RedemptionRecords/RedemptionRecordsPage';
 import { RouteObject } from 'react-router-dom';
@@ -26,6 +28,14 @@ export const pointsMallRoutes: RouteObject[] = [
   {
     path: '/points-mall/points-history',
     element: <PointsHistoryPage />,
+  },
+  {
+    path: '/points-mall/points-balance',
+    element: <PointsBalancePage />,
+  },
+  {
+    path: '/points-mall/product-categories',
+    element: <ProductCategoriesPage />,
   },
   // TODO: Add routes as pages are developed
   /*

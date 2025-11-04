@@ -819,5 +819,22 @@
       "rejected": "reject",
       "underReview": "Pending trial"
     }
+  },
+  "pointspBalance": {
+    "CRMID": "CRM ID",
+    "earnPoints": "Number of points earned",
+    "timeFilterTipOne": "1. Select only the start time, and the queried data is the user’s points balance at that time point.",
+    "timeFilterTipTwo": "2. Select the start time and end time at the same time to query the total amount of user points changes during the time period and the point balance operation at the end.",
+    "title": "Points balance overview",
+    "usedPoints": "Points consumed"
+  },
+  "productCategories": {
+    "classificationName": "Category name",
+    "confirm": {
+      "open": "Are you sure you want to enable this product category information?",
+      "stop": "Are you sure you want to deactivate this product category information?"
+    },
+    "parentClassificationName": "Parent category",
+    "title": "Product category list"
   }
 }

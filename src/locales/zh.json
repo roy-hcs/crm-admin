@@ -571,6 +571,23 @@
       "14": "非活跃扣减"
     }
   },
+  "pointspBalance": {
+    "title": "积分余额总览",
+    "CRMID": "CRM ID",
+    "earnPoints": "获得积分数",
+    "usedPoints": "消耗积分数",
+    "timeFilterTipOne": "1.仅选择开始时间，查询的数据为该时间点用户的积分余额",
+    "timeFilterTipTwo": "2.同时选择开始时间和结束时间，可查询时间段内用户积分变化总量及结束时的积分余额操作"
+  },
+  "productCategories": {
+    "title": "商品分类列表",
+    "classificationName": "分类名称",
+    "parentClassificationName": "上级类别",
+    "confirm": {
+      "stop": "确认要停用该商品分类信息吗？",
+      "open": "确认要启用该商品分类信息吗？"
+    }
+  },
   "table": {
     "orderNo": "订单ID",
     "server": "服务器",
