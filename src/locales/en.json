@@ -165,7 +165,12 @@
     "operName": "operator",
     "operObject": "Operation object",
     "operStatus": "operating status",
-    "operTime": "Operating time"
+    "operTime": "Operating time",
+    "allCRMUsers": "All CRM users",
+    "failedToSend": "Sending failed",
+    "hasBeenSent": "Sent",
+    "sending": "Sending",
+    "toBeSent": "To be sent"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -518,7 +523,11 @@
     "unlockTime": "Unlock time",
     "creditAmount": "Credit limit",
     "threeCons": "Account ownership",
-    "currency": "Wallet currency"
+    "currency": "Wallet currency",
+    "infoType": "Information type",
+    "receiver": "Receive object",
+    "sendAgain": "Resend",
+    "submitter": "Author"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -836,6 +845,13 @@
     },
     "parentClassificationName": "Parent category",
     "title": "Product category list"
+  },
+  "messageManagement": {
+    "emailNotification": "Email notification",
+    "inSiteMsgNotification": "Site message",
+    "messageTempate": "Message template",
+    "popupNotification": "Pop-up notification",
+    "title": "Message management"
   },
   "relationships": {
     "title": "customer relations"

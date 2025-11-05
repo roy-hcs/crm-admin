@@ -53,6 +53,8 @@ import {
   CrmDealAccountGroupListParams,
   CrmDealAccountGroupListRes,
   UserInfoRes,
+  GetMsgListParams,
+  GetMsgListRes,
   CustomerRelationsPostParams,
   CustomerRelationsPostRes,
 } from './types';
@@ -470,6 +472,12 @@ export function useGetUserInfo() {
   });
 }
 
+export function useGetMsgList(params: GetMsgListParams) {
+  return useQuery({
+    queryKey: ['MsgList', params],
+    queryFn: () => apiFormPostCustom<GetMsgListRes>('/system/msg/list', params),
+  });
+}
 /**
  * 获取客户关系数据
  */
