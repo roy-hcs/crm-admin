@@ -84,3 +84,9 @@ export const depositMethodsMap: Record<number, string> = {
   7: 'quickPayment',
   13: 'payID',
 };
+
+export const infoTypesMap: Record<number, string> = {
+  0: 'popupNotification',
+  1: 'inSiteMsgNotification',
+  2: 'emailNotification',
+};

@@ -184,7 +184,12 @@
     "operStatus": "操作状态",
     "operIp": "操作IP",
     "operLocation": "操作地点",
-    "operTime": "操作时间"
+    "operTime": "操作时间",
+    "failedToSend": "发送失败",
+    "toBeSent": "待发送",
+    "hasBeenSent": "已发送",
+    "sending": "发送中",
+    "allCRMUsers": "所有CRM用户"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -771,7 +776,11 @@
     "unlockAmount": "解锁金额",
     "creditAmount": "信用额",
     "threeCons": "账号归属",
-    "currency": "钱包币种"
+    "currency": "钱包币种",
+    "submitter": "提交人",
+    "infoType": "信息类型",
+    "receiver": "接收对象",
+    "sendAgain": "重新发送"
   },
   "review": {
     "settings": {
@@ -836,5 +845,12 @@
       "amount": "奖励金额",
       "lockStatus": "奖励锁定"
     }
+  },
+  "messageManagement": {
+    "title": "消息管理",
+    "popupNotification": "弹窗通知",
+    "inSiteMsgNotification": "站内信消息",
+    "emailNotification": "邮件通知",
+    "messageTempate": "消息模板"
   }
 }

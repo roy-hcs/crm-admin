@@ -53,6 +53,8 @@ import {
   CrmDealAccountGroupListParams,
   CrmDealAccountGroupListRes,
   UserInfoRes,
+  GetMsgListParams,
+  GetMsgListRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -465,5 +467,12 @@ export function useGetUserInfo() {
   return useQuery({
     queryKey: ['GetUserInfo'],
     queryFn: () => apiGetCustom<UserInfoRes>('/system/user/profile/getUserInfo'),
+  });
+}
+
+export function useGetMsgList(params: GetMsgListParams) {
+  return useQuery({
+    queryKey: ['MsgList', params],
+    queryFn: () => apiFormPostCustom<GetMsgListRes>('/system/msg/list', params),
   });
 }
