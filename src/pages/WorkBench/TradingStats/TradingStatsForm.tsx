@@ -1,4 +1,4 @@
-import { forwardRef, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormProvider } from '@/contexts/form';
 import { FormSelect } from '@/components/form/FormSelect';
@@ -7,20 +7,18 @@ import { useTranslation } from 'react-i18next';
 import { ServerItem } from '@/api/hooks/system/types';
 import { serverMap } from '@/lib/constant';
 import { BaseOption } from '@/components/common/RrhSelect';
-export interface OverviewFormRef {
-  onReset: () => void;
-}
 type ClientTrackingFormValues = {
   serverId: string;
 };
-export const TradingStatsForm = forwardRef<
-  OverviewFormRef,
-  {
-    setServerId: (id: string) => void;
-    serverOptions: ServerItem[];
-    initialServerId?: string;
-  }
->(({ setServerId, serverOptions, initialServerId }) => {
+export const TradingStatsForm = ({
+  setServerId,
+  serverOptions,
+  initialServerId,
+}: {
+  setServerId: (id: string) => void;
+  serverOptions: ServerItem[];
+  initialServerId?: string;
+}) => {
   const { t } = useTranslation();
   const form = useForm<ClientTrackingFormValues>({
     defaultValues: {
@@ -78,4 +76,4 @@ export const TradingStatsForm = forwardRef<
       </Form>
     </FormProvider>
   );
-});
+};

@@ -59,7 +59,6 @@ export const RelationshipsPage = () => {
     async (id: string) => {
       // dedupe using module-level set
       if (moduleFetching.has(id)) {
-        console.debug('[RelationShips] requestChildren skipped (already fetching):', id);
         return;
       }
       moduleFetching.add(id);
@@ -99,13 +98,6 @@ export const RelationshipsPage = () => {
           expanded: false,
           loading: false,
         }));
-
-        console.debug(
-          '[RelationShips] fetched children for',
-          id,
-          '->',
-          childrenNodes.map(n => n.id),
-        );
 
         if (id === '') {
           setTreeData(childrenNodes);
