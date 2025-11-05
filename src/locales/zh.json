@@ -593,6 +593,9 @@
       "open": "确认要启用该商品分类信息吗？"
     }
   },
+  "relationships": {
+    "title": "客户关系"
+  },
   "table": {
     "orderNo": "订单ID",
     "server": "服务器",

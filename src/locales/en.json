@@ -852,5 +852,8 @@
     "messageTempate": "Message template",
     "popupNotification": "Pop-up notification",
     "title": "Message management"
+  },
+  "relationships": {
+    "title": "customer relations"
   }
 }
