@@ -1152,3 +1152,17 @@ export type UserInfoRes = {
   };
   emailTail: string | null;
 };
+
+export type CustomerRelationsPostParams = {
+  userId?: string;
+};
+
+export type CustomerRelationsGetItem = {
+  id: string;
+  parentName: string;
+  childNames: null | Array<string>;
+  hasChildren: boolean;
+  crmRebateLevel: null;
+};
+
+export type CustomerRelationsPostRes = CustomerRelationsGetItem[];

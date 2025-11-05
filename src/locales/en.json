@@ -836,5 +836,8 @@
     },
     "parentClassificationName": "Parent category",
     "title": "Product category list"
+  },
+  "relationships": {
+    "title": "customer relations"
   }
 }

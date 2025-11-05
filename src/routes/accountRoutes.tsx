@@ -4,6 +4,7 @@ import { CRMAccounts } from '@/pages/account/CRMAccounts/CRMAccounts';
 import { TradingAccountsPage } from '@/pages/account/TradingAccounts/TradingAccountsPage';
 import { WalletAccountsPage } from '@/pages/account/WalletAccounts/WalletAccountsPage';
 import { AccountGroupsPage } from '@/pages/account/AccountGroups/AccountGroupsPage';
+import { RelationshipsPage } from '@/pages/account/RelationShips/RelationShipsPage';
 // Import other account pages as they are developed
 
 /**
@@ -38,6 +39,10 @@ export const accountRoutes: RouteObject[] = [
   {
     path: 'account/account-groups',
     element: <AccountGroupsPage />,
+  },
+  {
+    path: '/account/relationships',
+    element: <RelationshipsPage />,
   },
   // Routes to be developed - commented out until pages are created
   /*
