@@ -53,6 +53,8 @@ import {
   CrmDealAccountGroupListParams,
   CrmDealAccountGroupListRes,
   UserInfoRes,
+  CustomerRelationsPostParams,
+  CustomerRelationsPostRes,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -465,5 +467,16 @@ export function useGetUserInfo() {
   return useQuery({
     queryKey: ['GetUserInfo'],
     queryFn: () => apiGetCustom<UserInfoRes>('/system/user/profile/getUserInfo'),
+  });
+}
+
+/**
+ * 获取客户关系数据
+ */
+export function useCustomerRelationsPost(params: CustomerRelationsPostParams) {
+  return useQuery({
+    queryKey: ['customerRelationsPost', params],
+    queryFn: () =>
+      apiFormPostCustom<CustomerRelationsPostRes>(`/system/crmUser/customerRelationsPost`, params),
   });
 }
