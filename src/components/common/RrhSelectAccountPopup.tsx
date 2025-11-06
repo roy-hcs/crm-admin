@@ -2,12 +2,12 @@ import { RrhCascader } from '@/components/common/RrhCascader';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-import { useCustomerRelationsPostList } from '@/api/hooks/system/system';
+import { useCustomerRelationsPostList } from '@/api/hooks/account';
 import { AccountDialog } from '@/pages/account/CRMAccounts/components/AccountDialog';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ControllerRenderProps, FieldValues } from 'react-hook-form';
-import { CrmUserItem } from '@/api/hooks/system/types';
+import { CrmUserItem } from '@/api/hooks/account';
 import { FormControl, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { RrhButton } from './RrhButton';
 

@@ -15,8 +15,8 @@ import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
 import dayjs from 'dayjs';
-import { WalletAccountsListParams } from '@/api/hooks/account';
 import { FormSelect } from '@/components/form/FormSelect';
+import { WalletAccountsListParams } from '@/api/hooks/account/types';
 
 type FormData = {
   threeCons: string;

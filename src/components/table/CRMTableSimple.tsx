@@ -1,6 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from './DataTable';
-import { CrmUserItem } from '@/api/hooks/system/types';
+import { CrmUserItem } from '@/api/hooks/account';
 
 export const CRMTableSimple = ({
   data,

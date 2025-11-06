@@ -1,12 +1,12 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { DataTable } from './DataTable';
-import { CrmUserItem } from '@/api/hooks/system/types';
+import { CrmUserItem } from '@/api/hooks/account';
 import { ChevronDown, ChevronUp, Ellipsis } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Switch } from '../ui/switch';
 import { Alert } from '../common/Alert';
 import { useCallback, useState } from 'react';
-import { useChangeUserStatus } from '@/api/hooks/system/system';
+import { useChangeUserStatus } from '@/api/hooks/account';
 import { useQueryClient } from '@tanstack/react-query';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useTranslation } from 'react-i18next';
