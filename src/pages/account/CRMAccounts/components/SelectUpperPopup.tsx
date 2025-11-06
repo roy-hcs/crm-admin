@@ -1,4 +1,4 @@
-import { CrmUserItem } from '@/api/hooks/system/types';
+import { CrmUserItem } from '@/api/hooks/account';
 import { FormControl, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useState } from 'react';
 import { ControllerRenderProps, FieldValues } from 'react-hook-form';

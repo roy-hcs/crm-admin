@@ -1,5 +1,5 @@
-import { useCrmUser } from '@/api/hooks/system/system';
-import { CrmUserItem } from '@/api/hooks/system/types';
+import { useCrmUser } from '@/api/hooks/account';
+import { CrmUserItem } from '@/api/hooks/account';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { RrhButton } from '@/components/common/RrhButton';
 import { CRMTableSimple } from '@/components/table/CRMTableSimple';

@@ -1,4 +1,4 @@
-import { WalletAccountsItem } from '@/api/hooks/system/types';
+import { WalletAccountsItem } from '@/api/hooks/account';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { DataTable } from '@/components/table/DataTable';
 import { ColumnDef } from '@tanstack/react-table';

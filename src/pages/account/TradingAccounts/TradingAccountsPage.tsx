@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { useCrmDealAccountList, useServerList } from '@/api/hooks/system/system';
+import { useCrmDealAccountList } from '@/api/hooks/account';
+import { useServerList } from '@/api/hooks/system/system';
 import { TradingAccountsForm } from './TradingAccountsForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { TradingAccountsTable } from './TradingAccountsTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
-import { CrmDealAccountListParams } from '@/api/hooks/system/types';
+import { CrmDealAccountListParams } from '@/api/hooks/account';
 
 export function TradingAccountsPage() {
   const { t } = useTranslation();

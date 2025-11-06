@@ -3,7 +3,7 @@ import { RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AccountGroupsTable } from './AccountGroupsTable';
-import { useCrmDealAccountGroupList } from '@/api/hooks/system/system';
+import { useCrmDealAccountGroupList } from '@/api/hooks/account';
 
 export const AccountGroupsPage = () => {
   const [pageNum, setPageNum] = useState(0);

@@ -1,4 +1,4 @@
-import { CrmDealAccountListItem } from '@/api/hooks/system/types';
+import { CrmDealAccountListItem } from '@/api/hooks/account';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { Ellipsis } from 'lucide-react';

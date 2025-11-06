@@ -7,11 +7,11 @@ import { useTranslation } from 'react-i18next';
 import { WalletAccountsTable } from './WalletAccountsTable';
 import { WalletAccountsForm } from './WalletAccountsForm';
 import {
-  useCurrencyList,
   useWalletAccountsList,
   useWalletAccountsListSum,
-} from '@/api/hooks/system/system';
-import { WalletAccountsListParams } from '@/api/hooks/system/types';
+  WalletAccountsListParams,
+} from '@/api/hooks/account';
+import { useCurrencyList } from '@/api/hooks/system/system';
 import { TableCell } from '@/components/ui/table';
 
 export const WalletAccountsPage = () => {

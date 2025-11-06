@@ -1,5 +1,5 @@
-import { useCrmUser, useTagUserCountList } from '@/api/hooks/system/system';
-import { TagUserItem } from '@/api/hooks/system/types';
+import { useCrmUser, useTagUserCountList } from '@/api/hooks/account';
+import { TagUserItem } from '@/api/hooks/account';
 import { EmblaCarousel } from '@/components/common/EmblaCarousel';
 import { CRMTable } from '@/components/table/CRMTable';
 import { cn } from '@/lib/utils';

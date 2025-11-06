@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
-import { TagUserItem } from '@/api/hooks/system/types';
+import { TagUserItem } from '@/api/hooks/account';
 import { forwardRef, useImperativeHandle } from 'react';
 import { RefreshCcw, Search } from 'lucide-react';
 import { FormInput } from '@/components/form/FormInput';

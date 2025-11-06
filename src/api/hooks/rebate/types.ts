@@ -1,0 +1,2 @@
+// Rebate module types
+export {};

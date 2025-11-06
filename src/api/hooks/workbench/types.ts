@@ -1,0 +1,2 @@
+// Workbench module types
+export {};

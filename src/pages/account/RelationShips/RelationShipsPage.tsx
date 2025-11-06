@@ -4,7 +4,7 @@ import { apiFormPostCustom } from '@/api/client';
 import { useTranslation } from 'react-i18next';
 // react-window v2 exports `List` (new API). Import List and use rowComponent/rowCount/rowHeight props.
 import { List } from 'react-window';
-import { CustomerRelationsGetItem, CustomerRelationsPostRes } from '@/api/hooks/system/types';
+import { CustomerRelationsGetItem, CustomerRelationsPostRes } from '@/api/hooks/account';
 
 // Module-level fetching set to dedupe requests across component instances and remounts.
 // Using a module-scoped Set ensures Strict Mode duplicate mounts (separate component
