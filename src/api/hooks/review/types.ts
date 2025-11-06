@@ -1,17 +1,9 @@
-export type BasicParams = {
-  pageNum?: number;
-  pageSize?: number;
-  orderByColumn?: string;
-  isAsc?: string;
-};
+import { BasicParams, BasicRes, BaseEntity } from '../../types';
 
-export type AgentApplyItem = {
-  createBy: string;
-  createTime: string;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+// Re-export shared types for backward compatibility
+export type { BasicParams, BasicRes, BaseEntity };
+
+export type AgentApplyItem = BaseEntity & {
   id: string;
   lastName: string;
   name: string;
@@ -44,12 +36,7 @@ export type AgentApplyItem = {
   vuserName: string;
 };
 
-export type AgentApplyListRes = {
-  code: number;
-  msg: string;
-  rows: AgentApplyItem[];
-  total: string;
-};
+export type AgentApplyListRes = BasicRes<AgentApplyItem>;
 
 export type AgentApplyListParams = BasicParams & {
   name?: string;
@@ -64,14 +51,7 @@ export type AgentApplyListParams = BasicParams & {
   };
 };
 
-export type RebateCommissionItem = {
-  // generate type according to above json
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type RebateCommissionItem = BaseEntity & {
   id: string;
   userId: string;
   orderId: string;
@@ -125,12 +105,7 @@ export type RebateCommissionItem = {
   orderComment: string;
 };
 
-export type RebateCommissionListRes = {
-  code: number;
-  msg: string;
-  rows: RebateCommissionItem[];
-  total: string;
-};
+export type RebateCommissionListRes = BasicRes<RebateCommissionItem>;
 
 export type RebateCommissionListParams = BasicParams & {
   serverId?: string;
@@ -153,13 +128,8 @@ export type RebateCommissionListParams = BasicParams & {
   };
 };
 
-export type RebateCommissionRuleItem = {
-  createBy: string | null;
-  createTime: string;
+export type RebateCommissionRuleItem = BaseEntity & {
   updateBy: string | null;
-  updateTime: string;
-  remark: string | null;
-  params: Record<string, unknown>;
   id: string;
   userId: string | null;
   accountId: string | null;
@@ -251,12 +221,8 @@ export type InternalTransferItem = {
   inAliasName: string;
   status: number;
 };
-export type InternalTransferListRes = {
-  code: number;
-  msg: string;
-  rows: InternalTransferItem[];
-  total: string;
-};
+
+export type InternalTransferListRes = BasicRes<InternalTransferItem>;
 
 export type WithdrawItem = {
   orderComment: string;
@@ -322,12 +288,9 @@ export type WithdrawItem = {
   withdraw: string;
   walletCurrency?: string;
 };
-export type WithdrawListRes = {
-  code: number;
-  msg: string;
-  rows: WithdrawItem[];
-  total: string;
-};
+
+export type WithdrawListRes = BasicRes<WithdrawItem>;
+
 export type WithdrawListParams = BasicParams & {
   userId?: string;
   status?: number | string;
@@ -378,12 +341,9 @@ export type DepositListParams = BasicParams & {
     accounts?: string;
   };
 };
-export type DepositListRes = {
-  code: number;
-  msg: string;
-  rows: DepositListItem[];
-  total: string;
-};
+
+export type DepositListRes = BasicRes<DepositListItem>;
+
 export type DepositListSumRes = {
   code: number;
   msg: string;
@@ -439,18 +399,9 @@ export type DepositListItem = {
   status: number;
 };
 
-export type ThirdPaymentListRes = {
-  code: number;
-  msg: string;
-  rows: ThirdPaymentItem[];
-};
-export type CurrencyItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type ThirdPaymentListRes = BasicRes<ThirdPaymentItem>;
+
+export type CurrencyItem = BaseEntity & {
   id: string;
   currencyNameChn: string;
   currencyNameEng: string;
@@ -470,19 +421,9 @@ export type OutMoneyMethodListRes = {
   data: { name: string; id: string }[];
 };
 
-export type CurrencyListRes = {
-  code: number;
-  msg: string;
-  rows: CurrencyItem[];
-};
+export type CurrencyListRes = BasicRes<CurrencyItem>;
 
-export type ThirdPaymentItem = {
-  createBy: string;
-  createTime: string;
-  updateBy: string;
-  updateTime: string;
-  remark: string;
-  params: Record<string, unknown>;
+export type ThirdPaymentItem = BaseEntity & {
   id: number;
   channelName: string;
   payWay: string | null;
@@ -539,12 +480,8 @@ export type CrmPreferenceItem = {
   groupCode: string | null;
 };
 
-export type CrmPreferenceListRes = {
-  code: number;
-  msg: string | null;
-  rows: CrmPreferenceItem[];
-  total: string;
-};
+export type CrmPreferenceListRes = BasicRes<CrmPreferenceItem>;
+
 // 审核-信息审核
 export type CrmInfoVerifyListParams = {
   pageSize?: number;
@@ -580,12 +517,9 @@ export type CrmInfoVerifyItem = {
   sumsubName: string | null;
   params: string | null;
 };
-export type CrmInfoVerifyListRes = {
-  code: number;
-  msg: string | null;
-  rows: CrmInfoVerifyItem[];
-  total: string;
-};
+
+export type CrmInfoVerifyListRes = BasicRes<CrmInfoVerifyItem>;
+
 // 审核-开户审核
 export type CrmNewLoginVerifyListParams = {
   pageSize?: number;
@@ -636,12 +570,9 @@ export type CrmNewLoginVerifyItem = {
   account: string | null;
   status: string | null;
 };
-export type CrmNewLoginVerifyListRes = {
-  code: number;
-  msg: string | null;
-  rows: CrmNewLoginVerifyItem[];
-  total: string;
-};
+
+export type CrmNewLoginVerifyListRes = BasicRes<CrmNewLoginVerifyItem>;
+
 // 审核-绑定审核
 export type BindVerifyListParams = {
   pageSize?: number;
@@ -681,12 +612,9 @@ export type BindVerifyListItem = {
   id: string | null;
   status: string | null;
 };
-export type BindVerifyListRes = {
-  code: number;
-  msg: string | null;
-  rows: BindVerifyListItem[];
-  total: string;
-};
+
+export type BindVerifyListRes = BasicRes<BindVerifyListItem>;
+
 // 审核-杠杆审核
 export type LeverageVerifyListParams = {
   pageSize?: number;
@@ -724,9 +652,5 @@ export type LeverageVerifyListItem = {
   id: string | null;
   status: string | null;
 };
-export type LeverageVerifyListRes = {
-  code: number;
-  msg: string | null;
-  rows: LeverageVerifyListItem[];
-  total: string;
-};
+
+export type LeverageVerifyListRes = BasicRes<LeverageVerifyListItem>;

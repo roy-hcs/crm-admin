@@ -1,15 +1,13 @@
+import { BasicRes, BaseEntity, BasicParams } from '../../types';
+
 // ib客户追踪
-export type ClientTrackingParams = {
-  pageSize: number;
-  pageNum: number;
-  isAsc?: string;
+export type ClientTrackingParams = BasicParams & {
   Level?: string;
   userName: string;
   email: string;
   statisticMonth: string;
   level: string;
   drirectFlag?: string;
-  orderByColumn?: string;
 };
 export type AgencyClientTrackingItem = {
   allFirstDeposit: string | null;
@@ -29,17 +27,11 @@ export type AgencyClientTrackingItem = {
   withdrawTotalStr: string | null;
   netTotalStr: string | null;
 };
-export type AgencyClientTrackingResponse = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: AgencyClientTrackingItem[];
-};
+
+export type AgencyClientTrackingResponse = BasicRes<AgencyClientTrackingItem>;
+
 // ib数据总览
-export type OverviewParams = {
-  pageSize: number;
-  pageNum: number;
-  isAsc?: string;
+export type OverviewParams = BasicParams & {
   Level?: string;
   userName: string;
   email: string;
@@ -47,7 +39,6 @@ export type OverviewParams = {
   endTime: string;
   level: string;
   drirectFlag?: string;
-  orderByColumn?: string;
   serverId?: string;
   serverType?: string;
 };
@@ -70,17 +61,11 @@ export type OverviewItem = {
   rebateOnCommission: string | null;
   rebateOnDeposit: string | null;
 };
-export type OverviewResponse = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: OverviewItem[];
-};
+
+export type OverviewResponse = BasicRes<OverviewItem>;
+
 // 交易佣金报表
-export type TradingParams = {
-  pageSize: number;
-  pageNum: number;
-  isAsc?: string;
+export type TradingParams = BasicParams & {
   rebateType?: string;
   serverId?: string;
   serverGroupList?: string;
@@ -91,7 +76,6 @@ export type TradingParams = {
   conditionName?: string;
   rebateTraderIdList?: string;
   accounts?: string;
-  orderByColumn?: string;
   params: {
     startTraderTime?: string;
     endTraderTime?: string;
@@ -117,19 +101,11 @@ export type TradingItem = {
   rebateFixedAmt: string | null;
   rebatePointsAmt: string | null;
 };
-export type TradingResponse = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: TradingItem[];
-};
+
+export type TradingResponse = BasicRes<TradingItem>;
 
 // 日结返佣报表
-export type DailyRebateParams = {
-  pageSize: number;
-  pageNum: number;
-  isAsc?: string;
-  orderByColumn?: string;
+export type DailyRebateParams = BasicParams & {
   settleStyle?: string;
   rebateType?: string;
   rebateStatus?: string;
@@ -156,14 +132,10 @@ export type DailyRebateItem = {
   id: string | null;
   account: string | null;
 };
-export type DailyRebateResponse = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: DailyRebateItem[];
-};
 
-export type TradingHistoryParams = {
+export type DailyRebateResponse = BasicRes<DailyRebateItem>;
+
+export type TradingHistoryParams = BasicParams & {
   serverType: number | string;
   serverId?: string;
   serverGroupList?: string;
@@ -177,9 +149,6 @@ export type TradingHistoryParams = {
   accounts?: string;
   positionID?: string;
   entry?: string;
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
   isAsc?: 'asc' | 'desc';
   params: {
     selectOther?: string;
@@ -192,13 +161,7 @@ export type TradingHistoryParams = {
   };
 };
 
-export type TradingHistoryItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, string>;
+export type TradingHistoryItem = BaseEntity & {
   login: string | null;
   serverId: string | null;
   server: string | null;
@@ -249,11 +212,7 @@ export type TradingHistoryListResponse = {
   serverType: string;
 };
 // 资金报表- 钱包流水
-export type crmUserDealDetailParams = {
-  pageSize: number;
-  pageNum: number;
-  isAsc?: string;
-  orderByColumn?: string;
+export type crmUserDealDetailParams = BasicParams & {
   operationType?: string;
   serialNum?: string;
   accounts?: string;
@@ -294,14 +253,11 @@ export type WalletTransactionItem = {
   remark: string | null;
   postAmount: string | null;
 };
-export type WalletTransactionResponse = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: WalletTransactionItem[];
-};
+
+export type WalletTransactionResponse = BasicRes<WalletTransactionItem>;
+
 // 支付订单
-export type PaymentOrderListParams = {
+export type PaymentOrderListParams = BasicParams & {
   params: {
     userName?: string;
     account?: string;
@@ -313,9 +269,6 @@ export type PaymentOrderListParams = {
   orderStatus?: string;
   orderId?: string;
   accounts?: string;
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
   isAsc?: 'asc' | 'desc';
 };
 export type PaymentOrderItem = {
@@ -330,15 +283,11 @@ export type PaymentOrderItem = {
   channelName: string | null;
   userName: string | null;
 };
-export type PaymentOrderListResponse = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: PaymentOrderItem[];
-};
+
+export type PaymentOrderListResponse = BasicRes<PaymentOrderItem>;
 
 // 交易账号资金流水
-export type CrmUserDealListParams = {
+export type CrmUserDealListParams = BasicParams & {
   params: {
     ticket?: string;
     historyFuzzyName?: string;
@@ -356,21 +305,15 @@ export type CrmUserDealListParams = {
   serverGroup?: string;
   accountGroupList?: string;
   accounts?: string;
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
   isAsc?: 'asc' | 'desc';
 };
 
-export type PositionOrderParams = {
+export type PositionOrderParams = BasicParams & {
   server?: string;
   serverGroupList?: string;
   type?: number | string;
   accountGroupList?: string;
   accounts?: string;
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
   isAsc?: 'asc' | 'desc';
   params: {
     random?: string;
@@ -416,15 +359,11 @@ export type CrmUserDealItem = {
   server_type: string | null;
   crmName: string | null;
 };
-export type CrmUserDealListResponse = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: CrmUserDealItem[];
-};
+
+export type CrmUserDealListResponse = BasicRes<CrmUserDealItem>;
 
 // 资金回退失败日志
-export type RefundFailLogListParams = {
+export type RefundFailLogListParams = BasicParams & {
   params: {
     beginTime?: string;
     endTime?: string;
@@ -432,18 +371,10 @@ export type RefundFailLogListParams = {
   userId?: string;
   status?: string;
   refundAccount?: string;
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
   isAsc?: 'asc' | 'desc';
 };
 
-export type PositionOrderItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
+export type PositionOrderItem = BaseEntity & {
   params: {
     currency: string | null;
     accountName: string | null;
@@ -497,13 +428,10 @@ export type PositionOrderResponse = {
 
 export type LimitOrderListResponse = PositionOrderResponse;
 export type LimitOrderListItem = PositionOrderItem;
-export type LimitOrderListParams = {
+export type LimitOrderListParams = BasicParams & {
   server?: string;
   serverGroupList?: string;
   accounts?: string;
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
   isAsc?: 'asc' | 'desc';
   params: {
     positionFuzzyType?: number | string;
@@ -517,12 +445,9 @@ export type LimitOrderListParams = {
   };
 };
 
-export type AccountStatisticListParams = {
+export type AccountStatisticListParams = BasicParams & {
   server?: string;
   accountGroupList?: string;
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
   isAsc?: 'asc' | 'desc';
   params: {
     serverGroupList?: number | string;
@@ -532,13 +457,7 @@ export type AccountStatisticListParams = {
     statisticEndTime?: string;
   };
 };
-export type RefundFailLogItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: string | null;
+export type RefundFailLogItem = BaseEntity & {
   id: string | null;
   userId: string | null;
   operType: string | null;
@@ -555,13 +474,9 @@ export type RefundFailLogItem = {
   refundAccount: string | null;
 };
 
-export type AccountStatisticListItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, string>;
+export type RefundFailLogListResponse = BasicRes<RefundFailLogItem>;
+
+export type AccountStatisticListItem = BaseEntity & {
   name: string | null;
   login: string | null;
   countOrder: number | null;
@@ -577,14 +492,9 @@ export type AccountStatisticListItem = {
   currency: string | null;
   serviceType: number | null;
 };
-export type RefundFailLogListResponse = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: RefundFailLogItem[];
-};
+
 // 交易账号资金统计
-export type TradingAccountFundsStatsParams = {
+export type TradingAccountFundsStatsParams = BasicParams & {
   params: {
     serverGroupList?: string;
     fuzzyAccount?: string;
@@ -597,18 +507,10 @@ export type TradingAccountFundsStatsParams = {
   accounts?: string;
   accountGroupList?: string;
   server?: string;
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
   isAsc?: 'asc' | 'desc';
 };
 
-export type AccountStatisticListResponse = {
-  code: number;
-  msg: string | null;
-  rows: AccountStatisticListItem[];
-  total: string;
-};
+export type AccountStatisticListResponse = BasicRes<AccountStatisticListItem>;
 
 export type AccountStatisticSumParams = {
   server?: string;
@@ -642,13 +544,6 @@ export type AccountStatisticSumResponse = {
   data: AccountStatisticSumItem[];
 };
 
-export type SystemFundOperationRecordListRes = {
-  code: number;
-  msg: string | null;
-  rows: SystemFundOperationRecordItem[];
-  total: string;
-};
-
 export type SystemFundOperationRecordItem = {
   id: string | null;
   orderNumber: string | null;
@@ -672,11 +567,10 @@ export type SystemFundOperationRecordItem = {
   params: Record<string, string> | null;
 };
 
-export type SystemFundOperationRecordListParams = {
+export type SystemFundOperationRecordListRes = BasicRes<SystemFundOperationRecordItem>;
+
+export type SystemFundOperationRecordListParams = BasicParams & {
   type?: number | string;
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
   isAsc?: 'asc' | 'desc';
   params: {
     name?: string;
@@ -750,14 +644,10 @@ export type TradingAccountFundsStatsItem = {
   pammWithdrawalAmount: string | null;
 };
 
-export type TradingAccountFundsStatsResponse = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: TradingAccountFundsStatsItem[];
-};
+export type TradingAccountFundsStatsResponse = BasicRes<TradingAccountFundsStatsItem>;
+
 // 交易账号数据统计
-export type DataStatisticsParams = {
+export type DataStatisticsParams = BasicParams & {
   params: {
     serverGroupList?: string;
     fuzzyAccount?: string;
@@ -770,9 +660,6 @@ export type DataStatisticsParams = {
   accounts?: string;
   accountGroupList?: string;
   server?: string;
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
   isAsc?: 'asc' | 'desc';
 };
 
@@ -798,13 +685,6 @@ export type SystemFundOperationRecordSumParams = {
   };
 };
 
-export type WalletBalanceRes = {
-  code: number;
-  msg: string | null;
-  rows: WalletBalanceItem[];
-  total: string;
-};
-
 export type WalletBalanceItem = {
   email: string | null;
   lastName: string | null;
@@ -813,10 +693,9 @@ export type WalletBalanceItem = {
   [key: string]: number | string | null;
 };
 
-export type WalletBalanceParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
+export type WalletBalanceRes = BasicRes<WalletBalanceItem>;
+
+export type WalletBalanceParams = BasicParams & {
   isAsc?: 'asc' | 'desc';
   accounts: string;
   params: {
@@ -892,11 +771,7 @@ export type DataStatisticsItem = {
   pammWithdrawalAmount?: string;
 };
 
-export type DataStatisticsResponse = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: DataStatisticsItem[];
+export type DataStatisticsResponse = BasicRes<DataStatisticsItem> & {
   accounts: string;
   params: {
     fuzzyName?: string;
@@ -958,13 +833,7 @@ export type WalletTransactionSumRes = {
   data: WalletTransactionSumItem[];
 };
 
-export type CurrencyListItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, string>;
+export type CurrencyListItem = BaseEntity & {
   id: string | null;
   currencyNameChn: string | null;
   currencyNameEng: string | null;
@@ -978,9 +847,4 @@ export type CurrencyListItem = {
   network: string | null;
 };
 
-export type CurrencyListRes = {
-  code: number;
-  msg: string | null;
-  rows: CurrencyListItem[];
-  total: string;
-};
+export type CurrencyListRes = BasicRes<CurrencyListItem>;

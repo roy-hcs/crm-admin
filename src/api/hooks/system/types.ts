@@ -1,32 +1,7 @@
-import { BasicParams } from '../review/types';
+import { BasicParams, BasicRes, BaseEntity } from '../../types';
 
-export type WithDrawReportItem = {
-  amount: number;
-  currency: string | null;
-  statisticDate: string;
-  usdAmount: number | null;
-  rate: number | null;
-  symbol: string | null;
-  count: number | null;
-  type: string | null;
-  serverId: number | null;
-  intDate: number;
-  profit: number | null;
-  loss: number | null;
-  netProfit: number | null;
-  volume: number | null;
-  quantity: number | null;
-};
-
-export type SymbolReportParams = {
-  type: string;
-  serverId: string;
-  pageNum?: number;
-  orderByColumn?: boolean;
-  isAsc: string;
-};
-
-export type SymbolReportRowItem = {
+// Base types for reusability
+export type BaseReportItem = {
   amount: number;
   currency: string | null;
   statisticDate: string | null;
@@ -44,11 +19,20 @@ export type SymbolReportRowItem = {
   quantity: number | null;
 };
 
-export type SymbolReportResponse = {
-  total: string;
-  rows: SymbolReportRowItem[];
-  code: number;
+export type WithDrawReportItem = BaseReportItem;
+
+export type SymbolReportParams = {
+  type: string;
+  serverId: string;
+  pageNum?: number;
+  orderByColumn?: boolean;
+  isAsc: string;
 };
+
+export type SymbolReportRowItem = BaseReportItem;
+
+export type SymbolReportResponse = BasicRes<SymbolReportRowItem>;
+
 export type ServerItem = {
   id: string;
   serviceType: number;
@@ -60,23 +44,13 @@ export type ServerItem = {
   managerSecret: string;
 };
 
-export type ServerListResponse = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: ServerItem[];
-};
+export type ServerListResponse = BasicRes<ServerItem>;
 export type RebateLevelItem = {
   id: string;
   level: string;
   levelName: string;
 };
-export type RebateLevelListResponse = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: RebateLevelItem[];
-};
+export type RebateLevelListResponse = BasicRes<RebateLevelItem>;
 
 export type RegCountReportItem = Record<string, [number, number, number]>;
 
@@ -88,10 +62,6 @@ export type SumReport = {
 };
 
 export type CrmUserParams = {
-  pageSize: number;
-  pageNum: number;
-  orderByColumn?: string;
-  isAsc?: string;
   params: {
     threeCons?: string;
     fiveCons?: string;
@@ -108,15 +78,9 @@ export type CrmUserParams = {
   certiricateNo?: string;
   accountType?: string;
   tags?: string;
-};
+} & BasicParams;
 
-export type CrmUserItem = {
-  createBy: string | null;
-  createTime: string;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type CrmUserItem = BaseEntity & {
   id: string;
   lastName: string;
   name: string;
@@ -176,12 +140,7 @@ export type CrmUserItem = {
   mttwo: string;
 };
 
-export type CrmUserResponse = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: CrmUserItem[];
-};
+export type CrmUserResponse = BasicRes<CrmUserItem>;
 
 export type TagUserItem = {
   userCount: string;
@@ -204,13 +163,7 @@ export type CrmRebateTradersItem = {
 
 export type GetGroupByServerResponse = string[];
 
-export type DealAccountGroup = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type DealAccountGroup = BaseEntity & {
   id: string;
   name: string;
   sort: number;
@@ -227,21 +180,10 @@ export type CurrencyItem = {
   id: string;
   currencyAbbr: string;
 };
-export type CurrencyListResponse = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: CurrencyItem[];
-};
+export type CurrencyListResponse = BasicRes<CurrencyItem>;
 
 // 操作类型 / 操作方式 - 单条字典项
-export type DictTypeItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type DictTypeItem = BaseEntity & {
   dictCode: string; // 接口返回为字符串
   dictSort: string; // 同上，如需数字可改成 number | string
   dictLabel: string;
@@ -272,7 +214,7 @@ export type InfoTypeItem = {
   updateBy: string | null;
   updateTime: string | null;
   remark: string | null;
-  params: string | null;
+  params: string | null; // Note: different from BaseEntity (string instead of Record)
   dictCode: string | null;
   dictSort: string | null;
   dictLabel: string | null;
@@ -286,13 +228,7 @@ export type InfoTypeItem = {
   globalizationKey: string | null;
 };
 
-export type RoleItem = {
-  createBy: string | null;
-  createTime: string;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type RoleItem = BaseEntity & {
   roleId: string;
   roleName: string;
   roleKey: string;
@@ -310,12 +246,7 @@ export type RoleItem = {
   deptIds: string[] | null;
 };
 
-export type RoleListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: RoleItem[];
-};
+export type RoleListRes = BasicRes<RoleItem>;
 
 export type RoleListParams = BasicParams & {
   roleName?: string;
@@ -365,13 +296,7 @@ export type ServerExceptionNoticeItem = {
   manager: string;
 };
 export type ServerExceptionNoticeRes = ServerExceptionNoticeItem[];
-export type PreferencesItem = {
-  createBy: string;
-  createTime: string;
-  updateBy: string;
-  updateTime: string;
-  remark: string;
-  params: Record<string, unknown>;
+export type PreferencesItem = BaseEntity & {
   id: string;
   nameText: string;
   code: string;
@@ -382,13 +307,7 @@ export type PreferencesItem = {
 };
 export type PreferencesRes = PreferencesItem[];
 
-export type MenuListItem = {
-  createBy: string;
-  createTime: string;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type MenuListItem = BaseEntity & {
   menuId: string;
   menuName: string;
   parentName: string | null;
@@ -414,13 +333,7 @@ export type EmailListParams = BasicParams & {
   };
 };
 
-export type EmailListItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type EmailListItem = BaseEntity & {
   id: string;
   sendEmail: string | null;
   acceptEmail: string | null;
@@ -436,12 +349,7 @@ export type EmailListItem = {
   acceptEmailStr: string;
   userMsgId: string;
 };
-export type EmailListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: EmailListItem[];
-};
+export type EmailListRes = BasicRes<EmailListItem>;
 
 export type UserOrderLogListParams = BasicParams & {
   orderId?: string;
@@ -453,13 +361,7 @@ export type UserOrderLogListParams = BasicParams & {
     userName?: string;
   };
 };
-export type UserOrderLogItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type UserOrderLogItem = BaseEntity & {
   id: string;
   orderId: string;
   userId: string;
@@ -475,20 +377,9 @@ export type UserOrderLogItem = {
   msg: string;
   logType: number;
 };
-export type UserOrderLogListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: UserOrderLogItem[];
-};
+export type UserOrderLogListRes = BasicRes<UserOrderLogItem>;
 // 角色基础类型（为 UserItem.roles / userRole.role 提供复用）
-export type Role = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type Role = BaseEntity & {
   roleId: string | null;
   roleName: string | null;
   roleKey: string | null;
@@ -506,13 +397,7 @@ export type Role = {
   deptIds: string | null;
 };
 
-export type UserItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type UserItem = BaseEntity & {
   userId: string | null;
   deptId: string | null;
   parentId: string | null;
@@ -532,13 +417,7 @@ export type UserItem = {
   loginIp: string | null;
   loginDate: string | null;
   chatId: string | null;
-  dept: {
-    createBy: string | null;
-    createTime: string | null;
-    updateBy: string | null;
-    updateTime: string | null;
-    remark: string | null;
-    params: Record<string, unknown>;
+  dept: BaseEntity & {
     deptId: string | null;
     parentId: string | null;
     ancestors: string | null;
@@ -566,19 +445,9 @@ export type UserItem = {
   admin: boolean | null;
   wholeName: string | null;
 };
-export type UserListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: UserItem[];
-};
+export type UserListRes = BasicRes<UserItem>;
 
-export type UserListParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
-  isAsc?: 'asc' | 'desc';
-
+export type UserListParams = BasicParams & {
   userName?: string;
   roleId?: string;
   status?: string;
@@ -599,13 +468,7 @@ export type BonusSettingListParams = BasicParams & {
   };
 };
 
-export type BonusSettingListItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type BonusSettingListItem = BaseEntity & {
   id: string;
   rewardTitle: string;
   sort: string;
@@ -654,18 +517,8 @@ export type BonusSettingListItem = {
   unlockNet: string | null;
   unlockVolume: string | null;
 };
-export type BonusSettingListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: BonusSettingListItem[];
-};
-export type AdminOperLogParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
-  isAsc?: 'asc' | 'desc';
-
+export type BonusSettingListRes = BasicRes<BonusSettingListItem>;
+export type AdminOperLogParams = BasicParams & {
   title?: string;
   operName?: string;
   status?: string;
@@ -694,19 +547,9 @@ export type AdminOperLogItem = {
   operTime: string | null;
   operObject: string | null;
 };
-export type AdminOperLogRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: AdminOperLogItem[];
-};
+export type AdminOperLogRes = BasicRes<AdminOperLogItem>;
 
-export type AdminLoginParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
-  isAsc?: 'asc' | 'desc';
-
+export type AdminLoginParams = BasicParams & {
   ipaddr?: string;
   status?: string;
   loginLocation?: string;
@@ -732,19 +575,9 @@ export type AdminLoginItem = {
   status: string | null;
 };
 
-export type AdminLoginRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: AdminLoginItem[];
-};
+export type AdminLoginRes = BasicRes<AdminLoginItem>;
 
-export type CrmLogininforParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
-  isAsc?: 'asc' | 'desc';
-
+export type CrmLogininforParams = BasicParams & {
   ipaddr?: string;
   userName?: string;
   status?: string;
@@ -755,13 +588,7 @@ export type CrmLogininforParams = {
     endTime?: string;
   };
 };
-export type CrmLogininforItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type CrmLogininforItem = BaseEntity & {
   infoId: string | null;
   loginName: string | null;
   ipaddr: string | null;
@@ -772,27 +599,11 @@ export type CrmLogininforItem = {
   loginTime: string | null;
 };
 
-export type CrmLogininforRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: CrmLogininforItem[];
-};
+export type CrmLogininforRes = BasicRes<CrmLogininforItem>;
 
-export type AdsListParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
-  isAsc?: 'asc' | 'desc';
-};
+export type AdsListParams = BasicParams;
 
-export type AdsListItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type AdsListItem = BaseEntity & {
   id: string | null;
   name: string | null;
   position: string | null;
@@ -808,19 +619,9 @@ export type AdsListItem = {
   delFlag: string | null;
 };
 
-export type AdsListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: AdsListItem[];
-};
+export type AdsListRes = BasicRes<AdsListItem>;
 
-export type RewardRecordsListParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
-  isAsc?: 'asc' | 'desc';
-
+export type RewardRecordsListParams = BasicParams & {
   rewardId?: string;
 
   params: {
@@ -860,21 +661,10 @@ export type RewardRecordsListItem = {
   unlockVolume: string | null;
 };
 
-export type RewardRecordsListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: RewardRecordsListItem[];
-};
+export type RewardRecordsListRes = BasicRes<RewardRecordsListItem>;
 
-export type WalletAccountsListParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
-  isAsc?: 'asc' | 'desc';
-
+export type WalletAccountsListParams = BasicParams & {
   currency?: string;
-
   params: {
     threeCons?: string;
     regStartTime?: string;
@@ -882,13 +672,7 @@ export type WalletAccountsListParams = {
   };
 };
 
-export type WalletAccountsItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type WalletAccountsItem = BaseEntity & {
   id: string | null;
   crmUserId: string | null;
   balance: string | null;
@@ -903,12 +687,7 @@ export type WalletAccountsItem = {
   accounts: string | null;
 };
 
-export type WalletAccountsListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: WalletAccountsItem[];
-};
+export type WalletAccountsListRes = BasicRes<WalletAccountsItem>;
 
 export type SumWalletAccountsItem = {
   totalBalance: number;
@@ -930,12 +709,7 @@ export type WalletAccountsListSumParams = {
   };
 };
 
-export type CrmDealAccountListParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
-  isAsc?: 'asc' | 'desc';
-
+export type CrmDealAccountListParams = BasicParams & {
   server?: string;
   serverGroupList?: string;
   accounts?: string;
@@ -950,13 +724,7 @@ export type CrmDealAccountListParams = {
     threeCons?: string;
   };
 };
-export type CrmDealAccountListItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type CrmDealAccountListItem = BaseEntity & {
   id: string | null;
   userId: string | null;
   username: string | null;
@@ -1003,27 +771,11 @@ export type CrmDealAccountListItem = {
   roleName: string | null;
 };
 
-export type CrmDealAccountListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: CrmDealAccountListItem[];
-};
+export type CrmDealAccountListRes = BasicRes<CrmDealAccountListItem>;
 
-export type CrmDealAccountGroupListParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
-  isAsc?: 'asc' | 'desc';
-};
+export type CrmDealAccountGroupListParams = BasicParams;
 
-export type CrmDealAccountItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, unknown>;
+export type CrmDealAccountItem = BaseEntity & {
   id: string | null;
   name: string | null;
   sort: number | null;
@@ -1033,12 +785,7 @@ export type CrmDealAccountItem = {
   relatedRebateRuleCount: string | null;
 };
 
-export type CrmDealAccountGroupListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: CrmDealAccountItem[];
-};
+export type CrmDealAccountGroupListRes = BasicRes<CrmDealAccountItem>;
 
 export type UserInfoRes = {
   allowCheckEmail: boolean;
@@ -1162,12 +909,7 @@ export type GetMsgListParams = BasicParams & {
     sendEndTime?: string;
   };
 };
-export type GetMsgListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: MsgListItem[];
-};
+export type GetMsgListRes = BasicRes<MsgListItem>;
 export type MsgListItem = {
   create_time: string;
   user_last_name: string;
@@ -1200,3 +942,66 @@ export type CustomerRelationsGetItem = {
 };
 
 export type CustomerRelationsPostRes = CustomerRelationsGetItem[];
+
+export type RebateBasePointParams = BasicParams & {
+  pointValueName?: string;
+  serverType?: string;
+  serverId?: string;
+  pointValueType?: string;
+};
+
+export type RebateBasePointRes = BasicRes<RebateBasePointItem>;
+export type RebateBasePointItem = BaseEntity & {
+  id: string;
+  userId: string | null;
+  accountId: string | null;
+  serialNumber: number;
+  pointValue: string;
+  pointValueName: string;
+  rebateType: string;
+  serverType: number;
+  serverName: string;
+  serverId: string;
+  pointValueType: number;
+  pointValueLots: string;
+  pointValueCurrency: string;
+  sourceCurrency: string | null;
+  pointValueRules: number;
+};
+
+export type SelectServerListParams = {
+  serverProperty: string | number;
+  serverType: string | number;
+};
+
+export type SelectServerListRes = SelectServerListItem[];
+export type SelectServerListItem = {
+  id: string;
+  serviceType: number;
+  serviceProperty: number;
+  servicePropertyValue: string | null;
+  aliasName: string;
+  serverName: string;
+  serviceHost: string;
+  managerAccount: string;
+  managerSecret: string;
+  salt: string | null;
+  accountStart: number;
+  accountEnd: number;
+  status: number;
+  processStatus: number;
+  syncTime: string;
+  lastTicket: number;
+  checkTime: string;
+  port: string;
+  isBindAllowed: number;
+  pid: string | null;
+  flag: boolean;
+  sort: number;
+  generateType: number;
+  interType: string;
+  reportingHost: string | null;
+  reportingDbName: string | null;
+  reportingAccount: string | null;
+  reportingSecret: string | null;
+};

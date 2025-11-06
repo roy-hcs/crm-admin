@@ -28,6 +28,10 @@ import Hex from 'crypto-js/enc-hex';
 import { useLogin, useLoginConfig } from '@/api/hooks/users/users';
 import { TFunction } from 'i18next';
 import { RrhButton } from './common/RrhButton';
+import { useUserStore } from '@/store/userStore';
+import { useQueryClient } from '@tanstack/react-query';
+import { apiGetCustom } from '@/api/client';
+import { UserInfoRes } from '@/api/hooks/system/types';
 
 const emailSchema = (t: TFunction<'translation', undefined>) => {
   return z.object({
@@ -71,6 +75,8 @@ export const LoginForm = ({
   const loginMutation = useLogin();
   const { data: loginConfig } = useLoginConfig();
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const { setUser } = useUserStore();
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginType === 2 ? emailSchema(t) : phoneSchema(t)),
@@ -107,10 +113,30 @@ export const LoginForm = ({
       }
       submittedValues.password = encryptPassword(values.password, secretKey);
       // submittedValues.googleCode = '';
+
+      // Step 1: Login
       const res = await loginMutation.mutateAsync(submittedValues);
       if (res.code === 0 && res.data) {
         localStorage.setItem('publicKey', res.data?.pubKey);
-        navigate('/');
+
+        // Step 2: Fetch user info after successful login
+        try {
+          const userInfoData = await queryClient.fetchQuery({
+            queryKey: ['GetUserInfo'],
+            queryFn: () => apiGetCustom<UserInfoRes>('/system/user/profile/getUserInfo'),
+          });
+
+          // Step 3: Store user info in Zustand
+          if (userInfoData?.user) {
+            setUser(userInfoData.user);
+          }
+
+          // Step 4: Navigate to home page
+          navigate('/');
+        } catch (userInfoError) {
+          console.error('Failed to fetch user info:', userInfoError);
+          toast.error(t('loginPage.LoginFailedPleaseTryAgainLater'));
+        }
       } else {
         toast.error(res.msg || t('loginPage.LoginFailedPleaseTryAgainLater'));
       }

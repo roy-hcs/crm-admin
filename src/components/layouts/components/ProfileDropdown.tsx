@@ -9,12 +9,14 @@ import {
 import { useAuth } from '@/contexts/auth';
 import { useNavigate } from 'react-router-dom';
 import { useTabStore } from '@/store/tabStore';
+import { useUserStore } from '@/store/userStore';
 
 export const ProfileDropdown: React.FC = () => {
   const menus = ['profile', 'settings', 'logout'];
   const { logout } = useAuth();
   const navigate = useNavigate();
   const { addTab } = useTabStore();
+  const { user } = useUserStore();
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -23,7 +25,7 @@ export const ProfileDropdown: React.FC = () => {
     switch (menu) {
       case 'profile':
         addTab({ key: 'profile', title: 'Profile', path: '/profile', closable: true });
-        navigate('/profile');
+        navigate('/account/profile');
         break;
       case 'settings':
         addTab({ key: 'settings', title: 'Settings', path: '/settings', closable: true });
@@ -39,7 +41,9 @@ export const ProfileDropdown: React.FC = () => {
     <DropdownMenu>
       <DropdownMenuTrigger className="hover:bg-accent flex cursor-pointer items-center rounded-sm p-2">
         <User className="h-5 w-5" />
-        <span className="ml-2 hidden sm:inline-block">Admin</span>
+        <span className="ml-2 hidden sm:inline-block">
+          {(user?.userLastName || '') + user?.userName}
+        </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {menus.map(menu => (

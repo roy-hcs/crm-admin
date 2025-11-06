@@ -189,7 +189,9 @@
     "toBeSent": "待发送",
     "hasBeenSent": "已发送",
     "sending": "发送中",
-    "allCRMUsers": "所有CRM用户"
+    "allCRMUsers": "所有CRM用户",
+    "contractSize": "合约规模",
+    "contractNumber": "合约数"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -783,7 +785,15 @@
     "submitter": "提交人",
     "infoType": "信息类型",
     "receiver": "接收对象",
-    "sendAgain": "重新发送"
+    "sendAgain": "重新发送",
+    "pointValueName": "点值名称",
+    "transactionPlatform": "交易平台",
+    "pointValueType": "点值类型",
+    "pointValue": "点值",
+    "fixedPipValue": "固定点值",
+    "floatingPipValue": "浮动点值",
+    "serverName": "服务器名称",
+    "rebateType": "品种"
   },
   "review": {
     "settings": {
@@ -855,5 +865,9 @@
     "inSiteMsgNotification": "站内信消息",
     "emailNotification": "邮件通知",
     "messageTempate": "消息模板"
+  },
+  "pipValueSettings": {
+    "title": "点值设置",
+    "warn": "点值相同的品种请归在同一个点值组内，组内的品种会以相同的点值返佣。未设置点值的品种默认按0处理。如存在重复的品种点值，将以排序最靠前的点值计算返佣。"
   }
 }

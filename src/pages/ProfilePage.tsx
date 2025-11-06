@@ -1,26 +1,25 @@
-import { useGetUserInfo } from '@/api/hooks/system/system';
+import { useUserStore } from '@/store/userStore';
 import { useTranslation } from 'react-i18next';
 
 export const ProfilePage = () => {
   const { t } = useTranslation();
-  const { data: userData } = useGetUserInfo();
+  const { user } = useUserStore();
   return (
     <div>
       <h1>{t('profile.title')}</h1>
       <div>
-        <img src={userData?.user.avatar} alt="" />
+        <img src={user?.avatar} alt="" />
         <p>{t('profile.uploadAvatar')}</p>
       </div>
-      <div>{(userData?.user.userLastName || '') + (userData?.user.userName || '')}</div>
-      {userData?.user.phonenumber && (
+      <div>{(user?.userLastName || '') + (user?.userName || '')}</div>
+      {user?.phonenumber && (
         <div>
-          {t('CRMAccountPage.Mobile')}:{' '}
-          {`+${(userData?.user.mzone || '') + userData?.user.phonenumber}`}{' '}
+          {t('CRMAccountPage.Mobile')}: {`+${(user?.mzone || '') + user?.phonenumber}`}{' '}
         </div>
       )}
-      {userData?.user.email && (
+      {user?.email && (
         <div>
-          {t('loginPage.email')}: {userData?.user.email}
+          {t('loginPage.email')}: {user?.email}
         </div>
       )}
       <div>{t('loginPage.password')}: ******</div>
