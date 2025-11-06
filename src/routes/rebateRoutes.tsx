@@ -1,3 +1,4 @@
+import { PipValuePage } from '@/pages/rebate/pipValue/PipValuePage';
 import { RouteObject } from 'react-router-dom';
 
 /**
@@ -14,6 +15,10 @@ import { RouteObject } from 'react-router-dom';
  */
 export const rebateRoutes: RouteObject[] = [
   // TODO: Add routes as pages are developed
+  {
+    path: '/rebate/pip-value',
+    element: <PipValuePage />,
+  },
   /*
   {
     path: '/rebate/basic-settings',
@@ -22,10 +27,6 @@ export const rebateRoutes: RouteObject[] = [
   {
     path: '/rebate/product-groups',
     element: <ProductGroupsPage />,
-  },
-  {
-    path: '/rebate/pip-value',
-    element: <PipValuePage />,
   },
   {
     path: '/rebate/level-settings',

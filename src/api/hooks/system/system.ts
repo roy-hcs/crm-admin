@@ -57,6 +57,10 @@ import {
   GetMsgListRes,
   CustomerRelationsPostParams,
   CustomerRelationsPostRes,
+  RebateBasePointParams,
+  RebateBasePointRes,
+  SelectServerListRes,
+  SelectServerListParams,
 } from './types';
 
 export function useWithDrawReport(type?: string) {
@@ -486,5 +490,24 @@ export function useCustomerRelationsPost(params: CustomerRelationsPostParams) {
     queryKey: ['customerRelationsPost', params],
     queryFn: () =>
       apiFormPostCustom<CustomerRelationsPostRes>(`/system/crmUser/customerRelationsPost`, params),
+  });
+}
+
+export function useGetRebateBasePoint(params: RebateBasePointParams) {
+  return useQuery({
+    queryKey: ['getRebateBasePoint', params],
+    queryFn: () =>
+      apiFormPostCustom<RebateBasePointRes>('/system/crmRebateBasePointValue/list', params),
+  });
+}
+
+export function useSelectServerList(
+  params: SelectServerListParams,
+  options: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['selectServerList', params],
+    queryFn: () => apiFormPostCustom<SelectServerListRes>('/system/mtService/servers', params),
+    enabled: options?.enabled ?? true,
   });
 }

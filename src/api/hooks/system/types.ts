@@ -942,3 +942,66 @@ export type CustomerRelationsGetItem = {
 };
 
 export type CustomerRelationsPostRes = CustomerRelationsGetItem[];
+
+export type RebateBasePointParams = BasicParams & {
+  pointValueName?: string;
+  serverType?: string;
+  serverId?: string;
+  pointValueType?: string;
+};
+
+export type RebateBasePointRes = BasicRes<RebateBasePointItem>;
+export type RebateBasePointItem = BaseEntity & {
+  id: string;
+  userId: string | null;
+  accountId: string | null;
+  serialNumber: number;
+  pointValue: string;
+  pointValueName: string;
+  rebateType: string;
+  serverType: number;
+  serverName: string;
+  serverId: string;
+  pointValueType: number;
+  pointValueLots: string;
+  pointValueCurrency: string;
+  sourceCurrency: string | null;
+  pointValueRules: number;
+};
+
+export type SelectServerListParams = {
+  serverProperty: string | number;
+  serverType: string | number;
+};
+
+export type SelectServerListRes = SelectServerListItem[];
+export type SelectServerListItem = {
+  id: string;
+  serviceType: number;
+  serviceProperty: number;
+  servicePropertyValue: string | null;
+  aliasName: string;
+  serverName: string;
+  serviceHost: string;
+  managerAccount: string;
+  managerSecret: string;
+  salt: string | null;
+  accountStart: number;
+  accountEnd: number;
+  status: number;
+  processStatus: number;
+  syncTime: string;
+  lastTicket: number;
+  checkTime: string;
+  port: string;
+  isBindAllowed: number;
+  pid: string | null;
+  flag: boolean;
+  sort: number;
+  generateType: number;
+  interType: string;
+  reportingHost: string | null;
+  reportingDbName: string | null;
+  reportingAccount: string | null;
+  reportingSecret: string | null;
+};
