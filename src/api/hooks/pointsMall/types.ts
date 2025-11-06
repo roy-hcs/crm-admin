@@ -1,21 +1,13 @@
-export type CrmDealGoodsListParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
-  isAsc?: 'asc' | 'desc';
+import { BasicParams, BasicRes, BaseEntity } from '../../types';
 
+export type CrmDealGoodsListParams = BasicParams & {
+  isAsc?: 'asc' | 'desc';
   params: {
     goodsName?: string;
   };
 };
 
-export type GoodsListItem = {
-  createBy: string;
-  createTime: string;
-  updateBy: string;
-  updateTime: string;
-  remark: string;
-  params: object;
+export type GoodsListItem = BaseEntity & {
   id: string;
   goodsName: string;
   exchangePoints: string;
@@ -46,21 +38,11 @@ export type GoodsListItem = {
   applicableRoles: string | null;
 };
 
-export type CrmDealGoodsListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: GoodsListItem[];
-};
+export type CrmDealGoodsListRes = BasicRes<GoodsListItem>;
 
-export type PointsHistoryListParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
+export type PointsHistoryListParams = BasicParams & {
   isAsc?: 'asc' | 'desc';
-
   payType?: string;
-
   params: {
     fuzzyName?: string;
     fuzzyEmail?: string;
@@ -73,13 +55,7 @@ export type PointsHistoryListParams = {
   };
 };
 
-export type PointsHistoryItem = {
-  createBy: string;
-  createTime: string;
-  updateBy: string | null;
-  updateTime: string;
-  remark: string;
-  params: object;
+export type PointsHistoryItem = BaseEntity & {
   id: string;
   orderNo: string;
   userId: string;
@@ -101,21 +77,11 @@ export type PointsHistoryItem = {
   paymentAmount: number;
 };
 
-export type PointsHistoryListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: PointsHistoryItem[];
-};
+export type PointsHistoryListRes = BasicRes<PointsHistoryItem>;
 
-export type PointsChangeListParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
+export type PointsChangeListParams = BasicParams & {
   isAsc?: 'asc' | 'desc';
-
   businessType?: string;
-
   params: {
     fuzzyName?: string;
     fuzzyEmail?: string;
@@ -124,13 +90,7 @@ export type PointsChangeListParams = {
   };
 };
 
-export type PointsChangeItem = {
-  createBy: string;
-  createTime: string;
-  updateBy: string;
-  updateTime: string;
-  remark: string;
-  params: object;
+export type PointsChangeItem = BaseEntity & {
   id: string;
   serialNo: string;
   userId: string;
@@ -145,19 +105,10 @@ export type PointsChangeItem = {
   showId: string;
 };
 
-export type PointsChangeListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: PointsChangeItem[];
-};
+export type PointsChangeListRes = BasicRes<PointsChangeItem>;
 
-export type PointsBalanceParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
+export type PointsBalanceParams = BasicParams & {
   isAsc?: 'asc' | 'desc';
-
   params: {
     fuzzyName?: string;
     email?: string;
@@ -177,29 +128,14 @@ export type PointsBalanceItem = {
   params: string | null;
 };
 
-export type PointsBalanceRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: PointsBalanceItem[];
-};
+export type PointsBalanceRes = BasicRes<PointsBalanceItem>;
 
-export type GoodsClassificationParams = {
-  pageSize?: number;
-  pageNum?: number;
-  orderByColumn?: string;
+export type GoodsClassificationParams = BasicParams & {
   isAsc?: 'asc' | 'desc';
-
   searchName?: string;
 };
 
-export type GoodsClassificationItem = {
-  createBy: string;
-  createTime: string;
-  updateBy: string;
-  updateTime: string;
-  remark: string | null;
-  params: object;
+export type GoodsClassificationItem = BaseEntity & {
   id: number;
   parentId: number;
   status: number;
@@ -213,9 +149,4 @@ export type GoodsClassificationItem = {
   classificationLanguageId: string | null;
 };
 
-export type GoodsClassificationRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: GoodsClassificationItem[];
-};
+export type GoodsClassificationRes = BasicRes<GoodsClassificationItem>;
