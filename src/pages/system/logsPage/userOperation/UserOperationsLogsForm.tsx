@@ -13,7 +13,7 @@ import { FormInput } from '@/components/form/FormInput';
 import { FormProvider } from '@/contexts/form';
 import { RrhButton } from '@/components/common/RrhButton';
 import { useTranslation } from 'react-i18next';
-import { DictTypeItem } from '@/api/hooks/system/types';
+import { DictTypeItem } from '@/api/hooks/system';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { Dispatch, SetStateAction } from 'react';
 import { UserOperationsLogsParams } from '@/api/hooks/monitor/type';

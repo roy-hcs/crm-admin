@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useRolesList } from '@/api/hooks/system/system';
+import { useRolesList } from '@/api/hooks/system';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { RolesTable } from './RolesTable';
 

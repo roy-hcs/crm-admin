@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AdminAccountsTable } from './AdminAccountsTable';
 import { AdminAccountsForm } from './AdminAccountsForm';
-import { useRoleList, useUserList } from '@/api/hooks/system/system';
-import { UserListParams } from '@/api/hooks/system/types';
+import { useRoleList, useUserList, UserListParams } from '@/api/hooks/system';
 
 export const AdminAccountsPage = () => {
   const [params, setParams] = useState<UserListParams['params']>({

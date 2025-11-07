@@ -1,4 +1,4 @@
-import { RoleItem } from '@/api/hooks/system/types';
+import { RoleItem } from '@/api/hooks/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { DataTable } from '@/components/table/DataTable';
 import { ColumnDef } from '@tanstack/react-table';

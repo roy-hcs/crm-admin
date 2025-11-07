@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AdminLoginTable } from './AdminLoginTable';
 import { AdminLoginForm } from './AdminLoginForm';
-import { useAdminLoginList } from '@/api/hooks/system/system';
-import { AdminLoginParams } from '@/api/hooks/system/types';
+import { useAdminLoginList, AdminLoginParams } from '@/api/hooks/system';
 
 export const AdminLoginPage = () => {
   const [params, setParams] = useState<AdminLoginParams['params']>({

@@ -1,4 +1,4 @@
-import { AdminOperLogItem, DictTypeItem } from '@/api/hooks/system/types';
+import { AdminOperLogItem, DictTypeItem } from '@/api/hooks/system';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { RrhTag } from '@/components/common/RrhTag';
 import { DataTable } from '@/components/table/DataTable';

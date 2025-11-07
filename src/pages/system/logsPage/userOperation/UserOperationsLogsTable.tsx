@@ -1,5 +1,5 @@
 import { OperationsLogsItem } from '@/api/hooks/monitor/type';
-import { DictTypeItem } from '@/api/hooks/system/types';
+import { DictTypeItem } from '@/api/hooks/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { RrhTag } from '@/components/common/RrhTag';

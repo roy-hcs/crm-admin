@@ -1,4 +1,4 @@
-import { UserOrderLogItem } from '@/api/hooks/system/types';
+import { UserOrderLogItem } from '@/api/hooks/system';
 import { ToolTip } from '@/components/common/ToolTip';
 import { DataTable } from '@/components/table/DataTable';
 import { Checkbox } from '@/components/ui/checkbox';

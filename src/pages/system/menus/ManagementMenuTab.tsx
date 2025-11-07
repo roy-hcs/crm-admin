@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { Funnel, LucideChevronsDownUp, LucideChevronsUpDown, RefreshCcw } from 'lucide-react';
 import { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMenuList } from '@/api/hooks/system/system';
+import { useMenuList } from '@/api/hooks/system';
 import { MenuTable } from './MenuTable';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { MenuForm } from './MenuForm';

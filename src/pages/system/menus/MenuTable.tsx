@@ -1,4 +1,4 @@
-import { MenuListItem } from '@/api/hooks/system/types';
+import { MenuListItem } from '@/api/hooks/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhTag } from '@/components/common/RrhTag';
 import { ToolTip } from '@/components/common/ToolTip';
