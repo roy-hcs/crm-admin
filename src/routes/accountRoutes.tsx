@@ -1,10 +1,10 @@
 import { RouteObject } from 'react-router-dom';
-import { ProfilePage } from '@/pages/ProfilePage';
-import { CRMAccounts } from '@/pages/account/CRMAccounts/CRMAccounts';
-import { TradingAccountsPage } from '@/pages/account/TradingAccounts/TradingAccountsPage';
-import { WalletAccountsPage } from '@/pages/account/WalletAccounts/WalletAccountsPage';
-import { AccountGroupsPage } from '@/pages/account/AccountGroups/AccountGroupsPage';
-import { RelationshipsPage } from '@/pages/account/RelationShips/RelationShipsPage';
+import { ProfilePage } from '@/pages/account/profile/ProfilePage';
+import { CRMAccounts } from '@/pages/account/crm-accounts/CRMAccounts';
+import { TradingAccountsPage } from '@/pages/account/trading-accounts/TradingAccountsPage';
+import { WalletAccountsPage } from '@/pages/account/wallet-accounts/WalletAccountsPage';
+import { AccountGroupsPage } from '@/pages/account/account-groups/AccountGroupsPage';
+import { RelationshipsPage } from '@/pages/account/relationships/RelationshipsPage';
 // Import other account pages as they are developed
 
 /**

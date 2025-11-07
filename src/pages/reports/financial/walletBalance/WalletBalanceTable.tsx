@@ -1,4 +1,4 @@
-import { CurrencyListItem, WalletBalanceItem } from '@/api/hooks/report/types';
+import { CurrencyListItem, WalletBalanceItem } from '@/api/hooks/report';
 import { CRMColumnDef, DataTable } from '@/components/table/DataTable';
 import { ColumnDef } from '@tanstack/react-table';
 import { ReactElement } from 'react';

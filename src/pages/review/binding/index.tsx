@@ -5,9 +5,8 @@ import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { BindingTable } from './BindingTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-import { useBindVerifyList } from '@/api/hooks/review/review';
+import { useBindVerifyList, CrmNewLoginVerifyListParams } from '@/api/hooks/review';
 import { RrhButton } from '@/components/common/RrhButton';
-import { CrmNewLoginVerifyListParams } from '@/api/hooks/review/types';
 export function BindingPage() {
   const { t } = useTranslation();
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('');

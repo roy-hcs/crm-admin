@@ -1,38 +1,8 @@
 import { BasicParams, BasicRes, BaseEntity } from '../../types';
 
-// Base types for reusability
-export type BaseReportItem = {
-  amount: number;
-  currency: string | null;
-  statisticDate: string | null;
-  usdAmount: number | null;
-  rate: number | null;
-  symbol: string | null;
-  count: number | null;
-  type: string | null;
-  serverId: number | null;
-  intDate: number | null;
-  profit: number | null;
-  loss: number | null;
-  netProfit: number | null;
-  volume: number | null;
-  quantity: number | null;
-};
+// Note: BaseReportItem, WithDrawReportItem, SymbolReport*, RegCountReportItem, SumReport moved to @/api/hooks/workbench
 
-export type WithDrawReportItem = BaseReportItem;
-
-export type SymbolReportParams = {
-  type: string;
-  serverId: string;
-  pageNum?: number;
-  orderByColumn?: boolean;
-  isAsc: string;
-};
-
-export type SymbolReportRowItem = BaseReportItem;
-
-export type SymbolReportResponse = BasicRes<SymbolReportRowItem>;
-
+// Shared across multiple modules (account, marketing, reports, review, workbench)
 export type ServerItem = {
   id: string;
   serviceType: number;
@@ -45,6 +15,7 @@ export type ServerItem = {
 };
 
 export type ServerListResponse = BasicRes<ServerItem>;
+
 export type RebateLevelItem = {
   id: string;
   level: string;
@@ -52,128 +23,12 @@ export type RebateLevelItem = {
 };
 export type RebateLevelListResponse = BasicRes<RebateLevelItem>;
 
-export type RegCountReportItem = Record<string, [number, number, number]>;
-
-export type SumReport = {
-  crmUser: string;
-  dealAccount: string;
-  deposit: number;
-  withdraw: number;
-};
-
-export type CrmUserParams = {
-  params: {
-    threeCons?: string;
-    fiveCons?: string;
-    regStartTime?: string;
-    regEndTime?: string;
-    fuzzyMobile?: string;
-    fuzzyEmail?: string;
-    inviter?: string;
-    accounts?: string;
-  };
-  status?: string;
-  role?: string;
-  accounts?: string;
-  certiricateNo?: string;
-  accountType?: string;
-  tags?: string;
-} & BasicParams;
-
-export type CrmUserItem = BaseEntity & {
-  id: string;
-  lastName: string;
-  name: string;
-  showId: string;
-  sex: string | null;
-  mzone: string;
-  mobile: string;
-  email: string;
-  accountType: number;
-  accountTypeStr: string;
-  userRole: string | null;
-  inviter: string;
-  inviterName: string | null;
-  inviterEmail: string;
-  headImg: string;
-  status: number;
-  role: string;
-  rebateLevelName: string | null;
-  certiricateType: string | null;
-  certiricateNo: string | null;
-  source: string;
-  country: string | null;
-  province: string | null;
-  city: string | null;
-  address: string | null;
-  postCode: string | null;
-  birthday: string | null;
-  verifyStatus: number;
-  nameOne: string;
-  nameTwo: string;
-  inviterShowId: string;
-  roleId: string | null;
-  rebateLevelId: string | null;
-  rebateAccountId: string;
-  crmRebateLevel: {
-    id: string;
-    level: string;
-    levelName: string;
-  } | null;
-  userInfo: string | null;
-  applySource: string | null;
-  account: string | null;
-  permissionJson: string | null;
-  inviterChain: string;
-  preferenceLanguage: string;
-  colorPreference: string;
-  lastLoginTime: string | null;
-  latestFollowupTime: string | null;
-  spreadLinkCodeId: string;
-  loginTwoFactorAuth: string | null;
-  antiPhishingCode: string | null;
-  tags: string;
-  points: string | null;
-  shortCode: string | null;
-  userName: string;
-  mtone: string;
-  mttwo: string;
-};
-
-export type CrmUserResponse = BasicRes<CrmUserItem>;
-
-export type TagUserItem = {
-  userCount: string;
-  id: string;
-  tagName: string;
-};
-
-export type CustomRelationsItem = {
-  childNames: string;
-  crmRebateLevel: string;
-  id: string;
-  hasChildren: boolean;
-  parentName: string;
-};
+// Note: CrmUser, TagUser, CustomRelations types moved to @/api/hooks/account
 
 export type CrmRebateTradersItem = {
   ruleName: string;
   id: string;
 };
-
-export type GetGroupByServerResponse = string[];
-
-export type DealAccountGroup = BaseEntity & {
-  id: string;
-  name: string;
-  sort: number;
-  num: number | null;
-  flag: boolean;
-  delFlag: boolean;
-  relatedRebateRuleCount: number | null;
-};
-
-export type DealAccountGroupListResponse = DealAccountGroup[];
 
 // 钱包货币
 export type CurrencyItem = {
@@ -251,61 +106,7 @@ export type RoleListRes = BasicRes<RoleItem>;
 export type RoleListParams = BasicParams & {
   roleName?: string;
 };
-// 数据概览
-export type MtServiceUpdateRes = {
-  allAccount: number;
-  todayAccount: number;
-  count: number[];
-};
-export interface TclosureReportItem {
-  amount: number | null;
-  currency: string | null;
-  statisticDate: string; // "2025-10-06"
-  usdAmount: number | null;
-  rate: number | null;
-  symbol: string | null;
-  count: number | null;
-  type: string | null;
-  serverId: string | null;
-  intDate: number | null; // 20251006
-  profit: number;
-  loss: number;
-  netProfit: number;
-  volume: number;
-  quantity: number;
-}
-
-export interface TclosureReportMonthSummary {
-  volume: number;
-  quantity: number;
-}
-
-export interface TclosureReportResponse {
-  sumThisMonth: TclosureReportMonthSummary;
-  data: TclosureReportItem[];
-}
-
-export type ServerExceptionNoticeItem = {
-  id: number;
-  code: number;
-  server: string;
-  vhost: string;
-  time: string;
-  createTime: string;
-  reason: string;
-  manager: string;
-};
-export type ServerExceptionNoticeRes = ServerExceptionNoticeItem[];
-export type PreferencesItem = BaseEntity & {
-  id: string;
-  nameText: string;
-  code: string;
-  indexReviewCount: string;
-  val: string;
-  sort: string;
-  groupCode: string;
-};
-export type PreferencesRes = PreferencesItem[];
+// Note: MtServiceUpdateRes, TclosureReport*, ServerExceptionNotice*, Preferences* moved to @/api/hooks/workbench
 
 export type MenuListItem = BaseEntity & {
   menuId: string;
@@ -461,63 +262,8 @@ export type UserListParams = BasicParams & {
   };
 };
 
-export type BonusSettingListParams = BasicParams & {
-  businessType?: string;
-  params: {
-    rewardTitle?: string;
-  };
-};
+// Note: BonusSettingList types moved to @/api/hooks/marketing
 
-export type BonusSettingListItem = BaseEntity & {
-  id: string;
-  rewardTitle: string;
-  sort: string;
-  businessType: number;
-  rewardType: number;
-  status: number;
-  accountLimitType: number;
-  crmRoleIds: string | null;
-  accounts: string | null;
-  userIds: string | null;
-  tagIds: string | null;
-  serverId: string;
-  serverGroupIds: string;
-  accountTypes: string | null;
-  maxAccount: string | null;
-  minimumAmount: string | null;
-  limitType: number;
-  bonusType: number;
-  bonusPercentage: string | null;
-  bonusMode: number;
-  bonusAmount: string | null;
-  amountCapped: number;
-  timeRangeType: number;
-  businessTimeType: number;
-  expire: number;
-  timeUnit: number;
-  startTime: string;
-  endTime: string;
-  delFlag: boolean;
-  dealServer: string | null;
-  dealBreed: string | null;
-  bonusScheme: number;
-  dealNum: number;
-  dealBasis: string | null;
-  issueTimeUnit: string | null;
-  bonusIssueTime: string | null;
-  toClientStatus: number;
-  activityPicture: string | null;
-  activityContent: string | null;
-  titleLanguageList: string | null;
-  ladderBonusList: string | null;
-  ladderBonusListJsonStr: string | null;
-  bonusLock: string | null;
-  unlockLimit: string | null;
-  unlockDeposit: string | null;
-  unlockNet: string | null;
-  unlockVolume: string | null;
-};
-export type BonusSettingListRes = BasicRes<BonusSettingListItem>;
 export type AdminOperLogParams = BasicParams & {
   title?: string;
   operName?: string;
@@ -601,191 +347,9 @@ export type CrmLogininforItem = BaseEntity & {
 
 export type CrmLogininforRes = BasicRes<CrmLogininforItem>;
 
-export type AdsListParams = BasicParams;
+// Note: AdsList, RewardRecordsList types moved to @/api/hooks/marketing
 
-export type AdsListItem = BaseEntity & {
-  id: string | null;
-  name: string | null;
-  position: string | null;
-  sort: string | null;
-  status: number;
-  clickCount: string | null;
-  webPicture: string | null;
-  appPicture: string | null;
-  jumpType: number | null;
-  customLink: string | null;
-  msgId: string | null;
-  crmRoleIds: string | null;
-  delFlag: string | null;
-};
-
-export type AdsListRes = BasicRes<AdsListItem>;
-
-export type RewardRecordsListParams = BasicParams & {
-  rewardId?: string;
-
-  params: {
-    rewardTitle?: string;
-    crmAccount?: string;
-    businessType?: string;
-    bonusTimeStart?: string;
-    bonusTimeEnd?: string;
-  };
-};
-
-export type RewardRecordsListItem = {
-  recordId: string | null;
-  orderNo: string | null;
-  userId: string | null;
-  lastName: string | null;
-  name: string | null;
-  showId: string | null;
-  businessType: string | null;
-  rewardTitle: string | null;
-  targetType: string | null;
-  rewardType: string | null;
-  rewardTarget: string | null;
-  amount: string | null;
-  status: string;
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  verifyFlag: boolean | null;
-  lockStatus: string | null;
-  unlockAmount: string | null;
-  unlockTime: string | null;
-  unlockLimit: string | null;
-  unlockDeposit: string | null;
-  unlockNet: string | null;
-  unlockVolume: string | null;
-};
-
-export type RewardRecordsListRes = BasicRes<RewardRecordsListItem>;
-
-export type WalletAccountsListParams = BasicParams & {
-  currency?: string;
-  params: {
-    threeCons?: string;
-    regStartTime?: string;
-    regEndTime?: string;
-  };
-};
-
-export type WalletAccountsItem = BaseEntity & {
-  id: string | null;
-  crmUserId: string | null;
-  balance: string | null;
-  currency: string | null;
-  major: string | null;
-  permissionJson: string | null;
-  delFlag: string | null;
-  crmUserName: string | null;
-  crmUserShowId: string | null;
-  allIn: string | null;
-  allOut: string | null;
-  accounts: string | null;
-};
-
-export type WalletAccountsListRes = BasicRes<WalletAccountsItem>;
-
-export type SumWalletAccountsItem = {
-  totalBalance: number;
-  currency: string | null;
-};
-
-export type WalletAccountsListSumRes = {
-  code: number;
-  msg: string;
-  data: SumWalletAccountsItem[];
-};
-
-export type WalletAccountsListSumParams = {
-  currency?: string;
-  params: {
-    threeCons?: string;
-    regStartTime?: string;
-    regEndTime?: string;
-  };
-};
-
-export type CrmDealAccountListParams = BasicParams & {
-  server?: string;
-  serverGroupList?: string;
-  accounts?: string;
-  accountGroupList?: string;
-
-  params: {
-    regStartTime?: string;
-    regEndTime?: string;
-    fuzzyAccount?: string;
-    fuzzyName?: string;
-    accounts?: string;
-    threeCons?: string;
-  };
-};
-export type CrmDealAccountListItem = BaseEntity & {
-  id: string | null;
-  userId: string | null;
-  username: string | null;
-  name: string | null;
-  account: string | null;
-  serviceType: number | null;
-  serviceProperty: number | null;
-  servicePropertyStr: string | null;
-  servicePropertyValue: string | null;
-  server: string | null;
-  serverName: string | null;
-  accountSupervisorName: string | null;
-  directBrokerName: string | null;
-  accountGroupId: string | null;
-  accountGroupName: string | null;
-  accountSupervisorShowId: string | null;
-  serverGroup: string | null;
-  accountType: string | null;
-  accountTypeName: string | null;
-  lever: number | null;
-  balance: number | null;
-  netWorth: number | null;
-  creditAmount: number | null;
-  registerTime: string | null;
-  registerTimeStr: string | null;
-  dealAuth: number | null;
-  usedAdvance: number | null;
-  usableAdvance: number | null;
-  advanceScale: number | null;
-  status: number | null;
-  initialAmount: number | null;
-  currency: string | null;
-  authority: string | null;
-  directBroker: string | null;
-  permissionJson: string | null;
-  digits: number | null;
-  hasClearAccount: '0' | null;
-  buildRebateAccount: boolean | null;
-  accountGroupList: string[] | null;
-  accounts: string[] | null;
-  accountIds: string[] | null;
-  crmAuthority: number | null;
-  source: string | null;
-  roleName: string | null;
-};
-
-export type CrmDealAccountListRes = BasicRes<CrmDealAccountListItem>;
-
-export type CrmDealAccountGroupListParams = BasicParams;
-
-export type CrmDealAccountItem = BaseEntity & {
-  id: string | null;
-  name: string | null;
-  sort: number | null;
-  num: number | null;
-  flag: boolean;
-  delFlag: boolean;
-  relatedRebateRuleCount: string | null;
-};
-
-export type CrmDealAccountGroupListRes = BasicRes<CrmDealAccountItem>;
+// Note: WalletAccounts, CrmDealAccount types moved to @/api/hooks/account
 
 export type UserInfoRes = {
   allowCheckEmail: boolean;
@@ -900,108 +464,8 @@ export type UserInfoRes = {
   emailTail: string | null;
 };
 
-export type GetMsgListParams = BasicParams & {
-  type: string;
-  params: {
-    fuzzyTitle?: string;
-    fuzzyName?: string;
-    sendStartTime?: string;
-    sendEndTime?: string;
-  };
-};
-export type GetMsgListRes = BasicRes<MsgListItem>;
-export type MsgListItem = {
-  create_time: string;
-  user_last_name: string;
-  user_name: string;
-  modify_time: string | null;
-  send_email: string;
-  modify_by: string | null;
-  title: string;
-  type: number;
-  content: string;
-  allUser: string;
-  is_now: number;
-  create_by: string;
-  send_time: string;
-  receive_type: number;
-  expire: string | null;
-  id: string;
-  status: number;
-};
-export type CustomerRelationsPostParams = {
-  userId?: string;
-};
+// Note: GetMsgList types moved to @/api/hooks/message
 
-export type CustomerRelationsGetItem = {
-  id: string;
-  parentName: string;
-  childNames: null | Array<string>;
-  hasChildren: boolean;
-  crmRebateLevel: null;
-};
+// Note: CustomerRelations types moved to @/api/hooks/account
 
-export type CustomerRelationsPostRes = CustomerRelationsGetItem[];
-
-export type RebateBasePointParams = BasicParams & {
-  pointValueName?: string;
-  serverType?: string;
-  serverId?: string;
-  pointValueType?: string;
-};
-
-export type RebateBasePointRes = BasicRes<RebateBasePointItem>;
-export type RebateBasePointItem = BaseEntity & {
-  id: string;
-  userId: string | null;
-  accountId: string | null;
-  serialNumber: number;
-  pointValue: string;
-  pointValueName: string;
-  rebateType: string;
-  serverType: number;
-  serverName: string;
-  serverId: string;
-  pointValueType: number;
-  pointValueLots: string;
-  pointValueCurrency: string;
-  sourceCurrency: string | null;
-  pointValueRules: number;
-};
-
-export type SelectServerListParams = {
-  serverProperty: string | number;
-  serverType: string | number;
-};
-
-export type SelectServerListRes = SelectServerListItem[];
-export type SelectServerListItem = {
-  id: string;
-  serviceType: number;
-  serviceProperty: number;
-  servicePropertyValue: string | null;
-  aliasName: string;
-  serverName: string;
-  serviceHost: string;
-  managerAccount: string;
-  managerSecret: string;
-  salt: string | null;
-  accountStart: number;
-  accountEnd: number;
-  status: number;
-  processStatus: number;
-  syncTime: string;
-  lastTicket: number;
-  checkTime: string;
-  port: string;
-  isBindAllowed: number;
-  pid: string | null;
-  flag: boolean;
-  sort: number;
-  generateType: number;
-  interType: string;
-  reportingHost: string | null;
-  reportingDbName: string | null;
-  reportingAccount: string | null;
-  reportingSecret: string | null;
-};
+// Note: RebateBasePoint, SelectServerList types moved to @/api/hooks/rebate

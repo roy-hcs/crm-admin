@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AdminOperationsTable } from './AdminOperationsTable';
 import { AdminOperationsForm } from './AdminOperationsForm';
-import { useAdminOperLogList, useDictType } from '@/api/hooks/system/system';
-import { AdminOperLogParams } from '@/api/hooks/system/types';
+import { useAdminOperLogList, useDictType, AdminOperLogParams } from '@/api/hooks/system';
 
 export const AdminOperationsPage = () => {
   const [params, setParams] = useState<AdminOperLogParams['params']>({

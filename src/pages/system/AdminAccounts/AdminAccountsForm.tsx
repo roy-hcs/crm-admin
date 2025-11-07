@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
-import { RoleItem, UserListParams } from '@/api/hooks/system/types';
+import { RoleItem, UserListParams } from '@/api/hooks/system';
 import { FormSelect } from '@/components/form/FormSelect';
 import { onlineStatusOptions, statusOptions } from '@/lib/const';
 

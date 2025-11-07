@@ -1,4 +1,4 @@
-import { AdminLoginItem } from '@/api/hooks/system/types';
+import { AdminLoginItem } from '@/api/hooks/system';
 import { RrhTag } from '@/components/common/RrhTag';
 import { DataTable } from '@/components/table/DataTable';
 import { adminOperationsStatusOptions } from '@/lib/const';

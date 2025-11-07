@@ -1,8 +1,8 @@
-import { PointsBalancePage } from '@/pages/PointsMall/PointsBalance/PointsBalancePage';
-import { PointsHistoryPage } from '@/pages/PointsMall/PointsHistory/PointsHistoryPage';
-import { ProductCategoriesPage } from '@/pages/PointsMall/ProductCategories/ProductCategoriesPage';
-import { ProductsPage } from '@/pages/PointsMall/products/ProductsPage';
-import { RedemptionRecordsPage } from '@/pages/PointsMall/RedemptionRecords/RedemptionRecordsPage';
+import { PointsBalancePage } from '@/pages/points-mall/points-balance/PointsBalancePage';
+import { PointsHistoryPage } from '@/pages/points-mall/points-history/PointsHistoryPage';
+import { ProductCategoriesPage } from '@/pages/points-mall/product-categories/ProductCategoriesPage';
+import { ProductsPage } from '@/pages/points-mall/products/ProductsPage';
+import { RedemptionRecordsPage } from '@/pages/points-mall/redemption-records/RedemptionRecordsPage';
 import { RouteObject } from 'react-router-dom';
 
 /**

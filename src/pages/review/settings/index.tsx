@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SettingsTable } from './WalletTransactionsTable';
 import { useTranslation } from 'react-i18next';
-import { useCrmPreferenceList } from '@/api/hooks/review/review';
+import { useCrmPreferenceList } from '@/api/hooks/review';
 export function SettingsPage() {
   const { t } = useTranslation();
   // 分页

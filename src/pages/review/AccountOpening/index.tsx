@@ -5,9 +5,8 @@ import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { AccountOpeningTable } from './AccountOpeningTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-import { useCrmNewLoginVerifyList } from '@/api/hooks/review/review';
+import { useCrmNewLoginVerifyList, CrmNewLoginVerifyListParams } from '@/api/hooks/review';
 import { RrhButton } from '@/components/common/RrhButton';
-import { CrmNewLoginVerifyListParams } from '@/api/hooks/review/types';
 export function AccountOpeningPage() {
   const { t } = useTranslation();
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('');

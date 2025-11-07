@@ -1,6 +1,6 @@
 import { AdsPage } from '@/pages/marketing/ads/AdsPage';
-import { RewardConfigPage } from '@/pages/marketing/RewardConfigs/RewardConfigsPage';
-import { RewardRecordsPage } from '@/pages/marketing/RewardRecords/RewardRecordsPage';
+import { RewardConfigPage } from '@/pages/marketing/reward-configs/RewardConfigsPage';
+import { RewardRecordsPage } from '@/pages/marketing/reward-records/RewardRecordsPage';
 import { RouteObject } from 'react-router-dom';
 
 /**

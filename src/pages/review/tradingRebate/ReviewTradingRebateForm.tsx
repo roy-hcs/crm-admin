@@ -16,11 +16,11 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { useTranslation } from 'react-i18next';
 import { ServerItem } from '@/api/hooks/system/types';
 import { BaseOption } from '@/components/common/RrhSelect';
-import { useGetDealAccountGroupList, useGetGroupByServer } from '@/api/hooks/system/system';
+import { useGetDealAccountGroupList, useGetGroupByServer } from '@/api/hooks/account';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { serverMap } from '@/lib/constant';
 import { Dispatch, SetStateAction } from 'react';
-import { RebateCommissionListParams, RebateCommissionRuleItem } from '@/api/hooks/review/types';
+import { RebateCommissionListParams, RebateCommissionRuleItem } from '@/api/hooks/review';
 import dayjs from 'dayjs';
 
 type FormData = {

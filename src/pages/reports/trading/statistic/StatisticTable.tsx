@@ -1,4 +1,4 @@
-import { AccountStatisticListItem } from '@/api/hooks/report/types';
+import { AccountStatisticListItem } from '@/api/hooks/report';
 import { ServerItem } from '@/api/hooks/system/types';
 import { DataTable } from '@/components/table/DataTable';
 import { ColumnDef } from '@tanstack/react-table';

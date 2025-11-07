@@ -13,7 +13,7 @@ import { FormInput } from '@/components/form/FormInput';
 import { FormProvider } from '@/contexts/form';
 import { RrhButton } from '@/components/common/RrhButton';
 import { useTranslation } from 'react-i18next';
-import { UserOrderLogListParams } from '@/api/hooks/system/types';
+import { UserOrderLogListParams } from '@/api/hooks/system';
 import { Dispatch, SetStateAction } from 'react';
 import { BasicParams, ThirdPaymentItem } from '@/api/hooks/review/types';
 import dayjs from 'dayjs';

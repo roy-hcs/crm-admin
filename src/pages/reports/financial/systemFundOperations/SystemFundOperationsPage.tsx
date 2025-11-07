@@ -7,11 +7,11 @@ import { useTranslation } from 'react-i18next';
 import { SystemFundOperationsForm } from './SystemFundOperationsForm';
 import { TableCell } from '@/components/ui/table';
 import { SystemFundOperationsTable } from './SystemFundOperationsTable';
-import { SystemFundOperationRecordListParams } from '@/api/hooks/report/types';
 import {
+  SystemFundOperationRecordListParams,
   useSystemFundOperationRecordList,
   useSystemFundOperationRecordSum,
-} from '@/api/hooks/report/report';
+} from '@/api/hooks/report';
 
 export const SystemFundOperationsPage = () => {
   const [params, setParams] = useState<SystemFundOperationRecordListParams['params']>({

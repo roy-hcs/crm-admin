@@ -1,4 +1,4 @@
-import { RefundFailLogItem } from '@/api/hooks/report/types';
+import { RefundFailLogItem } from '@/api/hooks/report';
 import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { RrhOrderStatusTag } from '@/components/common/RrhOrderStatusTag';
 import { Ellipsis } from 'lucide-react';

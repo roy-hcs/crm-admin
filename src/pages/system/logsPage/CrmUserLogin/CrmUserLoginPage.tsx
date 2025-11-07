@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CrmUserLoginTable } from './CrmUserLoginTable';
 import { CrmUserLoginForm } from './CrmUserLoginForm';
-import { useCrmLogininfor } from '@/api/hooks/system/system';
-import { CrmLogininforParams } from '@/api/hooks/system/types';
+import { useCrmLogininfor, CrmLogininforParams } from '@/api/hooks/system';
 
 export const CrmUserLoginPage = () => {
   const [params, setParams] = useState<CrmLogininforParams['params']>({

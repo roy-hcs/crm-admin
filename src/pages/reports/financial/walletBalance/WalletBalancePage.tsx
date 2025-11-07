@@ -3,8 +3,8 @@ import {
   useCurrencyList,
   useWalletBalanceList,
   useWalletBalanceSum,
-} from '@/api/hooks/report/report';
-import { WalletBalanceParams } from '@/api/hooks/report/types';
+  WalletBalanceParams,
+} from '@/api/hooks/report';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';

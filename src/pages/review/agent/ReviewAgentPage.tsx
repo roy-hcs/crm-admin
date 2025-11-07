@@ -3,8 +3,7 @@ import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Funnel, RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AgentApplyListParams } from '@/api/hooks/review/types';
-import { useAgentApplyList } from '@/api/hooks/review/review';
+import { AgentApplyListParams, useAgentApplyList } from '@/api/hooks/review';
 import { ReviewAgentTable } from './ReviewAgentTable';
 import { ReviewAgentForm } from './ReviewAgentForm';
 

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserOperationsLogsParams } from '@/api/hooks/monitor/type';
 import { useUserOperationLogs } from '@/api/hooks/monitor/monitor';
-import { useDictType } from '@/api/hooks/system/system';
+import { useDictType } from '@/api/hooks/system';
 import { UserOperationsLogsTable } from './UserOperationsLogsTable';
 import { UserOperationsLogsForm } from './UserOperationsLogsForm';
 

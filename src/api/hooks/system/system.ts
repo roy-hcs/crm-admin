@@ -1,30 +1,15 @@
-import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom, FormValue } from '@/api/client';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { apiFormPostCustom, apiGet, apiGetCustom, FormValue } from '@/api/client';
+import { useQuery } from '@tanstack/react-query';
 import {
   CrmRebateTradersItem,
-  CrmUserParams,
-  CrmUserResponse,
-  CustomRelationsItem,
-  DealAccountGroupListResponse,
-  GetGroupByServerResponse,
   RebateLevelListResponse,
-  RegCountReportItem,
   ServerListResponse,
-  SumReport,
-  SymbolReportParams,
-  SymbolReportResponse,
-  TagUserItem,
-  WithDrawReportItem,
   CurrencyListResponse,
   DictTypeResponse,
   ChannelListResponse,
   InfoTypeItem,
   RoleListRes,
   RoleListParams,
-  MtServiceUpdateRes,
-  TclosureReportResponse,
-  ServerExceptionNoticeRes,
-  PreferencesRes,
   MenuListItem,
   EmailListParams,
   EmailListRes,
@@ -32,62 +17,20 @@ import {
   UserOrderLogListRes,
   UserListParams,
   UserListRes,
-  BonusSettingListParams,
-  BonusSettingListRes,
   AdminOperLogParams,
   AdminOperLogRes,
   AdminLoginParams,
   AdminLoginRes,
   CrmLogininforParams,
   CrmLogininforRes,
-  AdsListParams,
-  AdsListRes,
-  RewardRecordsListParams,
-  RewardRecordsListRes,
-  CrmDealAccountListParams,
-  CrmDealAccountListRes,
-  WalletAccountsListParams,
-  WalletAccountsListRes,
-  WalletAccountsListSumRes,
-  WalletAccountsListSumParams,
-  CrmDealAccountGroupListParams,
-  CrmDealAccountGroupListRes,
   UserInfoRes,
-  GetMsgListParams,
-  GetMsgListRes,
-  CustomerRelationsPostParams,
-  CustomerRelationsPostRes,
-  RebateBasePointParams,
-  RebateBasePointRes,
-  SelectServerListRes,
-  SelectServerListParams,
 } from './types';
 
-export function useWithDrawReport(type?: string) {
-  return useQuery({
-    queryKey: ['withdrawReport', type],
-    queryFn: () =>
-      apiGet<WithDrawReportItem[]>(`/system/withdrawReport${type ? `?type=${type}` : ''}`),
-  });
-}
+// Note: useWithDrawReport, useFundFlowReport, useSymbolReport, useRegCountReport, useDepositAllReport, useCustomerTransactionsReport, useSumReport moved to @/api/hooks/workbench
 
-export function useFundFlowReport(type?: string) {
-  return useQuery({
-    queryKey: ['fundFlowReport', type],
-    queryFn: () =>
-      apiGet<Record<string, [number, number]>>(
-        `/system/fundFlowReport${type ? `?type=${type}` : ''}`,
-      ),
-  });
-}
-
-export function useSymbolReport(params: SymbolReportParams) {
-  return useQuery({
-    queryKey: ['symbolReport', params],
-    queryFn: () => apiFormPostCustom<SymbolReportResponse>('/system/symbolReport', params),
-  });
-}
-
+/**
+ * 获取服务器列表 - shared across multiple modules
+ */
 export function useServerList(params: Record<string, FormValue> = {}) {
   return useQuery({
     queryKey: ['serverList', params],
@@ -102,69 +45,8 @@ export function useRebateLevelList(params: Record<string, FormValue> = {}) {
       apiFormPostCustom<RebateLevelListResponse>('/system/crmRebateLevel/list', params),
   });
 }
-export function useRegCountReport(type: string) {
-  return useQuery({
-    queryKey: ['regCountReport', type],
-    queryFn: () => apiGet<RegCountReportItem>(`/system/regCountReport?type=${type}`),
-  });
-}
 
-export function useDepositAllReport(type: string) {
-  return useQuery({
-    queryKey: ['depositAllReport', type],
-    queryFn: () =>
-      apiGet<Record<string, [number, number]>>(`/system/depositAllReport?type=${type}`),
-  });
-}
-export function useCustomerTransactionsReport(params: { type: string; serverId: string }) {
-  return useQuery({
-    queryKey: ['customerTransactionsReport', params.type, params.serverId],
-    queryFn: () =>
-      apiGet<TclosureReportResponse>(
-        `/system/tclosureReport?type=${params.type}&serverId=${params.serverId}`,
-      ),
-  });
-}
-export function useSumReport() {
-  return useQuery({
-    queryKey: ['sumReport'],
-    queryFn: () => apiGet<SumReport>('/system/sumReport'),
-  });
-}
-
-// query can be route, userId, accounts, origin
-export function useCrmUser(params: CrmUserParams, query?: string) {
-  return useQuery({
-    queryKey: ['crmUser', params, query],
-    queryFn: () =>
-      apiFormPostCustom<CrmUserResponse>(`/system/crmUser/list${query ? '?' + query : ''}`, params),
-  });
-}
-
-export function useTagUserCountList() {
-  return useQuery({
-    queryKey: ['tagUserCountList'],
-    queryFn: () => apiGet<TagUserItem[]>('/system/crmUser/tagsUserCountList'),
-  });
-}
-
-export function useCustomerRelationsPostList(params: { userId: string } | null = null) {
-  return useQuery({
-    queryKey: ['customerRelationsPostList', params],
-    queryFn: () =>
-      apiFormPostCustom<CustomRelationsItem[]>(
-        '/system/crmUser/customerRelationsPostList',
-        params || {},
-      ),
-  });
-}
-
-export function useChangeUserStatus() {
-  return useMutation({
-    mutationFn: (params: { id: string; status: number }) =>
-      apiFormPost('/system/crmUser/changeStatus', params),
-  });
-}
+// Note: useCrmUser, useTagUserCountList, useCustomerRelationsPostList, useChangeUserStatus moved to @/api/hooks/account
 
 /**
  * 获取组别列表
@@ -192,22 +74,7 @@ export function useGetCrmRebateTraders(type: string) {
   });
 }
 
-export function useGetGroupByServer(params: { serverId: string }) {
-  return useQuery({
-    queryKey: ['getGroupByServer', params],
-    queryFn: () =>
-      apiFormPostCustom<GetGroupByServerResponse>('/system/mtServerGroup/getGroupByServer', params),
-    enabled: !!params.serverId,
-  });
-}
-
-export function useGetDealAccountGroupList() {
-  return useQuery({
-    queryKey: ['getDealAccountGroupList'],
-    queryFn: () =>
-      apiGetCustom<DealAccountGroupListResponse>('/system/crmDealAccount/getDealAccountGroupList'),
-  });
-}
+// Note: useGetGroupByServer, useGetDealAccountGroupList moved to @/api/hooks/account
 /**
  * 获取操作类型 操作方式
  */
@@ -262,39 +129,7 @@ export function useUserRoleList(params: RoleListParams) {
     queryFn: () => apiFormPostCustom<RoleListRes>('/system/user/role/list', params),
   });
 }
-export function useMtServiceUpdate(
-  params: {
-    server: string;
-  },
-  options?: { enabled?: boolean },
-) {
-  const { server } = params;
-  return useQuery({
-    queryKey: ['MtServiceUpdate', server],
-    queryFn: () =>
-      apiFormPostCustom<MtServiceUpdateRes>(`/system/mtService/updateSta`, params || {}),
-    enabled: options?.enabled ?? true,
-  });
-}
-
-/**
- * 获取服务器异常
- */
-export function useServerExceptionNotice() {
-  return useQuery({
-    queryKey: ['serverExceptionNotice'],
-    queryFn: () => apiGetCustom<ServerExceptionNoticeRes | []>(`/system/serverExceptionNotice`),
-  });
-}
-/**
- * 获取代办事项
- */
-export function useGetPreferences() {
-  return useQuery({
-    queryKey: ['preferences'],
-    queryFn: () => apiGetCustom<PreferencesRes | []>('/system/getPreferences'),
-  });
-}
+// Note: useMtServiceUpdate, useServerExceptionNotice, useGetPreferences moved to @/api/hooks/workbench
 
 export function useMenuList(menuName?: string, visible?: string) {
   return useQuery({
@@ -361,13 +196,8 @@ export function useRoleList() {
   });
 }
 
-export function useBonusSettingList(params: BonusSettingListParams) {
-  return useQuery({
-    queryKey: ['bonusSettingList', params],
-    queryFn: () =>
-      apiFormPostCustom<BonusSettingListRes>(`/system/marketing/bonusSetting/list`, params),
-  });
-}
+// Note: useBonusSettingList moved to @/api/hooks/marketing
+
 /**
  * 系统管理-日志管理-管理员操作日志
  */
@@ -398,72 +228,9 @@ export function useCrmLogininfor(params: CrmLogininforParams) {
   });
 }
 
-/**
- * 获取广告管理
- */
-export function useAdsList(params: AdsListParams) {
-  return useQuery({
-    queryKey: ['adsList', params],
-    queryFn: () => apiFormPostCustom<AdsListRes>(`/system/marketing/advertise/list`, params),
-  });
-}
+// Note: useAdsList, useRewardRecordsList moved to @/api/hooks/marketing
 
-/**
- * 获取奖励记录
- */
-export function useRewardRecordsList(params: RewardRecordsListParams) {
-  return useQuery({
-    queryKey: ['rewardRecordsList', params],
-    queryFn: () =>
-      apiFormPostCustom<RewardRecordsListRes>(`/system/marketing/rewardRecord/list`, params),
-  });
-}
-
-/**
- * 获取交易账号列表
- */
-export function useCrmDealAccountList(
-  params: CrmDealAccountListParams,
-  options?: { enabled?: boolean },
-) {
-  return useQuery({
-    queryKey: ['crmDealAccountList', params],
-    queryFn: () =>
-      apiFormPostCustom<CrmDealAccountListRes>(`/system/crmDealAccount/serviceList`, params),
-    enabled: options?.enabled ?? true,
-  });
-}
-
-/**
- * 获取钱包账户列表
- */
-export function useWalletAccountsList(params: WalletAccountsListParams) {
-  return useQuery({
-    queryKey: ['walletAccountsList', params],
-    queryFn: () => apiFormPostCustom<WalletAccountsListRes>(`/system/crmUserWallet/list`, params),
-  });
-}
-
-/**
- * 获取钱包账户列表合计
- */
-export function useWalletAccountsListSum() {
-  return useMutation({
-    mutationFn: (params: WalletAccountsListSumParams) =>
-      apiFormPostCustom<WalletAccountsListSumRes>('/system/crmUserWallet/listSum', params),
-  });
-}
-
-/**
- * 获取账户组设置列表
- */
-export function useCrmDealAccountGroupList(params: CrmDealAccountGroupListParams) {
-  return useQuery({
-    queryKey: ['crmDealAccountGroupList', params],
-    queryFn: () =>
-      apiFormPostCustom<CrmDealAccountGroupListRes>(`/system/crmDealAccountGroup/list`, params),
-  });
-}
+// Note: useCrmDealAccountList, useWalletAccountsList, useWalletAccountsListSum, useCrmDealAccountGroupList moved to @/api/hooks/account
 
 /**
  * 获取用户信息
@@ -476,38 +243,8 @@ export function useGetUserInfo() {
   });
 }
 
-export function useGetMsgList(params: GetMsgListParams) {
-  return useQuery({
-    queryKey: ['MsgList', params],
-    queryFn: () => apiFormPostCustom<GetMsgListRes>('/system/msg/list', params),
-  });
-}
-/**
- * 获取客户关系数据
- */
-export function useCustomerRelationsPost(params: CustomerRelationsPostParams) {
-  return useQuery({
-    queryKey: ['customerRelationsPost', params],
-    queryFn: () =>
-      apiFormPostCustom<CustomerRelationsPostRes>(`/system/crmUser/customerRelationsPost`, params),
-  });
-}
+// Note: useGetMsgList moved to @/api/hooks/message
 
-export function useGetRebateBasePoint(params: RebateBasePointParams) {
-  return useQuery({
-    queryKey: ['getRebateBasePoint', params],
-    queryFn: () =>
-      apiFormPostCustom<RebateBasePointRes>('/system/crmRebateBasePointValue/list', params),
-  });
-}
+// Note: useCustomerRelationsPost moved to @/api/hooks/account
 
-export function useSelectServerList(
-  params: SelectServerListParams,
-  options: { enabled?: boolean },
-) {
-  return useQuery({
-    queryKey: ['selectServerList', params],
-    queryFn: () => apiFormPostCustom<SelectServerListRes>('/system/mtService/servers', params),
-    enabled: options?.enabled ?? true,
-  });
-}
+// Note: useGetRebateBasePoint, useSelectServerList moved to @/api/hooks/rebate

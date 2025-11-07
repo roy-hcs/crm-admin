@@ -1,0 +1,120 @@
+// Account module API hooks
+import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom } from '@/api/client';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  CrmUserParams,
+  CrmUserResponse,
+  TagUserItem,
+  CustomRelationsItem,
+  CrmDealAccountListParams,
+  CrmDealAccountListRes,
+  WalletAccountsListParams,
+  WalletAccountsListRes,
+  WalletAccountsListSumParams,
+  WalletAccountsListSumRes,
+  CrmDealAccountGroupListParams,
+  CrmDealAccountGroupListRes,
+  GetGroupByServerResponse,
+  DealAccountGroupListResponse,
+  CustomerRelationsPostParams,
+  CustomerRelationsPostRes,
+} from './types';
+
+export * from './types';
+
+// CRM User hooks
+export function useCrmUser(params: CrmUserParams, query?: string) {
+  return useQuery({
+    queryKey: ['crmUser', params, query],
+    queryFn: () =>
+      apiFormPostCustom<CrmUserResponse>(`/system/crmUser/list${query ? '?' + query : ''}`, params),
+  });
+}
+
+export function useTagUserCountList() {
+  return useQuery({
+    queryKey: ['tagUserCountList'],
+    queryFn: () => apiGet<TagUserItem[]>('/system/crmUser/tagsUserCountList'),
+  });
+}
+
+export function useCustomerRelationsPostList(params: { userId: string } | null = null) {
+  return useQuery({
+    queryKey: ['customerRelationsPostList', params],
+    queryFn: () =>
+      apiFormPostCustom<CustomRelationsItem[]>(
+        '/system/crmUser/customerRelationsPostList',
+        params || {},
+      ),
+  });
+}
+
+export function useChangeUserStatus() {
+  return useMutation({
+    mutationFn: (params: { id: string; status: number }) =>
+      apiFormPost('/system/crmUser/changeStatus', params),
+  });
+}
+
+// Trading Account hooks
+export function useCrmDealAccountList(
+  params: CrmDealAccountListParams,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['crmDealAccountList', params],
+    queryFn: () =>
+      apiFormPostCustom<CrmDealAccountListRes>(`/system/crmDealAccount/serviceList`, params),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+export function useGetGroupByServer(params: { serverId: string }) {
+  return useQuery({
+    queryKey: ['getGroupByServer', params],
+    queryFn: () =>
+      apiFormPostCustom<GetGroupByServerResponse>('/system/mtServerGroup/getGroupByServer', params),
+    enabled: !!params.serverId,
+  });
+}
+
+export function useGetDealAccountGroupList() {
+  return useQuery({
+    queryKey: ['getDealAccountGroupList'],
+    queryFn: () =>
+      apiGetCustom<DealAccountGroupListResponse>('/system/crmDealAccount/getDealAccountGroupList'),
+  });
+}
+
+// Wallet Account hooks
+export function useWalletAccountsList(params: WalletAccountsListParams) {
+  return useQuery({
+    queryKey: ['walletAccountsList', params],
+    queryFn: () => apiFormPostCustom<WalletAccountsListRes>(`/system/crmUserWallet/list`, params),
+  });
+}
+
+export function useWalletAccountsListSum() {
+  return useMutation({
+    mutationFn: (params: WalletAccountsListSumParams) =>
+      apiFormPostCustom<WalletAccountsListSumRes>('/system/crmUserWallet/listSum', params),
+  });
+}
+
+// Account Group hooks
+export function useCrmDealAccountGroupList(params: CrmDealAccountGroupListParams) {
+  return useQuery({
+    queryKey: ['crmDealAccountGroupList', params],
+    queryFn: () =>
+      apiFormPostCustom<CrmDealAccountGroupListRes>(`/system/crmDealAccountGroup/list`, params),
+  });
+}
+
+// Customer Relations hooks
+export function useCustomerRelationsPost(params: CustomerRelationsPostParams) {
+  return useQuery({
+    queryKey: ['customerRelationsPost', params],
+    queryFn: () =>
+      apiFormPostCustom<CustomerRelationsPostRes>(`/system/crmUser/customerRelationsPost`, params),
+  });
+}

@@ -5,9 +5,8 @@ import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { InFormationTable } from './InFormationTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-import { useCrmInfoVerifyList } from '@/api/hooks/review/review';
+import { useCrmInfoVerifyList, CrmInfoVerifyListParams } from '@/api/hooks/review';
 import { RrhButton } from '@/components/common/RrhButton';
-import { CrmInfoVerifyListParams } from '@/api/hooks/review/types';
 import { useInfoTypeList } from '@/api/hooks/system/system';
 import { InfoTypeItem } from '@/api/hooks/system/types';
 export function InFormationPage() {

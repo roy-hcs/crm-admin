@@ -1,4 +1,4 @@
-import { AdsListItem } from '@/api/hooks/system/types';
+import { AdsListItem } from '@/api/hooks/marketing';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { DataTable } from '@/components/table/DataTable';
 import { Switch } from '@/components/ui/switch';

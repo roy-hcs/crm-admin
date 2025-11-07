@@ -3,8 +3,12 @@ import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Funnel, RefreshCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DepositListParams } from '@/api/hooks/review/types';
-import { useDepositList, useDepositListSum, useThirdPaymentList } from '@/api/hooks/review/review';
+import {
+  DepositListParams,
+  useDepositList,
+  useDepositListSum,
+  useThirdPaymentList,
+} from '@/api/hooks/review';
 import { TableCell } from '@/components/ui/table';
 import { ReviewDepositForm } from './ReviewDepositForm';
 import { ReviewDepositTable } from './ReviewDepositTable';
