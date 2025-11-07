@@ -8,9 +8,9 @@ import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { BasicParams } from '@/api/hooks/review/types';
 import { Dispatch, SetStateAction } from 'react';
-import { DictTypeItem, RebateBasePointParams } from '@/api/hooks/system/types';
-import { useSelectServerList } from '@/api/hooks/system/system';
+import { DictTypeItem } from '@/api/hooks/system/types';
 import { BaseOption } from '@/components/common/RrhSelect';
+import { useSelectServerList, RebateBasePointParams } from '@/api/hooks/rebate';
 import { serverMap } from '@/lib/constant';
 
 type FormData = {

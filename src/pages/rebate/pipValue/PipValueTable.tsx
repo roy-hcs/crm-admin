@@ -1,4 +1,4 @@
-import { RebateBasePointItem } from '@/api/hooks/system/types';
+import { RebateBasePointItem } from '@/api/hooks/rebate';
 import { RrhButton } from '@/components/common/RrhButton';
 import { ToolTip } from '@/components/common/ToolTip';
 import { DataTable } from '@/components/table/DataTable';

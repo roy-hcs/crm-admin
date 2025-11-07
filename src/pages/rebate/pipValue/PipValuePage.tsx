@@ -4,8 +4,8 @@ import { Funnel, RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BasicParams } from '@/api/hooks/review/types';
-import { RebateBasePointParams } from '@/api/hooks/system/types';
-import { useDictType, useGetRebateBasePoint } from '@/api/hooks/system/system';
+import { useDictType } from '@/api/hooks/system/system';
+import { useGetRebateBasePoint, RebateBasePointParams } from '@/api/hooks/rebate';
 import { PipValueForm } from './PipValueForm';
 import { PipValueTable } from './PipValueTable';
 
