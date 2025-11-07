@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { useRefundFailLogList } from '@/api/hooks/report/report';
+import { useRefundFailLogList } from '@/api/hooks/report';
 import { RefundFailureLogsForm, RefundFailureLogsFormRef } from './components/PaymentOrdersForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { RefundFailureLogsTable } from './components/RefundFailureLogsTable';

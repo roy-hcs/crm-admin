@@ -3,7 +3,7 @@ import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { TableCell } from '@/components/ui/table';
 import { RrhButton } from '@/components/common/RrhButton';
-import { useWalletTransactionList, useWalletTransactionSum } from '@/api/hooks/report/report';
+import { useWalletTransactionList, useWalletTransactionSum } from '@/api/hooks/report';
 import {
   WalletTransactionsForm,
   WalletTransactionsFormRef,

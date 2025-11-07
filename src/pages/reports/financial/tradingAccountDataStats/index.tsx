@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { useDataStatistics } from '@/api/hooks/report/report';
+import { useDataStatistics } from '@/api/hooks/report';
 import { useServerList } from '@/api/hooks/system/system';
 import {
   TradingAccountDataStatsForm,

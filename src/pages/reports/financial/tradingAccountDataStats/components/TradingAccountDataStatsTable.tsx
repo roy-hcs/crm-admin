@@ -1,4 +1,4 @@
-import { DataStatisticsItem } from '@/api/hooks/report/types';
+import { DataStatisticsItem } from '@/api/hooks/report';
 import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { useTranslation } from 'react-i18next';
 

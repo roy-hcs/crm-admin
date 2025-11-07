@@ -1,4 +1,4 @@
-import { TradingHistoryItem } from '@/api/hooks/report/types';
+import { TradingHistoryItem } from '@/api/hooks/report';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { DataTable } from '@/components/table/DataTable';

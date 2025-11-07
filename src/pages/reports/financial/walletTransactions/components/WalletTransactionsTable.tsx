@@ -1,4 +1,4 @@
-import { WalletTransactionItem } from '@/api/hooks/report/types';
+import { WalletTransactionItem } from '@/api/hooks/report';
 import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';

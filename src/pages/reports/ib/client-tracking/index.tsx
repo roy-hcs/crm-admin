@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { useAgencyClientTrackingList } from '@/api/hooks/report/report';
+import { useAgencyClientTrackingList } from '@/api/hooks/report';
 import { ClientTrackingForm, ClientTrackingFormRef } from './components/ClientTrackingForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { ClientTrackingTable } from './components/ClientTrackingTable';

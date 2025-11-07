@@ -1,5 +1,4 @@
-import { useLimitOrderList } from '@/api/hooks/report/report';
-import { LimitOrderListParams } from '@/api/hooks/report/types';
+import { useLimitOrderList, LimitOrderListParams } from '@/api/hooks/report';
 import { useServerList } from '@/api/hooks/system/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';

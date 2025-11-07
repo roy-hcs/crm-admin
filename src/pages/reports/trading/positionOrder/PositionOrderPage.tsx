@@ -1,5 +1,4 @@
-import { usePositionOrderList } from '@/api/hooks/report/report';
-import { PositionOrderParams } from '@/api/hooks/report/types';
+import { usePositionOrderList, PositionOrderParams } from '@/api/hooks/report';
 import { useServerList } from '@/api/hooks/system/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';

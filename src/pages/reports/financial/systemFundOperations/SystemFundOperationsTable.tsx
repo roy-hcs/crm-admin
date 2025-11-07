@@ -1,4 +1,4 @@
-import { SystemFundOperationRecordItem } from '@/api/hooks/report/types';
+import { SystemFundOperationRecordItem } from '@/api/hooks/report';
 import { DataTable } from '@/components/table/DataTable';
 import { financeTypeMap } from '@/lib/constant';
 import { ColumnDef } from '@tanstack/react-table';

@@ -1,4 +1,4 @@
-import { useTradingHistoryList } from '@/api/hooks/report/report';
+import { useTradingHistoryList } from '@/api/hooks/report';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';

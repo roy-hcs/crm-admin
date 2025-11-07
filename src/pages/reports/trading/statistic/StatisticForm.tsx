@@ -1,4 +1,4 @@
-import { AccountStatisticListParams } from '@/api/hooks/report/types';
+import { AccountStatisticListParams } from '@/api/hooks/report';
 import { useGetDealAccountGroupList, useGetGroupByServer } from '@/api/hooks/account';
 import { ServerItem } from '@/api/hooks/system/types';
 import { RrhButton } from '@/components/common/RrhButton';

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { useRebateList } from '@/api/hooks/report/report';
+import { useRebateList } from '@/api/hooks/report';
 import { DepositsForm, ClientTrackingFormRef } from './components/DepositsForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { DepositsTable } from './components/DepositsTable';

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { useDailyRebateList } from '@/api/hooks/report/report';
+import { useDailyRebateList } from '@/api/hooks/report';
 import { DailyRebateForm, FormRef } from './components/DailyRebateForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { DailyRebateTable } from './components/DailyRebateTable';

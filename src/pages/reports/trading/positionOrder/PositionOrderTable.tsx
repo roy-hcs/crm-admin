@@ -1,4 +1,4 @@
-import { PositionOrderItem } from '@/api/hooks/report/types';
+import { PositionOrderItem } from '@/api/hooks/report';
 import { ServerItem } from '@/api/hooks/system/types';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';

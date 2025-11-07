@@ -1,4 +1,4 @@
-import { SystemFundOperationRecordListParams } from '@/api/hooks/report/types';
+import { SystemFundOperationRecordListParams } from '@/api/hooks/report';
 import { RrhButton } from '@/components/common/RrhButton';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { FormInput } from '@/components/form/FormInput';

@@ -2,8 +2,8 @@ import {
   useAccountStaticsSum,
   useAccountStatisticList,
   useExportAccountStatisticList,
-} from '@/api/hooks/report/report';
-import { AccountStatisticListParams } from '@/api/hooks/report/types';
+  AccountStatisticListParams,
+} from '@/api/hooks/report';
 import { useServerList } from '@/api/hooks/system/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
