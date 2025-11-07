@@ -33,8 +33,6 @@ import {
   CrmLogininforParams,
   CrmLogininforRes,
   UserInfoRes,
-  GetMsgListParams,
-  GetMsgListRes,
   RebateBasePointParams,
   RebateBasePointRes,
   SelectServerListRes,
@@ -339,12 +337,8 @@ export function useGetUserInfo() {
   });
 }
 
-export function useGetMsgList(params: GetMsgListParams) {
-  return useQuery({
-    queryKey: ['MsgList', params],
-    queryFn: () => apiFormPostCustom<GetMsgListRes>('/system/msg/list', params),
-  });
-}
+// Note: useGetMsgList moved to @/api/hooks/message
+
 // Note: useCustomerRelationsPost moved to @/api/hooks/account
 
 export function useGetRebateBasePoint(params: RebateBasePointParams) {

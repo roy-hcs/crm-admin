@@ -16,8 +16,8 @@ import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
 import dayjs from 'dayjs';
-import { GetMsgListParams } from '@/api/hooks/system/types';
 import { infoTypesMap } from '@/lib/constant';
+import { GetMsgListParams } from '@/api/hooks/message';
 import { BasicParams } from '@/api/hooks/review/types';
 
 type FormData = {
