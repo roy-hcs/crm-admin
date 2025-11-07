@@ -13,6 +13,8 @@ import {
   PointsHistoryListRes,
 } from './types';
 
+export * from './types';
+
 /**
  * 获取商品列表
  */

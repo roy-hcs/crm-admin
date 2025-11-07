@@ -1,4 +1,4 @@
-import { PointsHistoryItem } from '@/api/hooks/pointsMall/types';
+import { PointsHistoryItem } from '@/api/hooks/pointsMall';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { RrhTag } from '@/components/common/RrhTag';
 import { DataTable } from '@/components/table/DataTable';

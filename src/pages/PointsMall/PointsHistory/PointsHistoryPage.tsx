@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PointsHistoryTable } from './PointsHistoryTable';
 import { PointsHistoryForm } from './PointsHistoryForm';
-import { PointsChangeListParams } from '@/api/hooks/pointsMall/types';
-import { usePointsChangeList } from '@/api/hooks/pointsMall/system';
+import { usePointsChangeList, PointsChangeListParams } from '@/api/hooks/pointsMall';
 import { useDictType } from '@/api/hooks/system/system';
 import { PointsOperTypeList } from '@/lib/const';
 

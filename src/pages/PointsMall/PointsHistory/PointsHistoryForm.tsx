@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
-import { PointsChangeListParams } from '@/api/hooks/pointsMall/types';
+import { PointsChangeListParams } from '@/api/hooks/pointsMall';
 import dayjs from 'dayjs';
 import { FormSelect } from '@/components/form/FormSelect';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';

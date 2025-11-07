@@ -1,5 +1,5 @@
-import { useChangeGoodsClassificationStatus } from '@/api/hooks/pointsMall/system';
-import { GoodsClassificationItem } from '@/api/hooks/pointsMall/types';
+import { useChangeGoodsClassificationStatus } from '@/api/hooks/pointsMall';
+import { GoodsClassificationItem } from '@/api/hooks/pointsMall';
 import { Alert } from '@/components/common/Alert';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { DataTable } from '@/components/table/DataTable';

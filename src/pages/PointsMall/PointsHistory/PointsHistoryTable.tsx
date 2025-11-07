@@ -1,4 +1,4 @@
-import { PointsChangeItem } from '@/api/hooks/pointsMall/types';
+import { PointsChangeItem } from '@/api/hooks/pointsMall';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { DataTable } from '@/components/table/DataTable';
 import { ColumnDef } from '@tanstack/react-table';

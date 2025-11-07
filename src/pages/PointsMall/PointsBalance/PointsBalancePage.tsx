@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PointsBalanceTable } from './PointsBalanceTable';
 import { PointsBalanceForm } from './PointsBalanceForm';
-import { PointsBalanceParams } from '@/api/hooks/pointsMall/types';
-import { usePointsBalance } from '@/api/hooks/pointsMall/system';
+import { usePointsBalance, PointsBalanceParams } from '@/api/hooks/pointsMall';
 
 export const PointsBalancePage = () => {
   const [params, setParams] = useState<PointsBalanceParams['params']>({

@@ -1,4 +1,4 @@
-import { GoodsListItem } from '@/api/hooks/pointsMall/types';
+import { GoodsListItem } from '@/api/hooks/pointsMall';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { DataTable } from '@/components/table/DataTable';
 import { ColumnDef, Row } from '@tanstack/react-table';
@@ -9,7 +9,7 @@ import { useCallback, useState } from 'react';
 import { Switch } from '@/components/ui/switch';
 import { Alert } from '@/components/common/Alert';
 import { useQueryClient } from '@tanstack/react-query';
-import { useChangeGoodsStatus } from '@/api/hooks/pointsMall/system';
+import { useChangeGoodsStatus } from '@/api/hooks/pointsMall';
 
 const StatusCell = ({ row }: { row: Row<GoodsListItem> }) => {
   const [isOpen, setIsOpen] = useState(false);

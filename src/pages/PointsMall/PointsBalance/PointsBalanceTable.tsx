@@ -1,4 +1,4 @@
-import { PointsBalanceItem } from '@/api/hooks/pointsMall/types';
+import { PointsBalanceItem } from '@/api/hooks/pointsMall';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { DataTable } from '@/components/table/DataTable';
 import { cn } from '@/lib/utils';

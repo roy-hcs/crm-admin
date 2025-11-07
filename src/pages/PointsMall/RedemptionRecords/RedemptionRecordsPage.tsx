@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RedemptionRecordsTable } from './RedemptionRecordsTable';
 import { RedemptionRecordsForm } from './RedemptionRecordsForm';
-import { PointsHistoryListParams } from '@/api/hooks/pointsMall/types';
-import { usePointsHistoryList } from '@/api/hooks/pointsMall/system';
+import { usePointsHistoryList, PointsHistoryListParams } from '@/api/hooks/pointsMall';
 
 export const RedemptionRecordsPage = () => {
   const [params, setParams] = useState<PointsHistoryListParams['params']>({

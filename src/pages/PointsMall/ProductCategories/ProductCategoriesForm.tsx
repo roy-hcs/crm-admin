@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
-import { GoodsClassificationParams } from '@/api/hooks/pointsMall/types';
+import { GoodsClassificationParams } from '@/api/hooks/pointsMall';
 
 type FormData = {
   searchName: string;

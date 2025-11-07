@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AdminOperationsTable } from './AdminOperationsTable';
 import { AdminOperationsForm } from './AdminOperationsForm';
-import { useCrmDealGoodsList } from '@/api/hooks/pointsMall/system';
-import { CrmDealGoodsListParams } from '@/api/hooks/pointsMall/types';
+import { useCrmDealGoodsList, CrmDealGoodsListParams } from '@/api/hooks/pointsMall';
 
 export const ProductsPage = () => {
   const [params, setParams] = useState<CrmDealGoodsListParams['params']>({

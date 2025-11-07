@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ProductCategoriesTable } from './ProductCategoriesTable';
 import { ProductCategoriesForm } from './ProductCategoriesForm';
-import { GoodsClassificationParams } from '@/api/hooks/pointsMall/types';
-import { useGoodsClassification } from '@/api/hooks/pointsMall/system';
+import { useGoodsClassification, GoodsClassificationParams } from '@/api/hooks/pointsMall';
 
 export const ProductCategoriesPage = () => {
   const { t } = useTranslation();
