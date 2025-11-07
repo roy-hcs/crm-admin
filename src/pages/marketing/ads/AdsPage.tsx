@@ -3,7 +3,7 @@ import { RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AdsTable } from './AdsTable';
-import { useAdsList } from '@/api/hooks/system/system';
+import { useAdsList } from '@/api/hooks/marketing';
 
 export const AdsPage = () => {
   const [pageNum, setPageNum] = useState(0);

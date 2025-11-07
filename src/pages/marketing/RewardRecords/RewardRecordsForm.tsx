@@ -14,8 +14,8 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
-import { RewardRecordsListParams } from '@/api/hooks/system/types';
 import { FormSelect } from '@/components/form/FormSelect';
+import { RewardRecordsListParams } from '@/api/hooks/marketing';
 import dayjs from 'dayjs';
 
 type FormData = {

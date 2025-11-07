@@ -1,4 +1,4 @@
-import { RewardRecordsListItem } from '@/api/hooks/system/types';
+import { RewardRecordsListItem } from '@/api/hooks/marketing';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { RrhTag } from '@/components/common/RrhTag';
 import { DataTable } from '@/components/table/DataTable';

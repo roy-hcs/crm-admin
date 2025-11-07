@@ -26,18 +26,12 @@ import {
   UserOrderLogListRes,
   UserListParams,
   UserListRes,
-  BonusSettingListParams,
-  BonusSettingListRes,
   AdminOperLogParams,
   AdminOperLogRes,
   AdminLoginParams,
   AdminLoginRes,
   CrmLogininforParams,
   CrmLogininforRes,
-  AdsListParams,
-  AdsListRes,
-  RewardRecordsListParams,
-  RewardRecordsListRes,
   UserInfoRes,
   GetMsgListParams,
   GetMsgListRes,
@@ -298,13 +292,8 @@ export function useRoleList() {
   });
 }
 
-export function useBonusSettingList(params: BonusSettingListParams) {
-  return useQuery({
-    queryKey: ['bonusSettingList', params],
-    queryFn: () =>
-      apiFormPostCustom<BonusSettingListRes>(`/system/marketing/bonusSetting/list`, params),
-  });
-}
+// Note: useBonusSettingList moved to @/api/hooks/marketing
+
 /**
  * 系统管理-日志管理-管理员操作日志
  */
@@ -335,26 +324,7 @@ export function useCrmLogininfor(params: CrmLogininforParams) {
   });
 }
 
-/**
- * 获取广告管理
- */
-export function useAdsList(params: AdsListParams) {
-  return useQuery({
-    queryKey: ['adsList', params],
-    queryFn: () => apiFormPostCustom<AdsListRes>(`/system/marketing/advertise/list`, params),
-  });
-}
-
-/**
- * 获取奖励记录
- */
-export function useRewardRecordsList(params: RewardRecordsListParams) {
-  return useQuery({
-    queryKey: ['rewardRecordsList', params],
-    queryFn: () =>
-      apiFormPostCustom<RewardRecordsListRes>(`/system/marketing/rewardRecord/list`, params),
-  });
-}
+// Note: useAdsList, useRewardRecordsList moved to @/api/hooks/marketing
 
 // Note: useCrmDealAccountList, useWalletAccountsList, useWalletAccountsListSum, useCrmDealAccountGroupList moved to @/api/hooks/account
 

@@ -6,8 +6,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RewardRecordsTable } from './RewardRecordsTable';
 import { RewardRecordsForm } from './RewardRecordsForm';
-import { RewardRecordsListParams } from '@/api/hooks/system/types';
-import { useDictType, useRewardRecordsList } from '@/api/hooks/system/system';
+import { useDictType } from '@/api/hooks/system/system';
+import { useRewardRecordsList, RewardRecordsListParams } from '@/api/hooks/marketing';
 
 export const RewardRecordsPage = () => {
   const [params, setParams] = useState<RewardRecordsListParams['params']>({
