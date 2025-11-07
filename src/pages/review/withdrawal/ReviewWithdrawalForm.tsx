@@ -14,7 +14,7 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
-import { WithdrawListParams } from '@/api/hooks/review/types';
+import { WithdrawListParams } from '@/api/hooks/review';
 import { Dispatch, SetStateAction } from 'react';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import dayjs from 'dayjs';

@@ -1,6 +1,6 @@
 import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { useTranslation } from 'react-i18next';
-import { CrmInfoVerifyItem } from '@/api/hooks/review/types';
+import { CrmInfoVerifyItem } from '@/api/hooks/review';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { ChevronDown, ChevronUp, Ellipsis } from 'lucide-react';
 import { cn } from '@/lib/utils';

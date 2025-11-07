@@ -4,12 +4,12 @@ import { Funnel, RefreshCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useServerList } from '@/api/hooks/system/system';
 import { useTranslation } from 'react-i18next';
-import { RebateCommissionListParams } from '@/api/hooks/review/types';
 import {
+  RebateCommissionListParams,
   useRebateCommissionList,
   useRebateCommissionListSum,
   useRebateCommissionRuleList,
-} from '@/api/hooks/review/review';
+} from '@/api/hooks/review';
 import { TableCell } from '@/components/ui/table';
 import { ReviewTradingRebateForm } from './ReviewTradingRebateForm';
 import { ReviewTradingRebateTable } from './ReviewTradingRebateTable';

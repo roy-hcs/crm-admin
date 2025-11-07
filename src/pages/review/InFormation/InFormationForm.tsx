@@ -15,7 +15,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Dispatch, SetStateAction } from 'react';
-import { CrmInfoVerifyListParams } from '@/api/hooks/review/types';
+import { CrmInfoVerifyListParams } from '@/api/hooks/review';
 
 import { VerifyStatusOptions } from '@/lib/const';
 import { InfoTypeItem } from '@/api/hooks/system/types';

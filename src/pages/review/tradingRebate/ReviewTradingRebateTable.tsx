@@ -1,4 +1,4 @@
-import { RebateCommissionItem } from '@/api/hooks/review/types';
+import { RebateCommissionItem } from '@/api/hooks/review';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhTag } from '@/components/common/RrhTag';
 import { DataTable } from '@/components/table/DataTable';

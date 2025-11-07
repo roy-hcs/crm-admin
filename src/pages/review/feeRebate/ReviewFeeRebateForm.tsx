@@ -20,7 +20,7 @@ import { useGetDealAccountGroupList, useGetGroupByServer } from '@/api/hooks/acc
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { serverMap } from '@/lib/constant';
 import { Dispatch, SetStateAction } from 'react';
-import { RebateCommissionListParams, RebateCommissionRuleItem } from '@/api/hooks/review/types';
+import { RebateCommissionListParams, RebateCommissionRuleItem } from '@/api/hooks/review';
 import dayjs from 'dayjs';
 
 type FormData = {

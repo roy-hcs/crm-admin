@@ -1,4 +1,4 @@
-import { CrmPreferenceItem } from '@/api/hooks/review/types';
+import { CrmPreferenceItem } from '@/api/hooks/review';
 import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { Ellipsis } from 'lucide-react';

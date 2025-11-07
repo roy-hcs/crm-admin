@@ -5,9 +5,8 @@ import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { LeverageTable } from './LeverageTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-import { useLeverageVerifyList } from '@/api/hooks/review/review';
+import { useLeverageVerifyList, CrmNewLoginVerifyListParams } from '@/api/hooks/review';
 import { RrhButton } from '@/components/common/RrhButton';
-import { CrmNewLoginVerifyListParams } from '@/api/hooks/review/types';
 export function LeveragePage() {
   const { t } = useTranslation();
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('');

@@ -14,7 +14,7 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
-import { InternalTransferListParams } from '@/api/hooks/review/types';
+import { InternalTransferListParams } from '@/api/hooks/review';
 import { Dispatch, SetStateAction } from 'react';
 import dayjs from 'dayjs';
 

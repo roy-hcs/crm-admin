@@ -3,12 +3,12 @@ import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Funnel, RefreshCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { WithdrawListParams } from '@/api/hooks/review/types';
 import {
+  WithdrawListParams,
   useOutMoneyMethodList,
   useWithdrawList,
   useWithdrawListSum,
-} from '@/api/hooks/review/review';
+} from '@/api/hooks/review';
 import { TableCell } from '@/components/ui/table';
 import { ReviewWithdrawalForm } from './ReviewWithdrawalForm';
 import { ReviewWithdrawalTable } from './ReviewWithdrawalTable';
