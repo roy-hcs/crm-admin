@@ -1,4 +1,4 @@
-import { useDepositAllReport } from '@/api/hooks/system/system';
+import { useDepositAllReport } from '@/api/hooks/workbench';
 import { BarChart } from '@/components/charts/BarCharts';
 import { LegendHeader } from '@/components/charts/LegendHeader';
 import { RrhSelect } from '@/components/common/RrhSelect';

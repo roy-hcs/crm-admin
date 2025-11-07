@@ -3,22 +3,13 @@ import { useQuery } from '@tanstack/react-query';
 import {
   CrmRebateTradersItem,
   RebateLevelListResponse,
-  RegCountReportItem,
   ServerListResponse,
-  SumReport,
-  SymbolReportParams,
-  SymbolReportResponse,
-  WithDrawReportItem,
   CurrencyListResponse,
   DictTypeResponse,
   ChannelListResponse,
   InfoTypeItem,
   RoleListRes,
   RoleListParams,
-  MtServiceUpdateRes,
-  TclosureReportResponse,
-  ServerExceptionNoticeRes,
-  PreferencesRes,
   MenuListItem,
   EmailListParams,
   EmailListRes,
@@ -35,31 +26,11 @@ import {
   UserInfoRes,
 } from './types';
 
-export function useWithDrawReport(type?: string) {
-  return useQuery({
-    queryKey: ['withdrawReport', type],
-    queryFn: () =>
-      apiGet<WithDrawReportItem[]>(`/system/withdrawReport${type ? `?type=${type}` : ''}`),
-  });
-}
+// Note: useWithDrawReport, useFundFlowReport, useSymbolReport, useRegCountReport, useDepositAllReport, useCustomerTransactionsReport, useSumReport moved to @/api/hooks/workbench
 
-export function useFundFlowReport(type?: string) {
-  return useQuery({
-    queryKey: ['fundFlowReport', type],
-    queryFn: () =>
-      apiGet<Record<string, [number, number]>>(
-        `/system/fundFlowReport${type ? `?type=${type}` : ''}`,
-      ),
-  });
-}
-
-export function useSymbolReport(params: SymbolReportParams) {
-  return useQuery({
-    queryKey: ['symbolReport', params],
-    queryFn: () => apiFormPostCustom<SymbolReportResponse>('/system/symbolReport', params),
-  });
-}
-
+/**
+ * 获取服务器列表 - shared across multiple modules
+ */
 export function useServerList(params: Record<string, FormValue> = {}) {
   return useQuery({
     queryKey: ['serverList', params],
@@ -72,35 +43,6 @@ export function useRebateLevelList(params: Record<string, FormValue> = {}) {
     queryKey: ['rebateLevelList', params],
     queryFn: () =>
       apiFormPostCustom<RebateLevelListResponse>('/system/crmRebateLevel/list', params),
-  });
-}
-export function useRegCountReport(type: string) {
-  return useQuery({
-    queryKey: ['regCountReport', type],
-    queryFn: () => apiGet<RegCountReportItem>(`/system/regCountReport?type=${type}`),
-  });
-}
-
-export function useDepositAllReport(type: string) {
-  return useQuery({
-    queryKey: ['depositAllReport', type],
-    queryFn: () =>
-      apiGet<Record<string, [number, number]>>(`/system/depositAllReport?type=${type}`),
-  });
-}
-export function useCustomerTransactionsReport(params: { type: string; serverId: string }) {
-  return useQuery({
-    queryKey: ['customerTransactionsReport', params.type, params.serverId],
-    queryFn: () =>
-      apiGet<TclosureReportResponse>(
-        `/system/tclosureReport?type=${params.type}&serverId=${params.serverId}`,
-      ),
-  });
-}
-export function useSumReport() {
-  return useQuery({
-    queryKey: ['sumReport'],
-    queryFn: () => apiGet<SumReport>('/system/sumReport'),
   });
 }
 
@@ -187,39 +129,7 @@ export function useUserRoleList(params: RoleListParams) {
     queryFn: () => apiFormPostCustom<RoleListRes>('/system/user/role/list', params),
   });
 }
-export function useMtServiceUpdate(
-  params: {
-    server: string;
-  },
-  options?: { enabled?: boolean },
-) {
-  const { server } = params;
-  return useQuery({
-    queryKey: ['MtServiceUpdate', server],
-    queryFn: () =>
-      apiFormPostCustom<MtServiceUpdateRes>(`/system/mtService/updateSta`, params || {}),
-    enabled: options?.enabled ?? true,
-  });
-}
-
-/**
- * 获取服务器异常
- */
-export function useServerExceptionNotice() {
-  return useQuery({
-    queryKey: ['serverExceptionNotice'],
-    queryFn: () => apiGetCustom<ServerExceptionNoticeRes | []>(`/system/serverExceptionNotice`),
-  });
-}
-/**
- * 获取代办事项
- */
-export function useGetPreferences() {
-  return useQuery({
-    queryKey: ['preferences'],
-    queryFn: () => apiGetCustom<PreferencesRes | []>('/system/getPreferences'),
-  });
-}
+// Note: useMtServiceUpdate, useServerExceptionNotice, useGetPreferences moved to @/api/hooks/workbench
 
 export function useMenuList(menuName?: string, visible?: string) {
   return useQuery({

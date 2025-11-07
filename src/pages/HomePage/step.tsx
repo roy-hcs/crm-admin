@@ -1,4 +1,4 @@
-import { ServerExceptionNoticeRes } from '@/api/hooks/system/types';
+import { ServerExceptionNoticeRes } from '@/api/hooks/workbench';
 import { TriangleAlert } from 'lucide-react';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';

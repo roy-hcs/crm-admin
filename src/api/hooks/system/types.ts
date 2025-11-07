@@ -1,38 +1,8 @@
 import { BasicParams, BasicRes, BaseEntity } from '../../types';
 
-// Base types for reusability
-export type BaseReportItem = {
-  amount: number;
-  currency: string | null;
-  statisticDate: string | null;
-  usdAmount: number | null;
-  rate: number | null;
-  symbol: string | null;
-  count: number | null;
-  type: string | null;
-  serverId: number | null;
-  intDate: number | null;
-  profit: number | null;
-  loss: number | null;
-  netProfit: number | null;
-  volume: number | null;
-  quantity: number | null;
-};
+// Note: BaseReportItem, WithDrawReportItem, SymbolReport*, RegCountReportItem, SumReport moved to @/api/hooks/workbench
 
-export type WithDrawReportItem = BaseReportItem;
-
-export type SymbolReportParams = {
-  type: string;
-  serverId: string;
-  pageNum?: number;
-  orderByColumn?: boolean;
-  isAsc: string;
-};
-
-export type SymbolReportRowItem = BaseReportItem;
-
-export type SymbolReportResponse = BasicRes<SymbolReportRowItem>;
-
+// Shared across multiple modules (account, marketing, reports, review, workbench)
 export type ServerItem = {
   id: string;
   serviceType: number;
@@ -45,21 +15,13 @@ export type ServerItem = {
 };
 
 export type ServerListResponse = BasicRes<ServerItem>;
+
 export type RebateLevelItem = {
   id: string;
   level: string;
   levelName: string;
 };
 export type RebateLevelListResponse = BasicRes<RebateLevelItem>;
-
-export type RegCountReportItem = Record<string, [number, number, number]>;
-
-export type SumReport = {
-  crmUser: string;
-  dealAccount: string;
-  deposit: number;
-  withdraw: number;
-};
 
 // Note: CrmUser, TagUser, CustomRelations types moved to @/api/hooks/account
 
@@ -144,61 +106,7 @@ export type RoleListRes = BasicRes<RoleItem>;
 export type RoleListParams = BasicParams & {
   roleName?: string;
 };
-// 数据概览
-export type MtServiceUpdateRes = {
-  allAccount: number;
-  todayAccount: number;
-  count: number[];
-};
-export interface TclosureReportItem {
-  amount: number | null;
-  currency: string | null;
-  statisticDate: string; // "2025-10-06"
-  usdAmount: number | null;
-  rate: number | null;
-  symbol: string | null;
-  count: number | null;
-  type: string | null;
-  serverId: string | null;
-  intDate: number | null; // 20251006
-  profit: number;
-  loss: number;
-  netProfit: number;
-  volume: number;
-  quantity: number;
-}
-
-export interface TclosureReportMonthSummary {
-  volume: number;
-  quantity: number;
-}
-
-export interface TclosureReportResponse {
-  sumThisMonth: TclosureReportMonthSummary;
-  data: TclosureReportItem[];
-}
-
-export type ServerExceptionNoticeItem = {
-  id: number;
-  code: number;
-  server: string;
-  vhost: string;
-  time: string;
-  createTime: string;
-  reason: string;
-  manager: string;
-};
-export type ServerExceptionNoticeRes = ServerExceptionNoticeItem[];
-export type PreferencesItem = BaseEntity & {
-  id: string;
-  nameText: string;
-  code: string;
-  indexReviewCount: string;
-  val: string;
-  sort: string;
-  groupCode: string;
-};
-export type PreferencesRes = PreferencesItem[];
+// Note: MtServiceUpdateRes, TclosureReport*, ServerExceptionNotice*, Preferences* moved to @/api/hooks/workbench
 
 export type MenuListItem = BaseEntity & {
   menuId: string;

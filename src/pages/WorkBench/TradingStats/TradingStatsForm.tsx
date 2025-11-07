@@ -4,7 +4,7 @@ import { FormProvider } from '@/contexts/form';
 import { FormSelect } from '@/components/form/FormSelect';
 import { Form } from '@/components/ui/form';
 import { useTranslation } from 'react-i18next';
-import { ServerItem } from '@/api/hooks/system/types';
+import { ServerItem } from '@/api/hooks/workbench';
 import { serverMap } from '@/lib/constant';
 import { BaseOption } from '@/components/common/RrhSelect';
 type ClientTrackingFormValues = {

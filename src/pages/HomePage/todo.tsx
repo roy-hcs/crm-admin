@@ -1,4 +1,4 @@
-import { PreferencesRes } from '@/api/hooks/system/types';
+import { PreferencesRes } from '@/api/hooks/workbench';
 import { PenLine } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';

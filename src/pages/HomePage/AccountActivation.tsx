@@ -1,4 +1,4 @@
-import { useRegCountReport } from '@/api/hooks/system/system';
+import { useRegCountReport } from '@/api/hooks/workbench';
 import { LegendHeader } from '@/components/charts/LegendHeader';
 import { LineChart } from '@/components/charts/LineCharts';
 import { RrhSelect } from '@/components/common/RrhSelect';

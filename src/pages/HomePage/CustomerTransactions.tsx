@@ -1,10 +1,9 @@
-import { useCustomerTransactionsReport } from '@/api/hooks/system/system';
+import { useCustomerTransactionsReport, ServerItem } from '@/api/hooks/workbench';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart } from '@/components/charts/BarCharts';
 import { RrhSelect } from '@/components/common/RrhSelect';
-import { ServerItem } from '@/api/hooks/system/types';
 import { DEFAULT_TIME_RANGE, timeRangeOptions, TimeRangeType } from '@/lib/const';
 import { cn } from '@/lib/utils';
 import { serverMap } from '@/lib/constant';

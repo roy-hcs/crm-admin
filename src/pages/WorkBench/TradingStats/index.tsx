@@ -2,8 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { TradingStatsForm } from './TradingStatsForm';
 import { LineChart } from '@/components/charts/LineCharts';
 import { useEffect, useMemo, useState } from 'react';
-import { useMtServiceUpdate, useServerList } from '@/api/hooks/system/system';
-import { MtServiceUpdateRes } from '@/api/hooks/system/types';
+import { useMtServiceUpdate, useServerList, MtServiceUpdateRes } from '@/api/hooks/workbench';
 
 export function TradingStatsPage() {
   const [serverId, setServerId] = useState('');

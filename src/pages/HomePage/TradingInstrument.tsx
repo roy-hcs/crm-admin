@@ -1,5 +1,4 @@
-import { useSymbolReport } from '@/api/hooks/system/system';
-import { ServerItem } from '@/api/hooks/system/types';
+import { useSymbolReport, ServerItem } from '@/api/hooks/workbench';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RrhSelect } from '@/components/common/RrhSelect';

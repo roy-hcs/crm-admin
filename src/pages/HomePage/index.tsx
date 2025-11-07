@@ -2,7 +2,8 @@ import {
   useGetPreferences,
   useServerExceptionNotice,
   useServerList,
-} from '@/api/hooks/system/system';
+  ServerItem,
+} from '@/api/hooks/workbench';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import { NavList } from './NavList';
@@ -14,7 +15,6 @@ import { CustomerTransactions } from './CustomerTransactions';
 import { FundsTransit } from './FundsTransit';
 import { Step } from './step';
 import { Todo } from './todo';
-import { ServerItem } from '@/api/hooks/system/types';
 import { useMemo } from 'react';
 
 export function HomePage() {
