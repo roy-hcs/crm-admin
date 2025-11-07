@@ -1,4 +1,4 @@
-import { PipValuePage } from '@/pages/rebate/pipValue/PipValuePage';
+import { PipValuePage } from '@/pages/rebate/pip-value/PipValuePage';
 import { RouteObject } from 'react-router-dom';
 
 /**

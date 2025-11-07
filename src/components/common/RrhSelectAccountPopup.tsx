@@ -3,7 +3,7 @@ import { RrhDialog } from '@/components/common/RrhDialog';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { useCustomerRelationsPostList } from '@/api/hooks/account';
-import { AccountDialog } from '@/pages/account/CRMAccounts/components/AccountDialog';
+import { AccountDialog } from '@/pages/account/crm-accounts/components/AccountDialog';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ControllerRenderProps, FieldValues } from 'react-hook-form';

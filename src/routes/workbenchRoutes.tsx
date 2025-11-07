@@ -1,6 +1,6 @@
 import { RouteObject } from 'react-router-dom';
-import { HomePage } from '@/pages/HomePage';
-import { TradingStatsPage } from '@/pages/WorkBench/TradingStats';
+import { HomePage } from '@/pages/home-page';
+import { TradingStatsPage } from '@/pages/work-bench/trading-stats';
 
 /**
  * Workbench routes - corresponds to "工作台" menu item
