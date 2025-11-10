@@ -1,4 +1,5 @@
 import { PipValuePage } from '@/pages/rebate/pip-value/PipValuePage';
+import { ProductGroupPage } from '@/pages/rebate/product-group/ProductGroupPage';
 import { RouteObject } from 'react-router-dom';
 
 /**
@@ -19,15 +20,16 @@ export const rebateRoutes: RouteObject[] = [
     path: '/rebate/pip-value',
     element: <PipValuePage />,
   },
+  {
+    path: '/rebate/product-groups',
+    element: <ProductGroupPage />,
+  },
   /*
   {
     path: '/rebate/basic-settings',
     element: <RebateBasicSettingsPage />,
   },
-  {
-    path: '/rebate/product-groups',
-    element: <ProductGroupsPage />,
-  },
+  
   {
     path: '/rebate/level-settings',
     element: <RebateLevelSettingsPage />,

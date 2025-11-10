@@ -4,6 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import {
   RebateBasePointParams,
   RebateBasePointRes,
+  RebateBaseTypeParams,
+  RebateBaseTypeRes,
   SelectServerListParams,
   SelectServerListRes,
 } from './types';
@@ -32,5 +34,15 @@ export function useSelectServerList(
     queryKey: ['selectServerList', params],
     queryFn: () => apiFormPostCustom<SelectServerListRes>('/system/mtService/servers', params),
     enabled: options?.enabled ?? true,
+  });
+}
+
+/**
+ * 获取品种组列表
+ */
+export function useRebateBaseTypeList(params: RebateBaseTypeParams) {
+  return useQuery({
+    queryKey: ['getRebateBaseTypeList', params],
+    queryFn: () => apiFormPostCustom<RebateBaseTypeRes>('system/crmRebateBaseType/list', params),
   });
 }

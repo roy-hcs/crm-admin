@@ -45,3 +45,22 @@ export type SelectServerListItem = {
   serverUrl: string;
   status: number;
 };
+
+export type RebateBaseTypeItem = BaseEntity & {
+  id: string;
+  userId: string | null;
+  accountId: string | null;
+  typeName: string;
+  typeGroupName: string;
+  serverType: number;
+  serverName: string;
+  flag: boolean;
+  serverId: string;
+};
+
+export type RebateBaseTypeRes = BasicRes<RebateBaseTypeItem>;
+export type RebateBaseTypeParams = BasicParams & {
+  typeGroupName?: string;
+  serverType?: string;
+  serverId?: string;
+};
