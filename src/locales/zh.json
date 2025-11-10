@@ -793,7 +793,8 @@
     "fixedPipValue": "固定点值",
     "floatingPipValue": "浮动点值",
     "serverName": "服务器名称",
-    "rebateType": "品种"
+    "rebateType": "品种",
+    "typeGroup": "品种组"
   },
   "review": {
     "settings": {
@@ -869,5 +870,8 @@
   "pipValueSettings": {
     "title": "点值设置",
     "warn": "点值相同的品种请归在同一个点值组内，组内的品种会以相同的点值返佣。未设置点值的品种默认按0处理。如存在重复的品种点值，将以排序最靠前的点值计算返佣。"
+  },
+  "ProductGroup": {
+    "title": "品种组设置"
   }
 }

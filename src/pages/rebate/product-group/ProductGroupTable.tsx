@@ -1,4 +1,4 @@
-import { RebateBasePointItem } from '@/api/hooks/rebate';
+import { RebateBaseTypeItem } from '@/api/hooks/rebate';
 import { RrhButton } from '@/components/common/RrhButton';
 import { ToolTip } from '@/components/common/ToolTip';
 import { DataTable } from '@/components/table/DataTable';
@@ -6,7 +6,7 @@ import { serverMap } from '@/lib/constant';
 import { ColumnDef } from '@tanstack/react-table';
 import { useTranslation } from 'react-i18next';
 
-export const PipValueTable = ({
+export const ProductGroupTable = ({
   data,
   pageCount,
   pageIndex,
@@ -15,7 +15,7 @@ export const PipValueTable = ({
   onPageSizeChange,
   loading = false,
 }: {
-  data: RebateBasePointItem[];
+  data: RebateBaseTypeItem[];
   pageCount: number;
   pageIndex: number;
   pageSize: number;
@@ -24,21 +24,16 @@ export const PipValueTable = ({
   loading?: boolean;
 }) => {
   const { t } = useTranslation();
-  const columns: ColumnDef<RebateBasePointItem>[] = [
-    {
-      id: 'serialNumber',
-      header: t('table.sort'),
-      accessorFn: row => row.serialNumber,
-    },
+  const columns: ColumnDef<RebateBaseTypeItem>[] = [
     {
       id: 'No.',
       header: t('ib.overview.Index'),
       cell: ({ row }) => <div>{row.index + 1}</div>,
     },
     {
-      id: 'pointValueName',
-      header: t('table.pointValueName'),
-      accessorFn: row => row.pointValueName || '-',
+      id: 'typeGroupName',
+      header: t('table.typeGroup'),
+      accessorFn: row => row.typeGroupName || '-',
     },
     {
       id: 'serverType',
@@ -49,62 +44,27 @@ export const PipValueTable = ({
     },
     {
       id: 'serverName',
-      header: t('table.serverName'),
+      header: t('table.server'),
       accessorFn: row => row.serverName || '-',
     },
     {
-      id: 'rebateType',
+      id: 'typeName',
       header: t('table.rebateType'),
       cell: ({ row }) => {
-        const exceedLength = row.original.rebateType.length > 20;
+        const exceedLength = row.original.typeName.length > 50;
         const content = exceedLength
-          ? row.original.rebateType.slice(0, 20) + '...'
-          : row.original.rebateType;
+          ? row.original.typeName.slice(0, 50) + '...'
+          : row.original.typeName;
         return exceedLength ? (
           <ToolTip
             maxWidth="800px"
-            content={<div className="break-all">{row.original.rebateType}</div>}
+            content={<div className="break-all">{row.original.typeName}</div>}
           >
             <div>{content}</div>
           </ToolTip>
         ) : (
           <div>{content}</div>
         );
-      },
-    },
-    {
-      id: 'pointValueType',
-      header: t('table.pointValueType'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            {row.original.pointValueType === 1
-              ? t('table.fixedPipValue')
-              : t('table.floatingPipValue')}
-          </div>
-        );
-      },
-    },
-    {
-      id: 'pointValue',
-      header: t('table.pointValue'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        if (rowData.pointValueType === 1) {
-          return <div>{rowData.pointValue}</div>;
-        } else if (rowData.pointValueType === 2) {
-          return (
-            <div>
-              <span>{rowData.pointValueLots}</span>
-              <span>*</span>
-              <span>
-                {rowData.pointValueRules === 2
-                  ? t('common.contractSize')
-                  : t('common.contractNumber')}
-              </span>
-            </div>
-          );
-        }
       },
     },
     {
