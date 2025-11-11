@@ -64,3 +64,18 @@ export type RebateBaseTypeParams = BasicParams & {
   serverType?: string;
   serverId?: string;
 };
+
+export type RebateLevelParams = BasicParams;
+export type RebateLevelRes = BasicRes<RebateLevelItem>;
+export type RebateLevelItem = BaseEntity & {
+  id: string;
+  userId: string | null;
+  accountId: string | null;
+  serialNumber: number | null;
+  level: string;
+  levelName: string;
+  relatedAccountCount: string;
+  relatedRebateRuleCount: string;
+  relatedRebateTemplateCount: string;
+  model: number;
+};
