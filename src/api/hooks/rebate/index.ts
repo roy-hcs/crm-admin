@@ -6,6 +6,8 @@ import {
   RebateBasePointRes,
   RebateBaseTypeParams,
   RebateBaseTypeRes,
+  RebateLevelParams,
+  RebateLevelRes,
   SelectServerListParams,
   SelectServerListRes,
 } from './types';
@@ -43,6 +45,16 @@ export function useSelectServerList(
 export function useRebateBaseTypeList(params: RebateBaseTypeParams) {
   return useQuery({
     queryKey: ['getRebateBaseTypeList', params],
-    queryFn: () => apiFormPostCustom<RebateBaseTypeRes>('system/crmRebateBaseType/list', params),
+    queryFn: () => apiFormPostCustom<RebateBaseTypeRes>('/system/crmRebateBaseType/list', params),
+  });
+}
+
+/**
+ * 获取返佣层级列表
+ */
+export function useRebateLevelList(params: RebateLevelParams) {
+  return useQuery({
+    queryKey: ['getRebateLevelList', params],
+    queryFn: () => apiFormPostCustom<RebateLevelRes>('/system/crmRebateLevel/list', params),
   });
 }

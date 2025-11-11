@@ -794,7 +794,12 @@
     "floatingPipValue": "浮动点值",
     "serverName": "服务器名称",
     "rebateType": "品种",
-    "typeGroup": "品种组"
+    "typeGroup": "品种组",
+    "level": "层级",
+    "levelName": "层级名称",
+    "relatedAccountCount": "关联账户数",
+    "relatedRebateRuleCount": "关联返佣规则数",
+    "relatedRebateTemplateCount": "关联返佣模板数"
   },
   "review": {
     "settings": {

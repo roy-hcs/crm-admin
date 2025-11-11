@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Dialog as ShadcnDialog,
+  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -60,7 +60,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
   const { t } = useTranslation();
 
   return (
-    <ShadcnDialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className={className} showCloseButton={false}>
         <DialogClose className="data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 cursor-pointer rounded-sm border-none opacity-70 transition-opacity outline-none hover:opacity-100 focus:outline-none disabled:pointer-events-none">
@@ -107,6 +107,6 @@ export const RrhDialog: React.FC<DialogProps> = ({
           </DialogFooter>
         )}
       </DialogContent>
-    </ShadcnDialog>
+    </Dialog>
   );
 };
