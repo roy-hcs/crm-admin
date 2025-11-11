@@ -5,15 +5,14 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BasicParams } from '@/api/hooks/review/types';
 import { useDictType } from '@/api/hooks/system/system';
-import { useGetRebateBasePoint, RebateBasePointParams } from '@/api/hooks/rebate';
-import { PipValueForm } from './PipValueForm';
-import { PipValueTable } from './PipValueTable';
+import { RebateBaseTypeParams, useRebateBaseTypeList } from '@/api/hooks/rebate';
+import { ProductGroupForm } from './ProductGroupForm';
+import { ProductGroupTable } from './ProductGroupTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 
-export const PipValuePage = () => {
-  const [otherParams, setOtherParams] = useState<Omit<RebateBasePointParams, keyof BasicParams>>({
-    pointValueName: '',
-    pointValueType: '',
+export const ProductGroupPage = () => {
+  const [otherParams, setOtherParams] = useState<Omit<RebateBaseTypeParams, keyof BasicParams>>({
+    typeGroupName: '',
     serverId: '',
     serverType: '',
   });
@@ -23,7 +22,7 @@ export const PipValuePage = () => {
   const { data: serverTypes } = useDictType('sys_mt_service_type');
   console.log('serverTypes', serverTypes);
 
-  const { data: rebateBasePoint, isLoading: rebateBasePointLoading } = useGetRebateBasePoint({
+  const { data: rebateBasePoint, isLoading: rebateBasePointLoading } = useRebateBaseTypeList({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn: '',
@@ -32,8 +31,7 @@ export const PipValuePage = () => {
   });
   const reset = () => {
     setOtherParams({
-      pointValueName: '',
-      pointValueType: '',
+      typeGroupName: '',
       serverId: '',
       serverType: '',
     });
@@ -42,15 +40,14 @@ export const PipValuePage = () => {
 
   return (
     <div>
-      <h1 className="text-title">{t('pipValueSettings.title')}</h1>
-      <div>{t('pipValueSettings.warn')}</div>
+      <h1 className="text-title">{t('ProductGroup.title')}</h1>
       <div className="my-3.5 flex items-center justify-between">
         <RrhInputWithIcon
-          placeholder={t('common.pleaseInput', { field: t('table.pointValueName') })}
+          placeholder={t('common.pleaseInput', { field: t('table.typeGroup') })}
           className="h-9"
           rightIcon={<Search className="size-4 cursor-pointer" />}
           onRightIconClick={e => {
-            setOtherParams(prev => ({ ...prev, pointValueName: e }));
+            setOtherParams(prev => ({ ...prev, typeGroupName: e }));
             setPageNum(1);
           }}
         />
@@ -70,7 +67,7 @@ export const PipValuePage = () => {
               </RrhButton>
             }
           >
-            <PipValueForm
+            <ProductGroupForm
               serverTypes={serverTypes || []}
               setOtherParams={setOtherParams}
               loading={rebateBasePointLoading}
@@ -78,7 +75,7 @@ export const PipValuePage = () => {
           </RrhDrawer>
         </div>
       </div>
-      <PipValueTable
+      <ProductGroupTable
         data={rebateBasePoint?.rows || []}
         pageCount={Math.ceil(+(rebateBasePoint?.total || 0) / pageSize)}
         pageIndex={pageNum}
