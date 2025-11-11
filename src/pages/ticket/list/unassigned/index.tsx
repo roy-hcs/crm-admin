@@ -8,11 +8,10 @@ import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { UnassignedForm } from './UnassignedForm';
 import { useTicketList } from '@/api/hooks/ticket/ticket';
 import { CrmTicketParams } from '@/api/hooks/ticket/types';
+import { BasicParams } from '@/api/types';
 
 export const UnassignedTab = () => {
-  const [otherParams, setOtherParams] = useState<
-    Omit<CrmTicketParams, 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
-  >({
+  const [otherParams, setOtherParams] = useState<Omit<CrmTicketParams, keyof BasicParams>>({
     isAll: '0',
     orderId: '',
     content: '',

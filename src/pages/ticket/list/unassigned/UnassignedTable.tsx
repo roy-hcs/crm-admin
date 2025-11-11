@@ -136,7 +136,7 @@ export const UnassignedTable = ({
       id: 'priority',
       header: t('ticketList.priority'),
       cell: ({ row }) => {
-        if (row?.original?.priority) {
+        if ([0, 1, 2].includes(row?.original?.priority)) {
           return <div>{t(`ticketList.priorityOptions.${row?.original?.priority}`)}</div>;
         }
         return '-';
@@ -146,7 +146,7 @@ export const UnassignedTable = ({
       id: 'status',
       header: t('common.status'),
       cell: ({ row }) => {
-        if (String(row?.original?.status).length) {
+        if ([0, 1, 2].includes(row?.original?.status)) {
           return <div>{t(`ticketList.statusOptions.${row?.original?.status}`)}</div>;
         }
         return '-';
