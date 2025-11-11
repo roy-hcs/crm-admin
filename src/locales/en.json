@@ -170,7 +170,11 @@
     "failedToSend": "Sending failed",
     "hasBeenSent": "Sent",
     "sending": "Sending",
-    "toBeSent": "To be sent"
+    "toBeSent": "To be sent",
+    "all": "all",
+    "contractNumber": "Number of contracts",
+    "contractSize": "Contract size",
+    "unassigned": "Not assigned"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -527,7 +531,15 @@
     "infoType": "Information type",
     "receiver": "Receive object",
     "sendAgain": "Resend",
-    "submitter": "Author"
+    "submitter": "Author",
+    "fixedPipValue": "fixed point value",
+    "floatingPipValue": "floating point value",
+    "pointValue": "pip value",
+    "pointValueName": "Point value name",
+    "pointValueType": "Point type",
+    "rebateType": "variety",
+    "serverName": "Server name",
+    "transactionPlatform": "trading platform"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -855,5 +867,35 @@
   },
   "relationships": {
     "title": "customer relations"
+  },
+  "myTicket": {
+    "title": "My work order"
+  },
+  "pipValueSettings": {
+    "title": "Point value settings",
+    "warn": "Products with the same point value should be placed in the same point value group. The products in the group will receive commissions with the same point value. \nVarieties with no point value set are treated as 0 by default. \nIf there are duplicate product point values, the rebate will be calculated based on the highest sorted point value."
+  },
+  "ticketList": {
+    "belongUser": "Belong to user",
+    "confirm": {
+      "stop": "Are you sure you want to unfollow?"
+    },
+    "content": "Work order content",
+    "isFollow": "focus on",
+    "orderId": "Work order number",
+    "priority": "priority",
+    "priorityOptions": {
+      "0": "Low",
+      "1": "middle",
+      "2": "high"
+    },
+    "receiverId": "Assignee",
+    "recentReplyTime": "Last reply time",
+    "statusOptions": {
+      "0": "Pending",
+      "1": "Processing",
+      "2": "Completed"
+    },
+    "title": "Work order list"
   }
 }

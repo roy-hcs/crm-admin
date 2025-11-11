@@ -191,7 +191,9 @@
     "sending": "发送中",
     "allCRMUsers": "所有CRM用户",
     "contractSize": "合约规模",
-    "contractNumber": "合约数"
+    "contractNumber": "合约数",
+    "all": "全部",
+    "unassigned": "未分配"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -597,6 +599,32 @@
   },
   "relationships": {
     "title": "客户关系"
+  },
+  "ticketList": {
+    "title": "工单列表",
+    "orderId": "工单编号",
+    "content": "工单内容",
+    "priority": "优先级",
+    "priorityOptions": {
+      "0": "低",
+      "1": "中",
+      "2": "高"
+    },
+    "statusOptions": {
+      "0": "待处理",
+      "1": "正在处理",
+      "2": "已完成"
+    },
+    "belongUser": "归属用户",
+    "receiverId": "受理人",
+    "isFollow": "关注",
+    "confirm": {
+      "stop": "确认要取消关注吗？"
+    },
+    "recentReplyTime": "最后回复时间"
+  },
+  "myTicket": {
+    "title": "我的工单"
   },
   "table": {
     "orderNo": "订单ID",
