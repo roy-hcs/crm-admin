@@ -170,7 +170,9 @@
     "failedToSend": "Sending failed",
     "hasBeenSent": "Sent",
     "sending": "Sending",
-    "toBeSent": "To be sent"
+    "toBeSent": "To be sent",
+    "contractNumber": "Number of contracts",
+    "contractSize": "Contract size"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -527,7 +529,31 @@
     "infoType": "Information type",
     "receiver": "Receive object",
     "sendAgain": "Resend",
-    "submitter": "Author"
+    "submitter": "Author",
+    "allGroups": "All categories",
+    "commissionSettings": "Commission settings",
+    "fixedPipValue": "fixed point value",
+    "floatingPipValue": "floating point value",
+    "historyOrderRebate": "Historical order rebates",
+    "level": "Hierarchy",
+    "levelName": "Level name",
+    "perContract": "contract",
+    "perLot": "Lot size",
+    "perOrder": "Order",
+    "pointValue": "pip value",
+    "pointValueName": "Point value name",
+    "pointValueType": "Point type",
+    "rebateTemplate": "Rebate template",
+    "rebateType": "variety",
+    "relatedAccountCount": "Number of associated accounts",
+    "relatedRebateRuleCount": "Number of associated rebate rules",
+    "relatedRebateTemplateCount": "Number of associated rebate templates",
+    "ruleName": "Rule name",
+    "serverName": "Server name",
+    "settlementUnit": "settlement unit",
+    "topRebateLevel": "Highest rebate level",
+    "transactionPlatform": "trading platform",
+    "typeGroup": "Breed group"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -855,5 +881,19 @@
   },
   "relationships": {
     "title": "customer relations"
+  },
+  "ProductGroup": {
+    "title": "Variety group settings"
+  },
+  "RebateLevelSettings": {
+    "title": "Rebate level settings"
+  },
+  "TradingRebateSettings": {
+    "title": "Trading rebate settings",
+    "warn": "Multiple rebates are allowed for one order. \nIf multiple rebate rules are hit, commissions will be repaid to the hit rules one after another. \nA rule will only rebate commission once."
+  },
+  "pipValueSettings": {
+    "title": "Point value settings",
+    "warn": "Products with the same point value should be placed in the same point value group. The products in the group will receive commissions with the same point value. \nVarieties with no point value set are treated as 0 by default. \nIf there are duplicate product point values, the rebate will be calculated based on the highest sorted point value."
   }
 }

@@ -1,6 +1,7 @@
 import { RebateLevelSettingsPage } from '@/pages/rebate/level-settings/RebateLevelSettingsPage';
 import { PipValuePage } from '@/pages/rebate/pip-value/PipValuePage';
 import { ProductGroupPage } from '@/pages/rebate/product-group/ProductGroupPage';
+import { TradingRebateSettingsPage } from '@/pages/rebate/trading-settings/TradingRebateSettingsPage';
 import { RouteObject } from 'react-router-dom';
 
 /**
@@ -29,6 +30,10 @@ export const rebateRoutes: RouteObject[] = [
     path: '/rebate/level-settings',
     element: <RebateLevelSettingsPage />,
   },
+  {
+    path: '/rebate/trading-settings',
+    element: <TradingRebateSettingsPage />,
+  },
   /*
   {
     path: '/rebate/basic-settings',
@@ -36,10 +41,7 @@ export const rebateRoutes: RouteObject[] = [
   },
   
   
-  {
-    path: '/rebate/trading-settings',
-    element: <TradingRebateSettingsPage />,
-  },
+  
   {
     path: '/rebate/fee-settings',
     element: <FeeRebateSettingsPage />,

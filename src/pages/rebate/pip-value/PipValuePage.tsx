@@ -21,7 +21,6 @@ export const PipValuePage = () => {
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
   const { data: serverTypes } = useDictType('sys_mt_service_type');
-  console.log('serverTypes', serverTypes);
 
   const { data: rebateBasePoint, isLoading: rebateBasePointLoading } = useGetRebateBasePoint({
     pageSize,

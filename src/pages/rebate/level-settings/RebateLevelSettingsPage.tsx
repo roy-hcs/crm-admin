@@ -1,7 +1,6 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDictType } from '@/api/hooks/system/system';
 import { useRebateLevelList } from '@/api/hooks/rebate';
 import { RebateLevelSettingsTable } from './RebateLevelSettingsTable';
 
@@ -9,8 +8,6 @@ export const RebateLevelSettingsPage = () => {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
-  const { data: serverTypes } = useDictType('sys_mt_service_type');
-  console.log('serverTypes', serverTypes);
 
   const { data: rebateLevelList, isLoading: rebateLevelListLoading } = useRebateLevelList({
     pageSize,
