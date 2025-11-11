@@ -199,7 +199,7 @@ export type Role = BaseEntity & {
 };
 
 export type UserItem = BaseEntity & {
-  userId: string | null;
+  userId: string;
   deptId: string | null;
   parentId: string | null;
   roleId: string | null;
@@ -244,7 +244,7 @@ export type UserItem = BaseEntity & {
   boundGoogle: number | null;
   onlineStatus: number | null;
   admin: boolean | null;
-  wholeName: string | null;
+  wholeName: string;
 };
 export type UserListRes = BasicRes<UserItem>;
 
