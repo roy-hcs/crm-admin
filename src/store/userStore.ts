@@ -5,6 +5,7 @@ import { persist } from 'zustand/middleware';
 type UserStore = {
   user: UserInfoRes['user'] | null;
   setUser: (user: UserInfoRes['user'] | null) => void;
+  clearUser: () => void;
 };
 
 export const useUserStore = create<UserStore>()(
@@ -12,6 +13,7 @@ export const useUserStore = create<UserStore>()(
     set => ({
       user: null,
       setUser: user => set({ user }),
+      clearUser: () => set({ user: null }),
     }),
     {
       name: 'user-store',

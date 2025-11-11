@@ -1,16 +1,10 @@
+import { UserInfoRes } from '@/api/hooks/system';
 import { createContext } from 'react';
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-}
 
 export interface AuthContextType {
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
-  user: User | null;
+  user: UserInfoRes['user'] | null;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);

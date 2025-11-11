@@ -1,58 +1,29 @@
-import { useState, useEffect, type ReactNode } from 'react';
-import { AuthContext, type User } from './auth-context';
+import { useMemo, type ReactNode } from 'react';
+import { AuthContext } from './auth-context';
 import { useTabStore } from '@/store/tabStore';
+import { useQueryClient } from '@tanstack/react-query';
+import { useUserStore } from '@/store/userStore';
+import { useLogout } from '@/api/hooks/users/users';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
   const { closeAllTabs } = useTabStore();
-
-  useEffect(() => {
-    // Check if there's a stored token or session
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      // Validate token here if needed
-      setIsAuthenticated(true);
-      // You might want to fetch user data here
-      setUser({
-        id: '1',
-        name: 'User',
-        email: 'user@example.com',
-      });
-    }
-  }, []);
-
-  const login = async (email: string, password: string): Promise<boolean> => {
-    try {
-      // Implement actual authentication logic here
-      // This is a placeholder implementation
-      if (email && password) {
-        localStorage.setItem('auth_token', 'sample_token');
-        setIsAuthenticated(true);
-        setUser({
-          id: '1',
-          name: 'User',
-          email: email,
-        });
-        return true;
-      } else {
-        throw new Error('Invalid credentials');
-      }
-    } catch (error) {
-      console.error('Login failed:', error);
-      return false;
-    }
-  };
-
-  const logout = () => {
-    localStorage.removeItem('auth_token');
+  const queryClient = useQueryClient();
+  const { clearUser, user } = useUserStore();
+  const logoutSuccess = () => {
+    localStorage.removeItem('publicKey');
     closeAllTabs();
-    setIsAuthenticated(false);
-    setUser(null);
+    clearUser();
+    queryClient.clear();
   };
+  const logoutMutation = useLogout(logoutSuccess);
+  const logout = () => {
+    logoutMutation.mutate();
+  };
+
+  const isAuthenticated = useMemo(() => !!user, [user]);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, logout }}>
       {children}
     </AuthContext.Provider>
   );

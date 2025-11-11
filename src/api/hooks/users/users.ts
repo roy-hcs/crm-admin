@@ -17,9 +17,11 @@ export function useLoginConfig() {
   });
 }
 
-export function useLogout() {
-  return useQuery({
-    queryKey: ['logout'],
-    queryFn: () => apiGet('/logout'),
+export function useLogout(onSuccess?: () => void) {
+  return useMutation({
+    mutationFn: () => apiGet('/logout'),
+    onSuccess: () => {
+      onSuccess?.();
+    },
   });
 }
