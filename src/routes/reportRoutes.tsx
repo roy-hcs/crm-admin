@@ -1,23 +1,23 @@
 import { RouteObject } from 'react-router-dom';
-import { WalletTransactionsPage } from '@/pages/reports/financial/walletTransactions';
-import { PaymentOrdersPage } from '@/pages/reports/financial/paymentOrders';
-import { TradingAccountTransactionsPage } from '@/pages/reports/financial/tradingAccountTransactions';
-import { RefundFailureLogsPage } from '@/pages/reports/financial/refundFailureLogs';
-import { TradingAccountFundsStatsPage } from '@/pages/reports/financial/tradingAccountFundsStats';
-import { TradingAccountDataStatsPage } from '@/pages/reports/financial/tradingAccountDataStats';
-import { SystemFundOperationsPage } from '@/pages/reports/financial/systemFundOperations/SystemFundOperationsPage';
-import { WalletBalancePage } from '@/pages/reports/financial/walletBalance/WalletBalancePage';
+import { WalletTransactionsPage } from '@/pages/reports/financial/wallet-transactions/WalletTransactionsPage';
+import { PaymentOrdersPage } from '@/pages/reports/financial/payment-orders/PaymentOrdersPage';
+import { TradingAccountTransactionsPage } from '@/pages/reports/financial/trading-account-transactions/TradingAccountTransactionsPage';
+import { RefundFailureLogsPage } from '@/pages/reports/financial/refund-failure-logs/RefundFailureLogsPage';
+import { TradingAccountFundsStatsPage } from '@/pages/reports/financial/trading-account-funds-stats/TradingAccountFundsStatsPage';
+import { TradingAccountDataStatsPage } from '@/pages/reports/financial/trading-account-data-stats/TradingAccountDataStatsPage';
+import { SystemFundOperationsPage } from '@/pages/reports/financial/system-fund-operations/SystemFundOperationsPage';
+import { WalletBalancePage } from '@/pages/reports/financial/wallet-balance/WalletBalancePage';
 import { TradingHistoryPage } from '@/pages/reports/trading/history/TradingHistoryPage';
-import { PositionOrderPage } from '@/pages/reports/trading/positionOrder/PositionOrderPage';
-import { LimitOrderPage } from '@/pages/reports/trading/limitOrder/LimitOrderPage';
+import { PositionOrderPage } from '@/pages/reports/trading/position-order/PositionOrderPage';
+import { LimitOrderPage } from '@/pages/reports/trading/limit-order/LimitOrderPage';
 import { StatisticPage } from '@/pages/reports/trading/statistic/StatisticPage';
-import { TradingPage } from '@/pages/reports/commission/trading';
-import { FeesPage } from '@/pages/reports/commission/fees';
-import { DepositsPage } from '@/pages/reports/commission/deposits';
-import { DailyRebatePage } from '@/pages/reports/commission/daily-rebate';
-import { WeeklyRebatePage } from '@/pages/reports/commission/weekly-rebate';
-import { ClientTrackingPage } from '@/pages/reports/ib/client-tracking';
-import { OverviewPage } from '@/pages/reports/ib/overview';
+import { TradingPage } from '@/pages/reports/commission/trading/TradingPage';
+import { FeesPage } from '@/pages/reports/commission/fees/FeesPage';
+import { DepositsPage } from '@/pages/reports/commission/deposits/DepositsPage';
+import { DailyRebatePage } from '@/pages/reports/commission/daily-rebate/DailyRebatePage';
+import { WeeklyRebatePage } from '@/pages/reports/commission/weekly-rebate/WeeklyRebatePage';
+import { ClientTrackingPage } from '@/pages/reports/ib/client-tracking/ClientTrackingPage';
+import { OverviewPage } from '@/pages/reports/ib/overview/OverviewPage';
 
 /**
  * Report routes - corresponds to "报表" menu item

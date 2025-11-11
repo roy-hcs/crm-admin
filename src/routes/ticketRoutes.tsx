@@ -1,4 +1,4 @@
-import { TicketListPage } from '@/pages/ticket/list';
+import { TicketListPage } from '@/pages/ticket/list/TicketListPage';
 import { RouteObject } from 'react-router-dom';
 
 /**

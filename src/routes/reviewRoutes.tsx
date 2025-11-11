@@ -1,16 +1,16 @@
 import { RouteObject } from 'react-router-dom';
 import { ReviewAgentPage } from '@/pages/review/agent/ReviewAgentPage';
-import { ReviewDepositRebatePage } from '@/pages/review/depositRebate/ReviewDepositRebatePage';
-import { ReviewFeeRebatePage } from '@/pages/review/feeRebate/ReviewFeeRebatePage';
-import { ReviewTradingRebatePage } from '@/pages/review/tradingRebate/ReviewTradingRebatePage';
+import { ReviewDepositRebatePage } from '@/pages/review/deposit-rebate/ReviewDepositRebatePage';
+import { ReviewFeeRebatePage } from '@/pages/review/fee-rebate/ReviewFeeRebatePage';
+import { ReviewTradingRebatePage } from '@/pages/review/trading-rebate/ReviewTradingRebatePage';
 import { ReviewWithdrawalPage } from '@/pages/review/withdrawal/ReviewWithdrawalPage';
-import { ReviewInternalTransferPage } from '@/pages/review/internalTransfer/ReviewInternalTransferPage';
+import { ReviewInternalTransferPage } from '@/pages/review/internal-transfer/ReviewInternalTransferPage';
 import { ReviewDepositPage } from '@/pages/review/deposit/ReviewDepositPage';
-import { SettingsPage } from '@/pages/review/settings';
-import { InFormationPage } from '@/pages/review/InFormation';
-import { AccountOpeningPage } from '@/pages/review/AccountOpening';
-import { BindingPage } from '@/pages/review/binding';
-import { LeveragePage } from '@/pages/review/leverage';
+import { SettingsPage } from '@/pages/review/settings/SettingsPage';
+import { InformationPage } from '@/pages/review/information/InformationPage';
+import { AccountOpeningPage } from '@/pages/review/account-opening/AccountOpeningPage';
+import { BindingPage } from '@/pages/review/binding/BindingPage';
+import { LeveragePage } from '@/pages/review/leverage/LeveragePage';
 
 /**
  * Review routes - corresponds to "审核" menu item
@@ -37,7 +37,7 @@ export const reviewRoutes: RouteObject[] = [
   },
   {
     path: '/review/information',
-    element: <InFormationPage />,
+    element: <InformationPage />,
   },
   {
     path: '/review/account-opening',
