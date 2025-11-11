@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from 'react-i18next';
-import { AllTab } from './all';
-import { UnassignedTab } from './unassigned';
+import { AllTab } from './all/AllPage';
+import { UnassignedTab } from './unassigned/UnassignedPage';
 
 export const TicketListPage = () => {
   const { t } = useTranslation();

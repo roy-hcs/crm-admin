@@ -8,7 +8,7 @@ import { VerifyStatusOptions } from '@/lib/const';
 import { InfoTypeItem } from '@/api/hooks/system/types';
 import { RrhOrderStatusTag } from '@/components/common/RrhOrderStatusTag';
 
-export const InFormationTable = ({
+export const InformationTable = ({
   data,
   pageCount,
   pageIndex,

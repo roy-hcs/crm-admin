@@ -27,7 +27,7 @@ type FormData = {
   status: string;
   verifyUserName: string;
 };
-export const InFormationForm = ({
+export const InformationForm = ({
   setParams,
   setCommonParams,
   infoTypeList,

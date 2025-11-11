@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { InFormationForm } from './InFormationForm';
+import { InformationForm } from './InformationForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
-import { InFormationTable } from './InFormationTable';
+import { InformationTable } from './InformationTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { useCrmInfoVerifyList, CrmInfoVerifyListParams } from '@/api/hooks/review';
 import { RrhButton } from '@/components/common/RrhButton';
 import { useInfoTypeList } from '@/api/hooks/system/system';
 import { InfoTypeItem } from '@/api/hooks/system/types';
-export function InFormationPage() {
+export function InformationPage() {
   const { t } = useTranslation();
   const { data: useInfoTyperesponse, isLoading: useInfoTypeloading } = useInfoTypeList();
   const infoTypeList: InfoTypeItem[] = Array.isArray(useInfoTyperesponse)
@@ -77,7 +77,7 @@ export function InFormationPage() {
               </RrhButton>
             }
           >
-            <InFormationForm
+            <InformationForm
               setParams={setParams}
               setCommonParams={setCommonParams}
               infoTypeList={infoTypeList}
@@ -85,7 +85,7 @@ export function InFormationPage() {
           </RrhDrawer>
         </div>
       </div>
-      <InFormationTable
+      <InformationTable
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}
