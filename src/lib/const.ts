@@ -110,3 +110,17 @@ export const PointsOperTypeList = [
   { dictLabel: 'PointsHistory.operTypeList.13', dictValue: '13' },
   { dictLabel: 'PointsHistory.operTypeList.14', dictValue: '14' },
 ];
+
+// 工单列表优先级
+export const priorityOptions = [
+  { label: 'ticketList.priorityOptions.0', value: '0' },
+  { label: 'ticketList.priorityOptions.1', value: '1' },
+  { label: 'ticketList.priorityOptions.2', value: '2' },
+];
+
+// 工单列表状态
+export const ticketStatusOptions = [
+  { label: 'ticketList.statusOptions.0', value: '0' },
+  { label: 'ticketList.statusOptions.1', value: '1' },
+  { label: 'ticketList.statusOptions.2', value: '2' },
+];
