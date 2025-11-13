@@ -1,4 +1,5 @@
-import { TicketListPage } from '@/pages/ticket/list';
+import { TicketListPage } from '@/pages/ticket/list/TicketListPage';
+import { MyTicketsPage } from '@/pages/ticket/my-tickets/MyTicketsPage';
 import { RouteObject } from 'react-router-dom';
 
 /**
@@ -13,11 +14,8 @@ export const ticketRoutes: RouteObject[] = [
     path: '/ticket/list',
     element: <TicketListPage />,
   },
-  // TODO: Add routes as pages are developed
-  /*
   {
     path: '/ticket/my-tickets',
     element: <MyTicketsPage />,
   },
-  */
 ];

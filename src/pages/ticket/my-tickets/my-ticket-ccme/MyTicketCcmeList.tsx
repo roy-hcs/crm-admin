@@ -3,43 +3,44 @@ import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { UnassignedTable } from './UnassignedTable';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { UnassignedForm } from './UnassignedForm';
-import { useTicketList } from '@/api/hooks/ticket/ticket';
+import { MyTicketCcmeForm } from './MyTicketCcmeForm';
+import { useMyTicketAllList } from '@/api/hooks/ticket/ticket';
 import { CrmTicketParams } from '@/api/hooks/ticket/types';
 import { BasicParams } from '@/api/types';
+import { MyTicketsTable } from '../common/MyTicketsTable';
 
-export const UnassignedTab = () => {
+export const MyTicketCcmeList = () => {
   const [otherParams, setOtherParams] = useState<Omit<CrmTicketParams, keyof BasicParams>>({
-    isAll: '0',
     orderId: '',
     content: '',
     priority: '-1',
     startDate: '',
     endDate: '',
-    belongUser: '',
+    status: '-1',
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
-  const { data: data, isLoading: loading } = useTicketList({
-    pageSize,
-    pageNum: pageNum + 1,
-    orderByColumn: '',
-    isAsc: 'asc',
-    ...otherParams,
-  });
+  const { data: data, isLoading: loading } = useMyTicketAllList(
+    {
+      pageSize,
+      pageNum: pageNum + 1,
+      orderByColumn: '',
+      isAsc: 'asc',
+      ...otherParams,
+    },
+    'ccme',
+  );
 
   const reset = () => {
     setOtherParams({
-      isAll: '0',
       orderId: '',
       content: '',
       priority: '-1',
       startDate: '',
       endDate: '',
-      belongUser: '',
+      status: '-1',
     });
     setPageNum(0);
   };
@@ -71,11 +72,11 @@ export const UnassignedTab = () => {
               </RrhButton>
             }
           >
-            <UnassignedForm setOtherParams={setOtherParams} loading={loading} />
+            <MyTicketCcmeForm setOtherParams={setOtherParams} loading={loading} />
           </RrhDrawer>
         </div>
       </div>
-      <UnassignedTable
+      <MyTicketsTable
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}

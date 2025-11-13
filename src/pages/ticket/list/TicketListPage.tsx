@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from 'react-i18next';
-import { AllTab } from './all';
-import { UnassignedTab } from './unassigned';
+import { TicketAllList } from './ticket-all-list/TicketAllList';
+import { TicketUnassignedList } from './ticket-unassigned-list/TicketUnassignedList';
 
 export const TicketListPage = () => {
   const { t } = useTranslation();
@@ -14,10 +14,10 @@ export const TicketListPage = () => {
           <TabsTrigger value="volume">{t('common.unassigned')}</TabsTrigger>
         </TabsList>
         <TabsContent value="account">
-          <AllTab />
+          <TicketAllList />
         </TabsContent>
         <TabsContent value="volume">
-          <UnassignedTab />
+          <TicketUnassignedList />
         </TabsContent>
       </Tabs>
     </div>
