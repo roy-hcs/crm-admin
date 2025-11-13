@@ -8,6 +8,8 @@ import {
   RebateBaseTypeRes,
   RebateLevelParams,
   RebateLevelRes,
+  RebateTraderDealListParams,
+  RebateTraderDealListRes,
   SelectServerListParams,
   SelectServerListRes,
 } from './types';
@@ -56,5 +58,16 @@ export function useRebateLevelList(params: RebateLevelParams) {
   return useQuery({
     queryKey: ['getRebateLevelList', params],
     queryFn: () => apiFormPostCustom<RebateLevelRes>('/system/crmRebateLevel/list', params),
+  });
+}
+
+/**
+ * 获取交易返佣设置
+ */
+export function useRebateTraderDealList(params: RebateTraderDealListParams) {
+  return useQuery({
+    queryKey: ['getRebateTraderDealList', params],
+    queryFn: () =>
+      apiFormPostCustom<RebateTraderDealListRes>('/system/crmRebateTraderDeal/list', params),
   });
 }

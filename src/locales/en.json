@@ -171,9 +171,9 @@
     "hasBeenSent": "Sent",
     "sending": "Sending",
     "toBeSent": "To be sent",
-    "all": "all",
     "contractNumber": "Number of contracts",
     "contractSize": "Contract size",
+    "all": "all",
     "unassigned": "Not assigned"
   },
   "home": {
@@ -532,6 +532,22 @@
     "receiver": "Receive object",
     "sendAgain": "Resend",
     "submitter": "Author",
+    "allGroups": "All categories",
+    "commissionSettings": "Commission settings",
+    "historyOrderRebate": "Historical order rebates",
+    "level": "Hierarchy",
+    "levelName": "Level name",
+    "perContract": "contract",
+    "perLot": "Lot size",
+    "perOrder": "Order",
+    "rebateTemplate": "Rebate template",
+    "relatedAccountCount": "Number of associated accounts",
+    "relatedRebateRuleCount": "Number of associated rebate rules",
+    "relatedRebateTemplateCount": "Number of associated rebate templates",
+    "ruleName": "Rule name",
+    "settlementUnit": "settlement unit",
+    "topRebateLevel": "Highest rebate level",
+    "typeGroup": "Breed group",
     "fixedPipValue": "fixed point value",
     "floatingPipValue": "floating point value",
     "pointValue": "pip value",
@@ -873,6 +889,16 @@
   },
   "relationships": {
     "title": "customer relations"
+  },
+  "ProductGroup": {
+    "title": "Variety group settings"
+  },
+  "RebateLevelSettings": {
+    "title": "Rebate level settings"
+  },
+  "TradingRebateSettings": {
+    "title": "Trading rebate settings",
+    "warn": "Multiple rebates are allowed for one order. \nIf multiple rebate rules are hit, commissions will be repaid to the hit rules one after another. \nA rule will only rebate commission once."
   },
   "myTicket": {
     "title": "My work order",

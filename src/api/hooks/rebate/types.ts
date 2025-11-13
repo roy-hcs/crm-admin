@@ -79,3 +79,55 @@ export type RebateLevelItem = BaseEntity & {
   relatedRebateTemplateCount: string;
   model: number;
 };
+
+export type RebateTraderDealListParams = BasicParams & {
+  rebateType: string;
+  model: string;
+  ruleName: string;
+  serverType: string;
+  serverId: string;
+  hasUsed: string;
+};
+export type RebateTraderDealListRes = BasicRes<RebateTraderDealItem>;
+export type RebateTraderDealItem = BaseEntity & {
+  id: string;
+  userId: string | null;
+  accountId: string | null;
+  serialNumber: string;
+  ruleName: string;
+  hasUsed: string;
+  rebateGroupType: string;
+  mtGroup: string;
+  settleUnit: string;
+  highestRebateLevel: string;
+  relatedAccountCount: string;
+  relatedRebateTemplateCount: string;
+  serverType: number | null;
+  serverName: string | null;
+  serverId: string | null;
+  groupTypeId: string;
+  rebateType: string;
+  accountGroups: string;
+  model: number;
+  settleType: number | null;
+  commissionSettlementTiming: number;
+  suitType: number;
+  settleValue: number;
+  crmRebateLevels: string | null;
+  ruleAndModel: string;
+  traderServers: TraderServer[] | null;
+  traderLanguages: string | null;
+  accountGroupNames: string;
+};
+
+export type TraderServer = {
+  id: string;
+  rebateTraderId: string;
+  serverId: string;
+  serverName: string;
+  serverType: string;
+  mtGroups: string | null;
+  mtGroup: string;
+  rebateGroupTypes: string | null;
+  rebateGroupType: string | null;
+};

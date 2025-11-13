@@ -6,15 +6,15 @@ import {
 } from '@/api/hooks/workbench';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
-import { NavList } from './NavList';
-import { OverviewDepositWithdrawal } from './OverviewDepositWithdrawal';
-import { DataOverview } from './DataOverview';
-import { TradingInstrument } from './TradingInstrument';
-import { AccountActivation } from './AccountActivation';
-import { CustomerTransactions } from './CustomerTransactions';
-import { FundsTransit } from './FundsTransit';
-import { Step } from './step';
-import { Todo } from './todo';
+import { NavList } from './components/NavList';
+import { OverviewDepositWithdrawal } from './components/OverviewDepositWithdrawal';
+import { DataOverview } from './components/DataOverview';
+import { TradingInstrument } from './components/TradingInstrument';
+import { AccountActivation } from './components/AccountActivation';
+import { CustomerTransactions } from './components/CustomerTransactions';
+import { FundsTransit } from './components/FundsTransit';
+import { Step } from './components/Step';
+import { Todo } from './components/Todo';
 import { useMemo } from 'react';
 
 export function HomePage() {

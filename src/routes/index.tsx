@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { MainLayout } from '@/components/layouts/MainLayout';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { AppError } from '@/components/common/AppError';
@@ -24,7 +25,11 @@ import { copyTradingRoutes } from './copyTradingRoutes';
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout />,
+    element: (
+      <ProtectedRoute>
+        <MainLayout />
+      </ProtectedRoute>
+    ),
     errorElement: <AppError />,
     children: [
       ...workbenchRoutes,

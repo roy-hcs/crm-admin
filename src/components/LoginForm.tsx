@@ -114,24 +114,23 @@ export const LoginForm = ({
       submittedValues.password = encryptPassword(values.password, secretKey);
       // submittedValues.googleCode = '';
 
-      // Step 1: Login
       const res = await loginMutation.mutateAsync(submittedValues);
       if (res.code === 0 && res.data) {
+        const userId = res.data?.userId;
         localStorage.setItem('publicKey', res.data?.pubKey);
 
-        // Step 2: Fetch user info after successful login
         try {
           const userInfoData = await queryClient.fetchQuery({
-            queryKey: ['GetUserInfo'],
+            queryKey: ['GetUserInfo', userId],
             queryFn: () => apiGetCustom<UserInfoRes>('/system/user/profile/getUserInfo'),
+            staleTime: 0,
+            gcTime: 0,
           });
 
-          // Step 3: Store user info in Zustand
           if (userInfoData?.user) {
             setUser(userInfoData.user);
           }
 
-          // Step 4: Navigate to home page
           navigate('/');
         } catch (userInfoError) {
           console.error('Failed to fetch user info:', userInfoError);

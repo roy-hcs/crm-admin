@@ -1,13 +1,13 @@
 import { RouteObject } from 'react-router-dom';
 import { RolesPage } from '@/pages/system/roles/RolesPage';
 import { MenusPage } from '@/pages/system/menus/MenusPage';
-import { CRMUserOperationsLogsPage } from '@/pages/system/logsPage/userOperation/CRMUserOperationsLogsPage';
-import { EmailLogsPage } from '@/pages/system/logsPage/email/EmailLogsPage';
-import { PaymentLogsPage } from '@/pages/system/logsPage/payment/PaymentLogsPage';
-import { AdminAccountsPage } from '@/pages/system/AdminAccounts/AdminAccountsPage';
-import { AdminOperationsPage } from '@/pages/system/logsPage/AdminOperations/AdminAccountsPage';
-import { AdminLoginPage } from '@/pages/system/logsPage/AdminLogin/AdminLoginPage';
-import { CrmUserLoginPage } from '@/pages/system/logsPage/CrmUserLogin/CrmUserLoginPage';
+import { CRMUserOperationsLogsPage } from '@/pages/system/logs-page/user-operation/CRMUserOperationsLogsPage';
+import { EmailLogsPage } from '@/pages/system/logs-page/email/EmailLogsPage';
+import { PaymentLogsPage } from '@/pages/system/logs-page/payment/PaymentLogsPage';
+import { AdminAccountsPage } from '@/pages/system/admin-accounts/AdminAccountsPage';
+import { AdminOperationsPage } from '@/pages/system/logs-page/admin-operations/AdminOperationsPage';
+import { AdminLoginPage } from '@/pages/system/logs-page/admin-login/AdminLoginPage';
+import { CrmUserLoginPage } from '@/pages/system/logs-page/crm-user-login/CrmUserLoginPage';
 // Import other system pages as they are developed
 
 /**

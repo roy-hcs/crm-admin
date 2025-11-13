@@ -835,7 +835,17 @@
     "levelName": "层级名称",
     "relatedAccountCount": "关联账户数",
     "relatedRebateRuleCount": "关联返佣规则数",
-    "relatedRebateTemplateCount": "关联返佣模板数"
+    "relatedRebateTemplateCount": "关联返佣模板数",
+    "ruleName": "规则名称",
+    "settlementUnit": "结算单位",
+    "topRebateLevel": "最高返佣层级",
+    "rebateTemplate": "返佣模板",
+    "historyOrderRebate": "历史订单返佣",
+    "perLot": "手数",
+    "perOrder": "订单",
+    "perContract": "合约",
+    "allGroups": "全部组别",
+    "commissionSettings": "佣金设置"
   },
   "review": {
     "settings": {
@@ -914,5 +924,12 @@
   },
   "ProductGroup": {
     "title": "品种组设置"
+  },
+  "RebateLevelSettings": {
+    "title": "返佣层级设置"
+  },
+  "TradingRebateSettings": {
+    "title": "交易返佣设置",
+    "warn": "一笔订单允许返佣多次。如命中多条返佣规则，将对命中的规则陆续返佣。一条规则仅返佣一次。"
   }
 }

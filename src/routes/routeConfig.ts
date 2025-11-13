@@ -1,5 +1,5 @@
 import React from 'react';
-import { HomePage } from '../pages/home-page/index';
+import { HomePage } from '../pages/homepage/Homepage';
 import { LoginPage } from '../pages/LoginPage';
 
 export interface RouteConfig {
