@@ -1,6 +1,6 @@
 import { apiFormPostCustom } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { CrmTicketParams, CrmTicketRes, tabs } from './types';
+import { CrmTicketParams, CrmTicketRes, TicketTabsParamse } from './types';
 
 export function useTicketList(params: CrmTicketParams) {
   return useQuery({
@@ -22,7 +22,7 @@ export function useTicketFollow() {
 /**
  * 我的工单 全部 待处理 等等
  */
-export function useMyTicketAllList(params: CrmTicketParams, tab: tabs) {
+export function useMyTicketAllList(params: CrmTicketParams, tab: TicketTabsParamse) {
   return useQuery({
     queryKey: ['MyTicketAllList', params, tab],
     queryFn: () => apiFormPostCustom<CrmTicketRes>(`/system/ticket/list?tab=${tab}`, params),

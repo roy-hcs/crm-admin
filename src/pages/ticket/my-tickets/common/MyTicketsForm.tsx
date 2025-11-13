@@ -18,6 +18,7 @@ import { FormSelect } from '@/components/form/FormSelect';
 import { priorityOptions, ticketStatusOptions } from '@/lib/const';
 import { CrmTicketParams } from '@/api/hooks/ticket/types';
 import dayjs from 'dayjs';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   isAll: string;
@@ -28,14 +29,14 @@ type FormData = {
   time: { from: string; to: string };
 };
 
-export const MyTicketConcernedForm = ({
+export const MyTicketsForm = ({
   setOtherParams,
   loading,
+  showStatus = true,
 }: {
-  setOtherParams: Dispatch<
-    SetStateAction<Omit<CrmTicketParams, 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>>
-  >;
+  setOtherParams: Dispatch<SetStateAction<Omit<CrmTicketParams, keyof BasicParams>>>;
   loading: boolean;
+  showStatus?: boolean;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
@@ -50,26 +51,33 @@ export const MyTicketConcernedForm = ({
   });
 
   const onSubmit = (data: FormData) => {
-    setOtherParams({
+    const submitData: Omit<CrmTicketParams, keyof BasicParams> = {
       isAll: data.isAll,
       orderId: data.orderId,
       content: data.content,
       priority: data.priority,
       startDate: data.time.from ? dayjs(data.time.from).format('YYYY-MM-DD') : '',
       endDate: data.time.to ? dayjs(data.time.to).format('YYYY-MM-DD') : '',
-      status: data.status,
-    });
+    };
+    if (showStatus) {
+      submitData.status = data.status;
+    }
+    setOtherParams(submitData);
   };
   const onReset = () => {
-    setOtherParams({
+    const resetData: Omit<CrmTicketParams, keyof BasicParams> = {
       isAll: '',
       orderId: '',
       content: '',
       priority: '',
       startDate: '',
       endDate: '',
-      status: '',
-    });
+    };
+
+    if (showStatus) {
+      resetData.status = '';
+    }
+    setOtherParams(resetData);
     form.reset();
   };
   return (
@@ -120,14 +128,17 @@ export const MyTicketConcernedForm = ({
               </FormItem>
             )}
           />
-          <FormSelect
-            verticalLabel
-            name="status"
-            label={t('common.status')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={ticketStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
-          />
+          {showStatus && (
+            <FormSelect
+              verticalLabel
+              name="status"
+              label={t('common.status')}
+              placeholder={t('common.pleaseSelect')}
+              showRowValue={false}
+              options={ticketStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
+            />
+          )}
+
           <div className="flex justify-end gap-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>
               <RefreshCcw className="size-3.5" />

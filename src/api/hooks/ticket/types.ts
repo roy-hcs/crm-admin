@@ -43,4 +43,10 @@ export type CrmTicketItem = {
 
 export type CrmTicketRes = BasicRes<CrmTicketItem>;
 
-export type tabs = 'all' | 'unprocessed' | 'processing' | 'concerned' | 'ccme' | 'created';
+export type TicketTabsParamse =
+  | 'all'
+  | 'unprocessed'
+  | 'processing'
+  | 'concerned'
+  | 'ccme'
+  | 'created';

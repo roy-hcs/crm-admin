@@ -7,7 +7,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { cn } from '@/lib/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { ColumnDef, Row } from '@tanstack/react-table';
-import { Ellipsis, Heart } from 'lucide-react';
+import { Ellipsis, Star } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -41,9 +41,9 @@ const FollowCell = ({ row }: { row: Row<CrmTicketItem> }) => {
 
   return (
     <>
-      <Heart
+      <Star
         onClick={handleClick}
-        className={cn(row.original.isFollow === 1 ? 'text-[#ec0808]' : '')}
+        className={cn(row.original.isFollow === 1 ? 'text-yellow-500' : '')}
       />
       <Alert
         trigger={null}

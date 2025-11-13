@@ -1,45 +1,76 @@
+import { memo, useMemo, useState, Suspense, lazy } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from 'react-i18next';
-import { MyTicketAllList } from './my-ticket-all/MyTicketAllList';
-import { MyTicketUnassignedList } from './my-ticket-unassigned/MyTicketUnassignedList';
-import { MyTicketProcessingList } from './my-ticket-processing/MyTicketProcessingList';
-import { MyTicketConcernedList } from './my-ticket-concerned/MyTicketConcernedList';
-import { MyTicketCcmeList } from './my-ticket-ccme/MyTicketCcmeList';
-import { MyTicketCreatedList } from './my-ticket-created/MyTicketCreatedList';
+const MyTicketAllList = lazy(() =>
+  import('./my-ticket-all/MyTicketAllList').then(m => ({ default: m.MyTicketAllList })),
+);
+const MyTicketUnassignedList = lazy(() =>
+  import('./my-ticket-unassigned/MyTicketUnassignedList').then(m => ({
+    default: m.MyTicketUnassignedList,
+  })),
+);
+const MyTicketProcessingList = lazy(() =>
+  import('./my-ticket-processing/MyTicketProcessingList').then(m => ({
+    default: m.MyTicketProcessingList,
+  })),
+);
+const MyTicketConcernedList = lazy(() =>
+  import('./my-ticket-concerned/MyTicketConcernedList').then(m => ({
+    default: m.MyTicketConcernedList,
+  })),
+);
+const MyTicketCcmeList = lazy(() =>
+  import('./my-ticket-ccme/MyTicketCcmeList').then(m => ({ default: m.MyTicketCcmeList })),
+);
+const MyTicketCreatedList = lazy(() =>
+  import('./my-ticket-created/MyTicketCreatedList').then(m => ({ default: m.MyTicketCreatedList })),
+);
 
-export const MyTicketsPage = () => {
+type TabItem = { value: string; textKey: string };
+
+const TABS: TabItem[] = [
+  { value: '1', textKey: 'myTicket.tabs.1' },
+  { value: '2', textKey: 'myTicket.tabs.2' },
+  { value: '3', textKey: 'myTicket.tabs.3' },
+  { value: '4', textKey: 'myTicket.tabs.4' },
+  { value: '5', textKey: 'myTicket.tabs.5' },
+  { value: '6', textKey: 'myTicket.tabs.6' },
+];
+
+export const MyTicketsPage = memo(function MyTicketsPage() {
   const { t } = useTranslation();
+  const [active, setActive] = useState<string>('1');
+
+  const tabTriggers = useMemo(
+    () =>
+      TABS.map(tab => (
+        <TabsTrigger key={tab.value} value={tab.value}>
+          {t(tab.textKey)}
+        </TabsTrigger>
+      )),
+    [t],
+  );
+
   return (
     <div>
       <h1 className="text-title">{t('myTicket.title')}</h1>
-      <Tabs defaultValue="1" className="w-full">
-        <TabsList className="dark:bg-accent bg-slate-100">
-          <TabsTrigger value="1">{t('myTicket.tabs.1')}</TabsTrigger>
-          <TabsTrigger value="2">{t('myTicket.tabs.2')}</TabsTrigger>
-          <TabsTrigger value="3">{t('myTicket.tabs.3')}</TabsTrigger>
-          <TabsTrigger value="4">{t('myTicket.tabs.4')}</TabsTrigger>
-          <TabsTrigger value="5">{t('myTicket.tabs.5')}</TabsTrigger>
-          <TabsTrigger value="6">{t('myTicket.tabs.6')}</TabsTrigger>
-        </TabsList>
-        <TabsContent value="1">
-          <MyTicketAllList />
-        </TabsContent>
-        <TabsContent value="2">
-          <MyTicketUnassignedList />
-        </TabsContent>
-        <TabsContent value="3">
-          <MyTicketProcessingList />
-        </TabsContent>
-        <TabsContent value="4">
-          <MyTicketConcernedList />
-        </TabsContent>
-        <TabsContent value="5">
-          <MyTicketCcmeList />
-        </TabsContent>
-        <TabsContent value="6">
-          <MyTicketCreatedList />
+      <Tabs value={active} onValueChange={setActive} className="w-full">
+        <TabsList className="dark:bg-accent bg-slate-100">{tabTriggers}</TabsList>
+        <TabsContent value={active}>
+          <Suspense
+            fallback={
+              <div className="text-muted p-4 text-center text-sm">{t('common.loading')}</div>
+            }
+          >
+            {active === '1' && <MyTicketAllList />}
+            {active === '2' && <MyTicketUnassignedList />}
+            {active === '3' && <MyTicketProcessingList />}
+            {active === '4' && <MyTicketConcernedList />}
+            {active === '5' && <MyTicketCcmeList />}
+            {active === '6' && <MyTicketCreatedList />}
+          </Suspense>
         </TabsContent>
       </Tabs>
     </div>
   );
-};
+});
