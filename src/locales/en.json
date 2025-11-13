@@ -555,7 +555,13 @@
     "pointValueType": "Point type",
     "rebateType": "variety",
     "serverName": "Server name",
-    "transactionPlatform": "trading platform"
+    "transactionPlatform": "trading platform",
+    "level": "Hierarchy",
+    "levelName": "Level name",
+    "relatedAccountCount": "Number of associated accounts",
+    "relatedRebateRuleCount": "Number of associated rebate rules",
+    "relatedRebateTemplateCount": "Number of associated rebate templates",
+    "typeGroup": "Breed group"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -895,7 +901,15 @@
     "warn": "Multiple rebates are allowed for one order. \nIf multiple rebate rules are hit, commissions will be repaid to the hit rules one after another. \nA rule will only rebate commission once."
   },
   "myTicket": {
-    "title": "My work order"
+    "title": "My work order",
+    "tabs": {
+      "1": "all",
+      "2": "Pending",
+      "3": "Processing",
+      "4": "What I pay attention to",
+      "5": "CC me",
+      "6": "created by me"
+    }
   },
   "pipValueSettings": {
     "title": "Point value settings",
@@ -923,5 +937,8 @@
       "2": "Completed"
     },
     "title": "Work order list"
+  },
+  "ProductGroup": {
+    "title": "Variety group settings"
   }
 }

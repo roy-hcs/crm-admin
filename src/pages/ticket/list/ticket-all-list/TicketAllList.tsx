@@ -3,26 +3,45 @@ import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { UnassignedTable } from './UnassignedTable';
+import { AllTable } from './AllTable';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { UnassignedForm } from './UnassignedForm';
+import { AllForm } from './AllForm';
 import { useTicketList } from '@/api/hooks/ticket/ticket';
 import { CrmTicketParams } from '@/api/hooks/ticket/types';
 import { BasicParams } from '@/api/types';
+import { useUserList } from '@/api/hooks/system';
 
-export const UnassignedTab = () => {
+export const TicketAllList = () => {
   const [otherParams, setOtherParams] = useState<Omit<CrmTicketParams, keyof BasicParams>>({
-    isAll: '0',
+    isAll: '1',
     orderId: '',
     content: '',
     priority: '-1',
     startDate: '',
     endDate: '',
+    status: '-1',
+    receiverId: '',
     belongUser: '',
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
+  const { data: userData, isLoading: userDataLoading } = useUserList({
+    pageSize,
+    pageNum: pageNum + 1,
+    orderByColumn: '',
+    isAsc: 'asc',
+    userName: '',
+    roleId: '',
+    status: '',
+    phonenumber: '',
+    email: '',
+    onlineStatus: '',
+    params: {
+      beginTime: '',
+      endTime: '',
+    },
+  });
   const { data: data, isLoading: loading } = useTicketList({
     pageSize,
     pageNum: pageNum + 1,
@@ -33,12 +52,14 @@ export const UnassignedTab = () => {
 
   const reset = () => {
     setOtherParams({
-      isAll: '0',
+      isAll: '1',
       orderId: '',
       content: '',
       priority: '-1',
       startDate: '',
       endDate: '',
+      status: '-1',
+      receiverId: '',
       belongUser: '',
     });
     setPageNum(0);
@@ -71,18 +92,22 @@ export const UnassignedTab = () => {
               </RrhButton>
             }
           >
-            <UnassignedForm setOtherParams={setOtherParams} loading={loading} />
+            <AllForm
+              setOtherParams={setOtherParams}
+              userData={userData?.rows || []}
+              loading={loading || userDataLoading}
+            />
           </RrhDrawer>
         </div>
       </div>
-      <UnassignedTable
+      <AllTable
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}
         pageSize={pageSize}
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
-        loading={loading}
+        loading={loading || userDataLoading}
       />
     </div>
   );
