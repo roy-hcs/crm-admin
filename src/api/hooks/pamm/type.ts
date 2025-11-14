@@ -1,4 +1,4 @@
-import { BasicParams } from '@/api/types';
+import { BasicParams, BasicRes } from '@/api/types';
 
 export type PammCommissionListParams = BasicParams & {
   commissionType?: string;
@@ -58,10 +58,6 @@ export type TotalItem = {
   businessAmountToatl: number | null;
 };
 
-export type PammCommissionListRes = {
-  code: number;
-  msg: string;
-  total: string;
-  rows: PammCommissionItem[];
+export type PammCommissionListRes = BasicRes<PammCommissionItem> & {
   totalList: TotalItem[];
 };
