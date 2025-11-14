@@ -124,3 +124,10 @@ export const ticketStatusOptions = [
   { label: 'ticketList.statusOptions.1', value: '1' },
   { label: 'ticketList.statusOptions.2', value: '2' },
 ];
+
+// 提成审核状态
+export const commissionReviewOptions = [
+  { label: 'table.pending', value: '0' },
+  { label: 'table.pass', value: '1' },
+  { label: 'table.refuse', value: '2' },
+];

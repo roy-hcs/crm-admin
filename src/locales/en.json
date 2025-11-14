@@ -556,12 +556,10 @@
     "rebateType": "variety",
     "serverName": "Server name",
     "transactionPlatform": "trading platform",
-    "level": "Hierarchy",
-    "levelName": "Level name",
-    "relatedAccountCount": "Number of associated accounts",
-    "relatedRebateRuleCount": "Number of associated rebate rules",
-    "relatedRebateTemplateCount": "Number of associated rebate templates",
-    "typeGroup": "Breed group"
+    "customerName": "investor",
+    "projectName": "Product name",
+    "verifyTime": "review time",
+    "verifyUser": "reviewer"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -938,7 +936,8 @@
     },
     "title": "Work order list"
   },
-  "ProductGroup": {
-    "title": "Variety group settings"
+  "commissionReview": {
+    "commission": "Commission",
+    "title": "Commission review"
   }
 }

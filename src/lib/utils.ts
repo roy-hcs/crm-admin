@@ -1,3 +1,4 @@
+import { TotalItem } from '@/api/hooks/pamm/type';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -28,4 +29,50 @@ export const generateColorfulColor = (index: number) => {
   const s = Math.floor(70 + Math.random() * 30); // saturation (70-100%)
   const l = Math.floor(45 + Math.random() * 10); // lightness (45-55%)
   return `hsl(${h}, ${s}%, ${l}%)`;
+};
+
+type TransformedItem = {
+  amount: string;
+  currency: string;
+};
+
+type TransformedData = Array<{
+  commissionToatl?: TransformedItem[];
+  businessAmountToatl?: TransformedItem[];
+  rewardAmountToatl?: TransformedItem[];
+}>;
+
+/**
+ * 数据格式处理
+ */
+export const transformTotalList = (data: TotalItem[] | undefined): TransformedData => {
+  if (!data || !Array.isArray(data)) {
+    return [];
+  }
+
+  const result: TransformedData = [];
+
+  const fields = ['commissionToatl', 'businessAmountToatl', 'rewardAmountToatl'] as const;
+
+  fields.forEach(field => {
+    const fieldData: TransformedItem[] = [];
+
+    data.forEach(item => {
+      const value = item[field];
+      if (value !== null) {
+        fieldData.push({
+          amount: String(value),
+          currency: item.currency,
+        });
+      }
+    });
+
+    if (fieldData.length > 0) {
+      result.push({
+        [field]: fieldData,
+      });
+    }
+  });
+
+  return result;
 };
