@@ -634,6 +634,10 @@
       "6": "我创建的"
     }
   },
+  "commissionReview": {
+    "title": "提成审核",
+    "commission": "提成"
+  },
   "table": {
     "orderNo": "订单ID",
     "server": "服务器",
@@ -845,7 +849,11 @@
     "perOrder": "订单",
     "perContract": "合约",
     "allGroups": "全部组别",
-    "commissionSettings": "佣金设置"
+    "commissionSettings": "佣金设置",
+    "projectName": "产品名称",
+    "customerName": "投资者",
+    "verifyUser": "审核人",
+    "verifyTime": "审核时间"
   },
   "review": {
     "settings": {

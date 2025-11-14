@@ -1,3 +1,4 @@
+import { CommissionReviewPage } from '@/pages/pamm/review/commission/CommissionReviewPage';
 import { RouteObject } from 'react-router-dom';
 
 /**
@@ -17,6 +18,10 @@ import { RouteObject } from 'react-router-dom';
  * - /pamm/reports/accrual              - 计提报表 (Accrual Report)
  */
 export const pammRoutes: RouteObject[] = [
+  {
+    path: '/pamm/review/commission',
+    element: <CommissionReviewPage />,
+  },
   // TODO: Add routes as pages are developed
   /*
   {
