@@ -1,14 +1,14 @@
 import { PammCommissionItem } from '@/api/hooks/pamm/type';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { DataTable } from '@/components/table/DataTable';
-import { commissionReviewOptions } from '@/lib/const';
+import { commissionReviewOptions, settlementTypeOptions } from '@/lib/const';
 import { serverMap } from '@/lib/constant';
 import { ColumnDef } from '@tanstack/react-table';
 import { Ellipsis } from 'lucide-react';
 import { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const CommissionReviewTable = ({
+export const ProfitSharingReviewTable = ({
   data,
   pageCount,
   pageIndex,
@@ -56,21 +56,46 @@ export const CommissionReviewTable = ({
       header: t('table.customerName'),
       cell: ({ row }) => row?.original?.customerName || '-',
     },
-    {
-      id: 'businessAmount',
-      header: t('table.amount'),
-      cell: ({ row }) => {
-        return (row?.original?.businessAmount || '0') + row?.original?.currency || '';
-      },
-    },
+
     {
       id: 'orderNo',
       header: t('table.orderNumber'),
       cell: ({ row }) => row?.original?.orderNo || '-',
     },
     {
+      id: 'settlementType',
+      header: t('profitSharingReview.settlementType'),
+      cell: ({ row }) => {
+        const text = settlementTypeOptions.find(
+          res => res.value === String(row?.original?.settlementType),
+        );
+        return text?.label ? t(text.label) : '-';
+      },
+    },
+    {
+      id: 'businessAmount',
+      header: t('profitSharingReview.businessAmount'),
+      cell: ({ row }) => {
+        return (row?.original?.businessAmount || '0') + row?.original?.currency || '';
+      },
+    },
+    {
+      id: 'rewardAmount',
+      header: t('profitSharingReview.rewardAmount'),
+      cell: ({ row }) => {
+        return (row?.original?.rewardAmount || '0') + row?.original?.currency || '';
+      },
+    },
+    {
+      id: 'performanceReward',
+      header: t('profitSharingReview.performanceReward'),
+      cell: ({ row }) => {
+        return (row?.original?.performanceReward || '0') + '%';
+      },
+    },
+    {
       id: 'commission',
-      header: t('commissionReview.commission'),
+      header: t('profitSharingReview.commission'),
       cell: ({ row }) => {
         return (row?.original?.commission || '0') + row?.original?.currency || '';
       },

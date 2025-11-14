@@ -45,14 +45,17 @@ type TransformedData = Array<{
 /**
  * 数据格式处理
  */
-export const transformTotalList = (data: TotalItem[] | undefined): TransformedData => {
+export const transformTotalList = (
+  data: TotalItem[] | undefined,
+  fileds: Array<'commissionToatl' | 'businessAmountToatl' | 'rewardAmountToatl'>,
+): TransformedData => {
   if (!data || !Array.isArray(data)) {
     return [];
   }
 
   const result: TransformedData = [];
 
-  const fields = ['commissionToatl', 'businessAmountToatl', 'rewardAmountToatl'] as const;
+  const fields = fileds;
 
   fields.forEach(field => {
     const fieldData: TransformedItem[] = [];
