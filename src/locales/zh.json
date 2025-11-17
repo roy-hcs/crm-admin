@@ -638,6 +638,18 @@
     "title": "提成审核",
     "commission": "提成"
   },
+  "profitSharingReview": {
+    "title": "分润审核",
+    "settlementType": "结算类型",
+    "businessAmount": "收益",
+    "rewardAmount": "业绩报酬金额",
+    "performanceReward": "业绩报酬",
+    "commission": "代理分润",
+    "settlementTypeOptions": {
+      "1": "周期结算",
+      "2": "赎回结算"
+    }
+  },
   "table": {
     "orderNo": "订单ID",
     "server": "服务器",

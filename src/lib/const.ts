@@ -131,3 +131,9 @@ export const commissionReviewOptions = [
   { label: 'table.pass', value: '1' },
   { label: 'table.refuse', value: '2' },
 ];
+
+// 分润审核结算类型
+export const settlementTypeOptions = [
+  { label: 'profitSharingReview.settlementTypeOptions.1', value: '1' },
+  { label: 'profitSharingReview.settlementTypeOptions.2', value: '2' },
+];

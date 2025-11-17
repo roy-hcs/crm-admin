@@ -939,5 +939,17 @@
   "commissionReview": {
     "commission": "Commission",
     "title": "Commission review"
+  },
+  "profitSharingReview": {
+    "businessAmount": "income",
+    "commission": "Agency profit sharing",
+    "performanceReward": "Performance compensation",
+    "rewardAmount": "Performance compensation amount",
+    "settlementType": "Settlement type",
+    "settlementTypeOptions": {
+      "1": "Periodic settlement",
+      "2": "redemption settlement"
+    },
+    "title": "Profit sharing review"
   }
 }

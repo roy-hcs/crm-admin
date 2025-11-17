@@ -8,6 +8,7 @@ export type PammCommissionListParams = BasicParams & {
   orderNo?: string;
   verifyStatus?: string;
   profitType?: string;
+  settlementType?: string;
 
   params: {
     beginTime?: string;

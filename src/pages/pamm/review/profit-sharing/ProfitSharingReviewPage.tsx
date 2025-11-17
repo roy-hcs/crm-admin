@@ -4,15 +4,15 @@ import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CommissionReviewTable } from './CommissionReviewTable';
-import { CommissionReviewForm } from './CommissionReviewForm';
+import { ProfitSharingReviewTable } from './ProfitSharingReviewTable';
+import { ProfitSharingReviewForm } from './ProfitSharingReviewForm';
 import { PammCommissionListParams } from '@/api/hooks/pamm/type';
 import { usePammCommissionList } from '@/api/hooks/pamm';
 import { BasicParams } from '@/api/types';
 import { TableCell } from '@/components/ui/table';
 import { transformTotalList } from '@/lib/utils';
 
-export const CommissionReviewPage = () => {
+export const ProfitSharingReviewPage = () => {
   const [params, setParams] = useState<PammCommissionListParams['params']>({
     beginTime: '',
     endTime: '',
@@ -22,13 +22,14 @@ export const CommissionReviewPage = () => {
   const [otherParams, setOtherParams] = useState<
     Omit<PammCommissionListParams, 'params' | keyof BasicParams>
   >({
-    commissionType: '',
+    commissionType: '2',
     serverId: '',
     projectName: '',
     customerName: '',
     orderNo: '',
     verifyStatus: '',
     profitType: '',
+    settlementType: '',
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -44,7 +45,11 @@ export const CommissionReviewPage = () => {
   });
 
   const totalList = useMemo(() => {
-    return transformTotalList(data?.totalList, ['businessAmountToatl', 'commissionToatl']);
+    return transformTotalList(data?.totalList, [
+      'businessAmountToatl',
+      'rewardAmountToatl',
+      'commissionToatl',
+    ]);
   }, [data]);
 
   const reset = () => {
@@ -64,13 +69,14 @@ export const CommissionReviewPage = () => {
       orderNo: '',
       verifyStatus: '',
       profitType: '',
+      settlementType: '',
     }));
     setPageNum(0);
   };
 
   return (
     <div>
-      <h1 className="text-title">{t('commissionReview.title')}</h1>
+      <h1 className="text-title">{t('profitSharingReview.title')}</h1>
       <div className="my-3.5 flex items-center justify-between">
         <RrhInputWithIcon
           placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
@@ -96,7 +102,7 @@ export const CommissionReviewPage = () => {
               </RrhButton>
             }
           >
-            <CommissionReviewForm
+            <ProfitSharingReviewForm
               setParams={setParams}
               setOtherParams={setOtherParams}
               loading={loading}
@@ -104,7 +110,7 @@ export const CommissionReviewPage = () => {
           </RrhDrawer>
         </div>
       </div>
-      <CommissionReviewTable
+      <ProfitSharingReviewTable
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}
@@ -114,15 +120,16 @@ export const CommissionReviewPage = () => {
         loading={loading}
         CustomRow={
           <>
-            <TableCell colSpan={4}>{t('table.total')}</TableCell>
+            <TableCell colSpan={6}>{t('table.total')}</TableCell>
             {loading ? (
               <TableCell>{t('common.loading')}</TableCell>
             ) : (
               <>
                 {totalList.map(it => {
+                  // 收益
                   if ('businessAmountToatl' in it) {
                     return (
-                      <TableCell colSpan={2}>
+                      <TableCell colSpan={1}>
                         {(it['businessAmountToatl'] || []).map((i, index) => {
                           return (
                             <div key={index}>
@@ -133,9 +140,24 @@ export const CommissionReviewPage = () => {
                       </TableCell>
                     );
                   }
-                  if ('commissionToatl' in it) {
+                  // 业绩报酬金额
+                  if ('rewardAmountToatl' in it) {
                     return (
                       <TableCell colSpan={2}>
+                        {(it['rewardAmountToatl'] || []).map((i, index) => {
+                          return (
+                            <div key={index}>
+                              {(Number(i.amount) || 0).toFixed(2)} {i.currency}
+                            </div>
+                          );
+                        })}
+                      </TableCell>
+                    );
+                  }
+                  // 代理分润
+                  if ('commissionToatl' in it) {
+                    return (
+                      <TableCell colSpan={1}>
                         {(it['commissionToatl'] || []).map((i, index) => {
                           return (
                             <div key={index}>

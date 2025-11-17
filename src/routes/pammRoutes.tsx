@@ -1,4 +1,5 @@
 import { CommissionReviewPage } from '@/pages/pamm/review/commission/CommissionReviewPage';
+import { ProfitSharingReviewPage } from '@/pages/pamm/review/profit-sharing/ProfitSharingReviewPage';
 import { RouteObject } from 'react-router-dom';
 
 /**
@@ -21,6 +22,10 @@ export const pammRoutes: RouteObject[] = [
   {
     path: '/pamm/review/commission',
     element: <CommissionReviewPage />,
+  },
+  {
+    path: '/pamm/review/profit-sharing',
+    element: <ProfitSharingReviewPage />,
   },
   // TODO: Add routes as pages are developed
   /*
