@@ -55,9 +55,7 @@ export const transformTotalList = (
 
   const result: TransformedData = [];
 
-  const fields = fileds;
-
-  fields.forEach(field => {
+  fileds.forEach(field => {
     const fieldData: TransformedItem[] = [];
 
     data.forEach(item => {
