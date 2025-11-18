@@ -559,7 +559,10 @@
     "customerName": "investor",
     "projectName": "Product name",
     "verifyTime": "review time",
-    "verifyUser": "reviewer"
+    "verifyUser": "reviewer",
+    "buy": "Buy",
+    "login": "main account",
+    "redemption": "redemption"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -951,5 +954,17 @@
       "2": "redemption settlement"
     },
     "title": "Profit sharing review"
+  },
+  "investmentReview": {
+    "operType": "investment type",
+    "title": "Investment review"
+  },
+  "productReview": {
+    "investmentManager": "investment manager",
+    "model": "product type",
+    "modelOptions": {
+      "2": "share type"
+    },
+    "title": "product review"
   }
 }

@@ -650,7 +650,20 @@
       "2": "赎回结算"
     }
   },
+  "investmentReview": {
+    "title": "投资审核",
+    "operType": "投资类型"
+  },
+  "productReview": {
+    "title": "产品审核",
+    "investmentManager": "投资经理",
+    "model": "产品类型",
+    "modelOptions": {
+      "2": "份额式"
+    }
+  },
   "table": {
+    "login": "主账号",
     "orderNo": "订单ID",
     "server": "服务器",
     "groups": "组别",
@@ -865,7 +878,9 @@
     "projectName": "产品名称",
     "customerName": "投资者",
     "verifyUser": "审核人",
-    "verifyTime": "审核时间"
+    "verifyTime": "审核时间",
+    "buy": "买入",
+    "redemption": "赎回"
   },
   "review": {
     "settings": {
