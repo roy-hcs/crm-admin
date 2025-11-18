@@ -125,7 +125,7 @@ export const ticketStatusOptions = [
   { label: 'ticketList.statusOptions.2', value: '2' },
 ];
 
-// 提成审核状态
+// 提成审核状态 产品审核状态
 export const commissionReviewOptions = [
   { label: 'table.pending', value: '0' },
   { label: 'table.pass', value: '1' },
@@ -136,4 +136,17 @@ export const commissionReviewOptions = [
 export const settlementTypeOptions = [
   { label: 'profitSharingReview.settlementTypeOptions.1', value: '1' },
   { label: 'profitSharingReview.settlementTypeOptions.2', value: '2' },
+];
+
+// 投资审核状态
+export const InvestmentReviewStatusOptions = [
+  { label: 'table.pending', value: '0' },
+  { label: 'table.pass', value: '1' },
+  { label: 'table.refuse', value: '2' },
+  { label: 'table.cancel', value: '3' },
+];
+// 投资审核类型
+export const InvestmentReviewOperTypeOptions = [
+  { label: 'table.buy', value: '1' },
+  { label: 'table.redemption', value: '2' },
 ];

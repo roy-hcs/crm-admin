@@ -62,3 +62,119 @@ export type TotalItem = {
 export type PammCommissionListRes = BasicRes<PammCommissionItem> & {
   totalList: TotalItem[];
 };
+
+export type PammAuditLogListParams = BasicParams & {
+  projectName?: string;
+  investor?: string;
+  operType?: string;
+  orderNo?: string;
+  auditStatus?: string;
+  createStartTime?: string;
+  createEndTime?: string;
+  auditStartTime?: string;
+  auditEndTime?: string;
+};
+
+export type PammAuditLogItem = {
+  id: string | null;
+  orderNo: string | null;
+  userInvestId: string | null;
+  userId: string | null;
+  projectId: string | null;
+  projectName: string | null;
+  share: string | null;
+  amount: number | null;
+  walletId: string | null;
+  operType: number | null;
+  auditStatus: number | null;
+  auditTime: string | null;
+  auditor: string | null;
+  remark: string | null;
+  createTime: string | null;
+  investor: string | null;
+  createStartTime: string | null;
+  createEndTime: string | null;
+  auditStartTime: string | null;
+  auditEndTime: string | null;
+  currency: string | null;
+};
+
+export type PammAuditLogTotalItem = {
+  amountTotal: number | null;
+  currency: string | null;
+};
+
+export type PammAuditLogListRes = BasicRes<PammAuditLogItem> & {
+  totalList: PammAuditLogTotalItem[];
+};
+
+export type ProductReviewListParams = BasicParams & {
+  investmentManager?: string;
+  projectName?: string;
+  submitStartTime?: string;
+  submitEndTime?: string;
+  verifyStartTime?: string;
+  verifyEndTime?: string;
+  login?: string;
+  applyStatus?: string;
+};
+
+export type ProductReviewItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: object;
+  id: string | null;
+  status: number | null;
+  projectName: string | null;
+  serverId: string | null;
+  serverName: string | null;
+  serverType: number | null;
+  primaryAccount: string | null;
+  login: string | null;
+  subAccount: string | null;
+  isDeleted: boolean;
+  currency: string | null;
+  followCount: string | null;
+  agentCommission: string | null;
+  agentProfit: string | null;
+  primaryShowUser: string | null;
+  subShowUser: string | null;
+  adjustTime: string | null;
+  freezeTime: string | null;
+  profitType: string | null;
+  performanceReward: string | null;
+  annualizedRate: string | null;
+  minAmount: string | null;
+  lockPeriod: string | null;
+  billingCycle: string | null;
+  billingUnit: string | null;
+  model: number | null;
+  maxAmount: string | null;
+  maxTimes: string | null;
+  projectLevels: string | null;
+  netWorth: string | null;
+  totalYield: string | null;
+  account: string | null;
+  archivesList: string | null;
+  settlementType: string | null;
+  openingDays: string | null;
+  profitRate: string | null;
+  profit: string | null;
+  belongedUserName: string | null;
+  allowSellAhead: string | null;
+  applyStatus: number | null;
+  verifyTime: string | null;
+  verifyBy: string | null;
+  source: string | null;
+  totalAmountLimit: string | null;
+  followCountLimit: null;
+  closePosition: null;
+  showProtocol: null;
+  protocolIds: null;
+  protocols: null;
+};
+
+export type ProductReviewListRes = BasicRes<ProductReviewItem>;
