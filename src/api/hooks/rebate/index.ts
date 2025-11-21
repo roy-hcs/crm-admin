@@ -6,6 +6,8 @@ import {
   RebateBasePointRes,
   RebateBaseTypeParams,
   RebateBaseTypeRes,
+  RebateFeeSettingsListParams,
+  RebateFeeSettingsListRes,
   RebateLevelParams,
   RebateLevelRes,
   RebateTraderDealListParams,
@@ -69,5 +71,15 @@ export function useRebateTraderDealList(params: RebateTraderDealListParams) {
     queryKey: ['getRebateTraderDealList', params],
     queryFn: () =>
       apiFormPostCustom<RebateTraderDealListRes>('/system/crmRebateTraderDeal/list', params),
+  });
+}
+/**
+ * 获取手续费返佣设置
+ */
+export function useRebateFeeSettingsList(params: RebateFeeSettingsListParams) {
+  return useQuery({
+    queryKey: ['getRebateFeeSettingsList', params],
+    queryFn: () =>
+      apiFormPostCustom<RebateFeeSettingsListRes>('/system/crmRebateTraderCommission/list', params),
   });
 }
