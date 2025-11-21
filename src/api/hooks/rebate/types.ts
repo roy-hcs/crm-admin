@@ -132,42 +132,10 @@ export type TraderServer = {
   rebateGroupType: string | null;
 };
 
-export type RebateFeeSettingsListParams = BasicParams & {
-  rebateType: string;
-  model: string;
-  ruleName: string;
-  serverType: string;
-  serverId: string;
-  hasUsed: string;
-};
-export type RebateFeeSettingsListRes = BasicRes<RebateFeeSettingsItem>;
-export type RebateFeeSettingsItem = BaseEntity & {
-  id: string;
-  userId: string | null;
-  accountId: string | null;
-  serialNumber: string;
-  ruleName: string;
-  hasUsed: string;
-  rebateGroupType: string;
-  mtGroup: string;
-  settleUnit: string;
-  highestRebateLevel: string;
-  relatedAccountCount: string;
-  relatedRebateTemplateCount: string;
-  serverType: string | null;
-  serverName: string;
-  serverId: string;
-  groupTypeId: string;
-  rebateType: string;
-  accountGroups: string;
-  model: number;
-  settleType: number | null;
-  commissionSettlementTiming: number;
-  suitType: number;
-  settleValue: number;
-  crmRebateLevels: string | null;
-  ruleAndModel: string;
-  traderServers: TraderServer[] | null;
-  traderLanguages: string | null;
-  accountGroupNames: string;
-};
+export type RebateFeeSettingsListParams = RebateTraderDealListParams;
+export type RebateFeeSettingsListRes = RebateTraderDealListRes;
+export type RebateFeeSettingsItem = RebateTraderDealItem;
+
+export type RebateDepositSettingsListParams = RebateTraderDealListParams;
+export type RebateDepositSettingsListRes = RebateTraderDealListRes;
+export type RebateDepositSettingsItem = RebateTraderDealItem;

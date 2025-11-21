@@ -970,5 +970,8 @@
   "FeeRebateSettings": {
     "title": "Handling fee rebate settings",
     "warn": "Multiple rebates are allowed for one order. \nIf multiple rebate rules are hit, commissions will be repaid to the hit rules one after another. \nA rule will only rebate commission once."
+  },
+  "DepositRebateSettings": {
+    "warn": "One deposit allows multiple commission rebates. \nIf multiple rebate rules are hit, commissions will be repaid to the hit rules one after another. \nA rule will only rebate commission once."
   }
 }
