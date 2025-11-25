@@ -1,3 +1,4 @@
+import { AgreementsPage } from '@/pages/pamm/agreements/AgreementsPage';
 import { PammProductsPage } from '@/pages/pamm/products/PammProductsPage';
 import { CommissionReviewPage } from '@/pages/pamm/review/commission/CommissionReviewPage';
 import { InvestmentReviewPage } from '@/pages/pamm/review/investment/InvestmentReviewPage';
@@ -42,15 +43,15 @@ export const pammRoutes: RouteObject[] = [
     path: '/pamm/products',
     element: <PammProductsPage />,
   },
+  {
+    path: '/pamm/agreements',
+    element: <AgreementsPage />,
+  },
   // TODO: Add routes as pages are developed
   /*
   {
     path: '/pamm/settings',
     element: <PammSettingsPage />,
-  },
-  {
-    path: '/pamm/agreements',
-    element: <AgreementsPage />,
   },
   {
     path: '/pamm/review/commission',
