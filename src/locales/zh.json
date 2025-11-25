@@ -880,7 +880,12 @@
     "verifyUser": "审核人",
     "verifyTime": "审核时间",
     "buy": "买入",
-    "redemption": "赎回"
+    "redemption": "赎回",
+    "productModel": "产品类型",
+    "belongedUserName": "主账号归属",
+    "netWorth": "净值",
+    "totalReturn": "总收益率",
+    "numberOfFollowers": "跟投人数"
   },
   "review": {
     "settings": {
@@ -974,5 +979,14 @@
   "DepositRebateSettings": {
     "title": "入金返佣设置",
     "warn": "一笔入金允许返佣多次。如命中多条返佣规则，将对命中的规则陆续返佣。一条规则仅返佣一次。"
+  },
+  "PammProduct": {
+    "title": "PAMM产品设置",
+    "desc": "产品类型说明：",
+    "descOne": "1.简易式PAMM产品在用户买入时会创建MT子账号；主账号平仓后，会按照占比比例分配盈亏订单到各个子账号；用户随时都可买入，主账号无持仓订单即可赎回！",
+    "descTwo": "2.份额式PAMM产品每日计算份额和净值，用户买入后需在计算时重新计算份额和比例；锁定期可自由设定；在冻结期间不可有持仓订单！",
+    "typeOne": "简易式",
+    "typeTwo": "份额式",
+    "liquidationProducts": "清算产品"
   }
 }

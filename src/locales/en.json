@@ -562,7 +562,12 @@
     "verifyUser": "reviewer",
     "buy": "Buy",
     "login": "main account",
-    "redemption": "redemption"
+    "redemption": "redemption",
+    "belongedUserName": "Main account ownership",
+    "netWorth": "net worth",
+    "numberOfFollowers": "Number of investors",
+    "productModel": "product type",
+    "totalReturn": "total return"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -972,6 +977,16 @@
     "warn": "Multiple rebates are allowed for one order. \nIf multiple rebate rules are hit, commissions will be repaid to the hit rules one after another. \nA rule will only rebate commission once."
   },
   "DepositRebateSettings": {
-    "warn": "One deposit allows multiple commission rebates. \nIf multiple rebate rules are hit, commissions will be repaid to the hit rules one after another. \nA rule will only rebate commission once."
+    "warn": "One deposit allows multiple commission rebates. \nIf multiple rebate rules are hit, commissions will be repaid to the hit rules one after another. \nA rule will only rebate commission once.",
+    "title": "Deposit rebate settings"
+  },
+  "PammProduct": {
+    "desc": "Product type description:",
+    "descOne": "1. The simple PAMM product will create an MT sub-account when the user buys it; after the main account closes the position, the profit and loss orders will be allocated to each sub-account according to the proportion; the user can buy at any time, and the main account can redeem it if there is no position order!",
+    "descTwo": "2. The share and net value of share-based PAMM products are calculated daily. After the user purchases, the share and proportion must be recalculated during the calculation; the lock-in period can be set freely; no position orders are allowed during the freezing period!",
+    "liquidationProducts": "liquidation products",
+    "title": "PAMM product settings",
+    "typeOne": "Simple",
+    "typeTwo": "share type"
   }
 }
