@@ -567,7 +567,10 @@
     "netWorth": "net worth",
     "numberOfFollowers": "Number of investors",
     "productModel": "product type",
-    "totalReturn": "total return"
+    "totalReturn": "total return",
+    "applicableScenario": "Applicable scenarios",
+    "protocolName": "Protocol name",
+    "relatedProduct": "Related products"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -988,5 +991,8 @@
     "title": "PAMM product settings",
     "typeOne": "Simple",
     "typeTwo": "share type"
+  },
+  "PammAgreements": {
+    "title": "Protocol management"
   }
 }

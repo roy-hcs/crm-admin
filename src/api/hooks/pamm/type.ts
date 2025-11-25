@@ -238,3 +238,28 @@ export type PammProductItem = BaseEntity & {
   protocols: string | null;
 };
 export type PammProductListRes = BasicRes<PammProductItem>;
+
+export type PammProtocolListParams = BasicParams & {
+  name: string;
+  projectId: string;
+  applicableScenarios: string;
+};
+
+export type PammProtocolItem = BaseEntity & {
+  id: string;
+  projectId: string;
+  applicableScenarios: number;
+  status: number;
+  sort: number;
+  delFlag: number;
+  name: string;
+  language: string | null;
+  projectName: string;
+  content: string;
+  fileUrl: string;
+  type: number;
+  languages: string | null;
+  operate: string | null;
+  userOperation: number;
+};
+export type PammProtocolListRes = BasicRes<PammProtocolItem>;
