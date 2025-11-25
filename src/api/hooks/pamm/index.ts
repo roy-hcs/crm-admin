@@ -5,6 +5,8 @@ import {
   PammAuditLogListRes,
   PammCommissionListParams,
   PammCommissionListRes,
+  PammProductListParams,
+  PammProductListRes,
   ProductReviewListParams,
   ProductReviewListRes,
 } from './type';
@@ -28,5 +30,11 @@ export function useProductReviewList(params: ProductReviewListParams) {
     queryKey: ['ProductReviewList', params],
     queryFn: () =>
       apiFormPostCustom<ProductReviewListRes>(`/system/pammProject/verifyList`, params),
+  });
+}
+export function usePammProductList(params: PammProductListParams) {
+  return useQuery({
+    queryKey: ['PammProductList', params],
+    queryFn: () => apiFormPostCustom<PammProductListRes>(`/system/pammProject/list`, params),
   });
 }

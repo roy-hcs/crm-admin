@@ -1,4 +1,4 @@
-import { BasicParams, BasicRes } from '@/api/types';
+import { BaseEntity, BasicParams, BasicRes } from '@/api/types';
 
 export type PammCommissionListParams = BasicParams & {
   commissionType?: string;
@@ -178,3 +178,63 @@ export type ProductReviewItem = {
 };
 
 export type ProductReviewListRes = BasicRes<ProductReviewItem>;
+
+export type PammProductListParams = BasicParams & {
+  profitType: string;
+  projectName: string;
+  model: string;
+  serverType: string;
+  status: string;
+};
+export type PammProductItem = BaseEntity & {
+  id: string;
+  status: number;
+  projectName: string;
+  serverId: string;
+  serverName: string;
+  serverType: number;
+  primaryAccount: string;
+  login: string;
+  subAccount: string | null;
+  isDeleted: string | null;
+  currency: string;
+  followCount: number;
+  agentCommission: number | null;
+  agentProfit: number | null;
+  primaryShowUser: string | null;
+  subShowUser: string | null;
+  adjustTime: string | null;
+  freezeTime: string | null;
+  profitType: number;
+  performanceReward: number;
+  annualizedRate: number;
+  minAmount: number;
+  lockPeriod: number;
+  billingCycle: number;
+  billingUnit: number;
+  model: number;
+  maxAmount: number;
+  maxTimes: number;
+  projectLevels: string | null;
+  netWorth: number;
+  totalYield: number;
+  account: string | null;
+  archivesList: string | null;
+  settlementType: number;
+  openingDays: string | null;
+  profitRate: number;
+  profit: number;
+  belongedUserName: string;
+  allowSellAhead: number;
+  applyStatus: number;
+  verifyTime: string;
+  verifyBy: string;
+  source: number;
+  totalAmountLimit: number | null;
+  followCountLimit: number | null;
+  closePosition: number;
+  showProtocol: boolean;
+  protocolIds: string | null;
+  protocols: string | null;
+};
+export type PammProductListRes = BasicRes<PammProductItem>;
