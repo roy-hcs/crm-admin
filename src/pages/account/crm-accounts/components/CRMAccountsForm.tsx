@@ -19,7 +19,7 @@ import { crmAccountTypeOptions, roleOptions, statusOptions } from '@/lib/const';
 import { RrhButton } from '@/components/common/RrhButton';
 import { useTranslation } from 'react-i18next';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
-import dayjs from 'dayjs';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   accountType: string;
@@ -87,10 +87,8 @@ export const CRMAccountsForm = forwardRef<
   const onSubmit = (data: FormData) => {
     setParams({
       threeCons: data.name,
-      regStartTime: data.regStartTime.from
-        ? dayjs(data.regStartTime.from).format('YYYY-MM-DD')
-        : '',
-      regEndTime: data.regStartTime.to ? dayjs(data.regStartTime.to).format('YYYY-MM-DD') : '',
+      regStartTime: formatDate(data.regStartTime.from),
+      regEndTime: formatDate(data.regStartTime.to),
       fuzzyMobile: data.mobile,
       fuzzyEmail: data.email,
       inviter: data.inviter,

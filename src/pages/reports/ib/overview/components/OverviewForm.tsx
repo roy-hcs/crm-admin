@@ -16,8 +16,8 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { RebateLevelItem, ServerItem } from '@/api/hooks/system/types';
-import dayjs from 'dayjs';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
+import { formatDate } from '@/lib/utils';
 export interface OverviewFormRef {
   onReset: () => void;
 }
@@ -75,8 +75,8 @@ export const OverviewForm = forwardRef<
       serverId: data.serverId,
       userName: data.userName,
       email: data.email,
-      beginTime: data.beginTime.from ? dayjs(data.beginTime.from).format('YYYY-MM-DD') : '',
-      endTime: data.beginTime.to ? dayjs(data.beginTime.to).format('YYYY-MM-DD') : '',
+      beginTime: formatDate(data.beginTime.from),
+      endTime: formatDate(data.beginTime.to),
       level: data.level,
     });
   };

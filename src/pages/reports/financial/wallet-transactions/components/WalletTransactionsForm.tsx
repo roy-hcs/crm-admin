@@ -19,7 +19,7 @@ import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopu
 import { CurrencyItem, DictTypeItem } from '@/api/hooks/system/types';
 import { useDictType } from '@/api/hooks/system/system';
 import { useCurrencyList } from '@/api/hooks/system/system';
-import dayjs from 'dayjs';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   account: string;
@@ -117,10 +117,8 @@ export const WalletTransactionsForm = forwardRef<
       selectOther: data.selectOther,
       inMethod: data.inMethod,
       currencyId: data.currencyId,
-      operationStart: data.operationTime.from
-        ? dayjs(data.operationTime.from).format('YYYY-MM-DD')
-        : '',
-      operationEnd: data.operationTime.to ? dayjs(data.operationTime.to).format('YYYY-MM-DD') : '',
+      operationStart: formatDate(data.operationTime.from),
+      operationEnd: formatDate(data.operationTime.to),
       accounts: data.accounts,
     });
     setCommonParams({

@@ -20,7 +20,7 @@ import { useGetDealAccountGroupList, useGetGroupByServer } from '@/api/hooks/acc
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { serverMap } from '@/lib/constant';
-import dayjs from 'dayjs';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   serverId: string;
@@ -126,14 +126,10 @@ export const TradingHistoryForm = ({
       })
         ? '1'
         : '0',
-      historyDealBJStartTime: data.openTime.from
-        ? dayjs(data.openTime.from).format('YYYY-MM-DD')
-        : '',
-      historyDealBJEndTime: data.openTime.to ? dayjs(data.openTime.to).format('YYYY-MM-DD') : '',
-      historyCloseStartTime: data.closeTime.from
-        ? dayjs(data.closeTime.from).format('YYYY-MM-DD')
-        : '',
-      historyCloseEndTime: data.closeTime.to ? dayjs(data.closeTime.to).format('YYYY-MM-DD') : '',
+      historyDealBJStartTime: formatDate(data.openTime.from),
+      historyDealBJEndTime: formatDate(data.openTime.to),
+      historyCloseStartTime: formatDate(data.closeTime.from),
+      historyCloseEndTime: formatDate(data.closeTime.to),
       accounts: selectedAccounts.label,
       historyFuzzyName: data.name,
     });

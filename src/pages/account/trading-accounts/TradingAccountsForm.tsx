@@ -23,8 +23,8 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ServerItem } from '@/api/hooks/system/types';
-import dayjs from 'dayjs';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   serverId: string;
@@ -85,8 +85,8 @@ export const TradingAccountsForm = ({
 
   const onSubmit = (data: FormData) => {
     setParams({
-      regStartTime: data.Time.from ? dayjs(data.Time.from).format('YYYY-MM-DD') : '',
-      regEndTime: data.Time.to ? dayjs(data.Time.to).format('YYYY-MM-DD') : '',
+      regStartTime: formatDate(data.Time.from),
+      regEndTime: formatDate(data.Time.to),
       fuzzyAccount: data.fuzzyAccount,
       fuzzyName: data.fuzzyName,
       accounts: data.accounts,

@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
 import { FormSelect } from '@/components/form/FormSelect';
 import { RewardRecordsListParams } from '@/api/hooks/marketing';
-import dayjs from 'dayjs';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   rewardId: string;
@@ -58,8 +58,8 @@ export const RewardRecordsForm = ({
     });
     setParams(pre => ({
       ...pre,
-      beginTime: data.time.from ? dayjs(data.time.from).format('YYYY-MM-DD') : '',
-      endTime: data.time.to ? dayjs(data.time.to).format('YYYY-MM-DD') : '',
+      beginTime: formatDate(data.time.from),
+      endTime: formatDate(data.time.to),
       rewardTitle: data.rewardTitle,
       crmAccount: data.crmAccount,
       businessType: data.businessType,

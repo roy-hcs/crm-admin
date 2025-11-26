@@ -13,11 +13,11 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
-import dayjs from 'dayjs';
 import { FormSelect } from '@/components/form/FormSelect';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { ProductReviewListParams } from '@/api/hooks/pamm/type';
 import { commissionReviewOptions } from '@/lib/const';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   submitTime: { from: string; to: string };
@@ -54,10 +54,10 @@ export const ProductReviewForm = ({
       login: data.login,
       applyStatus: data.applyStatus,
 
-      submitStartTime: data.submitTime.from ? dayjs(data.submitTime.from).format('YYYY-MM-DD') : '',
-      submitEndTime: data.submitTime.to ? dayjs(data.submitTime.to).format('YYYY-MM-DD') : '',
-      verifyStartTime: data.verifyTime.from ? dayjs(data.verifyTime.from).format('YYYY-MM-DD') : '',
-      verifyEndTime: data.verifyTime.to ? dayjs(data.verifyTime.to).format('YYYY-MM-DD') : '',
+      submitStartTime: formatDate(data.submitTime.from),
+      submitEndTime: formatDate(data.submitTime.to),
+      verifyStartTime: formatDate(data.verifyTime.from),
+      verifyEndTime: formatDate(data.verifyTime.to),
     }));
   };
   const onReset = () => {

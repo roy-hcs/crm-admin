@@ -22,8 +22,8 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ServerItem } from '@/api/hooks/system/types';
-import dayjs from 'dayjs';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
+import { formatDate } from '@/lib/utils';
 export interface TradingAccountTransactionsFormRef {
   onReset: () => void;
 }
@@ -119,10 +119,8 @@ export const TradingAccountTransactionsForm = forwardRef<
       login: data.login,
       comment: data.comment,
       accounts: data.accounts,
-      operationStart: data.operationTime.from
-        ? dayjs(data.operationTime.from).format('YYYY-MM-DD')
-        : '',
-      operationEnd: data.operationTime.to ? dayjs(data.operationTime.to).format('YYYY-MM-DD') : '',
+      operationStart: formatDate(data.operationTime.from),
+      operationEnd: formatDate(data.operationTime.to),
       fuzzyCrmAccount: data.fuzzyCrmAccount,
     });
     setCommonParams({

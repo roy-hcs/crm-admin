@@ -17,7 +17,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { AdminLoginParams } from '@/api/hooks/system';
 import { FormSelect } from '@/components/form/FormSelect';
 import { adminOperationsStatusOptions } from '@/lib/const';
-import dayjs from 'dayjs';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   userName: string;
@@ -59,8 +59,8 @@ export const AdminLoginForm = ({
     });
     setParams(pre => ({
       ...pre,
-      beginTime: data.time.from ? dayjs(data.time.from).format('YYYY-MM-DD') : '',
-      endTime: data.time.to ? dayjs(data.time.to).format('YYYY-MM-DD') : '',
+      beginTime: formatDate(data.time.from),
+      endTime: formatDate(data.time.to),
       userName: data.userName,
     }));
   };

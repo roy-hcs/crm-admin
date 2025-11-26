@@ -17,8 +17,8 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { CrmRebateTradersItem, ServerItem } from '@/api/hooks/system/types';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
-import dayjs from 'dayjs';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
+import { formatDate } from '@/lib/utils';
 type FormData = {
   tradingTime: { from: string; to: string };
   rebateTime: { from: string; to: string };
@@ -101,14 +101,10 @@ export const DepositsForm = forwardRef<
 
     const onSubmit = (data: FormData) => {
       setParams({
-        startTraderTime: data.tradingTime.from
-          ? dayjs(data.tradingTime.from).format('YYYY-MM-DD')
-          : '',
-        endTraderTime: data.tradingTime.to ? dayjs(data.tradingTime.to).format('YYYY-MM-DD') : '',
-        beginVerifyTime: data.rebateTime.from
-          ? dayjs(data.rebateTime.from).format('YYYY-MM-DD')
-          : '',
-        endVerifyTime: data.rebateTime.to ? dayjs(data.rebateTime.to).format('YYYY-MM-DD') : '',
+        startTraderTime: formatDate(data.tradingTime.from),
+        endTraderTime: formatDate(data.tradingTime.to),
+        beginVerifyTime: formatDate(data.rebateTime.from),
+        endVerifyTime: formatDate(data.rebateTime.to),
         accounts: JSON.parse(data.accounts || '{"id": "", "label": ""}').id || '',
       });
       setCommonParams({
