@@ -1,5 +1,6 @@
 import { TotalItem } from '@/api/hooks/pamm/type';
 import { clsx, type ClassValue } from 'clsx';
+import dayjs from 'dayjs';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -76,4 +77,11 @@ export const transformTotalList = (
   });
 
   return result;
+};
+
+export const formatDate = (date?: Date | string, format = 'YYYY-MM-DD') => {
+  if (!date) {
+    return '';
+  }
+  return dayjs(date).format(format);
 };

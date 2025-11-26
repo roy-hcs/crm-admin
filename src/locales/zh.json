@@ -888,7 +888,17 @@
     "numberOfFollowers": "跟投人数",
     "protocolName": "协议名称",
     "relatedProduct": "关联产品",
-    "applicableScenario": "适用场景"
+    "applicableScenario": "适用场景",
+    "investTime": "投资时间",
+    "confirmTime": "确认时间",
+    "floatingIncome": "浮动收益",
+    "fixedIncome": "固定收益",
+    "investRole": "投资角色",
+    "investorUpper": "投资者上级",
+    "investAmount": "金额",
+    "revenueSettlementMethods": "收益结算方式",
+    "periodicSettlement": "周期结算",
+    "redemptionSettlement": "赎回结算"
   },
   "review": {
     "settings": {
@@ -994,5 +1004,12 @@
   },
   "PammAgreements": {
     "title": "协议管理"
+  },
+  "PammInvestReport": {
+    "title": "PAMM投资报表",
+    "cancel": "取消",
+    "waitForConfirm": "待确认",
+    "confirmed": "已确认",
+    "rejected": "已拒绝"
   }
 }
