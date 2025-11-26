@@ -662,6 +662,24 @@
       "2": "份额式"
     }
   },
+  "signals": {
+    "title": "信号源",
+    "name": "信号源名称",
+    "signalSourceAuthor": "信号源作者",
+    "totalProfit": "收益(Total)",
+    "totalProfitRate": "收益率(Total)",
+    "subscribeFee": "订阅费",
+    "subscribeNum": "订阅数",
+    "statusOptions": {
+      "0": "关闭",
+      "1": "正常"
+    },
+    "publicShow": "公开展示",
+    "confirm": {
+      "stop": "确认要修改为不公开展示？",
+      "open": "确认要修改为公开展示？"
+    }
+  },
   "table": {
     "login": "主账号",
     "orderNo": "订单ID",
