@@ -680,6 +680,14 @@
       "open": "确认要修改为公开展示？"
     }
   },
+  "signalReview": {
+    "title": "信号源审核",
+    "performanceFeeRatio": "表现费比例",
+    "show": "展示",
+    "hide": "不展示",
+    "upperLimit": "订阅上限(选填)",
+    "minBalanceForSubscription": "订阅最低余额限制(选填)"
+  },
   "table": {
     "login": "主账号",
     "orderNo": "订单ID",
@@ -916,7 +924,8 @@
     "investAmount": "金额",
     "revenueSettlementMethods": "收益结算方式",
     "periodicSettlement": "周期结算",
-    "redemptionSettlement": "赎回结算"
+    "redemptionSettlement": "赎回结算",
+    "applicationTime": "申请时间"
   },
   "review": {
     "settings": {

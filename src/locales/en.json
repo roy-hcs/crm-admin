@@ -580,7 +580,8 @@
     "investorUpper": "Investor superior",
     "periodicSettlement": "Periodic settlement",
     "redemptionSettlement": "redemption settlement",
-    "revenueSettlementMethods": "Revenue settlement method"
+    "revenueSettlementMethods": "Revenue settlement method",
+    "applicationTime": "Application time"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1029,5 +1030,13 @@
     "rejected": "Rejected",
     "title": "PAMM Investment Statement",
     "waitForConfirm": "To be confirmed"
+  },
+  "signalReview": {
+    "hide": "Do not display",
+    "minBalanceForSubscription": "Subscription minimum balance limit (optional)",
+    "performanceFeeRatio": "Performance fee ratio",
+    "show": "exhibit",
+    "title": "Signal source review",
+    "upperLimit": "Subscription limit (optional)"
   }
 }
