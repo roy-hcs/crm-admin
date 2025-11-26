@@ -1005,6 +1005,24 @@
   "PammAgreements": {
     "title": "Protocol management"
   },
+  "signals": {
+    "confirm": {
+      "open": "Are you sure you want to change it to public display?",
+      "stop": "Are you sure you want to modify it to private display?"
+    },
+    "name": "Signal source name",
+    "publicShow": "public display",
+    "signalSourceAuthor": "Signal source author",
+    "statusOptions": {
+      "0": "closure",
+      "1": "normal"
+    },
+    "subscribeFee": "Subscription fee",
+    "subscribeNum": "Number of subscriptions",
+    "title": "signal source",
+    "totalProfit": "Revenue(Total)",
+    "totalProfitRate": "Yield(Total)"
+  },
   "PammInvestReport": {
     "cancel": "Cancel",
     "confirmed": "Confirmed",

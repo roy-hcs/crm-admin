@@ -150,3 +150,9 @@ export const InvestmentReviewOperTypeOptions = [
   { label: 'table.buy', value: '1' },
   { label: 'table.redemption', value: '2' },
 ];
+
+// 信号源状态
+export const SignalStatusOptions = [
+  { label: 'signals.statusOptions.0', value: '0' },
+  { label: 'signals.statusOptions.1', value: '1' },
+];
