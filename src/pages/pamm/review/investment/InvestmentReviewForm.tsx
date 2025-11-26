@@ -13,11 +13,11 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
-import dayjs from 'dayjs';
 import { FormSelect } from '@/components/form/FormSelect';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { PammAuditLogListParams } from '@/api/hooks/pamm/type';
 import { InvestmentReviewOperTypeOptions, InvestmentReviewStatusOptions } from '@/lib/const';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   createTime: { from: string; to: string };
@@ -57,11 +57,11 @@ export const InvestmentReviewForm = ({
       orderNo: data.orderNo,
       auditStatus: data.auditStatus,
 
-      createStartTime: data.createTime.from ? dayjs(data.createTime.from).format('YYYY-MM-DD') : '',
-      createEndTime: data.createTime.to ? dayjs(data.createTime.to).format('YYYY-MM-DD') : '',
+      createStartTime: formatDate(data.createTime.from),
+      createEndTime: formatDate(data.createTime.to),
 
-      auditStartTime: data.auditTime.from ? dayjs(data.auditTime.from).format('YYYY-MM-DD') : '',
-      auditEndTime: data.auditTime.to ? dayjs(data.auditTime.to).format('YYYY-MM-DD') : '',
+      auditStartTime: formatDate(data.auditTime.from),
+      auditEndTime: formatDate(data.auditTime.to),
     }));
   };
   const onReset = () => {

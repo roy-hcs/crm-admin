@@ -18,7 +18,7 @@ import { DepositListParams, ThirdPaymentItem } from '@/api/hooks/review';
 import { Dispatch, SetStateAction } from 'react';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { CurrencyItem } from '@/api/hooks/system/types';
-import dayjs from 'dayjs';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   name: string;
@@ -87,8 +87,8 @@ export const ReviewDepositForm = ({
       accounts: selectedAccounts.id,
     });
     setParams({
-      beginTime: data.submitTime.from ? dayjs(data.submitTime.from).format('YYYY-MM-DD') : '',
-      endTime: data.submitTime.to ? dayjs(data.submitTime.to).format('YYYY-MM-DD') : '',
+      beginTime: formatDate(data.submitTime.from),
+      endTime: formatDate(data.submitTime.to),
       inMoneyAccount: data.inAccountType,
       accounts: selectedAccounts.label,
     });

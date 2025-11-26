@@ -16,9 +16,9 @@ import { useTranslation } from 'react-i18next';
 import { UserOrderLogListParams } from '@/api/hooks/system';
 import { Dispatch, SetStateAction } from 'react';
 import { BasicParams, ThirdPaymentItem } from '@/api/hooks/review/types';
-import dayjs from 'dayjs';
 import { FormSelect } from '@/components/form/FormSelect';
 import { OrderStatusOptions } from '@/lib/const';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   orderId: string;
@@ -57,10 +57,8 @@ export const PaymentLogsForm = ({
   const onSubmit = (data: FormData) => {
     setParams(pre => ({
       ...pre,
-      operationStart: data.operationTime.from
-        ? dayjs(data.operationTime.from).format('YYYY-MM-DD')
-        : '',
-      operationEnd: data.operationTime.to ? dayjs(data.operationTime.to).format('YYYY-MM-DD') : '',
+      operationStart: formatDate(data.operationTime.from),
+      operationEnd: formatDate(data.operationTime.to),
       userName: data.userName,
     }));
     setOtherParams(pre => ({

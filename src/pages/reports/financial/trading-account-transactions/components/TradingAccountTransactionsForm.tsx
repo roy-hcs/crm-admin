@@ -3,14 +3,12 @@ import { useForm } from 'react-hook-form';
 import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
-import { BaseOption } from '@/components/common/RrhSelect';
 import { FormSelect } from '@/components/form/FormSelect';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { useDictType } from '@/api/hooks/system/system';
 import { DictTypeItem } from '@/api/hooks/system/types';
 import { useGetGroupByServer, useGetDealAccountGroupList } from '@/api/hooks/account';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
-import { serverMap } from '@/lib/constant';
 
 import {
   Form,
@@ -24,7 +22,8 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ServerItem } from '@/api/hooks/system/types';
-import dayjs from 'dayjs';
+import { RrhServerSelector } from '@/components/common/RrhServerSelector';
+import { formatDate } from '@/lib/utils';
 export interface TradingAccountTransactionsFormRef {
   onReset: () => void;
 }
@@ -120,10 +119,8 @@ export const TradingAccountTransactionsForm = forwardRef<
       login: data.login,
       comment: data.comment,
       accounts: data.accounts,
-      operationStart: data.operationTime.from
-        ? dayjs(data.operationTime.from).format('YYYY-MM-DD')
-        : '',
-      operationEnd: data.operationTime.to ? dayjs(data.operationTime.to).format('YYYY-MM-DD') : '',
+      operationStart: formatDate(data.operationTime.from),
+      operationEnd: formatDate(data.operationTime.to),
       fuzzyCrmAccount: data.fuzzyCrmAccount,
     });
     setCommonParams({
@@ -167,35 +164,7 @@ export const TradingAccountTransactionsForm = forwardRef<
           onReset={onReset}
           className="flex flex-col gap-4 overflow-auto p-4"
         >
-          <FormSelect<
-            Record<string, string>,
-            BaseOption & {
-              serviceProperty: number;
-              serviceType: number;
-            }
-          >
-            verticalLabel
-            name="serverId"
-            label={t('table.server')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={serverOptions.map(item => ({
-              label: item.serverName,
-              value: item.id,
-              serviceProperty: item.serviceProperty,
-              serviceType: item.serviceType,
-            }))}
-            renderItem={option => {
-              return (
-                <div>
-                  {/* TODO: 优化样式 */}
-                  <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
-                  {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
-                  <span>{option.label}</span>
-                </div>
-              );
-            }}
-          />
+          <RrhServerSelector serverOptions={serverOptions} />
           <FormSelect
             verticalLabel
             name="operationType"

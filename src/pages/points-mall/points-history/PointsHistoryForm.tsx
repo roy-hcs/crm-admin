@@ -14,14 +14,14 @@ import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
 import { PointsChangeListParams } from '@/api/hooks/pointsMall';
-import dayjs from 'dayjs';
 import { FormSelect } from '@/components/form/FormSelect';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   fuzzyName: string;
   fuzzyEmail: string;
-  Time: { from: string; to: string };
+  time: { from: string; to: string };
   businessType: string;
 };
 
@@ -46,7 +46,7 @@ export const PointsHistoryForm = ({
       businessType: '',
       fuzzyName: '',
       fuzzyEmail: '',
-      Time: { from: '', to: '' },
+      time: { from: '', to: '' },
     },
   });
   const onSubmit = (data: FormData) => {
@@ -54,8 +54,8 @@ export const PointsHistoryForm = ({
       ...pre,
       fuzzyName: data.fuzzyName,
       fuzzyEmail: data.fuzzyEmail,
-      timeStart: data.Time.from ? dayjs(data.Time.from).format('YYYY-MM-DD') : '',
-      timeEnd: data.Time.to ? dayjs(data.Time.to).format('YYYY-MM-DD') : '',
+      timeStart: formatDate(data.time.from),
+      timeEnd: formatDate(data.time.to),
     }));
     setOtherParams(pre => ({
       ...pre,
@@ -117,12 +117,12 @@ export const PointsHistoryForm = ({
             options={operTypeList.map(i => ({ label: i.dictLabel, value: i.dictValue }))}
           />
           <FormField
-            name="Time"
+            name="time"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
                 <FormLabel className="basis-3/12">{t('table.time')}</FormLabel>
                 <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="Time" control={form.control} />
+                  <FormDateRangeInput name="time" control={form.control} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

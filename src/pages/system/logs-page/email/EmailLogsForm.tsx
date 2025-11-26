@@ -16,8 +16,8 @@ import { useTranslation } from 'react-i18next';
 import { EmailListParams } from '@/api/hooks/system';
 import { Dispatch, SetStateAction } from 'react';
 import { BasicParams } from '@/api/hooks/review/types';
-import dayjs from 'dayjs';
 import { FormSelect } from '@/components/form/FormSelect';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   acceptEmail: string;
@@ -41,15 +41,15 @@ export const EmailLogsForm = ({
       acceptEmail: '',
       title: '',
       status: '',
-      sendTime: { from: dayjs(new Date()).format('YYYY-MM-DD'), to: '' },
+      sendTime: { from: formatDate(new Date()), to: '' },
     },
   });
 
   const onSubmit = (data: FormData) => {
     setParams(pre => ({
       ...pre,
-      sendStartTime: data.sendTime.from ? dayjs(data.sendTime.from).format('YYYY-MM-DD') : '',
-      sendEndTime: data.sendTime.to ? dayjs(data.sendTime.to).format('YYYY-MM-DD') : '',
+      sendStartTime: formatDate(data.sendTime.from),
+      sendEndTime: formatDate(data.sendTime.to),
     }));
     setOtherParams(pre => ({
       ...pre,
@@ -62,7 +62,7 @@ export const EmailLogsForm = ({
     form.reset();
     setParams({
       sendEndTime: '',
-      sendStartTime: dayjs(new Date()).format('YYYY-MM-DD'),
+      sendStartTime: formatDate(new Date()),
     });
     setOtherParams({
       title: '',

@@ -19,7 +19,7 @@ import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopu
 import { OrderStatusOptions } from '@/lib/const';
 import { useChannelList } from '@/api/hooks/system/system';
 import { PaymentChannelItem } from '@/api/hooks/system/types';
-import dayjs from 'dayjs';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   userName: string;
@@ -79,10 +79,8 @@ export const PaymentOrdersForm = forwardRef<
       userName: data.userName,
       account: data.account,
       accounts: data.accounts,
-      operationStart: data.operationTime?.from
-        ? dayjs(data.operationTime.from).format('YYYY-MM-DD')
-        : '',
-      operationEnd: data.operationTime?.to ? dayjs(data.operationTime.to).format('YYYY-MM-DD') : '',
+      operationStart: formatDate(data.operationTime.from),
+      operationEnd: formatDate(data.operationTime.to),
     });
     setCommonParams({
       channelId: data.channelId,

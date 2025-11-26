@@ -17,8 +17,8 @@ import { Dispatch, SetStateAction } from 'react';
 import { FormSelect } from '@/components/form/FormSelect';
 import { priorityOptions, ticketStatusOptions } from '@/lib/const';
 import { CrmTicketParams } from '@/api/hooks/ticket/types';
-import dayjs from 'dayjs';
 import { UserItem } from '@/api/hooks/system';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   isAll: string;
@@ -62,8 +62,8 @@ export const AllForm = ({
       orderId: data.orderId,
       content: data.content,
       priority: data.priority,
-      startDate: data.time.from ? dayjs(data.time.from).format('YYYY-MM-DD') : '',
-      endDate: data.time.to ? dayjs(data.time.to).format('YYYY-MM-DD') : '',
+      startDate: formatDate(data.time.from),
+      endDate: formatDate(data.time.to),
       status: data.status,
       receiverId: data.receiverId,
       belongUser: data.belongUser,

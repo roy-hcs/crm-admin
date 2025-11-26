@@ -14,13 +14,13 @@ import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
 import { PointsBalanceParams } from '@/api/hooks/pointsMall';
-import dayjs from 'dayjs';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   fuzzyName: string;
   email: string;
-  Time: { from: string; to: string };
+  time: { from: string; to: string };
 };
 
 export const PointsBalanceForm = ({
@@ -35,7 +35,7 @@ export const PointsBalanceForm = ({
     defaultValues: {
       fuzzyName: '',
       email: '',
-      Time: { from: '', to: '' },
+      time: { from: '', to: '' },
     },
   });
   const onSubmit = (data: FormData) => {
@@ -43,8 +43,8 @@ export const PointsBalanceForm = ({
       ...pre,
       fuzzyName: data.fuzzyName,
       email: data.email,
-      timeStart: data.Time.from ? dayjs(data.Time.from).format('YYYY-MM-DD') : '',
-      timeEnd: data.Time.to ? dayjs(data.Time.to).format('YYYY-MM-DD') : '',
+      timeStart: formatDate(data.time.from),
+      timeEnd: formatDate(data.time.to),
     }));
   };
   const onReset = () => {
@@ -90,12 +90,12 @@ export const PointsBalanceForm = ({
             })}
           />
           <FormField
-            name="Time"
+            name="time"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
                 <FormLabel className="basis-3/12">{t('table.time')}</FormLabel>
                 <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="Time" control={form.control} />
+                  <FormDateRangeInput name="time" control={form.control} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

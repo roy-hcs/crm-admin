@@ -14,9 +14,9 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
-import dayjs from 'dayjs';
 import { FormSelect } from '@/components/form/FormSelect';
 import { WalletAccountsListParams } from '@/api/hooks/account/types';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   threeCons: string;
@@ -54,8 +54,8 @@ export const WalletAccountsForm = ({
     });
     setParams(pre => ({
       ...pre,
-      regStartTime: data.time.from ? dayjs(data.time.from).format('YYYY-MM-DD') : '',
-      regEndTime: data.time.to ? dayjs(data.time.to).format('YYYY-MM-DD') : '',
+      regStartTime: formatDate(data.time.from),
+      regEndTime: formatDate(data.time.to),
       threeCons: data.threeCons,
     }));
   };

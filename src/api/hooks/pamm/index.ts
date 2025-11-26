@@ -9,6 +9,8 @@ import {
   PammProductListRes,
   PammProtocolListParams,
   PammProtocolListRes,
+  PammReportInvestListParams,
+  PammReportInvestListRes,
   ProductReviewListParams,
   ProductReviewListRes,
 } from './type';
@@ -48,5 +50,12 @@ export function usePammProtocolList(params: PammProtocolListParams) {
   return useQuery({
     queryKey: ['PammProtocolList', params],
     queryFn: () => apiFormPostCustom<PammProtocolListRes>(`/system/pammProtocol/list`, params),
+  });
+}
+export function usePammReportInvestList(params: PammReportInvestListParams) {
+  return useQuery({
+    queryKey: ['PammReportInvestList', params],
+    queryFn: () =>
+      apiFormPostCustom<PammReportInvestListRes>(`/system/pammReportForms/investHistory`, params),
   });
 }

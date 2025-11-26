@@ -570,7 +570,17 @@
     "totalReturn": "total return",
     "applicableScenario": "Applicable scenarios",
     "protocolName": "Protocol name",
-    "relatedProduct": "Related products"
+    "relatedProduct": "Related products",
+    "confirmTime": "Confirmation time",
+    "fixedIncome": "fixed income",
+    "floatingIncome": "floating income",
+    "investAmount": "Amount",
+    "investRole": "investment role",
+    "investTime": "investment time",
+    "investorUpper": "Investor superior",
+    "periodicSettlement": "Periodic settlement",
+    "redemptionSettlement": "redemption settlement",
+    "revenueSettlementMethods": "Revenue settlement method"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1012,5 +1022,12 @@
     "title": "signal source",
     "totalProfit": "Revenue(Total)",
     "totalProfitRate": "Yield(Total)"
+  },
+  "PammInvestReport": {
+    "cancel": "Cancel",
+    "confirmed": "Confirmed",
+    "rejected": "Rejected",
+    "title": "PAMM Investment Statement",
+    "waitForConfirm": "To be confirmed"
   }
 }

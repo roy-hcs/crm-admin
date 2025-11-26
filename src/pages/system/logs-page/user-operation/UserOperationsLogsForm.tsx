@@ -19,7 +19,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { UserOperationsLogsParams } from '@/api/hooks/monitor/type';
 import { BasicParams } from '@/api/hooks/review/types';
 import { FormSelect } from '@/components/form/FormSelect';
-import dayjs from 'dayjs';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   systemModule: string;
@@ -56,8 +56,8 @@ export const UserOperationsLogsForm = ({
   const onSubmit = (data: FormData) => {
     setParams(pre => ({
       ...pre,
-      beginTime: data.operationTime.from ? dayjs(data.operationTime.from).format('YYYY-MM-DD') : '',
-      endTime: data.operationTime.to ? dayjs(data.operationTime.to).format('YYYY-MM-DD') : '',
+      beginTime: formatDate(data.operationTime.from),
+      endTime: formatDate(data.operationTime.to),
     }));
     setOtherParams(pre => ({
       ...pre,
