@@ -12,16 +12,15 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction } from 'react';
-import dayjs from 'dayjs';
+import { Dispatch, SetStateAction, useMemo } from 'react';
 import { FormSelect } from '@/components/form/FormSelect';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { BasicParams } from '@/api/types';
 import { SignalStatusOptions } from '@/lib/const';
 import { useServerList } from '@/api/hooks/system';
-import { BaseOption } from '@/components/common/RrhSelect';
-import { serverMap } from '@/lib/constant';
 import { MamSignalSourceListParams } from '@/api/hooks/copyTrading/type';
+import { RrhServerSelector } from '@/components/common/RrhServerSelector';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   Time: { from: string; to: string };
@@ -44,7 +43,7 @@ export const SignalsForm = ({
   loading: boolean;
 }) => {
   const { t } = useTranslation();
-  const { data: server, isLoading: serverLoading } = useServerList();
+  const { data: server } = useServerList();
   const form = useForm({
     defaultValues: {
       Time: { from: '', to: '' },
@@ -58,8 +57,8 @@ export const SignalsForm = ({
   const onSubmit = (data: FormData) => {
     setParams(pre => ({
       ...pre,
-      beginTime: data.Time.from ? dayjs(data.Time.from).format('YYYY-MM-DD') : '',
-      endTime: data.Time.to ? dayjs(data.Time.to).format('YYYY-MM-DD') : '',
+      beginTime: formatDate(data.Time.from),
+      endTime: formatDate(data.Time.to),
     }));
     setOtherParams(pre => ({
       ...pre,
@@ -86,6 +85,10 @@ export const SignalsForm = ({
     }));
     form.reset();
   };
+
+  const serverData = useMemo(() => {
+    return server?.rows || [];
+  }, [server]);
   return (
     <FormProvider form={form}>
       <Form {...form}>
@@ -120,38 +123,7 @@ export const SignalsForm = ({
             })}
           />
 
-          {!serverLoading && (
-            <FormSelect<
-              Record<string, string>,
-              BaseOption & {
-                serviceProperty: number;
-                serviceType: number;
-              }
-            >
-              verticalLabel
-              name="serverId"
-              label={t('table.server')}
-              placeholder={t('common.pleaseSelect')}
-              showRowValue={false}
-              options={(server?.rows || []).map(item => ({
-                label: item.serverName,
-                value: item.id,
-                serviceProperty: item.serviceProperty,
-                serviceType: item.serviceType,
-              }))}
-              renderItem={option => {
-                return (
-                  <div>
-                    <span>
-                      {option.serviceProperty === 1 ? t('common.live') : t('common.demo')}
-                    </span>
-                    {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
-                    <span>{option.label}</span>
-                  </div>
-                );
-              }}
-            />
-          )}
+          <RrhServerSelector serverOptions={serverData} />
 
           <FormInput
             verticalLabel
