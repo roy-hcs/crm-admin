@@ -19,8 +19,8 @@ import { ServerItem } from '@/api/hooks/system/types';
 import { PammReportInvestListParams } from '@/api/hooks/pamm/type';
 import { formatDate } from '@/lib/utils';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
-import { pammReportStatusMap, serverMap } from '@/lib/constant';
-import { BaseOption } from '@/components/common/RrhSelect';
+import { pammReportStatusMap } from '@/lib/constant';
+import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 
 type FormData = {
   serverId: string;
@@ -105,34 +105,7 @@ export const InvestmentReportForm = ({
           }}
           className="flex flex-col gap-4 overflow-auto p-4"
         >
-          <FormSelect<
-            Record<string, string>,
-            BaseOption & {
-              serviceProperty: number;
-              serviceType: number;
-            }
-          >
-            verticalLabel
-            name="serverId"
-            label={t('table.server')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={serverOptions.map(item => ({
-              label: item.serverName,
-              value: item.id,
-              serviceProperty: item.serviceProperty,
-              serviceType: item.serviceType,
-            }))}
-            renderItem={option => {
-              return (
-                <div>
-                  <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
-                  {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
-                  <span>{option.label}</span>
-                </div>
-              );
-            }}
-          />
+          <RrhServerSelector serverOptions={serverOptions} />
           <FormInput
             verticalLabel
             name="projectName"

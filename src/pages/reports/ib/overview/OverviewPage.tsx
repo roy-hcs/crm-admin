@@ -61,10 +61,6 @@ export function OverviewPage() {
     <div>
       {/* 页面名称 */}
       <div className="text-xl leading-8 font-semibold text-[#1e1e1e]">{t('ib.overview.title')}</div>
-      {/* 页面简介 */}
-      <div className="text-sm leading-6 font-normal text-[#1e1e1e]">
-        View all of your account's information
-      </div>
       {/* 表格 */}
       <div className="mt-3.5 mb-3.5 flex justify-between">
         <div className="w-67 max-w-sm">
