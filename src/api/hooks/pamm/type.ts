@@ -320,3 +320,52 @@ export type PammReportInvestItem = {
   projectIdList: string | null;
   userIdList: string | null;
 };
+export type PammReportCommissionListParams = BasicParams & {
+  serverId: string;
+  projectName: string;
+  userName: string;
+  profitType: string;
+  orderNo: string;
+  params: {
+    beginTime?: string;
+    endTime?: string;
+    agentName?: string;
+  };
+};
+export type PammReportCommissionListRes = BasicRes<PammReportCommissionItem> & {
+  totalList: {
+    businessAmountTotal: number;
+    commissionTotal: number;
+    rewardAmountTotal: number | null;
+    currency: string | null;
+  }[];
+};
+export type PammReportCommissionItem = {
+  id: string | null;
+  commissionId: string | null;
+  userId: string;
+  lastName: string;
+  name: string;
+  agentUserId: string;
+  agentLastName: string;
+  agentName: string;
+  agentUserName: string | null;
+  level: number | null;
+  proportion: number;
+  commission: number;
+  projectId: string;
+  projectName: string;
+  serverId: string;
+  serverName: string;
+  serverType: number;
+  profitType: number;
+  businessTime: string;
+  rewardAmount: number | null;
+  businessAmount: number;
+  unitEquity: number | null;
+  orderNo: string;
+  currency: string;
+  showId: string;
+  role: string;
+  inviter: string | null;
+};

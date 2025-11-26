@@ -1,5 +1,6 @@
 import { AgreementsPage } from '@/pages/pamm/agreements/AgreementsPage';
 import { PammProductsPage } from '@/pages/pamm/products/PammProductsPage';
+import { CommissionReportPage } from '@/pages/pamm/reports/commission/CommissionReportPage';
 import { InvestmentReportPage } from '@/pages/pamm/reports/investment/InvestmentReportPage';
 import { CommissionReviewPage } from '@/pages/pamm/review/commission/CommissionReviewPage';
 import { InvestmentReviewPage } from '@/pages/pamm/review/investment/InvestmentReviewPage';
@@ -52,15 +53,15 @@ export const pammRoutes: RouteObject[] = [
     path: '/pamm/reports/investment',
     element: <InvestmentReportPage />,
   },
+  {
+    path: '/pamm/reports/commission',
+    element: <CommissionReportPage />,
+  },
   // TODO: Add routes as pages are developed
   /*
   {
     path: '/pamm/settings',
     element: <PammSettingsPage />,
-  },
-  {
-    path: '/pamm/reports/commission',
-    element: <CommissionReportPage />,
   },
   {
     path: '/pamm/reports/profit-sharing',

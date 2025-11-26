@@ -1,7 +1,6 @@
-import { PammReportInvestItem } from '@/api/hooks/pamm/type';
+import { PammReportCommissionItem } from '@/api/hooks/pamm/type';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { DataTable } from '@/components/table/DataTable';
-import { pammReportStatusMap } from '@/lib/constant';
 import { ColumnDef } from '@tanstack/react-table';
 import { Dispatch, ReactElement, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +22,7 @@ function getServerTypeName(serverType: number) {
   }
 }
 
-export const InvestmentReportTable = ({
+export const CommissionReportTable = ({
   data,
   pageCount,
   pageIndex,
@@ -37,7 +36,7 @@ export const InvestmentReportTable = ({
   isAsc,
   setIsAsc,
 }: {
-  data: PammReportInvestItem[];
+  data: PammReportCommissionItem[];
   pageCount: number;
   pageIndex: number;
   pageSize: number;
@@ -51,7 +50,7 @@ export const InvestmentReportTable = ({
   loading?: boolean;
 }) => {
   const { t } = useTranslation();
-  const columns: ColumnDef<PammReportInvestItem>[] = [
+  const columns: ColumnDef<PammReportCommissionItem>[] = [
     {
       id: 'No.',
       header: t('ib.overview.Index'),
@@ -112,40 +111,39 @@ export const InvestmentReportTable = ({
       accessorFn: row => row.orderNo || '-',
     },
     {
-      id: 'type',
-      header: t('investmentReview.operType'),
-      cell: ({ row }) => {
-        return row.original.type === 1 ? t('table.buy') : t('table.redemption');
-      },
-    },
-    {
       id: 'amount',
       header: t('table.investAmount'),
       cell: ({ row }) => {
         const currency = row.original.currency || '';
         return (
           <div>
-            <div>{row.original.amount?.toFixed(2)}</div>
+            <div>{row.original.businessAmount?.toFixed(2)}</div>
             <div>{currency}</div>
           </div>
         );
       },
     },
     {
-      id: 'revenueSettlementMethods',
-      header: t('table.revenueSettlementMethods'),
-      accessorFn: row =>
-        row.settlementType === 1 ? t('table.periodicSettlement') : t('table.redemptionSettlement'),
+      id: 'agentName',
+      header: t('common.account.type.agent'),
+      accessorFn: row => row.agentLastName + row.agentName,
     },
     {
-      id: 'status',
-      header: t('table.status'),
+      id: 'tierRatio',
+      header: t('table.tierRatio'),
+      accessorFn: row => (row.proportion ? `${row.proportion}%` : '-'),
+    },
+    {
+      id: 'commission',
+      header: t('commissionReview.commission'),
       cell: ({ row }) => {
-        const status = row.original.status;
-        if (!status) return '-';
-        return pammReportStatusMap[status]
-          ? t(`PammInvestReport.${pammReportStatusMap[status]}`)
-          : '-';
+        const currency = row.original.currency || '';
+        return (
+          <div>
+            <div>{row.original.commission?.toFixed(2)}</div>
+            <div>{currency}</div>
+          </div>
+        );
       },
     },
     {
@@ -157,32 +155,14 @@ export const InvestmentReportTable = ({
             <RrhSorter
               orderByColumn={orderByColumn}
               isAsc={isAsc}
-              column="operTime"
+              column="businessTime"
               setOrderByColumn={setOrderByColumn}
               setIsAsc={setIsAsc}
             />
           </div>
         );
       },
-      accessorFn: row => row.operTime ?? '-',
-    },
-    {
-      id: 'confirmTime',
-      header: () => {
-        return (
-          <div className="flex items-center gap-2">
-            <div>{t('table.confirmTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="confirmTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      accessorFn: row => row.confirmTime ?? '-',
+      accessorFn: row => row.businessTime ?? '-',
     },
   ];
   return (

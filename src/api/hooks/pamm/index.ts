@@ -9,6 +9,8 @@ import {
   PammProductListRes,
   PammProtocolListParams,
   PammProtocolListRes,
+  PammReportCommissionListParams,
+  PammReportCommissionListRes,
   PammReportInvestListParams,
   PammReportInvestListRes,
   ProductReviewListParams,
@@ -57,5 +59,15 @@ export function usePammReportInvestList(params: PammReportInvestListParams) {
     queryKey: ['PammReportInvestList', params],
     queryFn: () =>
       apiFormPostCustom<PammReportInvestListRes>(`/system/pammReportForms/investHistory`, params),
+  });
+}
+export function usePammReportCommissionList(params: PammReportCommissionListParams) {
+  return useQuery({
+    queryKey: ['PammReportCommissionList', params],
+    queryFn: () =>
+      apiFormPostCustom<PammReportCommissionListRes>(
+        '/system/pammReportForms/projectCommission',
+        params,
+      ),
   });
 }
