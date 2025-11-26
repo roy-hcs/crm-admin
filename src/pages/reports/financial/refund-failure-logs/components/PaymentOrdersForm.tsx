@@ -16,7 +16,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { StatusOptions } from '@/lib/const';
-import dayjs from 'dayjs';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   operationTime: { from: string; to: string };
@@ -53,10 +53,8 @@ export const RefundFailureLogsForm = forwardRef<
 
   const onSubmit = (data: FormData) => {
     setParams({
-      beginTime: data.operationTime?.from
-        ? dayjs(data.operationTime.from).format('YYYY-MM-DD')
-        : '',
-      endTime: data.operationTime?.to ? dayjs(data.operationTime.to).format('YYYY-MM-DD') : '',
+      beginTime: formatDate(data.operationTime.from),
+      endTime: formatDate(data.operationTime.to),
     });
     setCommonParams({
       userId: data.userId,

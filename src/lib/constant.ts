@@ -90,3 +90,10 @@ export const infoTypesMap: Record<number, string> = {
   1: 'inSiteMsgNotification',
   2: 'emailNotification',
 };
+
+export const pammReportStatusMap: Record<string, string> = {
+  '-1': 'cancel',
+  '0': 'waitForConfirm',
+  '1': 'confirmed',
+  '2': 'rejected',
+};

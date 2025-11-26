@@ -16,7 +16,7 @@ import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { InternalTransferListParams } from '@/api/hooks/review';
 import { Dispatch, SetStateAction } from 'react';
-import dayjs from 'dayjs';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   name: string;
@@ -58,8 +58,8 @@ export const ReviewInternalTransferForm = ({
       verifyUserName: data.verifyUserName,
     });
     setParams({
-      fuzzyStartTime: data.submitTime.from ? dayjs(data.submitTime.from).format('YYYY-MM-DD') : '',
-      fuzzyEndTime: data.submitTime.to ? dayjs(data.submitTime.to).format('YYYY-MM-DD') : '',
+      fuzzyStartTime: formatDate(data.submitTime.from),
+      fuzzyEndTime: formatDate(data.submitTime.to),
       fuzzyOutAccount: data.outAccount,
       fuzzyInAccount: data.inAccount,
     });

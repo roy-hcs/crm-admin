@@ -14,10 +14,10 @@ import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
 import { PointsHistoryListParams } from '@/api/hooks/pointsMall';
-import dayjs from 'dayjs';
 import { FormSelect } from '@/components/form/FormSelect';
 import { pointsHistoryPayType, pointsHistoryVerifyStatus } from '@/lib/const';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   fuzzyName: string;
@@ -62,12 +62,10 @@ export const RedemptionRecordsForm = ({
       fuzzyEmail: data.fuzzyEmail,
       fuzzyGoods: data.fuzzyGoods,
       verifyStatus: data.verifyStatus,
-      exchangeTimeStart: data.exchangeTime.from
-        ? dayjs(data.exchangeTime.from).format('YYYY-MM-DD')
-        : '',
-      exchangeTimeEnd: data.exchangeTime.to ? dayjs(data.exchangeTime.to).format('YYYY-MM-DD') : '',
-      updateTimeStart: data.updateTime.from ? dayjs(data.updateTime.from).format('YYYY-MM-DD') : '',
-      updateTimeEnd: data.updateTime.to ? dayjs(data.updateTime.to).format('YYYY-MM-DD') : '',
+      exchangeTimeStart: formatDate(data.exchangeTime.from),
+      exchangeTimeEnd: formatDate(data.exchangeTime.to),
+      updateTimeStart: formatDate(data.updateTime.from),
+      updateTimeEnd: formatDate(data.updateTime.to),
     }));
     setOtherParams(pre => ({
       ...pre,

@@ -17,7 +17,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { CrmLogininforParams } from '@/api/hooks/system';
 import { FormSelect } from '@/components/form/FormSelect';
 import { adminOperationsStatusOptions } from '@/lib/const';
-import dayjs from 'dayjs';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   ipaddr: string;
@@ -60,8 +60,8 @@ export const CrmUserLoginForm = ({
     });
     setParams(pre => ({
       ...pre,
-      beginTime: data.time.from ? dayjs(data.time.from).format('YYYY-MM-DD') : '',
-      endTime: data.time.to ? dayjs(data.time.to).format('YYYY-MM-DD') : '',
+      beginTime: formatDate(data.time.from),
+      endTime: formatDate(data.time.to),
     }));
   };
   const onReset = () => {

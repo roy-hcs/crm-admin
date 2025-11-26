@@ -13,7 +13,6 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
-import dayjs from 'dayjs';
 import { FormSelect } from '@/components/form/FormSelect';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { PammCommissionListParams } from '@/api/hooks/pamm/type';
@@ -22,6 +21,7 @@ import { commissionReviewOptions } from '@/lib/const';
 import { useServerList } from '@/api/hooks/system';
 import { BaseOption } from '@/components/common/RrhSelect';
 import { serverMap } from '@/lib/constant';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   auditTime: { from: string; to: string };
@@ -64,11 +64,11 @@ export const CommissionReviewForm = ({
   const onSubmit = (data: FormData) => {
     setParams(pre => ({
       ...pre,
-      beginTime: data.beginTime.from ? dayjs(data.beginTime.from).format('YYYY-MM-DD') : '',
-      endTime: data.beginTime.to ? dayjs(data.beginTime.to).format('YYYY-MM-DD') : '',
+      beginTime: formatDate(data.beginTime.from),
+      endTime: formatDate(data.beginTime.to),
 
-      auditBeginTime: data.auditTime.from ? dayjs(data.auditTime.from).format('YYYY-MM-DD') : '',
-      auditEndTime: data.auditTime.to ? dayjs(data.auditTime.to).format('YYYY-MM-DD') : '',
+      auditBeginTime: formatDate(data.auditTime.from),
+      auditEndTime: formatDate(data.auditTime.to),
     }));
     setOtherParams(pre => ({
       ...pre,

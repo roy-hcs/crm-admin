@@ -1,12 +1,9 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormProvider } from '@/contexts/form';
-import { FormSelect } from '@/components/form/FormSelect';
 import { Form } from '@/components/ui/form';
-import { useTranslation } from 'react-i18next';
 import { ServerItem } from '@/api/hooks/workbench';
-import { serverMap } from '@/lib/constant';
-import { BaseOption } from '@/components/common/RrhSelect';
+import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 type ClientTrackingFormValues = {
   serverId: string;
 };
@@ -19,7 +16,6 @@ export const TradingStatsForm = ({
   serverOptions: ServerItem[];
   initialServerId?: string;
 }) => {
-  const { t } = useTranslation();
   const form = useForm<ClientTrackingFormValues>({
     defaultValues: {
       serverId: initialServerId || '',
@@ -44,34 +40,7 @@ export const TradingStatsForm = ({
     <FormProvider form={form}>
       <Form {...form}>
         <form className="flex flex-col gap-4 overflow-auto">
-          <FormSelect<
-            Record<string, string>,
-            BaseOption & {
-              serviceProperty: number;
-              serviceType: number;
-            }
-          >
-            verticalLabel
-            name="serverId"
-            label={t('table.server')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={serverOptions.map(item => ({
-              label: item.serverName,
-              value: item.id,
-              serviceProperty: item.serviceProperty,
-              serviceType: item.serviceType,
-            }))}
-            renderItem={option => {
-              return (
-                <div>
-                  <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
-                  {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
-                  <span>{option.label}</span>
-                </div>
-              );
-            }}
-          />
+          <RrhServerSelector serverOptions={serverOptions} />
         </form>
       </Form>
     </FormProvider>

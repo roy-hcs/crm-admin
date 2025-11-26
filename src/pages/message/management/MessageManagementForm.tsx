@@ -15,10 +15,10 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
-import dayjs from 'dayjs';
 import { infoTypesMap } from '@/lib/constant';
 import { GetMsgListParams } from '@/api/hooks/message';
 import { BasicParams } from '@/api/hooks/review/types';
+import { formatDate } from '@/lib/utils';
 
 type FormData = {
   name: string;
@@ -51,8 +51,8 @@ export const MessageManagementForm = ({
       type: data.type,
     });
     setParams({
-      sendStartTime: data.sendTime.from ? dayjs(data.sendTime.from).format('YYYY-MM-DD') : '',
-      sendEndTime: data.sendTime.to ? dayjs(data.sendTime.to).format('YYYY-MM-DD') : '',
+      sendStartTime: formatDate(data.sendTime.from),
+      sendEndTime: formatDate(data.sendTime.to),
       fuzzyName: data.name,
       fuzzyTitle: data.title,
     });
