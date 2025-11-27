@@ -108,7 +108,7 @@ export type PointsChangeItem = BaseEntity & {
 export type PointsChangeListRes = BasicRes<PointsChangeItem>;
 
 export type PointsBalanceParams = BasicParams & {
-  isAsc?: 'asc' | 'desc';
+  isAsc?: string;
   params: {
     fuzzyName?: string;
     email?: string;

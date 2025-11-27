@@ -6,27 +6,26 @@ import { useTranslation } from 'react-i18next';
 import { BasicParams } from '@/api/hooks/review/types';
 import { useServerList } from '@/api/hooks/system/system';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
-import { PammReportInvestListParams } from '@/api/hooks/pamm/type';
-import { usePammReportInvestList } from '@/api/hooks/pamm';
-import { InvestmentReportForm } from './InvestmentReportForm';
-import { InvestmentReportTable } from './InvestmentReportTable';
+import { PammReportCommissionListParams } from '@/api/hooks/pamm/type';
+import { usePammReportCommissionList } from '@/api/hooks/pamm';
 import { TableCell } from '@/components/ui/table';
+import { CommissionReportForm } from './CommissionReportForm';
+import { CommissionReportTable } from './CommissionReportTable';
 
-export const InvestmentReportPage = () => {
+export const CommissionReportPage = () => {
   const [otherParams, setOtherParams] = useState<
-    Omit<PammReportInvestListParams, keyof BasicParams>
+    Omit<PammReportCommissionListParams, 'params' | keyof BasicParams>
   >({
     serverId: '',
     projectName: '',
     profitType: '',
     userName: '',
-    type: '',
     orderNo: '',
-    status: '',
-    startTime: '',
+  });
+  const [params, setParams] = useState<PammReportCommissionListParams['params']>({
+    beginTime: '',
     endTime: '',
-    confirmEndTime: '',
-    confirmStartTime: '',
+    agentName: '',
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -35,33 +34,34 @@ export const InvestmentReportPage = () => {
   const { t } = useTranslation();
   const { data: server, isLoading: serverLoading } = useServerList();
 
-  const { data: pammInvestReports, isLoading: pammInvestReportsLoading } = usePammReportInvestList({
-    pageSize,
-    pageNum: pageNum + 1,
-    orderByColumn,
-    isAsc,
-    ...otherParams,
-  });
+  const { data: pammInvestReports, isLoading: pammInvestReportsLoading } =
+    usePammReportCommissionList({
+      pageSize,
+      pageNum: pageNum + 1,
+      orderByColumn,
+      isAsc,
+      ...otherParams,
+      params,
+    });
   const reset = () => {
     setOtherParams({
       serverId: '',
       projectName: '',
       profitType: '',
       userName: '',
-      type: '',
       orderNo: '',
-      status: '',
-      startTime: '',
+    });
+    setParams({
+      beginTime: '',
       endTime: '',
-      confirmEndTime: '',
-      confirmStartTime: '',
+      agentName: '',
     });
     setPageNum(0);
   };
 
   return (
     <div>
-      <h1 className="text-title">{t('PammInvestReport.title')}</h1>
+      <h1 className="text-title">{t('PammCommissionReport.title')}</h1>
       <div className="my-3.5 flex items-center justify-between">
         <RrhInputWithIcon
           placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
@@ -87,7 +87,8 @@ export const InvestmentReportPage = () => {
               </RrhButton>
             }
           >
-            <InvestmentReportForm
+            <CommissionReportForm
+              setParams={setParams}
               serverOptions={server?.rows || []}
               setOtherParams={setOtherParams}
               loading={pammInvestReportsLoading || serverLoading}
@@ -95,7 +96,7 @@ export const InvestmentReportPage = () => {
           </RrhDrawer>
         </div>
       </div>
-      <InvestmentReportTable
+      <CommissionReportTable
         data={pammInvestReports?.rows || []}
         pageCount={Math.ceil(+(pammInvestReports?.total || 0) / pageSize)}
         pageIndex={pageNum}
@@ -109,17 +110,32 @@ export const InvestmentReportPage = () => {
         setIsAsc={setIsAsc}
         CustomRow={
           <>
-            <TableCell colSpan={3}>{t('table.total')}</TableCell>
-            <TableCell colSpan={6}>
-              <div className="flex flex-col items-center">
-                {pammInvestReports?.totalList?.map(item => {
-                  return (
-                    <div key={`${item.currency} + ${item.currency}`}>
-                      {(item.amountTotal || 0).toFixed(2)} {item.currency}
-                    </div>
-                  );
-                })}
-              </div>
+            <TableCell colSpan={7}>{t('table.total')}</TableCell>
+            <TableCell colSpan={3}>
+              {pammInvestReports?.totalList?.map(item => {
+                return (
+                  <div key={`${item.currency} + ${item.currency}`}>
+                    {item.businessAmountTotal ? (
+                      <div>
+                        {item.businessAmountTotal.toFixed(2)} {item.currency}
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              })}
+            </TableCell>
+            <TableCell colSpan={2}>
+              {pammInvestReports?.totalList?.map(item => {
+                return (
+                  <div key={`${item.currency} + ${item.currency}`}>
+                    {item.commissionTotal ? (
+                      <div>
+                        {item.commissionTotal.toFixed(2)} {item.currency}
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              })}
             </TableCell>
           </>
         }

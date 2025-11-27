@@ -1,9 +1,10 @@
 import { PointsBalanceItem } from '@/api/hooks/pointsMall';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { RrhSorter } from '@/components/common/RrhSorter';
 import { DataTable } from '@/components/table/DataTable';
-import { cn } from '@/lib/utils';
 import { ColumnDef } from '@tanstack/react-table';
-import { ChevronDown, ChevronUp, Ellipsis } from 'lucide-react';
+import { Ellipsis } from 'lucide-react';
+import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const PointsBalanceTable = ({
@@ -26,10 +27,10 @@ export const PointsBalanceTable = ({
   onPageChange: (pageIndex: number) => void;
   onPageSizeChange: (pageSize: number) => void;
   loading?: boolean;
-  isAsc: 'asc' | 'desc';
-  setIsAsc: (isAsc: 'asc' | 'desc') => void;
-  orderByColumn: 'pointsBalance' | 'earnPoints' | 'usedPoints' | '';
-  setOrderByColumn: (orderByColumn: 'pointsBalance' | 'earnPoints' | 'usedPoints' | '') => void;
+  isAsc: 'asc' | 'desc' | '';
+  setIsAsc: Dispatch<SetStateAction<'asc' | 'desc' | ''>>;
+  orderByColumn: string;
+  setOrderByColumn: Dispatch<SetStateAction<string>>;
 }) => {
   const { t } = useTranslation();
   const columns: ColumnDef<PointsBalanceItem>[] = [
@@ -65,25 +66,13 @@ export const PointsBalanceTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('PointsHistory.pointsBalance')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('pointsBalance');
-              }}
-            >
-              {orderByColumn === 'pointsBalance' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className={cn('h-3 w-3')} />
-                  <ChevronDown className={cn('h-3 w-3')} />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="pointsBalance"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },
@@ -95,25 +84,13 @@ export const PointsBalanceTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('pointspBalance.earnPoints')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('earnPoints');
-              }}
-            >
-              {orderByColumn === 'earnPoints' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className={cn('h-3 w-3')} />
-                  <ChevronDown className={cn('h-3 w-3')} />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="earnPoints"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },
@@ -125,25 +102,13 @@ export const PointsBalanceTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('pointspBalance.usedPoints')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('usedPoints');
-              }}
-            >
-              {orderByColumn === 'usedPoints' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className={cn('h-3 w-3')} />
-                  <ChevronDown className={cn('h-3 w-3')} />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="usedPoints"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },

@@ -2,10 +2,11 @@ import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { useTranslation } from 'react-i18next';
 import { BindVerifyListItem } from '@/api/hooks/review';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
-import { ChevronDown, ChevronUp, Ellipsis } from 'lucide-react';
+import { Ellipsis } from 'lucide-react';
 import { VerifyStatusOptions } from '@/lib/const';
-import { cn } from '@/lib/utils';
 import { RrhOrderStatusTag } from '@/components/common/RrhOrderStatusTag';
+import { Dispatch, SetStateAction } from 'react';
+import { RrhSorter } from '@/components/common/RrhSorter';
 
 export const BindingTable = ({
   data,
@@ -17,6 +18,7 @@ export const BindingTable = ({
   loading = false,
   isAsc,
   setIsAsc,
+  orderByColumn,
   setOrderByColumn,
 }: {
   data: BindVerifyListItem[];
@@ -27,10 +29,9 @@ export const BindingTable = ({
   onPageSizeChange: (pageSize: number) => void;
   loading?: boolean;
   isAsc: 'asc' | 'desc' | '';
-  setIsAsc: (isAsc: 'asc' | 'desc' | '') => void;
-  setOrderByColumn: (
-    orderByColumn: 'status desc,subTime desc' | 'lever' | 'status' | 'subTime' | 'verifyTime',
-  ) => void;
+  setIsAsc: Dispatch<SetStateAction<'asc' | 'desc' | ''>>;
+  orderByColumn: string;
+  setOrderByColumn: Dispatch<SetStateAction<string>>;
 }) => {
   const { t } = useTranslation();
   const baseColumns: CRMColumnDef<BindVerifyListItem, unknown>[] = [
@@ -92,25 +93,13 @@ export const BindingTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('common.status')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('status');
-              }}
-            >
-              {isAsc === '' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3')} />
-                  <ChevronDown className={cn('h-3 w-3')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="status"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },
@@ -125,25 +114,13 @@ export const BindingTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('common.subTime')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('subTime');
-              }}
-            >
-              {isAsc === '' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3')} />
-                  <ChevronDown className={cn('h-3 w-3')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="subTime"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },
@@ -162,25 +139,13 @@ export const BindingTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('common.verifyTime')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('verifyTime');
-              }}
-            >
-              {isAsc === '' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3')} />
-                  <ChevronDown className={cn('h-3 w-3')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="verifyTime"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },
