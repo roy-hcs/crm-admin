@@ -372,3 +372,44 @@ export type PammReportCommissionItem = {
 export type PammReportProfitSharingListParams = PammReportCommissionListParams;
 export type PammReportProfitSharingListRes = PammReportCommissionListRes;
 export type PammReportProfitSharingItem = PammReportCommissionItem;
+
+export type PammReportSettlementListParams = BasicParams & {
+  serverId: string;
+  projectName: string;
+  userName: string;
+  orderNo: string;
+  managerName: string;
+  settlementType: string;
+  startTime: string;
+  endTime: string;
+};
+export type PammReportSettlementListRes = BasicRes<PammReportSettlementItem> & {
+  totalList: {
+    businessAmountTotal: number;
+    commissionTotal: number;
+    rewardAmountTotal: number | null;
+    currency: string | null;
+  }[];
+};
+export type PammReportSettlementItem = {
+  id: string;
+  projectId: string;
+  projectName: string;
+  serverName: string;
+  serverType: string;
+  settlementType: string;
+  businessAmount: number;
+  rewardAmount: number;
+  businessTime: string;
+  commission: number | null;
+  managerName: string;
+  userId: string;
+  lastName: string;
+  name: string;
+  userInvestId: string;
+  orderNo: string;
+  currency: string;
+  showId: string;
+  role: string;
+  inviter: string;
+};
