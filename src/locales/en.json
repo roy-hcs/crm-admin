@@ -1070,5 +1070,8 @@
     "performanceFee": "performance fee",
     "title": "Performance fee record",
     "trader": "Signal source account"
+  },
+  "PammSettlementReport": {
+    "title": "PAMM Provision Report"
   }
 }

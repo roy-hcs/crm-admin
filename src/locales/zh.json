@@ -1070,5 +1070,8 @@
   "PammProfitSharingReport": {
     "title": "PAMM分润报表",
     "profitSharing": "分润"
+  },
+  "PammSettlementReport": {
+    "title": "PAMM计提报表"
   }
 }
