@@ -1055,5 +1055,8 @@
   "PammProfitSharingReport": {
     "profitSharing": "Share profit",
     "title": "PAMM Profit Report"
+  },
+  "PammSettlementReport": {
+    "title": "PAMM Provision Report"
   }
 }
