@@ -1,6 +1,11 @@
 import { apiFormPostCustom } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { MamSignalSourceListParams, MamSignalSourceListRes } from './type';
+import {
+  MamSignalSourceListParams,
+  MamSignalSourceListRes,
+  MamSignalSourceVerifyListParams,
+  MamSignalSourceVerifyListRes,
+} from './type';
 
 export function useChangeMamSignalSource() {
   return useMutation({
@@ -10,11 +15,27 @@ export function useChangeMamSignalSource() {
       }>('/system/mamSignalSource/edit', params),
   });
 }
-
+/**
+ * 信号源列表
+ */
 export function useMamSignalSourceList(params: MamSignalSourceListParams) {
   return useQuery({
     queryKey: ['mamSignalSourceList', params],
     queryFn: () =>
       apiFormPostCustom<MamSignalSourceListRes>(`/system/mamSignalSource/list`, params),
+  });
+}
+
+/**
+ * 信号源审核列表
+ */
+export function useMamSignalSourceVerifyList(params: MamSignalSourceVerifyListParams) {
+  return useQuery({
+    queryKey: ['mamSignalSourceVerifyList', params],
+    queryFn: () =>
+      apiFormPostCustom<MamSignalSourceVerifyListRes>(
+        `/system/mamSignalSourceVerify/verifyList`,
+        params,
+      ),
   });
 }

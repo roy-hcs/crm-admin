@@ -156,3 +156,11 @@ export const SignalStatusOptions = [
   { label: 'signals.statusOptions.0', value: '0' },
   { label: 'signals.statusOptions.1', value: '1' },
 ];
+
+// 信号源审核状态
+export const SignalReviewVerifyStatusOptions = [
+  { label: 'table.pending', value: '2' },
+  { label: 'table.reviewing', value: '-1' },
+  { label: 'table.pass', value: '1' },
+  { label: 'table.refuse', value: '0' },
+];

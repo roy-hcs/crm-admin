@@ -9,6 +9,14 @@ export type OrderByColumn =
   | 'createTime'
   | 'updateTime'
   | '';
+
+export type signalReviewOrderByColumn =
+  | 'subscribeFee'
+  | 'upperLimit'
+  | 'verifyStatus'
+  | 'createTime'
+  | 'verifyTime'
+  | '';
 export type MamSignalSourceListParams = BasicParams & {
   name?: string;
   userName?: string;
@@ -69,3 +77,20 @@ export type MamSignalSourceItem = {
 };
 
 export type MamSignalSourceListRes = BasicRes<MamSignalSourceItem>;
+
+export type MamSignalSourceVerifyListParams = BasicParams & {
+  name?: string;
+  userName?: string;
+  serverId?: string;
+  account?: string;
+  verifyStatus?: string;
+
+  params: {
+    beginTime?: string;
+    endTime?: string;
+    beginReviewTime?: string;
+    endReviewTime?: string;
+  };
+};
+
+export type MamSignalSourceVerifyListRes = BasicRes<MamSignalSourceItem>;
