@@ -1,15 +1,15 @@
 import { useChangeMamSignalSource } from '@/api/hooks/copyTrading';
-import { MamSignalSourceItem, OrderByColumn } from '@/api/hooks/copyTrading/type';
+import { MamSignalSourceItem } from '@/api/hooks/copyTrading/type';
 import { Alert } from '@/components/common/Alert';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { RrhSorter } from '@/components/common/RrhSorter';
 import { DataTable } from '@/components/table/DataTable';
 import { Switch } from '@/components/ui/switch';
 import { SignalStatusOptions } from '@/lib/const';
-import { cn } from '@/lib/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { ColumnDef, Row } from '@tanstack/react-table';
-import { ChevronDown, ChevronUp, Ellipsis } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import { Ellipsis } from 'lucide-react';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const StatusCell = ({ row }: { row: Row<MamSignalSourceItem> }) => {
@@ -72,9 +72,9 @@ export const SignalsTable = ({
   onPageSizeChange: (pageSize: number) => void;
   loading?: boolean;
   isAsc: 'asc' | 'desc' | '';
-  setIsAsc: (isAsc: 'asc' | 'desc' | '') => void;
-  orderByColumn: OrderByColumn;
-  setOrderByColumn: (orderByColumn: OrderByColumn) => void;
+  setIsAsc: Dispatch<SetStateAction<'asc' | 'desc' | ''>>;
+  orderByColumn: string;
+  setOrderByColumn: Dispatch<SetStateAction<string>>;
 }) => {
   const { t } = useTranslation();
   const columns: ColumnDef<MamSignalSourceItem>[] = [
@@ -123,25 +123,13 @@ export const SignalsTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('signals.totalProfit')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('totalProfit');
-              }}
-            >
-              {orderByColumn === 'totalProfit' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className="h-3 w-3" />
-                  <ChevronDown className="h-3 w-3" />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="totalProfit"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },
@@ -153,25 +141,13 @@ export const SignalsTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('signals.totalProfitRate')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('totalProfitRate');
-              }}
-            >
-              {orderByColumn === 'totalProfitRate' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className="h-3 w-3" />
-                  <ChevronDown className="h-3 w-3" />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="totalProfitRate"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },
@@ -183,25 +159,13 @@ export const SignalsTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('signals.subscribeFee')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('subscribeFee');
-              }}
-            >
-              {orderByColumn === 'subscribeFee' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className="h-3 w-3" />
-                  <ChevronDown className="h-3 w-3" />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="subscribeFee"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },
@@ -213,25 +177,13 @@ export const SignalsTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('signals.subscribeNum')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('subscribeNum');
-              }}
-            >
-              {orderByColumn === 'subscribeNum' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className="h-3 w-3" />
-                  <ChevronDown className="h-3 w-3" />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="subscribeNum"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },
@@ -248,25 +200,13 @@ export const SignalsTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('table.status')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('status');
-              }}
-            >
-              {orderByColumn === 'status' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className="h-3 w-3" />
-                  <ChevronDown className="h-3 w-3" />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="status"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },
@@ -286,25 +226,13 @@ export const SignalsTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('common.createTime')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('createTime');
-              }}
-            >
-              {orderByColumn === 'createTime' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className="h-3 w-3" />
-                  <ChevronDown className="h-3 w-3" />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="createTime"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },
@@ -316,25 +244,13 @@ export const SignalsTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('table.updateTime')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('updateTime');
-              }}
-            >
-              {orderByColumn === 'updateTime' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className="h-3 w-3" />
-                  <ChevronDown className="h-3 w-3" />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="updateTime"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },

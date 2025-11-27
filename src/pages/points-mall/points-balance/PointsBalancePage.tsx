@@ -15,10 +15,8 @@ export const PointsBalancePage = () => {
     timeStart: '',
     timeEnd: '',
   });
-  const [isAsc, setIsAsc] = useState<'asc' | 'desc'>('asc');
-  const [orderByColumn, setOrderByColumn] = useState<
-    'pointsBalance' | 'earnPoints' | 'usedPoints' | ''
-  >('');
+  const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
+  const [orderByColumn, setOrderByColumn] = useState<string>('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();

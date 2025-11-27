@@ -8,11 +8,11 @@ import { SignalsTable } from './SignalsTable';
 import { SignalsForm } from './SignalsForm';
 import { BasicParams } from '@/api/types';
 import { useMamSignalSourceList } from '@/api/hooks/copyTrading';
-import { MamSignalSourceListParams, OrderByColumn } from '@/api/hooks/copyTrading/type';
+import { MamSignalSourceListParams } from '@/api/hooks/copyTrading/type';
 
 export const SignalsPage = () => {
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('');
-  const [orderByColumn, setOrderByColumn] = useState<OrderByColumn>('');
+  const [orderByColumn, setOrderByColumn] = useState<string>('');
   const [params, setParams] = useState<MamSignalSourceListParams['params']>({
     beginTime: '',
     endTime: '',

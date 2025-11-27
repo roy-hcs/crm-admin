@@ -15,7 +15,7 @@ import {
 
 export const SignalReviewPage = () => {
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('');
-  const [orderByColumn, setOrderByColumn] = useState<signalReviewOrderByColumn>('');
+  const [orderByColumn, setOrderByColumn] = useState<string | signalReviewOrderByColumn>('');
   const [params, setParams] = useState<MamSignalSourceVerifyListParams['params']>({
     beginTime: '',
     endTime: '',

@@ -16,7 +16,7 @@ import { Dispatch, SetStateAction, useMemo } from 'react';
 import { FormSelect } from '@/components/form/FormSelect';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { BasicParams } from '@/api/types';
-import { SignalReviewverifyStatusOptions } from '@/lib/const';
+import { SignalReviewVerifyStatusOptions } from '@/lib/const';
 import { useServerList } from '@/api/hooks/system';
 import { MamSignalSourceListParams } from '@/api/hooks/copyTrading/type';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
@@ -146,7 +146,7 @@ export const SignalReviewForm = ({
             label={t('table.status')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
-            options={SignalReviewverifyStatusOptions.map(i => ({
+            options={SignalReviewVerifyStatusOptions.map(i => ({
               label: t(i.label),
               value: i.value,
             }))}

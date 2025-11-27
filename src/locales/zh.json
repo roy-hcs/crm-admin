@@ -925,6 +925,7 @@
     "revenueSettlementMethods": "收益结算方式",
     "periodicSettlement": "周期结算",
     "redemptionSettlement": "赎回结算",
+    "tierRatio": "层级比例",
     "applicationTime": "申请时间"
   },
   "review": {
@@ -1038,5 +1039,8 @@
     "waitForConfirm": "待确认",
     "confirmed": "已确认",
     "rejected": "已拒绝"
+  },
+  "PammCommissionReport": {
+    "title": "PAMM提成报表"
   }
 }
