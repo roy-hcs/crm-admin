@@ -1058,5 +1058,8 @@
   },
   "PammSettlementReport": {
     "title": "PAMM Provision Report"
+  },
+  "CopyTradingSettings": {
+    "title": "Protocol settings"
   }
 }

@@ -37,7 +37,6 @@ export const RewardConfigPage = () => {
   const { data: serverList } = useServerList();
 
   const { data: bonusDictType } = useDictType('sys_bonus_business_type');
-  console.log('bonusDictType', bonusDictType);
   const reset = () => {
     setParams({
       rewardTitle: '',

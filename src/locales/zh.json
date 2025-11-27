@@ -1058,5 +1058,8 @@
   },
   "PammSettlementReport": {
     "title": "PAMM计提报表"
+  },
+  "CopyTradingSettings": {
+    "title": "协议设置"
   }
 }
