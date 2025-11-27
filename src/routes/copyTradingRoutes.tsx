@@ -1,3 +1,4 @@
+import { CopyTradingSettingsPage } from '@/pages/copy-trading/settings/CopyTradingSettingsPage';
 import { SignalReviewPage } from '@/pages/copy-trading/signal-review/SignalReviewPage';
 import { SignalsPage } from '@/pages/copy-trading/signals/SignalsPage';
 import { VarietyManagementPage } from '@/pages/copy-trading/variety-management/VarietyManagementPage';
@@ -28,15 +29,15 @@ export const copyTradingRoutes: RouteObject[] = [
     path: '/copy-trading/variety-management',
     element: <VarietyManagementPage />,
   },
+  {
+    path: '/copy-trading/agreement-settings',
+    element: <CopyTradingSettingsPage />,
+  },
   // TODO: Add routes as pages are developed
   /*
   {
     path: '/copy-trading/dashboard',
     element: <CopyTradingDashboardPage />,
-  },
-  {
-    path: '/copy-trading/settings',
-    element: <CopyTradingSettingsPage />,
   },
   {
     path: '/copy-trading/signals',

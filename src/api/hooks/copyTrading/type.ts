@@ -1,4 +1,4 @@
-import { BasicParams, BasicRes } from '@/api/types';
+import { BaseEntity, BasicParams, BasicRes } from '@/api/types';
 
 export type OrderByColumn =
   | 'totalProfit'
@@ -118,3 +118,19 @@ export type MamSymbolItem = {
 };
 
 export type MamSymbolListRes = BasicRes<MamSymbolItem>;
+
+export type MamProtocolItem = BaseEntity & {
+  id: string;
+  applicableScenarios: number;
+  status: number;
+  sort: number;
+  delFlag: number;
+  name: string;
+  language: string | null;
+  languages: string | null;
+};
+export type MamProtocolListRes = BasicRes<MamProtocolItem>;
+export type MamProtocolListParams = BasicParams & {
+  name: string;
+  applicableScenarios: string;
+};
