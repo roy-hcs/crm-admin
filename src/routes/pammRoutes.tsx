@@ -2,6 +2,7 @@ import { AgreementsPage } from '@/pages/pamm/agreements/AgreementsPage';
 import { PammProductsPage } from '@/pages/pamm/products/PammProductsPage';
 import { CommissionReportPage } from '@/pages/pamm/reports/commission/CommissionReportPage';
 import { InvestmentReportPage } from '@/pages/pamm/reports/investment/InvestmentReportPage';
+import { ProfitSharingReportPage } from '@/pages/pamm/reports/profit-sharing/ProfitSharingReportPage';
 import { CommissionReviewPage } from '@/pages/pamm/review/commission/CommissionReviewPage';
 import { InvestmentReviewPage } from '@/pages/pamm/review/investment/InvestmentReviewPage';
 import { ProductReviewPage } from '@/pages/pamm/review/products/ProductReviewPage';
@@ -57,15 +58,15 @@ export const pammRoutes: RouteObject[] = [
     path: '/pamm/reports/commission',
     element: <CommissionReportPage />,
   },
+  {
+    path: '/pamm/reports/profit-sharing',
+    element: <ProfitSharingReportPage />,
+  },
   // TODO: Add routes as pages are developed
   /*
   {
     path: '/pamm/settings',
     element: <PammSettingsPage />,
-  },
-  {
-    path: '/pamm/reports/profit-sharing',
-    element: <ProfitSharingReportPage />,
   },
   {
     path: '/pamm/reports/accrual',

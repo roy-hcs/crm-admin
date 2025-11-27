@@ -581,7 +581,9 @@
     "periodicSettlement": "Periodic settlement",
     "redemptionSettlement": "redemption settlement",
     "revenueSettlementMethods": "Revenue settlement method",
-    "applicationTime": "Application time"
+    "applicationTime": "Application time",
+    "settlementTime": "settlement time",
+    "tierRatio": "Level ratio"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1038,5 +1040,12 @@
     "show": "exhibit",
     "title": "Signal source review",
     "upperLimit": "Subscription limit (optional)"
+  },
+  "PammCommissionReport": {
+    "title": "PAMM commission report"
+  },
+  "PammProfitSharingReport": {
+    "profitSharing": "Share profit",
+    "title": "PAMM Profit Report"
   }
 }

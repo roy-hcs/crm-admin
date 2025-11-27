@@ -369,3 +369,6 @@ export type PammReportCommissionItem = {
   role: string;
   inviter: string | null;
 };
+export type PammReportProfitSharingListParams = PammReportCommissionListParams;
+export type PammReportProfitSharingListRes = PammReportCommissionListRes;
+export type PammReportProfitSharingItem = PammReportCommissionItem;
