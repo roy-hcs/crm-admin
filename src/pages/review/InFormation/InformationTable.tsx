@@ -2,11 +2,12 @@ import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { useTranslation } from 'react-i18next';
 import { CrmInfoVerifyItem } from '@/api/hooks/review';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
-import { ChevronDown, ChevronUp, Ellipsis } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Ellipsis } from 'lucide-react';
 import { VerifyStatusOptions } from '@/lib/const';
 import { InfoTypeItem } from '@/api/hooks/system/types';
 import { RrhOrderStatusTag } from '@/components/common/RrhOrderStatusTag';
+import { Dispatch, SetStateAction } from 'react';
+import { RrhSorter } from '@/components/common/RrhSorter';
 
 export const InformationTable = ({
   data,
@@ -29,10 +30,10 @@ export const InformationTable = ({
   onPageChange: (pageIndex: number) => void;
   onPageSizeChange: (pageSize: number) => void;
   loading?: boolean;
-  isAsc: 'asc' | 'desc';
-  setIsAsc: (isAsc: 'asc' | 'desc') => void;
-  orderByColumn: 'infoType' | 'status' | 'subTime' | 'verifyTime';
-  setOrderByColumn: (orderByColumn: 'infoType' | 'status' | 'subTime' | 'verifyTime') => void;
+  isAsc: 'asc' | 'desc' | '';
+  setIsAsc: Dispatch<SetStateAction<'asc' | 'desc' | ''>>;
+  orderByColumn: string;
+  setOrderByColumn: Dispatch<SetStateAction<string>>;
   infoTypeList: InfoTypeItem[];
 }) => {
   const { t } = useTranslation();
@@ -67,25 +68,13 @@ export const InformationTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('review.information.infoType')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('infoType');
-              }}
-            >
-              {orderByColumn === 'infoType' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className={cn('h-3 w-3')} />
-                  <ChevronDown className={cn('h-3 w-3')} />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="infoType"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },
@@ -103,25 +92,13 @@ export const InformationTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('common.status')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('status');
-              }}
-            >
-              {orderByColumn === 'status' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className={cn('h-3 w-3')} />
-                  <ChevronDown className={cn('h-3 w-3')} />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="status"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },
@@ -136,25 +113,13 @@ export const InformationTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('common.subTime')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('subTime');
-              }}
-            >
-              {orderByColumn === 'subTime' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className={cn('h-3 w-3')} />
-                  <ChevronDown className={cn('h-3 w-3')} />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="subTime"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },
@@ -173,25 +138,13 @@ export const InformationTable = ({
         return (
           <div className="flex items-center justify-between gap-2">
             <div>{t('review.information.verifyTime')}</div>
-            <button
-              className="gap-.5 flex cursor-pointer flex-col"
-              onClick={() => {
-                setIsAsc(isAsc === 'asc' ? 'desc' : 'asc');
-                setOrderByColumn('verifyTime');
-              }}
-            >
-              {orderByColumn === 'verifyTime' ? (
-                <>
-                  <ChevronUp className={cn('h-3 w-3', isAsc === 'asc' ? '' : 'opacity-50')} />
-                  <ChevronDown className={cn('h-3 w-3', isAsc === 'asc' ? 'opacity-50' : '')} />
-                </>
-              ) : (
-                <>
-                  <ChevronUp className={cn('h-3 w-3')} />
-                  <ChevronDown className={cn('h-3 w-3')} />
-                </>
-              )}
-            </button>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="verifyTime"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
           </div>
         );
       },

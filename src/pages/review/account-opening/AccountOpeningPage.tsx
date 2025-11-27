@@ -10,9 +10,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 export function AccountOpeningPage() {
   const { t } = useTranslation();
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('');
-  const [orderByColumn, setOrderByColumn] = useState<
-    'status desc,subTime desc' | 'lever' | 'status' | 'subTime' | 'verifyTime'
-  >('status desc,subTime desc');
+  const [orderByColumn, setOrderByColumn] = useState<string>('status desc,subTime desc');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [params, setParams] = useState<CrmNewLoginVerifyListParams['params']>({
@@ -87,6 +85,7 @@ export function AccountOpeningPage() {
         onPageSizeChange={setPageSize}
         isAsc={isAsc}
         setIsAsc={setIsAsc}
+        orderByColumn={orderByColumn}
         setOrderByColumn={setOrderByColumn}
         loading={loading}
       />

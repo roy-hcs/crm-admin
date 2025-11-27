@@ -487,7 +487,7 @@ export type CrmInfoVerifyListParams = {
   pageSize?: number;
   pageNum?: number;
   orderByColumn?: string;
-  isAsc?: 'asc' | 'desc';
+  isAsc?: string;
   userId?: string;
   infoType?: string;
   status?: string;

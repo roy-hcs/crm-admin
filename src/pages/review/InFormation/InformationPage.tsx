@@ -15,10 +15,8 @@ export function InformationPage() {
   const infoTypeList: InfoTypeItem[] = Array.isArray(useInfoTyperesponse)
     ? useInfoTyperesponse
     : [];
-  const [isAsc, setIsAsc] = useState<'asc' | 'desc'>('asc');
-  const [orderByColumn, setOrderByColumn] = useState<
-    'infoType' | 'status' | 'subTime' | 'verifyTime'
-  >('status');
+  const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
+  const [orderByColumn, setOrderByColumn] = useState<string>('status');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [params, setParams] = useState<CrmInfoVerifyListParams['params']>({
