@@ -164,3 +164,9 @@ export const SignalReviewVerifyStatusOptions = [
   { label: 'table.pass', value: '1' },
   { label: 'table.refuse', value: '0' },
 ];
+
+// 表现费记录支付状态
+export const PerformanceFeePayStatusOptions = [
+  { label: 'performanceFeeRecord.payStatusOptions.1', value: '1' },
+  { label: 'performanceFeeRecord.payStatusOptions.0', value: '0' },
+];

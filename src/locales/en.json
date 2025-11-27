@@ -1055,5 +1055,20 @@
   "PammProfitSharingReport": {
     "profitSharing": "Share profit",
     "title": "PAMM Profit Report"
+  },
+  "performanceFeeRecord": {
+    "arrivalStatus": "Account arrival status",
+    "clientName": "Subscriber",
+    "managementFee": "management fee",
+    "payAccount": "Payment account",
+    "payAccountName": "Subscriber account",
+    "payStatusOptions": {
+      "0": "Not paid",
+      "1": "paid"
+    },
+    "payTime": "payment time",
+    "performanceFee": "performance fee",
+    "title": "Performance fee record",
+    "trader": "Signal source account"
   }
 }

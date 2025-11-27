@@ -7,6 +7,8 @@ import {
   MamSignalSourceVerifyListRes,
   MamSymbolListParams,
   MamSymbolListRes,
+  PerformanceFeeListParams,
+  PerformanceFeeListRes,
 } from './type';
 
 export function useChangeMamSignalSource() {
@@ -49,5 +51,15 @@ export function useMamSymbolList(params: MamSymbolListParams) {
   return useQuery({
     queryKey: ['mamSymbolList', params],
     queryFn: () => apiFormPostCustom<MamSymbolListRes>(`/system/mamSymbol/list`, params),
+  });
+}
+
+/**
+ * 表现费记录
+ */
+export function usePerformanceFeeList(params: PerformanceFeeListParams) {
+  return useQuery({
+    queryKey: ['performanceFeeList', params],
+    queryFn: () => apiFormPostCustom<PerformanceFeeListRes>(`/system/performanceFee/list`, params),
   });
 }

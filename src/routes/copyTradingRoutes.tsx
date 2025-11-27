@@ -1,3 +1,4 @@
+import { PerformanceFeeRecordPage } from '@/pages/copy-trading/performance-fee-record/PerformanceFeeRecordPage';
 import { SignalReviewPage } from '@/pages/copy-trading/signal-review/SignalReviewPage';
 import { SignalsPage } from '@/pages/copy-trading/signals/SignalsPage';
 import { VarietyManagementPage } from '@/pages/copy-trading/variety-management/VarietyManagementPage';
@@ -27,6 +28,10 @@ export const copyTradingRoutes: RouteObject[] = [
   {
     path: '/copy-trading/variety-management',
     element: <VarietyManagementPage />,
+  },
+  {
+    path: '/copy-trading/performance-fee-record',
+    element: <PerformanceFeeRecordPage />,
   },
   // TODO: Add routes as pages are developed
   /*
