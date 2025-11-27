@@ -5,6 +5,8 @@ import {
   MamSignalSourceListRes,
   MamSignalSourceVerifyListParams,
   MamSignalSourceVerifyListRes,
+  MamSymbolListParams,
+  MamSymbolListRes,
 } from './type';
 
 export function useChangeMamSignalSource() {
@@ -37,5 +39,15 @@ export function useMamSignalSourceVerifyList(params: MamSignalSourceVerifyListPa
         `/system/mamSignalSourceVerify/verifyList`,
         params,
       ),
+  });
+}
+
+/**
+ * 品种管理
+ */
+export function useMamSymbolList(params: MamSymbolListParams) {
+  return useQuery({
+    queryKey: ['mamSymbolList', params],
+    queryFn: () => apiFormPostCustom<MamSymbolListRes>(`/system/mamSymbol/list`, params),
   });
 }

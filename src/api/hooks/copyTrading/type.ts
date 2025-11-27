@@ -94,3 +94,27 @@ export type MamSignalSourceVerifyListParams = BasicParams & {
 };
 
 export type MamSignalSourceVerifyListRes = BasicRes<MamSignalSourceItem>;
+
+export type MamSymbolListParams = BasicParams & {
+  symbolCategory?: string;
+  symbol?: string;
+};
+
+export type MamSymbolItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: object;
+  id: string | null;
+  symbolCategory: string | null;
+  symbol: string | null;
+  cname: string | null;
+  enname: string | null;
+  name: string | null;
+  defaultNames: string | null;
+  sort: number;
+};
+
+export type MamSymbolListRes = BasicRes<MamSymbolItem>;
