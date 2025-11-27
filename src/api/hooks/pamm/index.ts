@@ -13,6 +13,8 @@ import {
   PammReportCommissionListRes,
   PammReportInvestListParams,
   PammReportInvestListRes,
+  PammReportProfitSharingListParams,
+  PammReportProfitSharingListRes,
   ProductReviewListParams,
   ProductReviewListRes,
 } from './type';
@@ -67,6 +69,16 @@ export function usePammReportCommissionList(params: PammReportCommissionListPara
     queryFn: () =>
       apiFormPostCustom<PammReportCommissionListRes>(
         '/system/pammReportForms/projectCommission',
+        params,
+      ),
+  });
+}
+export function usePammReportProfitSharingList(params: PammReportProfitSharingListParams) {
+  return useQuery({
+    queryKey: ['PammReportProfitSharingList', params],
+    queryFn: () =>
+      apiFormPostCustom<PammReportProfitSharingListRes>(
+        '/system/pammReportForms/projectProfit',
         params,
       ),
   });

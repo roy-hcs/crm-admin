@@ -926,7 +926,8 @@
     "periodicSettlement": "周期结算",
     "redemptionSettlement": "赎回结算",
     "tierRatio": "层级比例",
-    "applicationTime": "申请时间"
+    "applicationTime": "申请时间",
+    "settlementTime": "结算时间"
   },
   "review": {
     "settings": {
@@ -1042,5 +1043,9 @@
   },
   "PammCommissionReport": {
     "title": "PAMM提成报表"
+  },
+  "PammProfitSharingReport": {
+    "title": "PAMM分润报表",
+    "profitSharing": "分润"
   }
 }

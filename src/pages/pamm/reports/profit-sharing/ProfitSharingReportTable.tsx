@@ -1,4 +1,4 @@
-import { PammReportCommissionItem } from '@/api/hooks/pamm/type';
+import { PammReportProfitSharingItem } from '@/api/hooks/pamm/type';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { DataTable } from '@/components/table/DataTable';
 import { ColumnDef } from '@tanstack/react-table';
@@ -22,7 +22,7 @@ function getServerTypeName(serverType: number) {
   }
 }
 
-export const CommissionReportTable = ({
+export const ProfitSharingReportTable = ({
   data,
   pageCount,
   pageIndex,
@@ -36,7 +36,7 @@ export const CommissionReportTable = ({
   isAsc,
   setIsAsc,
 }: {
-  data: PammReportCommissionItem[];
+  data: PammReportProfitSharingItem[];
   pageCount: number;
   pageIndex: number;
   pageSize: number;
@@ -50,7 +50,7 @@ export const CommissionReportTable = ({
   loading?: boolean;
 }) => {
   const { t } = useTranslation();
-  const columns: ColumnDef<PammReportCommissionItem>[] = [
+  const columns: ColumnDef<PammReportProfitSharingItem>[] = [
     {
       id: 'No.',
       header: t('ib.overview.Index'),
@@ -111,13 +111,26 @@ export const CommissionReportTable = ({
       accessorFn: row => row.orderNo || '-',
     },
     {
-      id: 'amount',
-      header: t('table.investAmount'),
+      id: 'profit',
+      header: t('profitSharingReview.businessAmount'),
       cell: ({ row }) => {
         const currency = row.original.currency || '';
         return (
           <div>
             <div>{row.original.businessAmount?.toFixed(2)}</div>
+            <div>{currency}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'rewardAmount',
+      header: t('profitSharingReview.rewardAmount'),
+      cell: ({ row }) => {
+        const currency = row.original.currency || '';
+        return (
+          <div>
+            <div>{row.original.rewardAmount?.toFixed(2)}</div>
             <div>{currency}</div>
           </div>
         );
@@ -139,23 +152,25 @@ export const CommissionReportTable = ({
     },
     {
       id: 'commission',
-      header: t('commissionReview.commission'),
+      header: t('PammProfitSharingReport.profitSharing'),
       cell: ({ row }) => {
         const currency = row.original.currency || '';
-        return (
+        return row.original.commission ? (
           <div>
             <div>{row.original.commission?.toFixed(2)}</div>
             <div>{currency}</div>
           </div>
+        ) : (
+          <div>-</div>
         );
       },
     },
     {
-      id: 'investTime',
+      id: 'businessTime',
       header: () => {
         return (
           <div className="flex items-center gap-2">
-            <div>{t('table.investTime')}</div>
+            <div>{t('table.settlementTime')}</div>
             <RrhSorter
               orderByColumn={orderByColumn}
               isAsc={isAsc}
