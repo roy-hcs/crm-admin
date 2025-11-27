@@ -1,5 +1,6 @@
 import { SignalReviewPage } from '@/pages/copy-trading/signal-review/SignalReviewPage';
 import { SignalsPage } from '@/pages/copy-trading/signals/SignalsPage';
+import { VarietyManagementPage } from '@/pages/copy-trading/variety-management/VarietyManagementPage';
 import { RouteObject } from 'react-router-dom';
 
 /**
@@ -22,6 +23,10 @@ export const copyTradingRoutes: RouteObject[] = [
   {
     path: '/copy-trading/signal-review',
     element: <SignalReviewPage />,
+  },
+  {
+    path: '/copy-trading/variety-management',
+    element: <VarietyManagementPage />,
   },
   // TODO: Add routes as pages are developed
   /*

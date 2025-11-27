@@ -758,6 +758,10 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
           title: 'Copy Trade',
           path: '/copy-trading/copy-trade',
         },
+        {
+          title: '品种管理',
+          path: '/copy-trading/variety-management',
+        },
       ],
     },
   ];

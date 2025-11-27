@@ -1041,6 +1041,14 @@
     "title": "Signal source review",
     "upperLimit": "Subscription limit (optional)"
   },
+  "varietyManagement": {
+    "cname": "Chinese name",
+    "enname": "English name",
+    "name": "default name",
+    "symbol": "Standard name",
+    "symbolCategory": "Variety classification",
+    "title": "Variety management"
+  },
   "PammCommissionReport": {
     "title": "PAMM commission report"
   },
