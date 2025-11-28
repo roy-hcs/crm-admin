@@ -1,3 +1,4 @@
+import { OrderManagementPage } from '@/pages/copy-trading/order-management/OrderManagementPage';
 import { CopyTradingSettingsPage } from '@/pages/copy-trading/settings/CopyTradingSettingsPage';
 import { SignalReviewPage } from '@/pages/copy-trading/signal-review/SignalReviewPage';
 import { SignalsPage } from '@/pages/copy-trading/signals/SignalsPage';
@@ -32,6 +33,10 @@ export const copyTradingRoutes: RouteObject[] = [
   {
     path: '/copy-trading/agreement-settings',
     element: <CopyTradingSettingsPage />,
+  },
+  {
+    path: '/copy-trading/order-management',
+    element: <OrderManagementPage />,
   },
   // TODO: Add routes as pages are developed
   /*
