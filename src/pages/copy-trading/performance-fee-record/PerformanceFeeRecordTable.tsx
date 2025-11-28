@@ -46,10 +46,8 @@ export const PerformanceFeeRecordTable = ({
       cell: ({ row }) => {
         return (
           <div>
-            <div>
-              <span>{row?.original?.signalSourceName}</span>
-              <span>{row?.original?.traderServer}</span>
-            </div>
+            <span>{row?.original?.signalSourceName}</span>
+            <span>{row?.original?.traderServer}</span>
           </div>
         );
       },
@@ -60,10 +58,8 @@ export const PerformanceFeeRecordTable = ({
       cell: ({ row }) => {
         return (
           <div>
-            <div>
-              <span>{row?.original?.clientName}</span>
-              <span>{row?.original?.clientEmail}</span>
-            </div>
+            <span>{row?.original?.clientName}</span>
+            <span>{row?.original?.clientEmail}</span>
           </div>
         );
       },
