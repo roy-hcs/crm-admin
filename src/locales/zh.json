@@ -347,8 +347,7 @@
       "amount": "变动金额",
       "postAmount": "变动后金额",
       "operationTimeTable": "变动时间",
-      "serialNumTable": "交易流水号",
-      "remark": "备注"
+      "serialNumTable": "交易流水号"
     },
     "paymentOrders": {
       "title": "支付订单",
@@ -711,7 +710,31 @@
       "1": "已支付"
     }
   },
+  "orderManagementTable": {
+    "title": "订单管理",
+    "subscribeFee": "订阅费(USD)",
+    "managementFeeRatio": "预估管理费(USD)",
+    "payAccountName": "支付账户",
+    "arrivalStatusOptions": {
+      "1": "已到账",
+      "2": "待到账",
+      "3": "部分到账"
+    }
+  },
   "table": {
+    "firstSubscription": "首次订阅",
+    "renew": "续费",
+    "notInEffect": "未生效",
+    "inSubscription": "订阅中",
+    "arrivalStatus": "到账情况",
+    "subscriberAccount": "订阅者账号",
+    "signalSourceAccount": "信号源账号",
+    "subscriptionUsers": "订阅用户",
+    "arrivalTime": "到账时间",
+    "managementFee": "平台管理费",
+    "followEndTime": "预计到期时间",
+    "renewalStatus": "订阅状态",
+    "subscriptionTime": "订阅时间",
     "login": "主账号",
     "orderNo": "订单ID",
     "server": "服务器",
@@ -1073,5 +1096,8 @@
   },
   "PammSettlementReport": {
     "title": "PAMM计提报表"
+  },
+  "CopyTradingSettings": {
+    "title": "协议设置"
   }
 }

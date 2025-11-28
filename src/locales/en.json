@@ -583,7 +583,20 @@
     "revenueSettlementMethods": "Revenue settlement method",
     "applicationTime": "Application time",
     "settlementTime": "settlement time",
-    "tierRatio": "Level ratio"
+    "tierRatio": "Level ratio",
+    "arrivalStatus": "Account arrival status",
+    "arrivalTime": "Arrival time",
+    "firstSubscription": "First time subscription",
+    "followEndTime": "Estimated expiry time",
+    "inSubscription": "Subscribing",
+    "managementFee": "Platform management fee",
+    "notInEffect": "Not effective",
+    "renew": "Renewal",
+    "renewalStatus": "Subscription status",
+    "signalSourceAccount": "Signal source account",
+    "subscriberAccount": "Subscriber account",
+    "subscriptionTime": "Subscription time",
+    "subscriptionUsers": "Subscriber"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -601,7 +614,6 @@
       "operationType": "Operation Type",
       "postAmount": "Changeable amount",
       "preAmount": "Amount before change",
-      "remark": "Remark",
       "serialNum": "serial number",
       "serialNumTable": "Trading flow number",
       "title": "Wallet flow",
@@ -1073,5 +1085,19 @@
   },
   "PammSettlementReport": {
     "title": "PAMM Provision Report"
+  },
+  "CopyTradingSettings": {
+    "title": "Protocol settings"
+  },
+  "orderManagementTable": {
+    "arrivalStatusOptions": {
+      "1": "Already arrived",
+      "2": "Waiting for payment",
+      "3": "Partial arrival"
+    },
+    "managementFeeRatio": "Estimated management fee (USD)",
+    "payAccountName": "payment account",
+    "subscribeFee": "Subscription fee(USD)",
+    "title": "Order management"
   }
 }
