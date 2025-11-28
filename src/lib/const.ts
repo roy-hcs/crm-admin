@@ -165,6 +165,12 @@ export const SignalReviewVerifyStatusOptions = [
   { label: 'table.refuse', value: '0' },
 ];
 
+// 表现费记录支付状态
+export const PerformanceFeePayStatusOptions = [
+  { label: 'performanceFeeRecord.payStatusOptions.1', value: '1' },
+  { label: 'performanceFeeRecord.payStatusOptions.0', value: '0' },
+];
+
 // copytrading 订单管理 到账状态
 export const arrivalStatusOptions = [
   { label: 'orderManagementTable.arrivalStatusOptions.1', value: '1' },

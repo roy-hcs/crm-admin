@@ -695,6 +695,21 @@
     "enname": "英文名称",
     "name": "默认名称"
   },
+  "performanceFeeRecord": {
+    "title": "表现费记录",
+    "clientName": "订阅用户",
+    "payAccountName": "订阅者账号",
+    "performanceFee": "表现费",
+    "managementFee": "管理费",
+    "payTime": "支付时间",
+    "payAccount": "支付账号",
+    "trader": "信号源账号",
+    "arrivalStatus": "到账情况",
+    "payStatusOptions": {
+      "0": "未支付",
+      "1": "已支付"
+    }
+  },
   "orderManagementTable": {
     "title": "订单管理",
     "subscribeFee": "订阅费(USD)",

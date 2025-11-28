@@ -762,6 +762,10 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
           title: '品种管理',
           path: '/copy-trading/variety-management',
         },
+        {
+          title: '表现费记录',
+          path: '/copy-trading/performance-fee-record',
+        },
       ],
     },
   ];

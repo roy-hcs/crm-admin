@@ -234,3 +234,52 @@ type TotalItem = {
 export type MamFollowListRes = BasicRes<MamFollowItem> & {
   totalList: TotalItem[];
 };
+
+export type PerformanceFeeListParams = BasicParams & {
+  signalSourceName?: string;
+  traderServerId?: string;
+  trader?: string;
+  client?: string;
+  payStatus?: string;
+
+  params: {
+    signalSourceOwner?: string;
+    follower?: string;
+    beginTime?: string;
+    endTime?: string;
+    beginPayTime?: string;
+    endPayTime?: string;
+  };
+};
+
+export type PerformanceFeeItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: object;
+  id: string | null;
+  followId: string | null;
+  orderNo: string | null;
+  performanceFee: number | null;
+  managementFee: number | null;
+  payType: number | null;
+  payStatus: number | null;
+  payTime: string | null;
+  payAccount: string | null;
+  currency: string | null;
+  payServerId: string | null;
+  payAccountName: string | null;
+  signalSourceName: string | null;
+  trader: string | null;
+  traderServer: string | null;
+  traderServerId: string | null;
+  client: string | null;
+  clientServer: string | null;
+  clientServerId: string | null;
+  clientName: string | null;
+  clientEmail: string | null;
+};
+
+export type PerformanceFeeListRes = BasicRes<PerformanceFeeItem>;

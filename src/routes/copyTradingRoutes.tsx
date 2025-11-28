@@ -1,3 +1,4 @@
+import { PerformanceFeeRecordPage } from '@/pages/copy-trading/performance-fee-record/PerformanceFeeRecordPage';
 import { OrderManagementPage } from '@/pages/copy-trading/order-management/OrderManagementPage';
 import { CopyTradingSettingsPage } from '@/pages/copy-trading/settings/CopyTradingSettingsPage';
 import { SignalReviewPage } from '@/pages/copy-trading/signal-review/SignalReviewPage';
@@ -29,6 +30,10 @@ export const copyTradingRoutes: RouteObject[] = [
   {
     path: '/copy-trading/variety-management',
     element: <VarietyManagementPage />,
+  },
+  {
+    path: '/copy-trading/performance-fee-record',
+    element: <PerformanceFeeRecordPage />,
   },
   {
     path: '/copy-trading/agreement-settings',
