@@ -1,6 +1,8 @@
 import { apiFormPostCustom } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
+  MamFollowListParams,
+  MamFollowListRes,
   MamProtocolListParams,
   MamProtocolListRes,
   MamSignalSourceListParams,
@@ -60,5 +62,15 @@ export function useMamProtocolList(params: MamProtocolListParams) {
   return useQuery({
     queryKey: ['mamProtocolList', params],
     queryFn: () => apiFormPostCustom<MamProtocolListRes>('/system/mamProtocol/list', params),
+  });
+}
+
+/**
+ * 订单管理
+ */
+export function useMamFollowList(params: MamFollowListParams) {
+  return useQuery({
+    queryKey: ['mamFollowList', params],
+    queryFn: () => apiFormPostCustom<MamFollowListRes>('/system/mamFollow/list', params),
   });
 }

@@ -100,7 +100,7 @@ export const WalletTransactionsTable = ({
     {
       accessorKey: 'remark',
       size: 180,
-      header: t('financial.walletTransactions.remark'),
+      header: t('table.remarks'),
       accessorFn: row => row.remark || '--',
     },
   ];
