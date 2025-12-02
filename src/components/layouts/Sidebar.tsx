@@ -16,6 +16,7 @@ import {
   Copy,
   ChevronRight,
 } from 'lucide-react';
+import { useState } from 'react';
 
 import {
   Accordion,
@@ -61,6 +62,8 @@ function AccordionMenuItem({ item, level }: AccordionMenuItemProps) {
   const hasChildren = item.children && item.children.length > 0;
   const navigate = useNavigate();
   const { addTab } = useTabStore();
+  const [popoverOpen, setPopoverOpen] = useState(false);
+
   const handleClick = (item: MenuItem) => {
     if (item.path) {
       addTab({ key: item.path, title: item.title, path: item.path, closable: true });
@@ -108,7 +111,7 @@ function AccordionMenuItem({ item, level }: AccordionMenuItemProps) {
         </>
       ) : (
         <>
-          <Popover>
+          <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
             <PopoverTrigger className="w-full">
               <div
                 className={cn(
@@ -125,19 +128,20 @@ function AccordionMenuItem({ item, level }: AccordionMenuItemProps) {
                 {item.children?.map((child, index) => {
                   const isChildActive = child.path === location.pathname;
                   return (
-                    <PopoverTrigger>
-                      <li
-                        key={index}
-                        className={cn(
-                          'mb-1 cursor-pointer rounded-md py-1.5 pr-2 pl-4 last:mb-0',
-                          isChildActive ? 'bg-accent' : 'hover:bg-accent',
-                        )}
-                        onClick={() => handleClick(child)}
-                      >
-                        {child.icon && <span className="mr-2">{child.icon}</span>}
-                        <span>{child.title}</span>
-                      </li>
-                    </PopoverTrigger>
+                    <li
+                      key={index}
+                      className={cn(
+                        'mb-1 cursor-pointer rounded-md py-1.5 pr-2 pl-4 last:mb-0',
+                        isChildActive ? 'bg-accent' : 'hover:bg-accent',
+                      )}
+                      onClick={() => {
+                        handleClick(child);
+                        setPopoverOpen(false);
+                      }}
+                    >
+                      {child.icon && <span className="mr-2">{child.icon}</span>}
+                      <span>{child.title}</span>
+                    </li>
                   );
                 })}
               </ul>

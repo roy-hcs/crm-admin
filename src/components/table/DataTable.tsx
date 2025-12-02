@@ -150,7 +150,7 @@ function createDataTable<TData extends RowData, TValue>() {
 
     return (
       <div>
-        <div className="relative overflow-auto rounded-md border">
+        <div className="bg-background relative overflow-auto rounded-md border">
           <Table ref={tableRef}>
             <TableHeader>
               {table.getHeaderGroups().map(headerGroup => (
