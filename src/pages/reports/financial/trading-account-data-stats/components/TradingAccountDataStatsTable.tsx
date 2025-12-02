@@ -28,11 +28,9 @@ export const TradingAccountDataStatsTable = ({
       cell: ({ row }) => <div>{row.index + 1}</div>,
     },
     {
-      id: 'login',
-
+      id: 'name',
       header: t('financial.tradingAccountTransactions.name'),
-
-      accessorFn: row => row.login,
+      accessorFn: row => row.name,
     },
     {
       id: 'login',
@@ -239,7 +237,7 @@ export const TradingAccountDataStatsTable = ({
       },
     },
     {
-      id: 'profitPosition',
+      id: 'volumePosition',
 
       header: t('financial.tradingAccountDataStats.volumePosition'),
 

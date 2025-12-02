@@ -43,7 +43,7 @@ export const TradingAccountTransactionsTable = ({
     {
       id: 'balance',
 
-      header: t('financial.tradingAccountFundsStats.balance'),
+      header: t('financial.tradingAccountFundsStats.balance') + ' (+)',
 
       cell: ({ row }) => {
         return (
@@ -125,7 +125,7 @@ export const TradingAccountTransactionsTable = ({
     {
       id: 'negativeBalanceCount',
 
-      header: t('financial.tradingAccountFundsStats.negativeBalanceCount'),
+      header: t('financial.tradingAccountFundsStats.negativeBalanceCount') + ' (-)',
 
       cell: ({ row }) => {
         return (
@@ -225,7 +225,7 @@ export const TradingAccountTransactionsTable = ({
       accessorFn: row => row.profitLoss || `0${row.currency}`,
     },
     {
-      id: 'balance',
+      id: 'currentBalance',
 
       header: t('financial.tradingAccountFundsStats.currentbalance'),
 
