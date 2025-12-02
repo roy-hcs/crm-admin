@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./design-token.css";
 @plugin 'tailwind-scrollbar' {
   nocompatible: true;
 }
@@ -36,56 +37,58 @@
   /* Light theme colors by default */
   color-scheme: light;
   color: #334155; /* slate 700 */
-  background-color: #ffffff;
+  background-color: var(--colors-background-light);
 
-  /* ShadCN UI theme variables */
-  --background: #ffffff;
-  --foreground: #252525;
-  --card: #ffffff;
-  --component: #f8fafc; /* slate 50 */
-  --card-foreground: #252525;
-  --popover: #ffffff;
-  --popover-foreground: #252525;
-  --primary: #111827;
-  --primary-foreground: #ffffff;
-  --secondary: #f3f4f6;
-  --secondary-foreground: #1f2937;
-  --third: #0f172a; /* slate 900 */
-  --third-foreground: #f9fafb;
-  --muted: #64748b; /* slate 500 */
-  --muted-foreground: #6b7280;
-  --accent: #f1f5f9; /* slate 100 */
-  --accent-foreground: #1f2937;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #e2e8f0; /* slate 200 */
-  --input: #ebebeb;
-  --ring: #b4b4b4;
+  /* ShadCN UI theme variables - mapped to design-token.css */
+  --background: var(--colors-background-light);
+  --foreground: var(--colors-foreground-light);
+  --card: var(--colors-card-light);
+  --component: var(--colors-accent-light); /* Using accent for component background */
+  --card-foreground: var(--colors-card-foreground-light);
+  --popover: var(--colors-popover-light);
+  --popover-foreground: var(--colors-popover-foreground-light);
+  --primary: var(--colors-primary-light);
+  --primary-foreground: var(--colors-primary-foreground-light);
+  --secondary: var(--colors-secondary-light);
+  --secondary-foreground: var(--colors-secondary-foreground-light);
+  --third: var(--colors-primary-light); /* Mapping third to primary */
+  --third-foreground: var(--colors-primary-foreground-light);
+  --muted: var(--colors-muted-light);
+  --muted-foreground: var(--colors-muted-foreground-light);
+  --accent: var(--colors-accent-light);
+  --accent-foreground: var(--colors-accent-foreground-light);
+  --destructive: var(--colors-destructive-light);
+  --destructive-foreground: var(--colors-destructive-foreground-light);
+  --border: var(--colors-border-light);
+  --input: var(--colors-input-light);
+  --ring: var(--colors-ring-light);
 
   /* Chart colors */
-  --chart-1: #3b82f6;
-  --chart-2: #0ea5e9;
-  --chart-3: #3730a3;
-  --chart-4: #f59e0b;
-  --chart-5: #ef4444;
+  --chart-1: var(--colors-chart-1-light);
+  --chart-2: var(--colors-chart-2-light);
+  --chart-3: var(--colors-chart-3-light);
+  --chart-4: var(--colors-chart-4-light);
+  --chart-5: var(--colors-chart-5-light);
 
   /* Sidebar specific colors */
-  --sidebar: #fbfbfb;
-  --sidebar-foreground: #252525;
-  --sidebar-primary: #0ea5e9;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f3f4f6;
-  --sidebar-accent-foreground: #1f2937;
-  --sidebar-border: #ebebeb;
-  --sidebar-ring: #b4b4b4;
+  --sidebar: var(--colors-sidebar-light);
+  --sidebar-foreground: var(--colors-sidebar-foreground-light);
+  --sidebar-primary: var(--colors-sidebar-primary-light);
+  --sidebar-primary-foreground: var(--colors-sidebar-primary-foreground-light);
+  --sidebar-accent: var(--colors-sidebar-accent-light);
+  --sidebar-accent-foreground: var(--colors-sidebar-accent-foreground-light);
+  --sidebar-border: var(--colors-sidebar-border-light);
+  --sidebar-ring: var(--colors-sidebar-ring-light);
 
   /* Border radius variables - critical for ShadCN components */
-  --radius: 0.625rem;
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-
+  --radius: var(--tailwind-radius-md);
+  --radius-sm: var(--tailwind-radius-sm);
+  --radius-md: var(--tailwind-radius-md);
+  --radius-lg: var(--tailwind-radius-lg);
+  --radius-xl: var(--tailwind-radius-xl);
+  --radius-2xl: var(--tailwind-radius-2xl);
+  --radius-3xl: var(--tailwind-radius-3xl);
+  --radius-4xl: var(--tailwind-radius-4xl);
   /* These variables are needed for proper component rendering */
   --cell-size: 2.25rem; /* Calendar cell size */
   --day-size: 40px; /* Calendar day size */
@@ -112,21 +115,21 @@
 .dark {
   color-scheme: dark;
   color: #e2e8f0;
-  background-color: #0f172a;
+  background-color: var(--colors-background-dark);
 
-  /* ShadCN UI dark theme variables */
-  --background: #0f172a;
-  --foreground: #e2e8f0;
-  --card: #1e293b;
-  --component: #1e293b;
-  --card-foreground: #f1f5f9;
-  --popover: #1e293b;
-  --popover-foreground: #f1f5f9;
-  --primary: #3b82f6;
-  --primary-foreground: #ffffff;
-  --secondary: #334155;
-  --secondary-foreground: #e2e8f0;
-  --third: #e2e8f0;
+  /* ShadCN UI dark theme variables - mapped to design-token.css */
+  --background: var(--colors-background-dark);
+  --foreground: var(--colors-foreground-dark);
+  --card: var(--colors-card-dark);
+  --component: var(--colors-card-dark);
+  --card-foreground: var(--colors-card-foreground-dark);
+  --popover: var(--colors-popover-dark);
+  --popover-foreground: var(--colors-popover-foreground-dark);
+  --primary: var(--colors-primary-dark);
+  --primary-foreground: var(--colors-primary-foreground-dark);
+  --secondary: var(--colors-secondary-dark);
+  --secondary-foreground: var(--colors-secondary-foreground-dark);
+  --third: var(--colors-foreground-dark);
   /* 首页start */
   --text-home: #e2e8f0;
   --text-DataOverview: #ffffff;
@@ -137,33 +140,33 @@
   --bg-four-home: #eb575740;
   /* 首页end */
 
-  --third-foreground: #0f172a;
-  --muted: #475569;
-  --muted-foreground: #94a3b8;
-  --accent: #334155;
-  --accent-foreground: #e2e8f0;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #334155;
-  --input: #1e293b;
-  --ring: #64748b;
+  --third-foreground: var(--colors-primary-foreground-dark);
+  --muted: var(--colors-muted-dark);
+  --muted-foreground: var(--colors-muted-foreground-dark);
+  --accent: var(--colors-accent-dark);
+  --accent-foreground: var(--colors-accent-foreground-dark);
+  --destructive: var(--colors-destructive-dark);
+  --destructive-foreground: var(--colors-destructive-foreground-dark);
+  --border: var(--colors-border-dark);
+  --input: var(--colors-input-dark);
+  --ring: var(--colors-ring-dark);
 
   /* Chart colors - dark theme */
-  --chart-1: #60a5fa;
-  --chart-2: #22d3ee;
-  --chart-3: #fb7185;
-  --chart-4: #c084fc;
-  --chart-5: #fb923c;
+  --chart-1: var(--colors-chart-1-dark);
+  --chart-2: var(--colors-chart-2-dark);
+  --chart-3: var(--colors-chart-3-dark);
+  --chart-4: var(--colors-chart-4-dark);
+  --chart-5: var(--colors-chart-5-dark);
 
   /* Sidebar specific colors - dark theme */
-  --sidebar: #1e293b;
-  --sidebar-foreground: #e2e8f0;
-  --sidebar-primary: #3b82f6;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #334155;
-  --sidebar-accent-foreground: #e2e8f0;
-  --sidebar-border: #334155;
-  --sidebar-ring: #64748b;
+  --sidebar: var(--colors-sidebar-dark);
+  --sidebar-foreground: var(--colors-sidebar-foreground-dark);
+  --sidebar-primary: var(--colors-sidebar-primary-dark);
+  --sidebar-primary-foreground: var(--colors-sidebar-primary-foreground-dark);
+  --sidebar-accent: var(--colors-sidebar-accent-dark);
+  --sidebar-accent-foreground: var(--colors-sidebar-accent-foreground-dark);
+  --sidebar-border: var(--colors-sidebar-border-dark);
+  --sidebar-ring: var(--colors-sidebar-ring-dark);
 }
 
 /* Uncomment if you need specific button styling in dark mode
@@ -288,7 +291,7 @@ body {
   .text-title {
     @apply text-2xl font-semibold;
     /* TODO: 之后可能需要实现用户自定义文字颜色，此时需要使用如下代码 */
-    color: var(--text-third);
+    color: var(--text-foreground);
     /* @dark .text-title {
       @apply text-slate-100;
     } */
