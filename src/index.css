@@ -36,7 +36,7 @@
 
   /* Light theme colors by default */
   color-scheme: light;
-  color: #334155; /* slate 700 */
+  color: var(--colors-foreground-light);
   background-color: var(--colors-background-light);
 
   /* ShadCN UI theme variables - mapped to design-token.css */
@@ -114,7 +114,7 @@
 /* Dark mode overrides - activated when .dark class is applied to html */
 .dark {
   color-scheme: dark;
-  color: #e2e8f0;
+  color: var(--colors-foreground-dark);
   background-color: var(--colors-background-dark);
 
   /* ShadCN UI dark theme variables - mapped to design-token.css */
