@@ -125,17 +125,19 @@ function AccordionMenuItem({ item, level }: AccordionMenuItemProps) {
                 {item.children?.map((child, index) => {
                   const isChildActive = child.path === location.pathname;
                   return (
-                    <li
-                      key={index}
-                      className={cn(
-                        'mb-1 cursor-pointer rounded-md py-1.5 pr-2 pl-4 last:mb-0',
-                        isChildActive ? 'bg-accent' : 'hover:bg-accent',
-                      )}
-                      onClick={() => handleClick(child)}
-                    >
-                      {child.icon && <span className="mr-2">{child.icon}</span>}
-                      <span>{child.title}</span>
-                    </li>
+                    <PopoverTrigger>
+                      <li
+                        key={index}
+                        className={cn(
+                          'mb-1 cursor-pointer rounded-md py-1.5 pr-2 pl-4 last:mb-0',
+                          isChildActive ? 'bg-accent' : 'hover:bg-accent',
+                        )}
+                        onClick={() => handleClick(child)}
+                      >
+                        {child.icon && <span className="mr-2">{child.icon}</span>}
+                        <span>{child.title}</span>
+                      </li>
+                    </PopoverTrigger>
                   );
                 })}
               </ul>
@@ -773,7 +775,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
   return (
     <div
       className={cn(
-        'bg-component text-sidebar-foreground border-sidebar-border h-full border-r transition-all duration-300',
+        'bg-sidebar text-sidebar-foreground border-sidebar-border h-full border-r transition-all duration-300',
         open ? 'w-64' : 'w-16',
         cls,
       )}
@@ -792,15 +794,15 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
             collapsible
             className="scrollbar-none h-[calc(100vh-84px)] space-y-1 overflow-auto"
           >
-            <div className="text-muted px-2 pb-2 text-xs">Main</div>
+            <div className="text-sidebar-foreground px-2 pb-2 text-xs">Main</div>
             {menuItems.slice(0, 4).map((item, index) => (
               <AccordionMenuItem key={index} item={item} level={0} />
             ))}
-            <div className="text-muted px-2 pt-3 pb-2 text-xs">Marketing</div>
+            <div className="text-sidebar-foreground px-2 pt-3 pb-2 text-xs">Marketing</div>
             {menuItems.slice(4, 8).map((item, index) => (
               <AccordionMenuItem key={index} item={item} level={0} />
             ))}
-            <div className="text-muted px-2 pt-3 pb-2 text-xs">Others</div>
+            <div className="text-sidebar-foreground px-2 pt-3 pb-2 text-xs">Others</div>
             {menuItems.slice(8).map((item, index) => (
               <AccordionMenuItem key={index} item={item} level={0} />
             ))}
