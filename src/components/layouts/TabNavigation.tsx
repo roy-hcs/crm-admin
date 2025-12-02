@@ -1,5 +1,6 @@
-import { X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 import { useTabStore, type TabItem } from '../../store/tabStore';
 import { cn } from '@/lib/utils';
 import { RrhButton } from '../common/RrhButton';
@@ -7,7 +8,32 @@ import { RrhButton } from '../common/RrhButton';
 export function TabNavigation() {
   const navigate = useNavigate();
   const { tabs, activeTab, removeTab, setActiveTab } = useTabStore();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const tabRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   // const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    const activeTabElement = tabRefs.current.get(activeTab);
+    if (activeTabElement && scrollContainerRef.current) {
+      // Scroll the active tab into view
+      activeTabElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  }, [activeTab]);
+
+  const handleScroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 200; // Adjust scroll distance as needed
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   const handleTabClick = (tab: TabItem) => {
     setActiveTab(tab.key);
     navigate(tab.path);
@@ -40,25 +66,36 @@ export function TabNavigation() {
   // };
 
   return (
-    <div className="bg-background relative flex w-full items-center">
-      <div className="scrollbar-thin flex flex-1 items-center gap-0.5 overflow-x-auto px-0.5 py-1">
+    <div className="bg-background border-border relative flex w-full items-center border-b px-1.5">
+      <RrhButton variant="outline" className="size-8 !px-2" onClick={() => handleScroll('left')}>
+        <ChevronLeft className="size-4" />
+      </RrhButton>
+      <div
+        ref={scrollContainerRef}
+        className="scrollbar-none mx-1.5 flex flex-1 items-center gap-0.5 overflow-x-auto px-1.5 py-1"
+      >
         {tabs.map(tab => (
           <div
             key={tab.key}
+            ref={el => {
+              if (el) {
+                tabRefs.current.set(tab.key, el);
+              } else {
+                tabRefs.current.delete(tab.key);
+              }
+            }}
             className={cn(
-              'flex cursor-pointer items-center rounded border px-3 py-1.5 text-xs font-semibold text-nowrap select-none',
-              activeTab === tab.key
-                ? 'bg-background text-third shadow'
-                : 'bg-accent text-muted dark:text-third/50',
+              'text-muted-foreground hover:bg-accent hover:text-foreground relative flex cursor-pointer items-center rounded-lg px-2.5 py-2 text-sm text-nowrap select-none',
+              activeTab === tab.key ? 'text-foreground bg-accent' : '',
             )}
             onClick={() => handleTabClick(tab)}
           >
             <span>{tab.title}</span>
-            {tab.closable && activeTab === tab.key && (
+            {tab.closable && (
               <RrhButton
                 variant="ghost"
                 onClick={e => handleCloseTab(e, tab.key)}
-                className="ml-5 h-3 rounded-full !p-0"
+                className="ml-2 h-3 rounded-full !p-0 opacity-70"
               >
                 <X className="h-3 w-3" />
               </RrhButton>
@@ -66,6 +103,9 @@ export function TabNavigation() {
           </div>
         ))}
       </div>
+      <RrhButton variant="outline" className="size-8 !px-2" onClick={() => handleScroll('right')}>
+        <ChevronRight className="size-4" />
+      </RrhButton>
       {/* TODO: not sure whether keep it or not */}
       {/* <div className="relative px-2">
         <RrhButton
