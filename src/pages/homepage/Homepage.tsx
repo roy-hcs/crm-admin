@@ -44,19 +44,19 @@ export function HomePage() {
             <NavList />
           </div>
 
-          <OverviewDepositWithdrawal />
+          <div className="grid grid-cols-1 gap-6 2xl:grid-cols-2">
+            <OverviewDepositWithdrawal />
+            <AccountActivation />
+          </div>
 
           <div className="mt-6 mb-6">
             <TradingInstrument serverList={serverList} />
           </div>
 
-          <AccountActivation />
-
-          <div className="mt-6 mb-6">
+          <div className="mt-6 grid grid-cols-1 gap-6 2xl:grid-cols-2">
             <CustomerTransactions serverList={serverList} />
+            <FundsTransit />
           </div>
-
-          <FundsTransit />
         </div>
         <div className="flex flex-col lg:gap-6 xl:gap-6">
           {serverExceptionNotice && serverExceptionNotice?.length > 0 && (

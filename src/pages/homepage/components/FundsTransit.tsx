@@ -95,7 +95,7 @@ export const FundsTransit: FC = () => {
   }, [data]);
 
   return (
-    <div className="bg-card rounded-lg p-3 shadow-xs lg:p-6">
+    <div className="bg-card flex flex-col rounded-lg p-3 shadow-xs lg:p-6">
       <div className="flex items-center justify-between">
         <div className="text-card-foreground text-lg leading-7 font-semibold">
           {t('home.InTransitFunds')}
@@ -111,7 +111,7 @@ export const FundsTransit: FC = () => {
           />
         </div>
       </div>
-      <div className="mt-2 mb-2 flex lg:mt-6 lg:mb-6">
+      <div className="mt-2 flex lg:mt-6">
         <div className="flex-1">
           <LegendHeader
             label={t('home.AuditedDepositToday')}
@@ -126,17 +126,19 @@ export const FundsTransit: FC = () => {
           />
         </div>
       </div>
-      <div className="h-80 w-full">
-        {isLoading ? (
-          <div>{t('common.loading')}</div>
-        ) : (
-          <BarChart
-            options={options}
-            labels={chartData.labels}
-            datasets={chartData.datasets}
-            hideLegend={true}
-          />
-        )}
+      <div className="flex flex-1 flex-col justify-end">
+        <div className="h-80 w-full">
+          {isLoading ? (
+            <div>{t('common.loading')}</div>
+          ) : (
+            <BarChart
+              options={options}
+              labels={chartData.labels}
+              datasets={chartData.datasets}
+              hideLegend={true}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

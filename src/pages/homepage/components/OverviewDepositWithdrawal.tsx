@@ -61,7 +61,7 @@ export const OverviewDepositWithdrawal: FC = () => {
   }, [data, t]);
 
   return (
-    <div className="bg-card rounded-lg p-3 shadow-xs lg:p-6">
+    <div className="bg-card flex flex-col justify-between rounded-lg p-3 shadow-xs lg:p-6">
       <div className="flex items-start justify-between">
         <div className="text-card-foreground text-lg leading-7 font-semibold">
           {t('home.WithDrawReport')}
@@ -79,7 +79,7 @@ export const OverviewDepositWithdrawal: FC = () => {
           />
         </div>
       </div>
-      <div className="mt-6">
+      <div>
         {isLoading ? <div>{t('common.loading')}</div> : <LineChart lineChartProps={lineChart} />}
       </div>
     </div>
