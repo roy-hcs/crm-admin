@@ -359,4 +359,8 @@ body {
   .bg-four-color-step {
     background-color: var(--bg-four-home);
   }
+  /* 隐藏滚动条但保持滚动 */
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 }

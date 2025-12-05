@@ -1,19 +1,52 @@
 import { useCustomerTransactionsReport, ServerItem } from '@/api/hooks/workbench';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BarChart } from '@/components/charts/BarCharts';
 import { RrhSelect } from '@/components/common/RrhSelect';
 import { DEFAULT_TIME_RANGE, timeRangeOptions, TimeRangeType } from '@/lib/const';
-import { cn } from '@/lib/utils';
+import { cn, getCssVar } from '@/lib/utils';
 import { serverMap } from '@/lib/constant';
 import { LegendHeader } from '@/components/charts/LegendHeader';
 
-export const CustomerTransactions = ({ serverList }: { serverList: ServerItem[] }) => {
-  const { t } = useTranslation();
+import { BarChart } from '@/components/charts/BarCharts';
 
-  // 初始 serverId（若首项存在）
+export const CustomerTransactions = ({ serverList }: { serverList: ServerItem[] }) => {
+  const [legendColor, setLegendColor] = useState(() => getCssVar('--card-foreground', '#0a0a0a'));
+  const [borderColor, setBorderColor] = useState(() => getCssVar('--border', '#E1E3EA'));
+
+  const options = {
+    plugins: {
+      legend: {
+        position: 'top' as const,
+        align: 'end' as const,
+        labels: {
+          usePointStyle: true,
+          color: legendColor,
+        },
+      },
+      title: {
+        display: false,
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        border: { display: false },
+      },
+      y: {
+        grid: {
+          display: true,
+          color: borderColor,
+          lineWidth: 1,
+        },
+        border: { display: false },
+      },
+    },
+  };
   const initialServerId = serverList[0]?.id || '';
+  const { t } = useTranslation();
   const [serverId, setServerId] = useState(initialServerId);
   const [timeRange, setTimeRange] = useState<TimeRangeType>(DEFAULT_TIME_RANGE);
 
@@ -21,6 +54,16 @@ export const CustomerTransactions = ({ serverList }: { serverList: ServerItem[] 
     type: timeRange,
     serverId,
   });
+
+  useEffect(() => {
+    const handler = () => {
+      setLegendColor(getCssVar('--card-foreground', '#0a0a0a'));
+      setBorderColor(getCssVar('--border', '#E1E3EA'));
+    };
+    window.addEventListener('themechange', handler as EventListener);
+    return () => window.removeEventListener('themechange', handler as EventListener);
+  }, []);
+
   // 平仓盈亏 图表数据
   const PositionProfitLossChartData = useMemo(() => {
     if (!data || !data?.data?.data) return { labels: [], datasets: [] };
@@ -30,11 +73,21 @@ export const CustomerTransactions = ({ serverList }: { serverList: ServerItem[] 
     const datasets = [
       {
         label: t('common.profit'),
-        data: dataArr.map((item: { profit: number }) => item.profit || 0),
+        data: dataArr.map((item: { profit: number }) => item.profit),
+        borderDash: [6, 4], // dashed line
+        backgroundColor: '#3E97FF',
+        pointStyle: 'circle',
+        pointRadius: 6,
+        borderRadius: 4,
       },
       {
         label: t('common.loss'),
-        data: dataArr.map((item: { loss: number }) => Math.abs(item.loss || 0)),
+        data: dataArr.map((item: { loss: number }) => Math.abs(item.loss)),
+        borderDash: [6, 4], // dashed line
+        backgroundColor: '#27AE60',
+        pointStyle: 'circle',
+        pointRadius: 6,
+        borderRadius: 4,
       },
     ];
     return { labels, datasets };
@@ -64,6 +117,11 @@ export const CustomerTransactions = ({ serverList }: { serverList: ServerItem[] 
       {
         label: t('table.volume'),
         data: dataArr.map((item: { volume: number }) => item.volume || 0),
+        borderDash: [6, 4], // dashed line
+        backgroundColor: '#27AE60',
+        pointStyle: 'circle',
+        pointRadius: 6,
+        borderRadius: 4,
       },
     ];
     return { labels, datasets };
@@ -90,6 +148,11 @@ export const CustomerTransactions = ({ serverList }: { serverList: ServerItem[] 
       {
         label: t('home.quantity'),
         data: dataArr.map((item: { quantity: number }) => item.quantity || 0),
+        borderDash: [6, 4], // dashed line
+        backgroundColor: '#27AE60',
+        pointStyle: 'circle',
+        pointRadius: 6,
+        borderRadius: 4,
       },
     ];
     return { labels, datasets };
@@ -107,7 +170,6 @@ export const CustomerTransactions = ({ serverList }: { serverList: ServerItem[] 
     };
   }, [data]);
 
-  // server 列表 useMemo防止重复渲染
   const serverOptions = useMemo(
     () =>
       serverList.map(item => ({
@@ -119,174 +181,150 @@ export const CustomerTransactions = ({ serverList }: { serverList: ServerItem[] 
     [serverList],
   );
 
+  useEffect(() => {
+    if (!serverList.length) return;
+    const exists = serverList.some(s => s.id === serverId);
+    if (!exists) {
+      setServerId(serverList[0].id);
+    }
+  }, [serverList, serverId]);
+
   return (
-    <div className="bg-card mb-6 rounded-lg border p-6">
-      <div className="flex items-center justify-between">
-        <div className="h-6">
-          <h2 className="text-xl leading-6 font-semibold">{t('home.CustomerTrading')}</h2>
+    <div className="bg-card rounded-lg p-2 shadow-xs lg:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-1.5 lg:flex-nowrap">
+        <div className="text-card-foreground text-lg leading-7 font-semibold">
+          {t('home.CustomerTrading')}
         </div>
-        <div className={cn('flex items-center gap-4')}>
-          <RrhSelect
-            options={serverOptions}
-            showRowValue={false}
-            className="w-40"
-            value={serverId}
-            renderItem={option => {
-              return (
-                <div>
-                  <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
-                  {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
-                  <span>{option.label}</span>
-                </div>
-              );
-            }}
-            onValueChange={value => {
-              setServerId(value);
-            }}
-          />
-          <RrhSelect
-            options={timeRangeOptions}
-            showRowValue={false}
-            showi18nLabel={true}
-            className="w-40"
-            value={timeRange}
-            onValueChange={val => setTimeRange(val as TimeRangeType)}
-          />
+        <div className={cn('flex flex-wrap items-center gap-1 lg:flex-nowrap lg:gap-4')}>
+          <div className="flex-1">
+            <RrhSelect
+              options={serverOptions}
+              showRowValue={false}
+              className="px-3 py-2"
+              value={serverId}
+              renderItem={option => {
+                return (
+                  <div>
+                    <span>
+                      {option.serviceProperty === 1 ? t('common.live') : t('common.demo')}
+                    </span>
+                    {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
+                    <span>{option.label}</span>
+                  </div>
+                );
+              }}
+              onValueChange={value => {
+                setServerId(value);
+              }}
+            />
+          </div>
+          <div className="flex-1">
+            <RrhSelect
+              options={timeRangeOptions}
+              showRowValue={false}
+              showi18nLabel={true}
+              className="px-3 py-2"
+              value={timeRange}
+              onValueChange={val => setTimeRange(val as TimeRangeType)}
+            />
+          </div>
         </div>
       </div>
-      <div className="mt-3">
-        <Tabs defaultValue="account" className="w-full">
-          <TabsList className="dark:bg-accent bg-slate-100">
-            <TabsTrigger value="account">{t('home.PositionProfitLoss')}</TabsTrigger>
-            <TabsTrigger value="volume">{t('home.TradingVolume')}</TabsTrigger>
-            <TabsTrigger value="order">{t('home.TradingOrder')}</TabsTrigger>
-          </TabsList>
-          <TabsContent value="account">
-            <div className="mb-6 flex gap-20 px-6">
+      <Tabs defaultValue="account" className="mt-2 w-full lg:mt-6">
+        <TabsList className="dark:bg-accent bg-slate-100">
+          <TabsTrigger value="account" className="max-w-[100px] truncate md:max-w-full">
+            {t('home.PositionProfitLoss')}
+          </TabsTrigger>
+          <TabsTrigger value="volume" className="max-w-[100px] truncate md:max-w-full">
+            {t('home.TradingVolume')}
+          </TabsTrigger>
+          <TabsTrigger value="order" className="max-w-[100px] truncate md:max-w-full">
+            {t('home.TradingOrder')}
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="account">
+          <div className="mb-2 flex lg:mb-6">
+            <div className="flex-1">
               <LegendHeader label={t('home.NetProfit')} value={PositionProfitLossData.profit} />
+            </div>
+            <div className="bg-border mx-6 hidden w-[1px] md:block"></div>
+            <div className="flex-1">
               <LegendHeader label={t('home.GrossLoss')} value={PositionProfitLossData.loss} />
+            </div>
+            <div className="bg-border mx-6 hidden w-[1px] md:block"></div>
+            <div className="flex-1">
               <LegendHeader
                 label={t('home.NetProfitToday')}
                 value={PositionProfitLossData.netProfit}
               />
             </div>
-            <div className="min-h-75">
-              {isLoading ? (
-                <div>{t('common.loading')}</div>
-              ) : (
-                <BarChart
-                  labels={PositionProfitLossChartData?.labels || []}
-                  datasets={PositionProfitLossChartData?.datasets || []}
-                  title=""
-                  hideLegend={true}
-                  options={{
-                    responsive: true,
-                    scales: {
-                      x: {
-                        stacked: true,
-                        ticks: {
-                          maxTicksLimit: 7, // Limit the number of ticks shown
-                          autoSkip: true, // Enable automatic skipping of labels
-                          maxRotation: 45, // Rotate labels if needed
-                          minRotation: 0,
-                        },
-                        grid: {
-                          display: true,
-                        },
-                      },
-                      y: {
-                        stacked: true,
-                      },
-                    },
-                  }}
-                />
-              )}
-            </div>
-          </TabsContent>
-          <TabsContent value="volume">
-            <div className="mb-6 flex gap-20 px-6">
+          </div>
+          <div className="h-80 w-full">
+            {isLoading ? (
+              <div>{t('common.loading')}</div>
+            ) : (
+              <BarChart
+                options={options}
+                labels={PositionProfitLossChartData.labels}
+                datasets={PositionProfitLossChartData.datasets}
+                hideLegend={true}
+              />
+            )}
+          </div>
+        </TabsContent>
+        <TabsContent value="volume">
+          <div className="mb-2 flex lg:mb-6">
+            <div className="flex-1">
               <LegendHeader
                 label={t('home.TradingVolumeThisMonth')}
                 value={TradingVolumeData.thisMonth}
               />
+            </div>
+            <div className="bg-border mx-6 hidden w-[1px] md:block"></div>
+            <div className="flex-1">
               <LegendHeader label={t('home.TradingVolumeToday')} value={TradingVolumeData.today} />
             </div>
-            <div className="min-h-75">
-              {isLoading ? (
-                <div>{t('common.loading')}</div>
-              ) : (
-                <BarChart
-                  labels={TradingVolumeChartData?.labels || []}
-                  datasets={TradingVolumeChartData?.datasets || []}
-                  title=""
-                  hideLegend={true}
-                  options={{
-                    responsive: true,
-                    scales: {
-                      x: {
-                        stacked: true,
-                        ticks: {
-                          maxTicksLimit: 7, // Limit the number of ticks shown
-                          autoSkip: true, // Enable automatic skipping of labels
-                          maxRotation: 45, // Rotate labels if needed
-                          minRotation: 0,
-                        },
-                        grid: {
-                          display: true,
-                        },
-                      },
-                      y: {
-                        stacked: true,
-                      },
-                    },
-                  }}
-                />
-              )}
-            </div>
-          </TabsContent>
-          <TabsContent value="order">
-            <div className="mb-6 flex gap-20 px-6">
+          </div>
+          <div className="h-80 w-full">
+            {isLoading ? (
+              <div>{t('common.loading')}</div>
+            ) : (
+              <BarChart
+                options={options}
+                labels={TradingVolumeChartData.labels}
+                datasets={TradingVolumeChartData.datasets}
+                hideLegend={true}
+              />
+            )}
+          </div>
+        </TabsContent>
+        <TabsContent value="order">
+          <div className="mb-2 flex lg:mb-6">
+            <div className="flex-1">
               <LegendHeader
                 label={t('home.quantityThisMonth')}
                 value={TradingOrderData.thisMonth}
               />
+            </div>
+            <div className="bg-border mx-6 hidden w-[1px] md:block"></div>
+            <div className="flex-1">
               <LegendHeader label={t('home.quantityToday')} value={TradingOrderData.today} />
             </div>
-            <div className="min-h-75">
-              {isLoading ? (
-                <div>{t('common.loading')}</div>
-              ) : (
-                <BarChart
-                  labels={TradingOrderChartData?.labels || []}
-                  datasets={TradingOrderChartData?.datasets || []}
-                  title=""
-                  hideLegend={true}
-                  options={{
-                    responsive: true,
-                    scales: {
-                      x: {
-                        stacked: true,
-                        ticks: {
-                          maxTicksLimit: 7, // Limit the number of ticks shown
-                          autoSkip: true, // Enable automatic skipping of labels
-                          maxRotation: 45, // Rotate labels if needed
-                          minRotation: 0,
-                        },
-                        grid: {
-                          display: true,
-                        },
-                      },
-                      y: {
-                        stacked: true,
-                      },
-                    },
-                  }}
-                />
-              )}
-            </div>
-          </TabsContent>
-        </Tabs>
-      </div>
+          </div>
+          <div className="h-80 w-full">
+            {isLoading ? (
+              <div>{t('common.loading')}</div>
+            ) : (
+              <BarChart
+                options={options}
+                labels={TradingOrderChartData.labels}
+                datasets={TradingOrderChartData.datasets}
+                hideLegend={true}
+              />
+            )}
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

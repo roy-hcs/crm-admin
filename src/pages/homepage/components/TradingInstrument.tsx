@@ -63,41 +63,47 @@ export const TradingInstrument = ({ serverList }: { serverList: ServerItem[] }) 
   }, [serverList, serverId]);
 
   return (
-    <div className="bg-card mb-6 rounded-lg border p-6">
-      <div className="flex items-center justify-between">
-        <div className="h-6">
-          <h1 className="text-xl leading-6 font-semibold">{t('home.TradingPairOverview')}</h1>
+    <div className="bg-card rounded-lg p-2 shadow-xs lg:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-1.5 lg:flex-nowrap">
+        <div className="text-card-foreground text-lg leading-7 font-semibold">
+          {t('home.TradingPairOverview')}
         </div>
-        <div className={cn('flex items-center gap-4')}>
-          <RrhSelect
-            options={serverOptions}
-            showRowValue={false}
-            className="w-40"
-            value={serverId}
-            renderItem={option => {
-              return (
-                <div>
-                  <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
-                  {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
-                  <span>{option.label}</span>
-                </div>
-              );
-            }}
-            onValueChange={value => {
-              setServerId(value);
-            }}
-          />
-          <RrhSelect
-            options={timeRangeOptions}
-            showRowValue={false}
-            showi18nLabel={true}
-            className="w-40"
-            value={timeRange}
-            onValueChange={val => setTimeRange(val as TimeRangeType)}
-          />
+        <div className={cn('flex flex-wrap items-center gap-1 lg:flex-nowrap lg:gap-4')}>
+          <div className="flex-1">
+            <RrhSelect
+              options={serverOptions}
+              showRowValue={false}
+              className="px-3 py-2"
+              value={serverId}
+              renderItem={option => {
+                return (
+                  <div>
+                    <span>
+                      {option.serviceProperty === 1 ? t('common.live') : t('common.demo')}
+                    </span>
+                    {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
+                    <span>{option.label}</span>
+                  </div>
+                );
+              }}
+              onValueChange={value => {
+                setServerId(value);
+              }}
+            />
+          </div>
+          <div className="flex-1">
+            <RrhSelect
+              options={timeRangeOptions}
+              showRowValue={false}
+              showi18nLabel={true}
+              className="px-3 py-2"
+              value={timeRange}
+              onValueChange={val => setTimeRange(val as TimeRangeType)}
+            />
+          </div>
         </div>
       </div>
-      <div className="mt-12 flex min-h-75 items-center justify-center">
+      <div className="mt-6">
         {isLoading ? (
           <div>{t('common.loading')}</div>
         ) : pieData ? (

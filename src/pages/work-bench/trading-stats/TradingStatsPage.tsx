@@ -68,7 +68,7 @@ export function TradingStatsPage() {
       {showChartPlaceholder ? (
         <div className="mt-4 text-sm text-gray-500">{t('common.NoData')}</div>
       ) : (
-        <LineChart labels={chartData.labels} datasets={chartData.datasets} />
+        <LineChart lineChartProps={chartData} />
       )}
     </div>
   );

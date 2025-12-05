@@ -17,6 +17,10 @@ export const ThemeSwitcher = () => {
     } else {
       document.documentElement.classList.remove('dark');
     }
+    /**
+     * 派发主题切换事件
+     */
+    window?.dispatchEvent?.(new CustomEvent('themechange', { detail: { dark: newMode } }));
   };
 
   return (
