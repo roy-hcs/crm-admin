@@ -3,6 +3,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhTag } from '@/components/common/RrhTag';
 import { DataTable } from '@/components/table/DataTable';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useTabActions } from '@/hooks/useTabActions';
 import { withdrawalReviewStatusMap } from '@/lib/constant';
 import { ColumnDef } from '@tanstack/react-table';
 import { ReactElement } from 'react';
@@ -30,6 +31,16 @@ export const ReviewWithdrawalTable = ({
   withdrawMethodList: { id: string; name: string }[];
 }) => {
   const { t } = useTranslation();
+  const { openTab } = useTabActions();
+  const goToDetail = (row: WithdrawItem) => {
+    const type = ![-1, 2].includes(row.status) ? 'detail' : 'audit';
+    const url = `/review/withdrawal/detail?type=${type}&id=${row.id}`;
+    openTab({
+      key: url,
+      title: t('withdrawalReview.withdrawalReviewDetail'),
+      path: url,
+    });
+  };
   const ReviewWithdrawalTable: ColumnDef<WithdrawItem>[] = [
     {
       id: 'select',
@@ -158,7 +169,7 @@ export const ReviewWithdrawalTable = ({
       header: t('table.withdrawAmount'),
       cell: ({ row }) => (
         <div className="text-center">
-          {row.original.withdraw} {row.original.walletCurrency}
+          {row.original.withdraw} {row.original.withdrawCurrency}
         </div>
       ),
     },
@@ -225,9 +236,14 @@ export const ReviewWithdrawalTable = ({
       cell: ({ row }) => {
         // TODO: need to add view detail page later
         return (
-          <RrhButton variant="ghost">
-            {row.original.status !== 2 ? t('common.View') : t('table.audit')}
-          </RrhButton>
+          <>
+            <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+              {row.original.status !== 2 ? t('common.View') : t('table.audit')}
+            </RrhButton>
+            {row.original.status === 1 && (
+              <RrhButton variant="ghost">{t('table.cancelWithdrawal')}</RrhButton>
+            )}
+          </>
         );
       },
     },

@@ -17,7 +17,7 @@ export const RrhButton = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonP
     return (
       <Button
         ref={ref}
-        className={cn('cursor-pointer px-3 py-2', className)}
+        className={cn('cursor-pointer px-4 py-2', className)}
         {...props}
         disabled={loading || props.disabled}
       >
