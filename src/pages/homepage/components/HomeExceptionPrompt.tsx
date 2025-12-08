@@ -7,7 +7,7 @@ type Step = {
   status: 'complete' | 'error' | 'current' | 'upcoming';
   content: ReactNode;
 };
-export const Step = ({
+export const HomeExceptionPrompt = ({
   serverExceptionNotice,
 }: {
   serverExceptionNotice: ServerExceptionNoticeRes | [];

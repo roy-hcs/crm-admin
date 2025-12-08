@@ -28,7 +28,7 @@ const urlMenu = {
 
 type UrlMenuKey = keyof typeof urlMenu;
 
-export const Todo = ({ preferences }: { preferences: PreferencesRes | [] }) => {
+export const HomeTodo = ({ preferences }: { preferences: PreferencesRes | [] }) => {
   const { t } = useTranslation();
   const initialTodos: TodoItemType[] = preferences.map(it => {
     const code = it.code as UrlMenuKey;

@@ -13,8 +13,8 @@ import { TradingInstrument } from './components/TradingInstrument';
 import { AccountActivation } from './components/AccountActivation';
 import { CustomerTransactions } from './components/CustomerTransactions';
 import { FundsTransit } from './components/FundsTransit';
-import { Step } from './components/Step';
-import { Todo } from './components/Todo';
+import { HomeExceptionPrompt } from './components/HomeExceptionPrompt';
+import { HomeTodo } from './components/HomeTodo';
 import { useMemo } from 'react';
 
 export function HomePage() {
@@ -60,9 +60,9 @@ export function HomePage() {
         </div>
         <div className="flex flex-col lg:gap-6 xl:gap-6">
           {serverExceptionNotice && serverExceptionNotice?.length > 0 && (
-            <Step serverExceptionNotice={serverExceptionNotice} />
+            <HomeExceptionPrompt serverExceptionNotice={serverExceptionNotice} />
           )}
-          {preferences && preferences?.length > 0 && <Todo preferences={preferences} />}
+          {preferences && preferences?.length > 0 && <HomeTodo preferences={preferences} />}
         </div>
       </div>
     </div>
