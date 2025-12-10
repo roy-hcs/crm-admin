@@ -193,7 +193,18 @@
     "contractSize": "合约规模",
     "contractNumber": "合约数",
     "all": "全部",
-    "unassigned": "未分配"
+    "unassigned": "未分配",
+    "yes": "是",
+    "no": "否",
+    "copied": "已复制到剪贴板",
+    "qrcode": "二维码",
+    "higherThan": "高于",
+    "lowerThan": "低于",
+    "queryTime": "查询时间",
+    "day": "天",
+    "unitOrder": "订单",
+    "expand": "展开",
+    "collapse": "收起"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -483,7 +494,8 @@
     "title": "内部转账审核"
   },
   "withdrawalReview": {
-    "title": "出金审核"
+    "title": "出金审核",
+    "withdrawalReviewDetail": "出金审核详情"
   },
   "depositReview": {
     "title": "入金审核"
@@ -845,6 +857,7 @@
     "payID": "PayID",
     "withdrawAmount": "出金金额",
     "amountOfReceipt": "到账金额",
+    "amountOfReceiptTip": "到账金额为用户收到的金额，出金金额为实际扣款金额、手续费、汇率只做记录",
     "role": "角色",
     "depositMethods": "入金方式",
     "thirdPayment": "第三方支付",
@@ -974,7 +987,27 @@
     "redemptionSettlement": "赎回结算",
     "tierRatio": "层级比例",
     "applicationTime": "申请时间",
-    "settlementTime": "结算时间"
+    "settlementTime": "结算时间",
+    "cancelWithdrawal": "取消出金",
+    "payee": "收款人",
+    "paymentAccount": "收款账户",
+    "payeeAddress": "收款人地址",
+    "paymentBank": "收款银行",
+    "swiftCode": "SWIFT Code",
+    "paymentBankAddress": "收款银行地址",
+    "isDeduction": "是否已扣款",
+    "accountHolderName": "开户姓名",
+    "accountHolderBank": "开户银行",
+    "bankCardNumber": "银行卡号",
+    "branchName": "支行名称",
+    "IFSCCode": "IFSC 代码",
+    "BSBCode": "BSB 代码",
+    "network": "网络",
+    "paymentAddress": "收款地址",
+    "payIdPhone": "PayID手机号",
+    "payIdEmail": "PayID邮箱",
+    "payIdABN": "ABN",
+    "accountInformation": "账户信息"
   },
   "review": {
     "settings": {
@@ -1002,7 +1035,26 @@
       "title": "杠杆审核",
       "currentLever": "当前杠杆",
       "targetLever": "目标杠杆"
-    }
+    },
+    "submitForReview": "提交审核",
+    "reviewPass": "审核通过",
+    "reviewReject": "审核拒绝",
+    "advancePaymentRatio": "当前账户预付款比例",
+    "reviewStatus": "审核状态",
+    "withdrawalReviewDetail": "出金审核详情",
+    "reviewRecord": "审核记录",
+    "review": "审核",
+    "syncToTransactionPlatform": "同步至交易平台",
+    "reviewRemarksPlaceholder": "拒绝时需填写，500个字符以内",
+    "latestLogin": "最近登录",
+    "withdrawalAmountCumulative": "出金金额（累计）",
+    "withdrawalAmountDesc": "不同币种订单以美元做合计",
+    "amountCumulative": "金额（累计）",
+    "orderCount": "订单数",
+    "fundFlow": "资金流水",
+    "withdrawalInfo": "出金信息",
+    "depositRecord": "入金记录",
+    "withdrawalRecord": "出金记录"
   },
   "system": {
     "adminAccounts": {

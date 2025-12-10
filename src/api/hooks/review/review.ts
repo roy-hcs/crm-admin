@@ -29,6 +29,10 @@ import {
   CrmPreferenceListRes,
   LeverageVerifyListParams,
   LeverageVerifyListRes,
+  WithdrawalReviewDetailRes,
+  WithdrawalVerifyParams,
+  SumWithdrawalAmountParams,
+  SumWithdrawalAmountRes,
 } from './types';
 
 export function useAgentApplyList(params: AgentApplyListParams, options: { enabled: boolean }) {
@@ -188,5 +192,33 @@ export function useLeverageVerifyList(params: LeverageVerifyListParams) {
   return useQuery({
     queryKey: ['crmLeverageVerifyList', params],
     queryFn: () => apiFormPostCustom<LeverageVerifyListRes>('system/crmLeverVerify/list', params),
+  });
+}
+
+export function useWithdrawalReviewDetail(withdrawalId: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['withdrawalReviewDetail', withdrawalId],
+    queryFn: () =>
+      apiGetCustom<WithdrawalReviewDetailRes>(
+        `/system/crmWithdrawVerify/verifyDetail/${withdrawalId}`,
+      ),
+    enabled: options.enabled,
+  });
+}
+
+export function useWithdrawalVerify() {
+  return useMutation({
+    mutationFn: (params: WithdrawalVerifyParams) =>
+      apiFormPostCustom(`/system/crmWithdrawVerify/verify`, params),
+  });
+}
+export function useSumWithdrawAmount(params: SumWithdrawalAmountParams) {
+  return useQuery({
+    queryKey: ['sumWithdrawAmount', params],
+    queryFn: () =>
+      apiFormPostCustom<SumWithdrawalAmountRes>(
+        `/system/crmWithdrawVerify/sumWithdrawalAmount`,
+        params,
+      ),
   });
 }

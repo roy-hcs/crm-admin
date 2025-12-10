@@ -88,7 +88,10 @@ export function PaymentOrdersPage() {
               </Button>
             }
             title="Filter"
-            direction="right"
+            responsiveDirection={{
+              mobile: 'bottom',
+              desktop: 'right',
+            }}
             footerShow={false}
           >
             <PaymentOrdersForm

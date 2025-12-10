@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 interface FormSelectProps<T extends FieldValues, O extends BaseOption = BaseOption> {
   name: FieldPath<T>;
-  label: string;
+  label?: string;
   options: O[];
   placeholder?: string;
   verticalLabel?: boolean;
@@ -39,8 +39,10 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
               className,
             )}
           >
-            <FormLabel className="shrink-0 basis-3/12">{label}</FormLabel>
-            <FormControl className={cn('grow-0', verticalLabel ? 'basis-full' : 'basis-9/12')}>
+            {label && <FormLabel className="shrink-0 basis-3/12">{label}</FormLabel>}
+            <FormControl
+              className={cn('grow-0', verticalLabel || !label ? 'basis-full' : 'basis-9/12')}
+            >
               <RrhSelect<O>
                 options={options}
                 value={field.value}

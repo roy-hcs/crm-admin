@@ -30,6 +30,7 @@ import { useTreeData } from './hooks/useTreeData';
 import { usePinnedStyles } from './hooks/usePinnedStyles';
 import { TableRowSkeleton } from './components/TableRowSkeleton';
 import { TreeExpandButton } from './components/TreeExpandButton';
+import { cn } from '@/lib/utils';
 
 // Types are now imported from './types'
 // Hooks and components are now imported from separate files
@@ -51,6 +52,7 @@ function createDataTable<TData extends RowData, TValue>() {
       CustomFooter,
       CustomRow,
       treeConfig,
+      tableWrapperCls,
     }: DataTableProps<TData, TValue>,
     ref: React.Ref<DataTableRef>,
   ) {
@@ -150,7 +152,9 @@ function createDataTable<TData extends RowData, TValue>() {
 
     return (
       <div>
-        <div className="bg-background relative overflow-auto rounded-md border">
+        <div
+          className={cn('bg-background relative overflow-auto rounded-md border', tableWrapperCls)}
+        >
           <Table ref={tableRef}>
             <TableHeader>
               {table.getHeaderGroups().map(headerGroup => (

@@ -305,9 +305,6 @@ body {
   .text-table-header {
     @apply text-sm font-medium;
   }
-  .text-primary {
-    @apply text-sm font-normal;
-  }
   .text-subtle {
     @apply text-xs font-normal;
   }

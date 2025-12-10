@@ -11,6 +11,7 @@ import {
 import { Button } from '../ui/button';
 import { FC, PropsWithChildren } from 'react';
 import { cn } from '@/lib/utils';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 export const RrhDrawer: FC<
   PropsWithChildren<{
     Trigger: React.ReactNode;
@@ -19,6 +20,10 @@ export const RrhDrawer: FC<
     submitText?: string;
     cancelText?: string;
     direction?: 'left' | 'right' | 'top' | 'bottom';
+    responsiveDirection?: {
+      mobile: 'left' | 'right' | 'top' | 'bottom';
+      desktop: 'left' | 'right' | 'top' | 'bottom';
+    };
     headerShow?: boolean;
     footerShow?: boolean;
     open?: boolean;
@@ -31,6 +36,7 @@ export const RrhDrawer: FC<
   description,
   submitText,
   direction,
+  responsiveDirection,
   cancelText,
   children,
   headerShow = true,
@@ -39,8 +45,14 @@ export const RrhDrawer: FC<
   setOpen,
   asChild,
 }) => {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const finalDirection = responsiveDirection
+    ? isMobile
+      ? responsiveDirection.mobile
+      : responsiveDirection.desktop
+    : direction;
   return (
-    <Drawer direction={direction} open={open} onOpenChange={setOpen}>
+    <Drawer direction={finalDirection} open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild={asChild} className="cursor-pointer">
         {Trigger}
       </DrawerTrigger>

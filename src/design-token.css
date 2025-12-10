@@ -29,7 +29,8 @@
   --colors-popover-dark: #262626;
   --colors-popover-foreground-light: #0a0a0a;
   --colors-popover-foreground-dark: #fafafa;
-  --colors-primary-light: #171717;
+  /* --colors-primary-light: #171717; */
+  --colors-primary-light: #0154FC;
   --colors-primary-dark: #e5e5e5;
   --colors-primary-foreground-light: #fafafa;
   --colors-primary-foreground-dark: #171717;

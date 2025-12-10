@@ -38,7 +38,7 @@ const TagItem: FC<TagUserItem & { setTags: (id: string) => void; className?: str
       )}
     >
       <div className="mb-1 text-xs">{tagName}</div>
-      <div className="text-third font-medium">{userCount}</div>
+      <div className="font-medium">{userCount}</div>
       <Search className="absolute top-2 right-2 hidden size-3 group-hover/tag:block" />
     </div>
   );
@@ -203,7 +203,10 @@ export const CRMAccounts = () => {
                 </Button>
               }
               title="Filter"
-              direction="right"
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
               footerShow={false}
             >
               <CRMAccountsForm

@@ -1,4 +1,4 @@
-import { RouteObject } from 'react-router-dom';
+import { RouteObject, useSearchParams } from 'react-router-dom';
 import { ReviewAgentPage } from '@/pages/review/agent/ReviewAgentPage';
 import { ReviewDepositRebatePage } from '@/pages/review/deposit-rebate/ReviewDepositRebatePage';
 import { ReviewFeeRebatePage } from '@/pages/review/fee-rebate/ReviewFeeRebatePage';
@@ -11,6 +11,12 @@ import { InformationPage } from '@/pages/review/information/InformationPage';
 import { AccountOpeningPage } from '@/pages/review/account-opening/AccountOpeningPage';
 import { BindingPage } from '@/pages/review/binding/BindingPage';
 import { LeveragePage } from '@/pages/review/leverage/LeveragePage';
+import { ReviewWithdrawalDetailPage } from '@/pages/review/withdrawal-detail/ReviewWithdrawalDetailPage';
+
+const ReviewWithdrawalDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <ReviewWithdrawalDetailPage key={searchParams.get('id')} />;
+};
 
 /**
  * Review routes - corresponds to "审核" menu item
@@ -58,6 +64,10 @@ export const reviewRoutes: RouteObject[] = [
   {
     path: '/review/withdrawal',
     element: <ReviewWithdrawalPage />,
+  },
+  {
+    path: '/review/withdrawal/detail',
+    element: <ReviewWithdrawalDetailPageWrapper />,
   },
   {
     path: '/review/internal-transfer',

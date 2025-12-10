@@ -339,6 +339,9 @@ export type DepositListParams = BasicParams & {
     endTime?: string;
     inMoneyAccount?: string;
     accounts?: string;
+    finishBeginTime?: string;
+    finishEndTime?: string;
+    userId?: string;
   };
 };
 
@@ -654,3 +657,103 @@ export type LeverageVerifyListItem = {
 };
 
 export type LeverageVerifyListRes = BasicRes<LeverageVerifyListItem>;
+export type ChannelFieldItem = BaseEntity & {
+  id: string;
+  channelId: string;
+  fieldName: string;
+  whetherRequired: string | null;
+  type: number;
+  length: string | null;
+  sort: string | null;
+  delFlag: string | null;
+  showInfo: string | null;
+  checkUnique: string | null;
+  fieldValue: string;
+  channelName: string;
+};
+export type VerifyLogItem = BaseEntity & {
+  id: string;
+  businessId: string;
+  businessType: number;
+  verifyStep: number;
+  verifyUser: string;
+  verifyStatus: number;
+  isDone: boolean;
+  userName: string;
+  userLastName: string;
+  verifyTime: string;
+};
+
+export type withdrawalDetailItem = WithdrawItem & {
+  marginlevel: string;
+  marginlevelTime: string;
+  marginlevelTip: number;
+  minAdvanceScale: number;
+  maxAdvanceScale: number;
+};
+export type WithdrawalReviewDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    accountId: string;
+    detail: withdrawalDetailItem;
+    digits: number;
+    directBroker: string;
+    factWithdrawScale: number;
+    isPermission: number;
+    rateChange: number;
+    reviewer: BaseEntity & {
+      preferenceId: string;
+      remark: string;
+      roleId: string;
+      roleName: string;
+      sort: number;
+      userId: string;
+      userName: string;
+      userLastName: string;
+    };
+    sysWithdrawChannelLanguages: ChannelFieldItem[];
+    roleName: string;
+    subTime: string;
+    tLastLogin: string;
+    userName: string;
+    walletCurrency: string;
+    verifyLogs: VerifyLogItem[];
+  };
+};
+
+export type WithdrawalVerifyParams = {
+  id: string | null;
+  status: string;
+  remark: string;
+  withdraw: string;
+  fee: string;
+  expectWithdraw: string;
+  factWithdraw: string;
+  rate: string;
+  targetCurrency: string;
+  withdrawUser: string;
+  withdrawAddress: string;
+  withdrawAccount: string;
+  withdrawBank: string;
+  swift: string;
+  withdrawBankAddress: string;
+  accountName: string;
+  accountBank: string;
+  cardNo: string;
+  branchBank: string;
+  verifyStep: number;
+  ifscCode: string;
+  bsbCode: string;
+  orderComment: string;
+};
+export type SumWithdrawalAmountParams = {
+  userId: string;
+  subTime: string;
+  days: string;
+};
+export type SumWithdrawalAmountRes = {
+  size: number;
+  sum: number;
+  status: number;
+}[];

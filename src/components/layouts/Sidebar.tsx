@@ -791,7 +791,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
         </Link>
       </div>
 
-      <nav className="text-third px-2">
+      <nav className="text-sidebar-foreground px-2">
         {open ? (
           <Accordion
             type="single"
