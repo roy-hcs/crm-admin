@@ -237,7 +237,8 @@
     "TradingVolumeToday": "交易量(今日)",
     "quantity": "订单量",
     "quantityThisMonth": "订单量(本月)",
-    "quantityToday": "订单量(今日)"
+    "quantityToday": "订单量(今日)",
+    "todo": "代办事项"
   },
   "workBench": {
     "title": "数据概览"

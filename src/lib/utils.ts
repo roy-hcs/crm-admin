@@ -85,3 +85,16 @@ export const formatDate = (date?: Date | string, format = 'YYYY-MM-DD') => {
   }
   return dayjs(date).format(format);
 };
+
+export const percentageFormat = (value: number) => {
+  return (value >= 0 ? '+' : '') + (value * 100).toFixed(0) + '%';
+};
+
+export const getCssVar = (name: string, fallback: string) => {
+  try {
+    const v = getComputedStyle(document.documentElement).getPropertyValue(name);
+    return v && v.trim() ? v.trim() : fallback;
+  } catch {
+    return fallback;
+  }
+};

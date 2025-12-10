@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import {
   Chart as ChartJS,
   ArcElement,
@@ -33,8 +34,7 @@ export const PieChart: FC<PieChartProps> = ({ title, labels, datasets, options =
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        // position: 'top' as const,
-        display: false, // 自定义legend
+        display: false,
       },
       title: {
         display: !!title,
@@ -62,7 +62,6 @@ export const PieChart: FC<PieChartProps> = ({ title, labels, datasets, options =
 
     if (count > colorPalette.length) {
       for (let i = colorPalette.length; i < count; i++) {
-        // Generate a random vibrant color
         const h = Math.floor(Math.random() * 360); // hue (0-360)
         const s = Math.floor(70 + Math.random() * 30); // saturation (70-100%)
         const l = Math.floor(45 + Math.random() * 10); // lightness (45-55%)
@@ -96,12 +95,11 @@ export const PieChart: FC<PieChartProps> = ({ title, labels, datasets, options =
   legendData?.unshift({
     label: t('common.total'),
     value: t('common.TradingVolume'),
-    color: '', // 总计颜色
+    color: '',
   });
   return (
-    <div className="flex h-full w-full items-center">
-      {/* 图表区域靠左 */}
-      <div className="ml-11.5 h-55 w-61.5">
+    <div className="flex h-full w-full flex-wrap items-center justify-between lg:flex-nowrap">
+      <div className="w-full lg:h-55 lg:w-61.5">
         <Pie
           options={{
             ...pieOptions,
@@ -110,39 +108,43 @@ export const PieChart: FC<PieChartProps> = ({ title, labels, datasets, options =
           data={chartData}
         />
       </div>
-      {/* legend区域靠右，超出高度滚动 */}
-      <div className="ml-40 h-58.5 overflow-y-auto">
-        {/* 手动渲染 legend */}
-        {legendData?.map((it, idx) => (
-          <div className="mb-3.75 flex" key={idx}>
-            <div className="h-5 w-43.5">
-              {idx === 0 ? (
-                // 总计
-                <div className="text-color-home h-5 text-sm leading-5 font-medium">
-                  {String(it.label)}
-                </div>
-              ) : (
-                <>
-                  <span
-                    className="mr-1 inline-block h-3 w-3 rounded-full"
-                    style={{
-                      background: it.color,
-                    }}
-                  />
-                  <span className="text-color-home text-sm font-normal">{String(it.label)}</span>
-                </>
-              )}
+      <div className="scrollbar-none h-58.5 w-full overflow-y-auto lg:w-auto">
+        <div className="grid gap-3.75">
+          {legendData?.map((it, idx) => (
+            <div className="flex justify-between lg:justify-start" key={idx}>
+              <div className="w-43.5">
+                {idx === 0 ? (
+                  <div className="text-card-foreground text-sm leading-5 font-medium">
+                    {String(it.label)}
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1">
+                    <div
+                      className={cn('h-3 w-3 rounded-full')}
+                      style={{
+                        background: it.color,
+                      }}
+                    />
+                    <div className="text-card-foreground text-sm leading-5 font-normal">
+                      {String(it.label)}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div>
+                {idx === 0 ? (
+                  <div className="text-card-foreground text-sm leading-5 font-medium">
+                    {String(it.value)}
+                  </div>
+                ) : (
+                  <span className="text-card-foreground text-sm leading-5 font-normal">
+                    {String(it.value)}
+                  </span>
+                )}
+              </div>
             </div>
-            <div className="h-5">
-              {idx === 0 ? (
-                // 交易量(Lot)
-                <div className="h-5 text-sm leading-5 font-medium">{String(it.value)}</div>
-              ) : (
-                <span className="text-color-home text-sm font-normal">{String(it.value)}</span>
-              )}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

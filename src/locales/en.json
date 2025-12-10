@@ -218,7 +218,8 @@
     "TradingVolumeToday": "Trading volume (today)",
     "quantity": "Order quantity",
     "quantityThisMonth": "Order volume (this month)",
-    "quantityToday": "Order volume (today)"
+    "quantityToday": "Order volume (today)",
+    "todo": "To-do items"
   },
   "loginPage": {
     "EnterYourEmailBelowToSignInYourAccount": "Enter your email below to log in to your account",
