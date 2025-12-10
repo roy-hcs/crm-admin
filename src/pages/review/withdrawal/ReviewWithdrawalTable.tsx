@@ -1,11 +1,10 @@
 import { WithdrawItem } from '@/api/hooks/review';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhTag } from '@/components/common/RrhTag';
-import { DataTable } from '@/components/table/DataTable';
+import { CRMColumnDef, DataTable } from '@/components/table/DataTable';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useTabActions } from '@/hooks/useTabActions';
 import { withdrawalReviewStatusMap } from '@/lib/constant';
-import { ColumnDef } from '@tanstack/react-table';
 import { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -41,7 +40,7 @@ export const ReviewWithdrawalTable = ({
       path: url,
     });
   };
-  const ReviewWithdrawalTable: ColumnDef<WithdrawItem>[] = [
+  const ReviewWithdrawalTable: CRMColumnDef<WithdrawItem, unknown>[] = [
     {
       id: 'select',
       header: ({ table }) => (
@@ -231,7 +230,9 @@ export const ReviewWithdrawalTable = ({
       accessorFn: row => row.dealTicket,
     },
     {
+      fixed: 'right',
       id: 'operate',
+      size: 50,
       header: t('common.Operation'),
       cell: ({ row }) => {
         // TODO: need to add view detail page later

@@ -30,7 +30,7 @@ export function FormInput<T extends FieldValues>({
         <FormItem>
           <div
             className={cn(
-              'flex text-sm text-[#757F8D]',
+              'text-foreground flex text-sm',
               verticalLabel ? 'flex-col items-start gap-2' : 'items-center',
               className,
             )}

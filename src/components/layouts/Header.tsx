@@ -9,8 +9,8 @@ import { RrhButton } from '../common/RrhButton';
 
 export function Header() {
   return (
-    <header className="bg-card text-card-foreground flex flex-col">
-      <div className="border-border flex h-12 items-center justify-between border-b px-4">
+    <header className="bg-primary-foreground text-card-foreground flex flex-col">
+      <div className="flex h-12 items-center justify-between px-4">
         <div className="flex items-center">
           <RrhDrawer
             asChild

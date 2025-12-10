@@ -34,7 +34,7 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
         <FormItem>
           <div
             className={cn(
-              'flex items-center text-sm text-[#757F8D]',
+              'text-foreground flex items-center text-sm',
               verticalLabel ? 'flex-col items-start gap-2' : '',
               className,
             )}

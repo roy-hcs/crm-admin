@@ -67,6 +67,9 @@ export const MessageManagementTable = ({
         if (row.original.receive_type === 1) {
           return <div>{t('common.allCRMUsers')}</div>;
         } else {
+          if (!row.original.allUser) {
+            return <div>-</div>;
+          }
           const isTooLong = row.original.allUser.length > 19;
           const content = isTooLong
             ? row.original.allUser.slice(0, 19) + '...'

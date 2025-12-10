@@ -111,7 +111,7 @@ export const RrhSelectAccountsPopup = ({
 
   return (
     <FormItem className={cn('flex text-sm', verticalLabel ? 'flex-col items-start gap-2' : '')}>
-      <FormLabel className="basis-3/12 text-[#757F8D]">
+      <FormLabel className="text-foreground basis-3/12">
         {t('CRMAccountPage.AccountRange')}:
       </FormLabel>
       <FormControl className="basis-9/12">
@@ -119,7 +119,7 @@ export const RrhSelectAccountsPopup = ({
           title={t('CRMAccountPage.SelectSuperiorRange')}
           className="flex min-h-1/2 min-w-1/2 flex-col"
           trigger={
-            <div className="h-9 w-full shrink-0 basis-9/12 cursor-pointer rounded-md border p-2 text-[#757F8D]">
+            <div className="text-foreground h-9 w-full shrink-0 basis-9/12 cursor-pointer rounded-md border p-2">
               {selectedOptionLabel ? selectedOptionLabel : t('common.pleaseSelect')}
             </div>
           }

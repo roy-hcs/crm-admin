@@ -10,7 +10,7 @@ export const RrhInputWithUnit: FC<
   } & ComponentProps<'input'>
 > = ({ unit, wrapperClassName, unitClassName, disabled, ...props }) => {
   return (
-    <div className={cn('relative', wrapperClassName)}>
+    <div className={cn('relative w-full', wrapperClassName)}>
       <Input
         disabled={disabled}
         className="disabled:text-muted-foreground h-10 pr-15 text-sm"

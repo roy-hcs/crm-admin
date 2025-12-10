@@ -115,6 +115,7 @@ export const ReviewWithdrawalPage = () => {
           }
         >
           <ReviewWithdrawalForm
+            reset={reset}
             setParams={setParams}
             setOtherParams={setOtherParams}
             loading={withdrawListLoading}

@@ -66,7 +66,7 @@ export function TabNavigation() {
   // };
 
   return (
-    <div className="bg-background border-border relative flex w-full items-center border-b px-1.5">
+    <div className="bg-sidebar border-border relative flex w-full items-center border-b px-1.5">
       <RrhButton variant="outline" className="size-8 !px-2" onClick={() => handleScroll('left')}>
         <ChevronLeft className="size-4" />
       </RrhButton>
@@ -85,12 +85,12 @@ export function TabNavigation() {
               }
             }}
             className={cn(
-              'text-muted-foreground hover:bg-accent hover:text-foreground relative flex cursor-pointer items-center rounded-lg px-2.5 py-2 text-sm text-nowrap select-none',
-              activeTab === tab.key ? 'text-foreground bg-accent' : '',
+              'text-muted-foreground hover:bg-background hover:text-foreground relative flex cursor-pointer items-center rounded-lg px-2.5 py-2 text-sm text-nowrap select-none',
+              activeTab === tab.key ? 'bg-background' : '',
             )}
             onClick={() => handleTabClick(tab)}
           >
-            <span>{tab.title}</span>
+            <span className={cn(activeTab === tab.key ? 'text-primary' : '')}>{tab.title}</span>
             {tab.closable && (
               <RrhButton
                 variant="ghost"

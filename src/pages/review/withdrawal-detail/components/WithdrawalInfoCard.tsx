@@ -145,199 +145,201 @@ export const WithdrawalInfoCard: FC<{
   };
   return (
     <RrhCard title={t('review.withdrawalInfo')} className="flex-1 md:px-10 md:py-6">
-      <FormField
-        name="withdrawalAccount"
-        disabled
-        render={() => (
-          <WithdrawalItem
-            label={
-              <span className="flex items-center justify-between">
-                {t('table.withdrawAccount')}
-                <a href="#">{t('review.fundFlow')}</a>
-              </span>
-            }
-            ContentDom={
-              <>
-                {withdrawalInfo.walletId && (
-                  <InfoItem info={`${t('table.wallet')}(${withdrawData.walletCurrency})`} />
-                )}
-                {withdrawalInfo.login && (
-                  <InfoItem info={`${withdrawalInfo.aliasName}/${withdrawalInfo.login}`} />
-                )}
-              </>
-            }
-          />
-        )}
-      />
-      <FormField
-        name="withdrawalWay"
-        disabled
-        render={() => (
-          <WithdrawalItem
-            label={t('table.withdrawMethods')}
-            ContentDom={<InfoItem info={methodName} />}
-          />
-        )}
-      />
-
-      <div className="flex flex-col gap-2 py-3">
-        <label className="text-sm font-medium">{t('table.withdrawAmount')}</label>
-        <div className="flex items-center gap-3">
-          <FormField
-            name="withdrawAmount"
-            render={({ field }) => (
-              <RrhInputWithUnit
-                unit={withdrawalInfo.withdrawCurrency}
-                disabled
-                {...field}
-                value={field.value}
-              />
-            )}
-          />
-          <Repeat className="size-4" />
-          <FormField
-            name="expectWithdraw"
-            render={({ field }) => (
-              <>
-                <RrhInputWithUnit
-                  unit={withdrawalInfo.targetCurrency}
-                  disabled
-                  value={field.value || calculateTargetWithdraw(withdrawalInfo.withdraw)}
-                  onChange={field.onChange}
-                />
-              </>
-            )}
-          />
-        </div>
-      </div>
-      <FormField
-        name="commission"
-        render={({ field }) => (
-          <WithdrawalItem
-            label={t('table.commission')}
-            ContentDom={
-              <RrhInputWithUnit
-                unit={withdrawalInfo.feeCurrency}
-                disabled={withdrawalInfo.status !== 2 || !isAudit}
-                value={field.value ?? currentFee}
-                onChange={e => {
-                  field.onChange(e.target.value);
-                  setCurrentFee(e.target.value);
-                  form.setValue('commission', e.target.value);
-                }}
-              />
-            }
-          />
-        )}
-      />
-      <FormField
-        name="rate"
-        render={() => (
-          <WithdrawalItem
-            label={t('common.exchangeRate')}
-            ContentDom={
-              <RrhInputWithUnit
-                unit={withdrawalInfo.currencyPair}
-                disabled={!isAudit}
-                value={currentRate}
-                onChange={e => setRate(e.target.value)}
-                onBlur={handleRateBlur}
-              />
-            }
-          />
-        )}
-      />
-      <FormField
-        name="amountOfReceipt"
-        render={() => (
-          <WithdrawalItem
-            label={
-              <span className="flex items-center gap-1">
-                {t('table.amountOfReceipt')}
-                <ToolTip content={t('table.amountOfReceiptTip')}>
-                  <CircleAlert className="text-muted-foreground size-4" />
-                </ToolTip>
-              </span>
-            }
-            ContentDom={
-              <>
-                <RrhInputWithUnit
-                  unit={withdrawalInfo.targetCurrency}
-                  disabled={!isAudit}
-                  value={!isAudit ? withdrawalInfo.factWithdraw || '' : amountOfReceipt}
-                  onChange={e => setAmountOfReceipt(e.target.value)}
-                />
-              </>
-            }
-          />
-        )}
-      />
-      <FormField
-        name="remarks"
-        disabled
-        render={() => (
-          <WithdrawalItem
-            label={t('table.remarks')}
-            ContentDom={<InfoItem info={withdrawalInfo.subRemark || '-'} />}
-          />
-        )}
-      />
-      <FormField
-        name="orderNumber"
-        disabled
-        render={() => (
-          <WithdrawalItem
-            label={t('table.orderNumber')}
-            ContentDom={<InfoItem info={withdrawalInfo.orderNum || '-'} />}
-          />
-        )}
-      />
-      {withdrawalInfo.method === 1 && (
-        <InternationalTransferInfo withdrawalInfo={withdrawalInfo} isAudit={isAudit} />
-      )}
-      {withdrawalInfo.method === 2 && (
-        <BankTransferInfo
-          withdrawalInfo={withdrawalInfo}
-          isAudit={isAudit}
-          directBroker={withdrawData.directBroker}
+      <div className="max-w-150">
+        <FormField
+          name="withdrawalAccount"
+          disabled
+          render={() => (
+            <WithdrawalItem
+              label={
+                <span className="flex items-center justify-between">
+                  {t('table.withdrawAccount')}
+                  <a href="#">{t('review.fundFlow')}</a>
+                </span>
+              }
+              ContentDom={
+                <>
+                  {withdrawalInfo.walletId && (
+                    <InfoItem info={`${t('table.wallet')}(${withdrawData.walletCurrency})`} />
+                  )}
+                  {withdrawalInfo.login && (
+                    <InfoItem info={`${withdrawalInfo.aliasName}/${withdrawalInfo.login}`} />
+                  )}
+                </>
+              }
+            />
+          )}
         />
-      )}
-      {withdrawalInfo.method === 6 && (
-        <CryptocurrencyInfo withdrawalInfo={withdrawalInfo} isAudit={isAudit} />
-      )}
-      {withdrawalInfo.method === 13 && (
-        <PayIdInfo withdrawalInfo={withdrawalInfo} isAudit={isAudit} />
-      )}
-      {![1, 2, 6, 13].includes(withdrawalInfo.method) &&
-        fieldConfigs.map(({ key, label, name }) => (
-          <FormField
-            key={key}
-            name={name}
-            render={({ field }) => (
-              <WithdrawalItem
-                label={label}
-                ContentDom={
-                  <EditableItem
-                    infoEditable={isEditing(key)}
-                    info={getDisplayValue(key)}
-                    isAudit={isAudit}
-                    shadowInfo={getDisplayValue(key)}
-                    setShadowInfo={val => updateEditingValue(key, val)}
-                    onCancel={() => cancelEdit(key)}
-                    onConfirm={() => confirmEdit(key)}
-                    onEdit={() => startEdit(key)}
-                    value={field.value}
-                    onValueChange={e => field.onChange(e)}
+        <FormField
+          name="withdrawalWay"
+          disabled
+          render={() => (
+            <WithdrawalItem
+              label={t('table.withdrawMethods')}
+              ContentDom={<InfoItem info={methodName} />}
+            />
+          )}
+        />
+
+        <div className="flex flex-col gap-2 py-3">
+          <label className="text-sm font-medium">{t('table.withdrawAmount')}</label>
+          <div className="flex items-center gap-3">
+            <FormField
+              name="withdrawAmount"
+              render={({ field }) => (
+                <RrhInputWithUnit
+                  unit={withdrawalInfo.withdrawCurrency}
+                  disabled
+                  {...field}
+                  value={field.value}
+                />
+              )}
+            />
+            <Repeat className="size-4" />
+            <FormField
+              name="expectWithdraw"
+              render={({ field }) => (
+                <>
+                  <RrhInputWithUnit
+                    unit={withdrawalInfo.targetCurrency}
+                    disabled
+                    value={field.value || calculateTargetWithdraw(withdrawalInfo.withdraw)}
+                    onChange={field.onChange}
                   />
-                }
-              />
-            )}
+                </>
+              )}
+            />
+          </div>
+        </div>
+        <FormField
+          name="commission"
+          render={({ field }) => (
+            <WithdrawalItem
+              label={t('table.commission')}
+              ContentDom={
+                <RrhInputWithUnit
+                  unit={withdrawalInfo.feeCurrency}
+                  disabled={withdrawalInfo.status !== 2 || !isAudit}
+                  value={field.value ?? currentFee}
+                  onChange={e => {
+                    field.onChange(e.target.value);
+                    setCurrentFee(e.target.value);
+                    form.setValue('commission', e.target.value);
+                  }}
+                />
+              }
+            />
+          )}
+        />
+        <FormField
+          name="rate"
+          render={() => (
+            <WithdrawalItem
+              label={t('common.exchangeRate')}
+              ContentDom={
+                <RrhInputWithUnit
+                  unit={withdrawalInfo.currencyPair}
+                  disabled={!isAudit}
+                  value={currentRate}
+                  onChange={e => setRate(e.target.value)}
+                  onBlur={handleRateBlur}
+                />
+              }
+            />
+          )}
+        />
+        <FormField
+          name="amountOfReceipt"
+          render={() => (
+            <WithdrawalItem
+              label={
+                <span className="flex items-center gap-1">
+                  {t('table.amountOfReceipt')}
+                  <ToolTip content={t('table.amountOfReceiptTip')}>
+                    <CircleAlert className="text-muted-foreground size-4" />
+                  </ToolTip>
+                </span>
+              }
+              ContentDom={
+                <>
+                  <RrhInputWithUnit
+                    unit={withdrawalInfo.targetCurrency}
+                    disabled={!isAudit}
+                    value={!isAudit ? withdrawalInfo.factWithdraw || '' : amountOfReceipt}
+                    onChange={e => setAmountOfReceipt(e.target.value)}
+                  />
+                </>
+              }
+            />
+          )}
+        />
+        <FormField
+          name="remarks"
+          disabled
+          render={() => (
+            <WithdrawalItem
+              label={t('table.remarks')}
+              ContentDom={<InfoItem info={withdrawalInfo.subRemark || '-'} />}
+            />
+          )}
+        />
+        <FormField
+          name="orderNumber"
+          disabled
+          render={() => (
+            <WithdrawalItem
+              label={t('table.orderNumber')}
+              ContentDom={<InfoItem info={withdrawalInfo.orderNum || '-'} />}
+            />
+          )}
+        />
+        {withdrawalInfo.method === 1 && (
+          <InternationalTransferInfo withdrawalInfo={withdrawalInfo} isAudit={isAudit} />
+        )}
+        {withdrawalInfo.method === 2 && (
+          <BankTransferInfo
+            withdrawalInfo={withdrawalInfo}
+            isAudit={isAudit}
+            directBroker={withdrawData.directBroker}
           />
-        ))}
-      <AccountInfo
-        targetCurrency={withdrawalInfo.targetCurrency}
-        withdrawalChannelsInfo={withdrawData.sysWithdrawChannelLanguages}
-      />
+        )}
+        {withdrawalInfo.method === 6 && (
+          <CryptocurrencyInfo withdrawalInfo={withdrawalInfo} isAudit={isAudit} />
+        )}
+        {withdrawalInfo.method === 13 && (
+          <PayIdInfo withdrawalInfo={withdrawalInfo} isAudit={isAudit} />
+        )}
+        {![1, 2, 6, 13].includes(withdrawalInfo.method) &&
+          fieldConfigs.map(({ key, label, name }) => (
+            <FormField
+              key={key}
+              name={name}
+              render={({ field }) => (
+                <WithdrawalItem
+                  label={label}
+                  ContentDom={
+                    <EditableItem
+                      infoEditable={isEditing(key)}
+                      info={getDisplayValue(key)}
+                      isAudit={isAudit}
+                      shadowInfo={getDisplayValue(key)}
+                      setShadowInfo={val => updateEditingValue(key, val)}
+                      onCancel={() => cancelEdit(key)}
+                      onConfirm={() => confirmEdit(key)}
+                      onEdit={() => startEdit(key)}
+                      value={field.value}
+                      onValueChange={e => field.onChange(e)}
+                    />
+                  }
+                />
+              )}
+            />
+          ))}
+        <AccountInfo
+          targetCurrency={withdrawalInfo.targetCurrency}
+          withdrawalChannelsInfo={withdrawData.sysWithdrawChannelLanguages}
+        />
+      </div>
     </RrhCard>
   );
 };
