@@ -60,7 +60,10 @@ export const CRMUserOperationsLogsPage = () => {
         <RrhDrawer
           headerShow={false}
           asChild
-          direction="right"
+          responsiveDirection={{
+            mobile: 'bottom',
+            desktop: 'right',
+          }}
           footerShow={false}
           Trigger={
             <RrhButton variant="ghost" className="size-8">

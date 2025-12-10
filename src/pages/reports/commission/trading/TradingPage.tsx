@@ -127,7 +127,10 @@ export function TradingPage() {
               </Button>
             }
             title="Filter"
-            direction="right"
+            responsiveDirection={{
+              mobile: 'bottom',
+              desktop: 'right',
+            }}
             footerShow={false}
           >
             <TradingForm

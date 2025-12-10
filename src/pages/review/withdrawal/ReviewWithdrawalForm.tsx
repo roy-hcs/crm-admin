@@ -134,7 +134,7 @@ export const ReviewWithdrawalForm = ({
           />
           <FormSelect
             verticalLabel
-            name="withdrawMethods"
+            name="withdrawWay"
             label={t('table.withdrawMethods')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}

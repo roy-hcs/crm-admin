@@ -173,7 +173,11 @@ export const LoginForm = ({
                       />
                     </div>
                   ) : (
-                    <Input placeholder={t('loginPage.EnterYourUserName')} {...field} />
+                    <Input
+                      placeholder={t('loginPage.EnterYourUserName')}
+                      {...field}
+                      autoComplete="username"
+                    />
                   )}
                 </FormControl>
                 <FormMessage />
@@ -198,6 +202,7 @@ export const LoginForm = ({
                       type={showPWD ? 'text' : 'password'}
                       placeholder={t('loginPage.EnterYourPassword')}
                       {...field}
+                      autoComplete="current-password"
                     />
                     <button
                       type="button"

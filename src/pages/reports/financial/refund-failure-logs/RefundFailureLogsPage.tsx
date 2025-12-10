@@ -79,7 +79,10 @@ export function RefundFailureLogsPage() {
               </Button>
             }
             title="Filter"
-            direction="right"
+            responsiveDirection={{
+              mobile: 'bottom',
+              desktop: 'right',
+            }}
             footerShow={false}
           >
             <RefundFailureLogsForm

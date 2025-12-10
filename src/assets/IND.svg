@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="circle" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-336.000000, -1008.000000)">
+        <g id="IND--India" transform="translate(336.000000, 1008.000000)">
+            <path d="M1.36564566,32 L46.6343543,32 C43.3396631,41.321539 34.4497506,48 24,48 C13.5502494,48 4.66033693,41.321539 1.36564566,32 Z" id="Combined-Shape" fill="#1AAF5D"></path>
+            <path d="M1.36564566,16 L46.6343543,16 C47.5187662,18.5022314 48,21.1949166 48,24 C48,26.8050834 47.5187662,29.4977686 46.6343543,32 L1.36564566,32 C0.481233769,29.4977686 0,26.8050834 0,24 C0,21.1949166 0.481233769,18.5022314 1.36564566,16 Z" id="Combined-Shape" fill="#FFFFFF"></path>
+            <path d="M46.6343543,16 L1.36564566,16 C4.66033693,6.67846102 13.5502494,0 24,0 C34.4497506,0 43.3396631,6.67846102 46.6343543,16 Z" id="Combined-Shape" fill="#E87E04"></path>
+            <circle id="Oval-15" fill="#227FBB" cx="24" cy="24" r="7"></circle>
+            <circle id="Oval-15" fill="#FFFFFF" cx="24" cy="24" r="6"></circle>
+            <circle id="Oval-15" fill="#227FBB" cx="24" cy="24" r="2"></circle>
+        </g>
+    </g>
+</svg>

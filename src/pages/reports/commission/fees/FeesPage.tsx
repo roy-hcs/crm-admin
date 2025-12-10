@@ -126,7 +126,10 @@ export function FeesPage() {
               </Button>
             }
             title="Filter"
-            direction="right"
+            responsiveDirection={{
+              mobile: 'bottom',
+              desktop: 'right',
+            }}
             footerShow={false}
           >
             <FeesForm

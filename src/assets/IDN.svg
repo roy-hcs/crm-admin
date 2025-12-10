@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="circle" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-432.000000, -1008.000000)">
+        <g id="IDN--Indonesia" transform="translate(432.000000, 1008.000000)">
+            <path d="M48,24 L0,24 C0,10.745166 10.745166,0 24,0 C37.254834,0 48,10.745166 48,24 Z" id="Combined-Shape" fill="#E94B35"></path>
+            <path d="M48,24 C48,37.254834 37.254834,48 24,48 C10.745166,48 0,37.254834 0,24 L48,24 Z" id="Combined-Shape" fill="#FFFFFF"></path>
+        </g>
+    </g>
+</svg>

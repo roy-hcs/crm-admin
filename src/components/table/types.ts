@@ -67,4 +67,5 @@ export interface DataTableProps<TData extends RowData, TValue> {
   CustomFooter?: ReactElement;
   /** Tree functionality configuration */
   treeConfig?: TreeConfig<TData>;
+  tableWrapperCls?: string;
 }

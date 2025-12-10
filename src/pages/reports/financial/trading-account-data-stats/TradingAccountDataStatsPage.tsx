@@ -110,7 +110,10 @@ export function TradingAccountDataStatsPage() {
               </Button>
             }
             title="Filter"
-            direction="right"
+            responsiveDirection={{
+              mobile: 'bottom',
+              desktop: 'right',
+            }}
             footerShow={false}
           >
             <TradingAccountDataStatsForm
