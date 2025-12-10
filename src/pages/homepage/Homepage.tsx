@@ -13,8 +13,8 @@ import { TradingInstrument } from './components/TradingInstrument';
 import { AccountActivation } from './components/AccountActivation';
 import { CustomerTransactions } from './components/CustomerTransactions';
 import { FundsTransit } from './components/FundsTransit';
-import { Step } from './components/Step';
-import { Todo } from './components/Todo';
+import { HomeExceptionPrompt } from './components/HomeExceptionPrompt';
+import { HomeTodo } from './components/HomeTodo';
 import { useMemo } from 'react';
 
 export function HomePage() {
@@ -22,6 +22,7 @@ export function HomePage() {
 
   const { data: serverListRes } = useServerList();
   const { data: serverExceptionNotice } = useServerExceptionNotice();
+
   const { data: preferences } = useGetPreferences();
 
   const serverList: ServerItem[] = useMemo(() => serverListRes?.rows ?? [], [serverListRes?.rows]);
@@ -29,39 +30,39 @@ export function HomePage() {
 
   return (
     <div>
-      <div className="mb-3 flex items-center justify-between">
-        <h1 className="text-title">{t('home.DataOverview')}</h1>
-        <div className="text-xs font-normal">
-          {t('home.DataUpdateTime')}: {dataUpdateTime}
-        </div>
+      <h1 className="text-card-foreground text-xl leading-7 font-semibold">
+        {t('home.DataOverview')}
+      </h1>
+      <div className="text-muted-foreground text-sm leading-5 font-normal">
+        {t('home.DataUpdateTime')}: {dataUpdateTime}
       </div>
-      <div className="grid gap-6 lg:grid-cols-1 xl:grid-cols-[1fr_18.5rem]">
-        <div>
+      <div className="mt-3 grid gap-8 sm:grid-cols-1 lg:mt-12 lg:grid-cols-1 xl:grid-cols-[1fr_365px]">
+        <div className="w-full">
           <DataOverview />
 
-          <NavList />
+          <div className="mt-6 mb-6">
+            <NavList />
+          </div>
 
-          <OverviewDepositWithdrawal />
+          <div className="grid grid-cols-1 gap-6 2xl:grid-cols-2">
+            <OverviewDepositWithdrawal />
+            <AccountActivation />
+          </div>
 
-          <TradingInstrument serverList={serverList} />
+          <div className="mt-6 mb-6">
+            <TradingInstrument serverList={serverList} />
+          </div>
 
-          <AccountActivation />
-
-          {serverList && serverList?.length > 0 && <CustomerTransactions serverList={serverList} />}
-
-          <FundsTransit />
+          <div className="mt-6 grid grid-cols-1 gap-6 2xl:grid-cols-2">
+            <CustomerTransactions serverList={serverList} />
+            <FundsTransit />
+          </div>
         </div>
-        <div className="lg:flex lg:gap-6 xl:block xl:gap-0">
-          {serverExceptionNotice && serverExceptionNotice.length > 0 && (
-            <div className="bg-card mb-6 w-74 rounded-lg border py-4">
-              <Step serverExceptionNotice={serverExceptionNotice} />
-            </div>
+        <div className="flex flex-col lg:gap-6 xl:gap-6">
+          {serverExceptionNotice && serverExceptionNotice?.length > 0 && (
+            <HomeExceptionPrompt serverExceptionNotice={serverExceptionNotice} />
           )}
-          {preferences && preferences.length > 0 && (
-            <div className="bg-card w-74 rounded-lg border p-6">
-              <Todo preferences={preferences} />
-            </div>
-          )}
+          {preferences && preferences?.length > 0 && <HomeTodo preferences={preferences} />}
         </div>
       </div>
     </div>
