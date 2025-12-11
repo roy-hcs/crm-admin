@@ -12,6 +12,7 @@ export type CRMColumnDef<TData extends RowData, TValue> = ColumnDef<TData, TValu
     fixed?: FixedColumnPosition;
     width?: number | string;
     minWidth?: number | string;
+    label?: string;
   };
 
 // Tree functionality types

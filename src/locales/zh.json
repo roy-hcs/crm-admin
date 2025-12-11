@@ -1007,7 +1007,9 @@
     "payIdPhone": "PayID手机号",
     "payIdEmail": "PayID邮箱",
     "payIdABN": "ABN",
-    "accountInformation": "账户信息"
+    "accountInformation": "账户信息",
+    "showAllCols": "显示所有列",
+    "hideHidableCols": "隐藏可隐藏列"
   },
   "review": {
     "settings": {
@@ -1054,7 +1056,15 @@
     "fundFlow": "资金流水",
     "withdrawalInfo": "出金信息",
     "depositRecord": "入金记录",
-    "withdrawalRecord": "出金记录"
+    "withdrawalRecord": "出金记录",
+    "orderAbnormalWarning": "异常订单警示",
+    "largeWithdrawalWarning": "大额出金：该笔出金超过",
+    "frequentWithdrawalWarning": "用户频繁出金：",
+    "withinDays": "天内",
+    "accumulatedWithdrawals": "累计出金：",
+    "accumulatedApplyWithdrawals": "累计申请出金：",
+    "times": "次",
+    "shortTimeLargeWithdrawalWarning": "用户短期大额出金："
   },
   "system": {
     "adminAccounts": {

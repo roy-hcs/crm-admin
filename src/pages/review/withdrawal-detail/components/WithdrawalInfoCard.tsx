@@ -25,7 +25,7 @@ export const WithdrawalInfoCard: FC<{
 }> = ({ withdrawData, isAudit, form }) => {
   const withdrawalInfo: WithdrawItem = withdrawData.detail;
   const { t } = useTranslation();
-  const [currentRate, setCurrentRate] = useState(withdrawalInfo.rate.toString());
+  const [currentRate, setCurrentRate] = useState(withdrawalInfo.rate?.toString() || '');
   const [currentFee, setCurrentFee] = useState(withdrawalInfo.fee);
   const [amountOfReceipt, setAmountOfReceipt] = useState('');
   const { data: outMoneyMethodList } = useOutMoneyMethodList();
@@ -73,7 +73,7 @@ export const WithdrawalInfoCard: FC<{
   ]);
   const methodName = useMemo(() => {
     return (
-      outMoneyMethodList?.data?.find(item => item.id === withdrawalInfo.method.toString())?.name ||
+      outMoneyMethodList?.data?.find(item => item.id === withdrawalInfo.method?.toString())?.name ||
       '-'
     );
   }, [outMoneyMethodList?.data, withdrawalInfo?.method]);
@@ -145,7 +145,53 @@ export const WithdrawalInfoCard: FC<{
   };
   return (
     <RrhCard title={t('review.withdrawalInfo')} className="flex-1 md:px-10 md:py-6">
-      <div className="max-w-150">
+      <div className="max-w-125">
+        {withdrawData.largeWithdrawAmountSingle ||
+        withdrawData.orderTipSize ||
+        withdrawData.shortorderTipSum ? (
+          <div className="text-destructive bg-destructive/5 mb-4 flex gap-3 rounded-lg px-4 py-3">
+            <CircleAlert className="text-destructive mt-0.5 size-4" />
+            <div>
+              <div className="font-medium">{t('review.orderAbnormalWarning')}</div>
+              {withdrawData.largeWithdrawAmountSingle && (
+                <div>
+                  {t('review.largeWithdrawalWarning')}
+                  {withdrawData.largeWithdrawAmountSingle}
+                </div>
+              )}
+              {(withdrawData.orderTipSize || withdrawData.orderTipSum) && (
+                <div>
+                  {t('review.frequentWithdrawalWarning')}
+                  {withdrawData.orderTipDays}
+                  {t('review.withinDays')}
+                  {withdrawData.orderTipSum && (
+                    <>
+                      ,{t('review.accumulatedWithdrawals')}
+                      {withdrawData.orderTipSum}USD
+                    </>
+                  )}
+                  {withdrawData.orderTipSize && (
+                    <>
+                      ,{t('review.accumulatedApplyWithdrawals')}
+                      {withdrawData.orderTipSize}
+                      {t('review.times')}
+                    </>
+                  )}
+                </div>
+              )}
+              {withdrawData.shortorderTipSum && (
+                <div>
+                  {t('review.shortTimeLargeWithdrawalWarning')}
+                  {withdrawData.shortorderTipDays}
+                  {t('review.withinDays')}
+                  {t('review.accumulatedWithdrawals')}
+                  {withdrawData.shortorderTipSum}
+                  USD
+                </div>
+              )}
+            </div>
+          </div>
+        ) : null}
         <FormField
           name="withdrawalAccount"
           disabled

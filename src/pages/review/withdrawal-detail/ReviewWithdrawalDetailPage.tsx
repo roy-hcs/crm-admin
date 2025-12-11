@@ -82,7 +82,7 @@ export const ReviewWithdrawalDetailPage = () => {
         withdrawAmount: withdrawalInfo.withdraw,
         expectWithdraw: '',
         commission: withdrawalInfo.fee,
-        rate: withdrawalInfo.rate.toString(),
+        rate: withdrawalInfo.rate?.toString(),
         amountOfReceipt: withdrawalInfo.factWithdraw || '',
         paymentCurrency: withdrawalInfo.targetCurrency,
         payee: withdrawalInfo.withdrawUser || '',

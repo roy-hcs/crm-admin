@@ -175,7 +175,7 @@ export const ReviewWithdrawalForm = ({
           />
           <FormSelect
             verticalLabel
-            name="outAccountType"
+            name="status"
             label={t('table.status')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}

@@ -719,6 +719,13 @@ export type WithdrawalReviewDetailRes = {
     userName: string;
     walletCurrency: string;
     verifyLogs: VerifyLogItem[];
+    largeWithdrawAmountSingle?: string;
+    orderTipSize: string | null;
+    orderTipDays: string | null;
+    orderTipSum: string | null;
+    shortorderTipSum: string | null;
+    shortorderTipDays: string | null;
+    shortorderTipSize: string | null;
   };
 };
 
