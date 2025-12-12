@@ -131,18 +131,18 @@ export const CRMAccounts = () => {
               <button
                 onClick={onClick}
                 disabled={disabled}
-                className="bg-background hidden h-full cursor-pointer group-hover/swiper:block disabled:cursor-not-allowed"
+                className="hidden h-full cursor-pointer group-hover/swiper:block disabled:cursor-not-allowed"
               >
-                <CircleChevronLeft className="text-muted" />
+                <CircleChevronLeft className="text-foreground" />
               </button>
             )}
             NextButton={({ onClick, disabled }) => (
               <button
                 onClick={onClick}
                 disabled={disabled}
-                className="bg-background hidden h-full cursor-pointer group-hover/swiper:block disabled:cursor-not-allowed"
+                className="hidden h-full cursor-pointer group-hover/swiper:block disabled:cursor-not-allowed"
               >
-                <CircleChevronLeft className="text-muted rotate-180" />
+                <CircleChevronLeft className="text-foreground rotate-180" />
               </button>
             )}
             wrapperCls="gap-1"

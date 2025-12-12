@@ -3,6 +3,7 @@ import { TradingStatsForm } from './TradingStatsForm';
 import { LineChart } from '@/components/charts/LineCharts';
 import { useEffect, useMemo, useState } from 'react';
 import { useMtServiceUpdate, useServerList, MtServiceUpdateRes } from '@/api/hooks/workbench';
+import { PageInfo } from '@/components/common/PageInfo';
 
 export function TradingStatsPage() {
   const [serverId, setServerId] = useState('');
@@ -46,7 +47,7 @@ export function TradingStatsPage() {
   const showChartPlaceholder = !statsLoading && chartData.labels.length === 0;
   return (
     <div>
-      <h1 className="text-title">{t('workBench.title')}</h1>
+      <PageInfo title={t('workBench.title')} />
       <div className="my-3.5 flex items-center justify-between">
         <TradingStatsForm
           serverOptions={serverListResult?.rows || []}

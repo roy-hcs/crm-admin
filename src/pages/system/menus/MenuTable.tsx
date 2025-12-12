@@ -2,7 +2,7 @@ import { MenuListItem } from '@/api/hooks/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhTag } from '@/components/common/RrhTag';
 import { ToolTip } from '@/components/common/ToolTip';
-import { DataTable, TreeConfig, DataTableRef } from '@/components/table/DataTable';
+import { DataTable, TreeConfig, DataTableRef, CRMColumnDef } from '@/components/table/DataTable';
 import { ColumnDef, ExpandedState } from '@tanstack/react-table';
 import { useState, forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +16,7 @@ export interface MenuTableProps {
 export const MenuTable = forwardRef<DataTableRef, MenuTableProps>(
   ({ data, loading = false, isManagement }, ref) => {
     const { t } = useTranslation();
-    const menuColumns: ColumnDef<MenuListItem>[] = [
+    const menuColumns: CRMColumnDef<MenuListItem, unknown>[] = [
       {
         id: 'menuName',
         header: t('menuManagement.menuName'),
@@ -95,6 +95,7 @@ export const MenuTable = forwardRef<DataTableRef, MenuTableProps>(
             </div>
           );
         },
+        fixed: 'right',
       },
     ];
     const [expanded, setExpanded] = useState<ExpandedState>({

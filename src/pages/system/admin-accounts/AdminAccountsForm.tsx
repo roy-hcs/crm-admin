@@ -17,6 +17,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { RoleItem, UserListParams } from '@/api/hooks/system';
 import { FormSelect } from '@/components/form/FormSelect';
 import { onlineStatusOptions, statusOptions } from '@/lib/const';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   userName: string;
@@ -33,26 +34,28 @@ export const AdminAccountsForm = ({
   setParams,
   loading,
   roleList,
+  reset,
+  params,
+  otherParams,
 }: {
   setParams: Dispatch<SetStateAction<UserListParams['params']>>;
-  setOtherParams: Dispatch<
-    SetStateAction<
-      Omit<UserListParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
-    >
-  >;
+  setOtherParams: Dispatch<SetStateAction<Omit<UserListParams, 'params' | keyof BasicParams>>>;
   loading: boolean;
   roleList: RoleItem[];
+  reset: () => void;
+  params: UserListParams['params'];
+  otherParams: Omit<UserListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      userName: '',
-      roleId: '',
-      status: '',
-      phonenumber: '',
-      email: '',
-      onlineStatus: '',
-      time: { from: '', to: '' },
+      userName: otherParams?.userName || '',
+      roleId: otherParams?.roleId || '',
+      status: otherParams?.status || '',
+      phonenumber: otherParams?.phonenumber || '',
+      email: otherParams?.email || '',
+      onlineStatus: otherParams?.onlineStatus || '',
+      time: { from: params?.beginTime || '', to: params?.endTime || '' },
     },
   });
 
@@ -72,20 +75,16 @@ export const AdminAccountsForm = ({
     }));
   };
   const onReset = () => {
-    setOtherParams({
+    reset();
+    form.reset({
       userName: '',
       roleId: '',
       status: '',
       phonenumber: '',
       email: '',
       onlineStatus: '',
+      time: { from: '', to: '' },
     });
-    setParams(pre => ({
-      ...pre,
-      beginTime: '',
-      endTime: '',
-    }));
-    form.reset();
   };
   return (
     <FormProvider form={form}>

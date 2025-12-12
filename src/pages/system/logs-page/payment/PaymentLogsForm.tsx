@@ -34,6 +34,9 @@ export const PaymentLogsForm = ({
   setParams,
   loading,
   paymentMethods,
+  reset,
+  params,
+  otherParams,
 }: {
   setOtherParams: Dispatch<
     SetStateAction<Omit<UserOrderLogListParams, 'params' | keyof BasicParams>>
@@ -41,16 +44,19 @@ export const PaymentLogsForm = ({
   setParams: Dispatch<SetStateAction<UserOrderLogListParams['params']>>;
   loading: boolean;
   paymentMethods?: ThirdPaymentItem[];
+  reset: () => void;
+  params: UserOrderLogListParams['params'];
+  otherParams: Omit<UserOrderLogListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
-      orderId: '',
-      orderStatus: '',
-      userName: '',
-      channelName: '',
-      payResult: '',
-      operationTime: { from: '', to: '' },
+      orderId: otherParams.orderId || '',
+      orderStatus: otherParams.orderStatus || '',
+      userName: params.userName || '',
+      channelName: otherParams.channelName || '',
+      payResult: otherParams.payResult || '',
+      operationTime: { from: params.operationStart || '', to: params.operationEnd || '' },
     },
   });
 
@@ -66,19 +72,18 @@ export const PaymentLogsForm = ({
       orderId: data.orderId,
       channelName: data.channelName,
       payResult: data.payResult,
+      orderStatus: data.orderStatus,
     }));
   };
   const onReset = () => {
-    form.reset();
-    setParams({
-      operationEnd: '',
-      operationStart: '',
-      userName: '',
-    });
-    setOtherParams({
+    reset();
+    form.reset({
       orderId: '',
+      orderStatus: '',
+      userName: '',
       channelName: '',
       payResult: '',
+      operationTime: { from: '', to: '' },
     });
   };
 
@@ -110,7 +115,7 @@ export const PaymentLogsForm = ({
           />
           <FormSelect
             verticalLabel
-            name="status"
+            name="orderStatus"
             label={t('financial.paymentOrders.orderStatus')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}

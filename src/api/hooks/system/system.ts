@@ -21,7 +21,7 @@ import {
   AdminOperLogRes,
   AdminLoginParams,
   AdminLoginRes,
-  CrmLogininforParams,
+  CrmLoginInfoParams,
   CrmLogininforRes,
   UserInfoRes,
 } from './types';
@@ -221,7 +221,7 @@ export function useAdminLoginList(params: AdminLoginParams) {
 /**
  * 系统管理-日志管理-CRM用户登录日志
  */
-export function useCrmLogininfor(params: CrmLogininforParams) {
+export function useCrmLoginInfo(params: CrmLoginInfoParams) {
   return useQuery({
     queryKey: ['crmLogininfor', params],
     queryFn: () => apiFormPostCustom<CrmLogininforRes>(`/monitor/crmLogininfor/list`, params),

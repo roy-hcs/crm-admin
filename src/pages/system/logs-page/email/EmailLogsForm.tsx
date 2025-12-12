@@ -30,18 +30,27 @@ export const EmailLogsForm = ({
   setOtherParams,
   setParams,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   setOtherParams: Dispatch<SetStateAction<Omit<EmailListParams, 'params' | keyof BasicParams>>>;
   setParams: Dispatch<SetStateAction<EmailListParams['params']>>;
   loading: boolean;
+  reset: () => void;
+  params: EmailListParams['params'];
+  otherParams: Omit<EmailListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
-      acceptEmail: '',
-      title: '',
-      status: '',
-      sendTime: { from: formatDate(new Date()), to: '' },
+      acceptEmail: otherParams.acceptEmail || '',
+      title: otherParams.title || '',
+      status: otherParams.status || '',
+      sendTime: {
+        from: params.sendStartTime || formatDate(new Date()),
+        to: params.sendEndTime || '',
+      },
     },
   });
 
@@ -59,15 +68,12 @@ export const EmailLogsForm = ({
     }));
   };
   const onReset = () => {
-    form.reset();
-    setParams({
-      sendEndTime: '',
-      sendStartTime: formatDate(new Date()),
-    });
-    setOtherParams({
-      title: '',
+    reset();
+    form.reset({
       acceptEmail: '',
+      title: '',
       status: '',
+      sendTime: { from: formatDate(new Date()), to: '' },
     });
   };
 

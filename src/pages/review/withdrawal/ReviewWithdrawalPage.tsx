@@ -332,10 +332,8 @@ export const ReviewWithdrawalPage = () => {
   // 列可见性管理
   const columnMeta = getColumnMeta(allColumns, ['select']);
 
-  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, getSortedColumns } =
-    useColumnVisibility('withdrawal-review-table', columnMeta);
-
-  const tableColumns = getSortedColumns<WithdrawItem>(allColumns);
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns } =
+    useColumnVisibility('withdrawal-review-table', columnMeta, allColumns);
 
   return (
     <div>

@@ -1,12 +1,19 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
-import { Funnel, RefreshCcw, Search } from 'lucide-react';
+import { Ellipsis, Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AdminAccountsTable } from './AdminAccountsTable';
 import { AdminAccountsForm } from './AdminAccountsForm';
-import { useRoleList, useUserList, UserListParams } from '@/api/hooks/system';
+import { useRoleList, useUserList, UserListParams, UserItem } from '@/api/hooks/system';
+import { PageInfo } from '@/components/common/PageInfo';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { Switch } from '@/components/ui/switch';
+import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { getColumnMeta } from '@/lib/utils';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { BasicParams } from '@/api/types';
 
 export const AdminAccountsPage = () => {
   const [params, setParams] = useState<UserListParams['params']>({
@@ -14,7 +21,7 @@ export const AdminAccountsPage = () => {
     endTime: '',
   });
   const [otherParams, setOtherParams] = useState<
-    Omit<UserListParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
+    Omit<UserListParams, 'params' | keyof BasicParams>
   >({
     userName: '',
     roleId: '',
@@ -25,6 +32,7 @@ export const AdminAccountsPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [keyword, setKeyword] = useState('');
   const { t } = useTranslation();
   const { data: roleList } = useRoleList();
   const { data: walletBalanceList, isLoading: walletBalanceListLoading } = useUserList({
@@ -52,16 +60,161 @@ export const AdminAccountsPage = () => {
       email: '',
       onlineStatus: '',
     });
+    setKeyword('');
     setPageNum(0);
   };
+  const allColumns: CRMColumnDef<UserItem, unknown>[] = [
+    {
+      id: 'No',
+      header: t('table.index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
+      id: 'name',
+      header: t('table.fullName'),
+      cell: ({ row }) => {
+        return !row.original.wholeName ? (
+          <div className="text-center">-</div>
+        ) : (
+          <div>{row.original.wholeName}</div>
+        );
+      },
+    },
+    {
+      id: 'roleName',
+      header: t('system.adminAccounts.roleName'),
+      cell: ({ row }) => {
+        return !row.original?.roles?.[0]?.roleName ? (
+          <div className="text-center">-</div>
+        ) : (
+          <div>{row.original?.roles?.[0]?.roleName}</div>
+        );
+      },
+    },
+    {
+      id: 'onlineStatus',
+      header: t('system.adminAccounts.roleName'),
+      cell: ({ row }) => {
+        if (row.original?.onlineStatus === 1) {
+          return <div>{t('common.onlineStatus.online')}</div>;
+        } else {
+          return <div>{t('common.onlineStatus.offline')}</div>;
+        }
+      },
+    },
+    {
+      id: 'loginIp',
+      header: t('common.ip'),
+      cell: ({ row }) => {
+        if (row.original?.loginIp) {
+          return <div>{row.original.loginIp}</div>;
+        } else {
+          return <div className="text-center">-</div>;
+        }
+      },
+    },
+    {
+      id: 'status',
+      header: t('common.status'),
+      cell: ({ row }) => {
+        return (
+          <Switch
+            className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
+            checked={Number(row.original.status) === 1}
+            onClick={() => {}}
+          />
+        );
+      },
+    },
+    {
+      id: 'phonenumber',
+      header: t('table.mobile'),
+      cell: ({ row }) => {
+        if (row.original?.phonenumber) {
+          return (
+            <div>
+              {row?.original?.mzone
+                ? '+' + row?.original?.mzone + ' ' + row.original.phonenumber
+                : row.original.phonenumber}
+            </div>
+          );
+        } else {
+          return <div>-</div>;
+        }
+      },
+    },
+    {
+      id: 'email',
+      header: t('table.email'),
+      cell: ({ row }) => {
+        if (row.original?.email) {
+          return <div>{row?.original?.email}</div>;
+        } else {
+          return <div>-</div>;
+        }
+      },
+    },
+    {
+      id: 'createTime',
+      header: t('common.createTime'),
+      cell: ({ row }) => {
+        if (row.original?.createTime) {
+          return <div>{row?.original?.createTime}</div>;
+        } else {
+          return <div>-</div>;
+        }
+      },
+    },
+    {
+      id: 'boundGoogle',
+      header: t('common.boundGoogle'),
+      cell: ({ row }) => {
+        if (row.original?.boundGoogle === 1) {
+          return <div>{t('common.bind')}</div>;
+        } else {
+          return <div>{t('common.notBind')}</div>;
+        }
+      },
+    },
+    {
+      id: 'operation',
+      header: t('common.Operation'),
+      cell: () => (
+        <div>
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.View'), value: 'view' },
+              { label: t('common.Edit'), value: 'edit' },
+            ]}
+            callToAction={action => {
+              if (action === 'edit') {
+                // Handle edit action
+              } else if (action === 'view') {
+                // Handle view action
+              }
+            }}
+          />
+        </div>
+      ),
+      fixed: 'right',
+      size: 50,
+    },
+  ];
+
+  const columnMeta = getColumnMeta(allColumns);
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns } =
+    useColumnVisibility('admin-accounts-table', columnMeta, allColumns);
 
   return (
     <div>
-      <h1 className="text-title">{t('system.adminAccounts.title')}</h1>
+      <PageInfo title={t('system.adminAccounts.title')} />
       <div className="my-3.5 flex items-center justify-between">
         <RrhInputWithIcon
           placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
           className="h-9"
+          value={keyword}
+          onChange={e => setKeyword(e.target.value)}
           rightIcon={<Search className="size-4 cursor-pointer" />}
           onRightIconClick={e => {
             setParams(prev => ({ ...prev, userName: e }));
@@ -87,15 +240,26 @@ export const AdminAccountsPage = () => {
             }
           >
             <AdminAccountsForm
+              params={params}
+              otherParams={otherParams}
               setParams={setParams}
               setOtherParams={setOtherParams}
               loading={walletBalanceListLoading}
               roleList={roleList?.rows || []}
+              reset={reset}
             />
           </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
         </div>
       </div>
-      <AdminAccountsTable
+      <DataTable
+        columns={tableColumns}
         data={walletBalanceList?.rows || []}
         pageCount={Math.ceil(+(walletBalanceList?.total || 0) / pageSize)}
         pageIndex={pageNum}

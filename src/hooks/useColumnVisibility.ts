@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ColumnVisibilityConfig, ColumnMeta } from '@/api/hooks/common/types';
 import { CRMColumnDef } from '@/components/table';
 
-interface UseColumnVisibilityReturn {
+interface UseColumnVisibilityReturn<T> {
   columns: ColumnVisibilityConfig[];
   visibleColumns: string[];
   toggleColumn: (id: string) => void;
   resetColumns: () => void;
   batchUpdateColumns: (newOrder: string[]) => void;
-  getSortedColumns: <T>(allColumns: CRMColumnDef<T, unknown>[]) => CRMColumnDef<T, unknown>[];
+  tableColumns: CRMColumnDef<T, unknown>[];
 }
 
 const STORAGE_KEY_PREFIX = 'table-column-visibility-';
@@ -30,10 +30,11 @@ const saveToStorage = (tableId: string, config: ColumnVisibilityConfig[]) => {
   }
 };
 
-export const useColumnVisibility = (
+export const useColumnVisibility = <T>(
   tableId: string,
   columnMeta: ColumnMeta[],
-): UseColumnVisibilityReturn => {
+  allColumns: CRMColumnDef<T, unknown>[],
+): UseColumnVisibilityReturn<T> => {
   const [columns, setColumns] = useState<ColumnVisibilityConfig[]>(() => {
     const stored = loadFromStorage(tableId);
     if (stored) {
@@ -91,33 +92,30 @@ export const useColumnVisibility = (
       }));
     });
   };
-  // 新增：根据可见性和顺序过滤、排序列
-  const getSortedColumns = useCallback(
-    <T>(allColumns: CRMColumnDef<T, unknown>[]) => {
-      const visibleSet = new Set(visibleColumns);
-      const filteredColumns = allColumns.filter(col => col.id && visibleSet.has(col.id));
 
-      if (!columns || columns.length === 0) {
-        return filteredColumns;
-      }
+  const tableColumns = useMemo(() => {
+    const visibleSet = new Set(visibleColumns);
+    const filteredColumns = allColumns.filter(col => col.id && visibleSet.has(col.id));
 
-      // 创建位置映射
-      const positionMap = new Map(
-        columns
-          .filter(col => visibleSet.has(col.id))
-          .sort((a, b) => a.order - b.order)
-          .map((col, index) => [col.id, index]),
-      );
+    if (!columns || columns.length === 0) {
+      return filteredColumns;
+    }
 
-      // 根据位置排序
-      return filteredColumns.sort((a, b) => {
-        const posA = positionMap.get(a.id!) ?? Infinity;
-        const posB = positionMap.get(b.id!) ?? Infinity;
-        return posA - posB;
-      });
-    },
-    [columns, visibleColumns],
-  );
+    // 创建位置映射
+    const positionMap = new Map(
+      columns
+        .filter(col => visibleSet.has(col.id))
+        .sort((a, b) => a.order - b.order)
+        .map((col, index) => [col.id, index]),
+    );
+
+    // 根据位置排序
+    return filteredColumns.sort((a, b) => {
+      const posA = positionMap.get(a.id!) ?? Infinity;
+      const posB = positionMap.get(b.id!) ?? Infinity;
+      return posA - posB;
+    });
+  }, [allColumns, columns, visibleColumns]);
 
   return {
     columns,
@@ -125,6 +123,6 @@ export const useColumnVisibility = (
     toggleColumn,
     resetColumns,
     batchUpdateColumns,
-    getSortedColumns,
+    tableColumns,
   };
 };

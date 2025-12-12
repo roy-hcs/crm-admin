@@ -1,4 +1,4 @@
-import { Settings, GripVertical, Check } from 'lucide-react';
+import { Settings, GripVertical, Check, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -341,7 +341,7 @@ export const ColumnVisibilityButton = ({
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="sm">
-              <Settings className="h-4 w-4" />
+              <SlidersHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">

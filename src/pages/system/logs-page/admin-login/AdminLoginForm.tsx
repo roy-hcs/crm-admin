@@ -18,6 +18,7 @@ import { AdminLoginParams } from '@/api/hooks/system';
 import { FormSelect } from '@/components/form/FormSelect';
 import { adminOperationsStatusOptions } from '@/lib/const';
 import { formatDate } from '@/lib/utils';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   userName: string;
@@ -31,23 +32,25 @@ export const AdminLoginForm = ({
   setOtherParams,
   setParams,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   setParams: Dispatch<SetStateAction<AdminLoginParams['params']>>;
-  setOtherParams: Dispatch<
-    SetStateAction<
-      Omit<AdminLoginParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
-    >
-  >;
+  setOtherParams: Dispatch<SetStateAction<Omit<AdminLoginParams, 'params' | keyof BasicParams>>>;
   loading: boolean;
+  reset: () => void;
+  params: AdminLoginParams['params'];
+  otherParams: Omit<AdminLoginParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      userName: '',
-      ipaddr: '',
-      status: '',
-      loginLocation: '',
-      time: { from: '', to: '' },
+      userName: params.userName || '',
+      ipaddr: otherParams.ipaddr || '',
+      status: otherParams.status || '',
+      loginLocation: otherParams.loginLocation || '',
+      time: { from: params.beginTime || '', to: params.endTime || '' },
     },
   });
 
@@ -65,18 +68,14 @@ export const AdminLoginForm = ({
     }));
   };
   const onReset = () => {
-    setOtherParams({
+    reset();
+    form.reset({
+      userName: '',
       ipaddr: '',
       status: '',
       loginLocation: '',
+      time: { from: '', to: '' },
     });
-    setParams(pre => ({
-      ...pre,
-      beginTime: '',
-      endTime: '',
-      userName: '',
-    }));
-    form.reset();
   };
   return (
     <FormProvider form={form}>
