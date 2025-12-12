@@ -1,9 +1,10 @@
-import { useCrmUser, useTagUserCountList } from '@/api/hooks/account';
+import { CrmUserItem, CrmUserParams, useCrmUser, useTagUserCountList } from '@/api/hooks/account';
 import { TagUserItem } from '@/api/hooks/account';
 import { EmblaCarousel } from '@/components/common/EmblaCarousel';
-import { CRMTable } from '@/components/table/CRMTable';
-import { cn } from '@/lib/utils';
+import { cn, getColumnMeta } from '@/lib/utils';
 import {
+  ChevronDown,
+  ChevronUp,
   CircleChevronLeft,
   Download,
   Ellipsis,
@@ -21,6 +22,14 @@ import { Button } from '@/components/ui/button';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhButton } from '@/components/common/RrhButton';
 import { useTranslation } from 'react-i18next';
+import { PageInfo } from '@/components/common/PageInfo';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { Checkbox } from '@/components/ui/checkbox';
+import { StatusCell } from './components/StatusCell';
+import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { BasicParams } from '@/api/types';
 
 const TagItem: FC<TagUserItem & { setTags: (id: string) => void; className?: string }> = ({
   userCount,
@@ -51,7 +60,7 @@ export const CRMAccounts = () => {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [tags, setTags] = useState('');
-  const [params, setParams] = useState({
+  const [params, setParams] = useState<CrmUserParams['params']>({
     threeCons: '',
     regEndTime: '',
     regStartTime: '',
@@ -62,12 +71,14 @@ export const CRMAccounts = () => {
   });
 
   const { t } = useTranslation();
-  const [otherParams, setOtherParams] = useState({
-    status: '',
-    role: '',
-    certiricateNo: '',
-    accountType: '',
-  });
+  const [otherParams, setOtherParams] = useState<Omit<CrmUserParams, 'params' | keyof BasicParams>>(
+    {
+      status: '',
+      role: '',
+      certiricateNo: '',
+      accountType: '',
+    },
+  );
   const { data: tagUserCountList, isLoading: tagUserCountListLoading } = useTagUserCountList();
   const { data: crmUsers, isLoading: crmUsersLoading } = useCrmUser(
     {
@@ -102,13 +113,224 @@ export const CRMAccounts = () => {
     setPageNum(0);
     formRef.current?.onReset();
   };
-
+  const allColumns: CRMColumnDef<CrmUserItem, unknown>[] = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          className="data-[state=checked]:border-slate-700"
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          className="data-[state=checked]:border-slate-700"
+          checked={row.getIsSelected()}
+          onCheckedChange={value => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+      label: t('common.select'),
+    },
+    {
+      id: 'No.',
+      header: t('CRMAccountPage.Index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
+      id: 'userName',
+      header: t('CRMAccountPage.UserName'),
+      accessorFn: row => row.userName,
+      cell: ({ row }) => (
+        <div>
+          <div>{row.original.userName}</div>
+          <div>{row.original.showId}</div>
+        </div>
+      ),
+    },
+    {
+      id: 'status',
+      accessorKey: 'status',
+      header: t('CRMAccountPage.Status'),
+      cell: ({ row }) => <StatusCell row={row} />,
+    },
+    {
+      id: 'mobile',
+      header: t('CRMAccountPage.Mobile'),
+      cell: ({ row }) => (
+        <div className="max-w-25 whitespace-pre-wrap">
+          <span>{row.original.mzone ? `+${row.original.mzone} ` : ''}</span>
+          <span>{row.original.mobile}</span>
+        </div>
+      ),
+    },
+    {
+      id: 'accountTypeStr',
+      accessorKey: 'accountTypeStr',
+      header: t('CRMAccountPage.CRMAccountType'),
+    },
+    {
+      id: 'role',
+      accessorKey: 'role',
+      header: t('CRMAccountPage.Role'),
+    },
+    {
+      id: 'crmRebateLevel',
+      accessorKey: 'crmRebateLevel',
+      header: t('CRMAccountPage.Level'),
+      cell: ({ row }) => {
+        const crmRebateLevel = row.original.crmRebateLevel;
+        return crmRebateLevel ? (
+          <div>
+            {crmRebateLevel?.levelName}({crmRebateLevel?.level} {t('CRMAccountPage.Level')})
+          </div>
+        ) : (
+          '-'
+        );
+      },
+    },
+    {
+      id: 'tags',
+      header: t('CRMAccountPage.TagsName'),
+      accessorFn: row => row.tags,
+      cell: ({ row }) => {
+        const tagsString = row.original.tags || '';
+        const tags = tagsString.trim() ? tagsString.split(',') : [];
+        const length = tags.length;
+        if (length === 0) return <div>-</div>;
+        return (
+          <div className="flex max-w-50 flex-wrap items-center gap-1">
+            {tags.slice(0, 3).map((tag, index) => (
+              <span key={index} className="border-border rounded-md border p-1">
+                {tag}
+              </span>
+            ))}
+            <span>{length > 3 ? `+${length - 3}` : ''}</span>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'latestFollowupTime',
+      accessorKey: 'latestFollowupTime',
+      header: () => {
+        return (
+          <div className="flex items-center justify-between gap-2">
+            <div>{t('CRMAccountPage.LatestFollowupTime')}</div>
+            <button
+              className="gap-.5 flex cursor-pointer flex-col"
+              onClick={() => setIsAsc(isAsc === 'asc' ? 'desc' : 'asc')}
+            >
+              <ChevronUp className={cn('size-3', isAsc === 'asc' ? '' : 'opacity-50')} />
+              <ChevronDown className={cn('size-3', isAsc === 'asc' ? 'opacity-50' : '')} />
+            </button>
+          </div>
+        );
+      },
+      cell: ({ row }) => {
+        const latestFollowupTime = row.original.latestFollowupTime || '-';
+        return (
+          <div className="max-w-25 whitespace-pre-wrap">
+            <div>{latestFollowupTime}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'createTime',
+      accessorKey: 'createTime',
+      header: t('CRMAccountPage.RegisterTime'),
+      cell: ({ row }) => {
+        return <div className="max-w-25 whitespace-pre-wrap">{row.original.createTime}</div>;
+      },
+    },
+    {
+      id: 'upper',
+      header: t('CRMAccountPage.Upper'),
+      accessorFn: row => row.nameOne + row.nameTwo,
+      cell: ({ row }) => {
+        if (!row.original.nameOne && !row.original.nameTwo) return <div>-</div>;
+        return (
+          <div>
+            <div>{row.original.nameOne}</div>
+            <div>{row.original.nameTwo}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'inviterEmail',
+      accessorKey: 'inviterEmail',
+      header: t('CRMAccountPage.UpperEmail'),
+    },
+    {
+      id: 'mtone',
+      accessorKey: 'mtone',
+      header: t('CRMAccountPage.RealAccount'),
+      cell: ({ row }) => {
+        const account = row.original.mtone || '-';
+        return (
+          <div className="line-clamp-1 w-22.5 text-ellipsis" title={account}>
+            {account}
+          </div>
+        );
+      },
+    },
+    {
+      id: 'mttwo',
+      accessorKey: 'mttwo',
+      header: t('CRMAccountPage.DemoAccount'),
+      cell: ({ row }) => {
+        const account = row.original.mttwo || '-';
+        return (
+          <div className="line-clamp-1 w-22.5 text-ellipsis" title={account}>
+            {account}
+          </div>
+        );
+      },
+    },
+    {
+      id: 'operation',
+      header: t('common.Operation'),
+      cell: () => (
+        <div>
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.Edit'), value: 'edit' },
+              { label: t('common.View'), value: 'view' },
+            ]}
+            callToAction={action => {
+              if (action === 'edit') {
+                // Handle edit action
+              } else if (action === 'view') {
+                // Handle view action
+              }
+            }}
+          />
+        </div>
+      ),
+      fixed: 'right',
+      size: 50,
+    },
+  ];
+  const columnMeta = getColumnMeta(allColumns);
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns } =
+    useColumnVisibility('crm-accounts-table', columnMeta, allColumns);
   return (
     <div>
-      <div className="-mx-6 border-b px-6 pt-2 pb-4">
-        <h1 className="text-title">{t('CRMAccountPage.title')}</h1>
-        <div>{t('CRMAccountPage.desc')}</div>
-      </div>
+      <PageInfo
+        title={t('CRMAccountPage.title')}
+        desc={t('CRMAccountPage.desc')}
+        wrapperCls="-mx-6 border-b px-6 pt-2 pb-4"
+      />
       <div className="group/swiper mt-4 flex items-center gap-4">
         <TagItem
           tagName="总计(客户)"
@@ -181,6 +403,7 @@ export const CRMAccounts = () => {
                   <Settings className="size-3.5" />
                   <span>{t('CRMAccountPage.LifecycleAndUserTags')}</span>
                 </RrhButton>
+                <AddUserDialog />
               </>
             )}
           </div>
@@ -196,13 +419,13 @@ export const CRMAccounts = () => {
               <Ellipsis />
             </Button>
             <RrhDrawer
+              headerShow={false}
               asChild
               Trigger={
                 <Button variant="ghost" className="size-8">
                   <Funnel className="size-4" />
                 </Button>
               }
-              title="Filter"
               responsiveDirection={{
                 mobile: 'bottom',
                 desktop: 'right',
@@ -210,18 +433,26 @@ export const CRMAccounts = () => {
               footerShow={false}
             >
               <CRMAccountsForm
-                ref={formRef}
                 tagsUserList={tagUserCountList?.data || []}
                 setParams={setParams}
                 setOtherParams={setOtherParams}
                 setTags={setTags}
+                reset={reset}
+                params={params}
+                otherParams={otherParams}
               />
             </RrhDrawer>
-
-            <AddUserDialog />
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
           </div>
         </div>
-        <CRMTable
+        <DataTable
+          columns={tableColumns}
           data={crmUsers?.rows || []}
           pageCount={Math.ceil(+(crmUsers?.total || 0) / pageSize)}
           pageIndex={pageNum}
@@ -229,8 +460,6 @@ export const CRMAccounts = () => {
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
           loading={crmUsersLoading || tagUserCountListLoading}
-          isAsc={isAsc}
-          setIsAsc={setIsAsc}
         />
       </div>
     </div>

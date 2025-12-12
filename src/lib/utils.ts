@@ -106,7 +106,10 @@ export const getColumnMeta: <T>(
   filterIds?: string[],
 ) => ColumnMeta[] = (columns, filterIds = []) => {
   return columns
-    .filter(col => col.id && !filterIds.includes(col.id))
+    .filter(col => {
+      const id = col.id || col.accessorKey;
+      return id && !filterIds.includes(id);
+    })
     .map(col => ({
       id: col.id || '',
       label: typeof col.header === 'string' ? col.header : col.label || col.id || '',

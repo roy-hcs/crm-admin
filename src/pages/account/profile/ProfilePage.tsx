@@ -1,3 +1,4 @@
+import { PageInfo } from '@/components/common/PageInfo';
 import { useUserStore } from '@/store/userStore';
 import { useTranslation } from 'react-i18next';
 
@@ -6,7 +7,7 @@ export const ProfilePage = () => {
   const { user } = useUserStore();
   return (
     <div>
-      <h1>{t('profile.title')}</h1>
+      <PageInfo title={t('profile.title')} />
       <div>
         <img src={user?.avatar} alt="" />
         <p>{t('profile.uploadAvatar')}</p>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AccountGroupsTable } from './AccountGroupsTable';
 import { useCrmDealAccountGroupList } from '@/api/hooks/account';
+import { PageInfo } from '@/components/common/PageInfo';
 
 export const AccountGroupsPage = () => {
   const [pageNum, setPageNum] = useState(0);
@@ -22,7 +23,7 @@ export const AccountGroupsPage = () => {
 
   return (
     <div>
-      <h1 className="text-title">{t('accountGroups.title')}</h1>
+      <PageInfo title={t('accountGroups.title')} />
       <div className="my-3.5 flex items-center justify-end">
         <div className="flex justify-end gap-2">
           <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>

@@ -25,6 +25,7 @@ import { useTranslation } from 'react-i18next';
 import { ServerItem } from '@/api/hooks/system/types';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 import { formatDate } from '@/lib/utils';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   serverId: string;
@@ -43,20 +44,21 @@ export const TradingAccountsForm = ({
   initialServerId,
   setServerId,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   setParams: Dispatch<SetStateAction<CrmDealAccountListParams['params']>>;
   setOtherParams: Dispatch<
-    SetStateAction<
-      Omit<
-        CrmDealAccountListParams,
-        'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc' | 'server'
-      >
-    >
+    SetStateAction<Omit<CrmDealAccountListParams, 'params' | keyof BasicParams>>
   >;
   serverOptions: ServerItem[];
   initialServerId?: string;
   setServerId: (id: string) => void;
   loading: boolean;
+  reset: () => void;
+  params: CrmDealAccountListParams['params'];
+  otherParams: Omit<CrmDealAccountListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const { data: dealAccountGroupListData } = useGetDealAccountGroupList(); // 账户组数据
@@ -64,13 +66,13 @@ export const TradingAccountsForm = ({
   const form = useForm({
     defaultValues: {
       serverId: initialServerId || '',
-      fuzzyAccount: '',
-      fuzzyName: '',
-      threeCons: '',
-      serverGroupList: '',
-      accounts: '',
-      accountGroupList: '',
-      Time: { from: '', to: '' },
+      fuzzyAccount: params.fuzzyAccount || '',
+      fuzzyName: params.fuzzyName || '',
+      threeCons: params.threeCons || '',
+      serverGroupList: otherParams.serverGroupList || '',
+      accounts: otherParams.accounts || '',
+      accountGroupList: otherParams.accountGroupList || '',
+      Time: { from: params.regStartTime || '', to: params.regEndTime || '' },
     },
   });
 
@@ -100,21 +102,18 @@ export const TradingAccountsForm = ({
     setServerId(data.serverId);
   };
   const onReset = () => {
-    setParams({
-      regStartTime: '',
-      regEndTime: '',
+    reset();
+    setServerId(initialServerId || '');
+    form.reset({
+      serverId: initialServerId || '',
       fuzzyAccount: '',
       fuzzyName: '',
-      accounts: '',
       threeCons: '',
-    });
-    setOtherParams({
       serverGroupList: '',
       accounts: '',
       accountGroupList: '',
+      Time: { from: '', to: '' },
     });
-    setServerId(initialServerId || '');
-    form.reset();
   };
 
   return (

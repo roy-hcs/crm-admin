@@ -1,4 +1,4 @@
-import { Settings, GripVertical, Check, SlidersHorizontal } from 'lucide-react';
+import { GripVertical, Check, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -94,7 +94,7 @@ const SortableColumnItem = ({
           {...attributes}
           {...listeners}
         >
-          <GripVertical className="text-muted-foreground h-4 w-4" />
+          <GripVertical className="text-muted-foreground size-4" />
         </div>
       </div>
     );
@@ -115,7 +115,7 @@ const SortableColumnItem = ({
         {column.label}
       </DropdownMenuCheckboxItem>
       <div className="cursor-grab active:cursor-grabbing" {...attributes} {...listeners}>
-        <GripVertical className="text-muted-foreground h-4 w-4" />
+        <GripVertical className="text-muted-foreground size-4" />
       </div>
     </div>
   );
@@ -333,7 +333,7 @@ export const ColumnVisibilityButton = ({
           open={isOpen}
           setOpen={setIsOpen}
           direction="bottom"
-          Trigger={<Settings className="h-4 w-4" />}
+          Trigger={<SlidersHorizontal className="size-4" />}
         >
           {mobileDrawerContent}
         </RrhDrawer>
@@ -341,7 +341,7 @@ export const ColumnVisibilityButton = ({
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="sm">
-              <SlidersHorizontal className="h-4 w-4" />
+              <SlidersHorizontal className="size-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">

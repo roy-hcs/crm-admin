@@ -17,6 +17,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { FormSelect } from '@/components/form/FormSelect';
 import { WalletAccountsListParams } from '@/api/hooks/account/types';
 import { formatDate } from '@/lib/utils';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   threeCons: string;
@@ -29,22 +30,26 @@ export const WalletAccountsForm = ({
   setParams,
   walletData,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   setParams: Dispatch<SetStateAction<WalletAccountsListParams['params']>>;
   setOtherParams: Dispatch<
-    SetStateAction<
-      Omit<WalletAccountsListParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
-    >
+    SetStateAction<Omit<WalletAccountsListParams, 'params' | keyof BasicParams>>
   >;
   walletData: Array<{ id: string; currencyAbbr: string }>;
   loading: boolean;
+  reset: () => void;
+  params: WalletAccountsListParams['params'];
+  otherParams: Omit<WalletAccountsListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      threeCons: '',
-      currency: '',
-      time: { from: '', to: '' },
+      threeCons: params.threeCons || '',
+      currency: otherParams.currency || '',
+      time: { from: params.regStartTime || '', to: params.regEndTime || '' },
     },
   });
 
@@ -60,16 +65,12 @@ export const WalletAccountsForm = ({
     }));
   };
   const onReset = () => {
-    setOtherParams({
-      currency: '',
-    });
-    setParams(pre => ({
-      ...pre,
+    reset();
+    form.reset({
       threeCons: '',
-      regStartTime: '',
-      regEndTime: '',
-    }));
-    form.reset();
+      currency: '',
+      time: { from: '', to: '' },
+    });
   };
   return (
     <FormProvider form={form}>
