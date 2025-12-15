@@ -12,3 +12,17 @@ export interface ColumnVisibilityConfig {
   display: boolean;
   order: number;
 }
+
+export type GlobalSearchResItem = {
+  id: string;
+  nameCn: string;
+  nameEn: string;
+  type: number;
+  popular: number;
+  globalizationKey: string;
+  pagePath: string;
+  permission: string;
+  clickCount: number;
+  userId: null | string;
+};
+export type GlobalSearchRes = GlobalSearchResItem[];

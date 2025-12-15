@@ -66,7 +66,7 @@ export function TabNavigation() {
   // };
 
   return (
-    <div className="bg-sidebar border-border relative flex w-full items-center border-b px-1.5">
+    <div className="bg-sidebar border-border relative flex w-full items-center border-b px-3 md:px-6">
       <RrhButton variant="outline" className="size-8 !px-2" onClick={() => handleScroll('left')}>
         <ChevronLeft className="size-4" />
       </RrhButton>

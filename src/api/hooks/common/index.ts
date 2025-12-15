@@ -1,2 +1,12 @@
+import { apiFormPost } from '@/api/client';
+import { useMutation } from '@tanstack/react-query';
+import { GlobalSearchRes } from './types';
+
 // Common/shared API hooks
 export * from './types';
+export function useGlobalSearch() {
+  return useMutation({
+    mutationFn: (params: { nameCn: string }) =>
+      apiFormPost<GlobalSearchRes>('/grobal/search/list', params),
+  });
+}

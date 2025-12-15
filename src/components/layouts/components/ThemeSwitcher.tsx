@@ -24,7 +24,7 @@ export const ThemeSwitcher = () => {
   };
 
   return (
-    <button onClick={toggleDarkMode} className="hover:bg-accent cursor-pointer rounded-md p-2">
+    <button onClick={toggleDarkMode} className="hover:bg-accent cursor-pointer rounded-md md:p-2">
       {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
     </button>
   );
