@@ -39,11 +39,13 @@ export const ReviewWithdrawalForm = ({
   setParams,
   loading,
   withdrawMethodList,
+  reset,
 }: {
   setParams: Dispatch<SetStateAction<WithdrawListParams['params']>>;
   setOtherParams: Dispatch<SetStateAction<Omit<WithdrawListParams, 'params'>>>;
   loading: boolean;
   withdrawMethodList: { id: string; name: string }[];
+  reset?: () => void;
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
@@ -89,25 +91,7 @@ export const ReviewWithdrawalForm = ({
     });
   };
   const onReset = () => {
-    setOtherParams({
-      userId: '',
-      status: '',
-      verifyUserName: '',
-      dealTicket: '',
-      method: '',
-      login: '',
-      orderNum: '',
-      exceptionFlag: '',
-      accounts: '',
-    });
-    setParams({
-      beginTime: '',
-      endTime: '',
-      outMoneyAccount: '',
-      accounts: '',
-      finishBeginTime: '',
-      finishEndTime: '',
-    });
+    reset?.();
     form.reset();
   };
   return (
@@ -124,7 +108,7 @@ export const ReviewWithdrawalForm = ({
               form.handleSubmit(onSubmit)();
             }
           }}
-          className="flex flex-col gap-4 overflow-auto p-4"
+          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
             verticalLabel
@@ -173,7 +157,9 @@ export const ReviewWithdrawalForm = ({
             name="submitTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">{t('table.submitTime')}</FormLabel>
+                <FormLabel className="text-foreground basis-3/12">
+                  {t('table.submitTime')}
+                </FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="submitTime" control={form.control} />
                 </FormControl>
@@ -189,7 +175,7 @@ export const ReviewWithdrawalForm = ({
           />
           <FormSelect
             verticalLabel
-            name="outAccountType"
+            name="status"
             label={t('table.status')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
@@ -226,7 +212,9 @@ export const ReviewWithdrawalForm = ({
             name="finishTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12 text-[#757F8D]">{t('table.submitTime')}</FormLabel>
+                <FormLabel className="text-foreground basis-3/12">
+                  {t('table.submitTime')}
+                </FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="finishTime" control={form.control} />
                 </FormControl>
@@ -235,7 +223,7 @@ export const ReviewWithdrawalForm = ({
             )}
           />
 
-          <div className="flex justify-end gap-4">
+          <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>

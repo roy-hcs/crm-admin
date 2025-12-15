@@ -779,7 +779,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
   return (
     <div
       className={cn(
-        'bg-sidebar text-sidebar-foreground border-sidebar-border h-full border-r transition-all duration-300',
+        'text-sidebar-foreground border-sidebar-border bg-background h-full border-r transition-all duration-300',
         open ? 'w-64' : 'w-16',
         cls,
       )}

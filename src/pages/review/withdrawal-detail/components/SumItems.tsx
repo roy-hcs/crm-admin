@@ -8,7 +8,7 @@ import PHL from '@/assets/PHL.svg';
 import USA from '@/assets/USA.svg';
 import USDT from '@/assets/USDT.svg';
 import VND from '@/assets/VND.svg';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDivider } from '@/components/common/RrhDivider';
@@ -71,28 +71,62 @@ const SumItem = ({ currency, amount, orderCount }: SumItemProps) => {
 
 export const SumItems = ({ sumInfos }: { sumInfos: SumItemProps[] }) => {
   const [folded, setFolded] = useState(true);
+  const [showToggle, setShowToggle] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (contentRef.current) {
+        // 临时展开以检测完整内容高度
+        const currentMaxHeight = contentRef.current.style.maxHeight;
+        contentRef.current.style.maxHeight = 'none';
+
+        const isOverflowing = contentRef.current.scrollHeight > 96; // 96px = max-h-24 (24 * 4)
+
+        // 恢复原状态
+        contentRef.current.style.maxHeight = currentMaxHeight;
+
+        setShowToggle(isOverflowing);
+      }
+    };
+
+    // 延迟检测以确保DOM已完全渲染
+    const timeoutId = setTimeout(checkOverflow, 0);
+
+    window.addEventListener('resize', checkOverflow);
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', checkOverflow);
+    };
+  }, [sumInfos]);
+
   return (
     <div>
       <div
+        ref={contentRef}
         className={cn(
           'flex flex-wrap justify-between gap-3 duration-200 md:justify-start',
           folded ? 'max-h-24 overflow-hidden' : 'max-h-screen',
+          showToggle ? '' : 'mb-6',
         )}
       >
         {sumInfos.map((item, index) => (
           <SumItem key={item.currency + index} {...item} />
         ))}
       </div>
-      <RrhDivider className="my-6">
-        <RrhButton
-          type="button"
-          variant="ghost"
-          className="size-4"
-          onClick={() => setFolded(!folded)}
-        >
-          {folded ? <ChevronsDown /> : <ChevronsDown className="rotate-180" />}
-        </RrhButton>
-      </RrhDivider>
+      {showToggle && (
+        <RrhDivider className="my-6">
+          <RrhButton
+            type="button"
+            variant="ghost"
+            className="size-4"
+            onClick={() => setFolded(!folded)}
+          >
+            {folded ? <ChevronsDown /> : <ChevronsDown className="rotate-180" />}
+          </RrhButton>
+        </RrhDivider>
+      )}
     </div>
   );
 };

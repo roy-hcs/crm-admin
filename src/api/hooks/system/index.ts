@@ -19,7 +19,7 @@ export {
   useRoleList,
   useAdminOperLogList,
   useAdminLoginList,
-  useCrmLogininfor,
+  useCrmLoginInfo,
   useGetUserInfo,
 } from './system';
 

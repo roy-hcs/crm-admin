@@ -1,7 +1,6 @@
 import { CrmDealAccountItem } from '@/api/hooks/account';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
-import { DataTable } from '@/components/table/DataTable';
-import { ColumnDef } from '@tanstack/react-table';
+import { CRMColumnDef, DataTable } from '@/components/table/DataTable';
 import { Ellipsis } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -24,7 +23,7 @@ export const AccountGroupsTable = ({
 }) => {
   const { t } = useTranslation();
 
-  const columns: ColumnDef<CrmDealAccountItem>[] = [
+  const columns: CRMColumnDef<CrmDealAccountItem, unknown>[] = [
     {
       id: 'No',
       header: t('table.index'),
@@ -71,6 +70,8 @@ export const AccountGroupsTable = ({
           />
         </div>
       ),
+      fixed: 'right',
+      size: 50,
     },
   ];
 

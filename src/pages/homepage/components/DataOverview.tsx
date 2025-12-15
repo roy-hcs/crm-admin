@@ -175,17 +175,18 @@ export const DataOverview = () => {
       <div className="grid gap-3 sm:grid-cols-1 lg:grid-cols-4 lg:gap-6">
         {sumData.map((it, index) => {
           return (
-            <div className="bg-card grid gap-2 rounded-lg p-4 shadow-xs" key={index}>
+            <div className="bg-card flex flex-col gap-2 rounded-lg p-4 shadow-xs" key={index}>
               <div className="flex items-center justify-between">
                 <div className="text-card-foreground text-sm leading-5 font-normal">
                   {t(it.title)}
                 </div>
-                <div>
-                  <ChevronRight className="text-card-foreground h-4 w-4" />
-                </div>
+                <ChevronRight className="text-card-foreground h-4 w-4" />
               </div>
               <div className="flex items-center justify-between">
-                <div className="text-card-foreground text-base leading-4 font-semibold">
+                <div
+                  className="text-card-foreground truncate text-base leading-4 font-semibold"
+                  title={it.value.toString()}
+                >
                   {it.value}
                 </div>
                 <div className="text-muted-foreground text-xs leading-4 font-normal">USD</div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { User } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,9 +9,11 @@ import { useAuth } from '@/contexts/auth';
 import { useNavigate } from 'react-router-dom';
 import { useTabStore } from '@/store/tabStore';
 import { useUserStore } from '@/store/userStore';
+import { useTranslation } from 'react-i18next';
 
 export const ProfileDropdown: React.FC = () => {
-  const menus = ['profile', 'settings', 'logout'];
+  const { t } = useTranslation();
+  const menus = [t('common.profile'), t('common.settings'), t('common.logout')];
   const { logout } = useAuth();
   const navigate = useNavigate();
   const { addTab } = useTabStore();
@@ -39,11 +40,12 @@ export const ProfileDropdown: React.FC = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="hover:bg-accent flex cursor-pointer items-center rounded-sm p-2">
-        <User className="h-5 w-5" />
-        <span className="ml-2 hidden sm:inline-block">
-          {(user?.userLastName || '') + user?.userName}
-        </span>
+      <DropdownMenuTrigger className="hover:bg-accent flex w-6 cursor-pointer items-center rounded-sm md:w-auto md:p-2">
+        <img
+          src={user?.avatar || ''}
+          alt={user?.userLastName || 'avatar'}
+          className="size-6 rounded-full md:size-10"
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {menus.map(menu => (

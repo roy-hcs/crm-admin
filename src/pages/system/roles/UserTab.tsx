@@ -28,7 +28,7 @@ export const UserTab = () => {
   return (
     <div>
       <h1 className="text-title">{t('rolesManagement.title')}</h1>
-      <div className="my-3.5 flex justify-end gap-2">
+      <div className="my-3.5 flex justify-between gap-2">
         <RrhInputWithIcon
           placeholder={t('common.pleaseInput', { field: t('rolesManagement.roleName') })}
           className="h-9"
@@ -38,9 +38,12 @@ export const UserTab = () => {
             setPageNum(1);
           }}
         />
-        <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-          <RefreshCcw className="size-3.5" />
-        </RrhButton>
+        <div className="flex gap-2">
+          <RrhButton type="button">{t('common.add')}</RrhButton>
+          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+            <RefreshCcw className="size-3.5" />
+          </RrhButton>
+        </div>
       </div>
       <RolesTable
         data={userRoleList?.rows || []}

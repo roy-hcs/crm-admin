@@ -89,6 +89,10 @@ export const LoginForm = ({
   });
 
   useEffect(() => {
+    form.setValue('type', loginType);
+  }, [loginType, form]);
+
+  useEffect(() => {
     if (loginConfig?.code === 0) {
       setSecretKey(loginConfig.data || '');
     }
@@ -106,10 +110,12 @@ export const LoginForm = ({
   }, []);
 
   const onSubmit = async (values: LoginFormValues) => {
+    // console.log('LoginForm onSubmit values:', values);
+    // return;
     try {
       const submittedValues = { ...values };
       if (loginType === 1) {
-        submittedValues.username = `${countryCode}${values.username}`;
+        submittedValues.username = `${countryCode} ${values.username}`;
       }
       submittedValues.password = encryptPassword(values.password, secretKey);
       // submittedValues.googleCode = '';

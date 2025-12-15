@@ -14,10 +14,11 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
-import { CrmLogininforParams } from '@/api/hooks/system';
+import { CrmLoginInfoParams } from '@/api/hooks/system';
 import { FormSelect } from '@/components/form/FormSelect';
 import { adminOperationsStatusOptions } from '@/lib/const';
 import { formatDate } from '@/lib/utils';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   ipaddr: string;
@@ -31,23 +32,25 @@ export const CrmUserLoginForm = ({
   setOtherParams,
   setParams,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
-  setParams: Dispatch<SetStateAction<CrmLogininforParams['params']>>;
-  setOtherParams: Dispatch<
-    SetStateAction<
-      Omit<CrmLogininforParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
-    >
-  >;
+  setParams: Dispatch<SetStateAction<CrmLoginInfoParams['params']>>;
+  setOtherParams: Dispatch<SetStateAction<Omit<CrmLoginInfoParams, 'params' | keyof BasicParams>>>;
   loading: boolean;
+  reset: () => void;
+  params: CrmLoginInfoParams['params'];
+  otherParams: Omit<CrmLoginInfoParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      ipaddr: '',
-      userName: '',
-      status: '',
-      loginLocation: '',
-      time: { from: '', to: '' },
+      ipaddr: otherParams.ipaddr || '',
+      userName: otherParams.userName || '',
+      status: otherParams.status || '',
+      loginLocation: otherParams.loginLocation || '',
+      time: { from: params.beginTime || '', to: params.endTime || '' },
     },
   });
 
@@ -65,18 +68,14 @@ export const CrmUserLoginForm = ({
     }));
   };
   const onReset = () => {
-    setOtherParams({
+    reset();
+    form.reset({
       ipaddr: '',
       userName: '',
       status: '',
       loginLocation: '',
+      time: { from: '', to: '' },
     });
-    setParams(pre => ({
-      ...pre,
-      beginTime: '',
-      endTime: '',
-    }));
-    form.reset();
   };
   return (
     <FormProvider form={form}>
@@ -92,7 +91,7 @@ export const CrmUserLoginForm = ({
               form.handleSubmit(onSubmit)();
             }
           }}
-          className="flex flex-col gap-4 overflow-auto p-4"
+          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
             verticalLabel
@@ -132,7 +131,7 @@ export const CrmUserLoginForm = ({
             label={t('common.operLocation')}
             placeholder={t('common.pleaseInput', { field: t('common.operLocation') })}
           />
-          <div className="flex justify-end gap-4">
+          <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>

@@ -16,7 +16,7 @@ export function MainLayout() {
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header />
 
-        <main className="bg-sidebar flex-1 overflow-auto p-3 md:p-6">
+        <main className="bg-primary-foreground flex-1 overflow-auto p-3 md:p-6">
           <CachedRoute routeKey={activeTab}>
             <Outlet />
           </CachedRoute>

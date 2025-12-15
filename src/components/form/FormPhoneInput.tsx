@@ -36,7 +36,7 @@ export function FormPhoneInput<T extends FieldValues>({
       render={({ field }) => (
         <FormItem>
           <div className={cn('flex items-center text-sm', className)}>
-            <FormLabel className="basis-3/12 text-[#757F8D]">{label}</FormLabel>
+            <FormLabel className="text-foreground basis-3/12">{label}</FormLabel>
             <div className="flex basis-9/12 items-center">
               <div className="relative basis-3/12">
                 <div className="flex h-9 flex-nowrap items-center gap-1 rounded-l-lg border px-1">

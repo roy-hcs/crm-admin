@@ -8,6 +8,7 @@ import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { MenuForm } from './MenuForm';
 import { DataTableRef } from '@/components/table/DataTable';
 import { useDataTableTreeControl } from '@/components/table/useDataTableTreeControl';
+import { PageInfo } from '@/components/common/PageInfo';
 
 export const UserMenuTab = () => {
   const [menuName, setMenuName] = useState('');
@@ -43,26 +44,25 @@ export const UserMenuTab = () => {
 
   return (
     <div>
-      <h1 className="text-title">{t('menuManagement.userFrontend')}</h1>
+      <PageInfo title={t('menuManagement.title')} />
       <div className="my-3.5 flex justify-end gap-2">
-        <div>
-          <RrhDrawer
-            headerShow={false}
-            asChild
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
-            }}
-            footerShow={false}
-            Trigger={
-              <RrhButton variant="ghost" className="size-8">
-                <Funnel />
-              </RrhButton>
-            }
-          >
-            <MenuForm setMenuName={setMenuName} setMenuState={setMenuState} />
-          </RrhDrawer>
-        </div>
+        <RrhButton type="button">{t('common.add')}</RrhButton>
+        <RrhDrawer
+          headerShow={false}
+          asChild
+          responsiveDirection={{
+            mobile: 'bottom',
+            desktop: 'right',
+          }}
+          footerShow={false}
+          Trigger={
+            <RrhButton variant="ghost" className="size-8">
+              <Funnel />
+            </RrhButton>
+          }
+        >
+          <MenuForm setMenuName={setMenuName} setMenuState={setMenuState} />
+        </RrhDrawer>
         <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={toggleExpand}>
           {!expanded ? <LucideChevronsUpDown /> : <LucideChevronsDownUp />}
         </RrhButton>

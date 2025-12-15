@@ -30,18 +30,27 @@ export const EmailLogsForm = ({
   setOtherParams,
   setParams,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   setOtherParams: Dispatch<SetStateAction<Omit<EmailListParams, 'params' | keyof BasicParams>>>;
   setParams: Dispatch<SetStateAction<EmailListParams['params']>>;
   loading: boolean;
+  reset: () => void;
+  params: EmailListParams['params'];
+  otherParams: Omit<EmailListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
-      acceptEmail: '',
-      title: '',
-      status: '',
-      sendTime: { from: formatDate(new Date()), to: '' },
+      acceptEmail: otherParams.acceptEmail || '',
+      title: otherParams.title || '',
+      status: otherParams.status || '',
+      sendTime: {
+        from: params.sendStartTime || formatDate(new Date()),
+        to: params.sendEndTime || '',
+      },
     },
   });
 
@@ -59,15 +68,12 @@ export const EmailLogsForm = ({
     }));
   };
   const onReset = () => {
-    form.reset();
-    setParams({
-      sendEndTime: '',
-      sendStartTime: formatDate(new Date()),
-    });
-    setOtherParams({
-      title: '',
+    reset();
+    form.reset({
       acceptEmail: '',
+      title: '',
       status: '',
+      sendTime: { from: formatDate(new Date()), to: '' },
     });
   };
 
@@ -77,7 +83,7 @@ export const EmailLogsForm = ({
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto p-4"
+          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
             verticalLabel
@@ -116,7 +122,7 @@ export const EmailLogsForm = ({
             )}
           />
 
-          <div className="flex justify-end gap-4">
+          <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>

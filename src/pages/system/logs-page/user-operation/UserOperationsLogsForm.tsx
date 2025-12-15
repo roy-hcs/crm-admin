@@ -34,6 +34,9 @@ export const UserOperationsLogsForm = ({
   setParams,
   operationType = [],
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   operationType?: DictTypeItem[];
   setOtherParams: Dispatch<
@@ -41,15 +44,18 @@ export const UserOperationsLogsForm = ({
   >;
   setParams: Dispatch<SetStateAction<UserOperationsLogsParams['params']>>;
   loading: boolean;
+  reset: () => void;
+  params: UserOperationsLogsParams['params'];
+  otherParams: Omit<UserOperationsLogsParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
-      systemModule: '',
-      operationStatus: '',
-      operationTime: { from: '', to: '' },
-      operationType: [],
-      operator: '',
+      systemModule: otherParams?.title || '',
+      operationStatus: otherParams?.status || '',
+      operationTime: { from: params?.beginTime || '', to: params?.endTime || '' },
+      operationType: otherParams?.businessTypes ? otherParams.businessTypes.split(',') : [],
+      operator: otherParams?.operName || '',
     },
   });
 
@@ -68,16 +74,13 @@ export const UserOperationsLogsForm = ({
     }));
   };
   const onReset = () => {
-    form.reset();
-    setParams({
-      beginTime: '',
-      endTime: '',
-    });
-    setOtherParams({
-      title: '',
-      operName: '',
-      status: '',
-      businessTypes: '',
+    reset();
+    form.reset({
+      systemModule: '',
+      operationStatus: '',
+      operationTime: { from: '', to: '' },
+      operationType: [],
+      operator: '',
     });
   };
 
@@ -87,7 +90,7 @@ export const UserOperationsLogsForm = ({
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto p-4"
+          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
             verticalLabel
@@ -139,7 +142,7 @@ export const UserOperationsLogsForm = ({
             )}
           />
 
-          <div className="flex justify-end gap-4">
+          <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>

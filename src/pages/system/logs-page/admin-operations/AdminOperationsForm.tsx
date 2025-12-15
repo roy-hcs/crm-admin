@@ -18,6 +18,7 @@ import { AdminOperLogParams, DictTypeItem } from '@/api/hooks/system';
 import { FormSelect } from '@/components/form/FormSelect';
 import { adminOperationsStatusOptions } from '@/lib/const';
 import { formatDate } from '@/lib/utils';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   title: string;
@@ -32,24 +33,26 @@ export const AdminOperationsForm = ({
   setParams,
   loading,
   operTypeList,
+  reset,
+  params,
+  otherParams,
 }: {
   setParams: Dispatch<SetStateAction<AdminOperLogParams['params']>>;
-  setOtherParams: Dispatch<
-    SetStateAction<
-      Omit<AdminOperLogParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
-    >
-  >;
+  setOtherParams: Dispatch<SetStateAction<Omit<AdminOperLogParams, 'params' | keyof BasicParams>>>;
   loading: boolean;
   operTypeList: DictTypeItem[];
+  reset: () => void;
+  params: AdminOperLogParams['params'];
+  otherParams: Omit<AdminOperLogParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      title: '',
-      operName: '',
-      status: '',
-      businessTypes: '',
-      time: { from: '', to: '' },
+      title: otherParams?.title || '',
+      operName: otherParams?.operName || '',
+      status: otherParams?.status || '',
+      businessTypes: otherParams?.businessTypes || '',
+      time: { from: params?.beginTime || '', to: params?.endTime || '' },
     },
   });
 
@@ -67,18 +70,14 @@ export const AdminOperationsForm = ({
     }));
   };
   const onReset = () => {
-    setOtherParams({
+    reset();
+    form.reset({
       title: '',
       operName: '',
       status: '',
       businessTypes: '',
+      time: { from: '', to: '' },
     });
-    setParams(pre => ({
-      ...pre,
-      beginTime: '',
-      endTime: '',
-    }));
-    form.reset();
   };
   return (
     <FormProvider form={form}>
@@ -94,7 +93,7 @@ export const AdminOperationsForm = ({
               form.handleSubmit(onSubmit)();
             }
           }}
-          className="flex flex-col gap-4 overflow-auto p-4"
+          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
             verticalLabel
@@ -140,7 +139,7 @@ export const AdminOperationsForm = ({
               </FormItem>
             )}
           />
-          <div className="flex justify-end gap-4">
+          <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>

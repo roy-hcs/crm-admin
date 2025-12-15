@@ -34,6 +34,9 @@ export const PaymentLogsForm = ({
   setParams,
   loading,
   paymentMethods,
+  reset,
+  params,
+  otherParams,
 }: {
   setOtherParams: Dispatch<
     SetStateAction<Omit<UserOrderLogListParams, 'params' | keyof BasicParams>>
@@ -41,16 +44,19 @@ export const PaymentLogsForm = ({
   setParams: Dispatch<SetStateAction<UserOrderLogListParams['params']>>;
   loading: boolean;
   paymentMethods?: ThirdPaymentItem[];
+  reset: () => void;
+  params: UserOrderLogListParams['params'];
+  otherParams: Omit<UserOrderLogListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
-      orderId: '',
-      orderStatus: '',
-      userName: '',
-      channelName: '',
-      payResult: '',
-      operationTime: { from: '', to: '' },
+      orderId: otherParams.orderId || '',
+      orderStatus: otherParams.orderStatus || '',
+      userName: params.userName || '',
+      channelName: otherParams.channelName || '',
+      payResult: otherParams.payResult || '',
+      operationTime: { from: params.operationStart || '', to: params.operationEnd || '' },
     },
   });
 
@@ -66,19 +72,18 @@ export const PaymentLogsForm = ({
       orderId: data.orderId,
       channelName: data.channelName,
       payResult: data.payResult,
+      orderStatus: data.orderStatus,
     }));
   };
   const onReset = () => {
-    form.reset();
-    setParams({
-      operationEnd: '',
-      operationStart: '',
-      userName: '',
-    });
-    setOtherParams({
+    reset();
+    form.reset({
       orderId: '',
+      orderStatus: '',
+      userName: '',
       channelName: '',
       payResult: '',
+      operationTime: { from: '', to: '' },
     });
   };
 
@@ -88,7 +93,7 @@ export const PaymentLogsForm = ({
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto p-4"
+          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
             verticalLabel
@@ -110,7 +115,7 @@ export const PaymentLogsForm = ({
           />
           <FormSelect
             verticalLabel
-            name="status"
+            name="orderStatus"
             label={t('financial.paymentOrders.orderStatus')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
@@ -145,7 +150,7 @@ export const PaymentLogsForm = ({
             ]}
           />
 
-          <div className="flex justify-end gap-4">
+          <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>

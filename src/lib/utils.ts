@@ -1,4 +1,6 @@
+import { ColumnMeta } from '@/api/hooks/common';
 import { TotalItem } from '@/api/hooks/pamm/type';
+import { CRMColumnDef } from '@/components/table';
 import { clsx, type ClassValue } from 'clsx';
 import dayjs from 'dayjs';
 import { twMerge } from 'tailwind-merge';
@@ -97,4 +99,20 @@ export const getCssVar = (name: string, fallback: string) => {
   } catch {
     return fallback;
   }
+};
+
+export const getColumnMeta: <T>(
+  columns: CRMColumnDef<T, unknown>[],
+  filterIds?: string[],
+) => ColumnMeta[] = (columns, filterIds = []) => {
+  return columns
+    .filter(col => {
+      const id = col.id || col.accessorKey;
+      return id && !filterIds.includes(id);
+    })
+    .map(col => ({
+      id: col.id || '',
+      label: typeof col.header === 'string' ? col.header : col.label || col.id || '',
+      defaultVisible: true,
+    }));
 };

@@ -23,9 +23,12 @@ export const LanguageSwitcher: React.FC<{ showLabel?: boolean; className?: strin
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className={cn('hover:bg-accent flex cursor-pointer items-center rounded-sm p-2', className)}
+        className={cn(
+          'hover:bg-accent flex cursor-pointer items-center rounded-sm md:p-2',
+          className,
+        )}
       >
-        <Globe className="h-5 w-5" />
+        <Globe className="size-5" />
         {showLabel && <span className="ml-2 hidden sm:inline-block">{language.toUpperCase()}</span>}
       </DropdownMenuTrigger>
       <DropdownMenuContent>

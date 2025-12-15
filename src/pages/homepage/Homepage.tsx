@@ -16,6 +16,7 @@ import { FundsTransit } from './components/FundsTransit';
 import { HomeExceptionPrompt } from './components/HomeExceptionPrompt';
 import { HomeTodo } from './components/HomeTodo';
 import { useMemo } from 'react';
+import { PageInfo } from '@/components/common/PageInfo';
 
 export function HomePage() {
   const { t } = useTranslation();
@@ -30,17 +31,19 @@ export function HomePage() {
 
   return (
     <div>
-      <h1 className="text-card-foreground text-xl leading-7 font-semibold">
-        {t('home.DataOverview')}
-      </h1>
-      <div className="text-muted-foreground text-sm leading-5 font-normal">
-        {t('home.DataUpdateTime')}: {dataUpdateTime}
-      </div>
-      <div className="mt-3 grid gap-8 sm:grid-cols-1 lg:mt-12 lg:grid-cols-1 xl:grid-cols-[1fr_365px]">
+      <PageInfo
+        title={t('home.DataOverview')}
+        desc={
+          <>
+            {t('home.DataUpdateTime')}: {dataUpdateTime}
+          </>
+        }
+      />
+      <div className="mt-3 grid gap-8 sm:grid-cols-1 lg:mt-9 lg:grid-cols-1 xl:grid-cols-[1fr_365px]">
         <div className="w-full">
           <DataOverview />
 
-          <div className="mt-6 mb-6">
+          <div className="my-6">
             <NavList />
           </div>
 
@@ -49,7 +52,7 @@ export function HomePage() {
             <AccountActivation />
           </div>
 
-          <div className="mt-6 mb-6">
+          <div className="my-6">
             <TradingInstrument serverList={serverList} />
           </div>
 

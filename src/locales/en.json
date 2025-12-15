@@ -185,7 +185,14 @@
     "qrcode": "QR code",
     "queryTime": "query time",
     "unitOrder": "Order",
-    "yes": "yes"
+    "yes": "yes",
+    "globalSearch": "global search",
+    "logout": "Log out",
+    "marketplace": "trading market",
+    "newVersion": "new version",
+    "profile": "personal information",
+    "searchResult": "Search results",
+    "settings": "set up"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -629,7 +636,9 @@
     "paymentAddress": "Payment address",
     "paymentBank": "beneficiary bank",
     "paymentBankAddress": "Beneficiary bank address",
-    "swiftCode": "SWIFT Code"
+    "swiftCode": "SWIFT Code",
+    "hideHidableCols": "Hide hideable columns",
+    "showAllCols": "Show all columns"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -817,7 +826,15 @@
     "withdrawalAmountDesc": "Orders in different currencies are totaled in US dollars.",
     "withdrawalInfo": "Withdrawal information",
     "withdrawalRecord": "Withdrawal records",
-    "withdrawalReviewDetail": "Withdrawal review details"
+    "withdrawalReviewDetail": "Withdrawal review details",
+    "accumulatedApplyWithdrawals": "Cumulative withdrawal applications:",
+    "accumulatedWithdrawals": "Cumulative withdrawals:",
+    "frequentWithdrawalWarning": "Users frequently withdraw funds:",
+    "largeWithdrawalWarning": "Large withdrawal: The withdrawal exceeds",
+    "orderAbnormalWarning": "Abnormal order warning",
+    "shortTimeLargeWithdrawalWarning": "Users can withdraw large amounts of money in the short term:",
+    "times": "Second-rate",
+    "withinDays": "within days"
   },
   "rolesManagement": {
     "administrator": "administrator",

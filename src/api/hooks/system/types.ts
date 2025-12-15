@@ -156,6 +156,7 @@ export type UserOrderLogListParams = BasicParams & {
   orderId?: string;
   channelName?: string;
   payResult?: string;
+  orderStatus?: string;
   params: {
     operationStart?: string;
     operationEnd?: string;
@@ -323,7 +324,7 @@ export type AdminLoginItem = {
 
 export type AdminLoginRes = BasicRes<AdminLoginItem>;
 
-export type CrmLogininforParams = BasicParams & {
+export type CrmLoginInfoParams = BasicParams & {
   ipaddr?: string;
   userName?: string;
   status?: string;
@@ -334,7 +335,7 @@ export type CrmLogininforParams = BasicParams & {
     endTime?: string;
   };
 };
-export type CrmLogininforItem = BaseEntity & {
+export type CrmLoginInfoItem = BaseEntity & {
   infoId: string | null;
   loginName: string | null;
   ipaddr: string | null;
@@ -345,7 +346,7 @@ export type CrmLogininforItem = BaseEntity & {
   loginTime: string | null;
 };
 
-export type CrmLogininforRes = BasicRes<CrmLogininforItem>;
+export type CrmLogininforRes = BasicRes<CrmLoginInfoItem>;
 
 // Note: AdsList, RewardRecordsList types moved to @/api/hooks/marketing
 

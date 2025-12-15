@@ -5,6 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -31,7 +32,7 @@ export const RrhSelect = <T extends BaseOption>({
   const { t } = useTranslation();
   return (
     <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger className={className}>
+      <SelectTrigger className={cn('bg-background', className)}>
         {showRowValue ? (
           <div className="truncate text-sm">{value || placeholder}</div>
         ) : (

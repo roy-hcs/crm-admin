@@ -8,8 +8,7 @@ import {
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
-import { TagUserItem } from '@/api/hooks/account';
-import { forwardRef, useImperativeHandle } from 'react';
+import { CrmUserParams, TagUserItem } from '@/api/hooks/account';
 import { RefreshCcw, Search } from 'lucide-react';
 import { FormInput } from '@/components/form/FormInput';
 import { FormProvider } from '@/contexts/form';
@@ -20,6 +19,8 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { useTranslation } from 'react-i18next';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { formatDate } from '@/lib/utils';
+import { Dispatch, SetStateAction } from 'react';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   accountType: string;
@@ -39,48 +40,38 @@ export interface CRMFormRef {
   onReset: () => void;
 }
 
-export const CRMAccountsForm = forwardRef<
-  CRMFormRef,
-  {
-    tagsUserList: TagUserItem[];
-    setOtherParams: (params: {
-      status: string;
-      role: string;
-      certiricateNo: string;
-      accountType: string;
-    }) => void;
-    setParams: (params: {
-      threeCons: string;
-      regEndTime: string;
-      regStartTime: string;
-      fuzzyMobile: string;
-      fuzzyEmail: string;
-      inviter: string;
-      accounts: string;
-    }) => void;
-    setTags: (tags: string) => void;
-  }
->(({ tagsUserList, setOtherParams, setParams, setTags }, ref) => {
+export const CRMAccountsForm = ({
+  tagsUserList,
+  setOtherParams,
+  setParams,
+  setTags,
+  reset,
+  params,
+  otherParams,
+}: {
+  tagsUserList: TagUserItem[];
+  setOtherParams: Dispatch<SetStateAction<Omit<CrmUserParams, 'params' | keyof BasicParams>>>;
+  setParams: Dispatch<SetStateAction<CrmUserParams['params']>>;
+  setTags: (tags: string) => void;
+  reset: () => void;
+  params: CrmUserParams['params'];
+  otherParams: Omit<CrmUserParams, 'params' | keyof BasicParams>;
+}) => {
   const form = useForm({
     defaultValues: {
       regStartTime: { from: '', to: '' },
-      name: '',
-      status: '',
-      mobile: '',
-      email: '',
-      role: '',
-      inviter: '',
-      accounts: '',
-      certiricateNo: '',
+      name: params.threeCons || '',
+      status: otherParams.status || '',
+      mobile: params.fuzzyMobile || '',
+      email: params.fuzzyEmail || '',
+      role: otherParams.role || '',
+      inviter: params.inviter || '',
+      accounts: params.accounts || '',
+      certiricateNo: otherParams.certiricateNo || '',
       tags: '',
-      accountType: '',
+      accountType: otherParams.accountType || '',
     },
   });
-  useImperativeHandle(ref, () => ({
-    onReset: () => {
-      form.reset();
-    },
-  }));
 
   const { t } = useTranslation();
 
@@ -103,23 +94,21 @@ export const CRMAccountsForm = forwardRef<
     setTags(data.tags);
   };
   const onReset = () => {
-    form.reset();
-    setParams({
-      threeCons: '',
-      regEndTime: '',
-      regStartTime: '',
-      fuzzyMobile: '',
-      fuzzyEmail: '',
+    reset();
+    setTags('');
+    form.reset({
+      regStartTime: { from: '', to: '' },
+      name: '',
+      status: '',
+      mobile: '',
+      email: '',
+      role: '',
       inviter: '',
       accounts: '',
-    });
-    setOtherParams({
-      status: '',
-      role: '',
       certiricateNo: '',
+      tags: '',
       accountType: '',
     });
-    setTags('');
   };
 
   const tagsOptions = tagsUserList.map(tag => ({
@@ -133,7 +122,7 @@ export const CRMAccountsForm = forwardRef<
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto p-4"
+          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
             verticalLabel
@@ -214,7 +203,7 @@ export const CRMAccountsForm = forwardRef<
             placeholder={t('common.pleaseSelect')}
             options={tagsOptions}
           />
-          <div className="flex justify-end gap-4">
+          <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
             <RrhButton
               variant="outline"
               onClick={onReset}
@@ -233,4 +222,4 @@ export const CRMAccountsForm = forwardRef<
       </Form>
     </FormProvider>
   );
-});
+};

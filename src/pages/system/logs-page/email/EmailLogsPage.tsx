@@ -1,13 +1,20 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { Funnel, RefreshCcw } from 'lucide-react';
+import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useEmailList, EmailListParams } from '@/api/hooks/system';
+import { useEmailList, EmailListParams, EmailListItem } from '@/api/hooks/system';
 import { BasicParams } from '@/api/hooks/review/types';
 import { EmailLogsForm } from './EmailLogsForm';
-import { EmailLogsTable } from './EmailLogsTable';
 import dayjs from 'dayjs';
+import { PageInfo } from '@/components/common/PageInfo';
+import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { RrhTag } from '@/components/common/RrhTag';
+import { ToolTip } from '@/components/common/ToolTip';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { getColumnMeta } from '@/lib/utils';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 
 export const EmailLogsPage = () => {
   const [params, setParams] = useState<EmailListParams['params']>({
@@ -24,6 +31,7 @@ export const EmailLogsPage = () => {
 
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [keyword, setKeyword] = useState('');
   const { t } = useTranslation();
 
   const { data, isLoading } = useEmailList({
@@ -46,40 +54,150 @@ export const EmailLogsPage = () => {
       acceptEmail: '',
       status: '',
     });
+    setKeyword('');
     setPageNum(0);
   };
+  const allColumns: CRMColumnDef<EmailListItem, unknown>[] = [
+    {
+      id: 'No.',
+      header: t('CRMAccountPage.Index'),
+      cell: ({ row }) => row.index + 1,
+    },
+    {
+      id: 'acceptEmail',
+      header: t('table.acceptEmail'),
+      accessorFn: row => row.acceptEmailStr,
+    },
+    {
+      id: 'title',
+      header: t('table.title'),
+      accessorFn: row => row.title,
+    },
+    {
+      id: 'sendEmailAddress',
+      header: t('table.sendEmailAddress'),
+      accessorFn: row => row.sendEmailStr,
+    },
+    {
+      id: 'status',
+      header: t('common.status'), // 0: buy, 1: sell
+      cell: ({ row }) => {
+        switch (row.original.status) {
+          case 1:
+            return <RrhTag type="success">{t('common.success')}</RrhTag>;
+          case -1:
+            return <RrhTag type="error">{t('common.fail')}</RrhTag>;
+          case 0:
+            return <RrhTag type="warning">{t('table.notSend')}</RrhTag>;
+        }
+      },
+    },
+    {
+      id: 'sendTime',
+      header: t('table.sendTime'),
+      accessorFn: row => row.sendTime,
+    },
+    {
+      id: 'reason',
+      header: t('table.reason'),
+      cell: ({ row }) => {
+        const exceedLength = row.original.remark && row.original.remark.length > 40;
+        const reasonText = exceedLength
+          ? row.original.remark?.slice(0, 40) + '...'
+          : row.original.remark;
+        return exceedLength ? (
+          <ToolTip content={<div className="break-all">{row.original.remark}</div>}>
+            <div>{reasonText}</div>
+          </ToolTip>
+        ) : (
+          <div>{reasonText}</div>
+        );
+      },
+    },
+    {
+      id: 'operate',
+      header: t('common.Operation'),
+      cell: ({ row }) => {
+        const onClick = (data: EmailListItem) => {
+          console.log('Operate on row:', data);
+        };
+        return (
+          <div className="flex items-center gap-2">
+            <RrhButton variant="ghost" onClick={() => onClick(row.original)}>
+              {t('common.View')}
+            </RrhButton>
+            <RrhButton variant="ghost" onClick={() => onClick(row.original)}>
+              {t('table.failedRecord')}
+            </RrhButton>
+            <RrhButton variant="ghost" onClick={() => onClick(row.original)}>
+              {t('table.reSend')}
+            </RrhButton>
+          </div>
+        );
+      },
+      fixed: 'right',
+    },
+  ];
+
+  const columnMeta = getColumnMeta<EmailListItem>(allColumns);
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns } =
+    useColumnVisibility('crm-user-login-table', columnMeta, allColumns);
 
   return (
     <div>
-      <h1 className="text-title">{t('emailLogsPage.title')}</h1>
-      <div className="my-3.5 flex items-center justify-end gap-2">
-        <RrhButton variant="outline">{t('emailLogsPage.reSendFailedEmailConfig')}</RrhButton>
-        <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-          <RefreshCcw className="size-3.5" />
-        </RrhButton>
-        <RrhDrawer
-          headerShow={false}
-          asChild
-          responsiveDirection={{
-            mobile: 'bottom',
-            desktop: 'right',
+      <PageInfo title={t('emailLogsPage.title')} />
+      <div className="my-3.5 flex items-center justify-between gap-2">
+        <RrhInputWithIcon
+          placeholder={t('common.pleaseInput', { field: t('table.acceptEmail') })}
+          className="h-9"
+          value={keyword}
+          onChange={e => setKeyword(e.target.value)}
+          rightIcon={<Search className="size-4 cursor-pointer" />}
+          onRightIconClick={e => {
+            setOtherParams(prev => ({ ...prev, acceptEmail: e }));
+            setPageNum(1);
           }}
-          footerShow={false}
-          Trigger={
-            <RrhButton variant="ghost" className="size-8">
-              <Funnel />
-            </RrhButton>
-          }
-        >
-          <EmailLogsForm
-            setParams={setParams}
-            setOtherParams={setOtherParams}
-            loading={isLoading}
+        />
+        <div className="flex items-center gap-2">
+          <RrhButton type="button">{t('emailLogsPage.reSendFailedEmailConfig')}</RrhButton>
+          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+            <RefreshCcw className="size-3.5" />
+          </RrhButton>
+          <RrhDrawer
+            headerShow={false}
+            asChild
+            responsiveDirection={{
+              mobile: 'bottom',
+              desktop: 'right',
+            }}
+            footerShow={false}
+            Trigger={
+              <RrhButton variant="ghost" className="size-8">
+                <Funnel />
+              </RrhButton>
+            }
+          >
+            <EmailLogsForm
+              setParams={setParams}
+              setOtherParams={setOtherParams}
+              loading={isLoading}
+              reset={reset}
+              params={params}
+              otherParams={otherParams}
+            />
+          </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
           />
-        </RrhDrawer>
+        </div>
       </div>
 
-      <EmailLogsTable
+      <DataTable
+        columns={tableColumns}
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}

@@ -18,6 +18,7 @@ import { AdminLoginParams } from '@/api/hooks/system';
 import { FormSelect } from '@/components/form/FormSelect';
 import { adminOperationsStatusOptions } from '@/lib/const';
 import { formatDate } from '@/lib/utils';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   userName: string;
@@ -31,23 +32,25 @@ export const AdminLoginForm = ({
   setOtherParams,
   setParams,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   setParams: Dispatch<SetStateAction<AdminLoginParams['params']>>;
-  setOtherParams: Dispatch<
-    SetStateAction<
-      Omit<AdminLoginParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
-    >
-  >;
+  setOtherParams: Dispatch<SetStateAction<Omit<AdminLoginParams, 'params' | keyof BasicParams>>>;
   loading: boolean;
+  reset: () => void;
+  params: AdminLoginParams['params'];
+  otherParams: Omit<AdminLoginParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      userName: '',
-      ipaddr: '',
-      status: '',
-      loginLocation: '',
-      time: { from: '', to: '' },
+      userName: params.userName || '',
+      ipaddr: otherParams.ipaddr || '',
+      status: otherParams.status || '',
+      loginLocation: otherParams.loginLocation || '',
+      time: { from: params.beginTime || '', to: params.endTime || '' },
     },
   });
 
@@ -65,18 +68,14 @@ export const AdminLoginForm = ({
     }));
   };
   const onReset = () => {
-    setOtherParams({
+    reset();
+    form.reset({
+      userName: '',
       ipaddr: '',
       status: '',
       loginLocation: '',
+      time: { from: '', to: '' },
     });
-    setParams(pre => ({
-      ...pre,
-      beginTime: '',
-      endTime: '',
-      userName: '',
-    }));
-    form.reset();
   };
   return (
     <FormProvider form={form}>
@@ -92,7 +91,7 @@ export const AdminLoginForm = ({
               form.handleSubmit(onSubmit)();
             }
           }}
-          className="flex flex-col gap-4 overflow-auto p-4"
+          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
             verticalLabel
@@ -132,7 +131,7 @@ export const AdminLoginForm = ({
             label={t('common.operLocation')}
             placeholder={t('common.pleaseInput', { field: t('common.operLocation') })}
           />
-          <div className="flex justify-end gap-4">
+          <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>

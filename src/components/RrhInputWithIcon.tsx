@@ -70,7 +70,7 @@ const RrhInputWithIcon = React.forwardRef<HTMLInputElement, InputProps>(
       <Input
         ref={combinedRef}
         type={type}
-        className={cn(hasLeft && 'pl-8', hasRight && 'pr-8', className)}
+        className={cn('bg-white', hasLeft && 'pl-8', hasRight && 'pr-8', className)}
         onKeyDown={handleKeyDown}
         {...props}
       />

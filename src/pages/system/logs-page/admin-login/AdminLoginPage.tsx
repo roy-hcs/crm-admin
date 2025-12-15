@@ -4,9 +4,15 @@ import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AdminLoginTable } from './AdminLoginTable';
 import { AdminLoginForm } from './AdminLoginForm';
-import { useAdminLoginList, AdminLoginParams } from '@/api/hooks/system';
+import { useAdminLoginList, AdminLoginParams, AdminLoginItem } from '@/api/hooks/system';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { adminOperationsStatusOptions } from '@/lib/const';
+import { RrhTag } from '@/components/common/RrhTag';
+import { getColumnMeta } from '@/lib/utils';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { PageInfo } from '@/components/common/PageInfo';
 
 export const AdminLoginPage = () => {
   const [params, setParams] = useState<AdminLoginParams['params']>({
@@ -23,6 +29,7 @@ export const AdminLoginPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [keyword, setKeyword] = useState('');
   const { t } = useTranslation();
   const { data: walletBalanceList, isLoading: walletBalanceListLoading } = useAdminLoginList({
     pageSize,
@@ -47,16 +54,98 @@ export const AdminLoginPage = () => {
       status: '',
       loginLocation: '',
     });
+    setKeyword('');
     setPageNum(0);
   };
-
+  const allColumns: CRMColumnDef<AdminLoginItem, unknown>[] = [
+    {
+      id: 'No',
+      header: t('table.index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
+      id: 'user_last_name',
+      header: t('table.fullName'),
+      cell: ({ row }) => {
+        if (row.original?.user_last_name || row.original?.user_name) {
+          return (
+            <div>{`${row.original.user_last_name || ''} ${row.original.user_name || ''}`}</div>
+          );
+        } else {
+          return <div className="text-center">-</div>;
+        }
+      },
+    },
+    {
+      id: 'operIp',
+      header: t('common.operIp'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.ipaddr || '-'}</div>;
+      },
+    },
+    {
+      id: 'operLocation',
+      header: t('common.operLocation'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.login_location || '-'}</div>;
+      },
+    },
+    {
+      id: 'operTime',
+      header: t('common.operTime'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.login_time || '-'}</div>;
+      },
+    },
+    {
+      id: 'status',
+      header: t('table.status'),
+      accessorFn: row => row.status,
+      cell: ({ row }) => {
+        const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info'> = {
+          1: 'error',
+          0: 'success',
+        };
+        const status = Number(row.original.status);
+        const text =
+          adminOperationsStatusOptions.find(it => Number(it.value) === status)?.label || '';
+        return <RrhTag type={typeMap[status]}>{t(text)}</RrhTag>;
+      },
+    },
+    {
+      id: 'browser',
+      header: t('system.adminLogin.browser'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.browser || '-'}</div>;
+      },
+    },
+    {
+      id: 'os',
+      header: t('system.adminLogin.os'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.os || '-'}</div>;
+      },
+    },
+    {
+      id: 'msg',
+      header: t('table.remarks'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.msg || '-'}</div>;
+      },
+    },
+  ];
+  const columnMeta = getColumnMeta<AdminLoginItem>(allColumns);
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns } =
+    useColumnVisibility('admin-login-logs-table', columnMeta, allColumns);
   return (
     <div>
-      <h1 className="text-title">{t('system.adminLogin.title')}</h1>
+      <PageInfo title={t('system.adminLogin.title')} />
       <div className="my-3.5 flex items-center justify-between">
         <RrhInputWithIcon
           placeholder={t('common.pleaseInput', { field: t('system.adminLogin.name') })}
           className="h-9"
+          value={keyword}
+          onChange={e => setKeyword(e.target.value)}
           rightIcon={<Search className="size-4 cursor-pointer" />}
           onRightIconClick={e => {
             setParams(prev => ({ ...prev, userName: e }));
@@ -85,12 +174,23 @@ export const AdminLoginPage = () => {
               setParams={setParams}
               setOtherParams={setOtherParams}
               loading={walletBalanceListLoading}
+              reset={reset}
+              params={params}
+              otherParams={otherParams}
             />
           </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
         </div>
       </div>
-      <AdminLoginTable
+      <DataTable
         data={walletBalanceList?.rows || []}
+        columns={tableColumns}
         pageCount={Math.ceil(+(walletBalanceList?.total || 0) / pageSize)}
         pageIndex={pageNum}
         pageSize={pageSize}

@@ -133,7 +133,7 @@ export const PositionOrderForm = ({
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto p-4"
+          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormSelect<
             Record<string, string>,
@@ -247,7 +247,7 @@ export const PositionOrderForm = ({
             )}
           />
 
-          <div className="flex justify-end gap-4">
+          <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>

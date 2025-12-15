@@ -1,7 +1,6 @@
 import { RoleItem } from '@/api/hooks/system';
 import { RrhButton } from '@/components/common/RrhButton';
-import { DataTable } from '@/components/table/DataTable';
-import { ColumnDef } from '@tanstack/react-table';
+import { CRMColumnDef, DataTable } from '@/components/table/DataTable';
 import { useTranslation } from 'react-i18next';
 
 export const RolesTable = ({
@@ -22,7 +21,7 @@ export const RolesTable = ({
   loading?: boolean;
 }) => {
   const { t } = useTranslation();
-  const rolesColumns: ColumnDef<RoleItem>[] = [
+  const rolesColumns: CRMColumnDef<RoleItem, unknown>[] = [
     {
       id: 'No.',
       header: t('CRMAccountPage.Index'),
@@ -74,6 +73,7 @@ export const RolesTable = ({
           );
         }
       },
+      fixed: 'right',
     },
   ];
   return (

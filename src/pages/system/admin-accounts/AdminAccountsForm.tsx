@@ -17,6 +17,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { RoleItem, UserListParams } from '@/api/hooks/system';
 import { FormSelect } from '@/components/form/FormSelect';
 import { onlineStatusOptions, statusOptions } from '@/lib/const';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   userName: string;
@@ -33,26 +34,28 @@ export const AdminAccountsForm = ({
   setParams,
   loading,
   roleList,
+  reset,
+  params,
+  otherParams,
 }: {
   setParams: Dispatch<SetStateAction<UserListParams['params']>>;
-  setOtherParams: Dispatch<
-    SetStateAction<
-      Omit<UserListParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
-    >
-  >;
+  setOtherParams: Dispatch<SetStateAction<Omit<UserListParams, 'params' | keyof BasicParams>>>;
   loading: boolean;
   roleList: RoleItem[];
+  reset: () => void;
+  params: UserListParams['params'];
+  otherParams: Omit<UserListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      userName: '',
-      roleId: '',
-      status: '',
-      phonenumber: '',
-      email: '',
-      onlineStatus: '',
-      time: { from: '', to: '' },
+      userName: otherParams?.userName || '',
+      roleId: otherParams?.roleId || '',
+      status: otherParams?.status || '',
+      phonenumber: otherParams?.phonenumber || '',
+      email: otherParams?.email || '',
+      onlineStatus: otherParams?.onlineStatus || '',
+      time: { from: params?.beginTime || '', to: params?.endTime || '' },
     },
   });
 
@@ -72,20 +75,16 @@ export const AdminAccountsForm = ({
     }));
   };
   const onReset = () => {
-    setOtherParams({
+    reset();
+    form.reset({
       userName: '',
       roleId: '',
       status: '',
       phonenumber: '',
       email: '',
       onlineStatus: '',
+      time: { from: '', to: '' },
     });
-    setParams(pre => ({
-      ...pre,
-      beginTime: '',
-      endTime: '',
-    }));
-    form.reset();
   };
   return (
     <FormProvider form={form}>
@@ -101,7 +100,7 @@ export const AdminAccountsForm = ({
               form.handleSubmit(onSubmit)();
             }
           }}
-          className="flex flex-col gap-4 overflow-auto p-4"
+          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
             verticalLabel
@@ -157,7 +156,7 @@ export const AdminAccountsForm = ({
               </FormItem>
             )}
           />
-          <div className="flex justify-end gap-4">
+          <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
