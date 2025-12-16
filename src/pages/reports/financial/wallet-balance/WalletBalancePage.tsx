@@ -180,7 +180,7 @@ export const WalletBalancePage = () => {
           rightIcon={<Search className="size-4 cursor-pointer" />}
           onRightIconClick={e => {
             setParams(prev => ({ ...prev, positionFuzzyTicket: e }));
-            setPageNum(1);
+            setPageNum(0);
           }}
         />
         <div className="flex justify-end gap-2">

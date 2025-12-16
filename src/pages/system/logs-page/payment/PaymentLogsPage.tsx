@@ -172,7 +172,7 @@ export const PaymentLogsPage = () => {
           rightIcon={<Search className="size-4 cursor-pointer" />}
           onRightIconClick={e => {
             setOtherParams(prev => ({ ...prev, orderId: e }));
-            setPageNum(1);
+            setPageNum(0);
           }}
         />
         <div className="flex items-center gap-2">

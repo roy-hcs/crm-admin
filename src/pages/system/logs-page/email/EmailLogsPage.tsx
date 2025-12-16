@@ -155,7 +155,7 @@ export const EmailLogsPage = () => {
           rightIcon={<Search className="size-4 cursor-pointer" />}
           onRightIconClick={e => {
             setOtherParams(prev => ({ ...prev, acceptEmail: e }));
-            setPageNum(1);
+            setPageNum(0);
           }}
         />
         <div className="flex items-center gap-2">

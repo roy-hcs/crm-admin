@@ -21,6 +21,8 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { formatDate } from '@/lib/utils';
+import { Dispatch, SetStateAction } from 'react';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   serverId: string;
@@ -37,23 +39,30 @@ export const StatisticForm = ({
   setOtherParams,
   setParams,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   serverList: ServerItem[];
   serverListLoading: boolean;
-  setParams: (params: AccountStatisticListParams['params']) => void;
-  setOtherParams: (params: { server?: string; accountGroupList?: string }) => void;
+  setParams: Dispatch<SetStateAction<AccountStatisticListParams['params']>>;
+  setOtherParams: Dispatch<
+    SetStateAction<Omit<AccountStatisticListParams, 'params' | keyof BasicParams>>
+  >;
   loading: boolean;
+  reset: () => void;
+  params: AccountStatisticListParams['params'];
+  otherParams: Omit<AccountStatisticListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      serverId: '',
-      serverGroupList: [],
-      name: '',
-      login: '',
-      accounts: '',
-      accountGroupList: [],
-      statisticTime: { from: '', to: '' },
+      serverId: otherParams.server || '',
+      serverGroupList: (params.serverGroupList as string)?.split(',') || [],
+      name: params.fuzzyName || '',
+      login: params.fuzzyAccount || '',
+      accountGroupList: (otherParams.accountGroupList as string)?.split(',') || [],
+      statisticTime: { from: params.statisticStartTime || '', to: params.statisticEndTime || '' },
     },
   });
   if (!form.getValues('serverId') && serverList.length && !serverListLoading) {
@@ -80,18 +89,15 @@ export const StatisticForm = ({
     });
   };
   const onReset = () => {
-    setOtherParams({
-      server: form.watch('serverId') || '',
-      accountGroupList: '',
+    reset();
+    form.reset({
+      serverId: '',
+      serverGroupList: [],
+      name: '',
+      login: '',
+      accountGroupList: [],
+      statisticTime: { from: '', to: '' },
     });
-    setParams({
-      serverGroupList: '',
-      fuzzyAccount: '',
-      fuzzyName: '',
-      statisticStartTime: '',
-      statisticEndTime: '',
-    });
-    form.reset();
   };
   return (
     <FormProvider form={form}>

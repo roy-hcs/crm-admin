@@ -22,6 +22,7 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { formatDate } from '@/lib/utils';
+import { Dispatch, SetStateAction } from 'react';
 
 type FormData = {
   serverId: string;
@@ -46,32 +47,35 @@ export const PositionOrderForm = ({
   setOtherParams,
   setParams,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   serverList: ServerItem[];
   serverListLoading: boolean;
-  setParams: (params: PositionOrderParams['params']) => void;
-  setOtherParams: (params: {
-    server?: string;
-    type?: number | string;
-    accountGroupList?: string;
-    accounts?: string;
-    serverGroupList?: string;
-  }) => void;
+  setParams: Dispatch<SetStateAction<PositionOrderParams['params']>>;
+  setOtherParams: Dispatch<SetStateAction<Omit<PositionOrderParams, 'params'>>>;
   loading: boolean;
+  reset: () => void;
+  params: PositionOrderParams['params'];
+  otherParams: Omit<PositionOrderParams, 'params'>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      serverId: '',
-      serverGroupList: [],
-      type: '',
-      name: '',
-      login: '',
-      symbol: '',
-      ticket: '',
-      accounts: '',
-      accountGroupList: [],
-      openTime: { from: '', to: '' },
+      serverId: otherParams.server || '',
+      serverGroupList: otherParams.serverGroupList ? otherParams.serverGroupList.split(',') : [],
+      type: otherParams.type || '',
+      name: params.positionFuzzyName || '',
+      login: params.positionFuzzyLogin || '',
+      symbol: params.positionFuzzySymbol || '',
+      ticket: params.positionFuzzyTicket || '',
+      accounts: params.accounts || '',
+      accountGroupList: otherParams.accountGroupList ? otherParams.accountGroupList.split(',') : [],
+      openTime: {
+        from: params.positionDealBJStartTime || '',
+        to: params.positionDealBJEndTime || '',
+      },
     },
   });
   if (!form.getValues('serverId') && serverList.length && !serverListLoading) {
@@ -108,24 +112,19 @@ export const PositionOrderForm = ({
     });
   };
   const onReset = () => {
-    setOtherParams({
-      server: form.watch('serverId') || '',
-      serverGroupList: '',
+    reset();
+    form.reset({
+      serverId: '',
+      serverGroupList: [],
       type: '',
-      accountGroupList: '',
+      name: '',
+      login: '',
+      symbol: '',
+      ticket: '',
       accounts: '',
+      accountGroupList: [],
+      openTime: { from: '', to: '' },
     });
-    setParams({
-      random: new Date().getTime() + '' + Math.floor(Math.random() * 100 + 1),
-      positionFuzzyName: '',
-      positionFuzzyLogin: '',
-      positionFuzzySymbol: '',
-      positionFuzzyTicket: '',
-      accounts: '',
-      positionDealBJStartTime: '',
-      positionDealBJEndTime: '',
-    });
-    form.reset();
   };
   return (
     <FormProvider form={form}>

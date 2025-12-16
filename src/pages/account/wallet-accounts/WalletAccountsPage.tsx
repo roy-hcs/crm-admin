@@ -155,7 +155,7 @@ export const WalletAccountsPage = () => {
           rightIcon={<Search className="size-4 cursor-pointer" />}
           onRightIconClick={e => {
             setParams(prev => ({ ...prev, threeCons: e }));
-            setPageNum(1);
+            setPageNum(0);
           }}
         />
         <div className="flex items-center justify-end gap-2">

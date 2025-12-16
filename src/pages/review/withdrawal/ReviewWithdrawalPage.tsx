@@ -346,7 +346,7 @@ export const ReviewWithdrawalPage = () => {
           rightIcon={<Search className="size-4 cursor-pointer" />}
           onRightIconClick={e => {
             setOtherParams(prev => ({ ...prev, userId: e }));
-            setPageNum(1);
+            setPageNum(0);
           }}
         />
         <div className="flex justify-end gap-2">

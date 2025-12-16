@@ -41,7 +41,7 @@ export const ProductsPage = () => {
           rightIcon={<Search className="size-4 cursor-pointer" />}
           onRightIconClick={e => {
             setParams(prev => ({ ...prev, goodsName: e }));
-            setPageNum(1);
+            setPageNum(0);
           }}
         />
         <div className="flex justify-end gap-2">

@@ -249,7 +249,7 @@ export function TradingAccountsPage() {
           rightIcon={<Search className="size-4 cursor-pointer" />}
           onRightIconClick={e => {
             setParams(prev => ({ ...prev, fuzzyAccount: e }));
-            setPageNum(1);
+            setPageNum(0);
           }}
         />
         <div className="flex justify-end gap-2">
