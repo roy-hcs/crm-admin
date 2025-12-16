@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
@@ -24,9 +24,8 @@ import { useTranslation } from 'react-i18next';
 import { ServerItem } from '@/api/hooks/system/types';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 import { formatDate } from '@/lib/utils';
-export interface TradingAccountTransactionsFormRef {
-  onReset: () => void;
-}
+import { CrmUserDealListParams } from '@/api/hooks/report';
+import { BasicParams } from '@/api/types';
 type FormData = {
   serverId: string;
   ticket: string;
@@ -42,32 +41,27 @@ type FormData = {
   serverGroup: string;
   accountGroupList: string;
 };
-export const TradingAccountTransactionsForm = forwardRef<
-  TradingAccountTransactionsFormRef,
-  {
-    setParams: (params: {
-      ticket: string;
-      historyFuzzyName: string;
-      login: string;
-      comment: string;
-      accounts: string;
-      operationStart: string;
-      operationEnd: string;
-      fuzzyCrmAccount: string;
-    }) => void;
-    setCommonParams: (params: {
-      opeTypeList: string;
-      opeType: string;
-      serverGroupList: string;
-      serverGroup: string;
-      accountGroupList: string;
-      accounts: string;
-    }) => void;
-    setServerId: (id: string) => void;
-    serverOptions: ServerItem[];
-    initialServerId?: string;
-  }
->(({ setParams, setCommonParams, setServerId, serverOptions, initialServerId }, ref) => {
+export const TradingAccountTransactionsForm = ({
+  setParams,
+  setCommonParams,
+  setServerId,
+  serverOptions,
+  initialServerId,
+  reset,
+  params,
+  commonParams,
+}: {
+  setParams: Dispatch<SetStateAction<CrmUserDealListParams['params']>>;
+  setCommonParams: Dispatch<
+    SetStateAction<Omit<CrmUserDealListParams, 'params' | keyof BasicParams>>
+  >;
+  setServerId: (id: string) => void;
+  serverOptions: ServerItem[];
+  initialServerId?: string;
+  reset: () => void;
+  params: CrmUserDealListParams['params'];
+  commonParams: Omit<CrmUserDealListParams, 'params' | keyof BasicParams>;
+}) => {
   const { data: dealAccountGroupListData } = useGetDealAccountGroupList();
   // 获取操作类型 操作方式
   const { data: operationTypeResp } = useDictType('crm_wallet_opr_type');
@@ -83,18 +77,18 @@ export const TradingAccountTransactionsForm = forwardRef<
   const form = useForm({
     defaultValues: {
       serverId: initialServerId || '',
-      ticket: '',
-      historyFuzzyName: '',
-      login: '',
-      comment: '',
-      accounts: '',
-      fuzzyCrmAccount: '',
-      operationTime: { from: '', to: '' },
-      opeTypeList: '',
-      opeType: '',
-      serverGroupList: '',
-      serverGroup: '',
-      accountGroupList: '',
+      ticket: params.ticket || '',
+      historyFuzzyName: params.historyFuzzyName || '',
+      login: params.login || '',
+      comment: params.comment || '',
+      accounts: params.accounts || '',
+      fuzzyCrmAccount: params.fuzzyCrmAccount || '',
+      operationTime: { from: params.operationStart || '', to: params.operationEnd || '' },
+      opeTypeList: commonParams.opeTypeList || '',
+      opeType: commonParams.opeType || '',
+      serverGroupList: commonParams.serverGroupList || '',
+      serverGroup: commonParams.serverGroup || '',
+      accountGroupList: commonParams.accountGroupList || '',
     },
   });
 
@@ -106,11 +100,6 @@ export const TradingAccountTransactionsForm = forwardRef<
   const { data: groupData } = useGetGroupByServer({
     serverId: form.watch('serverId'),
   });
-  useImperativeHandle(ref, () => ({
-    onReset: () => {
-      form.reset();
-    },
-  }));
 
   const onSubmit = (data: FormData) => {
     setParams({
@@ -134,26 +123,23 @@ export const TradingAccountTransactionsForm = forwardRef<
     setServerId(data.serverId);
   };
   const onReset = () => {
-    setParams({
+    reset();
+    setServerId(initialServerId || '');
+    form.reset({
+      serverId: initialServerId || '',
       ticket: '',
       historyFuzzyName: '',
       login: '',
       comment: '',
       accounts: '',
-      operationStart: '',
-      operationEnd: '',
       fuzzyCrmAccount: '',
-    });
-    setCommonParams({
+      operationTime: { from: '', to: '' },
       opeTypeList: '',
       opeType: '',
       serverGroupList: '',
       serverGroup: '',
       accountGroupList: '',
-      accounts: '',
     });
-    setServerId(initialServerId || '');
-    form.reset();
   };
 
   return (
@@ -272,4 +258,4 @@ export const TradingAccountTransactionsForm = forwardRef<
       </Form>
     </FormProvider>
   );
-});
+};

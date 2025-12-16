@@ -54,7 +54,7 @@ export function DailyRebatePage() {
       <div className="mt-3.5 mb-3.5 flex justify-between">
         <div className="w-67 max-w-sm">
           <RrhInputWithIcon
-            placeholder="Last Name/First Name/Email"
+            placeholder={t('table.nameOrEmail')}
             className="h-9"
             rightIcon={<Search className="size-4" />}
             onLeftIconClick={() => {

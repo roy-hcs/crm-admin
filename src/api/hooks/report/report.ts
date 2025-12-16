@@ -11,7 +11,7 @@ import {
   DailyRebateResponse,
   TradingHistoryParams,
   TradingHistoryListResponse,
-  crmUserDealDetailParams,
+  CrmUserDealDetailParams,
   WalletTransactionResponse,
   PaymentOrderListParams,
   PaymentOrderListResponse,
@@ -107,7 +107,7 @@ export function useTradingHistoryList(params: TradingHistoryParams, options: { e
 /**
  * 获取钱包流水
  */
-export function useWalletTransactionList(params: crmUserDealDetailParams) {
+export function useWalletTransactionList(params: CrmUserDealDetailParams) {
   return useQuery({
     queryKey: ['walletTransactionList', params],
     queryFn: () =>

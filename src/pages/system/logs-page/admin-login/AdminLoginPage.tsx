@@ -9,7 +9,6 @@ import { useAdminLoginList, AdminLoginParams, AdminLoginItem } from '@/api/hooks
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { adminOperationsStatusOptions } from '@/lib/const';
 import { RrhTag } from '@/components/common/RrhTag';
-import { getColumnMeta } from '@/lib/utils';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { PageInfo } from '@/components/common/PageInfo';
@@ -134,9 +133,8 @@ export const AdminLoginPage = () => {
       },
     },
   ];
-  const columnMeta = getColumnMeta<AdminLoginItem>(allColumns);
-  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns } =
-    useColumnVisibility('admin-login-logs-table', columnMeta, allColumns);
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('admin-login-logs-table', allColumns);
   return (
     <div>
       <PageInfo title={t('system.adminLogin.title')} />

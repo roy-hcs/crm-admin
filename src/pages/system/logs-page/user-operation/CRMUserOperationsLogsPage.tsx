@@ -10,7 +10,6 @@ import { UserOperationsLogsForm } from './UserOperationsLogsForm';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { RrhTag } from '@/components/common/RrhTag';
 import { RrhDialog } from '@/components/common/RrhDialog';
-import { getColumnMeta } from '@/lib/utils';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { PageInfo } from '@/components/common/PageInfo';
@@ -197,7 +196,9 @@ export const CRMUserOperationsLogsPage = () => {
     },
     {
       id: 'operate',
-      header: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
       cell: ({ row }) => {
         const onClick = (data: OperationsLogsItem) => {
           console.log('Operate on row:', data);
@@ -223,9 +224,8 @@ export const CRMUserOperationsLogsPage = () => {
       size: 50,
     },
   ];
-  const columnMeta = getColumnMeta<OperationsLogsItem>(allColumns);
-  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns } =
-    useColumnVisibility('crm-user-operation-table', columnMeta, allColumns);
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('crm-user-operation-table', allColumns);
 
   return (
     <div>

@@ -1,4 +1,3 @@
-import { forwardRef, useImperativeHandle } from 'react';
 import {
   Form,
   FormControl,
@@ -17,6 +16,9 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { StatusOptions } from '@/lib/const';
 import { formatDate } from '@/lib/utils';
+import { Dispatch, SetStateAction } from 'react';
+import { RefundFailLogListParams } from '@/api/hooks/report';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   operationTime: { from: string; to: string };
@@ -25,31 +27,30 @@ type FormData = {
   refundAccount: string;
 };
 
-export interface RefundFailureLogsFormRef {
-  onReset: () => void;
-}
-export const RefundFailureLogsForm = forwardRef<
-  RefundFailureLogsFormRef,
-  {
-    setParams: (params: { beginTime: string; endTime: string }) => void;
-    setCommonParams: (params: { userId: string; status: string; refundAccount: string }) => void;
-  }
->(({ setParams, setCommonParams }, ref) => {
+export const RefundFailureLogsForm = ({
+  setParams,
+  setCommonParams,
+  reset,
+  params,
+  commonParams,
+}: {
+  setParams: Dispatch<SetStateAction<RefundFailLogListParams['params']>>;
+  setCommonParams: Dispatch<
+    SetStateAction<Omit<RefundFailLogListParams, 'params' | keyof BasicParams>>
+  >;
+  reset: () => void;
+  params: RefundFailLogListParams['params'];
+  commonParams: Omit<RefundFailLogListParams, 'params' | keyof BasicParams>;
+}) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      userId: '',
-      status: '',
-      refundAccount: '',
-      operationTime: { from: '', to: '' },
+      userId: commonParams.userId || '',
+      status: commonParams.status || '',
+      refundAccount: commonParams.refundAccount || '',
+      operationTime: { from: params.beginTime || '', to: params.endTime || '' },
     },
   });
-
-  useImperativeHandle(ref, () => ({
-    onReset: () => {
-      form.reset();
-    },
-  }));
 
   const onSubmit = (data: FormData) => {
     setParams({
@@ -63,15 +64,7 @@ export const RefundFailureLogsForm = forwardRef<
     });
   };
   const onReset = () => {
-    setParams({
-      beginTime: '',
-      endTime: '',
-    });
-    setCommonParams({
-      userId: '',
-      status: '',
-      refundAccount: '',
-    });
+    reset();
     form.reset({
       userId: '',
       status: '',
@@ -137,4 +130,4 @@ export const RefundFailureLogsForm = forwardRef<
       </Form>
     </FormProvider>
   );
-});
+};

@@ -11,7 +11,6 @@ import { CRMColumnDef, DataTable } from '@/components/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { OrderStatusOptions } from '@/lib/const';
 import { ToolTip } from '@/components/common/ToolTip';
-import { getColumnMeta } from '@/lib/utils';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { PageInfo } from '@/components/common/PageInfo';
@@ -158,9 +157,8 @@ export const PaymentLogsPage = () => {
       },
     },
   ];
-  const columnMeta = getColumnMeta<UserOrderLogItem>(allColumns);
-  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns } =
-    useColumnVisibility('payment-logs-table', columnMeta, allColumns);
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('payment-logs-table', allColumns);
 
   return (
     <div>

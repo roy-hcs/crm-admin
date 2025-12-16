@@ -16,7 +16,6 @@ import { TableCell } from '@/components/ui/table';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
-import { getColumnMeta } from '@/lib/utils';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 
@@ -116,7 +115,9 @@ export const WalletAccountsPage = () => {
     },
     {
       id: 'operation',
-      header: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
       cell: () => (
         <div>
           <RrhDropdown
@@ -139,9 +140,8 @@ export const WalletAccountsPage = () => {
       size: 50,
     },
   ];
-  const columnMeta = getColumnMeta(allColumns);
-  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns } =
-    useColumnVisibility('wallet-accounts-table', columnMeta, allColumns);
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('wallet-accounts-table', allColumns);
 
   return (
     <div>

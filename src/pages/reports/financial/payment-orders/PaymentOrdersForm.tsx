@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import {
   Form,
   FormControl,
@@ -20,6 +20,8 @@ import { OrderStatusOptions } from '@/lib/const';
 import { useChannelList } from '@/api/hooks/system/system';
 import { PaymentChannelItem } from '@/api/hooks/system/types';
 import { formatDate } from '@/lib/utils';
+import { PaymentOrderListParams } from '@/api/hooks/report';
+import { BasicParams } from '@/api/hooks/review/types';
 
 type FormData = {
   userName: string;
@@ -30,49 +32,36 @@ type FormData = {
   orderStatus: string;
   orderId: string;
 };
-
-export interface PaymentOrdersFormRef {
-  onReset: () => void;
-}
-export const PaymentOrdersForm = forwardRef<
-  PaymentOrdersFormRef,
-  {
-    setParams: (params: {
-      userName: string;
-      account: string;
-      accounts: string;
-      operationStart: string;
-      operationEnd: string;
-    }) => void;
-    setCommonParams: (params: {
-      channelId: string;
-      orderStatus: string;
-      orderId: string;
-      accounts: string;
-    }) => void;
-  }
->(({ setParams, setCommonParams }, ref) => {
+export const PaymentOrdersForm = ({
+  setParams,
+  setCommonParams,
+  reset,
+  params,
+  commonParams,
+}: {
+  setParams: Dispatch<SetStateAction<PaymentOrderListParams['params']>>;
+  setCommonParams: Dispatch<
+    SetStateAction<Omit<PaymentOrderListParams, 'params' | keyof BasicParams>>
+  >;
+  reset: () => void;
+  params: PaymentOrderListParams['params'];
+  commonParams: Omit<PaymentOrderListParams, 'params' | keyof BasicParams>;
+}) => {
   const { data: response } = useChannelList();
   // 统一归一化为数组
   const channelList: PaymentChannelItem[] = Array.isArray(response) ? response : [];
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      userName: '',
-      account: '',
-      accounts: '',
-      operationTime: { from: '', to: '' },
-      channelId: '',
-      orderStatus: '',
-      orderId: '',
+      userName: params.userName || '',
+      account: params.account || '',
+      accounts: params.accounts || '',
+      operationTime: { from: params.operationStart || '', to: params.operationEnd || '' },
+      channelId: commonParams.channelId || '',
+      orderStatus: commonParams.orderStatus || '',
+      orderId: commonParams.orderId || '',
     },
   });
-
-  useImperativeHandle(ref, () => ({
-    onReset: () => {
-      form.reset();
-    },
-  }));
 
   const onSubmit = (data: FormData) => {
     setParams({
@@ -90,20 +79,16 @@ export const PaymentOrdersForm = forwardRef<
     });
   };
   const onReset = () => {
-    setParams({
+    reset();
+    form.reset({
       userName: '',
       account: '',
       accounts: '',
-      operationStart: '',
-      operationEnd: '',
-    });
-    setCommonParams({
+      operationTime: { from: '', to: '' },
       channelId: '',
       orderStatus: '',
       orderId: '',
-      accounts: '',
     });
-    form.reset();
   };
 
   return (
@@ -186,4 +171,4 @@ export const PaymentOrdersForm = forwardRef<
       </Form>
     </FormProvider>
   );
-});
+};

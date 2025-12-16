@@ -72,7 +72,9 @@ export const CopyTradingSettingsTable = ({
     },
     {
       id: 'operation',
-      header: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
       cell: () => (
         <div>
           <RrhButton variant="ghost">{t('common.Edit')}</RrhButton>

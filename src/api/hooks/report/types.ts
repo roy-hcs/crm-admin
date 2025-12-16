@@ -212,7 +212,7 @@ export type TradingHistoryListResponse = {
   serverType: string;
 };
 // 资金报表- 钱包流水
-export type crmUserDealDetailParams = BasicParams & {
+export type CrmUserDealDetailParams = BasicParams & {
   operationType?: string;
   serialNum?: string;
   accounts?: string;
@@ -655,12 +655,15 @@ export type DataStatisticsParams = BasicParams & {
     statisticStartTime?: string;
     statisticEndTime?: string;
     accounts?: string;
+    onlyViewRebateAccount?: string;
   };
   serverGroup?: string;
   accounts?: string;
   accountGroupList?: string;
   server?: string;
   isAsc?: 'asc' | 'desc';
+  username?: string;
+  directBroker?: string;
 };
 
 export type SystemFundOperationRecordSumRes = {

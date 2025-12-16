@@ -11,7 +11,6 @@ import { CrmDealAccountListParams } from '@/api/hooks/account';
 import { BasicParams } from '@/api/types';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
-import { getColumnMeta } from '@/lib/utils';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { PageInfo } from '@/components/common/PageInfo';
@@ -208,7 +207,9 @@ export function TradingAccountsPage() {
     },
     {
       id: 'operation',
-      header: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
       cell: () => (
         <div>
           <RrhDropdown
@@ -231,9 +232,8 @@ export function TradingAccountsPage() {
       size: 50,
     },
   ];
-  const columnMeta = getColumnMeta(allColumns);
-  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns } =
-    useColumnVisibility('trading-accounts-table', columnMeta, allColumns);
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('trading-accounts-table', allColumns);
 
   return (
     <div>

@@ -55,7 +55,9 @@ export const RolesTable = ({
     },
     {
       id: 'operate',
-      header: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
       cell: ({ row }) => {
         // TODO: need to add view detail page later
         if (row.original.roleId === '1') {

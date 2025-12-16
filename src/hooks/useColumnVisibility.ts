@@ -9,6 +9,7 @@ interface UseColumnVisibilityReturn<T> {
   resetColumns: () => void;
   batchUpdateColumns: (newOrder: string[]) => void;
   tableColumns: CRMColumnDef<T, unknown>[];
+  columnMeta: ColumnMeta[];
 }
 
 const STORAGE_KEY_PREFIX = 'table-column-visibility-';
@@ -30,11 +31,28 @@ const saveToStorage = (tableId: string, config: ColumnVisibilityConfig[]) => {
   }
 };
 
+const getColumnMeta = <T>(
+  columns: CRMColumnDef<T, unknown>[],
+  filterIds: string[] = [],
+): ColumnMeta[] => {
+  return columns
+    .filter(col => {
+      const id = col.id || col.accessorKey;
+      return id && !filterIds.includes(id);
+    })
+    .map(col => ({
+      id: col.id || '',
+      label: typeof col.header === 'string' ? col.header : col.label || col.id || '',
+      defaultVisible: true,
+    }));
+};
+
 export const useColumnVisibility = <T>(
   tableId: string,
-  columnMeta: ColumnMeta[],
   allColumns: CRMColumnDef<T, unknown>[],
+  filterIds?: string[],
 ): UseColumnVisibilityReturn<T> => {
+  const columnMeta = useMemo(() => getColumnMeta(allColumns, filterIds), [allColumns, filterIds]);
   const [columns, setColumns] = useState<ColumnVisibilityConfig[]>(() => {
     const stored = loadFromStorage(tableId);
     if (stored) {
@@ -124,5 +142,6 @@ export const useColumnVisibility = <T>(
     resetColumns,
     batchUpdateColumns,
     tableColumns,
+    columnMeta,
   };
 };

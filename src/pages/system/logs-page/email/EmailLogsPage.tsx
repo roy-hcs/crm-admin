@@ -13,7 +13,6 @@ import { CRMColumnDef, DataTable } from '@/components/table';
 import { RrhTag } from '@/components/common/RrhTag';
 import { ToolTip } from '@/components/common/ToolTip';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
-import { getColumnMeta } from '@/lib/utils';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 
 export const EmailLogsPage = () => {
@@ -116,7 +115,9 @@ export const EmailLogsPage = () => {
     },
     {
       id: 'operate',
-      header: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
       cell: ({ row }) => {
         const onClick = (data: EmailListItem) => {
           console.log('Operate on row:', data);
@@ -139,9 +140,8 @@ export const EmailLogsPage = () => {
     },
   ];
 
-  const columnMeta = getColumnMeta<EmailListItem>(allColumns);
-  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns } =
-    useColumnVisibility('crm-user-login-table', columnMeta, allColumns);
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('crm-user-login-table', allColumns);
 
   return (
     <div>

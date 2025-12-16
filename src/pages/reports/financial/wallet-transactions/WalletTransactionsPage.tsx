@@ -1,26 +1,28 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { TableCell } from '@/components/ui/table';
 import { RrhButton } from '@/components/common/RrhButton';
-import { useWalletTransactionList, useWalletTransactionSum } from '@/api/hooks/report';
 import {
-  WalletTransactionsForm,
-  WalletTransactionsFormRef,
-} from './components/WalletTransactionsForm';
-import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
-import { WalletTransactionsTable } from './components/WalletTransactionsTable';
+  CrmUserDealDetailParams,
+  useWalletTransactionList,
+  useWalletTransactionSum,
+  WalletTransactionItem,
+} from '@/api/hooks/report';
+import { WalletTransactionsForm } from './WalletTransactionsForm';
+import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
+import { PageInfo } from '@/components/common/PageInfo';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { BasicParams } from '@/api/types';
 export function WalletTransactionsPage() {
   const { t } = useTranslation();
-  const formRef = useRef<WalletTransactionsFormRef>(null);
-  // 分页
   const [pageNum, setPageNum] = useState(0);
-  // 每页条数
   const [pageSize, setPageSize] = useState(10);
-  // 特殊参数
-  const [params, setParams] = useState({
+  const [params, setParams] = useState<CrmUserDealDetailParams['params']>({
     account: '',
     selectOther: '',
     inMethod: '',
@@ -29,29 +31,25 @@ export function WalletTransactionsPage() {
     operationEnd: '',
     accounts: '',
   });
-  // 普通参数
-  const [commonParams, setCommonParams] = useState({
+  const [commonParams, setCommonParams] = useState<
+    Omit<CrmUserDealDetailParams, 'params' | keyof BasicParams>
+  >({
     operationType: '',
     serialNum: '',
     accounts: '',
     mtOrder: '',
   });
-  // 获取钱包流水列表
   const { data: data, isLoading: loading } = useWalletTransactionList({
     params,
     pageSize,
     ...commonParams,
     pageNum: pageNum + 1,
-    // 下面是固定参数
     isAsc: 'asc',
     orderByColumn: '',
   });
 
-  // 获取合计数据接口
   const { mutate: getSum, data: sumData, isPending } = useWalletTransactionSum();
-  // 合计状态
   const [sumShow, setSumShow] = useState(false);
-  // 点击获取合计数
   const getSumData = () => {
     setSumShow(true);
     getSum({
@@ -61,7 +59,6 @@ export function WalletTransactionsPage() {
       },
     });
   };
-  // 列表数据变化重置合计状态
   useEffect(() => {
     setSumShow(false);
   }, [data]);
@@ -79,15 +76,106 @@ export function WalletTransactionsPage() {
     setPageNum(0);
     setPageSize(10);
   };
+
+  const allColumns: CRMColumnDef<WalletTransactionItem, unknown>[] = [
+    {
+      fixed: true,
+      id: 'No.',
+      header: t('ib.overview.Index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+      size: 50,
+    },
+    {
+      id: 'lastName',
+      header: t('financial.walletTransactions.lastName'),
+      cell: ({ row }) => (
+        <div>
+          <div>{(row.original.lastName ?? '') + (row.original.name ?? '')}</div>
+          <div>{row.original.showId}</div>
+        </div>
+      ),
+    },
+    {
+      id: 'operationType',
+      header: t('financial.walletTransactions.operationType'),
+      accessorFn: row => row.operationType,
+    },
+    {
+      id: 'operationMethod',
+      header: t('financial.walletTransactions.inMethod'),
+      accessorFn: row => row.operationMethod,
+    },
+    {
+      id: 'currency',
+      accessorKey: 'currency',
+      header: t('financial.walletTransactions.wallet'),
+      accessorFn: row => row.currency,
+    },
+    {
+      id: 'preAmount',
+      accessorKey: 'preAmount',
+      header: t('financial.walletTransactions.preAmount'),
+      accessorFn: row => row.preAmount,
+    },
+    {
+      id: 'amount',
+      accessorKey: 'amount',
+      header: t('financial.walletTransactions.amount'),
+      accessorFn: row => row.amount,
+    },
+    {
+      id: 'postAmount',
+      accessorKey: 'postAmount',
+      header: t('financial.walletTransactions.postAmount'),
+      accessorFn: row => row.postAmount,
+    },
+    {
+      id: 'operationTime',
+      accessorKey: 'operationTime',
+      header: t('financial.walletTransactions.operationTimeTable'),
+      accessorFn: row => row.operationTime,
+    },
+    {
+      id: 'serialNum',
+      accessorKey: 'serialNum',
+      header: t('financial.walletTransactions.serialNumTable'),
+      accessorFn: row => row.serialNum,
+    },
+    {
+      id: 'mtOrder',
+      accessorKey: 'mtOrder',
+      header: t('financial.walletTransactions.mtOrder'),
+      accessorFn: row => row.mtOrder || '--',
+    },
+    {
+      id: 'remark',
+      accessorKey: 'remark',
+      header: t('table.remarks'),
+      accessorFn: row => row.remark || '--',
+    },
+    {
+      id: 'operation',
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
+      cell: () => (
+        <RrhButton variant="ghost" type="button">
+          {t('common.View')}
+        </RrhButton>
+      ),
+      fixed: 'right',
+      size: 50,
+    },
+  ];
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('wallet-transactions-table', allColumns);
   return (
     <div>
-      <div className="text-xl leading-8 font-semibold text-neutral-950">
-        {t('financial.walletTransactions.title')}
-      </div>
+      <PageInfo title={t('financial.walletTransactions.title')} />
       <div className="mt-3.5 mb-3.5 flex justify-between">
         <div className="w-67 max-w-sm">
           <RrhInputWithIcon
-            placeholder="Last Name/First Name/Email"
+            placeholder={t('table.nameOrEmail')}
             className="h-9"
             rightIcon={<Search className="size-4" />}
             onRightIconClick={() => {
@@ -99,9 +187,6 @@ export function WalletTransactionsPage() {
         <div className="flex items-center gap-2">
           <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
-          </Button>
-          <Button variant="ghost" className="size-8 cursor-pointer">
-            <Ellipsis />
           </Button>
           <RrhDrawer
             asChild
@@ -118,14 +203,24 @@ export function WalletTransactionsPage() {
             footerShow={false}
           >
             <WalletTransactionsForm
-              ref={formRef}
+              reset={reset}
+              params={params}
+              commonParams={commonParams}
               setParams={setParams}
               setCommonParams={setCommonParams}
             />
           </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
         </div>
       </div>
-      <WalletTransactionsTable
+      <DataTable
+        columns={tableColumns}
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}

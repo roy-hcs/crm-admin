@@ -197,7 +197,9 @@ export const PositionOrderTable = ({
     },
     {
       id: 'operate',
-      header: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
       cell: ({ row }) => {
         return (
           <div>

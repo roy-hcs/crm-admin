@@ -253,7 +253,9 @@ export const OrderManagementTable = ({
       fixed: 'right',
       size: 50,
       id: 'operation',
-      header: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
       cell: () => (
         <div>
           <RrhDropdown

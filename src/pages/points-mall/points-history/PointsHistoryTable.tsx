@@ -75,7 +75,9 @@ export const PointsHistoryTable = ({
     },
     {
       id: 'operation',
-      header: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
       cell: () => (
         <div>
           <RrhDropdown

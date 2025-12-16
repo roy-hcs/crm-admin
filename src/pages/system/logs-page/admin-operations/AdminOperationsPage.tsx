@@ -16,7 +16,6 @@ import { CRMColumnDef, DataTable } from '@/components/table';
 import { adminOperationsStatusOptions } from '@/lib/const';
 import { RrhTag } from '@/components/common/RrhTag';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
-import { getColumnMeta } from '@/lib/utils';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
@@ -140,7 +139,9 @@ export const AdminOperationsPage = () => {
     },
     {
       id: 'operation',
-      header: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
       cell: () => (
         <div>
           <RrhDropdown
@@ -163,9 +164,8 @@ export const AdminOperationsPage = () => {
       size: 50,
     },
   ];
-  const columnMeta = getColumnMeta(allColumns);
-  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns } =
-    useColumnVisibility('admin-operation-logs-table', columnMeta, allColumns);
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('admin-operation-logs-table', allColumns);
 
   return (
     <div>

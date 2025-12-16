@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
@@ -20,9 +20,8 @@ import { useTranslation } from 'react-i18next';
 import { ServerItem } from '@/api/hooks/system/types';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 import { formatDate } from '@/lib/utils';
-export interface TradingAccountTransactionsFormRef {
-  onReset: () => void;
-}
+import { TradingAccountFundsStatsParams } from '@/api/hooks/report';
+import { BasicParams } from '@/api/types';
 type FormData = {
   serverId: string;
   serverGroupList: string;
@@ -33,39 +32,39 @@ type FormData = {
   accounts: string;
   accountGroupList: string;
 };
-export const TradingAccountTransactionsForm = forwardRef<
-  TradingAccountTransactionsFormRef,
-  {
-    setParams: (params: {
-      serverGroupList: string;
-      fuzzyAccount: string;
-      fuzzyName: string;
-      statisticStartTime: string;
-      statisticEndTime: string;
-      accounts: string;
-    }) => void;
-    setCommonParams: (params: {
-      serverGroup: string;
-      accounts: string;
-      accountGroupList: string;
-    }) => void;
-    setServerId: (id: string) => void;
-    serverOptions: ServerItem[];
-    initialServerId?: string;
-  }
->(({ setParams, setCommonParams, setServerId, serverOptions, initialServerId }, ref) => {
+export const TradingAccountTransactionsForm = ({
+  setParams,
+  setCommonParams,
+  setServerId,
+  serverOptions,
+  initialServerId,
+  reset,
+  params,
+  commonParams,
+}: {
+  setParams: Dispatch<SetStateAction<TradingAccountFundsStatsParams['params']>>;
+  setCommonParams: Dispatch<
+    SetStateAction<Omit<TradingAccountFundsStatsParams, 'params' | keyof BasicParams>>
+  >;
+  reset: () => void;
+  params: TradingAccountFundsStatsParams['params'];
+  commonParams: Omit<TradingAccountFundsStatsParams, 'params' | keyof BasicParams>;
+  setServerId: (id: string) => void;
+  serverOptions: ServerItem[];
+  initialServerId?: string;
+}) => {
   const { data: dealAccountGroupListData } = useGetDealAccountGroupList();
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
       serverId: initialServerId || '',
-      serverGroupList: '',
-      fuzzyAccount: '',
-      fuzzyName: '',
-      statisticTime: { from: '', to: '' },
-      serverGroup: '',
-      accounts: '',
-      accountGroupList: '',
+      serverGroupList: params.serverGroupList || '',
+      fuzzyAccount: params.fuzzyAccount || '',
+      fuzzyName: params.fuzzyName || '',
+      statisticTime: { from: params.statisticStartTime || '', to: params.statisticEndTime || '' },
+      serverGroup: commonParams.serverGroup || '',
+      accounts: params.accounts || '',
+      accountGroupList: commonParams.accountGroupList || '',
     },
   });
 
@@ -77,11 +76,6 @@ export const TradingAccountTransactionsForm = forwardRef<
   const { data: groupData } = useGetGroupByServer({
     serverId: form.watch('serverId'),
   });
-  useImperativeHandle(ref, () => ({
-    onReset: () => {
-      form.reset();
-    },
-  }));
 
   const onSubmit = (data: FormData) => {
     setParams({
@@ -100,21 +94,18 @@ export const TradingAccountTransactionsForm = forwardRef<
     setServerId(data.serverId);
   };
   const onReset = () => {
-    setParams({
+    reset();
+    setServerId(initialServerId || '');
+    form.reset({
+      serverId: initialServerId || '',
       serverGroupList: '',
       fuzzyAccount: '',
       fuzzyName: '',
-      statisticStartTime: '',
-      statisticEndTime: '',
-      accounts: '',
-    });
-    setCommonParams({
+      statisticTime: { from: '', to: '' },
       serverGroup: '',
       accounts: '',
       accountGroupList: '',
     });
-    setServerId(initialServerId || '');
-    form.reset();
   };
 
   return (
@@ -200,4 +191,4 @@ export const TradingAccountTransactionsForm = forwardRef<
       </Form>
     </FormProvider>
   );
-});
+};

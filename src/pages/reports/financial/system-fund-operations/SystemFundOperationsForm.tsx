@@ -16,12 +16,12 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { formatDate } from '@/lib/utils';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   way: number | string;
   name: string;
   login: string;
-  tradingAccount: string;
   serverOrder: string;
   operationTime: { from: string; to: string };
   operator: string;
@@ -31,21 +31,26 @@ export const SystemFundOperationsForm = ({
   setOtherParams,
   setParams,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   setParams: (params: SystemFundOperationRecordListParams['params']) => void;
   setOtherParams: (params: { type?: number | string }) => void;
   loading: boolean;
+  reset: () => void;
+  params: SystemFundOperationRecordListParams['params'];
+  otherParams: Omit<SystemFundOperationRecordListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
-      way: '',
-      name: '',
-      login: '',
-      tradingAccount: '',
-      serverOrder: '',
-      operationTime: { from: '', to: '' },
-      operator: '',
+      way: otherParams.type || '',
+      name: params.name || '',
+      login: params.login || '',
+      serverOrder: params.ticket || '',
+      operationTime: { from: params.operationStart || '', to: params.operationEnd || '' },
+      operator: params.operName || '',
     },
   });
 
@@ -63,18 +68,15 @@ export const SystemFundOperationsForm = ({
     });
   };
   const onReset = () => {
-    setOtherParams({
-      type: '',
-    });
-    setParams({
+    reset();
+    form.reset({
+      way: '',
       name: '',
       login: '',
-      ticket: '',
-      operationStart: '',
-      operationEnd: '',
-      operName: '',
+      serverOrder: '',
+      operationTime: { from: '', to: '' },
+      operator: '',
     });
-    form.reset();
   };
   return (
     <FormProvider form={form}>
@@ -113,7 +115,7 @@ export const SystemFundOperationsForm = ({
           />
           <FormInput
             verticalLabel
-            name="tradingAccount"
+            name="login"
             label={t('table.tradingAccount')}
             placeholder={t('common.pleaseInput', { field: t('table.tradingAccount') })}
           />

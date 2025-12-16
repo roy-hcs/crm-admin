@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { Dispatch, SetStateAction } from 'react';
 import { formatDate } from '@/lib/utils';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   name: string;
@@ -29,18 +30,24 @@ export const WalletBalanceForm = ({
   setOtherParams,
   setParams,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   setParams: Dispatch<SetStateAction<WalletBalanceParams['params']>>;
   setOtherParams: Dispatch<SetStateAction<{ accounts: string }>>;
   loading: boolean;
+  reset: () => void;
+  params: WalletBalanceParams['params'];
+  otherParams: Omit<WalletBalanceParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      name: '',
-      email: '',
-      accounts: '',
-      time: { from: '', to: '' },
+      name: params.fuzzyName || '',
+      email: params.email || '',
+      accounts: otherParams.accounts || '',
+      time: { from: params.timeStart || '', to: params.timeEnd || '' },
     },
   });
 
@@ -62,18 +69,13 @@ export const WalletBalanceForm = ({
     }));
   };
   const onReset = () => {
-    setOtherParams({
-      accounts: '',
-    });
-    setParams(pre => ({
-      ...pre,
-      fuzzyName: '',
+    reset();
+    form.reset({
+      name: '',
       email: '',
-      timeStart: '',
-      timeEnd: '',
       accounts: '',
-    }));
-    form.reset();
+      time: { from: '', to: '' },
+    });
   };
   return (
     <FormProvider form={form}>

@@ -1016,7 +1016,8 @@
     "payIdABN": "ABN",
     "accountInformation": "账户信息",
     "showAllCols": "显示所有列",
-    "hideHidableCols": "隐藏可隐藏列"
+    "hideHidableCols": "隐藏可隐藏列",
+    "nameOrEmail": "姓名/邮箱"
   },
   "review": {
     "settings": {

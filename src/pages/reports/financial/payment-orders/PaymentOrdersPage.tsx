@@ -1,29 +1,33 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { usePaymentOrderList } from '@/api/hooks/report';
-import { PaymentOrdersForm, PaymentOrdersFormRef } from './components/PaymentOrdersForm';
+import { PaymentOrderItem, PaymentOrderListParams, usePaymentOrderList } from '@/api/hooks/report';
+import { PaymentOrdersForm } from './PaymentOrdersForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
-import { PaymentOrdersTable } from './components/PaymentOrdersTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
+import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { RrhOrderStatusTag } from '@/components/common/RrhOrderStatusTag';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { PageInfo } from '@/components/common/PageInfo';
+import { BasicParams } from '@/api/types';
 export function PaymentOrdersPage() {
   const { t } = useTranslation();
-  const formRef = useRef<PaymentOrdersFormRef>(null);
-  // 分页
   const [pageNum, setPageNum] = useState(0);
-  // 每页条数
   const [pageSize, setPageSize] = useState(10);
-  // 特殊参数
-  const [params, setParams] = useState({
+  const [keyword, setKeyword] = useState('');
+  const [params, setParams] = useState<PaymentOrderListParams['params']>({
     userName: '',
     account: '',
     accounts: '',
     operationStart: '',
     operationEnd: '',
   });
-  // 普通参数
-  const [commonParams, setCommonParams] = useState({
+  const [commonParams, setCommonParams] = useState<
+    Omit<PaymentOrderListParams, 'params' | keyof BasicParams>
+  >({
     channelId: '',
     orderStatus: '',
     orderId: '',
@@ -35,7 +39,6 @@ export function PaymentOrdersPage() {
     pageSize,
     ...commonParams,
     pageNum: pageNum + 1,
-    // 下面是固定参数
     isAsc: 'asc',
     orderByColumn: '',
   });
@@ -53,32 +56,122 @@ export function PaymentOrdersPage() {
       orderId: '',
       accounts: '',
     });
+    setKeyword('');
     setPageNum(0);
     setPageSize(10);
   };
+  const allColumns: CRMColumnDef<PaymentOrderItem, unknown>[] = [
+    {
+      fixed: true,
+      size: 50,
+      id: 'No.',
+      header: t('ib.overview.Index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
+      id: 'userName',
+      header: t('financial.paymentOrders.userName'),
+      cell: ({ row }) => {
+        const name = row?.original?.userName?.split('<br/>') ?? [];
+        if (name.length === 0) {
+          return '--';
+        }
+        return (
+          <div>
+            <div>{name[0]}</div>
+            <div>{name[1]}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'account',
+      header: t('financial.paymentOrders.account'),
+      accessorFn: row => row.account,
+    },
+    {
+      id: 'payAmount',
+      header: t('financial.paymentOrders.payAmount'),
+      accessorFn: row => row.payAmount,
+    },
+    {
+      id: 'receiptAmount',
+      header: t('financial.paymentOrders.receiptAmount'),
+      accessorFn: row => row.receiptAmount || '--',
+    },
+    {
+      id: 'orderStatus',
+      header: t('financial.paymentOrders.orderStatus'),
+      cell: ({ row }) => <RrhOrderStatusTag status={String(row.original.orderStatus)} />,
+    },
+    {
+      id: 'channelName',
+      header: t('financial.paymentOrders.channelName'),
+      accessorFn: row => row.channelName || '--',
+    },
+    {
+      id: 'createTime',
+      header: t('financial.paymentOrders.createTime'),
+      accessorFn: row => row.createTime || '--',
+    },
+    {
+      id: 'orderId',
+      header: t('financial.paymentOrders.orderId'),
+      accessorFn: row => row.orderId || '--',
+    },
+    {
+      id: 'operation',
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
+      cell: () => (
+        <div>
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.View'), value: 'view' },
+              { label: t('common.Edit'), value: 'edit' },
+            ]}
+            callToAction={action => {
+              if (action === 'edit') {
+                // Handle edit action
+              } else if (action === 'view') {
+                // Handle view action
+              }
+            }}
+          />
+        </div>
+      ),
+    },
+  ];
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('payment-orders-table', allColumns);
   return (
     <div>
-      <div className="text-xl leading-8 font-semibold text-neutral-950">
-        {t('financial.paymentOrders.title')}
-      </div>
+      <PageInfo title={t('financial.paymentOrders.title')} />
       <div className="mt-3.5 mb-3.5 flex justify-between">
         <div className="w-67 max-w-sm">
           <RrhInputWithIcon
-            placeholder="Last Name/First Name/Email"
+            placeholder={t('common.pleaseInput', {
+              field: t('financial.paymentOrders.userName'),
+            })}
             className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
             rightIcon={<Search className="size-4" />}
-            onRightIconClick={() => {
+            onRightIconClick={e => {
               // 触发查询逻辑, 这里简单调用一次刷新
               setPageNum(0);
+              setParams(prev => ({
+                ...prev,
+                userName: e,
+              }));
             }}
           />
         </div>
         <div className="flex items-center gap-2">
           <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
-          </Button>
-          <Button variant="ghost" className="size-8 cursor-pointer">
-            <Ellipsis />
           </Button>
           <RrhDrawer
             asChild
@@ -95,14 +188,24 @@ export function PaymentOrdersPage() {
             footerShow={false}
           >
             <PaymentOrdersForm
-              ref={formRef}
+              reset={reset}
+              params={params}
+              commonParams={commonParams}
               setParams={setParams}
               setCommonParams={setCommonParams}
             />
           </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
         </div>
       </div>
-      <PaymentOrdersTable
+      <DataTable
+        columns={tableColumns}
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}

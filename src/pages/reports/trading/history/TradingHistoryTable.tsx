@@ -209,7 +209,9 @@ export const TradingHistoryTable = ({
     },
     {
       id: 'operate',
-      header: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
       cell: ({ row }) => {
         const onClick = (data: TradingHistoryItem) => {
           console.log('Operate on row:', data);
