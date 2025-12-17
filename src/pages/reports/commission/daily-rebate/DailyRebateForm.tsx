@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import {
   Form,
   FormControl,
@@ -17,6 +17,8 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { RebateTypeOptions, RebateStatusOptions } from '@/lib/const';
 import { formatDate } from '@/lib/utils';
+import { DailyRebateParams } from '@/api/hooks/report';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   // 结算日期
@@ -31,42 +33,34 @@ type FormData = {
   id: string;
 };
 
-export interface FormRef {
-  onReset: () => void;
-}
-export const WeeklyRebateForm = forwardRef<
-  FormRef,
-  {
-    setParams: (params: { beginTime: string; endTime: string; account: string }) => void;
-    setCommonParams: (params: {
-      settleStyle: string;
-      rebateType: string;
-      rebateStatus: string;
-      id: string;
-    }) => void;
-  }
->(({ setParams, setCommonParams }, ref) => {
+export const DailyRebateForm = ({
+  setParams,
+  setCommonParams,
+  reset,
+  params,
+  commonParams,
+}: {
+  setParams: Dispatch<SetStateAction<DailyRebateParams['params']>>;
+  setCommonParams: Dispatch<SetStateAction<Omit<DailyRebateParams, 'params' | keyof BasicParams>>>;
+  reset: () => void;
+  params: DailyRebateParams['params'];
+  commonParams: Omit<DailyRebateParams, 'params' | keyof BasicParams>;
+}) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
       // 结算日期
-      settlementTime: { from: '', to: '' },
+      settlementTime: { from: params.beginTime || '', to: params.endTime || '' },
       // 返佣账户
-      account: '',
+      account: params.account || '',
       // 返佣类型
-      rebateType: '',
+      rebateType: commonParams.rebateType || '',
       // 返佣状态
-      rebateStatus: '',
+      rebateStatus: commonParams.rebateStatus || '',
       // 结算订单号
-      id: '',
+      id: commonParams.id || '',
     },
   });
-
-  useImperativeHandle(ref, () => ({
-    onReset: () => {
-      form.reset();
-    },
-  }));
 
   const onSubmit = (data: FormData) => {
     setParams({
@@ -81,18 +75,9 @@ export const WeeklyRebateForm = forwardRef<
       id: data.id,
     });
   };
+
   const onReset = () => {
-    setParams({
-      beginTime: '',
-      endTime: '',
-      account: '',
-    });
-    setCommonParams({
-      settleStyle: '1',
-      rebateType: '',
-      rebateStatus: '',
-      id: '',
-    });
+    reset();
     form.reset({
       settlementTime: { from: '', to: '' },
       account: '',
@@ -126,13 +111,13 @@ export const WeeklyRebateForm = forwardRef<
           />
           <FormInput
             verticalLabel
-            name="mtOrder"
+            name="account"
             label={t('commission.daily-rebate.account')}
             placeholder={t('common.pleaseInput', { field: t('commission.daily-rebate.account') })}
           />
           <FormSelect
             verticalLabel
-            name="rebateTraderId"
+            name="rebateType"
             label={t('commission.daily-rebate.rebateType')}
             placeholder={t('common.pleaseSelect')}
             options={RebateTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
@@ -166,4 +151,4 @@ export const WeeklyRebateForm = forwardRef<
       </Form>
     </FormProvider>
   );
-});
+};

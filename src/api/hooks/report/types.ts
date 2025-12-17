@@ -73,6 +73,7 @@ export type TradingParams = BasicParams & {
   mtOrder?: string;
   trderAccount?: string;
   taderType?: string;
+  rebateTraderId?: string;
   conditionName?: string;
   rebateTraderIdList?: string;
   accounts?: string;

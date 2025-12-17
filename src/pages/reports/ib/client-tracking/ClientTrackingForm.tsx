@@ -1,6 +1,6 @@
-import { forwardRef, useImperativeHandle } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Form } from '@/components/ui/form';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
@@ -8,46 +8,39 @@ import { FormMonthPicker } from '@/components/form/FormMonthPicker';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-// import { RebateLevelOptions } from '@/lib/const';
 import { useRebateLevelList } from '@/api/hooks/system/system';
+import { ClientTrackingParams } from '@/api/hooks/report';
 
-export interface ClientTrackingFormRef {
-  onReset: () => void;
-}
-type ClientTrackingFormValues = {
+type FormData = {
   userName: string;
   email: string;
   statisticMonth: string;
   level: string;
 };
-export const ClientTrackingForm = forwardRef<
-  ClientTrackingFormRef,
-  {
-    setParams: (params: {
-      userName: string;
-      email: string;
-      statisticMonth: string;
-      level: string;
-    }) => void;
-  }
->(({ setParams }, ref) => {
+
+export const ClientTrackingForm = ({
+  setParams,
+  reset,
+  params,
+}: {
+  setParams: Dispatch<
+    SetStateAction<Pick<ClientTrackingParams, 'userName' | 'email' | 'statisticMonth' | 'level'>>
+  >;
+  reset: () => void;
+  params: Pick<ClientTrackingParams, 'userName' | 'email' | 'statisticMonth' | 'level'>;
+}) => {
   const { t } = useTranslation();
   const { data: rebateLevel } = useRebateLevelList();
-  const form = useForm<ClientTrackingFormValues>({
+  const form = useForm<FormData>({
     defaultValues: {
-      userName: '',
-      email: '',
-      statisticMonth: '',
-      level: '',
+      userName: params.userName || '',
+      email: params.email || '',
+      statisticMonth: params.statisticMonth || '',
+      level: params.level || '',
     },
   });
-  useImperativeHandle(ref, () => ({
-    onReset: () => {
-      form.reset();
-    },
-  }));
 
-  const onSubmit: SubmitHandler<ClientTrackingFormValues> = data => {
+  const onSubmit = (data: FormData) => {
     setParams({
       userName: data.userName,
       email: data.email,
@@ -55,14 +48,15 @@ export const ClientTrackingForm = forwardRef<
       level: data.level,
     });
   };
+
   const onReset = () => {
-    setParams({
+    reset();
+    form.reset({
       userName: '',
       email: '',
       statisticMonth: '',
       level: '',
     });
-    form.reset();
   };
 
   return (
@@ -116,4 +110,4 @@ export const ClientTrackingForm = forwardRef<
       </Form>
     </FormProvider>
   );
-});
+};
