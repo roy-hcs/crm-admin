@@ -44,6 +44,9 @@
 10. **在定义allColumns时，如果来自原有table组件的columns的item里存在只有accessorKey字段而没有id字段的。新增一个id字段，id的值和accessorKey的值一致**
     - 为所有只有accessorKey的列添加id字段，确保id值与accessorKey相同，
     - 确保所有item都有一个唯一的id，如果出现id重复，向开发者请求确认
+    - 如果存在id为operate的item，给该item添加fixed:'right'和size: 50的值。如果该item返回超过一个按钮，则参考RewardConfigsPage使用RrhDropdown和Ellipse组件进行整合
+    - 所有id不是operate的item，都不应该有fixed和size的字段，如果有，删除这些字段
+    - 如果item的header字段不是纯字符串或者t('xxx')，则新增一个label字段，label的值为header字段里的t('xxx')
 
 11. **在重构代码的过程中，保持所有常量的引用，不要将引用替换为hardcode**
     - 保持使用RebateTypeOptions和RebateStatusOptions等常量

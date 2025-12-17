@@ -1,23 +1,23 @@
-import { RrhButton } from '@/components/common/RrhButton';
-import FormDateRangeInput from '@/components/form/FormDateRangeInput';
-import { FormInput } from '@/components/form/FormInput';
-import { FormSelect } from '@/components/form/FormSelect';
+import { Dispatch, SetStateAction } from 'react';
 import {
+  Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  Form,
 } from '@/components/ui/form';
+import FormDateRangeInput from '@/components/form/FormDateRangeInput';
+import { useForm } from 'react-hook-form';
+import { FormProvider } from '@/contexts/form';
+import { FormInput } from '@/components/form/FormInput';
+import { FormSelect } from '@/components/form/FormSelect';
+import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
-import { useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction } from 'react';
 import { infoTypesMap } from '@/lib/constant';
 import { GetMsgListParams } from '@/api/hooks/message';
-import { BasicParams } from '@/api/hooks/review/types';
+import { BasicParams } from '@/api/types';
 import { formatDate } from '@/lib/utils';
 
 type FormData = {
@@ -31,18 +31,27 @@ export const MessageManagementForm = ({
   setOtherParams,
   setParams,
   loading,
+  params,
+  otherParams,
+  reset,
 }: {
   setParams: Dispatch<SetStateAction<GetMsgListParams['params']>>;
   setOtherParams: Dispatch<SetStateAction<Omit<GetMsgListParams, 'params' | keyof BasicParams>>>;
   loading: boolean;
+  params: GetMsgListParams['params'];
+  otherParams: Omit<GetMsgListParams, 'params'>;
+  reset: () => void;
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
-      name: '',
-      title: '',
-      type: '',
-      sendTime: { from: '', to: '' },
+      name: params?.fuzzyName || '',
+      title: params?.fuzzyTitle || '',
+      type: (otherParams as { type?: string })?.type || '',
+      sendTime: {
+        from: params?.sendStartTime || '',
+        to: params?.sendEndTime || '',
+      },
     },
   });
 
@@ -57,32 +66,23 @@ export const MessageManagementForm = ({
       fuzzyTitle: data.title,
     });
   };
+
   const onReset = () => {
-    setOtherParams({
+    reset();
+    form.reset({
+      name: '',
+      title: '',
       type: '',
+      sendTime: { from: '', to: '' },
     });
-    setParams({
-      sendEndTime: '',
-      sendStartTime: '',
-      fuzzyName: '',
-      fuzzyTitle: '',
-    });
-    form.reset();
   };
+
   return (
     <FormProvider form={form}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
-
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
@@ -123,7 +123,7 @@ export const MessageManagementForm = ({
           />
 
           <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
+            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
             </RrhButton>

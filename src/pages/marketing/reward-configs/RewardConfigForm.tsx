@@ -19,6 +19,8 @@ type FormData = {
 export const RewardConfigForm = ({
   setOtherParams,
   setParams,
+  reset,
+  params,
   loading,
   businessTypes = [],
 }: {
@@ -26,13 +28,15 @@ export const RewardConfigForm = ({
     SetStateAction<Omit<BonusSettingListParams, 'params' | keyof BasicParams>>
   >;
   setParams: Dispatch<SetStateAction<BonusSettingListParams['params']>>;
+  reset: () => void;
+  params: BonusSettingListParams['params'];
   loading: boolean;
   businessTypes?: DictTypeItem[];
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
-      rewardTitle: '',
+      rewardTitle: params.rewardTitle || '',
       businessType: '',
     },
   });
@@ -47,12 +51,11 @@ export const RewardConfigForm = ({
       businessType: data.businessType,
     }));
   };
+
   const onReset = () => {
-    form.reset();
-    setParams({
+    reset();
+    form.reset({
       rewardTitle: '',
-    });
-    setOtherParams({
       businessType: '',
     });
   };

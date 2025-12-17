@@ -29,26 +29,33 @@ type FormData = {
 export const RewardRecordsForm = ({
   setOtherParams,
   setParams,
+  reset,
+  params,
   loading,
   bonusDictType,
 }: {
-  setParams: Dispatch<SetStateAction<RewardRecordsListParams['params']>>;
   setOtherParams: Dispatch<
     SetStateAction<
       Omit<RewardRecordsListParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
     >
   >;
+  setParams: Dispatch<SetStateAction<RewardRecordsListParams['params']>>;
+  reset: () => void;
+  params: RewardRecordsListParams['params'];
   loading: boolean;
   bonusDictType: { dictLabel: string; dictValue: string }[];
 }) => {
   const { t } = useTranslation();
-  const form = useForm({
+  const form = useForm<FormData>({
     defaultValues: {
       rewardId: '',
-      rewardTitle: '',
-      crmAccount: '',
-      businessType: '',
-      time: { from: '', to: '' },
+      rewardTitle: params.rewardTitle || '',
+      crmAccount: params.crmAccount || '',
+      businessType: params.businessType || '',
+      time: {
+        from: params.bonusTimeStart || '',
+        to: params.bonusTimeEnd || '',
+      },
     },
   });
 
@@ -65,34 +72,24 @@ export const RewardRecordsForm = ({
       businessType: data.businessType,
     }));
   };
+
   const onReset = () => {
-    setOtherParams({
+    reset();
+    form.reset({
       rewardId: '',
-    });
-    setParams(pre => ({
-      ...pre,
       rewardTitle: '',
       crmAccount: '',
       businessType: '',
-      bonusTimeStart: '',
-      bonusTimeEnd: '',
-    }));
-    form.reset();
+      time: { from: '', to: '' },
+    });
   };
+
   return (
     <FormProvider form={form}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
-
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput

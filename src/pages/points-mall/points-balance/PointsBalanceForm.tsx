@@ -1,5 +1,4 @@
-import { RrhButton } from '@/components/common/RrhButton';
-import { FormInput } from '@/components/form/FormInput';
+import { Dispatch, SetStateAction } from 'react';
 import {
   Form,
   FormControl,
@@ -8,14 +7,15 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import FormDateRangeInput from '@/components/form/FormDateRangeInput';
+import { useForm } from 'react-hook-form';
+import { FormProvider } from '@/contexts/form';
+import { FormInput } from '@/components/form/FormInput';
+import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
-import { useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction } from 'react';
-import { PointsBalanceParams } from '@/api/hooks/pointsMall';
-import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { formatDate } from '@/lib/utils';
+import { PointsBalanceParams } from '@/api/hooks/pointsMall';
 
 type FormData = {
   fuzzyName: string;
@@ -26,51 +26,56 @@ type FormData = {
 export const PointsBalanceForm = ({
   setParams,
   loading,
+  params,
+  reset,
 }: {
   setParams: Dispatch<SetStateAction<PointsBalanceParams['params']>>;
   loading: boolean;
+  params: PointsBalanceParams['params'];
+  reset: () => void;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      fuzzyName: '',
-      email: '',
-      time: { from: '', to: '' },
+      fuzzyName: params?.fuzzyName || '',
+      email: params?.email || '',
+      time: {
+        from: params?.timeStart || '',
+        to: params?.timeEnd || '',
+      },
     },
   });
+
   const onSubmit = (data: FormData) => {
-    setParams(pre => ({
-      ...pre,
+    setParams({
       fuzzyName: data.fuzzyName,
       email: data.email,
       timeStart: formatDate(data.time.from),
       timeEnd: formatDate(data.time.to),
-    }));
+    });
   };
+
   const onReset = () => {
-    setParams(pre => ({
-      ...pre,
+    setParams({
       fuzzyName: '',
       email: '',
       timeStart: '',
       timeEnd: '',
-    }));
-    form.reset();
+    });
+    form.reset({
+      fuzzyName: '',
+      email: '',
+      time: { from: '', to: '' },
+    });
+    if (reset) reset();
   };
+
   return (
     <FormProvider form={form}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
-
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
@@ -102,7 +107,7 @@ export const PointsBalanceForm = ({
             )}
           />
           <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
+            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
             </RrhButton>

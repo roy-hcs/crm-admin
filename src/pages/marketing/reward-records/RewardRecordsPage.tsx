@@ -1,13 +1,22 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
-import { Funnel, RefreshCcw, Search } from 'lucide-react';
+import { Ellipsis, Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RewardRecordsTable } from './RewardRecordsTable';
-import { RewardRecordsForm } from './RewardRecordsForm';
 import { useDictType } from '@/api/hooks/system/system';
-import { useRewardRecordsList, RewardRecordsListParams } from '@/api/hooks/marketing';
+import {
+  useRewardRecordsList,
+  RewardRecordsListParams,
+  RewardRecordsListItem,
+} from '@/api/hooks/marketing';
+import { PageInfo } from '@/components/common/PageInfo';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { RewardRecordsForm } from './RewardRecordsForm';
+import { depositRebateStatusMap } from '@/lib/constant';
+import { RrhDropdown } from '@/components/common/RrhDropdown';
 
 export const RewardRecordsPage = () => {
   const [params, setParams] = useState<RewardRecordsListParams['params']>({
@@ -24,6 +33,7 @@ export const RewardRecordsPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [keyword, setKeyword] = useState('');
   const { t } = useTranslation();
   const { data: bonusDictType } = useDictType('sys_bonus_business_type');
   const { data: data, isLoading: loading } = useRewardRecordsList({
@@ -49,23 +59,208 @@ export const RewardRecordsPage = () => {
     setOtherParams({
       rewardId: '',
     });
+    setKeyword('');
     setPageNum(0);
   };
 
+  const allColumns: CRMColumnDef<RewardRecordsListItem, unknown>[] = [
+    {
+      id: 'No.',
+      header: t('table.index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
+      id: 'orderNo',
+      header: t('table.orderNo'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.orderNo || '-'}</div>;
+      },
+    },
+    {
+      id: 'lastName',
+      header: t('table.CRMAccount'),
+      cell: ({ row }) => {
+        if (row?.original?.lastName || row?.original?.name || row?.original?.showId) {
+          return (
+            <div>
+              <div>{`${row?.original?.lastName || ''} ${row?.original?.name || ''}`}</div>
+              <div>{row?.original?.showId || '-'}</div>
+            </div>
+          );
+        }
+        return '-';
+      },
+    },
+    {
+      id: 'rewardTitle',
+      header: t('table.activityName'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.rewardTitle || '-'}</div>;
+      },
+    },
+    {
+      id: 'businessType',
+      header: t('table.triggerBusiness'),
+      cell: ({ row }) => {
+        const text = bonusDictType?.find(
+          item => item.dictValue === String(row?.original?.businessType),
+        )?.dictLabel;
+        return <div>{text || '-'}</div>;
+      },
+    },
+    {
+      id: 'targetType',
+      header: t('common.type'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.targetType || '-'}</div>;
+      },
+    },
+    {
+      id: 'rewardType',
+      header: t('marketing.rewardRecords.rewardType'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.rewardType || '-'}</div>;
+      },
+    },
+    {
+      id: 'rewardTarget',
+      header: t('marketing.rewardRecords.rewardTarget'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.rewardTarget || '-'}</div>;
+      },
+    },
+    {
+      id: 'amount',
+      header: t('marketing.rewardRecords.amount'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.amount || '-'}</div>;
+      },
+    },
+    {
+      id: 'createBy',
+      header: t('common.system'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.createBy || '-'}</div>;
+      },
+    },
+    {
+      id: 'status',
+      header: t('common.status'),
+      cell: ({ row }) => {
+        const typeMap: Record<number | string, 'error' | 'success' | 'warning' | 'info'> = {
+          0: 'warning',
+          1: 'success',
+          '-1': 'info',
+          2: 'error',
+        };
+        return (
+          <div
+            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+              typeMap[row?.original?.status] === 'success'
+                ? 'bg-green-100 text-green-800'
+                : typeMap[row?.original?.status] === 'warning'
+                  ? 'bg-yellow-100 text-yellow-800'
+                  : typeMap[row?.original?.status] === 'error'
+                    ? 'bg-red-100 text-red-800'
+                    : 'bg-blue-100 text-blue-800'
+            }`}
+          >
+            {t(`table.${depositRebateStatusMap[row?.original?.status]}`)}
+          </div>
+        );
+      },
+    },
+    {
+      id: 'createTime',
+      header: t('common.createTime'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.createTime || '-'}</div>;
+      },
+    },
+    {
+      id: 'updateTime',
+      header: t('table.updateTime'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.updateTime || '-'}</div>;
+      },
+    },
+    {
+      id: 'lockStatus',
+      header: t('marketing.rewardRecords.lockStatus'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.lockStatus || '-'}</div>;
+      },
+    },
+    {
+      id: 'unlockAmount',
+      header: t('table.unlockAmount'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.unlockAmount || '-'}</div>;
+      },
+    },
+    {
+      id: 'unlockTime',
+      header: t('table.unlockTime'),
+      cell: ({ row }) => {
+        return <div>{row?.original?.unlockTime || '-'}</div>;
+      },
+    },
+    {
+      id: 'operation',
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
+      fixed: 'right',
+      size: 50,
+      cell: ({ row }) => {
+        console.log(row);
+        return (
+          <div>
+            <RrhDropdown
+              Trigger={
+                <RrhButton variant="ghost">
+                  <Ellipsis />
+                </RrhButton>
+              }
+              dropdownList={[
+                { label: t('common.View'), value: 'view' },
+                { label: t('common.Edit'), value: 'edit' },
+              ]}
+              callToAction={action => {
+                if (action === 'edit') {
+                  // Handle edit action
+                } else if (action === 'view') {
+                  // Handle view action
+                }
+              }}
+            />
+          </div>
+        );
+      },
+    },
+  ];
+
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('marketing-reward-records-table', allColumns);
+
   return (
     <div>
-      <h1 className="text-title">{t('marketing.rewardRecords.title')}</h1>
-      <div className="my-3.5 flex items-center justify-between">
-        <RrhInputWithIcon
-          placeholder={t('common.pleaseInput', { field: t('table.activityName') })}
-          className="h-9"
-          rightIcon={<Search className="size-4 cursor-pointer" />}
-          onRightIconClick={e => {
-            setParams(prev => ({ ...prev, rewardTitle: e }));
-            setPageNum(0);
-          }}
-        />
-        <div className="flex justify-end gap-2">
+      <PageInfo title={t('marketing.rewardRecords.title')} />
+      <div className="mt-3.5 mb-3.5 flex justify-between">
+        <div className="w-67 max-w-sm">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('table.activityName') })}
+            className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            rightIcon={<Search className="size-4 cursor-pointer" />}
+            onRightIconClick={() => {
+              setParams(prev => ({ ...prev, rewardTitle: keyword }));
+              setPageNum(0);
+            }}
+          />
+        </div>
+        <div className="flex items-center gap-2">
           <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
           </RrhButton>
@@ -88,11 +283,21 @@ export const RewardRecordsPage = () => {
               setOtherParams={setOtherParams}
               loading={loading}
               bonusDictType={bonusDictType || []}
+              reset={reset}
+              params={params}
             />
           </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
         </div>
       </div>
-      <RewardRecordsTable
+      <DataTable
+        columns={tableColumns}
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}
@@ -100,7 +305,6 @@ export const RewardRecordsPage = () => {
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
         loading={loading}
-        bonusDictType={bonusDictType || []}
       />
     </div>
   );
