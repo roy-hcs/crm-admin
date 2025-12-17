@@ -39,32 +39,38 @@ type FormData = {
 export const ReviewDepositForm = ({
   setOtherParams,
   setParams,
+  reset,
   loading,
   currencyList,
   thirdPaymentList,
+  params,
+  otherParams,
 }: {
   setParams: Dispatch<SetStateAction<DepositListParams['params']>>;
   setOtherParams: Dispatch<SetStateAction<Omit<DepositListParams, 'params'>>>;
+  reset: () => void;
+  loading: boolean;
   currencyList: CurrencyItem[];
   thirdPaymentList: ThirdPaymentItem[];
-  loading: boolean;
+  params: DepositListParams['params'];
+  otherParams: Omit<DepositListParams, 'params'>;
 }) => {
   const { t } = useTranslation();
-  const form = useForm<FormData>({
+  const form = useForm({
     defaultValues: {
-      name: '',
-      depositMethods: '',
-      tradeAccount: '',
-      orderNumber: '',
-      verifyStatus: '',
-      submitTime: { from: '', to: '' },
-      verifyUserName: '',
-      inAccountType: '',
-      tradeServerOrderNumber: '',
-      currency: '',
-      accounts: '',
-      payOrderNum: '',
-      channel: '',
+      name: otherParams.userId || '',
+      depositMethods: otherParams.method || '',
+      tradeAccount: otherParams.login || '',
+      orderNumber: otherParams.orderNum || '',
+      verifyStatus: otherParams.status || '',
+      submitTime: { from: params.beginTime || '', to: params.endTime || '' },
+      verifyUserName: otherParams.verifyUserName || '',
+      inAccountType: params.inMoneyAccount || '',
+      tradeServerOrderNumber: String(otherParams.dealTicket || ''),
+      currency: otherParams.depositCurrency || '',
+      accounts: params.accounts || '',
+      payOrderNum: otherParams.orderId || '',
+      channel: otherParams.channelId || '',
     },
   });
 
@@ -95,26 +101,22 @@ export const ReviewDepositForm = ({
   };
   const depositMethod = form.watch('depositMethods');
   const onReset = () => {
-    setOtherParams({
-      userId: '',
-      status: '',
+    reset();
+    form.reset({
+      name: '',
+      depositMethods: '',
+      tradeAccount: '',
+      orderNumber: '',
+      verifyStatus: '',
+      submitTime: { from: '', to: '' },
       verifyUserName: '',
-      dealTicket: '',
-      method: '',
-      login: '',
-      orderNum: '',
-      orderId: '',
-      channelId: '',
-      depositCurrency: '',
+      inAccountType: '',
+      tradeServerOrderNumber: '',
+      currency: '',
       accounts: '',
+      payOrderNum: '',
+      channel: '',
     });
-    setParams({
-      beginTime: '',
-      endTime: '',
-      inMoneyAccount: '',
-      accounts: '',
-    });
-    form.reset();
   };
   return (
     <FormProvider form={form}>

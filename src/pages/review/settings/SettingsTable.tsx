@@ -3,6 +3,7 @@ import { DataTable, CRMColumnDef } from '@/components/table/DataTable';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { Ellipsis } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Switch } from '@/components/ui/switch';
 
 export const SettingsTable = ({
   data,
@@ -24,8 +25,6 @@ export const SettingsTable = ({
   const { t } = useTranslation();
   const Columns: CRMColumnDef<CrmPreferenceItem, unknown>[] = [
     {
-      fixed: true,
-      size: 50,
       id: 'No.',
       header: t('ib.overview.Index'),
       cell: ({ row }) => <div>{row.index + 1}</div>,
@@ -43,12 +42,12 @@ export const SettingsTable = ({
     {
       id: 'indexReviewCount',
       header: t('review.settings.indexReviewCount'),
-      cell: () => <div>-</div>,
+      cell: ({ row }) => <Switch checked={row.original.indexReviewCount === 1} />,
     },
     {
       id: 'val',
       header: t('review.settings.val'),
-      cell: () => <div>-</div>,
+      cell: ({ row }) => <Switch checked={row.original.val === 1} />,
     },
     {
       id: 'operation',
@@ -60,19 +59,21 @@ export const SettingsTable = ({
           <RrhDropdown
             Trigger={<Ellipsis className="size-4" />}
             dropdownList={[
-              { label: t('common.View'), value: 'view' },
-              { label: t('common.Edit'), value: 'edit' },
+              { label: t('review.settings.editAccess'), value: 'edit' },
+              { label: t('review.settings.sortingConfig'), value: 'sort' },
             ]}
             callToAction={action => {
               if (action === 'edit') {
                 // Handle edit action
-              } else if (action === 'view') {
+              } else if (action === 'sort') {
                 // Handle view action
               }
             }}
           />
         </div>
       ),
+      size: 50,
+      fixed: 'right',
     },
   ];
   return (

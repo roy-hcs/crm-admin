@@ -1,8 +1,8 @@
 import {
-  DepositListParams,
   useOutMoneyMethodList,
   useWithdrawList,
   useWithdrawListSum,
+  WithdrawListParams,
 } from '@/api/hooks/review';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
@@ -21,12 +21,12 @@ type FormData = {
 
 export const WithdrawalRecordPage = ({ userId }: { userId: string }) => {
   const { t } = useTranslation();
-  const [params, setParams] = useState<DepositListParams['params']>({
+  const [params, setParams] = useState<WithdrawListParams['params']>({
     finishBeginTime: '',
     finishEndTime: '',
     userId,
   });
-  const [otherParams, setOtherParams] = useState<Omit<DepositListParams, 'params'>>({
+  const [otherParams, setOtherParams] = useState<Omit<WithdrawListParams, 'params'>>({
     status: '1',
     method: '',
   });

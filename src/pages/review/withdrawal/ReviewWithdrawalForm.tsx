@@ -27,7 +27,7 @@ type FormData = {
   verifyStatus: string | number;
   submitTime: { from: string; to: string };
   verifyUserName: string;
-  status: string | number;
+  status: string;
   tradeServerOrderNumber: string;
   outAccountType: string;
   accounts: string;
@@ -40,28 +40,32 @@ export const ReviewWithdrawalForm = ({
   loading,
   withdrawMethodList,
   reset,
+  params,
+  otherParams,
 }: {
   setParams: Dispatch<SetStateAction<WithdrawListParams['params']>>;
   setOtherParams: Dispatch<SetStateAction<Omit<WithdrawListParams, 'params'>>>;
   loading: boolean;
   withdrawMethodList: { id: string; name: string }[];
-  reset?: () => void;
+  reset: () => void;
+  params: WithdrawListParams['params'];
+  otherParams: Omit<WithdrawListParams, 'params'>;
 }) => {
   const { t } = useTranslation();
-  const form = useForm<FormData>({
+  const form = useForm({
     defaultValues: {
-      name: '',
-      withdrawWay: '',
-      tradeAccount: '',
-      orderNumber: '',
-      verifyStatus: '',
-      submitTime: { from: '', to: '' },
-      verifyUserName: '',
-      status: '',
-      tradeServerOrderNumber: '',
-      outAccountType: '',
-      accounts: '',
-      finishTime: { from: '', to: '' },
+      name: otherParams.userId || '',
+      withdrawWay: otherParams.method || '',
+      tradeAccount: otherParams.login || '',
+      orderNumber: otherParams.orderNum || '',
+      verifyStatus: otherParams.status || '',
+      submitTime: { from: params.beginTime || '', to: params.endTime || '' },
+      verifyUserName: otherParams.verifyUserName || '',
+      status: otherParams.exceptionFlag || '',
+      tradeServerOrderNumber: otherParams.dealTicket || '',
+      outAccountType: params.outMoneyAccount || '',
+      accounts: params.accounts || '',
+      finishTime: { from: params.finishBeginTime || '', to: params.finishEndTime || '' },
     },
   });
 
@@ -91,8 +95,21 @@ export const ReviewWithdrawalForm = ({
     });
   };
   const onReset = () => {
-    reset?.();
-    form.reset();
+    reset();
+    form.reset({
+      name: '',
+      withdrawWay: '',
+      tradeAccount: '',
+      orderNumber: '',
+      verifyStatus: '',
+      submitTime: { from: '', to: '' },
+      verifyUserName: '',
+      status: '',
+      tradeServerOrderNumber: '',
+      outAccountType: '',
+      accounts: '',
+      finishTime: { from: '', to: '' },
+    });
   };
   return (
     <FormProvider form={form}>

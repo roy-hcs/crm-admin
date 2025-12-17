@@ -32,30 +32,39 @@ type FormData = {
   source: string;
   verifyUserName: string;
 };
+
 export const AccountOpeningForm = ({
   setParams,
   setCommonParams,
+  reset,
+  params,
+  commonParams,
 }: {
   setParams: Dispatch<SetStateAction<CrmNewLoginVerifyListParams['params']>>;
   setCommonParams: Dispatch<
     SetStateAction<{ userId: string; status: string; source: string; verifyUserName: string }>
   >;
+  reset: () => void;
+  params: CrmNewLoginVerifyListParams['params'];
+  commonParams: { userId: string; status: string; source: string; verifyUserName: string };
 }) => {
   const { data: server } = useServerList();
   const serverOptions = server?.rows || [];
   const { t } = useTranslation();
+
   const form = useForm({
     defaultValues: {
-      server: '',
-      serverType: '',
-      serverProperty: '',
-      userId: '',
-      status: '',
-      source: '',
-      verifyUserName: '',
-      time: { from: '', to: '' },
+      server: params.server || '',
+      serverType: params.serverType || '',
+      serverProperty: params.serverProperty || '',
+      userId: commonParams.userId || '',
+      status: commonParams.status || '',
+      source: commonParams.source || '',
+      verifyUserName: commonParams.verifyUserName || '',
+      time: { from: params.beginTime || '', to: params.endTime || '' },
     },
   });
+
   const onSubmit = (data: FormData) => {
     setParams(pre => ({
       ...pre,
@@ -72,21 +81,19 @@ export const AccountOpeningForm = ({
       verifyUserName: data.verifyUserName,
     });
   };
+
   const onReset = () => {
-    setParams({
+    reset();
+    form.reset({
       server: '',
       serverType: '',
       serverProperty: '',
-      beginTime: '',
-      endTime: '',
-    });
-    setCommonParams({
       userId: '',
       status: '',
       source: '',
       verifyUserName: '',
+      time: { from: '', to: '' },
     });
-    form.reset();
   };
 
   return (
@@ -95,13 +102,6 @@ export const AccountOpeningForm = ({
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput

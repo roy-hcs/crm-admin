@@ -26,10 +26,10 @@ import { formatDate } from '@/lib/utils';
 type FormData = {
   serverId: string;
   serverGroupList: string[];
-  tradingOrderNumber: string;
+  tradingOrderNumber: string | number;
   tradeAccount: string;
   tradeType: string;
-  rebateStatus: string;
+  rebateStatus: string | number;
   tradingTime: { from: string; to: string };
   rebateUser: string;
   orderNumber: string;
@@ -46,32 +46,36 @@ export const ReviewTradingRebateForm = ({
   serverListLoading,
   rebateRuleList,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   serverList: ServerItem[];
   serverListLoading: boolean;
-  setOtherParams: Dispatch<
-    SetStateAction<Omit<RebateCommissionListParams & { taderType?: string }, 'params'>>
-  >;
+  setOtherParams: Dispatch<SetStateAction<Omit<RebateCommissionListParams, 'params'>>>;
   setParams: Dispatch<SetStateAction<RebateCommissionListParams['params']>>;
   rebateRuleList: RebateCommissionRuleItem[];
   loading: boolean;
+  reset: () => void;
+  params: RebateCommissionListParams['params'];
+  otherParams: Omit<RebateCommissionListParams, 'params'>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      serverId: '',
-      serverGroupList: [],
-      tradingOrderNumber: '',
-      tradeAccount: '',
-      tradeType: '',
-      rebateStatus: '',
-      rebateUser: '',
-      orderNumber: '',
-      rule: '',
-      verifyUserName: '',
-      accountGroupList: [],
-      tradingTime: { from: '', to: '' },
-      submitTime: { from: '', to: '' },
+      serverId: otherParams.serverId || '',
+      serverGroupList: otherParams.serverGroupList ? otherParams.serverGroupList.split(',') : [],
+      tradingOrderNumber: otherParams.mtOrder || '',
+      tradeAccount: otherParams.trderAccount || '',
+      tradeType: otherParams.taderType || '',
+      rebateStatus: otherParams.rebateStatus || '',
+      rebateUser: otherParams.rebateTraderId || '',
+      orderNumber: otherParams.id || '',
+      rule: otherParams.conditionName || '',
+      verifyUserName: otherParams.verifyUserName || '',
+      accountGroupList: otherParams.accountGroupList ? otherParams.accountGroupList.split(',') : [],
+      tradingTime: { from: params.startTraderTime || '', to: params.endTraderTime || '' },
+      submitTime: { from: params.beginTime || '', to: params.endTime || '' },
     },
   });
 
@@ -112,25 +116,21 @@ export const ReviewTradingRebateForm = ({
     });
   };
   const onReset = () => {
-    form.reset();
-    setParams({
-      startTraderTime: '',
-      endTraderTime: '',
-      beginTime: '',
-      endTime: '',
-    });
-    setOtherParams({
-      serverId: selectedServer?.id || '',
-      serverGroupList: '',
-      mtOrder: '',
-      trderAccount: '',
-      taderType: '',
+    reset();
+    form.reset({
+      serverId: '',
+      serverGroupList: [],
+      tradingOrderNumber: '',
+      tradeAccount: '',
+      tradeType: '',
       rebateStatus: '',
-      id: '',
-      rebateTraderId: '',
-      accountGroupList: '',
+      rebateUser: '',
+      orderNumber: '',
+      rule: '',
       verifyUserName: '',
-      conditionName: '',
+      accountGroupList: [],
+      tradingTime: { from: '', to: '' },
+      submitTime: { from: '', to: '' },
     });
   };
 
@@ -200,8 +200,8 @@ export const ReviewTradingRebateForm = ({
           <FormInput
             verticalLabel
             name="tradeType"
-            label={t('table.tradeType')}
-            placeholder={t('common.pleaseInput', { field: t('table.tradeType') })}
+            label={t('commission.trading.taderType')}
+            placeholder={t('common.pleaseInput', { field: t('commission.trading.taderType') })}
           />
           <FormSelect
             verticalLabel
@@ -210,10 +210,10 @@ export const ReviewTradingRebateForm = ({
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={[
-              { label: t('table.pending'), value: '0' },
-              { label: t('table.reviewing'), value: '-1' },
+              { label: t('table.pending'), value: '2' },
+              { label: t('table.reviewing'), value: '3' },
               { label: t('table.pass'), value: '1' },
-              { label: t('table.refuse'), value: '2' },
+              { label: t('table.refuse'), value: '0' },
             ]}
           />
           <FormField

@@ -46,7 +46,7 @@
     - 确保所有item都有一个唯一的id，如果出现id重复，向开发者请求确认
     - 如果存在id为operate的item，给该item添加fixed:'right'和size: 50的值。如果该item返回超过一个按钮，则参考RewardConfigsPage使用RrhDropdown和Ellipse组件进行整合
     - 所有id不是operate的item，都不应该有fixed和size的字段，如果有，删除这些字段
-    - 如果item的header字段不是纯字符串或者t('xxx')，则新增一个label字段，label的值为header字段里的t('xxx')
+    - 当且仅当item的header字段的值不是t('xxx')，而是个函数时，添加一个label字段，该字段的值为header字段中包含的t('xxx')
 
 11. **在重构代码的过程中，保持所有常量的引用，不要将引用替换为hardcode**
     - 保持使用RebateTypeOptions和RebateStatusOptions等常量

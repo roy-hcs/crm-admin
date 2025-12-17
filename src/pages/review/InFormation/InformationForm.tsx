@@ -16,10 +16,10 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Dispatch, SetStateAction } from 'react';
 import { CrmInfoVerifyListParams } from '@/api/hooks/review';
-
 import { VerifyStatusOptions } from '@/lib/const';
 import { InfoTypeItem } from '@/api/hooks/system/types';
 import { formatDate } from '@/lib/utils';
+
 type FormData = {
   time: { from: string; to: string };
   userId: string;
@@ -27,28 +27,36 @@ type FormData = {
   status: string;
   verifyUserName: string;
 };
+
 export const InformationForm = ({
   setParams,
   setCommonParams,
   infoTypeList,
+  reset,
+  params,
+  commonParams,
 }: {
   setParams: Dispatch<SetStateAction<CrmInfoVerifyListParams['params']>>;
   setCommonParams: Dispatch<
     SetStateAction<{ userId: string; infoType: string; status: string; verifyUserName: string }>
   >;
   infoTypeList: InfoTypeItem[];
+  reset: () => void;
+  params: CrmInfoVerifyListParams['params'];
+  commonParams: { userId: string; infoType: string; status: string; verifyUserName: string };
 }) => {
   const { t } = useTranslation();
 
   const form = useForm({
     defaultValues: {
-      userId: '',
-      infoType: '',
-      status: '',
-      verifyUserName: '',
-      time: { from: '', to: '' },
+      userId: commonParams.userId || '',
+      infoType: commonParams.infoType || '',
+      status: commonParams.status || '',
+      verifyUserName: commonParams.verifyUserName || '',
+      time: { from: params.beginTime || '', to: params.endTime || '' },
     },
   });
+
   const onSubmit = (data: FormData) => {
     setParams(pre => ({
       ...pre,
@@ -62,18 +70,16 @@ export const InformationForm = ({
       verifyUserName: data.verifyUserName,
     });
   };
+
   const onReset = () => {
-    setParams({
-      beginTime: '',
-      endTime: '',
-    });
-    setCommonParams({
+    reset();
+    form.reset({
       userId: '',
       infoType: '',
       status: '',
       verifyUserName: '',
+      time: { from: '', to: '' },
     });
-    form.reset();
   };
 
   return (
@@ -82,13 +88,6 @@ export const InformationForm = ({
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput

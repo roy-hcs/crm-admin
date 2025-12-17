@@ -25,28 +25,34 @@ type FormData = {
   inAccount: string;
   outAccount: string;
   verifyUserName: string;
-  dealTicket: string;
+  dealTicket: string | number;
 };
 
 export const ReviewInternalTransferForm = ({
   setOtherParams,
   setParams,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   setParams: Dispatch<SetStateAction<InternalTransferListParams['params']>>;
   setOtherParams: Dispatch<SetStateAction<Omit<InternalTransferListParams, 'params'>>>;
   loading: boolean;
+  reset: () => void;
+  params: InternalTransferListParams['params'];
+  otherParams: Omit<InternalTransferListParams, 'params'>;
 }) => {
   const { t } = useTranslation();
-  const form = useForm<FormData>({
+  const form = useForm({
     defaultValues: {
-      name: '',
-      status: '',
-      inAccount: '',
-      outAccount: '',
-      dealTicket: '',
-      verifyUserName: '',
-      submitTime: { from: '', to: '' },
+      name: otherParams.userId || '',
+      status: otherParams.status || '',
+      inAccount: params.fuzzyInAccount || '',
+      outAccount: params.fuzzyOutAccount || '',
+      dealTicket: otherParams.dealTicket || '',
+      verifyUserName: otherParams.verifyUserName || '',
+      submitTime: { from: params.fuzzyStartTime || '', to: params.fuzzyEndTime || '' },
     },
   });
 
@@ -54,7 +60,7 @@ export const ReviewInternalTransferForm = ({
     setOtherParams({
       userId: data.name,
       status: data.status,
-      dealTicket: data.dealTicket,
+      dealTicket: String(data.dealTicket || ''),
       verifyUserName: data.verifyUserName,
     });
     setParams({
@@ -65,19 +71,16 @@ export const ReviewInternalTransferForm = ({
     });
   };
   const onReset = () => {
-    setOtherParams({
-      userId: '',
+    reset();
+    form.reset({
+      name: '',
       status: '',
-      verifyUserName: '',
+      inAccount: '',
+      outAccount: '',
       dealTicket: '',
+      verifyUserName: '',
+      submitTime: { from: '', to: '' },
     });
-    setParams({
-      fuzzyStartTime: '',
-      fuzzyEndTime: '',
-      fuzzyOutAccount: '',
-      fuzzyInAccount: '',
-    });
-    form.reset();
   };
   return (
     <FormProvider form={form}>

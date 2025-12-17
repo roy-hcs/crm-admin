@@ -37,9 +37,9 @@ type FormData = {
   operationTime: { from: string; to: string };
   opeTypeList: string;
   opeType: string;
-  serverGroupList: string;
+  serverGroupList: string[];
   serverGroup: string;
-  accountGroupList: string;
+  accountGroupList: string[];
 };
 export const TradingAccountTransactionsForm = ({
   setParams,
@@ -86,9 +86,11 @@ export const TradingAccountTransactionsForm = ({
       operationTime: { from: params.operationStart || '', to: params.operationEnd || '' },
       opeTypeList: commonParams.opeTypeList || '',
       opeType: commonParams.opeType || '',
-      serverGroupList: commonParams.serverGroupList || '',
+      serverGroupList: commonParams.serverGroupList ? commonParams.serverGroupList.split(',') : [],
       serverGroup: commonParams.serverGroup || '',
-      accountGroupList: commonParams.accountGroupList || '',
+      accountGroupList: commonParams.accountGroupList
+        ? commonParams.accountGroupList.split(',')
+        : [],
     },
   });
 
@@ -115,9 +117,9 @@ export const TradingAccountTransactionsForm = ({
     setCommonParams({
       opeTypeList: data.opeTypeList,
       opeType: data.opeType,
-      serverGroupList: data.serverGroupList,
+      serverGroupList: data.serverGroupList.join(','),
       serverGroup: data.serverGroup,
-      accountGroupList: data.accountGroupList,
+      accountGroupList: data.accountGroupList.join(','),
       accounts: data.accounts,
     });
     setServerId(data.serverId);
@@ -136,9 +138,9 @@ export const TradingAccountTransactionsForm = ({
       operationTime: { from: '', to: '' },
       opeTypeList: '',
       opeType: '',
-      serverGroupList: '',
+      serverGroupList: [],
       serverGroup: '',
-      accountGroupList: '',
+      accountGroupList: [],
     });
   };
 

@@ -33,25 +33,33 @@ type FormData = {
 export const LeverageForm = ({
   setParams,
   setCommonParams,
+  reset,
+  params,
+  commonParams,
 }: {
   setParams: Dispatch<SetStateAction<CrmNewLoginVerifyListParams['params']>>;
   setCommonParams: Dispatch<
     SetStateAction<{ userId: string; status: string; login: string; verifyUserName: string }>
   >;
+  reset: () => void;
+  params: CrmNewLoginVerifyListParams['params'];
+  commonParams: { userId: string; status: string; login: string; verifyUserName: string };
 }) => {
   const { data: server } = useServerList();
   const serverOptions = server?.rows || [];
   const { t } = useTranslation();
+
   const form = useForm({
     defaultValues: {
-      server: '',
-      userId: '',
-      status: '',
-      login: '',
-      verifyUserName: '',
-      time: { from: '', to: '' },
+      server: params.server || '',
+      userId: commonParams.userId || '',
+      status: commonParams.status || '',
+      login: commonParams.login || '',
+      verifyUserName: commonParams.verifyUserName || '',
+      time: { from: params.beginTime || '', to: params.endTime || '' },
     },
   });
+
   const onSubmit = (data: FormData) => {
     setParams(pre => ({
       ...pre,
@@ -66,19 +74,17 @@ export const LeverageForm = ({
       verifyUserName: data.verifyUserName,
     });
   };
+
   const onReset = () => {
-    setParams({
+    reset();
+    form.reset({
       server: '',
-      beginTime: '',
-      endTime: '',
-    });
-    setCommonParams({
       userId: '',
       status: '',
       login: '',
       verifyUserName: '',
+      time: { from: '', to: '' },
     });
-    form.reset();
   };
 
   return (
