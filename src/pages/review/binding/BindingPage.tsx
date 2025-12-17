@@ -53,7 +53,7 @@ export function BindingPage() {
           rightIcon={<Search className="size-4 cursor-pointer" />}
           onRightIconClick={e => {
             setCommonParams(prev => ({ ...prev, verifyUserName: e }));
-            setPageNum(1);
+            setPageNum(0);
           }}
         />
         <div className="flex justify-end gap-2">

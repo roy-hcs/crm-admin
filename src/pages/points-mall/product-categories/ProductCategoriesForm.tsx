@@ -1,12 +1,13 @@
-import { RrhButton } from '@/components/common/RrhButton';
-import { FormInput } from '@/components/form/FormInput';
+import { Dispatch, SetStateAction } from 'react';
 import { Form } from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { FormProvider } from '@/contexts/form';
+import { FormInput } from '@/components/form/FormInput';
+import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
-import { useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction } from 'react';
 import { GoodsClassificationParams } from '@/api/hooks/pointsMall';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   searchName: string;
@@ -15,47 +16,43 @@ type FormData = {
 export const ProductCategoriesForm = ({
   setOtherParams,
   loading,
+  otherParams,
+  reset,
 }: {
-  setOtherParams: Dispatch<
-    SetStateAction<
-      Omit<GoodsClassificationParams, 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
-    >
-  >;
+  setOtherParams: Dispatch<SetStateAction<Omit<GoodsClassificationParams, keyof BasicParams>>>;
   loading: boolean;
+  otherParams?: Omit<GoodsClassificationParams, keyof BasicParams>;
+  reset?: () => void;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      searchName: '',
+      searchName: otherParams?.searchName || '',
     },
   });
+
   const onSubmit = (data: FormData) => {
-    setOtherParams(pre => ({
-      ...pre,
+    setOtherParams({
       searchName: data.searchName,
-    }));
+    });
   };
+
   const onReset = () => {
-    setOtherParams(pre => ({
-      ...pre,
+    setOtherParams({
       searchName: '',
-    }));
-    form.reset();
+    });
+    form.reset({
+      searchName: '',
+    });
+    if (reset) reset();
   };
+
   return (
     <FormProvider form={form}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
-
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
@@ -67,7 +64,7 @@ export const ProductCategoriesForm = ({
             })}
           />
           <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
+            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
             </RrhButton>

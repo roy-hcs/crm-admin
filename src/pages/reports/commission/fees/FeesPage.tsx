@@ -1,32 +1,33 @@
 import { useEffect, useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { useRebateList } from '@/api/hooks/report';
-import { FeesForm, ClientTrackingFormRef } from './components/FeesForm';
-import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
-import { FeesTable } from './components/FeesTable';
+import { TradingItem, TradingParams, useRebateList } from '@/api/hooks/report';
+import { FeesForm } from './FeesForm';
+import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { useServerList, useGroupList, useGetCrmRebateTraders } from '@/api/hooks/system/system';
+import { PageInfo } from '@/components/common/PageInfo';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { BasicParams } from '@/api/types';
 export function FeesPage() {
   const { t } = useTranslation();
-  const formRef = useRef<ClientTrackingFormRef>(null);
-  // serverId
   const [serverId, setServerId] = useState('');
-  // 分页
   const [pageNum, setPageNum] = useState(0);
-  // 每页条数
   const [pageSize, setPageSize] = useState(10);
-  // 特殊参数
-  const [params, setParams] = useState({
+  const [keyword, setKeyword] = useState('');
+  const [params, setParams] = useState<TradingParams['params']>({
     startTraderTime: '',
     endTraderTime: '',
     beginVerifyTime: '',
     endVerifyTime: '',
     accounts: '',
   });
-  // 普通参数
-  const [commonParams, setCommonParams] = useState({
+  const [commonParams, setCommonParams] = useState<
+    Omit<TradingParams, 'params' | keyof BasicParams>
+  >({
     trderAccount: '',
     mtOrder: '',
     taderType: '',
@@ -34,7 +35,6 @@ export function FeesPage() {
     rebateTraderId: '',
     serverGroup: '',
   });
-  // 获取服务器列表
   const { data: server, isLoading: serverLoading } = useServerList();
   // 获取命中规则列表
   const { data: RebateTraders, isLoading: RebateTradersLoading } = useGetCrmRebateTraders('1');
@@ -93,17 +93,106 @@ export function FeesPage() {
       endVerifyTime: '',
       accounts: '',
     });
+    setKeyword('');
     setPageNum(0);
     setPageSize(10);
   };
+  const allColumns: CRMColumnDef<TradingItem, unknown>[] = [
+    {
+      id: 'No.',
+      header: t('ib.overview.Index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
+      id: 'serverName',
+      header: t('commission.trading.serverName'),
+      accessorFn: row => row.serverName,
+    },
+    {
+      id: 'mtOrder',
+      header: t('commission.trading.mtOrder'),
+      accessorFn: row => row.mtOrder,
+    },
+    {
+      id: 'login',
+      header: t('commission.trading.login'),
+      accessorFn: row => row.login,
+    },
+    {
+      id: 'symbol',
+      accessorKey: 'symbol',
+      header: t('commission.trading.symbol'),
+      accessorFn: row => row.symbol,
+    },
+    {
+      id: 'volume',
+      accessorKey: 'volume',
+      header: t('commission.trading.volume'),
+      accessorFn: row => row.volume,
+    },
+    {
+      id: 'traderTime',
+      accessorKey: 'traderTime',
+      header: t('commission.trading.traderTime'),
+      accessorFn: row => row.traderTime,
+    },
+    {
+      id: 'userName',
+      accessorKey: 'userName',
+      header: t('commission.trading.userName'),
+      cell: ({ row }) => (
+        <div>
+          <div>{row.original.userName}</div>
+          <div>{row.original.showId}</div>
+        </div>
+      ),
+    },
+    {
+      id: 'rebateTotalAmt',
+      accessorKey: 'rebateTotalAmt',
+      header: t('commission.trading.rebateTotalAmt'),
+      cell: ({ row }) => (
+        <div>
+          <div>{(row.original.rebateTotalAmt || '') + (row.original.currency || '')}</div>
+          <div>
+            {(row.original.rebateFixedAmt || '') + '+' + (row.original.rebatePointsAmt || '')}
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'rebateAccountName',
+      accessorKey: 'rebateAccountName',
+      header: t('commission.trading.rebateAccountName'),
+      accessorFn: row => row.rebateAccountName,
+    },
+    {
+      id: 'rebateTime',
+      accessorKey: 'rebateTime',
+      header: t('commission.trading.rebateTime'),
+      accessorFn: row => row.rebateTime,
+    },
+    {
+      id: 'rebateTraderName',
+      accessorKey: 'rebateTraderName',
+      header: t('commission.trading.rebateTraderName'),
+      accessorFn: row => row.rebateTraderName,
+    },
+  ];
+
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('commission-fees-reports-table', allColumns);
+
   return (
     <div>
-      <div className="text-xl leading-8 font-semibold">{t('commission.fees.title')}</div>
+      <PageInfo title={t('commission.fees.title')} />
       <div className="mt-3.5 mb-3.5 flex justify-between">
         <div className="w-67 max-w-sm">
           <RrhInputWithIcon
-            placeholder="Last Name/First Name/Email"
+            placeholder={t('common.pleaseInput', { field: t('commission.trading.mtOrder') })}
             className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
             rightIcon={<Search className="size-4" />}
             onLeftIconClick={() => {
               // 触发查询逻辑, 这里简单调用一次刷新
@@ -114,9 +203,6 @@ export function FeesPage() {
         <div className="flex items-center gap-2">
           <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
-          </Button>
-          <Button variant="ghost" className="size-8 cursor-pointer">
-            <Ellipsis />
           </Button>
           <RrhDrawer
             asChild
@@ -133,7 +219,9 @@ export function FeesPage() {
             footerShow={false}
           >
             <FeesForm
-              ref={formRef}
+              params={params}
+              commonParams={commonParams}
+              reset={reset}
               setParams={setParams}
               setServerId={setServerId}
               setCommonParams={setCommonParams}
@@ -143,9 +231,17 @@ export function FeesPage() {
               initialServerId={serverId}
             />
           </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
         </div>
       </div>
-      <FeesTable
+      <DataTable
+        columns={tableColumns}
         data={AgencyClientTracking?.rows || []}
         pageCount={Math.ceil(+(AgencyClientTracking?.total || 0) / pageSize)}
         pageIndex={pageNum}

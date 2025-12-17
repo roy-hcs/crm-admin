@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
   Form,
   FormControl,
@@ -20,6 +20,8 @@ import { CurrencyItem, DictTypeItem } from '@/api/hooks/system/types';
 import { useDictType } from '@/api/hooks/system/system';
 import { useCurrencyList } from '@/api/hooks/system/system';
 import { formatDate } from '@/lib/utils';
+import { CrmUserDealDetailParams } from '@/api/hooks/report';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   account: string;
@@ -32,10 +34,6 @@ type FormData = {
   mtOrder: string;
   selectOther: string;
 };
-
-export interface WalletTransactionsFormRef {
-  onReset: () => void;
-}
 // 选择操作类型返回的数据枚举用来取操作方式
 const inMethodMap: Record<string, string> = {
   '1': 'crm_wallet_in_method',
@@ -43,26 +41,21 @@ const inMethodMap: Record<string, string> = {
   '3': 'crm_wallet_trans_method',
   '4': 'crm_wallet_remaid_method',
 };
-export const WalletTransactionsForm = forwardRef<
-  WalletTransactionsFormRef,
-  {
-    setParams: (params: {
-      account: string;
-      selectOther: string;
-      inMethod: string;
-      currencyId: string;
-      operationStart: string;
-      operationEnd: string;
-      accounts: string;
-    }) => void;
-    setCommonParams: (params: {
-      operationType: string;
-      serialNum: string;
-      accounts: string;
-      mtOrder: string;
-    }) => void;
-  }
->(({ setParams, setCommonParams }, ref) => {
+export const WalletTransactionsForm = ({
+  setParams,
+  setCommonParams,
+  reset,
+  params,
+  commonParams,
+}: {
+  setParams: Dispatch<SetStateAction<CrmUserDealDetailParams['params']>>;
+  setCommonParams: Dispatch<
+    SetStateAction<Omit<CrmUserDealDetailParams, 'params' | keyof BasicParams>>
+  >;
+  reset: () => void;
+  params: CrmUserDealDetailParams['params'];
+  commonParams: Omit<CrmUserDealDetailParams, 'params' | keyof BasicParams>;
+}) => {
   const [inMethodOptions, setInMethodOptions] = useState<{ label: string; value: string }[]>([]);
   const { data: currencyListResp } = useCurrencyList();
   const { data: operationTypeResp } = useDictType('crm_wallet_opr_type');
@@ -75,15 +68,15 @@ export const WalletTransactionsForm = forwardRef<
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      account: '',
-      selectOther: '',
-      inMethod: '',
-      currencyId: '',
-      operationTime: { from: '', to: '' },
-      accounts: '',
-      operationType: '',
-      serialNum: '',
-      mtOrder: '',
+      account: params.account || '',
+      selectOther: params.selectOther || '',
+      inMethod: params.inMethod || '',
+      currencyId: params.currencyId || '',
+      operationTime: { from: params.operationStart || '', to: params.operationEnd || '' },
+      accounts: params.accounts || '',
+      operationType: commonParams.operationType || '',
+      serialNum: commonParams.serialNum || '',
+      mtOrder: commonParams.mtOrder || '',
     },
   });
   const selectedOperationType = form.watch('operationType');
@@ -91,11 +84,6 @@ export const WalletTransactionsForm = forwardRef<
   const { data: inMethodResp } = useDictType(inMethodDictKey || 'placeholder', {
     enabled: !!inMethodDictKey,
   });
-  useImperativeHandle(ref, () => ({
-    onReset: () => {
-      form.reset();
-    },
-  }));
   useEffect(() => {
     // 切换操作类型时清空已选方式
     form.setValue('inMethod', '');
@@ -129,22 +117,18 @@ export const WalletTransactionsForm = forwardRef<
     });
   };
   const onReset = () => {
-    setParams({
+    reset();
+    form.reset({
       account: '',
       selectOther: '',
       inMethod: '',
       currencyId: '',
-      operationStart: '',
-      operationEnd: '',
+      operationTime: { from: '', to: '' },
       accounts: '',
-    });
-    setCommonParams({
       operationType: '',
       serialNum: '',
-      accounts: '',
       mtOrder: '',
     });
-    form.reset();
   };
 
   return (
@@ -239,4 +223,4 @@ export const WalletTransactionsForm = forwardRef<
       </Form>
     </FormProvider>
   );
-});
+};

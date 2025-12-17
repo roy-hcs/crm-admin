@@ -1,25 +1,26 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { useDataStatistics } from '@/api/hooks/report';
+import { DataStatisticsItem, DataStatisticsParams, useDataStatistics } from '@/api/hooks/report';
 import { useServerList } from '@/api/hooks/system/system';
-import {
-  TradingAccountDataStatsForm,
-  TradingAccountDataStatsFormRef,
-} from './components/TradingAccountDataStatsForm';
-import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
-import { TradingAccountDataStatsTable } from './components/TradingAccountDataStatsTable';
+import { TradingAccountDataStatsForm } from './TradingAccountDataStatsForm';
+import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
+import { PageInfo } from '@/components/common/PageInfo';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { BasicParams } from '@/api/types';
 
 export function TradingAccountDataStatsPage() {
   const { t } = useTranslation();
-  const formRef = useRef<TradingAccountDataStatsFormRef>(null);
   const [serverId, setServerId] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [keyword, setKeyword] = useState('');
   // 特殊参数
-  const [params, setParams] = useState({
+  const [params, setParams] = useState<DataStatisticsParams['params']>({
     onlyViewRebateAccount: '',
     serverGroupList: '',
     fuzzyAccount: '',
@@ -29,7 +30,9 @@ export function TradingAccountDataStatsPage() {
     accounts: '',
   });
   // 普通参数
-  const [commonParams, setCommonParams] = useState({
+  const [commonParams, setCommonParams] = useState<
+    Omit<DataStatisticsParams, 'params' | keyof BasicParams>
+  >({
     accounts: '',
     accountGroupList: '',
     username: '',
@@ -73,34 +76,377 @@ export function TradingAccountDataStatsPage() {
       username: '',
       directBroker: '',
     });
+    setKeyword('');
     setPageNum(0);
     setPageSize(10);
     setServerId(server?.rows?.[0]?.id || '');
   };
+  const allColumns: CRMColumnDef<DataStatisticsItem, unknown>[] = [
+    {
+      id: 'No.',
+      size: 50,
+      header: t('ib.overview.Index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
+      id: 'name',
+      header: t('financial.tradingAccountTransactions.name'),
+      accessorFn: row => row.name,
+    },
+    {
+      id: 'login',
+
+      header: t('financial.tradingAccountTransactions.login'),
+      accessorFn: row => row.login,
+    },
+    {
+      id: 'username',
+
+      header: t('financial.tradingAccountDataStats.username'),
+
+      cell: ({ row }) => {
+        if (row?.original?.username) {
+          return row.original.username;
+        }
+        return '--';
+      },
+    },
+    {
+      id: 'userLevel',
+
+      header: t('financial.tradingAccountDataStats.userLevel'),
+
+      cell: ({ row }) => {
+        if (row?.original?.userLevel) {
+          return row.original.userLevel;
+        }
+        return '--';
+      },
+    },
+    {
+      id: 'directBrokerName',
+
+      header: t('financial.tradingAccountDataStats.directBrokerName'),
+
+      cell: ({ row }) => {
+        if (row?.original?.directBrokerName) {
+          return row.original.directBrokerName;
+        }
+        return '--';
+      },
+    },
+    {
+      id: 'positiveBalance',
+
+      header: t('financial.tradingAccountDataStats.positiveBalance'),
+
+      cell: ({ row }) => {
+        if (row?.original?.positiveBalanceCount || row?.original?.positiveBalance) {
+          return (
+            <div>
+              <div>{row?.original?.positiveBalanceCount || '0'}</div>
+              <div>{row?.original?.positiveBalance || '0'}</div>
+              <div>{row?.original?.currency}</div>
+            </div>
+          );
+        }
+        return '--';
+      },
+    },
+    {
+      id: 'negativeBalance',
+
+      header: t('financial.tradingAccountDataStats.negativeBalance'),
+
+      cell: ({ row }) => {
+        if (row?.original?.negativeBalanceCount || row?.original?.negativeBalance) {
+          return (
+            <div>
+              <div>{row?.original?.negativeBalanceCount || '0'}</div>
+              <div>{row?.original?.negativeBalance || '0'}</div>
+              <div>{row?.original?.currency}</div>
+            </div>
+          );
+        }
+        return '--';
+      },
+    },
+    {
+      id: 'netDeposit',
+
+      header: t('financial.tradingAccountDataStats.netDeposit'),
+
+      cell: ({ row }) => {
+        if (row?.original?.positiveBalance || row?.original?.negativeBalance) {
+          return (
+            <div>
+              <div>{row?.original?.positiveBalance || '0'}</div>
+              <div>{row?.original?.negativeBalance || '0'}</div>
+              <div>{row?.original?.currency}</div>
+            </div>
+          );
+        }
+        return '--';
+      },
+    },
+    {
+      id: 'balance',
+
+      header: t('financial.tradingAccountDataStats.balance'),
+
+      cell: ({ row }) => {
+        return (
+          <div>
+            <div>{row?.original?.balance || '0'}</div>
+            <div>{row?.original?.currency}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'netWorth',
+
+      header: t('financial.tradingAccountDataStats.netWorth'),
+
+      cell: ({ row }) => {
+        return (
+          <div>
+            <div>{row?.original?.netWorth || '0'}</div>
+            <div>{row?.original?.currency}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'credit',
+
+      header: t('financial.tradingAccountDataStats.credit'),
+
+      cell: ({ row }) => {
+        return (
+          <div>
+            <div>{row?.original?.credit || '0'}</div>
+            <div>{row?.original?.currency}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'usedAdvance',
+
+      header: t('financial.tradingAccountDataStats.usedAdvance'),
+
+      cell: ({ row }) => {
+        return (
+          <div>
+            <div>{row?.original?.usedAdvance || '0'}</div>
+            <div>{row?.original?.currency}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'usableAdvance',
+
+      header: t('financial.tradingAccountDataStats.usableAdvance'),
+
+      cell: ({ row }) => {
+        return (
+          <div>
+            <div>{row?.original?.usableAdvance || '0'}</div>
+            <div>{row?.original?.currency}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'advanceScale',
+
+      header: t('financial.tradingAccountDataStats.advanceScale'),
+
+      cell: ({ row }) => {
+        if (row?.original?.advanceScale) {
+          return `${row?.original?.advanceScale}%`;
+        }
+        return '--';
+      },
+    },
+    {
+      id: 'riskScale',
+
+      header: t('financial.tradingAccountDataStats.riskScale'),
+
+      cell: ({ row }) => {
+        if (row?.original?.riskScale) {
+          return `${row?.original?.riskScale}%`;
+        }
+        return '--';
+      },
+    },
+    {
+      id: 'profitPosition',
+
+      header: t('financial.tradingAccountDataStats.profitPosition'),
+
+      cell: ({ row }) => {
+        return (
+          <div>
+            <div>{row?.original?.profitPosition || '0'}</div>
+            <div>{row?.original?.currency}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'volumePosition',
+
+      header: t('financial.tradingAccountDataStats.volumePosition'),
+
+      accessorFn: row => row.volumePosition || 0,
+    },
+    {
+      id: 'swapsPosition',
+
+      header: t('financial.tradingAccountDataStats.swapsPosition'),
+
+      cell: ({ row }) => {
+        return (
+          <div>
+            <div>{row?.original?.swapsPosition || '0'}</div>
+            <div>{row?.original?.currency}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'profitLoss',
+
+      header: t('financial.tradingAccountDataStats.profitLoss'),
+
+      cell: ({ row }) => {
+        return (
+          <div>
+            <div>{row?.original?.profitLoss || '0'}</div>
+            <div>{row?.original?.currency}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'volumeLoss',
+
+      header: t('financial.tradingAccountDataStats.volumeLoss'),
+
+      accessorFn: row => row.volumeLoss || 0,
+    },
+    {
+      id: 'commission',
+
+      header: t('financial.tradingAccountDataStats.commission'),
+
+      cell: ({ row }) => {
+        return (
+          <div>
+            <div>{row?.original?.commission || '0'}</div>
+            <div>{row?.original?.currency}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'swaps',
+
+      header: t('financial.tradingAccountDataStats.swaps'),
+
+      cell: ({ row }) => {
+        return (
+          <div>
+            <div>{row?.original?.swaps || '0'}</div>
+            <div>{row?.original?.currency}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'netProfit',
+
+      header: t('financial.tradingAccountDataStats.netProfit'),
+
+      cell: ({ row }) => {
+        return (
+          <div>
+            <div>{row?.original?.netProfit || '0'}</div>
+            <div>{row?.original?.currency}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'netProfitRatio',
+
+      header: t('financial.tradingAccountDataStats.netProfitRatio'),
+
+      cell: ({ row }) => {
+        if (row?.original?.netProfitRatio) {
+          return `${row?.original?.netProfitRatio}%`;
+        }
+        return '--';
+      },
+    },
+    {
+      id: 'rebateTraderAmount',
+
+      header: t('financial.tradingAccountDataStats.rebateTraderAmount'),
+
+      accessorFn: row => row.rebateTraderAmount || 0,
+    },
+    {
+      id: 'rebateCommissionAmount',
+
+      header: t('financial.tradingAccountDataStats.rebateCommissionAmount'),
+
+      accessorFn: row => row.rebateCommissionAmount || 0,
+    },
+    {
+      id: 'rebateDepositAmount',
+
+      header: t('financial.tradingAccountDataStats.rebateDepositAmount'),
+
+      accessorFn: row => row.rebateDepositAmount || 0,
+    },
+  ];
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('trading-account-data-stats-table', allColumns);
+
   return (
     <div>
-      <div className="text-xl leading-8 font-semibold text-neutral-950">
-        {t('financial.tradingAccountDataStats.title')}
-      </div>
+      <PageInfo title={t('financial.tradingAccountDataStats.title')} />
       <div className="text-sm leading-6 font-normal text-neutral-900">{t('common.tips')}</div>
       <div className="mt-3.5 mb-3.5 flex justify-between">
         <div className="w-67 max-w-sm">
           <RrhInputWithIcon
-            placeholder="Last Name/First Name/Email"
+            placeholder={t('common.pleaseInput', {
+              field: t('financial.tradingAccountTransactions.name'),
+            })}
+            value={keyword}
+            onChange={e => {
+              setKeyword(e.target.value);
+            }}
             className="h-9"
             rightIcon={<Search className="size-4" />}
-            onLeftIconClick={() => {
+            onRightIconClick={e => {
               // 触发查询逻辑, 这里简单调用一次刷新
               setPageNum(0);
+              setParams(prev => ({
+                ...prev,
+                fuzzyName: e,
+              }));
             }}
           />
         </div>
         <div className="flex items-center gap-2">
           <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
-          </Button>
-          <Button variant="ghost" className="size-8 cursor-pointer">
-            <Ellipsis />
           </Button>
           <RrhDrawer
             asChild
@@ -117,7 +463,9 @@ export function TradingAccountDataStatsPage() {
             footerShow={false}
           >
             <TradingAccountDataStatsForm
-              ref={formRef}
+              reset={reset}
+              params={params}
+              commonParams={commonParams}
               setParams={setParams}
               setCommonParams={setCommonParams}
               setServerId={setServerId}
@@ -125,9 +473,17 @@ export function TradingAccountDataStatsPage() {
               initialServerId={serverId}
             />
           </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
         </div>
       </div>
-      <TradingAccountDataStatsTable
+      <DataTable
+        columns={tableColumns}
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}

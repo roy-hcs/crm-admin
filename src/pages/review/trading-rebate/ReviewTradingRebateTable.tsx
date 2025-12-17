@@ -168,7 +168,9 @@ export const ReviewTradingRebateTable = ({
     },
     {
       id: 'operate',
-      header: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
       cell: ({ row }) => {
         const onClick = (data: RebateCommissionItem) => {
           console.log('Operate on row:', data);

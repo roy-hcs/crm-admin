@@ -21,6 +21,9 @@ import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { serverMap } from '@/lib/constant';
 import { formatDate } from '@/lib/utils';
+import { Dispatch, SetStateAction } from 'react';
+import { BasicParams } from '@/api/types';
+import { TradingHistoryParams } from '@/api/hooks/report';
 
 type FormData = {
   serverId: string;
@@ -44,50 +47,40 @@ export const TradingHistoryForm = ({
   serverList,
   serverListLoading,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   serverList: ServerItem[];
   serverListLoading: boolean;
-  setOtherParams: (params: {
-    serverType: string;
-    serverId: string;
-    serverGroupList: string;
-    serverGroup: string;
-    type: string;
-    symbol: string;
-    ticket: string;
-    login: string;
-    accountGroupList: string;
-    accounts: string;
-    positionID: string;
-    entry: string;
-  }) => void;
-  setParams: (params: {
-    selectOther: string;
-    historyDealBJStartTime: string;
-    historyDealBJEndTime: string;
-    historyCloseStartTime: string;
-    historyCloseEndTime: string;
-    accounts: string;
-    historyFuzzyName: string;
-  }) => void;
+  setOtherParams: Dispatch<
+    SetStateAction<Omit<TradingHistoryParams, 'params' | keyof BasicParams>>
+  >;
+  setParams: Dispatch<SetStateAction<TradingHistoryParams['params']>>;
   loading: boolean;
+  reset: () => void;
+  params: TradingHistoryParams['params'];
+  otherParams: Omit<TradingHistoryParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      serverId: '',
-      serverGroupList: [],
-      type: '',
-      symbol: '',
-      ticket: '',
-      name: '',
-      login: '',
-      accounts: '',
-      positionID: '',
-      entry: '',
-      accountGroupList: [],
-      openTime: { from: '', to: '' },
-      closeTime: { from: '', to: '' },
+      serverId: otherParams.serverId || '',
+      serverGroupList: otherParams.serverGroupList ? otherParams.serverGroupList.split(',') : [],
+      type: otherParams.type ? otherParams.type.toString() : '',
+      symbol: otherParams.symbol || '',
+      ticket: otherParams.ticket || '',
+      name: params.historyFuzzyName || '',
+      login: otherParams.login || '',
+      accounts: otherParams.accounts || '',
+      positionID: otherParams.positionID || '',
+      entry: otherParams.entry || '',
+      accountGroupList: otherParams.accountGroupList ? otherParams.accountGroupList.split(',') : [],
+      openTime: {
+        from: params.historyDealBJStartTime || '',
+        to: params.historyDealBJEndTime || '',
+      },
+      closeTime: { from: params.historyCloseStartTime || '', to: params.historyCloseEndTime || '' },
     },
   });
 
@@ -152,29 +145,21 @@ export const TradingHistoryForm = ({
     });
   };
   const onReset = () => {
-    form.reset();
-    setParams({
-      selectOther: '',
-      historyDealBJStartTime: '',
-      historyDealBJEndTime: '',
-      historyCloseStartTime: '',
-      historyCloseEndTime: '',
-      historyFuzzyName: '',
-      accounts: '',
-    });
-    setOtherParams({
-      serverType: '',
+    reset();
+    form.reset({
       serverId: '',
-      serverGroupList: '',
-      serverGroup: '',
+      serverGroupList: [],
       type: '',
       symbol: '',
       ticket: '',
+      name: '',
       login: '',
-      accountGroupList: '',
       accounts: '',
       positionID: '',
       entry: '',
+      accountGroupList: [],
+      openTime: { from: '', to: '' },
+      closeTime: { from: '', to: '' },
     });
   };
 

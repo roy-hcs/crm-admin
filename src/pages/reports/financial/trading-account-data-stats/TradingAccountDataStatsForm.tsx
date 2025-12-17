@@ -1,4 +1,3 @@
-import { forwardRef, useImperativeHandle } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
@@ -21,9 +20,9 @@ import { useTranslation } from 'react-i18next';
 import { ServerItem } from '@/api/hooks/system/types';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 import { formatDate } from '@/lib/utils';
-export interface TradingAccountDataStatsFormRef {
-  onReset: () => void;
-}
+import { Dispatch, SetStateAction } from 'react';
+import { DataStatisticsParams } from '@/api/hooks/report';
+import { BasicParams } from '@/api/types';
 type FormData = {
   serverId: string;
   onlyViewRebateAccount: string;
@@ -36,43 +35,41 @@ type FormData = {
   username: string;
   directBroker: string;
 };
-export const TradingAccountDataStatsForm = forwardRef<
-  TradingAccountDataStatsFormRef,
-  {
-    setParams: (params: {
-      onlyViewRebateAccount: string;
-      serverGroupList: string;
-      fuzzyAccount: string;
-      fuzzyName: string;
-      statisticStartTime: string;
-      statisticEndTime: string;
-      accounts: string;
-    }) => void;
-    setCommonParams: (params: {
-      accounts: string;
-      accountGroupList: string;
-      username: string;
-      directBroker: string;
-    }) => void;
-    setServerId: (id: string) => void;
-    serverOptions: ServerItem[];
-    initialServerId?: string;
-  }
->(({ setParams, setCommonParams, setServerId, serverOptions, initialServerId }, ref) => {
+export const TradingAccountDataStatsForm = ({
+  setParams,
+  setCommonParams,
+  setServerId,
+  serverOptions,
+  initialServerId,
+  reset,
+  params,
+  commonParams,
+}: {
+  setParams: Dispatch<SetStateAction<DataStatisticsParams['params']>>;
+  setCommonParams: Dispatch<
+    SetStateAction<Omit<DataStatisticsParams, 'params' | keyof BasicParams>>
+  >;
+  setServerId: (id: string) => void;
+  reset: () => void;
+  params: DataStatisticsParams['params'];
+  commonParams: Omit<DataStatisticsParams, 'params' | keyof BasicParams>;
+  serverOptions: ServerItem[];
+  initialServerId?: string;
+}) => {
   const { data: dealAccountGroupListData } = useGetDealAccountGroupList();
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
       serverId: initialServerId || '',
-      onlyViewRebateAccount: '',
-      serverGroupList: '',
-      fuzzyAccount: '',
-      fuzzyName: '',
-      statisticTime: { from: '', to: '' },
-      accounts: '',
-      accountGroupList: '',
-      username: '',
-      directBroker: '',
+      onlyViewRebateAccount: params.onlyViewRebateAccount || '',
+      serverGroupList: params.serverGroupList || '',
+      fuzzyAccount: params.fuzzyAccount || '',
+      fuzzyName: params.fuzzyName || '',
+      statisticTime: { from: params.statisticStartTime || '', to: params.statisticEndTime || '' },
+      accounts: commonParams.accounts || '',
+      accountGroupList: commonParams.accountGroupList || '',
+      username: commonParams.username || '',
+      directBroker: commonParams.directBroker || '',
     },
   });
 
@@ -84,11 +81,6 @@ export const TradingAccountDataStatsForm = forwardRef<
   const { data: groupData } = useGetGroupByServer({
     serverId: form.watch('serverId'),
   });
-  useImperativeHandle(ref, () => ({
-    onReset: () => {
-      form.reset();
-    },
-  }));
 
   const onSubmit = (data: FormData) => {
     setParams({
@@ -109,23 +101,20 @@ export const TradingAccountDataStatsForm = forwardRef<
     setServerId(data.serverId);
   };
   const onReset = () => {
-    setParams({
+    reset();
+    setServerId(initialServerId || '');
+    form.reset({
+      serverId: initialServerId || '',
       onlyViewRebateAccount: '',
       serverGroupList: '',
       fuzzyAccount: '',
       fuzzyName: '',
-      statisticStartTime: '',
-      statisticEndTime: '',
-      accounts: '',
-    });
-    setCommonParams({
+      statisticTime: { from: '', to: '' },
       accounts: '',
       accountGroupList: '',
       username: '',
       directBroker: '',
     });
-    setServerId(initialServerId || '');
-    form.reset();
   };
 
   return (
@@ -227,4 +216,4 @@ export const TradingAccountDataStatsForm = forwardRef<
       </Form>
     </FormProvider>
   );
-});
+};

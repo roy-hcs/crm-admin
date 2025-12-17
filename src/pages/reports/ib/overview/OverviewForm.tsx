@@ -1,5 +1,5 @@
-import { forwardRef, useImperativeHandle } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { Dispatch, SetStateAction } from 'react';
+import { useForm } from 'react-hook-form';
 import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
@@ -18,44 +18,57 @@ import { useTranslation } from 'react-i18next';
 import { RebateLevelItem, ServerItem } from '@/api/hooks/system/types';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 import { formatDate } from '@/lib/utils';
-export interface OverviewFormRef {
-  onReset: () => void;
-}
-type ClientTrackingFormValues = {
+
+type FormData = {
   serverId: string;
   userName: string;
   email: string;
   beginTime: { from: string; to: string };
   level: string;
 };
-export const OverviewForm = forwardRef<
-  OverviewFormRef,
-  {
-    setParams: (params: {
-      serverId: string;
+
+export const OverviewForm = ({
+  setParams,
+  reset,
+  params,
+  setServerId,
+  serverOptions,
+  rebateLevelOptions,
+  initialServerId,
+}: {
+  setParams: Dispatch<
+    SetStateAction<{
       userName: string;
       email: string;
       beginTime: string;
       endTime: string;
       level: string;
-    }) => void;
-    setServerId: (id: string) => void;
-    serverOptions: ServerItem[];
-    rebateLevelOptions: RebateLevelItem[];
-    initialServerId?: string;
-  }
->(({ setParams, serverOptions, initialServerId, rebateLevelOptions }, ref) => {
+    }>
+  >;
+  reset: () => void;
+  params: {
+    userName: string;
+    email: string;
+    beginTime: string;
+    endTime: string;
+    level: string;
+  };
+  setServerId: (id: string) => void;
+  serverOptions: ServerItem[];
+  rebateLevelOptions: RebateLevelItem[];
+  initialServerId?: string;
+}) => {
   const { t } = useTranslation();
-  const form = useForm<ClientTrackingFormValues>({
+  const form = useForm<FormData>({
     defaultValues: {
       serverId: initialServerId || '',
-      userName: '',
-      email: '',
+      userName: params.userName || '',
+      email: params.email || '',
       beginTime: {
-        from: '',
-        to: '',
+        from: params.beginTime || '',
+        to: params.endTime || '',
       },
-      level: '',
+      level: params.level || '',
     },
   });
 
@@ -64,33 +77,28 @@ export const OverviewForm = forwardRef<
     const auto = initialServerId || serverOptions[0]?.id || '';
     if (auto) form.setValue('serverId', auto, { shouldDirty: false, shouldTouch: false });
   }
-  useImperativeHandle(ref, () => ({
-    onReset: () => {
-      form.reset();
-    },
-  }));
 
-  const onSubmit: SubmitHandler<ClientTrackingFormValues> = data => {
+  const onSubmit = (data: FormData) => {
     setParams({
-      serverId: data.serverId,
       userName: data.userName,
       email: data.email,
       beginTime: formatDate(data.beginTime.from),
       endTime: formatDate(data.beginTime.to),
       level: data.level,
     });
+    setServerId(data.serverId);
   };
+
   const onReset = () => {
-    const first = serverOptions[0]?.id || '';
-    setParams({
-      serverId: first,
+    setServerId(initialServerId || '');
+    reset();
+    form.reset({
+      serverId: initialServerId || '',
       userName: '',
       email: '',
-      beginTime: '',
-      endTime: '',
+      beginTime: { from: '', to: '' },
       level: '',
     });
-    form.reset();
   };
 
   return (
@@ -148,4 +156,4 @@ export const OverviewForm = forwardRef<
       </Form>
     </FormProvider>
   );
-});
+};

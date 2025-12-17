@@ -1,26 +1,34 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { useRefundFailLogList } from '@/api/hooks/report';
-import { RefundFailureLogsForm, RefundFailureLogsFormRef } from './components/PaymentOrdersForm';
+import {
+  RefundFailLogItem,
+  RefundFailLogListParams,
+  useRefundFailLogList,
+} from '@/api/hooks/report';
+import { RefundFailureLogsForm } from './PaymentOrdersForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
-import { RefundFailureLogsTable } from './components/RefundFailureLogsTable';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
+import { BasicParams } from '@/api/types';
+import { PageInfo } from '@/components/common/PageInfo';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { RrhOrderStatusTag } from '@/components/common/RrhOrderStatusTag';
+import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 export function RefundFailureLogsPage() {
   const { t } = useTranslation();
-  const formRef = useRef<RefundFailureLogsFormRef>(null);
-  // 分页
   const [pageNum, setPageNum] = useState(0);
-  // 每页条数
   const [pageSize, setPageSize] = useState(10);
-  // 特殊参数
-  const [params, setParams] = useState({
+  const [keyword, setKeyword] = useState('');
+  const [params, setParams] = useState<RefundFailLogListParams['params']>({
     beginTime: '',
     endTime: '',
   });
-  // 普通参数
-  const [commonParams, setCommonParams] = useState({
+  const [commonParams, setCommonParams] = useState<
+    Omit<RefundFailLogListParams, 'params' | keyof BasicParams>
+  >({
     userId: '',
     status: '',
     refundAccount: '',
@@ -30,7 +38,6 @@ export function RefundFailureLogsPage() {
     pageSize,
     ...commonParams,
     pageNum: pageNum + 1,
-    // 下面是固定参数
     isAsc: 'asc',
     orderByColumn: '',
   });
@@ -44,32 +51,125 @@ export function RefundFailureLogsPage() {
       status: '',
       refundAccount: '',
     });
+    setKeyword('');
     setPageNum(0);
     setPageSize(10);
   };
+  const allColumns: CRMColumnDef<RefundFailLogItem, unknown>[] = [
+    {
+      id: 'No.',
+      header: t('ib.overview.Index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
+      id: 'userName',
+      header: t('financial.paymentOrders.userName'),
+      cell: ({ row }) => {
+        if (row.original.lastName || row.original.name || row.original.showId) {
+          return (
+            <div>
+              <div>{(row.original.lastName ?? '') + (row.original.name ?? '')}</div>
+              <div>{row.original.showId ?? ''}</div>
+            </div>
+          );
+        }
+        return '--';
+      },
+    },
+    {
+      id: 'operType',
+      header: t('common.operType'),
+      accessorFn: row => row.operType,
+    },
+    {
+      id: 'operTime',
+      header: t('common.operationTime'),
+      accessorFn: row => row.operTime,
+    },
+    {
+      id: 'refundAmount',
+      header: t('financial.refundFailLog.refundAmount'),
+      accessorFn: row => row.refundAmount,
+    },
+    {
+      id: 'refundAccount',
+      header: t('financial.refundFailLog.refundAccount'),
+      cell: ({ row }) => {
+        const name = row?.original?.refundAccount?.split('</br>') ?? [];
+        if (name.length === 0) {
+          return '--';
+        }
+        return (
+          <div>
+            <div>{name[0]}</div>
+            <div>{name[1]}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'status',
+      header: t('common.status'),
+      cell: ({ row }) => <RrhOrderStatusTag status={String(row.original.status)} />,
+    },
+    {
+      id: 'operation',
+      label: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
+      cell: () => (
+        <div>
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.View'), value: 'view' },
+              { label: t('common.Edit'), value: 'edit' },
+            ]}
+            callToAction={action => {
+              if (action === 'edit') {
+                // Handle edit action
+              } else if (action === 'view') {
+                // Handle view action
+              }
+            }}
+          />
+        </div>
+      ),
+      fixed: 'right',
+      size: 50,
+    },
+  ];
+
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('refund-failure-logs-table', allColumns);
+
   return (
     <div>
-      <div className="text-xl leading-8 font-semibold text-neutral-950">
-        {t('financial.refundFailLog.title')}
-      </div>
+      <PageInfo title={t('financial.refundFailLog.title')} />
       <div className="mt-3.5 mb-3.5 flex justify-between">
         <div className="w-67 max-w-sm">
           <RrhInputWithIcon
-            placeholder="Last Name/First Name/Email"
+            placeholder={t('common.pleaseInput', {
+              field: t('financial.paymentOrders.userName'),
+            })}
             className="h-9"
             rightIcon={<Search className="size-4" />}
-            onRightIconClick={() => {
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            onRightIconClick={e => {
               // 触发查询逻辑, 这里简单调用一次刷新
               setPageNum(0);
+              setCommonParams(prev => ({
+                ...prev,
+                userId: e,
+              }));
             }}
           />
         </div>
         <div className="flex items-center gap-2">
           <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
-          </Button>
-          <Button variant="ghost" className="size-8 cursor-pointer">
-            <Ellipsis />
           </Button>
           <RrhDrawer
             asChild
@@ -86,14 +186,24 @@ export function RefundFailureLogsPage() {
             footerShow={false}
           >
             <RefundFailureLogsForm
-              ref={formRef}
+              reset={reset}
+              params={params}
+              commonParams={commonParams}
               setParams={setParams}
               setCommonParams={setCommonParams}
             />
           </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
         </div>
       </div>
-      <RefundFailureLogsTable
+      <DataTable
+        columns={tableColumns}
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}

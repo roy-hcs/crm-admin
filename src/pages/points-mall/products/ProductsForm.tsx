@@ -1,58 +1,52 @@
-import { RrhButton } from '@/components/common/RrhButton';
-import { FormInput } from '@/components/form/FormInput';
+import { Dispatch, SetStateAction } from 'react';
 import { Form } from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { FormProvider } from '@/contexts/form';
+import { FormInput } from '@/components/form/FormInput';
+import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
-import { useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction } from 'react';
 import { CrmDealGoodsListParams } from '@/api/hooks/pointsMall';
 
 type FormData = {
   goodsName: string;
 };
 
-export const AdminOperationsForm = ({
+export const ProductsForm = ({
   setParams,
-  loading,
+  params,
+  reset,
 }: {
   setParams: Dispatch<SetStateAction<CrmDealGoodsListParams['params']>>;
-  loading: boolean;
+  params: CrmDealGoodsListParams['params'];
+  reset: () => void;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      goodsName: '',
+      goodsName: params.goodsName || '',
     },
   });
 
   const onSubmit = (data: FormData) => {
-    setParams(pre => ({
-      ...pre,
+    setParams({
       goodsName: data.goodsName,
-    }));
+    });
   };
+
   const onReset = () => {
-    setParams(pre => ({
-      ...pre,
+    reset();
+    form.reset({
       goodsName: '',
-    }));
-    form.reset();
+    });
   };
+
   return (
     <FormProvider form={form}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
-
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
@@ -64,11 +58,11 @@ export const AdminOperationsForm = ({
             })}
           />
           <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
+            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
             </RrhButton>
-            <RrhButton type="submit" loading={loading}>
+            <RrhButton type="submit">
               <Search className="size-3.5" />
               <span>{t('common.Search')}</span>
             </RrhButton>

@@ -3,17 +3,32 @@ import {
   useAccountStatisticList,
   useExportAccountStatisticList,
   AccountStatisticListParams,
+  AccountStatisticListItem,
 } from '@/api/hooks/report';
 import { useServerList } from '@/api/hooks/system/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { Funnel, RefreshCcw } from 'lucide-react';
+import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StatisticForm } from './StatisticForm';
-import { StatisticTable } from './StatisticTable';
 import { TableCell } from '@/components/ui/table';
 import { RrhDialog } from '@/components/common/RrhDialog';
+import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+
+const formatVolume = (serverType: number | undefined, volume: number) => {
+  if (serverType == 1) {
+    //MT5
+    return (volume / 10000).toFixed(2);
+  } else if (serverType == 2) {
+    return (volume / 100).toFixed(2);
+  } else {
+    return volume.toFixed(2);
+  }
+};
 
 export const StatisticPage = () => {
   const [params, setParams] = useState<AccountStatisticListParams['params']>({
@@ -29,6 +44,7 @@ export const StatisticPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [keyword, setKeyword] = useState('');
   const { t } = useTranslation();
   const { data: serverList, isLoading: serverListLoading } = useServerList();
   useEffect(() => {
@@ -84,15 +100,108 @@ export const StatisticPage = () => {
       statisticStartTime: '',
       statisticEndTime: '',
     });
+    setKeyword('');
     setPageNum(0);
     setSumShow(false);
   };
+  const serviceType = selectedServer?.serviceType;
+
+  const allColumns: CRMColumnDef<AccountStatisticListItem, unknown>[] = [
+    {
+      id: 'No.',
+      header: t('CRMAccountPage.Index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
+      id: 'userName',
+      header: t('CRMAccountPage.UserName'),
+      accessorFn: row => row.name,
+    },
+    {
+      id: 'login',
+      header: t('table.tradingAccount'),
+      accessorFn: row => row.login,
+    },
+    {
+      id: 'totalOrders',
+      header: t('table.tradingOrdersTotal'),
+      accessorFn: row => row.countOrder,
+    },
+    {
+      id: 'closeLots',
+      header: t('table.closeLots'),
+      cell: ({ row }) => {
+        const rowData = row.original;
+        return rowData.historyVolume ? (
+          <div>{formatVolume(serviceType, rowData.historyVolume)} </div>
+        ) : (
+          <div>-</div>
+        );
+      },
+    },
+    {
+      id: 'openLots',
+      header: t('table.openLots'),
+      cell: ({ row }) => {
+        const rowData = row.original;
+        return rowData.positionVolume ? (
+          <div>{formatVolume(serviceType, rowData.positionVolume)} </div>
+        ) : (
+          <div>-</div>
+        );
+      },
+    },
+    {
+      id: 'commission',
+      header: t('table.commission'),
+      cell: ({ row }) => {
+        return <div>{(row.original.countCommission || 0).toFixed(2)}</div>;
+      },
+    },
+    {
+      id: 'swap',
+      header: t('table.swap'),
+      cell: ({ row }) => {
+        return <div>{(row.original.countSwaps || 0).toFixed(2)}</div>;
+      },
+    },
+    {
+      id: 'closedPosition',
+      header: t('table.closedPosition'),
+      cell: ({ row }) => {
+        return <div>{(row.original.countProfit || 0).toFixed(2)}</div>;
+      },
+    },
+    {
+      id: 'currentBalance',
+      header: t('table.currentBalance'),
+      cell: ({ row }) => {
+        return (
+          <div>
+            {(row.original.balance || 0).toFixed(2)} {row.original.currency}
+          </div>
+        );
+      },
+    },
+  ];
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('trading-account-statistic-history-table', allColumns);
 
   return (
     <div>
       <h1 className="text-title">{t('accountStatisticPage.accountStatistic')}</h1>
       <div className="my-3.5 flex items-center justify-between">
-        <div></div>
+        <RrhInputWithIcon
+          placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
+          className="h-9"
+          value={keyword}
+          onChange={e => setKeyword(e.target.value)}
+          rightIcon={<Search className="size-4 cursor-pointer" />}
+          onRightIconClick={e => {
+            setParams(prev => ({ ...prev, fuzzyName: e }));
+            setPageNum(0);
+          }}
+        />
         <div className="flex justify-end gap-2">
           <RrhDialog
             title={t('common.systemTip')}
@@ -127,6 +236,9 @@ export const StatisticPage = () => {
             }
           >
             <StatisticForm
+              params={params}
+              otherParams={otherParams}
+              reset={reset}
               serverListLoading={serverListLoading}
               serverList={serverList?.rows || []}
               setParams={setParams}
@@ -134,9 +246,17 @@ export const StatisticPage = () => {
               loading={accountStatisticDataLoading}
             />
           </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
         </div>
       </div>
-      <StatisticTable
+      <DataTable
+        columns={tableColumns}
         data={accountStatisticData?.rows || []}
         pageCount={Math.ceil(+(accountStatisticData?.total || 0) / pageSize)}
         pageIndex={pageNum}
@@ -144,7 +264,6 @@ export const StatisticPage = () => {
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
         loading={accountStatisticDataLoading}
-        selectedServer={selectedServer}
         CustomRow={
           <>
             <TableCell colSpan={3}>{t('table.total')}</TableCell>

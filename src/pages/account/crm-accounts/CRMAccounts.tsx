@@ -1,7 +1,7 @@
 import { CrmUserItem, CrmUserParams, useCrmUser, useTagUserCountList } from '@/api/hooks/account';
 import { TagUserItem } from '@/api/hooks/account';
 import { EmblaCarousel } from '@/components/common/EmblaCarousel';
-import { cn, getColumnMeta } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import {
   ChevronDown,
   ChevronUp,
@@ -298,7 +298,9 @@ export const CRMAccounts = () => {
     },
     {
       id: 'operation',
-      header: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
       cell: () => (
         <div>
           <RrhDropdown
@@ -321,9 +323,8 @@ export const CRMAccounts = () => {
       size: 50,
     },
   ];
-  const columnMeta = getColumnMeta(allColumns);
-  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns } =
-    useColumnVisibility('crm-accounts-table', columnMeta, allColumns);
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, columnMeta, tableColumns } =
+    useColumnVisibility('crm-accounts-table', allColumns);
   return (
     <div>
       <PageInfo

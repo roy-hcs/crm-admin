@@ -35,7 +35,7 @@ export const UserTab = () => {
           rightIcon={<Search className="size-4 cursor-pointer" />}
           onRightIconClick={e => {
             setRoleName(e);
-            setPageNum(1);
+            setPageNum(0);
           }}
         />
         <div className="flex gap-2">

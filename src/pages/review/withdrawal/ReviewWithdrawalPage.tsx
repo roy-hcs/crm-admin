@@ -20,7 +20,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { RrhTag } from '@/components/common/RrhTag';
 import { withdrawalReviewStatusMap } from '@/lib/constant';
 import { useTabActions } from '@/hooks/useTabActions';
-import { getColumnMeta } from '@/lib/utils';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 
 export const ReviewWithdrawalPage = () => {
@@ -314,7 +313,9 @@ export const ReviewWithdrawalPage = () => {
         fixed: 'right',
         id: 'operate',
         size: 50,
-        header: t('common.Operation'),
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
         cell: ({ row }) => (
           <>
             <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
@@ -330,10 +331,8 @@ export const ReviewWithdrawalPage = () => {
   }, [goToDetail, outMoneyMethodList?.data, t]);
 
   // 列可见性管理
-  const columnMeta = getColumnMeta(allColumns, ['select']);
-
-  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns } =
-    useColumnVisibility('withdrawal-review-table', columnMeta, allColumns);
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('withdrawal-review-table', allColumns, ['select']);
 
   return (
     <div>
@@ -347,7 +346,7 @@ export const ReviewWithdrawalPage = () => {
           rightIcon={<Search className="size-4 cursor-pointer" />}
           onRightIconClick={e => {
             setOtherParams(prev => ({ ...prev, userId: e }));
-            setPageNum(1);
+            setPageNum(0);
           }}
         />
         <div className="flex justify-end gap-2">

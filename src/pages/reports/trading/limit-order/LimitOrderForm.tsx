@@ -1,5 +1,5 @@
 import { LimitOrderListParams } from '@/api/hooks/report';
-import { useGetDealAccountGroupList, useGetGroupByServer } from '@/api/hooks/account';
+import { useGetGroupByServer } from '@/api/hooks/account';
 import { ServerItem } from '@/api/hooks/system/types';
 import { RrhButton } from '@/components/common/RrhButton';
 import { BaseOption } from '@/components/common/RrhMultiSelect';
@@ -22,6 +22,8 @@ import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { formatDate } from '@/lib/utils';
+import { Dispatch, SetStateAction } from 'react';
+import { BasicParams } from '@/api/types';
 
 type FormData = {
   serverId: string;
@@ -32,7 +34,6 @@ type FormData = {
   symbol: string;
   ticket: string;
   accounts: string;
-  accountGroupList: string[];
   openTime: { from: string; to: string };
 };
 
@@ -42,32 +43,36 @@ export const LimitOrderForm = ({
   setOtherParams,
   setParams,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   serverList: ServerItem[];
   serverListLoading: boolean;
-  setParams: (params: LimitOrderListParams['params']) => void;
-  setOtherParams: (params: {
-    server?: string;
-    type?: number | string;
-    accountGroupList?: string;
-    accounts?: string;
-    serverGroupList?: string;
-  }) => void;
+  setParams: Dispatch<SetStateAction<LimitOrderListParams['params']>>;
+  setOtherParams: Dispatch<
+    SetStateAction<Omit<LimitOrderListParams, 'params' | keyof BasicParams>>
+  >;
   loading: boolean;
+  reset: () => void;
+  params: LimitOrderListParams['params'];
+  otherParams: Omit<LimitOrderListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      serverId: '',
-      serverGroupList: [],
-      type: '',
-      name: '',
-      login: '',
-      symbol: '',
-      ticket: '',
-      accounts: '',
-      accountGroupList: [],
-      openTime: { from: '', to: '' },
+      serverId: otherParams.server || '',
+      serverGroupList: otherParams.serverGroupList ? otherParams.serverGroupList.split(',') : [],
+      type: params.positionFuzzyType || '',
+      name: params.positionFuzzyName || '',
+      login: params.positionFuzzyLogin || '',
+      symbol: params.positionFuzzySymbol || '',
+      ticket: params.positionFuzzyTicket || '',
+      accounts: otherParams.accounts || '',
+      openTime: {
+        from: params.positionDealBJStartTime || '',
+        to: params.positionDealBJEndTime || '',
+      },
     },
   });
   if (!form.getValues('serverId') && serverList.length && !serverListLoading) {
@@ -77,8 +82,6 @@ export const LimitOrderForm = ({
   const { data: groupData } = useGetGroupByServer({
     serverId: form.watch('serverId'),
   });
-
-  const { data: dealAccountGroupListData } = useGetDealAccountGroupList();
 
   const onSubmit = (data: FormData) => {
     const selectedAccounts = JSON.parse(data.accounts || '{"id": "", "label": ""}') as {
@@ -102,24 +105,18 @@ export const LimitOrderForm = ({
     });
   };
   const onReset = () => {
-    setOtherParams({
-      server: form.watch('serverId') || '',
-      serverGroupList: '',
+    reset();
+    form.reset({
+      serverId: '',
+      serverGroupList: [],
       type: '',
-      accountGroupList: '',
+      name: '',
+      login: '',
+      symbol: '',
+      ticket: '',
       accounts: '',
+      openTime: { from: '', to: '' },
     });
-    setParams({
-      positionFuzzyType: '',
-      positionFuzzyName: '',
-      positionFuzzyLogin: '',
-      positionFuzzySymbol: '',
-      positionFuzzyTicket: '',
-      accounts: '',
-      positionDealBJStartTime: '',
-      positionDealBJEndTime: '',
-    });
-    form.reset();
   };
   return (
     <FormProvider form={form}>
@@ -216,18 +213,6 @@ export const LimitOrderForm = ({
             name="login"
             label={t('table.tradingAccount')}
             placeholder={t('common.pleaseInput', { field: t('table.tradingAccount') })}
-          />
-          <FormMultiSelect
-            verticalLabel
-            name="accountGroupList"
-            label={t('table.accountGroup')}
-            placeholder={t('common.pleaseSelect')}
-            options={
-              dealAccountGroupListData?.map(item => ({
-                label: item.name,
-                value: item.id,
-              })) || []
-            }
           />
           <FormField
             name="accounts"
