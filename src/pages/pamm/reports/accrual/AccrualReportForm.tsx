@@ -33,26 +33,29 @@ type FormData = {
 
 export const AccrualReportForm = ({
   setOtherParams,
+  reset,
   loading,
   serverOptions,
+  otherParams,
 }: {
   setOtherParams: Dispatch<
     SetStateAction<Omit<PammReportSettlementListParams, 'params' | keyof BasicParams>>
   >;
+  reset: () => void;
   loading: boolean;
-
   serverOptions: ServerItem[];
+  otherParams: Omit<PammReportSettlementListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
-      serverId: '',
-      projectName: '',
-      userName: '',
-      managerName: '',
-      orderNo: '',
-      settlementType: '',
-      settlementTime: { from: '', to: '' },
+      serverId: otherParams.serverId || '',
+      projectName: otherParams.projectName || '',
+      userName: otherParams.userName || '',
+      managerName: otherParams.managerName || '',
+      orderNo: otherParams.orderNo || '',
+      settlementType: otherParams.settlementType || '',
+      settlementTime: { from: otherParams.startTime || '', to: otherParams.endTime || '' },
     },
   });
   const onSubmit = (data: FormData) => {
@@ -68,17 +71,16 @@ export const AccrualReportForm = ({
     });
   };
   const onReset = () => {
-    setOtherParams({
+    reset();
+    form.reset({
       serverId: '',
       projectName: '',
       userName: '',
-      orderNo: '',
       managerName: '',
+      orderNo: '',
       settlementType: '',
-      startTime: '',
-      endTime: '',
+      settlementTime: { from: '', to: '' },
     });
-    form.reset();
   };
   return (
     <FormProvider form={form}>

@@ -22,18 +22,22 @@ export const PammProductsForm = ({
   setOtherParams,
   loading,
   serverTypes,
+  reset,
+  otherParams,
 }: {
   setOtherParams: Dispatch<SetStateAction<Omit<PammProductListParams, keyof BasicParams>>>;
   loading: boolean;
   serverTypes: DictTypeItem[];
+  reset?: () => void;
+  otherParams?: Omit<PammProductListParams, keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
-      projectName: '',
-      model: '',
-      serverType: '',
-      status: '',
+      projectName: otherParams?.projectName || '',
+      model: otherParams?.model || '',
+      serverType: otherParams?.serverType || '',
+      status: otherParams?.status || 'all',
     },
   });
   const onSubmit = (data: FormData) => {
@@ -46,14 +50,15 @@ export const PammProductsForm = ({
     });
   };
   const onReset = () => {
-    setOtherParams({
-      profitType: '',
-      model: '',
+    if (reset) {
+      reset();
+    }
+    form.reset({
       projectName: '',
+      model: '',
       serverType: '',
-      status: '',
+      status: 'all',
     });
-    form.reset();
   };
   return (
     <FormProvider form={form}>

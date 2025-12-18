@@ -36,26 +36,32 @@ type FormData = {
 
 export const InvestmentReportForm = ({
   setOtherParams,
+  reset,
   loading,
   serverOptions,
+  otherParams,
 }: {
   setOtherParams: Dispatch<SetStateAction<Omit<PammReportInvestListParams, keyof BasicParams>>>;
+  reset: () => void;
   loading: boolean;
-
   serverOptions: ServerItem[];
+  otherParams: Omit<PammReportInvestListParams, keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
-      serverId: '',
-      projectName: '',
-      profitType: '',
-      userName: '',
-      type: '',
-      orderNo: '',
-      status: '',
-      investTime: { from: '', to: '' },
-      confirmTime: { from: '', to: '' },
+      serverId: otherParams.serverId || '',
+      projectName: otherParams.projectName || '',
+      profitType: otherParams.profitType || '',
+      userName: otherParams.userName || '',
+      type: otherParams.type || '',
+      orderNo: otherParams.orderNo || '',
+      status: otherParams.status || '',
+      investTime: { from: otherParams.startTime || '', to: otherParams.endTime || '' },
+      confirmTime: {
+        from: otherParams.confirmStartTime || '',
+        to: otherParams.confirmEndTime || '',
+      },
     },
   });
   const onSubmit = (data: FormData) => {
@@ -74,7 +80,8 @@ export const InvestmentReportForm = ({
     });
   };
   const onReset = () => {
-    setOtherParams({
+    reset();
+    form.reset({
       serverId: '',
       projectName: '',
       profitType: '',
@@ -82,12 +89,9 @@ export const InvestmentReportForm = ({
       type: '',
       orderNo: '',
       status: '',
-      startTime: '',
-      endTime: '',
-      confirmEndTime: '',
-      confirmStartTime: '',
+      investTime: { from: '', to: '' },
+      confirmTime: { from: '', to: '' },
     });
-    form.reset();
   };
   return (
     <FormProvider form={form}>
