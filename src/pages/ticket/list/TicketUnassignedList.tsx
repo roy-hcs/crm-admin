@@ -1,22 +1,22 @@
-import React, { useState, useCallback, useMemo, Dispatch, SetStateAction } from 'react';
-import { useMyTicketAllList } from '@/api/hooks/ticket/ticket';
-import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
-import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
+import { Button } from '@/components/ui/button';
+import { useTicketList } from '@/api/hooks/ticket/ticket';
+import { TicketUnassignedListForm } from './TicketUnassignedListForm';
+import { Funnel, Search, RefreshCcw, Ellipsis, Star } from 'lucide-react';
+import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-import { CrmTicketParams, TicketTabsParams, CrmTicketItem } from '@/api/hooks/ticket/types';
-import { BasicParams } from '@/api/types';
-import { Funnel, RefreshCcw, Search, Ellipsis } from 'lucide-react';
-import { MyTicketsForm } from '../MyTicketsForm';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { BasicParams } from '@/api/types';
+import { CrmTicketParams, CrmTicketItem } from '@/api/hooks/ticket/types';
 import { ToolTip } from '@/components/common/ToolTip';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { useTicketFollow } from '@/api/hooks/ticket/ticket';
 import { useQueryClient } from '@tanstack/react-query';
 import { cn } from '@/lib/utils';
-import { useState as useHookState } from 'react';
+import { useCallback, useState as useHookState } from 'react';
 import { Alert } from '@/components/common/Alert';
 
 const FollowCell = ({ row }: { row: { original: CrmTicketItem } }) => {
@@ -31,7 +31,7 @@ const FollowCell = ({ row }: { row: { original: CrmTicketItem } }) => {
       follow: row.original.isFollow === 1 ? 0 : 1,
     });
     if (res.code === 0) {
-      queryClient.invalidateQueries({ queryKey: ['MyTicketAllList'] });
+      queryClient.invalidateQueries({ queryKey: ['TicketList'] });
     }
   }, [changeStatusMutation, queryClient, row.original.id, row.original.isFollow]);
 
@@ -49,7 +49,7 @@ const FollowCell = ({ row }: { row: { original: CrmTicketItem } }) => {
 
   return (
     <>
-      <Ellipsis
+      <Star
         onClick={handleClick}
         className={cn(row.original.isFollow === 1 ? 'text-yellow-400' : '')}
       />
@@ -67,60 +67,43 @@ const FollowCell = ({ row }: { row: { original: CrmTicketItem } }) => {
   );
 };
 
-type Props = {
-  mode: TicketTabsParams;
-  setOtherParams: Dispatch<SetStateAction<Omit<CrmTicketParams, keyof BasicParams>>>;
-  otherParams: Omit<CrmTicketParams, keyof BasicParams>;
-  onReset: () => void;
-};
-
-export const GenericTicketList: React.FC<Props> = ({
-  mode,
-  otherParams,
-  setOtherParams,
-  onReset,
-}) => {
+export const TicketUnassignedList = () => {
   const { t } = useTranslation();
   const [keyword, setKeyword] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [otherParams, setOtherParams] = useState<Omit<CrmTicketParams, keyof BasicParams>>({
+    isAll: '0',
+    orderId: '',
+    content: '',
+    priority: '-1',
+    startDate: '',
+    endDate: '',
+    belongUser: '',
+  });
 
-  const params = useMemo(
-    () => ({
-      pageSize,
-      pageNum: pageNum + 1,
-      orderByColumn: '',
-      isAsc: 'asc',
-      ...otherParams,
-    }),
-    [pageNum, pageSize, otherParams],
-  );
+  const { data: ticketData, isLoading: ticketLoading } = useTicketList({
+    pageSize,
+    pageNum: pageNum + 1,
+    orderByColumn: '',
+    isAsc: 'asc',
+    ...otherParams,
+  });
 
-  const { data, isLoading: loading } = useMyTicketAllList(params, mode);
-
-  const reset = useCallback(() => {
-    onReset();
+  const reset = () => {
+    setOtherParams({
+      isAll: '0',
+      orderId: '',
+      content: '',
+      priority: '-1',
+      startDate: '',
+      endDate: '',
+      belongUser: '',
+    });
     setKeyword('');
     setPageNum(0);
     setPageSize(10);
-  }, [onReset]);
-
-  const showStatus = useMemo(() => {
-    switch (mode) {
-      case 'all':
-        return true;
-      case 'unprocessed':
-        return false;
-      case 'processing':
-        return false;
-      case 'concerned':
-        return true;
-      case 'ccme':
-        return true;
-      case 'created':
-        return true;
-    }
-  }, [mode]);
+  };
 
   const allColumns: CRMColumnDef<CrmTicketItem, unknown>[] = [
     {
@@ -187,28 +170,14 @@ export const GenericTicketList: React.FC<Props> = ({
       },
     },
     {
-      id: 'receiver',
-      header: t('ticketList.receiverId'),
-      accessorFn: row => row.receiver || '-',
-    },
-    ...(showStatus
-      ? [
-          {
-            id: 'status',
-            header: t('common.status'),
-            cell: ({ row }: { row: { original: CrmTicketItem } }) => {
-              if ([0, 1, 2].includes(row.original.status)) {
-                return <div>{t(`ticketList.statusOptions.${row.original.status}`)}</div>;
-              }
-              return '-';
-            },
-          },
-        ]
-      : []),
-    {
-      id: 'recentReplyTime',
-      header: t('ticketList.recentReplyTime'),
-      accessorFn: row => row.recentReplyTime || '-',
+      id: 'status',
+      header: t('common.status'),
+      cell: ({ row }) => {
+        if ([0, 1, 2].includes(row.original.status)) {
+          return <div>{t(`ticketList.statusOptions.${row.original.status}`)}</div>;
+        }
+        return '-';
+      },
     },
     {
       id: 'createTime',
@@ -235,7 +204,7 @@ export const GenericTicketList: React.FC<Props> = ({
   ];
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility(`my-tickets-${mode}-table`, allColumns);
+    useColumnVisibility('ticket-unassigned-list-table', allColumns);
 
   return (
     <div>
@@ -270,11 +239,10 @@ export const GenericTicketList: React.FC<Props> = ({
             }}
             footerShow={false}
           >
-            <MyTicketsForm
+            <TicketUnassignedListForm
               params={otherParams}
               reset={reset}
               setParams={setOtherParams}
-              showStatus={showStatus}
             />
           </RrhDrawer>
           <ColumnVisibilityButton
@@ -286,16 +254,15 @@ export const GenericTicketList: React.FC<Props> = ({
           />
         </div>
       </div>
-
       <DataTable
         columns={tableColumns}
-        data={data?.rows || []}
-        pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
+        data={ticketData?.rows || []}
+        pageCount={Math.ceil(+(ticketData?.total || 0) / pageSize)}
         pageIndex={pageNum}
         pageSize={pageSize}
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
-        loading={loading}
+        loading={ticketLoading}
       />
     </div>
   );
