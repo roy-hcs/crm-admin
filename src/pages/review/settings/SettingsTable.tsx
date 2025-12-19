@@ -86,8 +86,6 @@ export const SettingsTable = ({
       onPageChange={onPageChange}
       onPageSizeChange={onPageSizeChange}
       loading={loading}
-      thCls="text-left"
-      tdCls="text-left"
     />
   );
 };

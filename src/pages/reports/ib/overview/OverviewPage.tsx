@@ -238,8 +238,6 @@ export function OverviewPage() {
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
         loading={AgencyClientTrackingLoading || serverLoading}
-        thCls="text-left"
-        tdCls="text-left"
       />
     </div>
   );

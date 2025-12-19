@@ -212,8 +212,6 @@ export function ClientTrackingPage() {
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
         loading={AgencyClientTrackingLoading}
-        thCls="text-center"
-        tdCls="text-center"
       />
     </div>
   );

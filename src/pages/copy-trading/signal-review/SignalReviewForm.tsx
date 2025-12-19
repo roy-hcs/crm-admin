@@ -18,7 +18,7 @@ import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { BasicParams } from '@/api/types';
 import { SignalReviewVerifyStatusOptions } from '@/lib/const';
 import { useServerList } from '@/api/hooks/system';
-import { MamSignalSourceListParams } from '@/api/hooks/copyTrading/type';
+import { MamSignalSourceVerifyListParams } from '@/api/hooks/copyTrading/type';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 import { formatDate } from '@/lib/utils';
 
@@ -35,25 +35,31 @@ type FormData = {
 export const SignalReviewForm = ({
   setParams,
   setOtherParams,
+  reset,
   loading,
+  params,
+  otherParams,
 }: {
-  setParams: Dispatch<SetStateAction<MamSignalSourceListParams['params']>>;
+  setParams: Dispatch<SetStateAction<MamSignalSourceVerifyListParams['params']>>;
   setOtherParams: Dispatch<
-    SetStateAction<Omit<MamSignalSourceListParams, 'params' | keyof BasicParams>>
+    SetStateAction<Omit<MamSignalSourceVerifyListParams, 'params' | keyof BasicParams>>
   >;
+  reset: () => void;
   loading: boolean;
+  params: MamSignalSourceVerifyListParams['params'];
+  otherParams: Omit<MamSignalSourceVerifyListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const { data: server } = useServerList();
   const form = useForm({
     defaultValues: {
-      Time: { from: '', to: '' },
-      name: '',
-      userName: '',
-      serverId: '',
-      account: '',
-      verifyStatus: '',
-      reviewTime: { from: '', to: '' },
+      Time: { from: params.beginTime || '', to: params.endTime || '' },
+      name: otherParams.name || '',
+      userName: otherParams.userName || '',
+      serverId: otherParams.serverId || '',
+      account: otherParams.account || '',
+      verifyStatus: otherParams.verifyStatus || '',
+      reviewTime: { from: params.beginReviewTime || '', to: params.endReviewTime || '' },
     },
   });
   const onSubmit = (data: FormData) => {
@@ -74,22 +80,16 @@ export const SignalReviewForm = ({
     }));
   };
   const onReset = () => {
-    setParams(pre => ({
-      ...pre,
-      beginTime: '',
-      endTime: '',
-      beginReviewTime: '',
-      endReviewTime: '',
-    }));
-    setOtherParams(pre => ({
-      ...pre,
+    reset();
+    form.reset({
+      Time: { from: '', to: '' },
       name: '',
       userName: '',
       serverId: '',
       account: '',
       verifyStatus: '',
-    }));
-    form.reset();
+      reviewTime: { from: '', to: '' },
+    });
   };
 
   const serverData = useMemo(() => {

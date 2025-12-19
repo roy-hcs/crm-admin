@@ -37,27 +37,33 @@ type FormData = {
 export const PerformanceFeeRecordForm = ({
   setParams,
   setOtherParams,
+  reset,
   loading,
+  params,
+  otherParams,
 }: {
   setParams: Dispatch<SetStateAction<PerformanceFeeListParams['params']>>;
   setOtherParams: Dispatch<
     SetStateAction<Omit<PerformanceFeeListParams, 'params' | keyof BasicParams>>
   >;
+  reset: () => void;
   loading: boolean;
+  params: PerformanceFeeListParams['params'];
+  otherParams: Omit<PerformanceFeeListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const { data: server } = useServerList();
   const form = useForm({
     defaultValues: {
-      Time: { from: '', to: '' },
-      PayTime: { from: '', to: '' },
-      signalSourceOwner: '',
-      follower: '',
-      signalSourceName: '',
-      traderServerId: '',
-      trader: '',
-      client: '',
-      payStatus: '',
+      Time: { from: params.beginTime || '', to: params.endTime || '' },
+      PayTime: { from: params.beginPayTime || '', to: params.endPayTime || '' },
+      signalSourceOwner: params.signalSourceOwner || '',
+      follower: params.follower || '',
+      signalSourceName: otherParams.signalSourceName || '',
+      traderServerId: otherParams.traderServerId || '',
+      trader: otherParams.trader || '',
+      client: otherParams.client || '',
+      payStatus: otherParams.payStatus || '',
     },
   });
   const onSubmit = (data: FormData) => {
@@ -80,24 +86,18 @@ export const PerformanceFeeRecordForm = ({
     }));
   };
   const onReset = () => {
-    setParams(pre => ({
-      ...pre,
+    reset();
+    form.reset({
+      Time: { from: '', to: '' },
+      PayTime: { from: '', to: '' },
       signalSourceOwner: '',
       follower: '',
-      beginTime: '',
-      endTime: '',
-      beginPayTime: '',
-      endPayTime: '',
-    }));
-    setOtherParams(pre => ({
-      ...pre,
       signalSourceName: '',
       traderServerId: '',
       trader: '',
       client: '',
       payStatus: '',
-    }));
-    form.reset();
+    });
   };
 
   const serverData = useMemo(() => {

@@ -223,8 +223,6 @@ export function MessageManagementPage() {
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
         loading={msgListLoading}
-        tdCls="text-center"
-        thCls="text-center"
       />
     </div>
   );

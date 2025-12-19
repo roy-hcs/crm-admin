@@ -85,8 +85,8 @@ export const CRMTableSimple = ({
       onPageChange={onPageChange}
       onPageSizeChange={onPageSizeChange}
       loading={loading}
-      thCls="text-center text-[13px]"
-      tdCls="text-center text-xs"
+      thCls="text-[13px]"
+      tdCls="text-xs"
     />
   ) : null;
 };

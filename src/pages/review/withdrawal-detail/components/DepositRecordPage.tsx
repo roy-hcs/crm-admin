@@ -1,19 +1,22 @@
-import { DepositListParams, useDepositList, useDepositListSum } from '@/api/hooks/review';
-import { RrhButton } from '@/components/common/RrhButton';
+import {
+  DepositListParams,
+  useDepositList,
+  useDepositListSum,
+  DepositListItem,
+} from '@/api/hooks/review';
+import { Button } from '@/components/ui/button';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { DepositRecordTable } from './DepositRecordTable';
 import { SumItems } from './SumItems';
 import { RrhSelect } from '@/components/common/RrhSelect';
 import { RrhRangeInput } from '@/components/common/RrhRangeInput';
 import { formatDate } from '@/lib/utils';
-
-type FormData = {
-  depositMethods: string;
-  finishTime: { from: string; to: string };
-};
+import { depositMethodsMap } from '@/lib/constant';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { BasicParams } from '@/api/types';
 
 export const DepositRecordPage = ({ userId }: { userId: string }) => {
   const { t } = useTranslation();
@@ -22,10 +25,14 @@ export const DepositRecordPage = ({ userId }: { userId: string }) => {
     finishEndTime: '',
     userId,
   });
-  const [otherParams, setOtherParams] = useState<Omit<DepositListParams, 'params'>>({
+  const [otherParams, setOtherParams] = useState<
+    Omit<DepositListParams, 'params' | keyof BasicParams>
+  >({
     status: '1',
     method: '',
   });
+  const [orderByColumn, setOrderByColumn] = useState('verifyTime desc');
+  const [isAsc, setIsAsc] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [depositMethod, setDepositMethod] = useState('');
@@ -36,20 +43,14 @@ export const DepositRecordPage = ({ userId }: { userId: string }) => {
     from: undefined,
     to: undefined,
   });
-  const form = useForm<FormData>({
-    defaultValues: {
-      depositMethods: '',
-      finishTime: { from: '', to: '' },
-    },
-  });
 
   const { data: depositList, isLoading: depositListLoading } = useDepositList(
     {
       pageSize,
       pageNum: pageNum + 1,
-      orderByColumn: 'verifyTime desc',
-      isAsc: '',
       ...otherParams,
+      orderByColumn,
+      isAsc,
       params: {
         ...params,
       },
@@ -66,6 +67,7 @@ export const DepositRecordPage = ({ userId }: { userId: string }) => {
   }, [getDepositSum, otherParams, params]);
 
   console.log('sumData----', sumData);
+
   const reset = () => {
     setParams({
       finishBeginTime: '',
@@ -76,8 +78,14 @@ export const DepositRecordPage = ({ userId }: { userId: string }) => {
       status: '1',
       method: '',
     });
+    setOrderByColumn('verifyTime desc');
+    setIsAsc('');
     setPageNum(0);
-    form.reset();
+    setFinishTimeRange({
+      from: undefined,
+      to: undefined,
+    });
+    setDepositMethod('');
   };
 
   const onSubmit = () => {
@@ -92,6 +100,105 @@ export const DepositRecordPage = ({ userId }: { userId: string }) => {
     });
     setPageNum(0);
   };
+
+  const allColumns: CRMColumnDef<DepositListItem, unknown>[] = [
+    {
+      id: 'orderNumber',
+      header: t('table.orderNumber'),
+      accessorFn: row => row.orderNum,
+    },
+    {
+      id: 'depositMethods',
+      header: t('table.depositMethods'),
+      cell: ({ row }) => {
+        const method = row.original.method;
+        return method ? t(`table.${depositMethodsMap[method]}`) : '-';
+      },
+    },
+    {
+      id: 'depositAccount',
+      header: t('table.depositAccount'),
+      cell: ({ row }) => {
+        if (row.original.login) {
+          return row.original.aliasName ? (
+            <div className="flex flex-col">
+              <div>{row.original.aliasName}</div>
+              <div>{row.original.login}</div>
+            </div>
+          ) : (
+            <div>{row.original.login}</div>
+          );
+        } else if (row.original.walletId) {
+          return (
+            <div>
+              {t('table.wallet')} ({row.original.walletCurrency})
+            </div>
+          );
+        }
+      },
+    },
+    {
+      id: 'payAmount',
+      header: t('table.payAmount'),
+      cell: ({ row }) => (
+        <div>
+          {row.original.deposit} {row.original.depositCurrency}
+        </div>
+      ),
+    },
+    {
+      id: 'depositAmount',
+      header: t('table.depositAmount'),
+      cell: ({ row }) => (
+        <div>
+          {row.original.factDeposit} {row.original.feeCurrency}
+        </div>
+      ),
+    },
+    {
+      id: 'commission',
+      header: t('table.commission'),
+      cell: ({ row }) => (
+        <div>
+          {row.original.fee} {row.original.feeCurrency}
+        </div>
+      ),
+    },
+    {
+      id: 'amountOfReceipt',
+      header: t('table.amountOfReceipt'),
+      cell: ({ row }) =>
+        row.original.receiptAmount ? (
+          <div>
+            {row.original.receiptAmount} {row.original.receiptCurrency}
+          </div>
+        ) : (
+          <div>-</div>
+        ),
+    },
+    {
+      id: 'exchangeRate',
+      header: t('common.exchangeRate'),
+      cell: ({ row }) =>
+        row.original.rate ? (
+          <div>
+            <div>{row.original.rate.toFixed(5)}</div>
+            <div>{row.original.currencyPair}</div>
+          </div>
+        ) : (
+          <div>-</div>
+        ),
+    },
+    {
+      id: 'finishTime',
+      header: t('table.finishTime'),
+      accessorFn: row => row.verifyTime,
+      cell: ({ row }) => <div>{row.original.verifyTime || '-'}</div>,
+    },
+  ];
+
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('deposit-record-table', allColumns);
   const sumMockData = [
     { currency: 'USD', amount: '100.00', orderCount: '2' },
     { currency: 'AUD', amount: '200.00', orderCount: '3' },
@@ -135,7 +242,7 @@ export const DepositRecordPage = ({ userId }: { userId: string }) => {
           />
 
           <div className="flex justify-end gap-4">
-            <RrhButton
+            <Button
               type="button"
               variant="outline"
               className="size-8"
@@ -145,19 +252,22 @@ export const DepositRecordPage = ({ userId }: { userId: string }) => {
               }}
             >
               <RefreshCcw className="size-3.5" />
-            </RrhButton>
-            <RrhButton
-              type="button"
-              onClick={() => onSubmit()}
-              size="sm"
-              loading={depositListLoading}
-            >
+            </Button>
+            <Button type="button" onClick={() => onSubmit()} size="sm">
               <Search className="size-3.5" />
               <span>{t('common.Search')}</span>
-            </RrhButton>
+            </Button>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
           </div>
         </div>
-        <DepositRecordTable
+        <DataTable
+          columns={tableColumns}
           data={depositList?.rows || []}
           pageCount={Math.ceil(+(depositList?.total || 0) / pageSize)}
           pageIndex={pageNum}
@@ -165,6 +275,7 @@ export const DepositRecordPage = ({ userId }: { userId: string }) => {
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
           loading={depositListLoading}
+          tableWrapperCls="border-none"
         />
       </div>
     </div>

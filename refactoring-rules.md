@@ -29,7 +29,7 @@
 
 7. **按照输出模板重构相关的form组件**
    - 创建新的Form组件在同一层级
-   - 实现正确的初始化数据和重置功能（为此需要从外界传入params,reset等新的props）
+   - 需要特别关注初始化数据和reset功能（为此需要从外界传入params,reset等新的props）
    - 匹配FeesForm模板结构
 
 8. **重构完成后需要删除现有的table组件**
@@ -39,14 +39,12 @@
    - 将Form组件移动到与Page组件相同目录层级
    - 如果此时存在空的components文件夹，则删除该文件夹
 
-### 新增规则 (Additional Rules)
-
 10. **在定义allColumns时，如果来自原有table组件的columns的item里存在只有accessorKey字段而没有id字段的。新增一个id字段，id的值和accessorKey的值一致**
     - 为所有只有accessorKey的列添加id字段，确保id值与accessorKey相同，
     - 确保所有item都有一个唯一的id，如果出现id重复，向开发者请求确认
     - 如果存在id为operate的item，给该item添加fixed:'right'和size: 50的值。如果该item返回超过一个按钮，则参考RewardConfigsPage使用RrhDropdown和Ellipse组件进行整合
     - 所有id不是operate的item，都不应该有fixed和size的字段，如果有，删除这些字段
-    - 当且仅当item的header字段的值不是t('xxx')，而是个函数时，添加一个label字段，该字段的值为header字段中包含的t('xxx')
+    - 当且仅当item的header字段的值不是t('xxx')时，添加一个label字段，该字段的值为header字段中包含的t('xxx')
 
 11. **在重构代码的过程中，保持所有常量的引用，不要将引用替换为hardcode**
     - 保持使用RebateTypeOptions和RebateStatusOptions等常量

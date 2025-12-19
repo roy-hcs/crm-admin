@@ -18,17 +18,21 @@ type FormData = {
 
 export const VarietyManagementForm = ({
   setOtherParams,
+  reset,
   loading,
+  otherParams,
 }: {
   setOtherParams: Dispatch<SetStateAction<Omit<MamSymbolListParams, keyof BasicParams>>>;
+  reset: () => void;
   loading: boolean;
+  otherParams: Omit<MamSymbolListParams, keyof BasicParams>;
 }) => {
   const { data: symbolCategoryDataRes } = useDictType('mam_symbol_category');
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      symbolCategory: '',
-      symbol: '',
+      symbolCategory: otherParams.symbolCategory || '',
+      symbol: otherParams.symbol || '',
     },
   });
   const onSubmit = (data: FormData) => {
@@ -39,12 +43,11 @@ export const VarietyManagementForm = ({
     }));
   };
   const onReset = () => {
-    setOtherParams(pre => ({
-      ...pre,
+    reset();
+    form.reset({
       symbolCategory: '',
       symbol: '',
-    }));
-    form.reset();
+    });
   };
 
   const symbolCategoryData = useMemo(() => {

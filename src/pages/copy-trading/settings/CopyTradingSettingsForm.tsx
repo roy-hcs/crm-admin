@@ -1,15 +1,15 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { FormInput } from '@/components/form/FormInput';
+import { FormSelect } from '@/components/form/FormSelect';
 import { Form } from '@/components/ui/form';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction } from 'react';
-import { FormSelect } from '@/components/form/FormSelect';
 import { BasicParams } from '@/api/types';
-import { MamProtocolListParams } from '@/api/hooks/copyTrading/type';
+import { Dispatch, SetStateAction } from 'react';
 import { DictTypeItem } from '@/api/hooks/system';
+import { MamProtocolListParams } from '@/api/hooks/copyTrading/type';
 
 type FormData = {
   protocolName: string;
@@ -18,20 +18,22 @@ type FormData = {
 
 export const CopyTradingSettingsForm = ({
   setOtherParams,
+  reset,
   loading,
   scenarioTypes = [],
+  otherParams,
 }: {
-  setOtherParams: Dispatch<
-    SetStateAction<Omit<MamProtocolListParams, 'params' | keyof BasicParams>>
-  >;
+  setOtherParams: Dispatch<SetStateAction<Omit<MamProtocolListParams, keyof BasicParams>>>;
+  reset: () => void;
   loading: boolean;
   scenarioTypes?: DictTypeItem[];
+  otherParams: Omit<MamProtocolListParams, keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
-      protocolName: '',
-      applicableScenarios: '',
+      protocolName: otherParams.name || '',
+      applicableScenarios: otherParams.applicableScenarios || '',
     },
   });
   const onSubmit = (data: FormData) => {
@@ -41,11 +43,11 @@ export const CopyTradingSettingsForm = ({
     });
   };
   const onReset = () => {
-    setOtherParams({
-      name: '',
+    reset();
+    form.reset({
+      protocolName: '',
       applicableScenarios: '',
     });
-    form.reset();
   };
   return (
     <FormProvider form={form}>
