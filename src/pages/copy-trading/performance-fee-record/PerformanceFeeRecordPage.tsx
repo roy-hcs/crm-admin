@@ -1,14 +1,20 @@
-import { RrhButton } from '@/components/common/RrhButton';
-import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
-import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { PerformanceFeeRecordTable } from './PerformanceFeeRecordTable';
-import { PerformanceFeeRecordForm } from './PerformanceFeeRecordForm';
-import { BasicParams } from '@/api/types';
+import { RrhDrawer } from '@/components/common/RrhDrawer';
+import { Button } from '@/components/ui/button';
+import { PerformanceFeeItem, PerformanceFeeListParams } from '@/api/hooks/copyTrading/type';
 import { usePerformanceFeeList } from '@/api/hooks/copyTrading';
-import { PerformanceFeeListParams } from '@/api/hooks/copyTrading/type';
+import { PerformanceFeeRecordForm } from './PerformanceFeeRecordForm';
+import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
+import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
+import { useTranslation } from 'react-i18next';
+import { PageInfo } from '@/components/common/PageInfo';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { BasicParams } from '@/api/types';
+import { PerformanceFeePayStatusOptions } from '@/lib/const';
+import { RrhSorter } from '@/components/common/RrhSorter';
+import { RrhDropdown } from '@/components/common/RrhDropdown';
 
 export const PerformanceFeeRecordPage = () => {
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('');
@@ -32,6 +38,7 @@ export const PerformanceFeeRecordPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [keyword, setKeyword] = useState('');
   const { t } = useTranslation();
 
   const { data: data, isLoading: loading } = usePerformanceFeeList({
@@ -61,59 +68,171 @@ export const PerformanceFeeRecordPage = () => {
       client: '',
       payStatus: '',
     }));
+    setKeyword('');
     setPageNum(0);
   };
 
+  const allColumns: CRMColumnDef<PerformanceFeeItem, unknown>[] = [
+    {
+      id: 'orderNo',
+      header: t('table.orderNumber'),
+      cell: ({ row }) => row?.original?.orderNo || '-',
+    },
+    {
+      id: 'signalSourceName',
+      header: t('signals.name'),
+      cell: ({ row }) => {
+        return (
+          <div>
+            <span>{row?.original?.signalSourceName}</span>
+            <span>{row?.original?.traderServer}</span>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'clientName',
+      header: t('performanceFeeRecord.clientName'),
+      cell: ({ row }) => {
+        return (
+          <div>
+            <span>{row?.original?.clientName}</span>
+            <span>{row?.original?.clientEmail}</span>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'payAccountName',
+      header: t('performanceFeeRecord.payAccountName'),
+      cell: ({ row }) => row?.original?.payAccountName || '-',
+    },
+    {
+      id: 'performanceFee',
+      header: t('performanceFeeRecord.performanceFee'),
+      cell: ({ row }) => row?.original?.performanceFee || '-',
+    },
+    {
+      id: 'managementFee',
+      header: t('performanceFeeRecord.managementFee'),
+      cell: ({ row }) => row?.original?.managementFee || '-',
+    },
+    {
+      id: 'createTime',
+      header: t('common.createTime'),
+      cell: ({ row }) => row?.original?.createTime || '-',
+    },
+    {
+      id: 'payStatus',
+      header: t('table.payResult'),
+      cell: ({ row }) => {
+        const text = PerformanceFeePayStatusOptions.find(
+          i => i.value === String(row?.original?.payStatus),
+        );
+        return <span>{text ? t(text.label) : '-'}</span>;
+      },
+    },
+    {
+      id: 'payTime',
+      label: t('performanceFeeRecord.payTime'),
+      header: () => {
+        return (
+          <div className="flex items-center justify-between gap-2">
+            <div>{t('performanceFeeRecord.payTime')}</div>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="payTime"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
+          </div>
+        );
+      },
+      cell: ({ row }) => row?.original?.payTime || '-',
+    },
+    {
+      id: 'operation',
+      label: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
+      cell: () => (
+        <RrhDropdown
+          Trigger={<Ellipsis className="size-4" />}
+          dropdownList={[{ label: t('table.audit'), value: 'audit' }]}
+          callToAction={() => {}}
+        />
+      ),
+      fixed: 'right',
+      size: 50,
+    },
+  ];
+
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('performance-fee-record-table', allColumns);
+
   return (
     <div>
-      <h1 className="text-title">{t('performanceFeeRecord.title')}</h1>
-      <div className="my-3.5 flex items-center justify-between">
-        <RrhInputWithIcon
-          placeholder={t('common.pleaseInput', { field: t('signals.name') })}
-          className="h-9"
-          rightIcon={<Search className="size-4 cursor-pointer" />}
-          onRightIconClick={e => {
-            setOtherParams(prev => ({ ...prev, signalSourceName: e }));
-            setPageNum(0);
-          }}
-        />
-        <div className="flex justify-end gap-2">
-          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+      <PageInfo title={t('performanceFeeRecord.title')} />
+      <div className="mt-3.5 mb-3.5 flex justify-between">
+        <div className="w-67 max-w-sm">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('signals.name') })}
+            className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            rightIcon={<Search className="size-4" />}
+            onRightIconClick={() => {
+              setOtherParams(prev => ({ ...prev, signalSourceName: keyword }));
+              setPageNum(0);
+            }}
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
-          </RrhButton>
+          </Button>
           <RrhDrawer
-            headerShow={false}
             asChild
+            Trigger={
+              <Button variant="ghost" className="size-8 cursor-pointer">
+                <Funnel className="size-4" />
+              </Button>
+            }
+            title="Filter"
             responsiveDirection={{
               mobile: 'bottom',
               desktop: 'right',
             }}
             footerShow={false}
-            Trigger={
-              <RrhButton variant="ghost" className="size-8">
-                <Funnel />
-              </RrhButton>
-            }
           >
             <PerformanceFeeRecordForm
               setParams={setParams}
               setOtherParams={setOtherParams}
+              reset={reset}
               loading={loading}
+              params={params}
+              otherParams={otherParams}
             />
           </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
         </div>
       </div>
-      <PerformanceFeeRecordTable
+      <DataTable
+        columns={tableColumns}
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}
         pageSize={pageSize}
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
-        setIsAsc={setIsAsc}
-        isAsc={isAsc}
-        orderByColumn={orderByColumn}
-        setOrderByColumn={setOrderByColumn}
         loading={loading}
       />
     </div>

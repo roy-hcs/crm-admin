@@ -1,6 +1,7 @@
 import { RoleItem } from '@/api/hooks/system';
-import { RrhButton } from '@/components/common/RrhButton';
+import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { CRMColumnDef, DataTable } from '@/components/table/DataTable';
+import { Ellipsis } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export const RolesTable = ({
@@ -62,20 +63,27 @@ export const RolesTable = ({
         // TODO: need to add view detail page later
         if (row.original.roleId === '1') {
           return (
-            <RrhButton variant="ghost" disabled>
-              {t('common.View')}
-            </RrhButton>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[{ label: t('common.View'), value: 'view' }]}
+              callToAction={() => {}}
+            />
           );
         } else {
           return (
-            <div>
-              <RrhButton variant="ghost">{t('common.Edit')}</RrhButton>
-              <RrhButton variant="ghost">{t('common.delete')}</RrhButton>
-            </div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.View'), value: 'view' },
+                { label: t('common.delete'), value: 'delete' },
+              ]}
+              callToAction={() => {}}
+            />
           );
         }
       },
       fixed: 'right',
+      size: 50,
     },
   ];
   return (
@@ -88,8 +96,6 @@ export const RolesTable = ({
       onPageChange={onPageChange}
       onPageSizeChange={onPageSizeChange}
       loading={loading}
-      tdCls="text-center"
-      thCls="text-center"
     />
   );
 };

@@ -1,5 +1,4 @@
-import { RrhButton } from '@/components/common/RrhButton';
-import { FormInput } from '@/components/form/FormInput';
+import { Dispatch, SetStateAction } from 'react';
 import {
   Form,
   FormControl,
@@ -8,13 +7,14 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import FormDateRangeInput from '@/components/form/FormDateRangeInput';
+import { useForm } from 'react-hook-form';
+import { FormProvider } from '@/contexts/form';
+import { FormInput } from '@/components/form/FormInput';
+import { FormSelect } from '@/components/form/FormSelect';
+import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
-import { useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction } from 'react';
-import { FormSelect } from '@/components/form/FormSelect';
-import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { PammAuditLogListParams } from '@/api/hooks/pamm/type';
 import { InvestmentReviewOperTypeOptions, InvestmentReviewStatusOptions } from '@/lib/const';
 import { formatDate } from '@/lib/utils';
@@ -31,14 +31,43 @@ type FormData = {
 
 export const InvestmentReviewForm = ({
   setOtherParams,
-  loading,
+  reset,
+  otherParams,
 }: {
   setOtherParams: Dispatch<SetStateAction<Omit<PammAuditLogListParams, 'BasicParams'>>>;
-  loading: boolean;
+  reset: () => void;
+  otherParams: Omit<PammAuditLogListParams, 'BasicParams'>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
+      createTime: { from: otherParams.createStartTime || '', to: otherParams.createEndTime || '' },
+      auditTime: { from: otherParams.auditStartTime || '', to: otherParams.auditEndTime || '' },
+      projectName: otherParams.projectName || '',
+      investor: otherParams.investor || '',
+      operType: otherParams.operType || '',
+      orderNo: otherParams.orderNo || '',
+      auditStatus: otherParams.auditStatus || '',
+    },
+  });
+
+  const onSubmit = (data: FormData) => {
+    setOtherParams({
+      projectName: data.projectName,
+      investor: data.investor,
+      operType: data.operType,
+      orderNo: data.orderNo,
+      auditStatus: data.auditStatus,
+      createStartTime: formatDate(data.createTime.from),
+      createEndTime: formatDate(data.createTime.to),
+      auditStartTime: formatDate(data.auditTime.from),
+      auditEndTime: formatDate(data.auditTime.to),
+    });
+  };
+
+  const onReset = () => {
+    reset();
+    form.reset({
       createTime: { from: '', to: '' },
       auditTime: { from: '', to: '' },
       projectName: '',
@@ -46,53 +75,15 @@ export const InvestmentReviewForm = ({
       operType: '',
       orderNo: '',
       auditStatus: '',
-    },
-  });
-  const onSubmit = (data: FormData) => {
-    setOtherParams(pre => ({
-      ...pre,
-      projectName: data.projectName,
-      investor: data.investor,
-      operType: data.operType,
-      orderNo: data.orderNo,
-      auditStatus: data.auditStatus,
-
-      createStartTime: formatDate(data.createTime.from),
-      createEndTime: formatDate(data.createTime.to),
-
-      auditStartTime: formatDate(data.auditTime.from),
-      auditEndTime: formatDate(data.auditTime.to),
-    }));
+    });
   };
-  const onReset = () => {
-    setOtherParams(pre => ({
-      ...pre,
-      projectName: '',
-      investor: '',
-      operType: '',
-      orderNo: '',
-      auditStatus: '',
-      createStartTime: '',
-      createEndTime: '',
-      auditStartTime: '',
-      auditEndTime: '',
-    }));
-    form.reset();
-  };
+
   return (
     <FormProvider form={form}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
-
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
@@ -170,7 +161,7 @@ export const InvestmentReviewForm = ({
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
             </RrhButton>
-            <RrhButton type="submit" loading={loading}>
+            <RrhButton type="submit">
               <Search className="size-3.5" />
               <span>{t('common.Search')}</span>
             </RrhButton>

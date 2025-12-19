@@ -34,27 +34,32 @@ type FormData = {
 export const CommissionReportForm = ({
   setParams,
   setOtherParams,
+  reset,
   loading,
   serverOptions,
+  otherParams,
+  params,
 }: {
   setOtherParams: Dispatch<
     SetStateAction<Omit<PammReportCommissionListParams, 'params' | keyof BasicParams>>
   >;
   setParams: Dispatch<SetStateAction<PammReportCommissionListParams['params']>>;
+  reset: () => void;
   loading: boolean;
-
   serverOptions: ServerItem[];
+  otherParams: Omit<PammReportCommissionListParams, 'params' | keyof BasicParams>;
+  params: PammReportCommissionListParams['params'];
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
-      serverId: '',
-      projectName: '',
-      profitType: '',
-      userName: '',
-      agentName: '',
-      orderNo: '',
-      investTime: { from: '', to: '' },
+      serverId: otherParams.serverId || '',
+      projectName: otherParams.projectName || '',
+      profitType: otherParams.profitType || '',
+      userName: otherParams.userName || '',
+      agentName: params.agentName || '',
+      orderNo: otherParams.orderNo || '',
+      investTime: { from: params.beginTime || '', to: params.endTime || '' },
     },
   });
   const onSubmit = (data: FormData) => {
@@ -72,19 +77,16 @@ export const CommissionReportForm = ({
     });
   };
   const onReset = () => {
-    setOtherParams({
+    reset();
+    form.reset({
       serverId: '',
       projectName: '',
       profitType: '',
       userName: '',
-      orderNo: '',
-    });
-    setParams({
-      beginTime: '',
-      endTime: '',
       agentName: '',
+      orderNo: '',
+      investTime: { from: '', to: '' },
     });
-    form.reset();
   };
   return (
     <FormProvider form={form}>

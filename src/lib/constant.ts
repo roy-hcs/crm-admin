@@ -52,6 +52,12 @@ export const depositRebateStatusMap: Record<number | string, string> = {
   0: 'pending',
   '-1': 'reviewing',
 };
+export const transactionRebateStatusMap: Record<number | string, string> = {
+  0: 'refuse',
+  1: 'pass',
+  2: 'pending',
+  3: 'reviewing',
+};
 
 export const internalTransferReviewStatusMap: Record<number | string, string> = {
   2: 'pending',

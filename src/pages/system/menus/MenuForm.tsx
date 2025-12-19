@@ -6,35 +6,55 @@ import { FormSelect } from '@/components/form/FormSelect';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useMemo } from 'react';
 
 type FormData = {
   menuName: string;
   menuState: string;
 };
+
 export const MenuForm = ({
   setMenuName,
   setMenuState,
+  reset,
+  menuName: currentMenuName = '',
+  menuState: currentMenuState = '',
 }: {
   setMenuName: Dispatch<SetStateAction<string>>;
   setMenuState: Dispatch<SetStateAction<string>>;
+  reset: () => void;
+  menuName?: string;
+  menuState?: string;
 }) => {
   const { t } = useTranslation();
+
   const form = useForm({
     defaultValues: {
-      menuName: '',
-      menuState: '',
+      menuName: currentMenuName || '',
+      menuState: currentMenuState || '',
     },
   });
   const onSubmit = (data: FormData) => {
     setMenuName(data.menuName);
     setMenuState(data.menuState === 'all' ? '' : data.menuState);
   };
+
   const onReset = () => {
-    setMenuName('');
-    setMenuState('');
-    form.reset();
+    reset();
+    form.reset({
+      menuName: '',
+      menuState: '',
+    });
   };
+
+  const menuStateOptions = useMemo(
+    () => [
+      { label: t('table.all'), value: 'all' },
+      { label: t('table.show'), value: '0' },
+      { label: t('table.hide'), value: '1' },
+    ],
+    [t],
+  );
 
   return (
     <FormProvider form={form}>
@@ -65,11 +85,7 @@ export const MenuForm = ({
             label={t('menuManagement.menuStatus')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
-            options={[
-              { label: t('table.all'), value: 'all' },
-              { label: t('table.show'), value: '0' },
-              { label: t('table.hide'), value: '1' },
-            ]}
+            options={menuStateOptions}
           />
           <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
             <RrhButton type="reset" variant={'outline'} onClick={onReset}>

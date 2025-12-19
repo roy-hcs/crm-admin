@@ -120,6 +120,7 @@ export type RebateCommissionListParams = BasicParams & {
   verifyUserName?: string;
   accountGroupList?: string;
   conditionName?: string;
+  taderType?: string;
   params: {
     startTraderTime?: string;
     endTraderTime?: string;
@@ -295,11 +296,11 @@ export type WithdrawListParams = BasicParams & {
   userId?: string;
   status?: number | string;
   verifyUserName?: string;
-  dealTicket?: string | number;
+  dealTicket?: string;
   method?: string;
   login?: string;
   orderNum?: string;
-  exceptionFlag?: string | number;
+  exceptionFlag?: string;
   accounts?: string;
   params: {
     beginTime?: string;
@@ -308,6 +309,7 @@ export type WithdrawListParams = BasicParams & {
     accounts?: string;
     finishBeginTime?: string;
     finishEndTime?: string;
+    userId?: string;
   };
 };
 
@@ -477,8 +479,8 @@ export type CrmPreferenceItem = {
   id: string | null;
   nameText: string | null;
   code: string | null;
-  indexReviewCount: string | null;
-  val: string | null;
+  indexReviewCount: number | null;
+  val: number | null;
   sort: string | null;
   groupCode: string | null;
 };

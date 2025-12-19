@@ -1,15 +1,20 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { Funnel, RefreshCcw, Search } from 'lucide-react';
+import { Ellipsis, Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BasicParams } from '@/api/hooks/review/types';
 import { useDictType } from '@/api/hooks/system/system';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { usePammProductList, usePammProtocolList } from '@/api/hooks/pamm';
-import { PammProtocolListParams } from '@/api/hooks/pamm/type';
+import { PammProtocolListParams, PammProtocolItem } from '@/api/hooks/pamm/type';
 import { AgreementsForm } from './AgreementsForm';
-import { AgreementsTable } from './AgreementsTable';
+import { PageInfo } from '@/components/common/PageInfo';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { Switch } from '@/components/ui/switch';
+import { RrhDropdown } from '@/components/common/RrhDropdown';
 
 export const AgreementsPage = () => {
   const [otherParams, setOtherParams] = useState<Omit<PammProtocolListParams, keyof BasicParams>>({
@@ -19,6 +24,7 @@ export const AgreementsPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [keyword, setKeyword] = useState('');
   const { t } = useTranslation();
   const { data: scenariosType } = useDictType('pamm_protocol_scenario');
 
@@ -29,6 +35,7 @@ export const AgreementsPage = () => {
       orderByColumn: '',
       isAsc: 'asc',
       ...otherParams,
+      name: otherParams.name,
     });
   const productListParams = {
     pageSize: 0,
@@ -54,23 +61,98 @@ export const AgreementsPage = () => {
       projectId: '',
       applicableScenarios: '',
     });
+    setKeyword('');
     setPageNum(0);
   };
 
+  const allColumns: CRMColumnDef<PammProtocolItem, unknown>[] = [
+    {
+      id: 'No.',
+      header: t('ib.overview.Index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
+      id: 'name',
+      header: t('table.protocolName'),
+      accessorFn: row => row.name,
+    },
+    {
+      id: 'projectName',
+      header: t('table.relatedProduct'),
+      accessorFn: row => row.projectName,
+    },
+    {
+      id: 'applicableScenarios',
+      header: t('table.applicableScenario'),
+      cell: ({ row }) => {
+        const currentScenario = scenariosType?.find(
+          item => item.dictValue === row.original.applicableScenarios.toString(),
+        );
+        return currentScenario?.dictLabel || '-';
+      },
+    },
+    {
+      id: 'sort',
+      header: t('table.sort'),
+      accessorFn: row => row.sort,
+    },
+    {
+      id: 'status',
+      header: t('table.status'),
+      cell: ({ row }) => {
+        return <Switch checked={row.original.status === 1} />;
+      },
+    },
+    {
+      id: 'createBy',
+      header: t('table.operator'),
+      accessorFn: row => row.createBy,
+    },
+    {
+      id: 'updateTime',
+      header: t('table.updateTime'),
+      accessorFn: row => row.updateTime,
+    },
+    {
+      id: 'operation',
+      header: () => <div className="text-center">{t('common.Operation')}</div>,
+      label: t('common.Operation'),
+      fixed: 'right',
+      size: 50,
+      cell: () => (
+        <RrhDropdown
+          Trigger={<Ellipsis className="size-4" />}
+          dropdownList={[
+            { label: t('common.Edit'), value: 'edit' },
+            { label: t('common.delete'), value: 'delete' },
+          ]}
+          callToAction={() => {}}
+        />
+      ),
+    },
+  ];
+
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('pamm-agreements-table', allColumns);
+
   return (
     <div>
-      <h1 className="text-title">{t('PammAgreements.title')}</h1>
-      <div className="my-3.5 flex items-center justify-between">
-        <RrhInputWithIcon
-          placeholder={t('common.pleaseInput', { field: t('table.protocolName') })}
-          className="h-9"
-          rightIcon={<Search className="size-4 cursor-pointer" />}
-          onRightIconClick={e => {
-            setOtherParams(prev => ({ ...prev, name: e }));
-            setPageNum(0);
-          }}
-        />
-        <div className="flex justify-end gap-2">
+      <PageInfo title={t('PammAgreements.title')} />
+      <div className="mt-3.5 mb-3.5 flex justify-between">
+        <div className="w-67 max-w-sm">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('table.protocolName') })}
+            className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            rightIcon={<Search className="size-4" />}
+            onRightIconClick={e => {
+              setPageNum(0);
+              setOtherParams(prev => ({ ...prev, name: e }));
+            }}
+          />
+        </div>
+        <div className="flex items-center gap-2">
           <RrhButton variant="outline">{t('common.add')}</RrhButton>
           <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
@@ -93,6 +175,8 @@ export const AgreementsPage = () => {
               scenariosType={scenariosType || []}
               setOtherParams={setOtherParams}
               loading={depositRebateSettingsLoading}
+              reset={reset}
+              otherParams={otherParams}
               productList={
                 productList?.rows.map(item => ({
                   label: item.projectName,
@@ -101,9 +185,17 @@ export const AgreementsPage = () => {
               }
             />
           </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
         </div>
       </div>
-      <AgreementsTable
+      <DataTable
+        columns={tableColumns}
         data={depositRebateSettings?.rows || []}
         pageCount={Math.ceil(+(depositRebateSettings?.total || 0) / pageSize)}
         pageIndex={pageNum}
@@ -111,7 +203,6 @@ export const AgreementsPage = () => {
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
         loading={depositRebateSettingsLoading}
-        scenariosType={scenariosType || []}
       />
     </div>
   );

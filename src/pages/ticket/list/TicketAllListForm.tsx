@@ -1,27 +1,21 @@
-import { RrhButton } from '@/components/common/RrhButton';
-import FormDateRangeInput from '@/components/form/FormDateRangeInput';
+import { Dispatch, SetStateAction } from 'react';
+import { Form } from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  Form,
-} from '@/components/ui/form';
+import { FormSelect } from '@/components/form/FormSelect';
+import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
-import { useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction } from 'react';
-import { FormSelect } from '@/components/form/FormSelect';
-import { priorityOptions, ticketStatusOptions } from '@/lib/const';
-import { CrmTicketParams } from '@/api/hooks/ticket/types';
 import { UserItem } from '@/api/hooks/system';
+import { CrmTicketParams } from '@/api/hooks/ticket/types';
+import { BasicParams } from '@/api/types';
 import { formatDate } from '@/lib/utils';
+import { priorityOptions, ticketStatusOptions } from '@/lib/const';
+import FormDateRangeInput from '@/components/form/FormDateRangeInput';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 type FormData = {
-  isAll: string;
   orderId: string;
   content: string;
   priority: string;
@@ -31,34 +25,33 @@ type FormData = {
   time: { from: string; to: string };
 };
 
-export const AllForm = ({
-  setOtherParams,
+export const TicketAllListForm = ({
+  setParams,
+  reset,
+  params,
   userData,
-  loading,
 }: {
-  setOtherParams: Dispatch<
-    SetStateAction<Omit<CrmTicketParams, 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>>
-  >;
+  setParams: Dispatch<SetStateAction<Omit<CrmTicketParams, keyof BasicParams>>>;
+  reset: () => void;
+  params: Omit<CrmTicketParams, keyof BasicParams>;
   userData: UserItem[];
-  loading: boolean;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      isAll: '',
-      orderId: '',
-      content: '',
-      priority: '',
-      status: '',
-      receiverId: '',
-      belongUser: '',
+      orderId: params.orderId || '',
+      content: params.content || '',
+      priority: params.priority || '',
+      status: params.status || '',
+      receiverId: params.receiverId || '',
+      belongUser: params.belongUser || '',
       time: { from: '', to: '' },
     },
   });
 
   const onSubmit = (data: FormData) => {
-    setOtherParams({
-      isAll: data.isAll,
+    setParams({
+      isAll: '1',
       orderId: data.orderId,
       content: data.content,
       priority: data.priority,
@@ -69,34 +62,26 @@ export const AllForm = ({
       belongUser: data.belongUser,
     });
   };
+
   const onReset = () => {
-    setOtherParams({
-      isAll: '',
+    reset();
+    form.reset({
       orderId: '',
       content: '',
       priority: '',
-      startDate: '',
-      endDate: '',
       status: '',
       receiverId: '',
       belongUser: '',
+      time: { from: '', to: '' },
     });
-    form.reset();
   };
+
   return (
     <FormProvider form={form}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
-
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
@@ -153,12 +138,13 @@ export const AllForm = ({
             label={t('ticketList.belongUser')}
             placeholder={t('common.pleaseInput', { field: t('ticketList.belongUser') })}
           />
+
           <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
             </RrhButton>
-            <RrhButton type="submit" loading={loading}>
+            <RrhButton type="submit">
               <Search className="size-3.5" />
               <span>{t('common.Search')}</span>
             </RrhButton>

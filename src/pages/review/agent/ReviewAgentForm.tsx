@@ -22,9 +22,9 @@ type FormData = {
   name: string;
   mobile: string | number;
   email: string;
-  verifyStatus: string;
+  verifyStatus: string | number;
   submitTime: { from: string; to: string };
-  applySource: string;
+  applySource: string | number;
   verifyUserName: string;
 };
 
@@ -32,6 +32,9 @@ export const ReviewAgentForm = ({
   setOtherParams,
   setParams,
   loading,
+  reset,
+  params,
+  otherParams,
 }: {
   setParams: (params: AgentApplyListParams['params']) => void;
   setOtherParams: (params: {
@@ -43,17 +46,20 @@ export const ReviewAgentForm = ({
     verifyUserName?: string;
   }) => void;
   loading: boolean;
+  reset: () => void;
+  params: AgentApplyListParams['params'];
+  otherParams: Omit<AgentApplyListParams, 'params'>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      name: '',
-      mobile: '',
-      email: '',
-      verifyStatus: '',
-      applySource: '',
-      verifyUserName: '',
-      submitTime: { from: '', to: '' },
+      name: otherParams.name || '',
+      mobile: otherParams.mobile || '',
+      email: otherParams.email || '',
+      verifyStatus: otherParams.verifyStatus || '',
+      applySource: otherParams.applySource || '',
+      verifyUserName: otherParams.verifyUserName || '',
+      submitTime: { from: params.beginTime || '', to: params.endTime || '' },
     },
   });
 
@@ -62,8 +68,8 @@ export const ReviewAgentForm = ({
       name: data.name,
       mobile: data.mobile,
       email: data.email,
-      verifyStatus: data.verifyStatus,
-      applySource: data.applySource,
+      verifyStatus: data.verifyStatus?.toString(),
+      applySource: data.applySource?.toString(),
       verifyUserName: data.verifyUserName,
     });
     setParams({
@@ -72,19 +78,16 @@ export const ReviewAgentForm = ({
     });
   };
   const onReset = () => {
-    setOtherParams({
+    reset();
+    form.reset({
       name: '',
       mobile: '',
       email: '',
       verifyStatus: '',
       applySource: '',
       verifyUserName: '',
+      submitTime: { from: '', to: '' },
     });
-    setParams({
-      beginTime: '',
-      endTime: '',
-    });
-    form.reset();
   };
   return (
     <FormProvider form={form}>

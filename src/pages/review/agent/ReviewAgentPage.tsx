@@ -1,11 +1,22 @@
-import { RrhButton } from '@/components/common/RrhButton';
-import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { Funnel, RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
+import { RrhDrawer } from '@/components/common/RrhDrawer';
+import { ReviewAgentForm } from './ReviewAgentForm';
+import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
+import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { AgentApplyListParams, useAgentApplyList } from '@/api/hooks/review';
-import { ReviewAgentTable } from './ReviewAgentTable';
-import { ReviewAgentForm } from './ReviewAgentForm';
+import { Button } from '@/components/ui/button';
+import { PageInfo } from '@/components/common/PageInfo';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { AgentApplyItem } from '@/api/hooks/review';
+import { RrhTag } from '@/components/common/RrhTag';
+import { applySourceMap, reviewStatusMap } from '@/lib/constant';
+import { RrhButton } from '@/components/common/RrhButton';
+import { Checkbox } from '@/components/ui/checkbox';
+import { RrhSorter } from '@/components/common/RrhSorter';
+import { RrhDropdown } from '@/components/common/RrhDropdown';
 
 export const ReviewAgentPage = () => {
   const [params, setParams] = useState<AgentApplyListParams['params']>({
@@ -23,13 +34,16 @@ export const ReviewAgentPage = () => {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
+  const [keyword, setKeyword] = useState('');
+  const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
+  const [orderByColumn, setOrderByColumn] = useState('');
 
   const { data: agentApplyList, isLoading: agentApplyListLoading } = useAgentApplyList(
     {
       pageSize,
       pageNum: pageNum + 1,
-      orderByColumn: '',
-      isAsc: 'asc',
+      orderByColumn,
+      isAsc,
       ...otherParams,
       params: {
         ...params,
@@ -50,38 +64,242 @@ export const ReviewAgentPage = () => {
       applySource: '',
       verifyUserName: '',
     });
+    setKeyword('');
     setPageNum(0);
   };
 
+  const allColumns: CRMColumnDef<AgentApplyItem, unknown>[] = [
+    {
+      id: 'select',
+      label: t('common.select'),
+      header: ({ table }) => (
+        <Checkbox
+          className="data-[state=checked]:border-slate-700"
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={(value: boolean) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          className="data-[state=checked]:border-slate-700"
+          checked={row.getIsSelected()}
+          onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      id: 'No.',
+      header: t('CRMAccountPage.Index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
+      id: 'userName',
+      header: t('CRMAccountPage.UserName'),
+      label: t('CRMAccountPage.UserName'),
+      accessorKey: 'userName',
+      cell: ({ row }) => (
+        <div>
+          {row.original.lastName} {row.original.name}
+        </div>
+      ),
+    },
+    {
+      id: 'mobile',
+      header: t('table.mobile'),
+      cell: ({ row }) => `+${row.original.mzone} ${row.original.mobile || ''}`,
+    },
+    {
+      id: 'email',
+      header: t('table.email'),
+      label: t('table.email'),
+      accessorKey: 'email',
+      cell: ({ row }) => row.original.email || '-',
+    },
+    {
+      id: 'applySource',
+      header: t('table.applySource'),
+      label: t('table.applySource'),
+      accessorKey: 'applySource',
+      cell: ({ row }) => {
+        const mapValue = applySourceMap[row.original.applySource as keyof typeof applySourceMap];
+
+        return mapValue ? t(`table.${mapValue}`) : row.original.applySource || '-';
+      },
+    },
+    {
+      id: 'status',
+      header: () => {
+        return (
+          <div className="flex items-center justify-between gap-2">
+            <div>{t('table.status')}</div>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="verifyStatus"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
+          </div>
+        );
+      },
+      label: t('table.status'),
+      accessorKey: 'verifyStatus',
+      cell: ({ row }) => {
+        const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info'> = {
+          0: 'error',
+          1: 'success',
+          2: 'warning',
+          3: 'info',
+        };
+        return (
+          <RrhTag type={typeMap[row.original.verifyStatus]}>
+            {t(`table.${reviewStatusMap[row.original.verifyStatus]}`)}
+          </RrhTag>
+        );
+      },
+    },
+    {
+      id: 'submitTime',
+      header: () => {
+        return (
+          <div className="flex items-center justify-between gap-2">
+            <div>{t('table.submitTime')}</div>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="createTime"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
+          </div>
+        );
+      },
+      label: t('table.submitTime'),
+      accessorKey: 'createTime',
+      cell: ({ row }) => row.original.createTime || '-',
+    },
+    {
+      id: 'currentAuditor',
+      header: t('table.currentAuditor'),
+      label: t('table.currentAuditor'),
+      accessorKey: 'verifyUserName',
+      cell: ({ row }) => row.original.verifyUserName || '-',
+    },
+    {
+      id: 'finishTime',
+      header: () => {
+        return (
+          <div className="flex items-center justify-between gap-2">
+            <div>{t('table.finishTime')}</div>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="verifyTime"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
+          </div>
+        );
+      },
+      label: t('table.finishTime'),
+      accessorKey: 'verifyTime',
+      cell: ({ row }) => row.original.verifyTime || '-',
+    },
+    {
+      id: 'operate',
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
+      label: t('common.Operation'),
+      cell: ({ row }) => (
+        <RrhDropdown
+          Trigger={<Ellipsis className="size-4" />}
+          dropdownList={[
+            {
+              label: [0, 1].includes(row.original.verifyStatus)
+                ? t('common.View')
+                : t('table.audit'),
+              value: 'audit',
+            },
+            { label: t('common.delete'), value: 'delete' },
+          ]}
+          callToAction={() => {}}
+        />
+      ),
+      fixed: 'right',
+      size: 50,
+    },
+  ];
+
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('review-agent-table', allColumns);
+
   return (
     <div>
-      <h1 className="text-title">{t('reviewAgent.title')}</h1>
-      <div className="my-3.5 flex justify-end gap-2">
-        <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-          <RefreshCcw className="size-3.5" />
-        </RrhButton>
-        <RrhDrawer
-          headerShow={false}
-          asChild
-          responsiveDirection={{
-            mobile: 'bottom',
-            desktop: 'right',
-          }}
-          footerShow={false}
-          Trigger={
-            <RrhButton variant="ghost" className="size-8">
-              <Funnel />
-            </RrhButton>
-          }
-        >
-          <ReviewAgentForm
-            setParams={setParams}
-            setOtherParams={setOtherParams}
-            loading={agentApplyListLoading}
+      <PageInfo title={t('reviewAgent.title')} />
+      <div className="mt-3.5 mb-3.5 flex justify-between">
+        <div className="w-67 max-w-sm">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
+            className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            rightIcon={<Search className="size-4" />}
+            onRightIconClick={() => {
+              setOtherParams(prev => ({ ...prev, name: keyword }));
+              setPageNum(0);
+            }}
           />
-        </RrhDrawer>
+        </div>
+        <div className="flex items-center gap-2">
+          <RrhButton variant="outline">{t('table.export')}</RrhButton>
+          <RrhButton variant="outline">{t('table.batchDelete')}</RrhButton>
+          <RrhButton variant="outline">{t('table.batchAudit')}</RrhButton>
+          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+            <RefreshCcw className="size-3.5" />
+          </Button>
+          <RrhDrawer
+            asChild
+            Trigger={
+              <Button variant="ghost" className="size-8 cursor-pointer">
+                <Funnel className="size-4" />
+              </Button>
+            }
+            title="Filter"
+            responsiveDirection={{
+              mobile: 'bottom',
+              desktop: 'right',
+            }}
+            footerShow={false}
+          >
+            <ReviewAgentForm
+              params={params}
+              otherParams={otherParams}
+              reset={reset}
+              setParams={setParams}
+              setOtherParams={setOtherParams}
+              loading={agentApplyListLoading}
+            />
+          </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
+        </div>
       </div>
-      <ReviewAgentTable
+
+      <DataTable
+        columns={tableColumns}
         data={agentApplyList?.rows || []}
         pageCount={Math.ceil(+(agentApplyList?.total || 0) / pageSize)}
         pageIndex={pageNum}

@@ -37,25 +37,31 @@ type FormData = {
 export const OrderManagementForm = ({
   setParams,
   setOtherParams,
+  reset,
   loading,
+  params,
+  otherParams,
 }: {
   setParams: Dispatch<SetStateAction<MamFollowListParams['params']>>;
   setOtherParams: Dispatch<SetStateAction<Omit<MamFollowListParams, 'params' | keyof BasicParams>>>;
+  reset: () => void;
   loading: boolean;
+  params: MamFollowListParams['params'];
+  otherParams: Omit<MamFollowListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const { data: server } = useServerList();
   const form = useForm({
     defaultValues: {
-      Time: { from: '', to: '' },
-      arrivalTime: { from: '', to: '' },
-      signalSourceOwner: '',
-      signalSourceName: '',
-      userName: '',
-      traderServerId: '',
-      trader: '',
-      client: '',
-      arrivalStatus: '',
+      Time: { from: params.beginTime || '', to: params.endTime || '' },
+      arrivalTime: { from: params.beginArrivalTime || '', to: params.endArrivalTime || '' },
+      signalSourceOwner: params.signalSourceOwner || '',
+      signalSourceName: otherParams.signalSourceName || '',
+      userName: otherParams.userName || '',
+      traderServerId: otherParams.traderServerId || '',
+      trader: otherParams.trader || '',
+      client: otherParams.client || '',
+      arrivalStatus: otherParams.arrivalStatus || '',
     },
   });
   const onSubmit = (data: FormData) => {
@@ -78,24 +84,18 @@ export const OrderManagementForm = ({
     }));
   };
   const onReset = () => {
-    setParams(pre => ({
-      ...pre,
+    reset();
+    form.reset({
+      Time: { from: '', to: '' },
+      arrivalTime: { from: '', to: '' },
       signalSourceOwner: '',
-      beginTime: '',
-      endTime: '',
-      beginArrivalTime: '',
-      endArrivalTime: '',
-    }));
-    setOtherParams(pre => ({
-      ...pre,
       signalSourceName: '',
       userName: '',
       traderServerId: '',
       trader: '',
       client: '',
       arrivalStatus: '',
-    }));
-    form.reset();
+    });
   };
 
   const serverData = useMemo(() => {

@@ -1,16 +1,22 @@
-import { RrhButton } from '@/components/common/RrhButton';
+import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
-import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { ProfitSharingReviewTable } from './ProfitSharingReviewTable';
-import { ProfitSharingReviewForm } from './ProfitSharingReviewForm';
-import { PammCommissionListParams } from '@/api/hooks/pamm/type';
+import { Button } from '@/components/ui/button';
+import { PammCommissionItem, PammCommissionListParams } from '@/api/hooks/pamm/type';
 import { usePammCommissionList } from '@/api/hooks/pamm';
+import { ProfitSharingReviewForm } from './ProfitSharingReviewForm';
+import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
+import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
+import { useTranslation } from 'react-i18next';
+import { PageInfo } from '@/components/common/PageInfo';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
 import { TableCell } from '@/components/ui/table';
 import { transformTotalList } from '@/lib/utils';
+import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { commissionReviewOptions, settlementTypeOptions } from '@/lib/const';
+import { serverMap } from '@/lib/constant';
 
 export const ProfitSharingReviewPage = () => {
   const [params, setParams] = useState<PammCommissionListParams['params']>({
@@ -33,6 +39,7 @@ export const ProfitSharingReviewPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [keyword, setKeyword] = useState('');
   const { t } = useTranslation();
 
   const { data: data, isLoading: loading } = usePammCommissionList({
@@ -44,25 +51,23 @@ export const ProfitSharingReviewPage = () => {
     params,
   });
 
-  const totalList = useMemo(() => {
-    return transformTotalList(data?.totalList, [
-      'businessAmountToatl',
-      'rewardAmountToatl',
-      'commissionToatl',
-    ]);
-  }, [data]);
+  const totalList = transformTotalList(data?.totalList, [
+    'businessAmountToatl',
+    'rewardAmountToatl',
+    'commissionToatl',
+  ]);
 
   const reset = () => {
-    setParams(pre => ({
+    setParams((pre: PammCommissionListParams['params']) => ({
       ...pre,
       beginTime: '',
       endTime: '',
       auditBeginTime: '',
       auditEndTime: '',
     }));
-    setOtherParams(pre => ({
+    setOtherParams((pre: Omit<PammCommissionListParams, 'params' | keyof BasicParams>) => ({
       ...pre,
-      commissionType: '',
+      commissionType: '2',
       serverId: '',
       projectName: '',
       customerName: '',
@@ -71,49 +76,183 @@ export const ProfitSharingReviewPage = () => {
       profitType: '',
       settlementType: '',
     }));
+    setKeyword('');
     setPageNum(0);
   };
 
+  const allColumns: CRMColumnDef<PammCommissionItem, unknown>[] = [
+    {
+      id: 'No',
+      header: t('table.index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
+      id: 'serverName',
+      header: t('table.server'),
+      cell: ({ row }) => {
+        return (
+          <div>
+            {row?.original?.serverName}
+            <span> {serverMap[row?.original?.serverType] || ''}</span>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'projectName',
+      header: t('table.projectName'),
+      accessorFn: row => row.projectName || '-',
+    },
+    {
+      id: 'customerName',
+      header: t('table.customerName'),
+      accessorFn: row => row.customerName || '-',
+    },
+    {
+      id: 'orderNo',
+      header: t('table.orderNumber'),
+      accessorFn: row => row.orderNo || '-',
+    },
+    {
+      id: 'settlementType',
+      header: t('profitSharingReview.settlementType'),
+      cell: ({ row }) => {
+        const text = settlementTypeOptions.find(
+          res => res.value === String(row?.original?.settlementType),
+        );
+        return text?.label ? t(text.label) : '-';
+      },
+    },
+    {
+      id: 'businessAmount',
+      header: t('profitSharingReview.businessAmount'),
+      cell: ({ row }) => {
+        return (row?.original?.businessAmount || '0') + row?.original?.currency || '';
+      },
+    },
+    {
+      id: 'rewardAmount',
+      header: t('profitSharingReview.rewardAmount'),
+      cell: ({ row }) => {
+        return (row?.original?.rewardAmount || '0') + row?.original?.currency || '';
+      },
+    },
+    {
+      id: 'performanceReward',
+      header: t('profitSharingReview.performanceReward'),
+      cell: ({ row }) => {
+        return (row?.original?.performanceReward || '0') + '%';
+      },
+    },
+    {
+      id: 'commission',
+      header: t('profitSharingReview.commission'),
+      cell: ({ row }) => {
+        return (row?.original?.commission || '0') + row?.original?.currency || '';
+      },
+    },
+    {
+      id: 'verifyStatus',
+      header: t('common.status'),
+      cell: ({ row }) => {
+        const text = commissionReviewOptions.find(
+          res => res.value === String(row?.original?.verifyStatus),
+        );
+        return text?.label ? t(text.label) : '-';
+      },
+    },
+    {
+      id: 'submitTime',
+      header: t('table.submitTime'),
+      accessorFn: row => row.submitTime || '-',
+    },
+    {
+      id: 'verifyUser',
+      header: t('table.verifyUser'),
+      accessorFn: row => row.verifyUser || '-',
+    },
+    {
+      id: 'verifyTime',
+      header: t('table.verifyTime'),
+      accessorFn: row => row.verifyTime || '-',
+    },
+    {
+      id: 'operation',
+      label: t('common.Operation'),
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
+      cell: () => (
+        <div>
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[{ label: t('table.audit'), value: 'edit' }]}
+            callToAction={() => {}}
+          />
+        </div>
+      ),
+      fixed: 'right',
+      size: 50,
+    },
+  ];
+
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('profit-sharing-review-table', allColumns);
+
   return (
     <div>
-      <h1 className="text-title">{t('profitSharingReview.title')}</h1>
-      <div className="my-3.5 flex items-center justify-between">
-        <RrhInputWithIcon
-          placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
-          className="h-9"
-          rightIcon={<Search className="size-4 cursor-pointer" />}
-          onRightIconClick={e => {
-            setOtherParams(prev => ({ ...prev, projectName: e }));
-            setPageNum(0);
-          }}
-        />
-        <div className="flex justify-end gap-2">
-          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+      <PageInfo title={t('profitSharingReview.title')} />
+      <div className="mt-3.5 mb-3.5 flex justify-between">
+        <div className="w-67 max-w-sm">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
+            className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            rightIcon={<Search className="size-4" />}
+            onRightIconClick={() => {
+              setOtherParams(prev => ({ ...prev, projectName: keyword }));
+              setPageNum(0);
+            }}
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
-          </RrhButton>
+          </Button>
           <RrhDrawer
-            headerShow={false}
             asChild
+            Trigger={
+              <Button variant="ghost" className="size-8 cursor-pointer">
+                <Funnel className="size-4" />
+              </Button>
+            }
+            title="Filter"
             responsiveDirection={{
               mobile: 'bottom',
               desktop: 'right',
             }}
             footerShow={false}
-            Trigger={
-              <RrhButton variant="ghost" className="size-8">
-                <Funnel />
-              </RrhButton>
-            }
           >
             <ProfitSharingReviewForm
+              params={params}
+              otherParams={otherParams}
+              reset={reset}
               setParams={setParams}
               setOtherParams={setOtherParams}
-              loading={loading}
             />
           </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
         </div>
       </div>
-      <ProfitSharingReviewTable
+      <DataTable
+        columns={tableColumns}
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
         pageIndex={pageNum}

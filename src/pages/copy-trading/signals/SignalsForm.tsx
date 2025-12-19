@@ -34,24 +34,30 @@ type FormData = {
 export const SignalsForm = ({
   setParams,
   setOtherParams,
+  reset,
   loading,
+  otherParams,
+  params,
 }: {
   setParams: Dispatch<SetStateAction<MamSignalSourceListParams['params']>>;
   setOtherParams: Dispatch<
     SetStateAction<Omit<MamSignalSourceListParams, 'params' | keyof BasicParams>>
   >;
+  reset: () => void;
   loading: boolean;
+  otherParams: Omit<MamSignalSourceListParams, 'params' | keyof BasicParams>;
+  params: MamSignalSourceListParams['params'];
 }) => {
   const { t } = useTranslation();
   const { data: server } = useServerList();
   const form = useForm({
     defaultValues: {
-      Time: { from: '', to: '' },
-      name: '',
-      userName: '',
-      serverId: '',
-      account: '',
-      status: '',
+      Time: { from: params.beginTime || '', to: params.endTime || '' },
+      name: otherParams.name || '',
+      userName: otherParams.userName || '',
+      serverId: otherParams.serverId || '',
+      account: otherParams.account || '',
+      status: otherParams.status || '',
     },
   });
   const onSubmit = (data: FormData) => {
@@ -70,20 +76,15 @@ export const SignalsForm = ({
     }));
   };
   const onReset = () => {
-    setParams(pre => ({
-      ...pre,
-      beginTime: '',
-      endTime: '',
-    }));
-    setOtherParams(pre => ({
-      ...pre,
+    reset();
+    form.reset({
+      Time: { from: '', to: '' },
       name: '',
       userName: '',
       serverId: '',
       account: '',
       status: '',
-    }));
-    form.reset();
+    });
   };
 
   const serverData = useMemo(() => {

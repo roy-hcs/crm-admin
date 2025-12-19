@@ -1,17 +1,17 @@
-import { RrhButton } from '@/components/common/RrhButton';
+import { Dispatch, SetStateAction } from 'react';
+import { Form } from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
-import { Form } from '@/components/ui/form';
+import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
-import { useForm } from 'react-hook-form';
-import { BasicParams } from '@/api/hooks/review/types';
-import { Dispatch, SetStateAction } from 'react';
 import { DictTypeItem } from '@/api/hooks/system/types';
 import { BaseOption } from '@/components/common/RrhSelect';
 import { useSelectServerList, RebateFeeSettingsListParams } from '@/api/hooks/rebate';
 import { serverMap } from '@/lib/constant';
+import { BasicParams } from '@/api/hooks/review/types';
 
 type FormData = {
   ruleName: string;
@@ -21,21 +21,23 @@ type FormData = {
 };
 
 export const FeeRebateSettingsForm = ({
-  setOtherParams,
-  loading,
+  setParams,
   serverTypes,
+  reset,
+  params,
 }: {
-  setOtherParams: Dispatch<SetStateAction<Omit<RebateFeeSettingsListParams, keyof BasicParams>>>;
-  loading: boolean;
+  setParams: Dispatch<SetStateAction<Omit<RebateFeeSettingsListParams, keyof BasicParams>>>;
+  reset: () => void;
+  params: Omit<RebateFeeSettingsListParams, keyof BasicParams>;
   serverTypes: DictTypeItem[];
 }) => {
   const { t } = useTranslation();
-  const form = useForm<FormData>({
+  const form = useForm({
     defaultValues: {
-      ruleName: '',
-      serverType: '',
-      serverId: '',
-      hasUsed: '',
+      ruleName: params.ruleName || '',
+      serverType: params.serverType || '',
+      serverId: params.serverId || '',
+      hasUsed: params.hasUsed || '',
     },
   });
 
@@ -46,8 +48,9 @@ export const FeeRebateSettingsForm = ({
     },
     { enabled: !!form.watch('serverType') },
   );
+
   const onSubmit = (data: FormData) => {
-    setOtherParams({
+    setParams({
       rebateType: '2',
       model: '1',
       ruleName: data.ruleName,
@@ -56,16 +59,15 @@ export const FeeRebateSettingsForm = ({
       hasUsed: data.hasUsed === 'all' ? '' : data.hasUsed,
     });
   };
+
   const onReset = () => {
-    setOtherParams({
-      rebateType: '',
-      model: '',
+    reset();
+    form.reset({
       ruleName: '',
       serverType: '',
       serverId: '',
       hasUsed: '',
     });
-    form.reset();
   };
   return (
     <FormProvider form={form}>
@@ -73,14 +75,6 @@ export const FeeRebateSettingsForm = ({
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
-
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
@@ -155,7 +149,7 @@ export const FeeRebateSettingsForm = ({
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
             </RrhButton>
-            <RrhButton type="submit" loading={loading}>
+            <RrhButton type="submit">
               <Search className="size-3.5" />
               <span>{t('common.Search')}</span>
             </RrhButton>

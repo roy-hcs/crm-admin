@@ -22,18 +22,22 @@ export const AgreementsForm = ({
   loading,
   scenariosType,
   productList,
+  reset,
+  otherParams,
 }: {
   setOtherParams: Dispatch<SetStateAction<Omit<PammProtocolListParams, keyof BasicParams>>>;
   loading: boolean;
   scenariosType: DictTypeItem[];
   productList: { label: string; value: string }[];
+  reset?: () => void;
+  otherParams?: Omit<PammProtocolListParams, keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const form = useForm<FormData>({
     defaultValues: {
-      projectId: '',
-      name: '',
-      applicableScenarios: '',
+      projectId: otherParams?.projectId || '',
+      name: otherParams?.name || '',
+      applicableScenarios: otherParams?.applicableScenarios || '',
     },
   });
   const onSubmit = (data: FormData) => {
@@ -44,12 +48,14 @@ export const AgreementsForm = ({
     });
   };
   const onReset = () => {
-    setOtherParams({
+    if (reset) {
+      reset();
+    }
+    form.reset({
       projectId: '',
       name: '',
       applicableScenarios: '',
     });
-    form.reset();
   };
   return (
     <FormProvider form={form}>

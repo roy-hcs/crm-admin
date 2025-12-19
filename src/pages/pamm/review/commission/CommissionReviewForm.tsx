@@ -1,5 +1,4 @@
-import { RrhButton } from '@/components/common/RrhButton';
-import { FormInput } from '@/components/form/FormInput';
+import { Dispatch, SetStateAction } from 'react';
 import {
   Form,
   FormControl,
@@ -8,13 +7,14 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import FormDateRangeInput from '@/components/form/FormDateRangeInput';
+import { useForm } from 'react-hook-form';
+import { FormProvider } from '@/contexts/form';
+import { FormInput } from '@/components/form/FormInput';
+import { FormSelect } from '@/components/form/FormSelect';
+import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
-import { useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction } from 'react';
-import { FormSelect } from '@/components/form/FormSelect';
-import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { PammCommissionListParams } from '@/api/hooks/pamm/type';
 import { BasicParams } from '@/api/types';
 import { commissionReviewOptions } from '@/lib/const';
@@ -38,18 +38,55 @@ type FormData = {
 export const CommissionReviewForm = ({
   setParams,
   setOtherParams,
-  loading,
+  reset,
+  params,
+  otherParams,
 }: {
   setParams: Dispatch<SetStateAction<PammCommissionListParams['params']>>;
   setOtherParams: Dispatch<
     SetStateAction<Omit<PammCommissionListParams, 'params' | keyof BasicParams>>
   >;
-  loading: boolean;
+  reset: () => void;
+  params: PammCommissionListParams['params'];
+  otherParams: Omit<PammCommissionListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
   const { data: server, isLoading: serverLoading } = useServerList();
   const form = useForm({
     defaultValues: {
+      auditTime: { from: params.auditBeginTime || '', to: params.auditEndTime || '' },
+      beginTime: { from: params.beginTime || '', to: params.endTime || '' },
+      commissionType: otherParams.commissionType || '',
+      serverId: otherParams.serverId || '',
+      projectName: otherParams.projectName || '',
+      customerName: otherParams.customerName || '',
+      orderNo: otherParams.orderNo || '',
+      verifyStatus: otherParams.verifyStatus || '',
+      profitType: otherParams.profitType || '',
+    },
+  });
+
+  const onSubmit = (data: FormData) => {
+    setParams({
+      beginTime: formatDate(data.beginTime.from),
+      endTime: formatDate(data.beginTime.to),
+      auditBeginTime: formatDate(data.auditTime.from),
+      auditEndTime: formatDate(data.auditTime.to),
+    });
+    setOtherParams({
+      commissionType: data.commissionType,
+      serverId: data.serverId,
+      projectName: data.projectName,
+      customerName: data.customerName,
+      orderNo: data.orderNo,
+      verifyStatus: data.verifyStatus,
+      profitType: data.profitType,
+    });
+  };
+
+  const onReset = () => {
+    reset();
+    form.reset({
       auditTime: { from: '', to: '' },
       beginTime: { from: '', to: '' },
       commissionType: '',
@@ -59,62 +96,15 @@ export const CommissionReviewForm = ({
       orderNo: '',
       verifyStatus: '',
       profitType: '',
-    },
-  });
-  const onSubmit = (data: FormData) => {
-    setParams(pre => ({
-      ...pre,
-      beginTime: formatDate(data.beginTime.from),
-      endTime: formatDate(data.beginTime.to),
+    });
+  };
 
-      auditBeginTime: formatDate(data.auditTime.from),
-      auditEndTime: formatDate(data.auditTime.to),
-    }));
-    setOtherParams(pre => ({
-      ...pre,
-      commissionType: data.commissionType,
-      serverId: data.serverId,
-      projectName: data.projectName,
-      customerName: data.customerName,
-      orderNo: data.orderNo,
-      verifyStatus: data.verifyStatus,
-      profitType: data.profitType,
-    }));
-  };
-  const onReset = () => {
-    setParams(pre => ({
-      ...pre,
-      beginTime: '',
-      endTime: '',
-      auditBeginTime: '',
-      auditEndTime: '',
-    }));
-    setOtherParams(pre => ({
-      ...pre,
-      commissionType: '',
-      serverId: '',
-      projectName: '',
-      customerName: '',
-      orderNo: '',
-      verifyStatus: '',
-      profitType: '',
-    }));
-    form.reset();
-  };
   return (
     <FormProvider form={form}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
-
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           {!serverLoading && (
@@ -210,7 +200,7 @@ export const CommissionReviewForm = ({
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
             </RrhButton>
-            <RrhButton type="submit" loading={loading}>
+            <RrhButton type="submit">
               <Search className="size-3.5" />
               <span>{t('common.Search')}</span>
             </RrhButton>

@@ -1,13 +1,14 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from 'react-i18next';
-import { TicketAllList } from './ticket-all-list/TicketAllList';
-import { TicketUnassignedList } from './ticket-unassigned-list/TicketUnassignedList';
+import { PageInfo } from '@/components/common/PageInfo';
+import { TicketAllList } from './TicketAllList';
+import { TicketUnassignedList } from './TicketUnassignedList';
 
 export const TicketListPage = () => {
   const { t } = useTranslation();
   return (
     <div>
-      <h1 className="text-title">{t('ticketList.title')}</h1>
+      <PageInfo title={t('ticketList.title')} />
       <Tabs defaultValue="account" className="w-full">
         <TabsList className="dark:bg-accent bg-slate-100">
           <TabsTrigger value="account">{t('common.all')}</TabsTrigger>

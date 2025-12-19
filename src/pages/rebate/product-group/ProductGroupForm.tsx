@@ -1,17 +1,17 @@
-import { RrhButton } from '@/components/common/RrhButton';
+import { Dispatch, SetStateAction } from 'react';
+import { Form } from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
-import { Form } from '@/components/ui/form';
+import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
-import { useForm } from 'react-hook-form';
-import { BasicParams } from '@/api/hooks/review/types';
-import { Dispatch, SetStateAction } from 'react';
 import { DictTypeItem } from '@/api/hooks/system/types';
 import { BaseOption } from '@/components/common/RrhSelect';
 import { useSelectServerList, RebateBaseTypeParams } from '@/api/hooks/rebate';
 import { serverMap } from '@/lib/constant';
+import { BasicParams } from '@/api/hooks/review/types';
 
 type FormData = {
   typeGroupName: string;
@@ -20,20 +20,22 @@ type FormData = {
 };
 
 export const ProductGroupForm = ({
-  setOtherParams,
-  loading,
+  setParams,
   serverTypes,
+  reset,
+  params,
 }: {
-  setOtherParams: Dispatch<SetStateAction<Omit<RebateBaseTypeParams, keyof BasicParams>>>;
-  loading: boolean;
+  setParams: Dispatch<SetStateAction<Omit<RebateBaseTypeParams, keyof BasicParams>>>;
+  reset: () => void;
+  params: Omit<RebateBaseTypeParams, keyof BasicParams>;
   serverTypes: DictTypeItem[];
 }) => {
   const { t } = useTranslation();
-  const form = useForm<FormData>({
+  const form = useForm({
     defaultValues: {
-      typeGroupName: '',
-      serverType: '',
-      serverId: '',
+      typeGroupName: params.typeGroupName || '',
+      serverType: params.serverType || '',
+      serverId: params.serverId || '',
     },
   });
 
@@ -44,20 +46,22 @@ export const ProductGroupForm = ({
     },
     { enabled: !!form.watch('serverType') },
   );
+
   const onSubmit = (data: FormData) => {
-    setOtherParams({
+    setParams({
       typeGroupName: data.typeGroupName,
       serverType: data.serverType,
       serverId: data.serverId,
     });
   };
+
   const onReset = () => {
-    setOtherParams({
+    reset();
+    form.reset({
       typeGroupName: '',
       serverType: '',
       serverId: '',
     });
-    form.reset();
   };
   return (
     <FormProvider form={form}>
@@ -65,14 +69,6 @@ export const ProductGroupForm = ({
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
-
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <FormInput
@@ -126,7 +122,7 @@ export const ProductGroupForm = ({
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>
             </RrhButton>
-            <RrhButton type="submit" loading={loading}>
+            <RrhButton type="submit">
               <Search className="size-3.5" />
               <span>{t('common.Search')}</span>
             </RrhButton>

@@ -1,16 +1,38 @@
-import { RrhButton } from '@/components/common/RrhButton';
-import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { BasicParams } from '@/api/hooks/review/types';
-import { useServerList } from '@/api/hooks/system/system';
-import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
-import { PammReportInvestListParams } from '@/api/hooks/pamm/type';
+import { RrhDrawer } from '@/components/common/RrhDrawer';
+import { Button } from '@/components/ui/button';
+import { PammReportInvestItem, PammReportInvestListParams } from '@/api/hooks/pamm/type';
 import { usePammReportInvestList } from '@/api/hooks/pamm';
 import { InvestmentReportForm } from './InvestmentReportForm';
-import { InvestmentReportTable } from './InvestmentReportTable';
+import { Funnel, Search, RefreshCcw } from 'lucide-react';
+import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
+import { useTranslation } from 'react-i18next';
+import { PageInfo } from '@/components/common/PageInfo';
+import { CRMColumnDef, DataTable } from '@/components/table';
+import { useColumnVisibility } from '@/hooks/useColumnVisibility';
+import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { BasicParams } from '@/api/hooks/review/types';
+import { useServerList } from '@/api/hooks/system/system';
 import { TableCell } from '@/components/ui/table';
+import { pammReportStatusMap } from '@/lib/constant';
+import { RrhSorter } from '@/components/common/RrhSorter';
+
+function getServerTypeName(serverType: number) {
+  switch (serverType) {
+    case 1:
+      return 'MT5';
+    case 2:
+      return 'MT4';
+    case 3:
+      return 'Sirix';
+    case 4:
+      return 'XForce';
+    case 5:
+      return 'XOH';
+    default:
+      return '-';
+  }
+}
 
 export const InvestmentReportPage = () => {
   const [otherParams, setOtherParams] = useState<
@@ -32,6 +54,7 @@ export const InvestmentReportPage = () => {
   const [pageSize, setPageSize] = useState(10);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
   const [orderByColumn, setOrderByColumn] = useState<string>('');
+  const [keyword, setKeyword] = useState('');
   const { t } = useTranslation();
   const { data: server, isLoading: serverLoading } = useServerList();
 
@@ -42,6 +65,7 @@ export const InvestmentReportPage = () => {
     isAsc,
     ...otherParams,
   });
+
   const reset = () => {
     setOtherParams({
       serverId: '',
@@ -56,49 +80,204 @@ export const InvestmentReportPage = () => {
       confirmEndTime: '',
       confirmStartTime: '',
     });
+    setKeyword('');
     setPageNum(0);
   };
 
+  const allColumns: CRMColumnDef<PammReportInvestItem, unknown>[] = [
+    {
+      id: 'No.',
+      header: t('ib.overview.Index'),
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
+      id: 'serverName',
+      header: t('table.serverName'),
+      cell: ({ row }) => {
+        const serverTypeName = getServerTypeName(row.original.serverType);
+        return row.original.serverName + (serverTypeName ? ` | (${serverTypeName})` : '');
+      },
+    },
+    {
+      id: 'projectName',
+      header: t('table.projectName'),
+      accessorFn: row => row.projectName || '-',
+    },
+    {
+      id: 'investor',
+      header: t('table.customerName'),
+      cell: ({ row }) => {
+        const rowInfo = row.original;
+        let userName = '';
+        if (rowInfo.lastName) {
+          userName += rowInfo.lastName;
+        }
+        if (rowInfo.name) {
+          userName += ' ' + rowInfo.name;
+        }
+        const showId = rowInfo.showId || '';
+        if (!userName) {
+          return '-';
+        }
+        return (
+          <div>
+            <div>{userName}</div>
+            {showId && <div>{showId}</div>}
+          </div>
+        );
+      },
+    },
+    {
+      id: 'role',
+      header: t('table.investRole'),
+      accessorFn: row => row.role || '-',
+    },
+    {
+      id: 'investUpper',
+      header: t('table.investorUpper'),
+      cell: ({ row }) => {
+        return <div dangerouslySetInnerHTML={{ __html: row.original.inviter || '-' }}></div>;
+      },
+    },
+    {
+      id: 'orderNo',
+      header: t('table.orderNumber'),
+      accessorFn: row => row.orderNo || '-',
+    },
+    {
+      id: 'type',
+      header: t('investmentReview.operType'),
+      cell: ({ row }) => {
+        return row.original.type === 1 ? t('table.buy') : t('table.redemption');
+      },
+    },
+    {
+      id: 'amount',
+      header: t('table.investAmount'),
+      cell: ({ row }) => {
+        const currency = row.original.currency || '';
+        return (
+          <div>
+            <div>{(row.original.amount || 0).toFixed(2)}</div>
+            <div>{currency}</div>
+          </div>
+        );
+      },
+    },
+    {
+      id: 'revenueSettlementMethods',
+      header: t('table.revenueSettlementMethods'),
+      accessorFn: row =>
+        row.settlementType === 1 ? t('table.periodicSettlement') : t('table.redemptionSettlement'),
+    },
+    {
+      id: 'status',
+      header: t('table.status'),
+      cell: ({ row }) => {
+        const status = row.original.status;
+        if (!status) return '-';
+        return pammReportStatusMap[status]
+          ? t(`PammInvestReport.${pammReportStatusMap[status]}`)
+          : '-';
+      },
+    },
+    {
+      id: 'investTime',
+      label: t('table.investTime'),
+      header: () => {
+        return (
+          <div className="flex items-center gap-2">
+            <div>{t('table.investTime')}</div>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="operTime"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
+          </div>
+        );
+      },
+      accessorFn: row => row.operTime ?? '-',
+    },
+    {
+      id: 'confirmTime',
+      label: t('table.confirmTime'),
+      header: () => {
+        return (
+          <div className="flex items-center gap-2">
+            <div>{t('table.confirmTime')}</div>
+            <RrhSorter
+              orderByColumn={orderByColumn}
+              isAsc={isAsc}
+              column="confirmTime"
+              setOrderByColumn={setOrderByColumn}
+              setIsAsc={setIsAsc}
+            />
+          </div>
+        );
+      },
+      accessorFn: row => row.confirmTime ?? '-',
+    },
+  ];
+
+  const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
+    useColumnVisibility('investment-report-table', allColumns);
+
   return (
     <div>
-      <h1 className="text-title">{t('PammInvestReport.title')}</h1>
-      <div className="my-3.5 flex items-center justify-between">
-        <RrhInputWithIcon
-          placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
-          className="h-9"
-          rightIcon={<Search className="size-4 cursor-pointer" />}
-          onRightIconClick={e => {
-            setOtherParams(prev => ({ ...prev, projectName: e }));
-            setPageNum(0);
-          }}
-        />
-        <div className="flex justify-end gap-2">
-          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+      <PageInfo title={t('PammInvestReport.title')} />
+      <div className="mt-3.5 mb-3.5 flex justify-between">
+        <div className="w-67 max-w-sm">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
+            className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            rightIcon={<Search className="size-4" />}
+            onRightIconClick={() => {
+              setOtherParams(prev => ({ ...prev, projectName: keyword }));
+              setPageNum(0);
+            }}
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
-          </RrhButton>
+          </Button>
           <RrhDrawer
-            headerShow={false}
             asChild
+            Trigger={
+              <Button variant="ghost" className="size-8 cursor-pointer">
+                <Funnel className="size-4" />
+              </Button>
+            }
+            title="Filter"
             responsiveDirection={{
               mobile: 'bottom',
               desktop: 'right',
             }}
             footerShow={false}
-            Trigger={
-              <RrhButton variant="ghost" className="size-8">
-                <Funnel />
-              </RrhButton>
-            }
           >
             <InvestmentReportForm
               serverOptions={server?.rows || []}
               setOtherParams={setOtherParams}
+              reset={reset}
               loading={pammInvestReportsLoading || serverLoading}
+              otherParams={otherParams}
             />
           </RrhDrawer>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
         </div>
       </div>
-      <InvestmentReportTable
+      <DataTable
+        columns={tableColumns}
         data={pammInvestReports?.rows || []}
         pageCount={Math.ceil(+(pammInvestReports?.total || 0) / pageSize)}
         pageIndex={pageNum}
@@ -106,10 +285,6 @@ export const InvestmentReportPage = () => {
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
         loading={pammInvestReportsLoading}
-        orderByColumn={orderByColumn}
-        setOrderByColumn={setOrderByColumn}
-        isAsc={isAsc}
-        setIsAsc={setIsAsc}
         CustomRow={
           <>
             <TableCell colSpan={3}>{t('table.total')}</TableCell>
