@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { ReviewDepositForm } from './ReviewDepositForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
@@ -22,6 +22,7 @@ import { RrhTag } from '@/components/common/RrhTag';
 import { depositMethodsMap, withdrawalReviewStatusMap } from '@/lib/constant';
 import { useCurrencyList } from '@/api/hooks/system/system';
 import { RrhSorter } from '@/components/common/RrhSorter';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export const ReviewDepositPage = () => {
   const { t } = useTranslation();
@@ -104,6 +105,22 @@ export const ReviewDepositPage = () => {
     setPageNum(0);
     setSumShow(false);
   };
+
+  // 获取导航操作
+  const { openTab } = useTabActions();
+
+  const goToDetail = useCallback(
+    (row: DepositListItem) => {
+      const type = ![-1, 2].includes(row.status) ? 'detail' : 'audit';
+      const url = `/review/deposit/detail?type=${type}&id=${row.id}`;
+      openTab({
+        key: url,
+        title: t('depositReview.depositReviewDetail'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
 
   const allColumns: CRMColumnDef<DepositListItem, unknown>[] = [
     {
@@ -387,7 +404,7 @@ export const ReviewDepositPage = () => {
       },
       label: t('common.Operation'),
       cell: ({ row }) => (
-        <RrhButton variant="ghost">
+        <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
           {row.original.status !== 2 ? t('common.View') : t('table.audit')}
         </RrhButton>
       ),

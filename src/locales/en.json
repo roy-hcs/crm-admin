@@ -638,7 +638,14 @@
     "paymentBankAddress": "Beneficiary bank address",
     "swiftCode": "SWIFT Code",
     "hideHidableCols": "Hide hideable columns",
-    "showAllCols": "Show all columns"
+    "showAllCols": "Show all columns",
+    "channelName": "Payment method",
+    "factDepositOfReceiptTip": "The deposit amount is the amount received in the account or wallet. The deposit amount, handling fee, and exchange rate are only recorded.",
+    "nameOrEmail": "Name/email",
+    "orderId": "Pay order",
+    "receiptAmount": "Amount received",
+    "userShowId": "Account ID",
+    "voucher": "certificate"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -766,7 +773,12 @@
     "title": "Deposit Rebate Review"
   },
   "depositReview": {
-    "title": "Deposit review"
+    "title": "Deposit review",
+    "depositFunds": "Deposit or not",
+    "depositInfo": "Deposit information",
+    "depositReviewDetail": "Deposit review details",
+    "isNeedDepositTips": "If you select yes, the deposit will be made to the target account, otherwise the deposit operation will not be performed.",
+    "orderCommentPlaceholder": "This content will be synchronized to the trading platform (exceeding characters will be truncated)"
   },
   "feeRebateReview": {
     "title": "Processing fee rebate review"
@@ -806,7 +818,10 @@
       "nameText": "name",
       "sort": "Sort",
       "title": "Review Settings",
-      "val": "Display of total count of navigation bar to be reviewed"
+      "val": "Display of total count of navigation bar to be reviewed",
+      "desc": "If you turn on/off the \"Display of the total number of pending review on the home page\", the home page will display/hide the number of records to be reviewed; if you turn on/off the \"Display of the total number of pending review on the navigation bar\", the number of records to be reviewed will be displayed/hidden on the navigation bar.",
+      "editAccess": "Edit permissions",
+      "sortingConfig": "Sorting configuration"
     },
     "advancePaymentRatio": "Current account prepayment ratio",
     "amountCumulative": "Amount (cumulative)",
