@@ -1,4 +1,5 @@
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { cn } from '@/lib/utils';
 
 type ImageZoomProps = {
   src: string;
@@ -15,23 +16,14 @@ export const ImageZoom = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <img
-          src={src}
-          alt={alt}
-          className={['cursor-zoom-in rounded-md', thumbnailClassName].filter(Boolean).join(' ')}
-        />
+        <img src={src} alt={alt} className={cn('cursor-zoom-in rounded-md', thumbnailClassName)} />
       </DialogTrigger>
-      <DialogContent
-        className="border-0 bg-transparent p-0 shadow-none sm:max-w-[90vw]"
-        aria-describedby={undefined}
-      >
+      <DialogContent className="border-0 bg-transparent p-0 shadow-none sm:max-w-[90vw]">
         <div className="flex max-h-[90vh] items-center justify-center">
           <img
             src={src}
             alt={alt}
-            className={['max-h-[90vh] max-w-[90vw] object-contain', fullImageClassName]
-              .filter(Boolean)
-              .join(' ')}
+            className={cn('max-h-[90vh] max-w-[90vw] object-contain', fullImageClassName)}
           />
         </div>
       </DialogContent>
