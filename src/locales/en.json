@@ -624,7 +624,13 @@
     "swiftCode": "SWIFT Code",
     "hideHidableCols": "Hide hideable columns",
     "showAllCols": "Show all columns",
-    "nameOrEmail": "Name/email"
+    "channelName": "Payment method",
+    "factDepositOfReceiptTip": "The deposit amount is the amount received in the account or wallet. The deposit amount, handling fee, and exchange rate are only recorded.",
+    "nameOrEmail": "Name/email",
+    "orderId": "Pay order",
+    "receiptAmount": "Amount received",
+    "userShowId": "Account ID",
+    "voucher": "certificate"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -752,7 +758,12 @@
     "title": "Deposit Rebate Review"
   },
   "depositReview": {
-    "title": "Deposit review"
+    "title": "Deposit review",
+    "depositFunds": "Deposit or not",
+    "depositInfo": "Deposit information",
+    "depositReviewDetail": "Deposit review details",
+    "isNeedDepositTips": "If you select yes, the deposit will be made to the target account, otherwise the deposit operation will not be performed.",
+    "orderCommentPlaceholder": "This content will be synchronized to the trading platform (exceeding characters will be truncated)"
   },
   "feeRebateReview": {
     "title": "Processing fee rebate review"

@@ -506,7 +506,12 @@
     "withdrawalReviewDetail": "出金审核详情"
   },
   "depositReview": {
-    "title": "入金审核"
+    "title": "入金审核",
+    "depositReviewDetail": "入金审核详情",
+    "depositInfo": "入金信息",
+    "depositFunds": "是否入金",
+    "orderCommentPlaceholder": "此内容将会同步至交易平台(超出的字符将会被截断)",
+    "isNeedDepositTips": "如果选择是，将会对目标账户进行入金，否则不会进行入金操作"
   },
   "rolesManagement": {
     "title": "角色管理",
@@ -743,6 +748,8 @@
     }
   },
   "table": {
+    "orderId": "支付订单",
+    "channelName": "支付方式",
     "firstSubscription": "首次订阅",
     "renew": "续费",
     "notInEffect": "未生效",
@@ -1018,7 +1025,11 @@
     "accountInformation": "账户信息",
     "showAllCols": "显示所有列",
     "hideHidableCols": "隐藏可隐藏列",
-    "nameOrEmail": "姓名/邮箱"
+    "nameOrEmail": "姓名/邮箱",
+    "receiptAmount": "到款金额",
+    "userShowId": "账户ID",
+    "voucher": "凭证",
+    "factDepositOfReceiptTip": "入金金额为账号或钱包的到账金额，存款金额、手续费、汇率只做记录"
   },
   "review": {
     "settings": {

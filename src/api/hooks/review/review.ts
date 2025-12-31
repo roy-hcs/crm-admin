@@ -33,6 +33,8 @@ import {
   WithdrawalVerifyParams,
   SumWithdrawalAmountParams,
   SumWithdrawalAmountRes,
+  DepositReviewDetailRes,
+  DepositVerifyParams,
 } from './types';
 
 export function useAgentApplyList(params: AgentApplyListParams, options: { enabled: boolean }) {
@@ -220,5 +222,48 @@ export function useSumWithdrawAmount(params: SumWithdrawalAmountParams) {
         `/system/crmWithdrawVerify/sumWithdrawalAmount`,
         params,
       ),
+  });
+}
+
+/**
+ * 获取入金审核详情
+ */
+export function useDepositReviewDetail(depistId: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['depositReviewDetail', depistId],
+    queryFn: () =>
+      apiGetCustom<DepositReviewDetailRes>(`/system/crmDepositVerify/verifyDetail/${depistId}`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 入金审核提交
+ */
+export function useDepositVerify() {
+  return useMutation({
+    mutationFn: (params: DepositVerifyParams) =>
+      apiFormPostCustom(`/system/crmDepositVerify/verify`, params),
+  });
+}
+
+/**
+ * 获取入金交易服务器订单
+ */
+export function useDepositDealTicketList(params: {
+  ticket: string;
+  pageSize: number;
+  pageNum: number;
+  orderByColumn: string;
+  isAsc: string;
+}) {
+  return useQuery({
+    queryKey: ['DepositDealTicketList', params],
+    queryFn: () =>
+      apiFormPostCustom<{
+        rows: [];
+        code: number;
+        total: number;
+      }>(`/system/crmDepositVerify/dealTicket/list/${params.ticket}`, params),
   });
 }
