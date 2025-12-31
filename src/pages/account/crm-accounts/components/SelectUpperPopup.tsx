@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
+import { ArrowRight } from 'lucide-react';
 
 export const SelectUpperPopup = ({
   field,
@@ -19,13 +20,10 @@ export const SelectUpperPopup = ({
   const { t } = useTranslation();
   return (
     <FormItem>
-      <div
-        className={cn(
-          'flex items-center text-sm',
-          verticalLabel ? 'flex-col items-start gap-2' : '',
-        )}
-      >
-        <FormLabel className="basis-3/12">{t('CRMAccountPage.Superior')}:</FormLabel>
+      <div className={cn('text-foreground text-sm', verticalLabel ? '' : 'flex items-center')}>
+        <FormLabel className={cn(verticalLabel ? 'mb-2' : 'basis-3/12')}>
+          {t('CRMAccountPage.Superior')}:
+        </FormLabel>
         <FormControl>
           <AccountDialog
             trigger={
@@ -36,13 +34,15 @@ export const SelectUpperPopup = ({
                 )}
               >
                 <Input
-                  className="flex-1"
+                  className="flex-1 border-0 ring-0 outline-0"
                   type="text"
-                  disabled
+                  readOnly
+                  placeholder={t('common.pleaseSelect')}
                   value={selectedUser ? `${selectedUser.userName}(${selectedUser.showId})` : ''}
                 />
-                <RrhButton className="rounded-l-none" type="button">
-                  {t('common.pleaseSelect')}
+                <RrhButton variant="ghost" className="rounded-l-none" type="button">
+                  {t('common.select')}
+                  <ArrowRight />
                 </RrhButton>
               </div>
             }

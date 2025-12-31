@@ -258,21 +258,6 @@
     "loginFailed": "Login failed:",
     "EnterYourPassword": "Please enter your password"
   },
-  "rules": {
-    "accountType": "Account Type",
-    "colorPreference": "color",
-    "email": "Mail",
-    "firstName": "name",
-    "inviter": "Inviter",
-    "lastName": "surname",
-    "mobile": "phone number",
-    "pattern": "Please enter a valid {{field}}",
-    "preferenceLanguage": "language",
-    "pwd": "password",
-    "required": "{{field}} cannot be empty",
-    "roleId": "Role",
-    "status": "state"
-  },
   "ib": {
     "CustomerTracking": {
       "Index": "Serial number",
@@ -638,7 +623,8 @@
     "paymentBankAddress": "Beneficiary bank address",
     "swiftCode": "SWIFT Code",
     "hideHidableCols": "Hide hideable columns",
-    "showAllCols": "Show all columns"
+    "showAllCols": "Show all columns",
+    "nameOrEmail": "Name/email"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -806,7 +792,10 @@
       "nameText": "name",
       "sort": "Sort",
       "title": "Review Settings",
-      "val": "Display of total count of navigation bar to be reviewed"
+      "val": "Display of total count of navigation bar to be reviewed",
+      "desc": "If you turn on/off the \"Display of the total number of pending review on the home page\", the home page will display/hide the number of records to be reviewed; if you turn on/off the \"Display of the total number of pending review on the navigation bar\", the number of records to be reviewed will be displayed/hidden on the navigation bar.",
+      "editAccess": "Edit permissions",
+      "sortingConfig": "Sorting configuration"
     },
     "advancePaymentRatio": "Current account prepayment ratio",
     "amountCumulative": "Amount (cumulative)",
@@ -1169,5 +1158,21 @@
     "payAccountName": "payment account",
     "subscribeFee": "Subscription fee(USD)",
     "title": "Order management"
+  },
+  "rules": {
+    "accountType": "Account type",
+    "colorPreference": "color",
+    "email": "Mail",
+    "firstName": "name",
+    "inviter": "Inviter",
+    "lastName": "surname",
+    "limitLength": "Within {{field}} characters",
+    "mobile": "phone number",
+    "pattern": "Please enter a valid {{field}}",
+    "preferenceLanguage": "Preferred language",
+    "pwd": "password",
+    "required": "{{field}} cannot be empty",
+    "roleId": "Role",
+    "status": "state"
   }
 }
