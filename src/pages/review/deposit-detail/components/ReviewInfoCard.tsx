@@ -1,0 +1,172 @@
+import { DepositDetail, DepositReviewDetailRes } from '@/api/hooks/review';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { WithdrawalItem } from './WithdrawalItem';
+import { FormField } from '@/components/ui/form';
+import { InfoItem } from './InfoItem';
+import { Switch } from '@/components/ui/switch';
+import { RrhRadioGroup } from '@/components/common/RrhRadioGroup';
+import { Input } from '@/components/ui/input';
+import { RrhButton } from '@/components/common/RrhButton';
+import { RrhTextarea } from '@/components/common/RrhTextarea';
+import { RrhCard } from '@/components/common/RrhCard';
+
+export const ReviewInfoCard = ({
+  depositInfo,
+  reviewer,
+}: {
+  depositInfo: DepositDetail;
+  reviewer: DepositReviewDetailRes['data']['reviewer'];
+}) => {
+  const { t } = useTranslation();
+  const [orderNumberShow, setOrderNumberShow] = useState(false);
+  const [statusValue, setStatusValue] = useState<string>('1');
+
+  return (
+    <RrhCard title={t('review.review')}>
+      <FormField
+        name="reviewer"
+        disabled
+        render={() => (
+          <WithdrawalItem
+            label={t('review.information.verifyUserName')}
+            ContentDom={
+              <InfoItem
+                info={
+                  reviewer.userId != null
+                    ? reviewer.userLastName + ' ' + reviewer.userName
+                    : reviewer.roleName
+                }
+              />
+            }
+          />
+        )}
+      />
+
+      <FormField
+        name="status"
+        render={({ field }) => (
+          <WithdrawalItem
+            label={t('review.reviewStatus')}
+            ContentDom={
+              <div>
+                <RrhRadioGroup
+                  value={field.value}
+                  onValueChange={v => {
+                    field.onChange(v);
+                    setStatusValue(v);
+                  }}
+                  labelClassName="font-medium"
+                  radioItems={[
+                    {
+                      value: '1',
+                      label: t('common.verifyStatus.approved'),
+                    },
+                    {
+                      value: '0',
+                      label: t('common.verifyStatus.rejected'),
+                    },
+                  ]}
+                />
+              </div>
+            }
+          />
+        )}
+      />
+
+      {statusValue !== '0' && (
+        <FormField
+          name="isNeedDeposit"
+          render={({ field }) => (
+            <WithdrawalItem
+              label={t('depositReview.depositFunds')}
+              ContentDom={
+                <div>
+                  <RrhRadioGroup
+                    value={field.value || '1'}
+                    onValueChange={field.onChange}
+                    labelClassName="font-medium"
+                    radioItems={[
+                      {
+                        value: '1',
+                        label: t('common.yes'),
+                      },
+                      {
+                        value: '0',
+                        label: t('common.no'),
+                      },
+                    ]}
+                  />
+                  <div className="text-muted-foreground mt-2 text-sm">
+                    *{t('depositReview.isNeedDepositTips')}
+                  </div>
+                </div>
+              }
+            />
+          )}
+        />
+      )}
+
+      <FormField
+        name="remark"
+        render={({ field }) => (
+          <WithdrawalItem
+            label={t('table.remarks')}
+            ContentDom={
+              <div className="flex w-full flex-col gap-3">
+                <div>
+                  <RrhTextarea
+                    value={field.value}
+                    onChange={field.onChange}
+                    className="border-input w-full rounded-lg border px-3 py-1 text-sm"
+                    placeholder={t('review.reviewRemarksPlaceholder')}
+                    maxLength={500}
+                  />
+                </div>
+                {depositInfo.login && (
+                  <>
+                    <div className="flex items-center gap-3">
+                      <Switch
+                        checked={orderNumberShow}
+                        onCheckedChange={() => setOrderNumberShow(!orderNumberShow)}
+                      />
+                      <div className="text-muted-foreground text-sm">
+                        {t('review.syncToTransactionPlatform')}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            }
+          />
+        )}
+      />
+
+      {orderNumberShow && (
+        <FormField
+          name="orderComment"
+          render={({ field }) => (
+            <WithdrawalItem
+              label=""
+              ContentDom={
+                <Input
+                  value={field.value}
+                  placeholder={t('depositReview.orderCommentPlaceholder')}
+                  onChange={field.onChange}
+                  maxLength={12}
+                />
+              }
+            />
+          )}
+        />
+      )}
+
+      <div className="flex items-center gap-3">
+        <RrhButton variant="outline">{t('common.Cancel')}</RrhButton>
+        <RrhButton type="submit" variant="default">
+          {t('common.Confirm')}
+        </RrhButton>
+      </div>
+    </RrhCard>
+  );
+};

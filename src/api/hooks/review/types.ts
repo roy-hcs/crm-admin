@@ -766,3 +766,94 @@ export type SumWithdrawalAmountRes = {
   sum: number;
   status: number;
 }[];
+
+export type DepositDetail = {
+  factDeposit: number;
+  orderComment: string;
+  orderId: string | null;
+  voucher: string;
+  fee: string;
+  verifyStep: number;
+  feeCurrency: string;
+  orderNum: string;
+  verifyUser: string | null;
+  remark: string | null;
+  verifyTime: string | null;
+  login: string;
+  vUserName: string | null;
+  serverId: string;
+  subTime: string;
+  receiptAmount: string | null;
+  rate: number;
+  isNeedDeposit: string | null;
+  userLastName: string;
+  expectDeposit: number;
+  userShowId: string | null;
+  subRemark: string | null;
+  id: string;
+  depositCurrency: string;
+  channelId: string;
+  walletId: string | null;
+  aliasName: string;
+  currencyPair: string;
+  method: string;
+  receiptCurrency: string | null;
+  walletCurrency: string | null;
+  dealTicket: string | null;
+  vUserLastName: string | null;
+  verifyUserName: string | null;
+  feeType: number;
+  userName: string;
+  userId: string;
+  deposit: string;
+  channelName: string;
+  digits: number;
+  status: number;
+};
+
+export type DepositVerifyParams = {
+  id: string;
+  status: string;
+  remark: string;
+  deposit: string;
+  fee: string;
+  expectDeposit: string;
+  factDeposit: string;
+  rate: string;
+  verifyStep: string;
+  isNeedDeposit: string;
+  orderComment: string;
+};
+
+export type DepositReviewDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    accountId: string;
+    verifyLogs: VerifyLogItem[];
+    directBroker: string;
+    walletCurrency: string;
+    isPermission: number;
+    detail: DepositDetail;
+    reviewer: {
+      createBy: string | null;
+      createTime: string | null;
+      updateBy: string | null;
+      updateTime: string | null;
+      remark: string | null;
+      params: object;
+      id: string;
+      preferenceId: string;
+      roleId: string;
+      userId: string | null;
+      sort: number;
+      userName: string | null;
+      userLastName: string | null;
+      roleName: string;
+    };
+    roleName: string;
+    tLastLogin: string;
+    rateChange: number;
+    factDepositScale: number;
+  };
+};
