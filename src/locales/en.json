@@ -258,21 +258,6 @@
     "loginFailed": "Login failed:",
     "EnterYourPassword": "Please enter your password"
   },
-  "rules": {
-    "accountType": "Account Type",
-    "colorPreference": "color",
-    "email": "Mail",
-    "firstName": "name",
-    "inviter": "Inviter",
-    "lastName": "surname",
-    "mobile": "phone number",
-    "pattern": "Please enter a valid {{field}}",
-    "preferenceLanguage": "language",
-    "pwd": "password",
-    "required": "{{field}} cannot be empty",
-    "roleId": "Role",
-    "status": "state"
-  },
   "ib": {
     "CustomerTracking": {
       "Index": "Serial number",
@@ -1184,5 +1169,21 @@
     "payAccountName": "payment account",
     "subscribeFee": "Subscription fee(USD)",
     "title": "Order management"
+  },
+  "rules": {
+    "accountType": "Account type",
+    "colorPreference": "color",
+    "email": "Mail",
+    "firstName": "name",
+    "inviter": "Inviter",
+    "lastName": "surname",
+    "limitLength": "Within {{field}} characters",
+    "mobile": "phone number",
+    "pattern": "Please enter a valid {{field}}",
+    "preferenceLanguage": "Preferred language",
+    "pwd": "password",
+    "required": "{{field}} cannot be empty",
+    "roleId": "Role",
+    "status": "state"
   }
 }

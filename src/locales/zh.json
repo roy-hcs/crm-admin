@@ -455,11 +455,12 @@
     "email": "邮箱",
     "inviter": "邀请人",
     "pwd": "密码",
-    "preferenceLanguage": "语言",
+    "preferenceLanguage": "偏好语言",
     "accountType": "账户类型",
     "roleId": "角色",
     "colorPreference": "颜色",
-    "status": "状态"
+    "status": "状态",
+    "limitLength": "{{field}}个字符以内"
   },
   "tradingHistoryPage": {
     "tradingHistoryDetail": "交易历史详情",

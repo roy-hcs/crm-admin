@@ -13,11 +13,13 @@ interface FormInputProps<T extends FieldValues> {
   label: string;
   placeholder: string;
   className?: string;
+  verticalLabel?: boolean;
 }
 export function FormPhoneInput<T extends FieldValues>({
   name,
   label,
   placeholder,
+  verticalLabel = false,
   className,
 }: FormInputProps<T>) {
   const [mzone, setMzone] = useState('+86-0');
@@ -35,11 +37,22 @@ export function FormPhoneInput<T extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <div className={cn('flex items-center text-sm', className)}>
-            <FormLabel className="text-foreground basis-3/12">{label}</FormLabel>
-            <div className="flex basis-9/12 items-center">
+          <div
+            className={cn(
+              'text-foreground text-sm',
+              verticalLabel ? '' : 'flex items-center',
+              className,
+            )}
+          >
+            <FormLabel className={cn(verticalLabel ? 'mb-2' : 'basis-3/12')}>{label}</FormLabel>
+            <div
+              className={cn(
+                'flex items-center',
+                verticalLabel ? 'w-full basis-full' : 'basis-9/12',
+              )}
+            >
               <div className="relative basis-3/12">
-                <div className="flex h-9 flex-nowrap items-center gap-1 rounded-l-lg border px-1">
+                <div className="flex h-9 flex-nowrap items-center justify-center gap-1 rounded-l-lg border-y border-r-0 border-l px-1">
                   <span>{mzone.replace(/-.*/, '')}</span>
                   <ChevronDown className="size-3.5" />
                 </div>
@@ -59,9 +72,7 @@ export function FormPhoneInput<T extends FieldValues>({
               />
             </div>
           </div>
-          <div className="flex justify-end">
-            <FormMessage className="basis-9/12" />
-          </div>
+          <FormMessage className="text-end" />
         </FormItem>
       )}
     />

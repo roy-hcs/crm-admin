@@ -30,25 +30,23 @@ export function FormInput<T extends FieldValues>({
         <FormItem>
           <div
             className={cn(
-              'text-foreground flex text-sm',
-              verticalLabel ? 'flex-col items-start gap-2' : 'items-center',
+              'text-foreground text-sm',
+              verticalLabel ? '' : 'flex items-center',
               className,
             )}
           >
-            <FormLabel className="basis-3/12">{label}</FormLabel>
+            <FormLabel className={cn(verticalLabel ? 'mb-2' : 'basis-3/12')}>{label}</FormLabel>
             <FormControl className="shrink-0 basis-9/12">
               <Input
                 type="text"
                 {...props}
                 {...field}
-                className="h-9 w-full border px-2"
+                className={cn('h-9 w-full border px-2')}
                 placeholder={placeholder}
               />
             </FormControl>
           </div>
-          <div className="flex justify-end">
-            <FormMessage className="basis-9/12" />
-          </div>
+          <FormMessage className="text-end" />
         </FormItem>
       )}
     />

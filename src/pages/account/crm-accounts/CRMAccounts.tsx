@@ -404,7 +404,6 @@ export const CRMAccounts = () => {
                   <Settings className="size-3.5" />
                   <span>{t('CRMAccountPage.LifecycleAndUserTags')}</span>
                 </RrhButton>
-                <AddUserDialog />
               </>
             )}
           </div>
@@ -450,6 +449,7 @@ export const CRMAccounts = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <AddUserDialog />
           </div>
         </div>
         <DataTable

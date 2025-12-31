@@ -9,9 +9,20 @@ import {
   DialogTrigger,
   DialogClose,
 } from '@/components/ui/dialog';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 interface DialogProps {
   title?: string;
@@ -28,6 +39,8 @@ interface DialogProps {
   onOpenChange?: (open: boolean) => void;
   footerShow?: boolean;
   confirmShow?: boolean;
+  variant?: 'default' | 'small' | 'middle' | 'large';
+  titleCls?: string;
 }
 
 export const RrhDialog: React.FC<DialogProps> = ({
@@ -45,6 +58,8 @@ export const RrhDialog: React.FC<DialogProps> = ({
   onOpenChange,
   footerShow = true,
   confirmShow = true,
+  variant = 'default',
+  titleCls,
 }) => {
   const handleCancel = () => {
     onCancel?.();
@@ -58,55 +73,124 @@ export const RrhDialog: React.FC<DialogProps> = ({
     onOpenChange(false);
   };
   const { t } = useTranslation();
+  const isDesktop = useMediaQuery('(min-width: 768px)');
 
+  // Desktop mode: use Dialog
+  if (isDesktop) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogTrigger asChild>{trigger}</DialogTrigger>
+        <DialogContent
+          className={cn(
+            {
+              'w-md': variant === 'small',
+              'w-xl': variant === 'middle',
+              'w-3xl sm:max-w-full': variant === 'large',
+            },
+            className,
+          )}
+          showCloseButton={false}
+        >
+          <DialogClose className="data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-7.5 right-6 cursor-pointer rounded-sm border-none opacity-70 transition-opacity outline-none hover:opacity-100 focus:outline-none disabled:pointer-events-none">
+            <X className="h-4 w-4 cursor-pointer" />
+            <span className="sr-only">Close</span>
+          </DialogClose>
+          {title && (
+            <DialogHeader>
+              <DialogTitle
+                className={cn(
+                  'border-muted -mx-6 border-b px-6 pb-6 text-lg font-semibold',
+                  titleCls,
+                )}
+              >
+                {title}
+              </DialogTitle>
+              {description ? (
+                <DialogDescription>{description}</DialogDescription>
+              ) : (
+                <DialogDescription className="sr-only">{description}</DialogDescription>
+              )}
+            </DialogHeader>
+          )}
+          {children}
+          {footerShow && (
+            <DialogFooter className="border-muted -mx-6 gap-2 border-t px-6 pt-6 sm:justify-end">
+              <DialogClose>
+                <div
+                  className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-[#1E1E1E]"
+                  onClick={handleCancel}
+                >
+                  {cancelText || t('common.Cancel')}
+                </div>
+              </DialogClose>
+              {confirmShow && (
+                <DialogClose>
+                  <div
+                    onClick={e => {
+                      if (isConfirmDisabled) return;
+                      handleConfirm?.(e);
+                    }}
+                    className={cn(
+                      'rounded-sm border bg-[#1E1E1E] px-4 py-2 text-white',
+                      isConfirmDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+                    )}
+                  >
+                    {confirmText || t('common.Confirm')}
+                  </div>
+                </DialogClose>
+              )}
+            </DialogFooter>
+          )}
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  // Mobile mode: use Drawer
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className={className} showCloseButton={false}>
-        <DialogClose className="data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 cursor-pointer rounded-sm border-none opacity-70 transition-opacity outline-none hover:opacity-100 focus:outline-none disabled:pointer-events-none">
+    <Drawer open={open} onOpenChange={onOpenChange}>
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+      <DrawerContent>
+        <DrawerClose className="data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 cursor-pointer rounded-sm border-none opacity-70 transition-opacity outline-none hover:opacity-100 focus:outline-none disabled:pointer-events-none">
           <X className="h-4 w-4 cursor-pointer" />
           <span className="sr-only">Close</span>
-        </DialogClose>
+        </DrawerClose>
         {title && (
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-            {description ? (
-              <DialogDescription>{description}</DialogDescription>
-            ) : (
-              <DialogDescription className="sr-only">{description}</DialogDescription>
-            )}
-          </DialogHeader>
+          <DrawerHeader>
+            <DrawerTitle className={cn('text-lg font-semibold', titleCls)}>{title}</DrawerTitle>
+            {description && <DrawerDescription>{description}</DrawerDescription>}
+          </DrawerHeader>
         )}
-        {children}
+        <div className="overflow-y-auto px-6">{children}</div>
         {footerShow && (
-          <DialogFooter className="gap-2 sm:justify-end">
-            <DialogClose>
+          <DrawerFooter className="flex flex-row justify-end gap-2 px-6">
+            <DrawerClose>
               <div
-                className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-[#1E1E1E]"
+                className="w-full cursor-pointer rounded-sm border bg-white px-4 py-2 text-center text-[#1E1E1E]"
                 onClick={handleCancel}
               >
                 {cancelText || t('common.Cancel')}
               </div>
-            </DialogClose>
+            </DrawerClose>
             {confirmShow && (
-              <DialogClose>
+              <DrawerClose>
                 <div
                   onClick={e => {
                     if (isConfirmDisabled) return;
                     handleConfirm?.(e);
                   }}
                   className={cn(
-                    'rounded-sm border bg-[#1E1E1E] px-4 py-2 text-white',
+                    'w-full rounded-sm border bg-[#1E1E1E] px-4 py-2 text-center text-white',
                     isConfirmDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
                   )}
                 >
                   {confirmText || t('common.Confirm')}
                 </div>
-              </DialogClose>
+              </DrawerClose>
             )}
-          </DialogFooter>
+          </DrawerFooter>
         )}
-      </DialogContent>
-    </Dialog>
+      </DrawerContent>
+    </Drawer>
   );
 };

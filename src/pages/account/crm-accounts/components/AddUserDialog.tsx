@@ -23,12 +23,18 @@ import { RrhDialog } from '@/components/common/RrhDialog';
 const addUserSchema = (t: TFunction<'translation', undefined>) => {
   return {
     lastName: z.string().min(1, t('rules.required', { field: t('rules.lastName') })),
-    name: z.string().min(1, t('rules.required', { field: t('rules.firstName') })),
+    name: z
+      .string()
+      .min(1, t('rules.required', { field: t('rules.firstName') }))
+      .max(32, t('rules.limitLength', { field: 32 })),
     mobile: z
       .string()
       .min(1, t('rules.required', { field: t('rules.mobile') }))
       .regex(/^\d{11}$/, t('rules.pattern', { field: t('rules.mobile') })),
-    email: z.string().email(t('rules.email')).optional(),
+    email: z
+      .string()
+      .min(1, t('rules.required', { field: t('rules.email') }))
+      .email(t('rules.pattern', { field: t('rules.email') })),
     inviter: z.string().optional(),
     pwd: z.string().min(1, t('rules.required', { field: t('rules.pwd') })),
     preferenceLanguage: z
@@ -104,95 +110,108 @@ export const AddUserDialog = () => {
         </Button>
       }
       title={t('CRMAccountPage.AddClient')}
-      className="flex min-h-1/2 min-w-1/2 flex-col"
+      // className="flex min-h-1/2 min-w-1/2 flex-col"
       cancelText={t('common.Cancel')}
       confirmText={t('common.Confirm')}
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
       footerShow={false}
+      variant="large"
     >
-      <div>
-        <FormProvider form={form}>
-          <Form {...form}>
-            <form
-              ref={formRef}
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="grid grid-cols-1 gap-x-8 gap-y-2 md:grid-cols-2"
-            >
-              <FormInput
-                name="lastName"
-                label={`${t('CRMAccountPage.lastName')}:`}
-                placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.lastName') })}
-              />
-              <FormInput
-                name="name"
-                label={`${t('CRMAccountPage.firstName')}:`}
-                placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.firstName') })}
-              />
-              <FormPhoneInput
-                name="mobile"
-                label={`${t('CRMAccountPage.Mobile')}:`}
-                placeholder={`${t('CRMAccountPage.Mobile')}`}
-                className="col-span-1 md:col-span-2"
-              />
-              <FormInput
-                name="email"
-                label={`${t('loginPage.email')}:`}
-                placeholder={`${t('common.pleaseInput', { field: t('loginPage.email') })}`}
-              />
-              <FormField
-                name="inviter"
-                render={({ field }) => {
-                  return <SelectUpperPopup field={field} />;
-                }}
-              />
-              <FormInput
-                name="pwd"
-                label={`${t('loginPage.password')}:`}
-                placeholder={`${t('common.pleaseInput', { field: t('loginPage.password') })}`}
-              />
-              <FormInput
-                name="preferenceLanguage"
-                label={`${t('rules.preferenceLanguage')}:`}
-                placeholder={`${t('common.pleaseInput', { field: t('rules.preferenceLanguage') })}`}
-              />
-              <FormSelect
-                name="roleId"
-                label={`${t('CRMAccountPage.CRMAccountType')}:`}
-                placeholder={`${t('common.pleaseSelect')}`}
-                options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
-              />
-              <FormSelect
-                name="roleId"
-                label={`${t('CRMAccountPage.Role')}:`}
-                placeholder={`${t('common.pleaseSelect')}`}
-                options={roleOptions.map(i => ({ label: t(i.label), value: i.value }))}
-              />
-              <FormSelect
-                name="roleId"
-                label={`${t('CRMAccountPage.ColorPreferences')}:`}
-                placeholder={t('common.pleaseSelect')}
-                options={colorPreferenceOptions.map(i => ({ label: t(i.label), value: i.value }))}
-              />
+      <FormProvider form={form}>
+        <Form {...form}>
+          <form
+            ref={formRef}
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2"
+          >
+            <FormInput
+              name="lastName"
+              label={`${t('CRMAccountPage.lastName')}`}
+              verticalLabel
+              placeholder={t('rules.limitLength', { field: 32 })}
+            />
+            <FormInput
+              name="name"
+              label={`${t('CRMAccountPage.firstName')}`}
+              verticalLabel
+              placeholder={t('rules.limitLength', { field: 32 })}
+            />
+            <FormPhoneInput
+              name="mobile"
+              label={`${t('CRMAccountPage.Mobile')}`}
+              placeholder={`${t('CRMAccountPage.Mobile')}`}
+              verticalLabel
+              // className="col-span-1 md:col-span-2"
+            />
+            <FormInput
+              name="email"
+              label={`${t('loginPage.email')}`}
+              verticalLabel
+              placeholder={`${t('common.pleaseInput', { field: t('loginPage.email') })}`}
+            />
+            <FormField
+              name="inviter"
+              render={({ field }) => {
+                return <SelectUpperPopup verticalLabel field={field} />;
+              }}
+            />
+            <FormInput
+              name="pwd"
+              label={`${t('loginPage.password')}`}
+              verticalLabel
+              placeholder={`${t('common.pleaseInput', { field: t('loginPage.password') })}`}
+            />
+            <FormInput
+              name="preferenceLanguage"
+              label={`${t('rules.preferenceLanguage')}`}
+              verticalLabel
+              placeholder={`${t('common.pleaseInput', { field: t('rules.preferenceLanguage') })}`}
+            />
+            <FormSelect
+              name="roleId"
+              label={`${t('CRMAccountPage.CRMAccountType')}`}
+              verticalLabel
+              placeholder={`${t('common.pleaseSelect')}`}
+              options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
+            />
+            <FormSelect
+              name="roleId"
+              label={`${t('CRMAccountPage.Role')}`}
+              verticalLabel
+              placeholder={`${t('common.pleaseSelect')}`}
+              options={roleOptions.map(i => ({ label: t(i.label), value: i.value }))}
+            />
+            <FormSelect
+              name="roleId"
+              label={`${t('CRMAccountPage.ColorPreferences')}`}
+              verticalLabel
+              placeholder={t('common.pleaseSelect')}
+              options={colorPreferenceOptions.map(i => ({ label: t(i.label), value: i.value }))}
+            />
+
+            <div className="border-muted col-span-full -mx-6 flex justify-between border-t px-6 pt-6 pb-6 sm:pb-0">
               <FormField
                 name="status"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex h-9 items-center">
-                      <FormLabel className="basis-3/12">{t('CRMAccountPage.status')}:</FormLabel>
+                    <div className="flex h-9 items-center gap-3">
                       <div className="flex basis-9/12 items-center">
                         <Switch
                           checked={field.value === '1'}
                           onCheckedChange={checked => field.onChange(checked ? '1' : '0')}
                         />
                       </div>
+                      <FormLabel className="basis-3/12 whitespace-nowrap">
+                        {t('CRMAccountPage.status')}
+                      </FormLabel>
                     </div>
                   </FormItem>
                 )}
                 control={form.control}
               />
-              <div className="col-span-full flex justify-end gap-4">
+              <div className="flex justify-end gap-4">
                 <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
                   {t('common.Cancel')}
                 </RrhButton>
@@ -200,10 +219,10 @@ export const AddUserDialog = () => {
                   {t('common.Confirm')}
                 </RrhButton>
               </div>
-            </form>
-          </Form>
-        </FormProvider>
-      </div>
+            </div>
+          </form>
+        </Form>
+      </FormProvider>
     </RrhDialog>
   );
 };

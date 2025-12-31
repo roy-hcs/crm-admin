@@ -54,7 +54,7 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
               />
             </FormControl>
           </div>
-          <FormMessage />
+          <FormMessage className="text-end" />
         </FormItem>
       )}
     />

@@ -24,15 +24,15 @@ export const ProfileDropdown: React.FC = () => {
   };
   const callToAction = (menu: string) => {
     switch (menu) {
-      case 'profile':
+      case t('common.profile'):
         addTab({ key: 'profile', title: 'Profile', path: '/profile', closable: true });
         navigate('/account/profile');
         break;
-      case 'settings':
+      case t('common.settings'):
         addTab({ key: 'settings', title: 'Settings', path: '/settings', closable: true });
         navigate('/settings');
         break;
-      case 'logout':
+      case t('common.logout'):
         handleLogout();
         break;
     }
