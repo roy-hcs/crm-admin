@@ -16,7 +16,7 @@ export const RrhSelect = <T extends BaseOption>({
   onValueChange,
   placeholder,
   showRowValue = true,
-  showi18nLabel = false,
+  showI18nLabel = false,
   className,
   renderItem,
 }: {
@@ -26,7 +26,7 @@ export const RrhSelect = <T extends BaseOption>({
   placeholder?: string;
   className?: string;
   showRowValue?: boolean;
-  showi18nLabel?: boolean;
+  showI18nLabel?: boolean;
   renderItem?: (option: T) => ReactNode;
 }) => {
   const { t } = useTranslation();
@@ -45,7 +45,7 @@ export const RrhSelect = <T extends BaseOption>({
             {renderItem ? (
               renderItem(option)
             ) : (
-              <div>{showi18nLabel ? t(option.label) : option.label}</div>
+              <div>{showI18nLabel ? t(option.label) : option.label}</div>
             )}
           </SelectItem>
         ))}

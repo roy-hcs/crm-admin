@@ -18,7 +18,7 @@ export function FormInput<T extends FieldValues>({
   placeholder,
   verticalLabel = false,
   className,
-
+  onBlur,
   ...props
 }: FormInputProps<T> & React.ComponentPropsWithoutRef<'input'>) {
   const { form } = useCrmFormContext<T>();
@@ -43,6 +43,10 @@ export function FormInput<T extends FieldValues>({
                 {...field}
                 className={cn('h-9 w-full border px-2')}
                 placeholder={placeholder}
+                onBlur={e => {
+                  field.onBlur();
+                  onBlur?.(e);
+                }}
               />
             </FormControl>
           </div>

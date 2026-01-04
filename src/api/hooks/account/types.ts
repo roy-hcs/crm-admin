@@ -252,3 +252,21 @@ export type CustomerRelationsGetItem = {
 };
 
 export type CustomerRelationsPostRes = CustomerRelationsGetItem[];
+
+export type AddCrmUserParams = {
+  deptId: string;
+  lastName: string;
+  name: string;
+  fullName: string;
+  mzone: string;
+  mobile: string;
+  email: string;
+  inviter: string;
+  pwd: string;
+  preferenceLanguage: string;
+  accountType: string;
+  roleId: string;
+  colorPreference: string;
+  source: string;
+  status: string;
+};

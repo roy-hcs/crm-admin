@@ -23,6 +23,7 @@ import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { RrhCircleLoading } from './RrhCircleLoading';
 
 interface DialogProps {
   title?: string;
@@ -41,6 +42,7 @@ interface DialogProps {
   confirmShow?: boolean;
   variant?: 'default' | 'small' | 'middle' | 'large';
   titleCls?: string;
+  formLoading?: boolean;
 }
 
 export const RrhDialog: React.FC<DialogProps> = ({
@@ -60,6 +62,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
   confirmShow = true,
   variant = 'default',
   titleCls,
+  formLoading = false,
 }) => {
   const handleCancel = () => {
     onCancel?.();
@@ -91,6 +94,11 @@ export const RrhDialog: React.FC<DialogProps> = ({
           )}
           showCloseButton={false}
         >
+          {formLoading && (
+            <div className="bg-accent-foreground/8 absolute inset-0 flex items-center justify-center">
+              <RrhCircleLoading />
+            </div>
+          )}
           <DialogClose className="data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-7.5 right-6 cursor-pointer rounded-sm border-none opacity-70 transition-opacity outline-none hover:opacity-100 focus:outline-none disabled:pointer-events-none">
             <X className="h-4 w-4 cursor-pointer" />
             <span className="sr-only">Close</span>
@@ -106,9 +114,11 @@ export const RrhDialog: React.FC<DialogProps> = ({
                 {title}
               </DialogTitle>
               {description ? (
-                <DialogDescription>{description}</DialogDescription>
+                <DialogDescription>{description || title || ''}</DialogDescription>
               ) : (
-                <DialogDescription className="sr-only">{description}</DialogDescription>
+                <DialogDescription className="sr-only">
+                  {description || title || ''}
+                </DialogDescription>
               )}
             </DialogHeader>
           )}
@@ -131,7 +141,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
                       handleConfirm?.(e);
                     }}
                     className={cn(
-                      'rounded-sm border bg-[#1E1E1E] px-4 py-2 text-white',
+                      'bg-primary rounded-sm border px-4 py-2 text-white',
                       isConfirmDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
                     )}
                   >
@@ -151,6 +161,11 @@ export const RrhDialog: React.FC<DialogProps> = ({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent>
+        {formLoading && (
+          <div className="bg-accent-foreground/8 absolute inset-0 flex items-center justify-center">
+            <RrhCircleLoading />
+          </div>
+        )}
         <DrawerClose className="data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 cursor-pointer rounded-sm border-none opacity-70 transition-opacity outline-none hover:opacity-100 focus:outline-none disabled:pointer-events-none">
           <X className="h-4 w-4 cursor-pointer" />
           <span className="sr-only">Close</span>
@@ -158,7 +173,13 @@ export const RrhDialog: React.FC<DialogProps> = ({
         {title && (
           <DrawerHeader>
             <DrawerTitle className={cn('text-lg font-semibold', titleCls)}>{title}</DrawerTitle>
-            {description && <DrawerDescription>{description}</DrawerDescription>}
+            {description ? (
+              <DrawerDescription>{description || title || ''}</DrawerDescription>
+            ) : (
+              <DrawerDescription className="sr-only">
+                {description || title || ''}
+              </DrawerDescription>
+            )}
           </DrawerHeader>
         )}
         <div className="overflow-y-auto px-6">{children}</div>
@@ -180,7 +201,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
                     handleConfirm?.(e);
                   }}
                   className={cn(
-                    'w-full rounded-sm border bg-[#1E1E1E] px-4 py-2 text-center text-white',
+                    'bg-primary w-full rounded-sm border px-4 py-2 text-center text-white',
                     isConfirmDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
                   )}
                 >
