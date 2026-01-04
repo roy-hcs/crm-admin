@@ -37,7 +37,8 @@
     "SelectSuperior": "选择上级",
     "keyWordOfSearchSuperior": "姓/名/账号ID/手机/邮箱",
     "AccountRange": "账户范围",
-    "SelectSuperiorRange": "选择上级范围"
+    "SelectSuperiorRange": "选择上级范围",
+    "aiSplitFullName": "无法准确拆分用户的姓和名？试试我们的AI功能"
   },
   "loginPage": {
     "email": "邮箱",
@@ -133,7 +134,9 @@
     "account": {
       "type": {
         "user": "用户",
-        "agent": "代理"
+        "agent": "代理",
+        "business": "业务",
+        "sale": "销售"
       }
     },
     "colorPreference": {
@@ -211,7 +214,8 @@
     "marketplace": "交易市场",
     "profile": "个人资料",
     "logout": "退出登录",
-    "settings": "设置"
+    "settings": "设置",
+    "optional": "可选"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -455,12 +459,16 @@
     "email": "邮箱",
     "inviter": "邀请人",
     "pwd": "密码",
+    "pwdPlaceholder": "请输入密码，8-20位英文（大小写）+数字",
+    "pwdTips": "若未添加密码，系统将自动为该账号创建登录密码，并将登录密码通过邮件发送",
     "preferenceLanguage": "偏好语言",
     "accountType": "账户类型",
     "roleId": "角色",
     "colorPreference": "颜色",
     "status": "状态",
-    "limitLength": "{{field}}个字符以内"
+    "limitLength": "{{field}}个字符以内",
+    "emailAlreadyUsed": "当前邮箱已被使用",
+    "phoneAlreadyUsed": "当前号码已被使用"
   },
   "tradingHistoryPage": {
     "tradingHistoryDetail": "交易历史详情",

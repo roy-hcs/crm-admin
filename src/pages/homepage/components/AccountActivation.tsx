@@ -87,7 +87,7 @@ export const AccountActivation = () => {
           <RrhSelect
             options={timeRangeOptions}
             showRowValue={false}
-            showi18nLabel={true}
+            showI18nLabel={true}
             className="px-3 py-2"
             value={timeRange}
             onValueChange={val => setTimeRange(val as TimeRangeType)}

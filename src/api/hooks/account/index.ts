@@ -18,6 +18,7 @@ import {
   DealAccountGroupListResponse,
   CustomerRelationsPostParams,
   CustomerRelationsPostRes,
+  AddCrmUserParams,
 } from './types';
 
 export * from './types';
@@ -46,6 +47,12 @@ export function useCustomerRelationsPostList(params: { userId: string } | null =
         '/system/crmUser/customerRelationsPostList',
         params || {},
       ),
+  });
+}
+
+export function useAddCrmUser() {
+  return useMutation({
+    mutationFn: (params: AddCrmUserParams) => apiFormPost<string>('/system/crmUser/add', params),
   });
 }
 

@@ -12,9 +12,11 @@ import { ArrowRight } from 'lucide-react';
 export const SelectUpperPopup = ({
   field,
   verticalLabel = false,
+  optional = false,
 }: {
   field: ControllerRenderProps<FieldValues, 'inviter'>;
   verticalLabel?: boolean;
+  optional?: boolean;
 }) => {
   const [selectedUser, setSelectedUser] = useState<CrmUserItem | null>(null);
   const { t } = useTranslation();
@@ -22,7 +24,7 @@ export const SelectUpperPopup = ({
     <FormItem>
       <div className={cn('text-foreground text-sm', verticalLabel ? '' : 'flex items-center')}>
         <FormLabel className={cn(verticalLabel ? 'mb-2' : 'basis-3/12')}>
-          {t('CRMAccountPage.Superior')}:
+          {`${t('CRMAccountPage.Superior')}${optional ? ` (${t('common.optional')})` : ''}`}
         </FormLabel>
         <FormControl>
           <AccountDialog

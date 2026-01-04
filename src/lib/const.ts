@@ -6,6 +6,8 @@ export const statusOptions = [
 export const crmAccountTypeOptions = [
   { label: 'common.account.type.user', value: '1' },
   { label: 'common.account.type.agent', value: '2' },
+  { label: 'common.account.type.business', value: '3' },
+  { label: 'common.account.type.sale', value: '4' },
 ];
 
 // TODO: get this data from API later

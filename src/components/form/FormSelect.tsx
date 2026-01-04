@@ -34,12 +34,16 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
         <FormItem>
           <div
             className={cn(
-              'text-foreground flex items-center text-sm',
-              verticalLabel ? 'flex-col items-start gap-2' : '',
+              'text-foreground text-sm',
+              verticalLabel ? '' : 'flex items-center',
               className,
             )}
           >
-            {label && <FormLabel className="shrink-0 basis-3/12">{label}</FormLabel>}
+            {label && (
+              <FormLabel className={cn(verticalLabel ? 'mb-2' : 'shrink-0 basis-3/12')}>
+                {label}
+              </FormLabel>
+            )}
             <FormControl
               className={cn('grow-0', verticalLabel || !label ? 'basis-full' : 'basis-9/12')}
             >

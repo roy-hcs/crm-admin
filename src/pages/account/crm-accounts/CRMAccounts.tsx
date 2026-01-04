@@ -80,7 +80,11 @@ export const CRMAccounts = () => {
     },
   );
   const { data: tagUserCountList, isLoading: tagUserCountListLoading } = useTagUserCountList();
-  const { data: crmUsers, isLoading: crmUsersLoading } = useCrmUser(
+  const {
+    data: crmUsers,
+    isLoading: crmUsersLoading,
+    refetch: refetchCrmUser,
+  } = useCrmUser(
     {
       pageSize,
       pageNum: pageNum + 1,
@@ -172,6 +176,11 @@ export const CRMAccounts = () => {
       ),
     },
     {
+      id: 'email',
+      accessorKey: 'email',
+      header: t('table.email'),
+    },
+    {
       id: 'accountTypeStr',
       accessorKey: 'accountTypeStr',
       header: t('CRMAccountPage.CRMAccountType'),
@@ -206,7 +215,7 @@ export const CRMAccounts = () => {
         const length = tags.length;
         if (length === 0) return <div>-</div>;
         return (
-          <div className="flex max-w-50 flex-wrap items-center gap-1">
+          <div className="flex items-center gap-1">
             {tags.slice(0, 3).map((tag, index) => (
               <span key={index} className="border-border rounded-md border p-1">
                 {tag}
@@ -235,10 +244,12 @@ export const CRMAccounts = () => {
         );
       },
       cell: ({ row }) => {
-        const latestFollowupTime = row.original.latestFollowupTime || '-';
+        const latestFollowupTimeArr = (row.original.latestFollowupTime || '-').split(' ');
         return (
-          <div className="max-w-25 whitespace-pre-wrap">
-            <div>{latestFollowupTime}</div>
+          <div>
+            {latestFollowupTimeArr.map((line, index) => (
+              <div key={index}>{line}</div>
+            ))}
           </div>
         );
       },
@@ -248,7 +259,14 @@ export const CRMAccounts = () => {
       accessorKey: 'createTime',
       header: t('CRMAccountPage.RegisterTime'),
       cell: ({ row }) => {
-        return <div className="max-w-25 whitespace-pre-wrap">{row.original.createTime}</div>;
+        const createTimeArr = (row.original.createTime || '-').split(' ');
+        return (
+          <div>
+            {createTimeArr.map((line, index) => (
+              <div key={index}>{line}</div>
+            ))}
+          </div>
+        );
       },
     },
     {
@@ -259,8 +277,8 @@ export const CRMAccounts = () => {
         if (!row.original.nameOne && !row.original.nameTwo) return <div>-</div>;
         return (
           <div>
-            <div>{row.original.nameOne}</div>
-            <div>{row.original.nameTwo}</div>
+            <div>{`${row.original.nameOne} ${row.original.nameTwo}`}</div>
+            <div>{row.original.inviterShowId}</div>
           </div>
         );
       },
@@ -449,7 +467,7 @@ export const CRMAccounts = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
-            <AddUserDialog />
+            <AddUserDialog onSuccess={refetchCrmUser} />
           </div>
         </div>
         <DataTable
