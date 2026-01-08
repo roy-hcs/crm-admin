@@ -70,7 +70,7 @@ export const OverviewDepositWithdrawal: FC = () => {
           <RrhSelect
             options={timeRangeOptions}
             showRowValue={false}
-            showi18nLabel={true}
+            showI18nLabel={true}
             className="px-3 py-2"
             value={type}
             onValueChange={value => {

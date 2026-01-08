@@ -37,7 +37,8 @@
     "keyWordOfSearchSuperior": "Last name/name/account ID/mobile phone/email",
     "lastName": "surname",
     "desc": "Manage and view CRM account information",
-    "title": "CRM Account"
+    "title": "CRM Account",
+    "aiSplitFullName": "Can't accurately split a user's first and last name? \nTry our AI features"
   },
   "common": {
     "AnErrorOccurred": "An error occurred",
@@ -73,7 +74,9 @@
     "account": {
       "type": {
         "agent": "acting",
-        "user": "user"
+        "user": "user",
+        "business": "business",
+        "sale": "Sale"
       }
     },
     "colorPreference": {
@@ -197,7 +200,8 @@
     "newPassword": "New Password",
     "passwordsNotMatch": "The passwords entered twice are inconsistent",
     "resetFundPassword": "Reset fund password",
-    "resetPassword": "reset password"
+    "resetPassword": "reset password",
+    "optional": "Optional"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1190,6 +1194,10 @@
     "required": "{{field}} cannot be empty",
     "roleId": "Role",
     "status": "state",
-    "passwordComplexity": "Please enter your password, {{min}}-{{max}} English (uppercase and lowercase) digits"
+    "passwordComplexity": "Please enter your password, {{min}}-{{max}} English (uppercase and lowercase) digits",
+    "emailAlreadyUsed": "The current email address is already in use",
+    "phoneAlreadyUsed": "Current number is already in use",
+    "pwdPlaceholder": "Please enter your password, 8-20 English digits (uppercase and lowercase) numbers",
+    "pwdTips": "If no password is added, the system will automatically create a login password for the account and send the login password via email."
   }
 }

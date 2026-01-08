@@ -3,23 +3,24 @@ import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
 import { FormProvider } from '@/contexts/form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Plus } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { Plus, TrendingUp } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { SelectUpperPopup } from './SelectUpperPopup';
 import { FormSelect } from '@/components/form/FormSelect';
 import { colorPreferenceOptions, crmAccountTypeOptions, roleOptions } from '@/lib/const';
-// import { RrhSelect } from '@/components/common/RrhSelect';
-// import mobileZone from '@/data/mzone.json';
 import { FormPhoneInput } from '@/components/form/FormPhoneInput';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { TFunction } from 'i18next';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
+import { useDictType } from '@/api/hooks/system';
+import { useCheckEmailUnique, useCheckPhoneUnique } from '@/api/hooks/common';
+import { useAddCrmUser } from '@/api/hooks/account';
+import { JSEncrypt as JSE } from 'jsencrypt';
 
-// create a zod schema for the form data
 const addUserSchema = (t: TFunction<'translation', undefined>) => {
   return {
     lastName: z.string().min(1, t('rules.required', { field: t('rules.lastName') })),
@@ -27,16 +28,26 @@ const addUserSchema = (t: TFunction<'translation', undefined>) => {
       .string()
       .min(1, t('rules.required', { field: t('rules.firstName') }))
       .max(32, t('rules.limitLength', { field: 32 })),
+    mzone: z.string(),
     mobile: z
       .string()
       .min(1, t('rules.required', { field: t('rules.mobile') }))
-      .regex(/^\d{11}$/, t('rules.pattern', { field: t('rules.mobile') })),
+      .regex(/^\d{11}$/, t('rules.pattern', { field: t('rules.mobile') }))
+      .or(z.literal('')),
     email: z
       .string()
       .min(1, t('rules.required', { field: t('rules.email') }))
       .email(t('rules.pattern', { field: t('rules.email') })),
     inviter: z.string().optional(),
-    pwd: z.string().min(1, t('rules.required', { field: t('rules.pwd') })),
+    pwd: z
+      .string()
+      .min(8, t('rules.limitLength', { field: 8 }))
+      .max(20, t('rules.limitLength', { field: 20 }))
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/,
+        t('rules.pattern', { field: t('rules.pwd') }),
+      )
+      .or(z.literal('')),
     preferenceLanguage: z
       .string()
       .min(1, t('rules.required', { field: t('rules.preferenceLanguage') })),
@@ -47,17 +58,11 @@ const addUserSchema = (t: TFunction<'translation', undefined>) => {
   };
 };
 
-export const AddUserDialog = () => {
+export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
   const [open, setOpen] = useState(false);
-  // const [mzone, setMzone] = useState('+86');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
-  // const mobileZoneOptions = mobileZone.mzone.map(item => {
-  //   return {
-  //     label: `${item.area} ${item.code}`,
-  //     value: `+${item.code}`,
-  //   };
-  // });
+  const { data: languageList } = useDictType('sys_language');
   const { t } = useTranslation();
 
   const form = useForm({
@@ -65,6 +70,7 @@ export const AddUserDialog = () => {
     defaultValues: {
       lastName: '',
       name: '',
+      mzone: '+86-0',
       mobile: '',
       email: '',
       inviter: '',
@@ -76,19 +82,94 @@ export const AddUserDialog = () => {
       status: '1',
     },
   });
+  const { mutateAsync: checkEmailUnique, data: checkEmailRes } = useCheckEmailUnique();
+  const { mutateAsync: checkPhoneUnique, data: checkPhoneRes } = useCheckPhoneUnique();
+  const { mutateAsync: addUserMutation } = useAddCrmUser();
+
+  useEffect(() => {
+    if (checkPhoneRes === 1) {
+      form.setError('mobile', {
+        type: 'manual',
+        message: t('rules.phoneAlreadyUsed'),
+      });
+    } else if (checkPhoneRes !== undefined && checkPhoneRes !== 1) {
+      form.clearErrors('mobile');
+    }
+  }, [checkPhoneRes, form, t]);
+  useEffect(() => {
+    if (checkEmailRes === 1) {
+      form.setError('email', {
+        type: 'manual',
+        message: t('rules.emailAlreadyUsed'),
+      });
+    } else if (checkEmailRes !== undefined && checkEmailRes !== 1) {
+      form.clearErrors('email');
+    }
+  }, [checkEmailRes, form, t]);
+
   const onSubmit = async (data: { [key: string]: string }) => {
     try {
       setIsSubmitting(true);
-      // Make your API request here
-      // const response = await api.createUser(data);
-      console.log('Form submitted:', data);
+      // 提交前再次验证邮箱和手机号的唯一性
+      const [emailResult, phoneResult] = await Promise.all([
+        checkEmailUnique({ email: data.email }),
+        data.mobile
+          ? checkPhoneUnique({ mobile: data.mobile, phone: data.mobile })
+          : Promise.resolve(0),
+      ]);
+      // 密码需要加密后使用
+      let pwd = '';
+      if (data.pwd) {
+        const encrypt = new JSE();
+        encrypt.setPublicKey(localStorage.getItem('publicKey') || '');
+        pwd = encrypt.encrypt(data.pwd) || '';
+      }
+      // 检查验证结果
+      let hasError = false;
+      if (emailResult === 1) {
+        form.setError('email', {
+          type: 'manual',
+          message: t('rules.emailAlreadyUsed'),
+        });
+        hasError = true;
+      }
+      if (phoneResult === 1) {
+        form.setError('mobile', {
+          type: 'manual',
+          message: t('rules.phoneAlreadyUsed'),
+        });
+        hasError = true;
+      }
 
-      // If the request is successful, close the dialog
-      // setOpen(false);
+      if (hasError) {
+        setIsSubmitting(false);
+        return; // 有验证错误，停止提交
+      }
+      const mzone = data.mzone.split('-')?.[0].replace('+', '') || '';
+      const res = await addUserMutation({
+        deptId: '',
+        lastName: data.lastName,
+        name: data.name,
+        fullName: '', // ai拆解名字的功能恢复之后才启用该字段
+        mzone,
+        mobile: data.mobile,
+        email: data.email,
+        inviter: data.inviter,
+        pwd,
+        preferenceLanguage: data.preferenceLanguage,
+        accountType: data.accountType,
+        roleId: data.roleId,
+        colorPreference: data.colorPreference,
+        source: '3',
+        status: data.status,
+      });
+      if (res.code === 0) {
+        setIsSubmitting(false);
+        setOpen(false);
+        onSuccess?.();
+      }
     } catch (error) {
-      // If the request fails, keep the dialog open and show error
       console.error('Error submitting form:', error);
-      // You can set an error state and display it in your form
     } finally {
       setIsSubmitting(false);
     }
@@ -110,7 +191,6 @@ export const AddUserDialog = () => {
         </Button>
       }
       title={t('CRMAccountPage.AddClient')}
-      // className="flex min-h-1/2 min-w-1/2 flex-col"
       cancelText={t('common.Cancel')}
       confirmText={t('common.Confirm')}
       isConfirmDisabled={isSubmitting}
@@ -118,6 +198,7 @@ export const AddUserDialog = () => {
       onOpenChange={setOpen}
       footerShow={false}
       variant="large"
+      formLoading={isSubmitting}
     >
       <FormProvider form={form}>
         <Form {...form}>
@@ -126,12 +207,19 @@ export const AddUserDialog = () => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2"
           >
-            <FormInput
-              name="lastName"
-              label={`${t('CRMAccountPage.lastName')}`}
-              verticalLabel
-              placeholder={t('rules.limitLength', { field: 32 })}
-            />
+            <div>
+              <FormInput
+                name="lastName"
+                label={`${t('CRMAccountPage.lastName')}`}
+                verticalLabel
+                placeholder={t('rules.limitLength', { field: 32 })}
+              />
+              {/* 等api可用之后再使用该功能 */}
+              {/* <div className="mt-2 cursor-pointer text-xs underline">
+                {t('CRMAccountPage.aiSplitFullName')}
+              </div> */}
+            </div>
+
             <FormInput
               name="name"
               label={`${t('CRMAccountPage.firstName')}`}
@@ -140,40 +228,55 @@ export const AddUserDialog = () => {
             />
             <FormPhoneInput
               name="mobile"
-              label={`${t('CRMAccountPage.Mobile')}`}
+              mzoneFieldName="mzone"
+              label={`${t('CRMAccountPage.Mobile')} (${t('common.optional')})`}
               placeholder={`${t('CRMAccountPage.Mobile')}`}
               verticalLabel
-              // className="col-span-1 md:col-span-2"
+              onBlur={async e => {
+                await checkPhoneUnique({ mobile: e.target.value, phone: e.target.value });
+              }}
             />
             <FormInput
               name="email"
               label={`${t('loginPage.email')}`}
               verticalLabel
               placeholder={`${t('common.pleaseInput', { field: t('loginPage.email') })}`}
+              onBlur={async e => {
+                await checkEmailUnique({ email: e.target.value });
+              }}
             />
             <FormField
               name="inviter"
               render={({ field }) => {
-                return <SelectUpperPopup verticalLabel field={field} />;
+                return <SelectUpperPopup optional verticalLabel field={field} />;
               }}
             />
-            <FormInput
-              name="pwd"
-              label={`${t('loginPage.password')}`}
-              verticalLabel
-              placeholder={`${t('common.pleaseInput', { field: t('loginPage.password') })}`}
-            />
-            <FormInput
+            <div>
+              <FormInput
+                name="pwd"
+                label={`${t('loginPage.password')} (${t('common.optional')})`}
+                verticalLabel
+                placeholder={`${t('rules.pwdPlaceholder')}`}
+              />
+              <div className="mt-2 text-xs">{t('rules.pwdTips')}</div>
+            </div>
+            <FormSelect
               name="preferenceLanguage"
               label={`${t('rules.preferenceLanguage')}`}
               verticalLabel
-              placeholder={`${t('common.pleaseInput', { field: t('rules.preferenceLanguage') })}`}
+              placeholder={`${t('common.pleaseSelect')}`}
+              showRowValue={false}
+              options={(languageList || []).map(i => ({
+                label: i.dictLabel,
+                value: i.dictValue,
+              }))}
             />
             <FormSelect
-              name="roleId"
+              name="accountType"
               label={`${t('CRMAccountPage.CRMAccountType')}`}
               verticalLabel
               placeholder={`${t('common.pleaseSelect')}`}
+              showRowValue={false}
               options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
             />
             <FormSelect
@@ -181,14 +284,26 @@ export const AddUserDialog = () => {
               label={`${t('CRMAccountPage.Role')}`}
               verticalLabel
               placeholder={`${t('common.pleaseSelect')}`}
+              showRowValue={false}
               options={roleOptions.map(i => ({ label: t(i.label), value: i.value }))}
             />
             <FormSelect
-              name="roleId"
+              name="colorPreference"
               label={`${t('CRMAccountPage.ColorPreferences')}`}
               verticalLabel
               placeholder={t('common.pleaseSelect')}
+              showRowValue={false}
               options={colorPreferenceOptions.map(i => ({ label: t(i.label), value: i.value }))}
+              renderItem={option => {
+                return (
+                  <div className="flex items-center gap-2">
+                    <TrendingUp
+                      className={option.value === '1' ? 'text-green-600' : 'text-red-600'}
+                    />
+                    <span>{option.label}</span>
+                  </div>
+                );
+              }}
             />
 
             <div className="border-muted col-span-full -mx-6 flex justify-between border-t px-6 pt-6 pb-6 sm:pb-0">
