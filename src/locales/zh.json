@@ -211,7 +211,12 @@
     "marketplace": "交易市场",
     "profile": "个人资料",
     "logout": "退出登录",
-    "settings": "设置"
+    "settings": "设置",
+    "resetPassword": "重置密码",
+    "resetFundPassword": "重置资金密码",
+    "newPassword": "新密码",
+    "confirmPassword": "确认密码",
+    "passwordsNotMatch": "两次输入的密码不一致"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -460,7 +465,8 @@
     "roleId": "角色",
     "colorPreference": "颜色",
     "status": "状态",
-    "limitLength": "{{field}}个字符以内"
+    "limitLength": "{{field}}个字符以内",
+    "passwordComplexity": "请输入密码,{{min}}-{{max}}位英文(大小写)+数字"
   },
   "tradingHistoryPage": {
     "tradingHistoryDetail": "交易历史详情",

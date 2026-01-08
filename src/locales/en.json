@@ -192,7 +192,12 @@
     "newVersion": "new version",
     "profile": "personal information",
     "searchResult": "Search results",
-    "settings": "set up"
+    "settings": "set up",
+    "confirmPassword": "Confirm Password",
+    "newPassword": "New Password",
+    "passwordsNotMatch": "The passwords entered twice are inconsistent",
+    "resetFundPassword": "Reset fund password",
+    "resetPassword": "reset password"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1184,6 +1189,7 @@
     "pwd": "password",
     "required": "{{field}} cannot be empty",
     "roleId": "Role",
-    "status": "state"
+    "status": "state",
+    "passwordComplexity": "Please enter your password, {{min}}-{{max}} English (uppercase and lowercase) digits"
   }
 }

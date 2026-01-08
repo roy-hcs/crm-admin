@@ -1,5 +1,5 @@
-import { apiFormPostCustom, apiGet, apiGetCustom, FormValue } from '@/api/client';
-import { useQuery } from '@tanstack/react-query';
+import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom, FormValue } from '@/api/client';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   CrmRebateTradersItem,
   RebateLevelListResponse,
@@ -248,3 +248,23 @@ export function useGetUserInfo() {
 // Note: useCustomerRelationsPost moved to @/api/hooks/account
 
 // Note: useGetRebateBasePoint, useSelectServerList moved to @/api/hooks/rebate
+
+/**
+ * 修改Crm账户密码
+ */
+export function useCrmUserResetPwd() {
+  return useMutation({
+    mutationFn: (params: { id: string; pwd: string; confirmPassword: string }) =>
+      apiFormPost('/system/crmUser/resetPwd', params),
+  });
+}
+
+/**
+ * 修改Crm账户资金密码
+ */
+export function useCrmUserResetFundsPwd() {
+  return useMutation({
+    mutationFn: (params: { id: string; dealPwd: string; dealConfirmPassword: string }) =>
+      apiFormPost('/system/crmUser/dealpwd', params),
+  });
+}
