@@ -31,6 +31,7 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
 import { ResetPassword } from './components/ResetPassword';
+import { DeleteAccount } from './components/DeleteAccount';
 
 const TagItem: FC<TagUserItem & { setTags: (id: string) => void; className?: string }> = ({
   userCount,
@@ -346,7 +347,8 @@ export const CRMAccounts = () => {
                   setIsResetFundsPasswordDialogOpen(true);
                   break;
                 case 'delete':
-                  // Delete action
+                  setId(row.original.id);
+                  setIsDeleteDialogOpen(true);
                   break;
                 default:
                   break;
@@ -365,6 +367,7 @@ export const CRMAccounts = () => {
 
   const [isResetPasswordDialogOpen, setIsResetPasswordDialogOpen] = useState(false);
   const [isResetFundsPasswordDialogOpen, setIsResetFundsPasswordDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [id, setId] = useState<string>('');
 
   return (
@@ -517,6 +520,12 @@ export const CRMAccounts = () => {
           title={t('common.resetFundPassword')}
           isResetDialogOpen={isResetFundsPasswordDialogOpen}
           setIsResetDialogOpen={setIsResetFundsPasswordDialogOpen}
+        />
+        <DeleteAccount
+          id={id}
+          title={t('common.deleteAccount')}
+          isResetDialogOpen={isDeleteDialogOpen}
+          setIsResetDialogOpen={setIsDeleteDialogOpen}
         />
       </div>
     </div>

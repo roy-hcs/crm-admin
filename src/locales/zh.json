@@ -38,7 +38,11 @@
     "keyWordOfSearchSuperior": "姓/名/账号ID/手机/邮箱",
     "AccountRange": "账户范围",
     "SelectSuperiorRange": "选择上级范围",
-    "aiSplitFullName": "无法准确拆分用户的姓和名？试试我们的AI功能"
+    "aiSplitFullName": "无法准确拆分用户的姓和名？试试我们的AI功能",
+    "DeleteAccountWalletBalanceZero": "钱包余额为 0 才可删除",
+    "DeleteAccountOnlyCRM": "仅删除 CRM 账户",
+    "DeleteAccountWithTrading": "删除CRM账户及其交易账号",
+    "DeleteAccountWalletBalance": "钱包余额"
   },
   "loginPage": {
     "email": "邮箱",
@@ -220,7 +224,8 @@
     "newPassword": "新密码",
     "confirmPassword": "确认密码",
     "passwordsNotMatch": "两次输入的密码不一致",
-    "optional": "可选"
+    "optional": "可选",
+    "deleteAccount": "删除账户"
   },
   "home": {
     "DataOverview": "数据总览",

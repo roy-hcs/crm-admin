@@ -268,3 +268,13 @@ export function useCrmUserResetFundsPwd() {
       apiFormPost('/system/crmUser/dealpwd', params),
   });
 }
+
+/**
+ * 删除Crm账户
+ */
+export function useCrmUserRemove() {
+  return useMutation({
+    mutationFn: (params: { id: string; deleteType: string }) =>
+      apiFormPost('/system/crmUser/remove', params),
+  });
+}
