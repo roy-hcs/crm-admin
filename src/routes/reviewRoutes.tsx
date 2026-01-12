@@ -7,12 +7,12 @@ import { ReviewWithdrawalPage } from '@/pages/review/withdrawal/ReviewWithdrawal
 import { ReviewInternalTransferPage } from '@/pages/review/internal-transfer/ReviewInternalTransferPage';
 import { ReviewDepositPage } from '@/pages/review/deposit/ReviewDepositPage';
 import { SettingsPage } from '@/pages/review/settings/SettingsPage';
-import { InformationPage } from '@/pages/review/information/InformationPage';
 import { AccountOpeningPage } from '@/pages/review/account-opening/AccountOpeningPage';
 import { BindingPage } from '@/pages/review/binding/BindingPage';
 import { LeveragePage } from '@/pages/review/leverage/LeveragePage';
 import { ReviewWithdrawalDetailPage } from '@/pages/review/withdrawal-detail/ReviewWithdrawalDetailPage';
 import { ReviewDepositDetailPage } from '@/pages/review/deposit-detail/ReviewDepositDetailPage';
+import { InformationPage } from '@/pages/review/in-formation/InformationPage';
 
 const ReviewWithdrawalDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();

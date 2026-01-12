@@ -30,6 +30,8 @@ import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
+import { ResetPassword } from './components/ResetPassword';
+import { DeleteAccount } from './components/DeleteAccount';
 
 const TagItem: FC<TagUserItem & { setTags: (id: string) => void; className?: string }> = ({
   userCount,
@@ -79,6 +81,7 @@ export const CRMAccounts = () => {
       accountType: '',
     },
   );
+
   const { data: tagUserCountList, isLoading: tagUserCountListLoading } = useTagUserCountList();
   const {
     data: crmUsers,
@@ -117,6 +120,7 @@ export const CRMAccounts = () => {
     setPageNum(0);
     formRef.current?.onReset();
   };
+
   const allColumns: CRMColumnDef<CrmUserItem, unknown>[] = [
     {
       id: 'select',
@@ -319,19 +323,35 @@ export const CRMAccounts = () => {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
+      cell: ({ row }) => (
         <div>
           <RrhDropdown
             Trigger={<Ellipsis className="size-4" />}
             dropdownList={[
-              { label: t('common.Edit'), value: 'edit' },
               { label: t('common.View'), value: 'view' },
+              { label: t('common.resetPassword'), value: 'resetPassword' },
+              { label: t('common.resetFundPassword'), value: 'resetFundPassword' },
+              { label: t('common.delete'), value: 'delete' },
             ]}
             callToAction={action => {
-              if (action === 'edit') {
-                // Handle edit action
-              } else if (action === 'view') {
-                // Handle view action
+              switch (action) {
+                case 'view':
+                  // View action
+                  break;
+                case 'resetPassword':
+                  setId(row.original.id);
+                  setIsResetPasswordDialogOpen(true);
+                  break;
+                case 'resetFundPassword':
+                  setId(row.original.id);
+                  setIsResetFundsPasswordDialogOpen(true);
+                  break;
+                case 'delete':
+                  setId(row.original.id);
+                  setIsDeleteDialogOpen(true);
+                  break;
+                default:
+                  break;
               }
             }}
           />
@@ -341,8 +361,15 @@ export const CRMAccounts = () => {
       size: 50,
     },
   ];
+
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, columnMeta, tableColumns } =
     useColumnVisibility('crm-accounts-table', allColumns);
+
+  const [isResetPasswordDialogOpen, setIsResetPasswordDialogOpen] = useState(false);
+  const [isResetFundsPasswordDialogOpen, setIsResetFundsPasswordDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [id, setId] = useState<string>('');
+
   return (
     <div>
       <PageInfo
@@ -479,6 +506,26 @@ export const CRMAccounts = () => {
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
           loading={crmUsersLoading || tagUserCountListLoading}
+        />
+        <ResetPassword
+          id={id}
+          type="password"
+          title={t('common.resetPassword')}
+          isResetDialogOpen={isResetPasswordDialogOpen}
+          setIsResetDialogOpen={setIsResetPasswordDialogOpen}
+        />
+        <ResetPassword
+          id={id}
+          type="fundPassword"
+          title={t('common.resetFundPassword')}
+          isResetDialogOpen={isResetFundsPasswordDialogOpen}
+          setIsResetDialogOpen={setIsResetFundsPasswordDialogOpen}
+        />
+        <DeleteAccount
+          id={id}
+          title={t('common.deleteAccount')}
+          isResetDialogOpen={isDeleteDialogOpen}
+          setIsResetDialogOpen={setIsDeleteDialogOpen}
         />
       </div>
     </div>

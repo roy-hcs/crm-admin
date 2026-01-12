@@ -38,7 +38,11 @@
     "lastName": "surname",
     "desc": "Manage and view CRM account information",
     "title": "CRM Account",
-    "aiSplitFullName": "Can't accurately split a user's first and last name? \nTry our AI features"
+    "aiSplitFullName": "Can't accurately split a user's first and last name? \nTry our AI features",
+    "DeleteAccountOnlyCRM": "Delete CRM account only",
+    "DeleteAccountWalletBalance": "wallet balance",
+    "DeleteAccountWalletBalanceZero": "The wallet balance can only be deleted when it reaches 0",
+    "DeleteAccountWithTrading": "Delete CRM account and its trading account"
   },
   "common": {
     "AnErrorOccurred": "An error occurred",
@@ -196,7 +200,13 @@
     "profile": "personal information",
     "searchResult": "Search results",
     "settings": "set up",
-    "optional": "Optional"
+    "confirmPassword": "Confirm Password",
+    "newPassword": "New Password",
+    "passwordsNotMatch": "The passwords entered twice are inconsistent",
+    "resetFundPassword": "Reset fund password",
+    "resetPassword": "reset password",
+    "optional": "Optional",
+    "deleteAccount": "Delete account"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1189,6 +1199,7 @@
     "required": "{{field}} cannot be empty",
     "roleId": "Role",
     "status": "state",
+    "passwordComplexity": "Please enter your password, {{min}}-{{max}} English (uppercase and lowercase) digits",
     "emailAlreadyUsed": "The current email address is already in use",
     "phoneAlreadyUsed": "Current number is already in use",
     "pwdPlaceholder": "Please enter your password, 8-20 English digits (uppercase and lowercase) numbers",
