@@ -24,6 +24,8 @@ import {
   CrmLoginInfoParams,
   CrmLogininforRes,
   UserInfoRes,
+  walletItem,
+  accountItem,
 } from './types';
 
 // Note: useWithDrawReport, useFundFlowReport, useSymbolReport, useRegCountReport, useDepositAllReport, useCustomerTransactionsReport, useSumReport moved to @/api/hooks/workbench
@@ -276,5 +278,53 @@ export function useCrmUserRemove() {
   return useMutation({
     mutationFn: (params: { id: string; deleteType: string }) =>
       apiFormPost('/system/crmUser/remove', params),
+  });
+}
+
+/**
+ * 交易账号-重置密码
+ */
+export function useCrmDealAccountResetPwd() {
+  return useMutation({
+    mutationFn: (params: { accountId: string; pwdType: string; pwd: string }) =>
+      apiFormPost('/system/crmDealAccount/resetPwd', params),
+  });
+}
+
+/**
+ * 交易账号-重置密码mt5获取密码长度配置
+ */
+
+export function useMtServerGroup(serverId?: string, account?: string) {
+  return useQuery({
+    queryKey: ['MtServerGroup', { serverId, account }],
+    queryFn: () => {
+      const params = new URLSearchParams();
+      if (serverId !== undefined) params.append('serverId', serverId);
+      if (account !== undefined) params.append('account', String(account));
+
+      const queryString = params.toString();
+      const url = `/system/mtServerGroup/getGroupByServerAndAccount${queryString ? `?${queryString}` : ''}`;
+
+      return apiGetCustom<{
+        groupId: string | null;
+        minpwdlength: number | null;
+        maxpwdlength: number | null;
+      }>(url);
+    },
+  });
+}
+
+/**
+ * crm账户 删除账户 账户信息
+ */
+export function useCrmUserConfirmRemoveInfo(userId: string) {
+  return useQuery({
+    queryKey: ['CrmUserConfirmRemoveInfo', userId],
+    queryFn: () =>
+      apiFormPostCustom<{
+        accountList: accountItem[];
+        walletList: walletItem[];
+      }>(`/system/crmUser/confirmCrmRemoveInfo/${userId}`, {}),
   });
 }

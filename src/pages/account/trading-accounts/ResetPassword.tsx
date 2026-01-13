@@ -16,28 +16,47 @@ import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect, useState } from 'react';
 import { Eye, EyeClosed } from 'lucide-react';
-import { useCrmUserResetPwd, useCrmUserResetFundsPwd } from '@/api/hooks/system/system';
+import { useCrmDealAccountResetPwd, useMtServerGroup } from '@/api/hooks/system/system';
 import { JSEncrypt } from 'jsencrypt';
+import { FormSelect } from '@/components/form/FormSelect';
+import { FormProvider } from '@/contexts/form';
+
+import { passwordTypeOptions } from '@/lib/const';
+import { CrmDealAccountListItem } from '@/api/hooks/account';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 type resetPasswordFormValues = {
+  pwdType: string;
   newPassword: string;
   againPassword: string;
 };
 
-const resetPasswordSchema = (t: TFunction<'translation', undefined>) => {
+const resetPasswordSchema = (
+  t: TFunction<'translation', undefined>,
+  maxLength?: number,
+  minLength?: number,
+) => {
   return z
     .object({
       newPassword: z
         .string()
         .min(1, t('rules.required', { field: t('common.newPassword') }))
-        .min(8, t('rules.passwordComplexity', { min: 8, max: 20 }))
-        .max(20, t('rules.passwordComplexity', { min: 8, max: 20 }))
+        .min(
+          minLength || 8,
+          t('rules.crmAccountPassword', { min: minLength || 8, max: maxLength || 16 }),
+        )
+        .max(
+          maxLength || 16,
+          t('rules.crmAccountPassword', { min: minLength || 8, max: maxLength || 16 }),
+        )
         .regex(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,20}$/,
-          t('rules.passwordComplexity', { min: 8, max: 20 }),
+          new RegExp(
+            `^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=[\\]{};:'",.<>/\\\\?|\\\`~])[A-Za-z\\d!@#$%^&*()_+\\-=[\\]{};:'",.<>/\\\\?|\\\`~]{${minLength || 8},${maxLength || 16}}$`,
+          ),
+          t('rules.crmAccountPassword', { min: minLength || 8, max: maxLength || 16 }),
         ),
       againPassword: z.string().min(1, t('rules.required', { field: t('common.confirmPassword') })),
+      pwdType: z.string().min(1, t('rules.required', { field: t('common.pwdType') })),
     })
     .refine(data => data.newPassword === data.againPassword, {
       message: t('common.passwordsNotMatch') || 'Passwords do not match',
@@ -93,29 +112,34 @@ const PasswordField = ({
 export const ResetPassword = ({
   isResetDialogOpen,
   setIsResetDialogOpen,
-  id,
   title,
-  type,
+  info,
 }: {
   isResetDialogOpen: boolean;
   setIsResetDialogOpen: (open: boolean) => void;
-  id: string;
   title: string;
-  type: 'password' | 'fundPassword';
+  info: CrmDealAccountListItem | null;
 }) => {
+  /**
+   * serviceType 1 MT5 5 XOH
+   * mt5的密码长度控制由useMtServerGroup接口控制 如果没有长度 则默认 16 8
+   */
+  const { data } = useMtServerGroup(info?.server || '', info?.account || '');
   const { t } = useTranslation();
-  const changePwdMutation = useCrmUserResetPwd();
-  const changeFundsPwdMutation = useCrmUserResetFundsPwd();
+  const changePwdMutation = useCrmDealAccountResetPwd();
 
   const [showNewPWD, setShowNewPWD] = useState(false);
   const [showAgainPWD, setShowAgainPWD] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<resetPasswordFormValues>({
-    resolver: zodResolver(resetPasswordSchema(t)),
+    resolver: zodResolver(
+      resetPasswordSchema(t, data?.maxpwdlength || 16, data?.minpwdlength || 8),
+    ),
     defaultValues: {
       newPassword: '',
       againPassword: '',
+      pwdType: '',
     },
   });
 
@@ -126,22 +150,11 @@ export const ResetPassword = ({
       const encryptor = new JSEncrypt();
       encryptor.setPublicKey(`-----BEGIN PUBLIC KEY-----${pubKey}-----END PUBLIC KEY-----`);
       const encryptedNewPassword = encryptor.encrypt(values.newPassword);
-      const encryptedAgainPassword = encryptor.encrypt(values.againPassword);
-
-      let res;
-      if (type === 'password') {
-        res = await changePwdMutation.mutateAsync({
-          id: id,
-          pwd: encryptedNewPassword || '',
-          confirmPassword: encryptedAgainPassword || '',
-        });
-      } else {
-        res = await changeFundsPwdMutation.mutateAsync({
-          id: id,
-          dealPwd: encryptedNewPassword || '',
-          dealConfirmPassword: encryptedAgainPassword || '',
-        });
-      }
+      const res = await changePwdMutation.mutateAsync({
+        accountId: info?.id || '',
+        pwdType: values.pwdType,
+        pwd: encryptedNewPassword || '',
+      });
 
       if (res.code === 0) {
         toast.success(t('common.success'));
@@ -182,25 +195,53 @@ export const ResetPassword = ({
       className="w-full sm:w-112"
     >
       <div className="w-full sm:w-100">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <PasswordField
-              control={form.control}
-              name="newPassword"
-              label={t('common.newPassword')}
-              show={showNewPWD}
-              setShow={setShowNewPWD}
-            />
+        <FormProvider form={form}>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <div className="mb-4 grid gap-2">
+                <div className="text-foreground text-sm leading-5 font-medium">
+                  {t('common.accountType')}
+                </div>
+                <div className="text-muted-foreground text-sm leading-5">{info?.account}</div>
+              </div>
+              <div className="mb-4">
+                <FormSelect
+                  verticalLabel
+                  name="pwdType"
+                  label={t('common.pwdType')}
+                  placeholder={t('common.pleaseSelect')}
+                  showRowValue={false}
+                  options={passwordTypeOptions
+                    .map(i => ({ label: t(i.label), value: i.value }))
+                    .filter(i => {
+                      if (info?.serviceType === 5) {
+                        // XOH 只展示交易密码
+                        return i.value === '1';
+                      } else {
+                        // 其他 展示所有
+                        return i.value !== '';
+                      }
+                    })}
+                />
+              </div>
+              <PasswordField
+                control={form.control}
+                name="newPassword"
+                label={t('common.newPassword')}
+                show={showNewPWD}
+                setShow={setShowNewPWD}
+              />
 
-            <PasswordField
-              control={form.control}
-              name="againPassword"
-              label={t('common.confirmPassword')}
-              show={showAgainPWD}
-              setShow={setShowAgainPWD}
-            />
-          </form>
-        </Form>
+              <PasswordField
+                control={form.control}
+                name="againPassword"
+                label={t('common.confirmPassword')}
+                show={showAgainPWD}
+                setShow={setShowAgainPWD}
+              />
+            </form>
+          </Form>
+        </FormProvider>
       </div>
       <DialogFooter className="border-muted -mx-6 gap-2 border-t px-6 pt-6 sm:justify-end">
         <DialogClose>

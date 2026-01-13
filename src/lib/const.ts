@@ -179,3 +179,9 @@ export const arrivalStatusOptions = [
   { label: 'orderManagementTable.arrivalStatusOptions.2', value: '2' },
   { label: 'orderManagementTable.arrivalStatusOptions.3', value: '3' },
 ];
+
+// 交易密码 只读密码
+export const passwordTypeOptions = [
+  { label: 'common.readOnlyPassword', value: '1' },
+  { label: 'common.tradingPassword', value: '2' },
+];
