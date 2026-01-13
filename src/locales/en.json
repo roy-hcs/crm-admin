@@ -42,7 +42,9 @@
     "DeleteAccountOnlyCRM": "Delete CRM account only",
     "DeleteAccountWalletBalance": "wallet balance",
     "DeleteAccountWalletBalanceZero": "The wallet balance can only be deleted when it reaches 0",
-    "DeleteAccountWithTrading": "Delete CRM account and its trading account"
+    "DeleteAccountWithTrading": "Delete CRM account and its trading account",
+    "DeleteAccountWalletAndRealAccountBalance": "Total {{real}} real, {{demo}} simulation",
+    "DeleteAccountWalletAndRealAccountBalanceZero": "The wallet balance and real account balance can only be deleted when they are 0."
   },
   "common": {
     "AnErrorOccurred": "An error occurred",
@@ -206,7 +208,10 @@
     "resetFundPassword": "Reset fund password",
     "resetPassword": "reset password",
     "optional": "Optional",
-    "deleteAccount": "Delete account"
+    "deleteAccount": "Delete account",
+    "pwdType": "Password type",
+    "readOnlyPassword": "read-only password",
+    "tradingPassword": "Transaction password"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1203,6 +1208,7 @@
     "emailAlreadyUsed": "The current email address is already in use",
     "phoneAlreadyUsed": "Current number is already in use",
     "pwdPlaceholder": "Please enter your password, 8-20 English digits (uppercase and lowercase) numbers",
-    "pwdTips": "If no password is added, the system will automatically create a login password for the account and send the login password via email."
+    "pwdTips": "If no password is added, the system will automatically create a login password for the account and send the login password via email.",
+    "crmAccountPassword": "{{min}}-{{max}} digits (numbers, uppercase letters, lowercase letters, special character combinations)"
   }
 }

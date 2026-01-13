@@ -40,9 +40,11 @@
     "SelectSuperiorRange": "选择上级范围",
     "aiSplitFullName": "无法准确拆分用户的姓和名？试试我们的AI功能",
     "DeleteAccountWalletBalanceZero": "钱包余额为 0 才可删除",
+    "DeleteAccountWalletAndRealAccountBalanceZero": "钱包余额和真实账号余额为0才可删除",
     "DeleteAccountOnlyCRM": "仅删除 CRM 账户",
     "DeleteAccountWithTrading": "删除CRM账户及其交易账号",
-    "DeleteAccountWalletBalance": "钱包余额"
+    "DeleteAccountWalletBalance": "钱包余额",
+    "DeleteAccountWalletAndRealAccountBalance": "共{{real}}真实, {{demo}}模拟"
   },
   "loginPage": {
     "email": "邮箱",
@@ -225,7 +227,10 @@
     "confirmPassword": "确认密码",
     "passwordsNotMatch": "两次输入的密码不一致",
     "optional": "可选",
-    "deleteAccount": "删除账户"
+    "deleteAccount": "删除账户",
+    "readOnlyPassword": "只读密码",
+    "tradingPassword": "交易密码",
+    "pwdType": "密码类型"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -479,7 +484,8 @@
     "limitLength": "{{field}}个字符以内",
     "passwordComplexity": "请输入密码,{{min}}-{{max}}位英文(大小写)+数字",
     "emailAlreadyUsed": "当前邮箱已被使用",
-    "phoneAlreadyUsed": "当前号码已被使用"
+    "phoneAlreadyUsed": "当前号码已被使用",
+    "crmAccountPassword": "{{min}}-{{max}}位（数字+大写字母+小写字母+特殊字符组合）"
   },
   "tradingHistoryPage": {
     "tradingHistoryDetail": "交易历史详情",

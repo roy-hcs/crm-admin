@@ -521,12 +521,14 @@ export const CRMAccounts = () => {
           isResetDialogOpen={isResetFundsPasswordDialogOpen}
           setIsResetDialogOpen={setIsResetFundsPasswordDialogOpen}
         />
-        <DeleteAccount
-          id={id}
-          title={t('common.deleteAccount')}
-          isResetDialogOpen={isDeleteDialogOpen}
-          setIsResetDialogOpen={setIsDeleteDialogOpen}
-        />
+        {id && (
+          <DeleteAccount
+            id={id}
+            title={t('common.deleteAccount')}
+            isResetDialogOpen={isDeleteDialogOpen}
+            setIsResetDialogOpen={setIsDeleteDialogOpen}
+          />
+        )}
       </div>
     </div>
   );

@@ -470,3 +470,77 @@ export type UserInfoRes = {
 // Note: CustomerRelations types moved to @/api/hooks/account
 
 // Note: RebateBasePoint, SelectServerList types moved to @/api/hooks/rebate
+
+export type WalletItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: object;
+  id: string | null;
+  crmUserId: string | null;
+  balance: string | null;
+  currency: string | null;
+  major: string | null;
+  permissionJson: string | null;
+  delFlag: string | null;
+  crmUserName: string | null;
+  crmUserShowId: string | null;
+  allIn: string | null;
+  allOut: string | null;
+  accounts: string | null;
+};
+export type AccountItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: object;
+  id: string | null;
+  userId: string | null;
+  username: string | null;
+  name: string | null;
+  account: string | null;
+  serviceType: number | null;
+  serviceProperty: number | null;
+  servicePropertyStr: string | null;
+  servicePropertyValue: string | null;
+  server: string | null;
+  serverName: string | null;
+  accountSupervisorName: string | null;
+  directBrokerName: string | null;
+  accountGroupId: string | null;
+  accountGroupName: string | null;
+  accountSupervisorShowId: string | null;
+  serverGroup: string | null;
+  accountType: string | null;
+  accountTypeName: string | null;
+  lever: string | null;
+  balance: number | null;
+  netWorth: number | null;
+  creditAmount: number | null;
+  registerTime: string | null;
+  registerTimeStr: string | null;
+  dealAuth: number | null;
+  usedAdvance: number | null;
+  usableAdvance: number | null;
+  advanceScale: number | null;
+  status: number | null;
+  initialAmount: number | null;
+  currency: string | null;
+  authority: string | null;
+  directBroker: string | null;
+  permissionJson: string | null;
+  digits: number | null;
+  hasClearAccount: string | null;
+  buildRebateAccount: boolean;
+  accountGroupList: string | null;
+  accounts: string | null;
+  accountIds: string | null;
+  crmAuthority: number | null;
+  source: string | null;
+  roleName: string | null;
+  triggeringEvent: string | null;
+};
