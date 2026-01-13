@@ -471,7 +471,7 @@ export type UserInfoRes = {
 
 // Note: RebateBasePoint, SelectServerList types moved to @/api/hooks/rebate
 
-export type walletItem = {
+export type WalletItem = {
   createBy: string | null;
   createTime: string | null;
   updateBy: string | null;
@@ -491,7 +491,7 @@ export type walletItem = {
   allOut: string | null;
   accounts: string | null;
 };
-export type accountItem = {
+export type AccountItem = {
   createBy: string | null;
   createTime: string | null;
   updateBy: string | null;

@@ -24,8 +24,8 @@ import {
   CrmLoginInfoParams,
   CrmLogininforRes,
   UserInfoRes,
-  walletItem,
-  accountItem,
+  AccountItem,
+  WalletItem,
 } from './types';
 
 // Note: useWithDrawReport, useFundFlowReport, useSymbolReport, useRegCountReport, useDepositAllReport, useCustomerTransactionsReport, useSumReport moved to @/api/hooks/workbench
@@ -323,8 +323,8 @@ export function useCrmUserConfirmRemoveInfo(userId: string) {
     queryKey: ['CrmUserConfirmRemoveInfo', userId],
     queryFn: () =>
       apiFormPostCustom<{
-        accountList: accountItem[];
-        walletList: walletItem[];
+        accountList: AccountItem[];
+        walletList: WalletItem[];
       }>(`/system/crmUser/confirmCrmRemoveInfo/${userId}`, {}),
   });
 }
