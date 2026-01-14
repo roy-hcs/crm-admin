@@ -2,8 +2,7 @@ import { SumWithdrawalAmountRes, withdrawalDetailItem } from '@/api/hooks/review
 import { RrhCard } from '@/components/common/RrhCard';
 import { Badge } from '@/components/ui/badge';
 import { useTranslation } from 'react-i18next';
-import { InfoItem } from './InfoItem';
-import { WithdrawalItem } from './WithdrawalItem';
+import { InfoItem } from '../../../../components/common/InfoItem';
 import { RrhButton } from '@/components/common/RrhButton';
 import { ChevronUp } from 'lucide-react';
 import { useState } from 'react';
@@ -12,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useSumWithdrawAmount } from '@/api/hooks/review/review';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/table';
+import { LabelItem } from '@/components/common/LabelItem';
 
 export const PersonalInfoCard = ({
   withdrawalInfo,
@@ -80,10 +80,7 @@ export const PersonalInfoCard = ({
             <span title={withdrawalInfo.userEmail}>{withdrawalInfo.userEmail}</span>
           </div>
         </div>
-        <WithdrawalItem
-          label={t('review.latestLogin')}
-          ContentDom={<InfoItem info={lastLoginTime} />}
-        />
+        <LabelItem label={t('review.latestLogin')} ContentDom={<InfoItem info={lastLoginTime} />} />
         <div className="py-3">
           <h3 className="text-lg font-semibold">{t('review.withdrawalAmountCumulative')}</h3>
           <div className="text-muted-foreground">{t('review.withdrawalAmountDesc')}</div>

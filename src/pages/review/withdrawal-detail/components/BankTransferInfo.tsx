@@ -1,11 +1,11 @@
 import { FC, useMemo } from 'react';
 import { FormField } from '@/components/ui/form';
-import { EditableItem } from './EditableItem';
+import { EditableItem } from '@/components/common/EditableItem';
 import { useTranslation } from 'react-i18next';
-import { WithdrawalItem } from './WithdrawalItem';
-import { InfoItem } from './InfoItem';
+import { InfoItem } from '../../../../components/common/InfoItem';
 import { useEditableFields } from '@/hooks/useEditableFields';
 import { WithdrawItem } from '@/api/hooks/review';
+import { LabelItem } from '@/components/common/LabelItem';
 
 type BankTransferField = string;
 
@@ -142,7 +142,7 @@ export const BankTransferInfo: FC<Props> = ({ withdrawalInfo, isAudit, directBro
           key={key}
           name={name}
           render={({ field }) => (
-            <WithdrawalItem
+            <LabelItem
               label={label}
               ContentDom={
                 <EditableItem
@@ -166,7 +166,7 @@ export const BankTransferInfo: FC<Props> = ({ withdrawalInfo, isAudit, directBro
       <FormField
         name="isDeduction"
         render={() => (
-          <WithdrawalItem
+          <LabelItem
             label={t('table.isDeduction')}
             ContentDom={
               <InfoItem info={withdrawalInfo.isWithdraw === 1 ? t('common.yes') : t('common.no')} />
@@ -177,10 +177,7 @@ export const BankTransferInfo: FC<Props> = ({ withdrawalInfo, isAudit, directBro
       <FormField
         name="directAgent"
         render={() => (
-          <WithdrawalItem
-            label={t('table.directAgent')}
-            ContentDom={<InfoItem info={directBroker} />}
-          />
+          <LabelItem label={t('table.directAgent')} ContentDom={<InfoItem info={directBroker} />} />
         )}
       />
     </>

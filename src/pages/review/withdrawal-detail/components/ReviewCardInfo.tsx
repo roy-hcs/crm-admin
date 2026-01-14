@@ -1,13 +1,13 @@
 import { withdrawalDetailItem, WithdrawalReviewDetailRes } from '@/api/hooks/review';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { WithdrawalItem } from './WithdrawalItem';
 import { FormField } from '@/components/ui/form';
-import { InfoItem } from './InfoItem';
+import { InfoItem } from '../../../../components/common/InfoItem';
 import { Switch } from '@/components/ui/switch';
 import { RrhRadioGroup } from '@/components/common/RrhRadioGroup';
 import { Input } from '@/components/ui/input';
 import { RrhButton } from '@/components/common/RrhButton';
+import { LabelItem } from '@/components/common/LabelItem';
 
 export const ReviewCardInfo = ({
   withdrawalInfo,
@@ -41,7 +41,7 @@ export const ReviewCardInfo = ({
         name="reviewer"
         disabled
         render={() => (
-          <WithdrawalItem
+          <LabelItem
             label={t('review.information.verifyUserName')}
             ContentDom={
               <InfoItem
@@ -58,7 +58,7 @@ export const ReviewCardInfo = ({
       <FormField
         name="reviewStatus"
         render={({ field }) => (
-          <WithdrawalItem
+          <LabelItem
             label={t('review.reviewStatus')}
             ContentDom={
               <div>
@@ -85,7 +85,7 @@ export const ReviewCardInfo = ({
       <FormField
         name="reviewRemarks"
         render={({ field }) => (
-          <WithdrawalItem
+          <LabelItem
             label={t('table.remarks')}
             ContentDom={
               <div className="flex w-full flex-col gap-3">

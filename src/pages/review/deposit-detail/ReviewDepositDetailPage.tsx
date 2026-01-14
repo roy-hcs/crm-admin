@@ -8,9 +8,9 @@ import { useEffect } from 'react';
 import { DepositInfoCard } from './components/DepositInfoCard';
 import { DepositVerifyParams } from '@/api/hooks/review/types';
 import { PersonalInfoCard } from './components/PersonalInfoCard';
-import { ReviewStepsCard } from './components/ReviewStepsCard';
 import { RrhStepProps } from '@/components/common/RrhStep';
 import { ReviewInfoCard } from './components/ReviewInfoCard';
+import { ReviewStepsCard } from '../withdrawal-detail/components/ReviewStepsCard';
 
 export const ReviewDepositDetailPage = () => {
   const [searchParams] = useSearchParams();

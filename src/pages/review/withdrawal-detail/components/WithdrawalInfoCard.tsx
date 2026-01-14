@@ -6,17 +6,17 @@ import { FormField } from '@/components/ui/form';
 import { CircleAlert, Repeat } from 'lucide-react';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { InfoItem } from './InfoItem';
-import { WithdrawalItem } from './WithdrawalItem';
+import { InfoItem } from '../../../../components/common/InfoItem';
 import { InternationalTransferInfo } from './InternationalTransferInfo';
 import { BankTransferInfo } from './BankTransferInfo';
 import { CryptocurrencyInfo } from './CryptocurrencyInfo';
 import { PayIdInfo } from './PayIdInfo';
-import { EditableItem } from './EditableItem';
+import { EditableItem } from '@/components/common/EditableItem';
 import { useEditableFields } from '@/hooks/useEditableFields';
 import { AccountInfo } from './AccountInfo';
 import { UseFormReturn } from 'react-hook-form';
 import { WithdrawalFormData } from '../ReviewWithdrawalDetailPage';
+import { LabelItem } from '@/components/common/LabelItem';
 type GeneralInfoField = 'dealTicket';
 export const WithdrawalInfoCard: FC<{
   withdrawData: WithdrawalReviewDetailRes['data'];
@@ -196,7 +196,7 @@ export const WithdrawalInfoCard: FC<{
           name="withdrawalAccount"
           disabled
           render={() => (
-            <WithdrawalItem
+            <LabelItem
               label={
                 <span className="flex items-center justify-between">
                   {t('table.withdrawAccount')}
@@ -220,7 +220,7 @@ export const WithdrawalInfoCard: FC<{
           name="withdrawalWay"
           disabled
           render={() => (
-            <WithdrawalItem
+            <LabelItem
               label={t('table.withdrawMethods')}
               ContentDom={<InfoItem info={methodName} />}
             />
@@ -260,7 +260,7 @@ export const WithdrawalInfoCard: FC<{
         <FormField
           name="commission"
           render={({ field }) => (
-            <WithdrawalItem
+            <LabelItem
               label={t('table.commission')}
               ContentDom={
                 <RrhInputWithUnit
@@ -280,7 +280,7 @@ export const WithdrawalInfoCard: FC<{
         <FormField
           name="rate"
           render={() => (
-            <WithdrawalItem
+            <LabelItem
               label={t('common.exchangeRate')}
               ContentDom={
                 <RrhInputWithUnit
@@ -297,7 +297,7 @@ export const WithdrawalInfoCard: FC<{
         <FormField
           name="amountOfReceipt"
           render={() => (
-            <WithdrawalItem
+            <LabelItem
               label={
                 <span className="flex items-center gap-1">
                   {t('table.amountOfReceipt')}
@@ -323,7 +323,7 @@ export const WithdrawalInfoCard: FC<{
           name="remarks"
           disabled
           render={() => (
-            <WithdrawalItem
+            <LabelItem
               label={t('table.remarks')}
               ContentDom={<InfoItem info={withdrawalInfo.subRemark || '-'} />}
             />
@@ -333,7 +333,7 @@ export const WithdrawalInfoCard: FC<{
           name="orderNumber"
           disabled
           render={() => (
-            <WithdrawalItem
+            <LabelItem
               label={t('table.orderNumber')}
               ContentDom={<InfoItem info={withdrawalInfo.orderNum || '-'} />}
             />
@@ -361,7 +361,7 @@ export const WithdrawalInfoCard: FC<{
               key={key}
               name={name}
               render={({ field }) => (
-                <WithdrawalItem
+                <LabelItem
                   label={label}
                   ContentDom={
                     <EditableItem
