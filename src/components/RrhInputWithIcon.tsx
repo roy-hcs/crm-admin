@@ -106,7 +106,7 @@ const RrhInputWithIcon = React.forwardRef<HTMLInputElement, InputProps>(
           </span>
         )}
         {!inputRef.current?.value && (
-          <span className="text-muted-foreground bg-muted absolute right-2 flex items-center gap-1 rounded-sm px-2 py-1 text-xs">
+          <span className="text-muted-foreground bg-muted absolute right-2 hidden items-center gap-1 rounded-sm px-2 py-1 text-xs md:flex">
             <span>Enter</span>
             <CornerDownLeft className="size-3" />
           </span>

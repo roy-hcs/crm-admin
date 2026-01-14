@@ -231,7 +231,8 @@
     "readOnlyPassword": "只读密码",
     "tradingPassword": "交易密码",
     "pwdType": "密码类型",
-    "detail": "{{field}} 详细"
+    "detail": "{{field}} 详细",
+    "exportFailed": "导出失败"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -830,7 +831,7 @@
     "currentBalance": "当前余额",
     "statisticTime": "统计时间",
     "clickToGetSum": "点击查看数据合计",
-    "exportAllDataTip": "确定导出所有{{field}}吗？",
+    "exportAllDataTip": "确定导出所有 {{field}} 吗？",
     "CRMAccount": "CRM账户",
     "fundAccount": "资金账号",
     "way": "方式",

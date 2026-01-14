@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '@/api/client';
 import { ColumnMeta } from '@/api/hooks/common';
 import { TotalItem } from '@/api/hooks/pamm/type';
 import { CRMColumnDef } from '@/components/table';
@@ -115,4 +116,74 @@ export const getColumnMeta: <T>(
       label: typeof col.header === 'string' ? col.header : col.label || col.id || '',
       defaultVisible: true,
     }));
+};
+
+export const downloadFile = (
+  fileName: string,
+  deleteAfterDownload: boolean = true,
+  baseUrl?: string,
+) => {
+  if (!fileName) {
+    console.error('downloadFile: fileName is required');
+    return;
+  }
+
+  // Import API_BASE_URL dynamically or use provided baseUrl
+  const API_URL = baseUrl || API_BASE_URL;
+  const downloadUrl = `${API_URL}/common/download?fileName=${encodeURIComponent(fileName)}&delete=${deleteAfterDownload}`;
+
+  // Use window.location.href for simple download (works with backend session cookies)
+  window.location.href = downloadUrl;
+};
+
+export const downloadFileWithBlob = async (
+  fileName: string,
+  deleteAfterDownload: boolean = true,
+  baseUrl?: string,
+): Promise<void> => {
+  if (!fileName) {
+    throw new Error('downloadFile: fileName is required');
+  }
+
+  const API_URL = baseUrl || API_BASE_URL;
+  const downloadUrl = `${API_URL}/common/download?fileName=${encodeURIComponent(fileName)}&delete=${deleteAfterDownload}`;
+
+  try {
+    const response = await fetch(downloadUrl, {
+      method: 'GET',
+      credentials: 'include', // Include cookies for authentication
+    });
+
+    if (!response.ok) {
+      throw new Error(`Download failed: ${response.statusText}`);
+    }
+
+    // Get the blob from response
+    const blob = await response.blob();
+
+    // Extract filename from Content-Disposition header if available
+    const contentDisposition = response.headers.get('Content-Disposition');
+    let downloadFileName = fileName;
+    if (contentDisposition) {
+      const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
+      if (matches != null && matches[1]) {
+        downloadFileName = matches[1].replace(/['"]/g, '');
+      }
+    }
+
+    // Create blob URL and trigger download
+    const blobUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = downloadFileName;
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(blobUrl);
+  } catch (error) {
+    console.error('Download error:', error);
+    throw error;
+  }
 };

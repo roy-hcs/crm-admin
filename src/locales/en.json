@@ -212,7 +212,8 @@
     "pwdType": "Password type",
     "readOnlyPassword": "read-only password",
     "tradingPassword": "Transaction password",
-    "detail": "{{field}} details"
+    "detail": "{{field}} details",
+    "exportFailed": "Export failed"
   },
   "home": {
     "AccountOverview": "Account opening overview",
