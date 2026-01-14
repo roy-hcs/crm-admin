@@ -388,7 +388,7 @@ export const CRMAccounts = () => {
   ];
 
   return (
-    <TableContentWrapper>
+    <div>
       <PageInfo
         title={t('CRMAccountPage.title')}
         desc={t('CRMAccountPage.desc')}
@@ -488,6 +488,6 @@ export const CRMAccounts = () => {
           />
         )}
       </TableContentWrapper>
-    </TableContentWrapper>
+    </div>
   );
 };

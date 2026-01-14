@@ -172,7 +172,7 @@ export const AdminOperationsPage = () => {
     <div>
       <PageInfo title={t('system.adminOperations.title')} />
       <TableContentWrapper>
-        <div className="my-3.5 flex items-center justify-between">
+        <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon
             placeholder={t('common.pleaseInput', { field: t('common.operName') })}
             className="h-9"

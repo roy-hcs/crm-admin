@@ -232,7 +232,7 @@ export const CRMUserOperationsLogsPage = () => {
     <div>
       <PageInfo title={t('CRMUserOperationsLogsPage.title')} />
       <TableContentWrapper>
-        <div className="my-3.5 flex items-center justify-between gap-2">
+        <div className="mb-3 flex items-center justify-between gap-2">
           <RrhInputWithIcon
             placeholder={t('common.pleaseInput', { field: t('table.systemModule') })}
             className="h-9"

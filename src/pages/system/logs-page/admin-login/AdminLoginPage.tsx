@@ -140,7 +140,7 @@ export const AdminLoginPage = () => {
     <div>
       <PageInfo title={t('system.adminLogin.title')} />
       <TableContentWrapper>
-        <div className="my-3.5 flex items-center justify-between">
+        <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon
             placeholder={t('common.pleaseInput', { field: t('system.adminLogin.name') })}
             className="h-9"
