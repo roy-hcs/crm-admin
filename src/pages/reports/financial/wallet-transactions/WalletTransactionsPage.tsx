@@ -19,6 +19,128 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { RrhDialog } from '@/components/common/RrhDialog';
+import { LabelItem } from '@/components/common/LabelItem';
+
+const OperationTypeMap: Record<number, string> = {
+  1: 'table.Deposit',
+  2: 'table.Withdrawal',
+  3: 'table.transfer',
+  4: 'table.rebate',
+};
+
+const OperationMethodMap: Record<number, string> = {
+  1: 'table.internationalTransfer',
+  2: 'table.bankTransfer',
+  3: 'table.withdrawOnDrawdown',
+  4: 'table.SystemDeposit',
+  5: 'table.SystemWithdrawal',
+  6: 'table.internalTransfer',
+  7: 'table.internalTransferOut',
+  8: 'table.RebateDeposit',
+  13: 'table.payID',
+  14: 'table.pointsProductReturn',
+  15: 'table.pointsProductExchange',
+  16: 'table.thirdPayment',
+};
+
+const DetailInfo = ({ itemInfo }: { itemInfo: WalletTransactionItem }) => {
+  const { t } = useTranslation();
+  let outflowAccount = '';
+  if (itemInfo.operationType === 2 || itemInfo.operationMethod === 7) {
+    outflowAccount = `${t('table.myWallet')}(${itemInfo.currency})`;
+  }
+  if (itemInfo.operationType === 3 && itemInfo.operationMethod === 6) {
+    outflowAccount = itemInfo?.params?.['serverName'] || '';
+  }
+  let inflowAccount = '';
+  if (
+    (itemInfo.operationType && [1, 4].includes(itemInfo.operationType)) ||
+    (itemInfo.operationType === 3 && itemInfo.operationMethod === 6)
+  ) {
+    inflowAccount = `${t('table.myWallet')}(${itemInfo.currency})`;
+  }
+  if (itemInfo.operationType === 3 && itemInfo.operationMethod === 7) {
+    inflowAccount = itemInfo?.params?.['serverName'] || '';
+  }
+
+  const accountInfo = [
+    {
+      label: t('financial.walletTransactions.lastName'),
+      value: `${itemInfo.lastName || ''} ${itemInfo.name || ''}`,
+    },
+    {
+      label: t('table.userShowId'),
+      value: itemInfo.showId || '',
+    },
+  ];
+  const flowInfo = [
+    {
+      label: t('financial.walletTransactions.operationType'),
+      value: itemInfo.operationType ? t(OperationTypeMap[itemInfo.operationType]) : '',
+    },
+    {
+      label: t('financial.walletTransactions.inMethod'),
+      value: itemInfo.operationMethod ? t(OperationMethodMap[itemInfo.operationMethod]) : '',
+    },
+    {
+      label: t('financial.walletTransactions.preAmount'),
+      value: `${itemInfo.preAmount || ''} ${itemInfo.currency}`,
+    },
+    {
+      label: t('financial.walletTransactions.amount'),
+      value: `${itemInfo.amount || ''} ${itemInfo.currency}`,
+    },
+    {
+      label: t('financial.walletTransactions.postAmount'),
+      value: `${itemInfo.postAmount || ''} ${itemInfo.currency}`,
+    },
+    {
+      label: t('financial.walletTransactions.operationTimeTable'),
+      value: itemInfo.operationTime || '',
+    },
+    {
+      label: t('financial.walletTransactions.serialNumTable'),
+      value: itemInfo.serialNum || '',
+    },
+    {
+      label: t('table.remarks'),
+      value: itemInfo.remark || '',
+    },
+    {
+      label: t('table.outflowAccount'),
+      value: outflowAccount,
+    },
+    {
+      label: t('table.inflowAccount'),
+      value: inflowAccount,
+    },
+    {
+      label: t('financial.walletTransactions.mtOrder'),
+      value: itemInfo.mtOrder || '',
+    },
+  ];
+  return (
+    <div>
+      <div className="mb-3">
+        <h3 className="text-card-foreground font-semibold">{t('table.accountInformation')}</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          {accountInfo.map(item => (
+            <LabelItem key={item.label} label={item.label} ContentDom={<div>{item.value}</div>} />
+          ))}
+        </div>
+      </div>
+      <div>
+        <h3 className="text-card-foreground font-semibold">{t('table.flowInfo')}</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          {flowInfo.map(item => (
+            <LabelItem key={item.label} label={item.label} ContentDom={<div>{item.value}</div>} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 export function WalletTransactionsPage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
@@ -99,12 +221,12 @@ export function WalletTransactionsPage() {
     {
       id: 'operationType',
       header: t('financial.walletTransactions.operationType'),
-      accessorFn: row => row.operationType,
+      accessorFn: row => (row.operationType ? t(OperationTypeMap[row.operationType]) : ''),
     },
     {
       id: 'operationMethod',
       header: t('financial.walletTransactions.inMethod'),
-      accessorFn: row => row.operationMethod,
+      accessorFn: row => (row.operationMethod ? t(OperationMethodMap[row.operationMethod]) : ''),
     },
     {
       id: 'currency',
@@ -159,10 +281,19 @@ export function WalletTransactionsPage() {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
-        <RrhButton variant="ghost" type="button">
-          {t('common.View')}
-        </RrhButton>
+      cell: ({ row }) => (
+        <RrhDialog
+          title={t('common.detail', { field: t('financial.walletTransactions.title') })}
+          trigger={
+            <RrhButton variant="ghost" type="button">
+              {t('common.View')}
+            </RrhButton>
+          }
+          confirmShow={false}
+          variant="large"
+        >
+          <DetailInfo itemInfo={row.original} />
+        </RrhDialog>
       ),
       fixed: 'right',
       size: 50,
