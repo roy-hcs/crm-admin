@@ -32,8 +32,8 @@ export const UserTab = () => {
         <RrhInputWithIcon
           placeholder={t('common.pleaseInput', { field: t('rolesManagement.roleName') })}
           className="h-9"
-          rightIcon={<Search className="size-4 cursor-pointer" />}
-          onRightIconClick={e => {
+          leftIcon={<Search className="size-4 cursor-pointer" />}
+          onLeftIconClick={e => {
             setRoleName(e);
             setPageNum(0);
           }}

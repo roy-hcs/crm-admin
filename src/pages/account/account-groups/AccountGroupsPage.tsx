@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { AccountGroupsTable } from './AccountGroupsTable';
 import { useCrmDealAccountGroupList } from '@/api/hooks/account';
 import { PageInfo } from '@/components/common/PageInfo';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const AccountGroupsPage = () => {
   const [pageNum, setPageNum] = useState(0);
@@ -24,22 +25,24 @@ export const AccountGroupsPage = () => {
   return (
     <div>
       <PageInfo title={t('accountGroups.title')} />
-      <div className="my-3.5 flex items-center justify-end">
-        <div className="flex justify-end gap-2">
-          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </RrhButton>
+      <TableContentWrapper>
+        <div className="mb-3 flex items-center justify-end">
+          <div className="flex justify-end gap-2">
+            <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </RrhButton>
+          </div>
         </div>
-      </div>
-      <AccountGroupsTable
-        data={data?.rows || []}
-        pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={loading}
-      />
+        <AccountGroupsTable
+          data={data?.rows || []}
+          pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={loading}
+        />
+      </TableContentWrapper>
     </div>
   );
 };

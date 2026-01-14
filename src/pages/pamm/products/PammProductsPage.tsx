@@ -15,6 +15,7 @@ import { PammProductListParams, PammProductItem } from '@/api/hooks/pamm/type';
 import { usePammProductList } from '@/api/hooks/pamm';
 import { Switch } from '@/components/ui/switch';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const PammProductsPage = () => {
   const [otherParams, setOtherParams] = useState<Omit<PammProductListParams, keyof BasicParams>>({
@@ -169,66 +170,68 @@ export const PammProductsPage = () => {
           </div>
         }
       />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <div className="w-67 max-w-sm">
-          <RrhInputWithIcon
-            placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
-            className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-            rightIcon={<Search className="size-4" />}
-            onRightIconClick={e => {
-              setPageNum(0);
-              setOtherParams(prev => ({ ...prev, projectName: e }));
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <RrhButton variant="outline">{t('common.add')}</RrhButton>
-          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </RrhButton>
-          <RrhDrawer
-            headerShow={false}
-            asChild
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
-            }}
-            footerShow={false}
-            Trigger={
-              <RrhButton variant="ghost" className="size-8">
-                <Funnel />
-              </RrhButton>
-            }
-          >
-            <PammProductsForm
-              serverTypes={serverTypes || []}
-              setOtherParams={setOtherParams}
-              loading={depositRebateSettingsLoading}
-              reset={reset}
-              otherParams={otherParams}
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div className="w-67 max-w-sm">
+            <RrhInputWithIcon
+              placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
+              className="h-9"
+              value={keyword}
+              onChange={e => setKeyword(e.target.value)}
+              leftIcon={<Search className="size-4" />}
+              onLeftIconClick={e => {
+                setPageNum(0);
+                setOtherParams(prev => ({ ...prev, projectName: e }));
+              }}
             />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
+          </div>
+          <div className="flex items-center gap-2">
+            <RrhButton variant="outline">{t('common.add')}</RrhButton>
+            <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </RrhButton>
+            <RrhDrawer
+              headerShow={false}
+              asChild
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+              Trigger={
+                <RrhButton variant="ghost" className="size-8">
+                  <Funnel />
+                </RrhButton>
+              }
+            >
+              <PammProductsForm
+                serverTypes={serverTypes || []}
+                setOtherParams={setOtherParams}
+                loading={depositRebateSettingsLoading}
+                reset={reset}
+                otherParams={otherParams}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={depositRebateSettings?.rows || []}
-        pageCount={Math.ceil(+(depositRebateSettings?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={depositRebateSettingsLoading}
-      />
+        <DataTable
+          columns={tableColumns}
+          data={depositRebateSettings?.rows || []}
+          pageCount={Math.ceil(+(depositRebateSettings?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={depositRebateSettingsLoading}
+        />
+      </TableContentWrapper>
     </div>
   );
 };

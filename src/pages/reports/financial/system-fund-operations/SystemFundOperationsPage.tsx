@@ -17,6 +17,7 @@ import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { financeTypeMap } from '@/lib/constant';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const SystemFundOperationsPage = () => {
   const [params, setParams] = useState<SystemFundOperationRecordListParams['params']>({
@@ -168,96 +169,98 @@ export const SystemFundOperationsPage = () => {
   return (
     <div>
       <PageInfo title={t('systemFundOperationsPage.title')} />
-      <div className="my-3.5 flex items-center justify-between">
-        <RrhInputWithIcon
-          placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
-          className="h-9"
-          value={keyword}
-          onChange={e => setKeyword(e.target.value)}
-          rightIcon={<Search className="size-4 cursor-pointer" />}
-          onRightIconClick={e => {
-            setParams(prev => ({ ...prev, ticket: e }));
-            setPageNum(0);
-          }}
-        />
-        <div className="flex justify-end gap-2">
-          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </RrhButton>
-          <RrhDrawer
-            headerShow={false}
-            asChild
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
+      <TableContentWrapper>
+        <div className="my-3.5 flex items-center justify-between">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
+            className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            leftIcon={<Search className="size-4 cursor-pointer" />}
+            onLeftIconClick={e => {
+              setParams(prev => ({ ...prev, ticket: e }));
+              setPageNum(0);
             }}
-            footerShow={false}
-            Trigger={
-              <RrhButton variant="ghost" className="size-8">
-                <Funnel />
-              </RrhButton>
-            }
-          >
-            <SystemFundOperationsForm
-              reset={reset}
-              params={params}
-              otherParams={otherParams}
-              setParams={setParams}
-              setOtherParams={setOtherParams}
-              loading={systemFunOperationRecordListLoading}
-            />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
           />
-        </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={systemFunOperationRecordList?.rows || []}
-        pageCount={Math.ceil(+(systemFunOperationRecordList?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={systemFunOperationRecordListLoading}
-        CustomRow={
-          <>
-            <TableCell colSpan={1}>{t('table.total')}</TableCell>
-            {!sumShow && (
-              <TableCell colSpan={9}>
-                <RrhButton variant="ghost" onClick={getSumData}>
-                  {t('table.clickToGetSum')}
+          <div className="flex justify-end gap-2">
+            <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </RrhButton>
+            <RrhDrawer
+              headerShow={false}
+              asChild
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+              Trigger={
+                <RrhButton variant="ghost" className="size-8">
+                  <Funnel />
                 </RrhButton>
-              </TableCell>
-            )}
-            {sumShow ? (
-              isPending ? (
-                <TableCell colSpan={9}>{t('common.loading')}</TableCell>
-              ) : (
-                <>
-                  <TableCell colSpan={9}>
-                    {sumData?.data.map((item, index) => {
-                      return (
-                        <div
-                          key={`${item.currency}-${index}`}
-                          className="flex flex-col items-center"
-                        >
-                          {t('table.balance')} {item.amount} {item.currency}
-                        </div>
-                      );
-                    })}
-                  </TableCell>
-                </>
-              )
-            ) : null}
-          </>
-        }
-      />
+              }
+            >
+              <SystemFundOperationsForm
+                reset={reset}
+                params={params}
+                otherParams={otherParams}
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+                loading={systemFunOperationRecordListLoading}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
+        </div>
+        <DataTable
+          columns={tableColumns}
+          data={systemFunOperationRecordList?.rows || []}
+          pageCount={Math.ceil(+(systemFunOperationRecordList?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={systemFunOperationRecordListLoading}
+          CustomRow={
+            <>
+              <TableCell colSpan={1}>{t('table.total')}</TableCell>
+              {!sumShow && (
+                <TableCell colSpan={9}>
+                  <RrhButton variant="ghost" onClick={getSumData}>
+                    {t('table.clickToGetSum')}
+                  </RrhButton>
+                </TableCell>
+              )}
+              {sumShow ? (
+                isPending ? (
+                  <TableCell colSpan={9}>{t('common.loading')}</TableCell>
+                ) : (
+                  <>
+                    <TableCell colSpan={9}>
+                      {sumData?.data.map((item, index) => {
+                        return (
+                          <div
+                            key={`${item.currency}-${index}`}
+                            className="flex flex-col items-center"
+                          >
+                            {t('table.balance')} {item.amount} {item.currency}
+                          </div>
+                        );
+                      })}
+                    </TableCell>
+                  </>
+                )
+              ) : null}
+            </>
+          }
+        />
+      </TableContentWrapper>
     </div>
   );
 };

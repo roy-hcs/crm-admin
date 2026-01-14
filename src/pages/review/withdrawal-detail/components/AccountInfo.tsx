@@ -1,8 +1,8 @@
 import { ChannelFieldItem } from '@/api/hooks/review';
 import { FormField } from '@/components/ui/form';
 import { useTranslation } from 'react-i18next';
-import { WithdrawalItem } from './WithdrawalItem';
-import { InfoItem } from './InfoItem';
+import { InfoItem } from '../../../../components/common/InfoItem';
+import { LabelItem } from '@/components/common/LabelItem';
 
 export const AccountInfo = ({
   targetCurrency,
@@ -21,7 +21,7 @@ export const AccountInfo = ({
         name="accountInfoPaymentCurrency"
         disabled
         render={() => (
-          <WithdrawalItem
+          <LabelItem
             label={t('table.paymentCurrency')}
             ContentDom={<InfoItem info={targetCurrency} />}
           />

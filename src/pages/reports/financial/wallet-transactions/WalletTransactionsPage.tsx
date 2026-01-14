@@ -18,6 +18,7 @@ import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 export function WalletTransactionsPage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
@@ -172,92 +173,94 @@ export function WalletTransactionsPage() {
   return (
     <div>
       <PageInfo title={t('financial.walletTransactions.title')} />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <div className="w-67 max-w-sm">
-          <RrhInputWithIcon
-            placeholder={t('table.nameOrEmail')}
-            className="h-9"
-            rightIcon={<Search className="size-4" />}
-            onRightIconClick={() => {
-              // 触发查询逻辑, 这里简单调用一次刷新
-              setPageNum(0);
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </Button>
-          <RrhDrawer
-            asChild
-            Trigger={
-              <Button variant="ghost" className="size-8 cursor-pointer">
-                <Funnel className="size-4" />
-              </Button>
-            }
-            title="Filter"
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
-            }}
-            footerShow={false}
-          >
-            <WalletTransactionsForm
-              reset={reset}
-              params={params}
-              commonParams={commonParams}
-              setParams={setParams}
-              setCommonParams={setCommonParams}
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div className="w-67 max-w-sm">
+            <RrhInputWithIcon
+              placeholder={t('table.nameOrEmail')}
+              className="h-9"
+              leftIcon={<Search className="size-4" />}
+              onLeftIconClick={() => {
+                // 触发查询逻辑, 这里简单调用一次刷新
+                setPageNum(0);
+              }}
             />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+            <RrhDrawer
+              asChild
+              Trigger={
+                <Button variant="ghost" className="size-8 cursor-pointer">
+                  <Funnel className="size-4" />
+                </Button>
+              }
+              title="Filter"
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+            >
+              <WalletTransactionsForm
+                reset={reset}
+                params={params}
+                commonParams={commonParams}
+                setParams={setParams}
+                setCommonParams={setCommonParams}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={data?.rows || []}
-        pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={loading}
-        CustomRow={
-          <>
-            <TableCell colSpan={6}>{t('table.total')}</TableCell>
-            {!sumShow && (
-              <TableCell colSpan={6}>
-                <RrhButton variant="ghost" onClick={getSumData}>
-                  {t('table.clickToGetSum')}
-                </RrhButton>
-              </TableCell>
-            )}
-            {sumShow ? (
-              isPending ? (
-                <TableCell>{t('common.loading')}</TableCell>
-              ) : (
-                <>
-                  <TableCell>
-                    {sumData?.data?.map((i, index) => {
-                      return (
-                        <div key={index}>
-                          {(Number(i.totalAmount) || 0).toFixed(2)} {i.currency}
-                        </div>
-                      );
-                    })}
-                  </TableCell>
-                </>
-              )
-            ) : null}
-          </>
-        }
-      />
+        <DataTable
+          columns={tableColumns}
+          data={data?.rows || []}
+          pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={loading}
+          CustomRow={
+            <>
+              <TableCell colSpan={6}>{t('table.total')}</TableCell>
+              {!sumShow && (
+                <TableCell colSpan={6}>
+                  <RrhButton variant="ghost" onClick={getSumData}>
+                    {t('table.clickToGetSum')}
+                  </RrhButton>
+                </TableCell>
+              )}
+              {sumShow ? (
+                isPending ? (
+                  <TableCell>{t('common.loading')}</TableCell>
+                ) : (
+                  <>
+                    <TableCell>
+                      {sumData?.data?.map((i, index) => {
+                        return (
+                          <div key={index}>
+                            {(Number(i.totalAmount) || 0).toFixed(2)} {i.currency}
+                          </div>
+                        );
+                      })}
+                    </TableCell>
+                  </>
+                )
+              ) : null}
+            </>
+          }
+        />
+      </TableContentWrapper>
     </div>
   );
 }

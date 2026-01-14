@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Input } from '@/components/ui/input';
 
 import { cn } from '@/lib/utils';
+import { CornerDownLeft } from 'lucide-react';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   leftIcon?: React.ReactNode;
@@ -60,9 +61,10 @@ const RrhInputWithIcon = React.forwardRef<HTMLInputElement, InputProps>(
       }
 
       // Trigger right icon click when Enter is pressed
-      if (e.key === 'Enter' && onRightIconClick && inputRef.current) {
+      if (e.key === 'Enter' && (onRightIconClick || onLeftIconClick) && inputRef.current) {
         e.preventDefault();
-        onRightIconClick(inputRef.current.value);
+        onRightIconClick?.(inputRef.current.value);
+        onLeftIconClick?.(inputRef.current.value);
       }
     };
 
@@ -101,6 +103,12 @@ const RrhInputWithIcon = React.forwardRef<HTMLInputElement, InputProps>(
             onClick={handleRightIconClick}
           >
             {rightIcon}
+          </span>
+        )}
+        {!inputRef.current?.value && (
+          <span className="text-muted-foreground bg-muted absolute right-2 flex items-center gap-1 rounded-sm px-2 py-1 text-xs">
+            <span>Enter</span>
+            <CornerDownLeft className="size-3" />
           </span>
         )}
       </div>

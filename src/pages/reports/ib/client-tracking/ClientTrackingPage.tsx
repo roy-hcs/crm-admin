@@ -14,6 +14,7 @@ import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { ClientTrackingForm } from './ClientTrackingForm';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export function ClientTrackingPage() {
   const { t } = useTranslation();
@@ -159,60 +160,62 @@ export function ClientTrackingPage() {
         title={t('ib.CustomerTracking.title')}
         desc="View all of your account's information"
       />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <div className="w-67 max-w-sm">
-          <RrhInputWithIcon
-            placeholder={t('ib.CustomerTracking.nameOrAccountId')}
-            className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-            rightIcon={<Search className="size-4" />}
-            onRightIconClick={() => {
-              // 触发查询逻辑, 这里简单调用一次刷新
-              setParams(prev => ({ ...prev, userName: keyword }));
-              setPageNum(0);
-            }}
-          />
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div className="w-67 max-w-sm">
+            <RrhInputWithIcon
+              placeholder={t('ib.CustomerTracking.nameOrAccountId')}
+              className="h-9"
+              value={keyword}
+              onChange={e => setKeyword(e.target.value)}
+              leftIcon={<Search className="size-4" />}
+              onLeftIconClick={() => {
+                // 触发查询逻辑, 这里简单调用一次刷新
+                setParams(prev => ({ ...prev, userName: keyword }));
+                setPageNum(0);
+              }}
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+            <RrhDrawer
+              asChild
+              Trigger={
+                <Button variant="ghost" className="size-8 cursor-pointer">
+                  <Funnel className="size-4" />
+                </Button>
+              }
+              title="Filter"
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+            >
+              <ClientTrackingForm params={params} reset={reset} setParams={setParams} />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </Button>
-          <RrhDrawer
-            asChild
-            Trigger={
-              <Button variant="ghost" className="size-8 cursor-pointer">
-                <Funnel className="size-4" />
-              </Button>
-            }
-            title="Filter"
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
-            }}
-            footerShow={false}
-          >
-            <ClientTrackingForm params={params} reset={reset} setParams={setParams} />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
-        </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={AgencyClientTracking?.rows || []}
-        pageCount={Math.ceil(+(AgencyClientTracking?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={AgencyClientTrackingLoading}
-      />
+        <DataTable
+          columns={tableColumns}
+          data={AgencyClientTracking?.rows || []}
+          pageCount={Math.ceil(+(AgencyClientTracking?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={AgencyClientTrackingLoading}
+        />
+      </TableContentWrapper>
     </div>
   );
 }

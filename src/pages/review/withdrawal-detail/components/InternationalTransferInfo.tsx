@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import { FormField } from '@/components/ui/form';
-import { EditableItem } from './EditableItem';
+import { EditableItem } from '@/components/common/EditableItem';
 import { useTranslation } from 'react-i18next';
-import { WithdrawalItem } from './WithdrawalItem';
-import { InfoItem } from './InfoItem';
+import { InfoItem } from '../../../../components/common/InfoItem';
 import { useEditableFields } from '@/hooks/useEditableFields';
 import { WithdrawItem } from '@/api/hooks/review';
+import { LabelItem } from '@/components/common/LabelItem';
 
 type InternationalTransferField =
   | 'paymentCurrency'
@@ -80,7 +80,7 @@ export const InternationalTransferInfo: FC<Props> = ({ withdrawalInfo, isAudit }
           key={key}
           name={name}
           render={({ field }) => (
-            <WithdrawalItem
+            <LabelItem
               label={label}
               ContentDom={
                 <EditableItem
@@ -104,7 +104,7 @@ export const InternationalTransferInfo: FC<Props> = ({ withdrawalInfo, isAudit }
       <FormField
         name="isDeduction"
         render={() => (
-          <WithdrawalItem
+          <LabelItem
             label={t('table.isDeduction')}
             ContentDom={
               <InfoItem info={withdrawalInfo.isWithdraw === 1 ? t('common.yes') : t('common.no')} />
