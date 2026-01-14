@@ -388,7 +388,7 @@ export const CRMAccounts = () => {
   ];
 
   return (
-    <div>
+    <TableContentWrapper>
       <PageInfo
         title={t('CRMAccountPage.title')}
         desc={t('CRMAccountPage.desc')}
@@ -479,13 +479,15 @@ export const CRMAccounts = () => {
           isResetDialogOpen={isResetFundsPasswordDialogOpen}
           setIsResetDialogOpen={setIsResetFundsPasswordDialogOpen}
         />
-        <DeleteAccount
-          id={id}
-          title={t('common.deleteAccount')}
-          isResetDialogOpen={isDeleteDialogOpen}
-          setIsResetDialogOpen={setIsDeleteDialogOpen}
-        />
+        {id && (
+          <DeleteAccount
+            id={id}
+            title={t('common.deleteAccount')}
+            isResetDialogOpen={isDeleteDialogOpen}
+            setIsResetDialogOpen={setIsDeleteDialogOpen}
+          />
+        )}
       </TableContentWrapper>
-    </div>
+    </TableContentWrapper>
   );
 };

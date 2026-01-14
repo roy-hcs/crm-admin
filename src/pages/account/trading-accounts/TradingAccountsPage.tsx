@@ -15,6 +15,8 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { PageInfo } from '@/components/common/PageInfo';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { ResetPassword } from './ResetPassword';
+import { DeleteAccount } from './DeleteAccount';
 
 export function TradingAccountsPage() {
   const { t } = useTranslation();
@@ -22,6 +24,10 @@ export function TradingAccountsPage() {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
+
+  const [isResetPasswordDialogOpen, setIsResetPasswordDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [info, setInfo] = useState<CrmDealAccountListItem | null>(null);
 
   const [params, setParams] = useState<CrmDealAccountListParams['params']>({
     regStartTime: '',
@@ -211,19 +217,30 @@ export function TradingAccountsPage() {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
+      cell: ({ row }) => (
         <div>
           <RrhDropdown
             Trigger={<Ellipsis className="size-4" />}
             dropdownList={[
               { label: t('common.View'), value: 'view' },
-              { label: t('common.Edit'), value: 'edit' },
+              { label: t('common.resetPassword'), value: 'resetPassword' },
+              { label: t('common.delete'), value: 'delete' },
             ]}
             callToAction={action => {
-              if (action === 'edit') {
-                // Handle edit action
-              } else if (action === 'view') {
-                // Handle view action
+              switch (action) {
+                case 'view':
+                  // View action
+                  break;
+                case 'resetPassword':
+                  setInfo(row.original);
+                  setIsResetPasswordDialogOpen(true);
+                  break;
+                case 'delete':
+                  setInfo(row.original);
+                  setIsDeleteDialogOpen(true);
+                  break;
+                default:
+                  break;
               }
             }}
           />
@@ -303,6 +320,20 @@ export function TradingAccountsPage() {
           onPageSizeChange={setPageSize}
           loading={dataLoading || serverLoading}
         />
+        <ResetPassword
+          info={info}
+          title={t('common.resetPassword')}
+          isResetDialogOpen={isResetPasswordDialogOpen}
+          setIsResetDialogOpen={setIsResetPasswordDialogOpen}
+        />
+        {info?.id && (
+          <DeleteAccount
+            id={info.id}
+            title={t('common.deleteAccount')}
+            isResetDialogOpen={isDeleteDialogOpen}
+            setIsResetDialogOpen={setIsDeleteDialogOpen}
+          />
+        )}
       </TableContentWrapper>
     </div>
   );

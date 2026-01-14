@@ -9,7 +9,6 @@ import { RrhRadioGroup } from '@/components/common/RrhRadioGroup';
 import { useCrmUserConfirmRemoveInfo, useCrmUserRemove } from '@/api/hooks/system/system';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
-import { useQueryClient } from '@tanstack/react-query';
 type resetPasswordFormValues = {
   deleteType: string;
 };
@@ -26,7 +25,6 @@ export const DeleteAccount = ({
   title: string;
 }) => {
   const { data: data, isLoading: isLoading } = useCrmUserConfirmRemoveInfo(id || '');
-  const queryClient = useQueryClient();
   const { t } = useTranslation();
   const changeRemoveAccountMutation = useCrmUserRemove();
 
@@ -54,8 +52,6 @@ export const DeleteAccount = ({
       if (res.code === 0) {
         toast.success(t('common.success'));
         setIsResetDialogOpen(false);
-        queryClient.invalidateQueries({ queryKey: ['crmUser'] });
-        // 刷新列表
       } else {
         toast.error(res.msg);
       }
