@@ -117,7 +117,7 @@ export const WalletAccountsForm = ({
               </FormItem>
             )}
           />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex gap-4 p-4">
+          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>
               <RefreshCcw className="size-3.5" />
               <span>{t('common.Reset')}</span>

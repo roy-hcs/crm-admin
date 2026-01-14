@@ -3,14 +3,14 @@ import { cn } from '@/lib/utils';
 import {
   ChevronDown,
   ChevronUp,
-  Download,
   Ellipsis,
+  FileOutput,
   Funnel,
-  Menu,
   RefreshCcw,
   Search,
-  Settings,
-  Users,
+  Tag,
+  UserRoundCog,
+  UsersRound,
 } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { CRMAccountsForm, CRMFormRef } from './components/CRMAccountsForm';
@@ -351,7 +351,7 @@ export const CRMAccounts = () => {
     {
       label: (
         <RrhButton variant="ghost" className="flex w-full items-center justify-start">
-          <Download className="size-3.5" />
+          <FileOutput className="size-4" />
           <span>{t('CRMAccountPage.Export')}</span>
         </RrhButton>
       ),
@@ -361,7 +361,7 @@ export const CRMAccounts = () => {
     {
       label: (
         <RrhButton variant="ghost" className="flex w-full items-center justify-start">
-          <Menu className="size-3.5" />
+          <UserRoundCog className="size-4" />
           <span>{t('CRMAccountPage.SetRolesInBatches')}</span>
         </RrhButton>
       ),
@@ -370,7 +370,7 @@ export const CRMAccounts = () => {
     {
       label: (
         <RrhButton variant="ghost" className="flex w-full items-center justify-start">
-          <Users className="size-3.5" />
+          <UsersRound className="size-4" />
           <span>{t('CRMAccountPage.UserStatistics')}</span>
         </RrhButton>
       ),
@@ -379,7 +379,7 @@ export const CRMAccounts = () => {
     {
       label: (
         <RrhButton variant="ghost" className="flex w-full items-center justify-start">
-          <Settings className="size-3.5" />
+          <Tag className="size-4" />
           <span>{t('CRMAccountPage.LifecycleAndUserTags')}</span>
         </RrhButton>
       ),

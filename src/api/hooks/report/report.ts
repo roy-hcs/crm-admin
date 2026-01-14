@@ -126,6 +126,16 @@ export function useWalletTransactionSum() {
 }
 
 /**
+ * 导出钱包流水
+ */
+export function useWalletTransactionListExport() {
+  return useMutation({
+    mutationFn: (params: CrmUserDealDetailParams) =>
+      apiFormPostCustom<WalletTransactionSumRes>('/system/crmUserDealDetail/export', params),
+  });
+}
+
+/**
  * 获取支付订单
  */
 export function usePaymentOrderList(params: PaymentOrderListParams) {
