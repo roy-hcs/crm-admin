@@ -170,7 +170,7 @@ export const SystemFundOperationsPage = () => {
     <div>
       <PageInfo title={t('systemFundOperationsPage.title')} />
       <TableContentWrapper>
-        <div className="my-3.5 flex items-center justify-between">
+        <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon
             placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
             className="h-9"

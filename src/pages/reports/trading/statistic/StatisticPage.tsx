@@ -192,7 +192,7 @@ export const StatisticPage = () => {
     <div>
       <h1 className="text-title">{t('accountStatisticPage.accountStatistic')}</h1>
       <TableContentWrapper>
-        <div className="my-3.5 flex items-center justify-between">
+        <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon
             placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
             className="h-9"
