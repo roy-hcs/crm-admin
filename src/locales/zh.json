@@ -230,7 +230,8 @@
     "deleteAccount": "删除账户",
     "readOnlyPassword": "只读密码",
     "tradingPassword": "交易密码",
-    "pwdType": "密码类型"
+    "pwdType": "密码类型",
+    "detail": "{{field}} 详细"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -1054,7 +1055,17 @@
     "receiptAmount": "到款金额",
     "userShowId": "账户ID",
     "voucher": "凭证",
-    "factDepositOfReceiptTip": "入金金额为账号或钱包的到账金额，存款金额、手续费、汇率只做记录"
+    "factDepositOfReceiptTip": "入金金额为账号或钱包的到账金额，存款金额、手续费、汇率只做记录",
+    "flowInfo": "流水信息",
+    "outflowAccount": "流出账号",
+    "inflowAccount": "流入账号",
+    "transfer": "转账",
+    "rebate": "返佣",
+    "withdrawOnDrawdown": "回撤出金",
+    "internalTransfer": "内部转入",
+    "internalTransferOut": "内部转出",
+    "pointsProductReturn": "积分商品回退",
+    "pointsProductExchange": "积分商品兑换"
   },
   "review": {
     "settings": {
