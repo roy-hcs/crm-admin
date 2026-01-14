@@ -15,6 +15,7 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { PageInfo } from '@/components/common/PageInfo';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Checkbox } from '@/components/ui/checkbox';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 const OperationLogDetails = ({
   data,
@@ -230,65 +231,67 @@ export const CRMUserOperationsLogsPage = () => {
   return (
     <div>
       <PageInfo title={t('CRMUserOperationsLogsPage.title')} />
-      <div className="my-3.5 flex items-center justify-between gap-2">
-        <RrhInputWithIcon
-          placeholder={t('common.pleaseInput', { field: t('table.systemModule') })}
-          className="h-9"
-          rightIcon={<Search className="size-4 cursor-pointer" />}
-          value={keyword}
-          onChange={e => setKeyword(e.target.value)}
-          onRightIconClick={e => {
-            setOtherParams(prev => ({ ...prev, title: e }));
-            setPageNum(0);
-          }}
-        />
-        <div className="flex items-center gap-2">
-          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </RrhButton>
-          <RrhDrawer
-            headerShow={false}
-            asChild
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
+      <TableContentWrapper>
+        <div className="my-3.5 flex items-center justify-between gap-2">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('table.systemModule') })}
+            className="h-9"
+            leftIcon={<Search className="size-4 cursor-pointer" />}
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            onLeftIconClick={e => {
+              setOtherParams(prev => ({ ...prev, title: e }));
+              setPageNum(0);
             }}
-            footerShow={false}
-            Trigger={
-              <RrhButton variant="ghost" className="size-8">
-                <Funnel />
-              </RrhButton>
-            }
-          >
-            <UserOperationsLogsForm
-              operationType={operationTypes}
-              setParams={setParams}
-              setOtherParams={setOtherParams}
-              loading={isLoading}
-              reset={reset}
-              params={params}
-              otherParams={otherParams}
-            />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
           />
+          <div className="flex items-center gap-2">
+            <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </RrhButton>
+            <RrhDrawer
+              headerShow={false}
+              asChild
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+              Trigger={
+                <RrhButton variant="ghost" className="size-8">
+                  <Funnel />
+                </RrhButton>
+              }
+            >
+              <UserOperationsLogsForm
+                operationType={operationTypes}
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+                loading={isLoading}
+                reset={reset}
+                params={params}
+                otherParams={otherParams}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={data?.rows || []}
-        pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={isLoading}
-      />
+        <DataTable
+          columns={tableColumns}
+          data={data?.rows || []}
+          pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={isLoading}
+        />
+      </TableContentWrapper>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,8 +12,8 @@ export const RrhDropdown = ({
   callToAction,
 }: {
   Trigger: React.ReactNode;
-  dropdownList: { label: string; value: string }[];
-  callToAction: (menu: string) => void;
+  dropdownList: { label: string | ReactElement; value: string }[];
+  callToAction?: (menu: string) => void;
 }) => {
   return (
     <DropdownMenu>
@@ -22,8 +23,8 @@ export const RrhDropdown = ({
       <DropdownMenuContent className="bg-background">
         {dropdownList.map(item => (
           <DropdownMenuItem
-            key={item.label}
-            onClick={() => callToAction(item.value)}
+            key={item.value}
+            onClick={() => callToAction?.(item.value)}
             className="w-auto cursor-pointer"
           >
             {item.label}

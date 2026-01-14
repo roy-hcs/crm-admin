@@ -19,6 +19,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { cn } from '@/lib/utils';
 import { useCallback, useState as useHookState } from 'react';
 import { Alert } from '@/components/common/Alert';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 const FollowCell = ({ row }: { row: { original: CrmTicketItem } }) => {
   const [isOpen, setIsOpen] = useHookState(false);
@@ -239,15 +240,15 @@ export const TicketAllList = () => {
     useColumnVisibility('ticket-all-list-table', allColumns);
 
   return (
-    <div>
-      <div className="mt-3.5 mb-3.5 flex flex-wrap justify-between gap-2">
+    <TableContentWrapper>
+      <div className="mb-3 flex flex-wrap justify-between gap-2">
         <RrhInputWithIcon
           placeholder={t('common.pleaseInput', { field: t('ticketList.orderId') })}
           className="h-9"
           value={keyword}
           onChange={e => setKeyword(e.target.value)}
-          rightIcon={<Search className="size-4" />}
-          onRightIconClick={() => {
+          leftIcon={<Search className="size-4" />}
+          onLeftIconClick={() => {
             setOtherParams(prev => ({ ...prev, orderId: keyword }));
             setPageNum(0);
           }}
@@ -297,6 +298,6 @@ export const TicketAllList = () => {
         onPageSizeChange={setPageSize}
         loading={ticketLoading || userDataLoading}
       />
-    </div>
+    </TableContentWrapper>
   );
 };

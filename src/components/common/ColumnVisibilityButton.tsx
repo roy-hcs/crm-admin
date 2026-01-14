@@ -340,7 +340,7 @@ export const ColumnVisibilityButton = ({
       ) : (
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" className="cursor-pointer">
               <SlidersHorizontal className="size-4" />
             </Button>
           </DropdownMenuTrigger>

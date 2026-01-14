@@ -169,7 +169,7 @@ function createDataTable<TData extends RowData, TValue>() {
                     return (
                       <TableHead
                         key={header.id}
-                        className={`${thCls || ''} ${className}`}
+                        className={cn('!bg-accent', thCls, className)}
                         style={style}
                       >
                         {header.isPlaceholder

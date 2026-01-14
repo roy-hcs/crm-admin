@@ -9,6 +9,7 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { RebateLevelItem } from '@/api/hooks/rebate';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { Ellipsis } from 'lucide-react';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const RebateLevelSettingsPage = () => {
   const { t } = useTranslation();
@@ -79,29 +80,31 @@ export const RebateLevelSettingsPage = () => {
   return (
     <div>
       <PageInfo title={t('ProductGroup.title')} />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <div></div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline">{t('common.add')}</Button>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div></div>
+          <div className="flex items-center gap-2">
+            <Button variant="outline">{t('common.add')}</Button>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={rebateLevelList?.rows || []}
-        pageCount={Math.ceil(+(rebateLevelList?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={rebateLevelListLoading}
-      />
+        <DataTable
+          columns={tableColumns}
+          data={rebateLevelList?.rows || []}
+          pageCount={Math.ceil(+(rebateLevelList?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={rebateLevelListLoading}
+        />
+      </TableContentWrapper>
     </div>
   );
 };

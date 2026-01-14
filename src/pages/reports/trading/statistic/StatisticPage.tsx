@@ -18,6 +18,7 @@ import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 const formatVolume = (serverType: number | undefined, volume: number) => {
   if (serverType == 1) {
@@ -190,150 +191,152 @@ export const StatisticPage = () => {
   return (
     <div>
       <h1 className="text-title">{t('accountStatisticPage.accountStatistic')}</h1>
-      <div className="my-3.5 flex items-center justify-between">
-        <RrhInputWithIcon
-          placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
-          className="h-9"
-          value={keyword}
-          onChange={e => setKeyword(e.target.value)}
-          rightIcon={<Search className="size-4 cursor-pointer" />}
-          onRightIconClick={e => {
-            setParams(prev => ({ ...prev, fuzzyName: e }));
-            setPageNum(0);
-          }}
-        />
-        <div className="flex justify-end gap-2">
-          <RrhDialog
-            title={t('common.systemTip')}
-            trigger={<RrhButton variant="outline">{t('table.export')}</RrhButton>}
-            onConfirm={() =>
-              exportStatisticData({
-                ...otherParams,
-                params: {
-                  ...params,
-                },
-              })
-            }
-          >
-            {t('table.exportAllDataTip', { field: t('accountStatisticPage.accountStatistic') })}
-          </RrhDialog>
-          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </RrhButton>
-
-          <RrhDrawer
-            headerShow={false}
-            asChild
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
+      <TableContentWrapper>
+        <div className="my-3.5 flex items-center justify-between">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
+            className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            leftIcon={<Search className="size-4 cursor-pointer" />}
+            onLeftIconClick={e => {
+              setParams(prev => ({ ...prev, fuzzyName: e }));
+              setPageNum(0);
             }}
-            footerShow={false}
-            Trigger={
-              <RrhButton variant="ghost" className="size-8">
-                <Funnel />
-              </RrhButton>
-            }
-          >
-            <StatisticForm
-              params={params}
-              otherParams={otherParams}
-              reset={reset}
-              serverListLoading={serverListLoading}
-              serverList={serverList?.rows || []}
-              setParams={setParams}
-              setOtherParams={setOtherParams}
-              loading={accountStatisticDataLoading}
-            />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
           />
-        </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={accountStatisticData?.rows || []}
-        pageCount={Math.ceil(+(accountStatisticData?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={accountStatisticDataLoading}
-        CustomRow={
-          <>
-            <TableCell colSpan={3}>{t('table.total')}</TableCell>
-            {!sumShow && (
-              <TableCell colSpan={5}>
-                <RrhButton variant="ghost" onClick={getSumData}>
-                  {t('table.clickToGetSum')}
+          <div className="flex justify-end gap-2">
+            <RrhDialog
+              title={t('common.systemTip')}
+              trigger={<RrhButton variant="outline">{t('table.export')}</RrhButton>}
+              onConfirm={() =>
+                exportStatisticData({
+                  ...otherParams,
+                  params: {
+                    ...params,
+                  },
+                })
+              }
+            >
+              {t('table.exportAllDataTip', { field: t('accountStatisticPage.accountStatistic') })}
+            </RrhDialog>
+            <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </RrhButton>
+
+            <RrhDrawer
+              headerShow={false}
+              asChild
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+              Trigger={
+                <RrhButton variant="ghost" className="size-8">
+                  <Funnel />
                 </RrhButton>
-              </TableCell>
-            )}
-            {sumShow ? (
-              isPending ? (
-                <TableCell>{t('common.loading')}</TableCell>
-              ) : (
-                <>
-                  <TableCell>
-                    {sumData?.data.reduce((pre, cur) => pre + (cur?.countOrderTotal || 0), 0)}
-                  </TableCell>
-                  <TableCell>
-                    {sumData?.data
-                      .reduce((pre, cur) => pre + (cur?.historyVolumeTotal || 0), 0)
-                      .toFixed(2)}
-                  </TableCell>
-                  <TableCell>
-                    {sumData?.data
-                      .reduce((pre, cur) => pre + (cur?.positionVolumeTotal || 0), 0)
-                      .toFixed(2)}
-                  </TableCell>
-                  <TableCell>
-                    {sumData?.data.map(item => {
-                      return item.countCommissionTotal ? (
-                        <div key={item.currency}>
-                          {item.countCommissionTotal} {item.currency}
-                        </div>
-                      ) : null;
-                    })}
-                  </TableCell>
-                  <TableCell>
-                    {sumData?.data.map(item => {
-                      return item.countSwapsTotal ? (
-                        <div key={item.currency}>
-                          {item.countSwapsTotal} {item.currency}
-                        </div>
-                      ) : null;
-                    })}
-                  </TableCell>
-                  <TableCell>
-                    {sumData?.data.map(item => {
-                      return item.countProfitTotal ? (
-                        <div key={item.currency}>
-                          {item.countProfitTotal} {item.currency}
-                        </div>
-                      ) : null;
-                    })}
-                  </TableCell>
-                  <TableCell>
-                    {sumData?.data.map(item => {
-                      return (
-                        <div key={item.currency}>
-                          {(item.balanceTotal || 0).toFixed(2)} {item.currency}
-                        </div>
-                      );
-                    })}
-                  </TableCell>
-                </>
-              )
-            ) : null}
-          </>
-        }
-      />
+              }
+            >
+              <StatisticForm
+                params={params}
+                otherParams={otherParams}
+                reset={reset}
+                serverListLoading={serverListLoading}
+                serverList={serverList?.rows || []}
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+                loading={accountStatisticDataLoading}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
+        </div>
+        <DataTable
+          columns={tableColumns}
+          data={accountStatisticData?.rows || []}
+          pageCount={Math.ceil(+(accountStatisticData?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={accountStatisticDataLoading}
+          CustomRow={
+            <>
+              <TableCell colSpan={3}>{t('table.total')}</TableCell>
+              {!sumShow && (
+                <TableCell colSpan={5}>
+                  <RrhButton variant="ghost" onClick={getSumData}>
+                    {t('table.clickToGetSum')}
+                  </RrhButton>
+                </TableCell>
+              )}
+              {sumShow ? (
+                isPending ? (
+                  <TableCell>{t('common.loading')}</TableCell>
+                ) : (
+                  <>
+                    <TableCell>
+                      {sumData?.data.reduce((pre, cur) => pre + (cur?.countOrderTotal || 0), 0)}
+                    </TableCell>
+                    <TableCell>
+                      {sumData?.data
+                        .reduce((pre, cur) => pre + (cur?.historyVolumeTotal || 0), 0)
+                        .toFixed(2)}
+                    </TableCell>
+                    <TableCell>
+                      {sumData?.data
+                        .reduce((pre, cur) => pre + (cur?.positionVolumeTotal || 0), 0)
+                        .toFixed(2)}
+                    </TableCell>
+                    <TableCell>
+                      {sumData?.data.map(item => {
+                        return item.countCommissionTotal ? (
+                          <div key={item.currency}>
+                            {item.countCommissionTotal} {item.currency}
+                          </div>
+                        ) : null;
+                      })}
+                    </TableCell>
+                    <TableCell>
+                      {sumData?.data.map(item => {
+                        return item.countSwapsTotal ? (
+                          <div key={item.currency}>
+                            {item.countSwapsTotal} {item.currency}
+                          </div>
+                        ) : null;
+                      })}
+                    </TableCell>
+                    <TableCell>
+                      {sumData?.data.map(item => {
+                        return item.countProfitTotal ? (
+                          <div key={item.currency}>
+                            {item.countProfitTotal} {item.currency}
+                          </div>
+                        ) : null;
+                      })}
+                    </TableCell>
+                    <TableCell>
+                      {sumData?.data.map(item => {
+                        return (
+                          <div key={item.currency}>
+                            {(item.balanceTotal || 0).toFixed(2)} {item.currency}
+                          </div>
+                        );
+                      })}
+                    </TableCell>
+                  </>
+                )
+              ) : null}
+            </>
+          }
+        />
+      </TableContentWrapper>
     </div>
   );
 };

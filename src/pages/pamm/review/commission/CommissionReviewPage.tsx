@@ -17,6 +17,7 @@ import { transformTotalList } from '@/lib/utils';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { commissionReviewOptions } from '@/lib/const';
 import { serverMap } from '@/lib/constant';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const CommissionReviewPage = () => {
   const [params, setParams] = useState<PammCommissionListParams['params']>({
@@ -172,102 +173,104 @@ export const CommissionReviewPage = () => {
   return (
     <div>
       <PageInfo title={t('commissionReview.title')} />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <RrhInputWithIcon
-          placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
-          className="h-9"
-          value={keyword}
-          onChange={e => setKeyword(e.target.value)}
-          rightIcon={<Search className="size-4" />}
-          onRightIconClick={() => {
-            setOtherParams(prev => ({ ...prev, projectName: keyword }));
-            setPageNum(0);
-          }}
-        />
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </Button>
-          <RrhDrawer
-            asChild
-            Trigger={
-              <Button variant="ghost" className="size-8 cursor-pointer">
-                <Funnel className="size-4" />
-              </Button>
-            }
-            title="Filter"
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
+            className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            leftIcon={<Search className="size-4" />}
+            onLeftIconClick={() => {
+              setOtherParams(prev => ({ ...prev, projectName: keyword }));
+              setPageNum(0);
             }}
-            footerShow={false}
-          >
-            <CommissionReviewForm
-              params={params}
-              otherParams={otherParams}
-              reset={reset}
-              setParams={setParams}
-              setOtherParams={setOtherParams}
-            />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
           />
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+            <RrhDrawer
+              asChild
+              Trigger={
+                <Button variant="ghost" className="size-8 cursor-pointer">
+                  <Funnel className="size-4" />
+                </Button>
+              }
+              title="Filter"
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+            >
+              <CommissionReviewForm
+                params={params}
+                otherParams={otherParams}
+                reset={reset}
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={data?.rows || []}
-        pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={loading}
-        CustomRow={
-          <>
-            <TableCell colSpan={4}>{t('table.total')}</TableCell>
-            {loading ? (
-              <TableCell>{t('common.loading')}</TableCell>
-            ) : (
-              <>
-                {totalList.map(it => {
-                  if ('businessAmountToatl' in it) {
-                    return (
-                      <TableCell colSpan={2}>
-                        {(it['businessAmountToatl'] || []).map((i, index) => {
-                          return (
-                            <div key={index}>
-                              {(Number(i.amount) || 0).toFixed(2)} {i.currency}
-                            </div>
-                          );
-                        })}
-                      </TableCell>
-                    );
-                  }
-                  if ('commissionToatl' in it) {
-                    return (
-                      <TableCell colSpan={2}>
-                        {(it['commissionToatl'] || []).map((i, index) => {
-                          return (
-                            <div key={index}>
-                              {(Number(i.amount) || 0).toFixed(2)} {i.currency}
-                            </div>
-                          );
-                        })}
-                      </TableCell>
-                    );
-                  }
-                })}
-              </>
-            )}
-          </>
-        }
-      />
+        <DataTable
+          columns={tableColumns}
+          data={data?.rows || []}
+          pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={loading}
+          CustomRow={
+            <>
+              <TableCell colSpan={4}>{t('table.total')}</TableCell>
+              {loading ? (
+                <TableCell>{t('common.loading')}</TableCell>
+              ) : (
+                <>
+                  {totalList.map(it => {
+                    if ('businessAmountToatl' in it) {
+                      return (
+                        <TableCell colSpan={2}>
+                          {(it['businessAmountToatl'] || []).map((i, index) => {
+                            return (
+                              <div key={index}>
+                                {(Number(i.amount) || 0).toFixed(2)} {i.currency}
+                              </div>
+                            );
+                          })}
+                        </TableCell>
+                      );
+                    }
+                    if ('commissionToatl' in it) {
+                      return (
+                        <TableCell colSpan={2}>
+                          {(it['commissionToatl'] || []).map((i, index) => {
+                            return (
+                              <div key={index}>
+                                {(Number(i.amount) || 0).toFixed(2)} {i.currency}
+                              </div>
+                            );
+                          })}
+                        </TableCell>
+                      );
+                    }
+                  })}
+                </>
+              )}
+            </>
+          }
+        />
+      </TableContentWrapper>
     </div>
   );
 };

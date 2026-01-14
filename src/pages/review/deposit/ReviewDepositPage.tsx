@@ -23,6 +23,7 @@ import { depositMethodsMap, withdrawalReviewStatusMap } from '@/lib/constant';
 import { useCurrencyList } from '@/api/hooks/system/system';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { useTabActions } from '@/hooks/useTabActions';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const ReviewDepositPage = () => {
   const { t } = useTranslation();
@@ -419,124 +420,126 @@ export const ReviewDepositPage = () => {
   return (
     <div>
       <PageInfo title={t('depositReview.title')} />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <div className="w-67 max-w-sm">
-          <RrhInputWithIcon
-            placeholder={t('common.pleaseInput', { field: t('table.nameOrLastNameOrId') })}
-            className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-            rightIcon={<Search className="size-4" />}
-            onRightIconClick={() => {
-              setOtherParams(prev => ({ ...prev, userId: keyword }));
-              setPageNum(0);
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </Button>
-          <RrhDrawer
-            asChild
-            Trigger={
-              <Button variant="ghost" className="size-8 cursor-pointer">
-                <Funnel className="size-4" />
-              </Button>
-            }
-            title="Filter"
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
-            }}
-            footerShow={false}
-          >
-            <ReviewDepositForm
-              params={params}
-              otherParams={otherParams}
-              reset={reset}
-              setParams={setParams}
-              setOtherParams={setOtherParams}
-              loading={depositListLoading}
-              currencyList={currencyList?.rows || []}
-              thirdPaymentList={thirdPaymentList?.rows || []}
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div className="w-67 max-w-sm">
+            <RrhInputWithIcon
+              placeholder={t('common.pleaseInput', { field: t('table.nameOrLastNameOrId') })}
+              className="h-9"
+              value={keyword}
+              onChange={e => setKeyword(e.target.value)}
+              leftIcon={<Search className="size-4" />}
+              onLeftIconClick={() => {
+                setOtherParams(prev => ({ ...prev, userId: keyword }));
+                setPageNum(0);
+              }}
             />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+            <RrhDrawer
+              asChild
+              Trigger={
+                <Button variant="ghost" className="size-8 cursor-pointer">
+                  <Funnel className="size-4" />
+                </Button>
+              }
+              title="Filter"
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+            >
+              <ReviewDepositForm
+                params={params}
+                otherParams={otherParams}
+                reset={reset}
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+                loading={depositListLoading}
+                currencyList={currencyList?.rows || []}
+                thirdPaymentList={thirdPaymentList?.rows || []}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={depositList?.rows || []}
-        pageCount={Math.ceil(+(depositList?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={depositListLoading}
-        CustomRow={
-          <>
-            <TableCell colSpan={5} className="text-center">
-              {t('table.total')}
-            </TableCell>
-            {!sumShow && (
-              <TableCell colSpan={5}>
-                <RrhButton variant="ghost" onClick={getSumData}>
-                  {t('table.clickToGetSum')}
-                </RrhButton>
+        <DataTable
+          columns={tableColumns}
+          data={depositList?.rows || []}
+          pageCount={Math.ceil(+(depositList?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={depositListLoading}
+          CustomRow={
+            <>
+              <TableCell colSpan={5} className="text-center">
+                {t('table.total')}
               </TableCell>
-            )}
-            {sumShow ? (
-              isPending ? (
-                <TableCell>{t('common.loading')}</TableCell>
-              ) : (
-                <>
-                  <TableCell colSpan={5}></TableCell>
-                  <TableCell colSpan={1} className="text-center">
-                    {sumData?.data
-                      .filter(item => item.type === '1')
-                      .map(item => {
-                        return item.sumDeposit ? (
-                          <div key={item.currency}>
-                            {item.sumDeposit} {item.currency}
-                          </div>
-                        ) : null;
-                      })}
-                  </TableCell>
-                  <TableCell colSpan={1} className="text-center">
-                    {sumData?.data
-                      .filter(item => item.type === '2')
-                      .map(item => {
-                        return item.sumDeposit ? (
-                          <div key={item.currency}>
-                            {item.sumDeposit} {item.currency}
-                          </div>
-                        ) : null;
-                      })}
-                  </TableCell>
-                  <TableCell colSpan={1} className="text-center">
-                    {sumData?.data
-                      .filter(item => item.type === '2')
-                      .map(item => {
-                        return item.sumFee ? (
-                          <div key={item.currency}>
-                            {item.sumFee} {item.currency}
-                          </div>
-                        ) : null;
-                      })}
-                  </TableCell>
-                </>
-              )
-            ) : null}
-          </>
-        }
-      />
+              {!sumShow && (
+                <TableCell colSpan={5}>
+                  <RrhButton variant="ghost" onClick={getSumData}>
+                    {t('table.clickToGetSum')}
+                  </RrhButton>
+                </TableCell>
+              )}
+              {sumShow ? (
+                isPending ? (
+                  <TableCell>{t('common.loading')}</TableCell>
+                ) : (
+                  <>
+                    <TableCell colSpan={5}></TableCell>
+                    <TableCell colSpan={1} className="text-center">
+                      {sumData?.data
+                        .filter(item => item.type === '1')
+                        .map(item => {
+                          return item.sumDeposit ? (
+                            <div key={item.currency}>
+                              {item.sumDeposit} {item.currency}
+                            </div>
+                          ) : null;
+                        })}
+                    </TableCell>
+                    <TableCell colSpan={1} className="text-center">
+                      {sumData?.data
+                        .filter(item => item.type === '2')
+                        .map(item => {
+                          return item.sumDeposit ? (
+                            <div key={item.currency}>
+                              {item.sumDeposit} {item.currency}
+                            </div>
+                          ) : null;
+                        })}
+                    </TableCell>
+                    <TableCell colSpan={1} className="text-center">
+                      {sumData?.data
+                        .filter(item => item.type === '2')
+                        .map(item => {
+                          return item.sumFee ? (
+                            <div key={item.currency}>
+                              {item.sumFee} {item.currency}
+                            </div>
+                          ) : null;
+                        })}
+                    </TableCell>
+                  </>
+                )
+              ) : null}
+            </>
+          }
+        />
+      </TableContentWrapper>
     </div>
   );
 };

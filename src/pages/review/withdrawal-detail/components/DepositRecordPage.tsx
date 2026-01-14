@@ -199,6 +199,7 @@ export const DepositRecordPage = ({ userId }: { userId: string }) => {
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('deposit-record-table', allColumns);
+  // TODO: 需要后端提供一个新的接口用来展示不同货币的数据
   const sumMockData = [
     { currency: 'USD', amount: '100.00', orderCount: '2' },
     { currency: 'AUD', amount: '200.00', orderCount: '3' },
