@@ -649,7 +649,8 @@
     "orderId": "Pay order",
     "receiptAmount": "Amount received",
     "userShowId": "Account ID",
-    "voucher": "certificate"
+    "voucher": "certificate",
+    "account": "account"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -701,7 +702,11 @@
       "ticket": "Order number",
       "time": "time",
       "title": "Transaction account capital flow",
-      "type": "Operation Type"
+      "type": "Operation Type",
+      "accountPlaceholder": "Account range {{accountStart}}-{{accountEnd}}",
+      "addLogin": "Add new trading account",
+      "maxAccount": "The maximum account number in the MT group is {{maxAccount}}",
+      "serverType": "Server type"
     },
     "tradingAccountDataStats": {
       "advanceScale": "Prepayment ratio",

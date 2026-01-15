@@ -411,7 +411,11 @@
       "time": "时间",
       "ticket": "订单号",
       "order_num": "CRM订单号",
-      "comment": "注释"
+      "comment": "注释",
+      "addLogin": "新增交易账号",
+      "serverType": "服务器类型",
+      "accountPlaceholder": "账号区间{{accountStart}}-{{accountEnd}}",
+      "maxAccount": "该MT组内最大账号为{{maxAccount}}"
     },
     "refundFailLog": {
       "title": "资金回退失败日志",
@@ -1054,7 +1058,8 @@
     "receiptAmount": "到款金额",
     "userShowId": "账户ID",
     "voucher": "凭证",
-    "factDepositOfReceiptTip": "入金金额为账号或钱包的到账金额，存款金额、手续费、汇率只做记录"
+    "factDepositOfReceiptTip": "入金金额为账号或钱包的到账金额，存款金额、手续费、汇率只做记录",
+    "account": "账号"
   },
   "review": {
     "settings": {

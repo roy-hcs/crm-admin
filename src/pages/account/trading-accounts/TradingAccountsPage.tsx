@@ -1,6 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { CrmDealAccountListItem, useCrmDealAccountList } from '@/api/hooks/account';
+import {
+  CrmDealAccountListItem,
+  useCrmDealAccountList,
+  useGetDealAccountGroupList,
+} from '@/api/hooks/account';
 import { useServerList } from '@/api/hooks/system/system';
 import { TradingAccountsForm } from './TradingAccountsForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
@@ -16,6 +20,7 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { PageInfo } from '@/components/common/PageInfo';
 import { ResetPassword } from './ResetPassword';
 import { DeleteAccount } from './DeleteAccount';
+import { AddAccountDialog } from './AddAccountDialog';
 
 export function TradingAccountsPage() {
   const { t } = useTranslation();
@@ -53,7 +58,11 @@ export function TradingAccountsPage() {
     }
   }, [server, serverId]);
 
-  const { data: data, isLoading: dataLoading } = useCrmDealAccountList(
+  const {
+    data: data,
+    isLoading: dataLoading,
+    refetch: refetch,
+  } = useCrmDealAccountList(
     {
       pageSize,
       pageNum: pageNum + 1,
@@ -65,6 +74,18 @@ export function TradingAccountsPage() {
     },
     { enabled: Boolean(serverId) },
   );
+
+  const { data: dealAccountGroupRes } = useGetDealAccountGroupList(); // 账户组数据 表单 弹窗都有使用
+
+  const dealAccountGroup = useMemo(() => {
+    // 表单 账户组选项
+    return (
+      dealAccountGroupRes?.map(item => ({
+        label: item.name,
+        value: item.id,
+      })) || []
+    );
+  }, [dealAccountGroupRes]);
 
   const reset = () => {
     setParams({
@@ -297,6 +318,7 @@ export function TradingAccountsPage() {
               reset={reset}
               params={params}
               otherParams={otherParams}
+              dealAccountGroup={dealAccountGroup}
             />
           </RrhDrawer>
           <ColumnVisibilityButton
@@ -306,6 +328,7 @@ export function TradingAccountsPage() {
             onBatchReorder={batchUpdateColumns}
             columns={columns}
           />
+          <AddAccountDialog onSuccess={refetch} dealAccountGroup={dealAccountGroup} />
         </div>
       </div>
       <DataTable
