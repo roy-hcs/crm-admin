@@ -19,7 +19,7 @@ import { TFunction } from 'i18next';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { SelectUser } from './SelectUser';
-import { SelectType } from './selectType';
+import { SelectType } from './SelectType';
 import { serverMap } from '@/lib/constant';
 import {
   useGetLever,
