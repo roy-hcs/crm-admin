@@ -17,6 +17,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const ReviewAgentPage = () => {
   const [params, setParams] = useState<AgentApplyListParams['params']>({
@@ -244,70 +245,72 @@ export const ReviewAgentPage = () => {
   return (
     <div>
       <PageInfo title={t('reviewAgent.title')} />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <div className="w-67 max-w-sm">
-          <RrhInputWithIcon
-            placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
-            className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-            rightIcon={<Search className="size-4" />}
-            onRightIconClick={() => {
-              setOtherParams(prev => ({ ...prev, name: keyword }));
-              setPageNum(0);
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <RrhButton variant="outline">{t('table.export')}</RrhButton>
-          <RrhButton variant="outline">{t('table.batchDelete')}</RrhButton>
-          <RrhButton variant="outline">{t('table.batchAudit')}</RrhButton>
-          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </Button>
-          <RrhDrawer
-            asChild
-            Trigger={
-              <Button variant="ghost" className="size-8 cursor-pointer">
-                <Funnel className="size-4" />
-              </Button>
-            }
-            title="Filter"
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
-            }}
-            footerShow={false}
-          >
-            <ReviewAgentForm
-              params={params}
-              otherParams={otherParams}
-              reset={reset}
-              setParams={setParams}
-              setOtherParams={setOtherParams}
-              loading={agentApplyListLoading}
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div className="w-67 max-w-sm">
+            <RrhInputWithIcon
+              placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
+              className="h-9"
+              value={keyword}
+              onChange={e => setKeyword(e.target.value)}
+              leftIcon={<Search className="size-4" />}
+              onLeftIconClick={() => {
+                setOtherParams(prev => ({ ...prev, name: keyword }));
+                setPageNum(0);
+              }}
             />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
+          </div>
+          <div className="flex items-center gap-2">
+            <RrhButton variant="outline">{t('table.export')}</RrhButton>
+            <RrhButton variant="outline">{t('table.batchDelete')}</RrhButton>
+            <RrhButton variant="outline">{t('table.batchAudit')}</RrhButton>
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+            <RrhDrawer
+              asChild
+              Trigger={
+                <Button variant="ghost" className="size-8 cursor-pointer">
+                  <Funnel className="size-4" />
+                </Button>
+              }
+              title="Filter"
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+            >
+              <ReviewAgentForm
+                params={params}
+                otherParams={otherParams}
+                reset={reset}
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+                loading={agentApplyListLoading}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
 
-      <DataTable
-        columns={tableColumns}
-        data={agentApplyList?.rows || []}
-        pageCount={Math.ceil(+(agentApplyList?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={agentApplyListLoading}
-      />
+        <DataTable
+          columns={tableColumns}
+          data={agentApplyList?.rows || []}
+          pageCount={Math.ceil(+(agentApplyList?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={agentApplyListLoading}
+        />
+      </TableContentWrapper>
     </div>
   );
 };

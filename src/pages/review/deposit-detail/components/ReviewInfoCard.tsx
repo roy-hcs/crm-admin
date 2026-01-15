@@ -1,15 +1,15 @@
 import { DepositDetail, DepositReviewDetailRes } from '@/api/hooks/review';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { WithdrawalItem } from './WithdrawalItem';
 import { FormField } from '@/components/ui/form';
-import { InfoItem } from './InfoItem';
 import { Switch } from '@/components/ui/switch';
 import { RrhRadioGroup } from '@/components/common/RrhRadioGroup';
 import { Input } from '@/components/ui/input';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhTextarea } from '@/components/common/RrhTextarea';
 import { RrhCard } from '@/components/common/RrhCard';
+import { LabelItem } from '@/components/common/LabelItem';
+import { InfoItem } from '@/components/common/InfoItem';
 
 export const ReviewInfoCard = ({
   depositInfo,
@@ -28,7 +28,7 @@ export const ReviewInfoCard = ({
         name="reviewer"
         disabled
         render={() => (
-          <WithdrawalItem
+          <LabelItem
             label={t('review.information.verifyUserName')}
             ContentDom={
               <InfoItem
@@ -46,29 +46,27 @@ export const ReviewInfoCard = ({
       <FormField
         name="status"
         render={({ field }) => (
-          <WithdrawalItem
+          <LabelItem
             label={t('review.reviewStatus')}
             ContentDom={
-              <div>
-                <RrhRadioGroup
-                  value={field.value}
-                  onValueChange={v => {
-                    field.onChange(v);
-                    setStatusValue(v);
-                  }}
-                  labelClassName="font-medium"
-                  radioItems={[
-                    {
-                      value: '1',
-                      label: t('common.verifyStatus.approved'),
-                    },
-                    {
-                      value: '0',
-                      label: t('common.verifyStatus.rejected'),
-                    },
-                  ]}
-                />
-              </div>
+              <RrhRadioGroup
+                value={field.value}
+                onValueChange={v => {
+                  field.onChange(v);
+                  setStatusValue(v);
+                }}
+                labelClassName="font-medium"
+                radioItems={[
+                  {
+                    value: '1',
+                    label: t('common.verifyStatus.approved'),
+                  },
+                  {
+                    value: '0',
+                    label: t('common.verifyStatus.rejected'),
+                  },
+                ]}
+              />
             }
           />
         )}
@@ -78,7 +76,7 @@ export const ReviewInfoCard = ({
         <FormField
           name="isNeedDeposit"
           render={({ field }) => (
-            <WithdrawalItem
+            <LabelItem
               label={t('depositReview.depositFunds')}
               ContentDom={
                 <div>
@@ -110,7 +108,7 @@ export const ReviewInfoCard = ({
       <FormField
         name="remark"
         render={({ field }) => (
-          <WithdrawalItem
+          <LabelItem
             label={t('table.remarks')}
             ContentDom={
               <div className="flex w-full flex-col gap-3">
@@ -146,7 +144,7 @@ export const ReviewInfoCard = ({
         <FormField
           name="orderComment"
           render={({ field }) => (
-            <WithdrawalItem
+            <LabelItem
               label=""
               ContentDom={
                 <Input

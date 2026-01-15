@@ -23,6 +23,7 @@ import { withdrawalReviewStatusMap } from '@/lib/constant';
 import { useTabActions } from '@/hooks/useTabActions';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { RrhButton } from '@/components/common/RrhButton';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const ReviewWithdrawalPage = () => {
   const { t } = useTranslation();
@@ -412,119 +413,121 @@ export const ReviewWithdrawalPage = () => {
   return (
     <div>
       <PageInfo title={t('withdrawalReview.title')} />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <div className="w-67 max-w-sm">
-          <RrhInputWithIcon
-            placeholder={t('common.pleaseInput', { field: t('table.nameOrLastNameOrId') })}
-            className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-            rightIcon={<Search className="size-4" />}
-            onRightIconClick={() => {
-              setOtherParams(prev => ({ ...prev, userId: keyword }));
-              setPageNum(0);
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <RrhButton onClick={reset}>{t('table.batchAudit')}</RrhButton>
-          <RrhButton variant="outline">{t('table.export')}</RrhButton>
-          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </Button>
-          <RrhDrawer
-            asChild
-            Trigger={
-              <Button variant="ghost" className="size-8 cursor-pointer">
-                <Funnel className="size-4" />
-              </Button>
-            }
-            title="Filter"
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
-            }}
-            footerShow={false}
-          >
-            <ReviewWithdrawalForm
-              params={params}
-              otherParams={otherParams}
-              reset={reset}
-              setParams={setParams}
-              setOtherParams={setOtherParams}
-              loading={withdrawListLoading}
-              withdrawMethodList={outMoneyMethodList?.data || []}
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div className="w-67 max-w-sm">
+            <RrhInputWithIcon
+              placeholder={t('common.pleaseInput', { field: t('table.nameOrLastNameOrId') })}
+              className="h-9"
+              value={keyword}
+              onChange={e => setKeyword(e.target.value)}
+              leftIcon={<Search className="size-4" />}
+              onLeftIconClick={() => {
+                setOtherParams(prev => ({ ...prev, userId: keyword }));
+                setPageNum(0);
+              }}
             />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
+          </div>
+          <div className="flex items-center gap-2">
+            <RrhButton onClick={reset}>{t('table.batchAudit')}</RrhButton>
+            <RrhButton variant="outline">{t('table.export')}</RrhButton>
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+            <RrhDrawer
+              asChild
+              Trigger={
+                <Button variant="ghost" className="size-8 cursor-pointer">
+                  <Funnel className="size-4" />
+                </Button>
+              }
+              title="Filter"
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+            >
+              <ReviewWithdrawalForm
+                params={params}
+                otherParams={otherParams}
+                reset={reset}
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+                loading={withdrawListLoading}
+                withdrawMethodList={outMoneyMethodList?.data || []}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={withdrawList?.rows || []}
-        pageCount={Math.ceil(+(withdrawList?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={withdrawListLoading}
-        CustomRow={
-          <>
-            <TableCell colSpan={5} className="text-center">
-              {t('table.total')}
-            </TableCell>
-            {!sumShow && (
-              <TableCell colSpan={5}>
-                <RrhButton variant="ghost" onClick={getSumData}>
-                  {t('table.clickToGetSum')}
-                </RrhButton>
+        <DataTable
+          columns={tableColumns}
+          data={withdrawList?.rows || []}
+          pageCount={Math.ceil(+(withdrawList?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={withdrawListLoading}
+          CustomRow={
+            <>
+              <TableCell colSpan={5} className="text-center">
+                {t('table.total')}
               </TableCell>
-            )}
-            {sumShow ? (
-              isPending ? (
-                <TableCell>{t('common.loading')}</TableCell>
-              ) : (
-                <>
-                  <TableCell colSpan={5}></TableCell>
-                  <TableCell colSpan={1} className="text-center">
-                    {sumData?.data.map(item => {
-                      return item.sumWithdraw ? (
-                        <div key={item.currency}>
-                          {item.sumWithdraw} {item.currency}
-                        </div>
-                      ) : null;
-                    })}
-                  </TableCell>
-                  <TableCell colSpan={1} className="text-center">
-                    {sumData?.data.map(item => {
-                      return item.sumFee ? (
-                        <div key={item.currency}>
-                          {item.sumFee} {item.currency}
-                        </div>
-                      ) : null;
-                    })}
-                  </TableCell>
-                  <TableCell colSpan={1} className="text-center">
-                    {sumData?.data.map(item => {
-                      return item.sumFactWithdraw ? (
-                        <div key={item.currency}>
-                          {item.sumFactWithdraw} {item.currency}
-                        </div>
-                      ) : null;
-                    })}
-                  </TableCell>
-                </>
-              )
-            ) : null}
-          </>
-        }
-      />
+              {!sumShow && (
+                <TableCell colSpan={5}>
+                  <RrhButton variant="ghost" onClick={getSumData}>
+                    {t('table.clickToGetSum')}
+                  </RrhButton>
+                </TableCell>
+              )}
+              {sumShow ? (
+                isPending ? (
+                  <TableCell>{t('common.loading')}</TableCell>
+                ) : (
+                  <>
+                    <TableCell colSpan={5}></TableCell>
+                    <TableCell colSpan={1} className="text-center">
+                      {sumData?.data.map(item => {
+                        return item.sumWithdraw ? (
+                          <div key={item.currency}>
+                            {item.sumWithdraw} {item.currency}
+                          </div>
+                        ) : null;
+                      })}
+                    </TableCell>
+                    <TableCell colSpan={1} className="text-center">
+                      {sumData?.data.map(item => {
+                        return item.sumFee ? (
+                          <div key={item.currency}>
+                            {item.sumFee} {item.currency}
+                          </div>
+                        ) : null;
+                      })}
+                    </TableCell>
+                    <TableCell colSpan={1} className="text-center">
+                      {sumData?.data.map(item => {
+                        return item.sumFactWithdraw ? (
+                          <div key={item.currency}>
+                            {item.sumFactWithdraw} {item.currency}
+                          </div>
+                        ) : null;
+                      })}
+                    </TableCell>
+                  </>
+                )
+              ) : null}
+            </>
+          }
+        />
+      </TableContentWrapper>
     </div>
   );
 };

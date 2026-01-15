@@ -1,9 +1,8 @@
 import { FC } from 'react';
 import { FormField } from '@/components/ui/form';
-import { EditableItem } from './EditableItem';
+import { EditableItem } from '@/components/common/EditableItem';
 import { useTranslation } from 'react-i18next';
-import { WithdrawalItem } from './WithdrawalItem';
-import { InfoItem } from './InfoItem';
+import { InfoItem } from '../../../../components/common/InfoItem';
 import { useEditableFields } from '@/hooks/useEditableFields';
 import { WithdrawItem } from '@/api/hooks/review';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -11,6 +10,7 @@ import { Copy, QrCode } from 'lucide-react';
 import { toast } from 'sonner';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { RrhQrCode } from '@/components/common/RrhQrCode';
+import { LabelItem } from '@/components/common/LabelItem';
 
 type CryptocurrencyInfoField = 'dealTicket';
 
@@ -89,7 +89,7 @@ export const CryptocurrencyInfo: FC<Props> = ({ withdrawalInfo, isAudit }) => {
           key={key}
           name={name}
           render={() => (
-            <WithdrawalItem
+            <LabelItem
               label={label}
               ContentDom={
                 copyable ? (
@@ -124,7 +124,7 @@ export const CryptocurrencyInfo: FC<Props> = ({ withdrawalInfo, isAudit }) => {
           key={key}
           name={name}
           render={({ field }) => (
-            <WithdrawalItem
+            <LabelItem
               label={label}
               ContentDom={
                 <EditableItem

@@ -16,6 +16,7 @@ import { useServerList } from '@/api/hooks/system/system';
 import { TableCell } from '@/components/ui/table';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { RrhButton } from '@/components/common/RrhButton';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 function getServerTypeName(serverType: number) {
   switch (serverType) {
@@ -223,109 +224,111 @@ export const AccrualReportPage = () => {
   return (
     <div>
       <PageInfo title={t('PammSettlementReport.title')} />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <div className="w-67 max-w-sm">
-          <RrhInputWithIcon
-            placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
-            className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-            rightIcon={<Search className="size-4" />}
-            onRightIconClick={() => {
-              setOtherParams(prev => ({ ...prev, projectName: keyword }));
-              setPageNum(0);
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </Button>
-          <RrhDrawer
-            asChild
-            Trigger={
-              <Button variant="ghost" className="size-8 cursor-pointer">
-                <Funnel className="size-4" />
-              </Button>
-            }
-            title="Filter"
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
-            }}
-            footerShow={false}
-          >
-            <AccrualReportForm
-              serverOptions={server?.rows || []}
-              setOtherParams={setOtherParams}
-              reset={reset}
-              loading={pammInvestReportsLoading || serverLoading}
-              otherParams={otherParams}
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div className="w-67 max-w-sm">
+            <RrhInputWithIcon
+              placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
+              className="h-9"
+              value={keyword}
+              onChange={e => setKeyword(e.target.value)}
+              leftIcon={<Search className="size-4" />}
+              onLeftIconClick={() => {
+                setOtherParams(prev => ({ ...prev, projectName: keyword }));
+                setPageNum(0);
+              }}
             />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+            <RrhDrawer
+              asChild
+              Trigger={
+                <Button variant="ghost" className="size-8 cursor-pointer">
+                  <Funnel className="size-4" />
+                </Button>
+              }
+              title="Filter"
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+            >
+              <AccrualReportForm
+                serverOptions={server?.rows || []}
+                setOtherParams={setOtherParams}
+                reset={reset}
+                loading={pammInvestReportsLoading || serverLoading}
+                otherParams={otherParams}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={pammInvestReports?.rows || []}
-        pageCount={Math.ceil(+(pammInvestReports?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={pammInvestReportsLoading}
-        CustomRow={
-          <>
-            <TableCell colSpan={8}>{t('table.total')}</TableCell>
-            <TableCell colSpan={1}>
-              {pammInvestReports?.totalList?.map(item => {
-                return (
-                  <div key={`${item.currency} + ${item.currency}`}>
-                    {item.businessAmountTotal ? (
-                      <div>
-                        {item.businessAmountTotal.toFixed(2)} {item.currency}
-                      </div>
-                    ) : null}
-                  </div>
-                );
-              })}
-            </TableCell>
-            <TableCell colSpan={1}>
-              {pammInvestReports?.totalList?.map(item => {
-                return (
-                  <div key={`${item.currency} + ${item.currency}`}>
-                    {item.commissionTotal ? (
-                      <div>
-                        {item.commissionTotal.toFixed(2)} {item.currency}
-                      </div>
-                    ) : null}
-                  </div>
-                );
-              })}
-            </TableCell>
-            <TableCell colSpan={1}>
-              {pammInvestReports?.totalList?.map(item => {
-                return (
-                  <div key={`${item.currency} + ${item.currency}`}>
-                    {item.rewardAmountTotal ? (
-                      <div>
-                        {item.rewardAmountTotal.toFixed(2)} {item.currency}
-                      </div>
-                    ) : null}
-                  </div>
-                );
-              })}
-            </TableCell>
-          </>
-        }
-      />
+        <DataTable
+          columns={tableColumns}
+          data={pammInvestReports?.rows || []}
+          pageCount={Math.ceil(+(pammInvestReports?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={pammInvestReportsLoading}
+          CustomRow={
+            <>
+              <TableCell colSpan={8}>{t('table.total')}</TableCell>
+              <TableCell colSpan={1}>
+                {pammInvestReports?.totalList?.map(item => {
+                  return (
+                    <div key={`${item.currency} + ${item.currency}`}>
+                      {item.businessAmountTotal ? (
+                        <div>
+                          {item.businessAmountTotal.toFixed(2)} {item.currency}
+                        </div>
+                      ) : null}
+                    </div>
+                  );
+                })}
+              </TableCell>
+              <TableCell colSpan={1}>
+                {pammInvestReports?.totalList?.map(item => {
+                  return (
+                    <div key={`${item.currency} + ${item.currency}`}>
+                      {item.commissionTotal ? (
+                        <div>
+                          {item.commissionTotal.toFixed(2)} {item.currency}
+                        </div>
+                      ) : null}
+                    </div>
+                  );
+                })}
+              </TableCell>
+              <TableCell colSpan={1}>
+                {pammInvestReports?.totalList?.map(item => {
+                  return (
+                    <div key={`${item.currency} + ${item.currency}`}>
+                      {item.rewardAmountTotal ? (
+                        <div>
+                          {item.rewardAmountTotal.toFixed(2)} {item.currency}
+                        </div>
+                      ) : null}
+                    </div>
+                  );
+                })}
+              </TableCell>
+            </>
+          }
+        />
+      </TableContentWrapper>
     </div>
   );
 };

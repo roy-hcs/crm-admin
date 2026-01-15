@@ -13,6 +13,7 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { PageInfo } from '@/components/common/PageInfo';
 import { BasicParams } from '@/api/types';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 export function PaymentOrdersPage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
@@ -149,71 +150,73 @@ export function PaymentOrdersPage() {
   return (
     <div>
       <PageInfo title={t('financial.paymentOrders.title')} />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <div className="w-67 max-w-sm">
-          <RrhInputWithIcon
-            placeholder={t('common.pleaseInput', {
-              field: t('financial.paymentOrders.userName'),
-            })}
-            className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-            rightIcon={<Search className="size-4" />}
-            onRightIconClick={e => {
-              // 触发查询逻辑, 这里简单调用一次刷新
-              setPageNum(0);
-              setParams(prev => ({
-                ...prev,
-                userName: e,
-              }));
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </Button>
-          <RrhDrawer
-            asChild
-            Trigger={
-              <Button variant="ghost" className="size-8 cursor-pointer">
-                <Funnel className="size-4" />
-              </Button>
-            }
-            title="Filter"
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
-            }}
-            footerShow={false}
-          >
-            <PaymentOrdersForm
-              reset={reset}
-              params={params}
-              commonParams={commonParams}
-              setParams={setParams}
-              setCommonParams={setCommonParams}
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div className="w-67 max-w-sm">
+            <RrhInputWithIcon
+              placeholder={t('common.pleaseInput', {
+                field: t('financial.paymentOrders.userName'),
+              })}
+              className="h-9"
+              value={keyword}
+              onChange={e => setKeyword(e.target.value)}
+              leftIcon={<Search className="size-4" />}
+              onLeftIconClick={e => {
+                // 触发查询逻辑, 这里简单调用一次刷新
+                setPageNum(0);
+                setParams(prev => ({
+                  ...prev,
+                  userName: e,
+                }));
+              }}
             />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+            <RrhDrawer
+              asChild
+              Trigger={
+                <Button variant="ghost" className="size-8 cursor-pointer">
+                  <Funnel className="size-4" />
+                </Button>
+              }
+              title="Filter"
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+            >
+              <PaymentOrdersForm
+                reset={reset}
+                params={params}
+                commonParams={commonParams}
+                setParams={setParams}
+                setCommonParams={setCommonParams}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={data?.rows || []}
-        pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={loading}
-      />
+        <DataTable
+          columns={tableColumns}
+          data={data?.rows || []}
+          pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={loading}
+        />
+      </TableContentWrapper>
     </div>
   );
 }

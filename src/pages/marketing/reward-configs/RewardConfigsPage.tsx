@@ -18,6 +18,7 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { RewardConfigForm } from './RewardConfigForm';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const RewardConfigPage = () => {
   const [params, setParams] = useState<BonusSettingListParams['params']>({
@@ -239,72 +240,74 @@ export const RewardConfigPage = () => {
   return (
     <div>
       <PageInfo title={t('rewardConfigPage.title')} />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <div className="w-67 max-w-sm">
-          <RrhInputWithIcon
-            placeholder={t('common.pleaseInput', { field: t('table.activityName') })}
-            className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-            rightIcon={<Search className="size-4" />}
-            onRightIconClick={() => {
-              setParams(prev => ({ ...prev, rewardTitle: keyword }));
-              setPageNum(0);
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <RrhButton variant="outline">{t('common.add')}</RrhButton>
-          <div className="flex items-center justify-center">
-            <span>{t('table.allowMultipleBonusHits')}</span>
-            <Switch className="ml-2" />
-          </div>
-          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </RrhButton>
-          <RrhDrawer
-            headerShow={false}
-            asChild
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
-            }}
-            footerShow={false}
-            Trigger={
-              <RrhButton variant="ghost" className="size-8">
-                <Funnel />
-              </RrhButton>
-            }
-          >
-            <RewardConfigForm
-              setParams={setParams}
-              setOtherParams={setOtherParams}
-              loading={isLoading}
-              businessTypes={bonusDictType || []}
-              reset={reset}
-              params={params}
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div className="w-67 max-w-sm">
+            <RrhInputWithIcon
+              placeholder={t('common.pleaseInput', { field: t('table.activityName') })}
+              className="h-9"
+              value={keyword}
+              onChange={e => setKeyword(e.target.value)}
+              leftIcon={<Search className="size-4" />}
+              onLeftIconClick={() => {
+                setParams(prev => ({ ...prev, rewardTitle: keyword }));
+                setPageNum(0);
+              }}
             />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
+          </div>
+          <div className="flex items-center gap-2">
+            <RrhButton variant="outline">{t('common.add')}</RrhButton>
+            <div className="flex items-center justify-center">
+              <span>{t('table.allowMultipleBonusHits')}</span>
+              <Switch className="ml-2" />
+            </div>
+            <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </RrhButton>
+            <RrhDrawer
+              headerShow={false}
+              asChild
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+              Trigger={
+                <RrhButton variant="ghost" className="size-8">
+                  <Funnel />
+                </RrhButton>
+              }
+            >
+              <RewardConfigForm
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+                loading={isLoading}
+                businessTypes={bonusDictType || []}
+                reset={reset}
+                params={params}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
 
-      <DataTable
-        columns={tableColumns}
-        data={data?.rows || []}
-        pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={isLoading}
-      />
+        <DataTable
+          columns={tableColumns}
+          data={data?.rows || []}
+          pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={isLoading}
+        />
+      </TableContentWrapper>
     </div>
   );
 };

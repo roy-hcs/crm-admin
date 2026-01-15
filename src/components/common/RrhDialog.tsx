@@ -70,8 +70,8 @@ export const RrhDialog: React.FC<DialogProps> = ({
     onOpenChange(false);
   };
 
-  const handleConfirm = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    onConfirm?.(e);
+  const handleConfirm = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    await onConfirm?.(e);
     if (!onOpenChange) return;
     onOpenChange(false);
   };
@@ -93,13 +93,28 @@ export const RrhDialog: React.FC<DialogProps> = ({
             className,
           )}
           showCloseButton={false}
+          onInteractOutside={e => {
+            if (formLoading) {
+              e.preventDefault();
+            }
+          }}
+          onEscapeKeyDown={e => {
+            if (formLoading) {
+              e.preventDefault(); // Also prevent Escape key
+            }
+          }}
         >
           {formLoading && (
             <div className="bg-accent-foreground/8 absolute inset-0 flex items-center justify-center">
               <RrhCircleLoading />
             </div>
           )}
-          <DialogClose className="data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-7.5 right-6 cursor-pointer rounded-sm border-none opacity-70 transition-opacity outline-none hover:opacity-100 focus:outline-none disabled:pointer-events-none">
+          <DialogClose
+            onClick={() => {
+              onOpenChange?.(false);
+            }}
+            className="data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-7.5 right-6 cursor-pointer rounded-sm border-none opacity-70 transition-opacity outline-none hover:opacity-100 focus:outline-none disabled:pointer-events-none"
+          >
             <X className="h-4 w-4 cursor-pointer" />
             <span className="sr-only">Close</span>
           </DialogClose>
@@ -107,7 +122,8 @@ export const RrhDialog: React.FC<DialogProps> = ({
             <DialogHeader>
               <DialogTitle
                 className={cn(
-                  'border-muted -mx-6 border-b px-6 pb-6 text-lg font-semibold',
+                  'border-muted -mx-6 px-6 pb-6 text-lg font-semibold',
+                  variant === 'small' ? '' : 'border-b',
                   titleCls,
                 )}
               >
@@ -124,7 +140,12 @@ export const RrhDialog: React.FC<DialogProps> = ({
           )}
           {children}
           {footerShow && (
-            <DialogFooter className="border-muted -mx-6 gap-2 border-t px-6 pt-6 sm:justify-end">
+            <DialogFooter
+              className={cn(
+                'border-muted -mx-6 gap-2 px-6 pt-6 sm:justify-end',
+                variant === 'small' ? '' : 'border-t',
+              )}
+            >
               <DialogClose>
                 <div
                   className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-[#1E1E1E]"
@@ -160,7 +181,18 @@ export const RrhDialog: React.FC<DialogProps> = ({
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent
+        onInteractOutside={e => {
+          if (formLoading) {
+            e.preventDefault();
+          }
+        }}
+        onEscapeKeyDown={e => {
+          if (formLoading) {
+            e.preventDefault(); // Also prevent Escape key
+          }
+        }}
+      >
         {formLoading && (
           <div className="bg-accent-foreground/8 absolute inset-0 flex items-center justify-center">
             <RrhCircleLoading />

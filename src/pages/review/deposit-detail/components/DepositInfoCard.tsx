@@ -5,12 +5,12 @@ import { FormField } from '@/components/ui/form';
 import { CircleAlert, Repeat } from 'lucide-react';
 import { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { InfoItem } from './InfoItem';
-import { WithdrawalItem } from './WithdrawalItem';
 
 import { UseFormReturn } from 'react-hook-form';
 import { ImageZoom } from '@/components/common/ImageZoom';
 import { ToolTip } from '@/components/common/ToolTip';
+import { LabelItem } from '@/components/common/LabelItem';
+import { InfoItem } from '@/components/common/InfoItem';
 
 export const DepositInfoCard: FC<{
   depositData: DepositReviewDetailRes['data'];
@@ -43,7 +43,7 @@ export const DepositInfoCard: FC<{
           name="depositAccount"
           disabled
           render={() => (
-            <WithdrawalItem
+            <LabelItem
               label={
                 <span className="flex items-center justify-between">
                   {t('table.depositAccount')}
@@ -68,7 +68,7 @@ export const DepositInfoCard: FC<{
           name="depositWay"
           disabled
           render={() => (
-            <WithdrawalItem
+            <LabelItem
               label={t('table.depositWay')}
               ContentDom={<InfoItem info={depositInfo?.method} />}
             />
@@ -140,7 +140,7 @@ export const DepositInfoCard: FC<{
         <FormField
           name="factDeposit"
           render={({ field }) => (
-            <WithdrawalItem
+            <LabelItem
               label={
                 <span className="flex items-center gap-1">
                   {t('table.depositAmount')}
@@ -167,7 +167,7 @@ export const DepositInfoCard: FC<{
         <FormField
           name="fee"
           render={({ field }) => (
-            <WithdrawalItem
+            <LabelItem
               label={t('table.commission')}
               ContentDom={
                 <RrhInputWithUnit
@@ -183,7 +183,7 @@ export const DepositInfoCard: FC<{
         <FormField
           name="rate"
           render={({ field }) => (
-            <WithdrawalItem
+            <LabelItem
               label={t('common.exchangeRate')}
               ContentDom={
                 <RrhInputWithUnit
@@ -200,7 +200,7 @@ export const DepositInfoCard: FC<{
           name="remarks"
           disabled
           render={() => (
-            <WithdrawalItem
+            <LabelItem
               label={t('table.remarks')}
               ContentDom={<InfoItem info={depositInfo.subRemark || '-'} />}
             />
@@ -211,7 +211,7 @@ export const DepositInfoCard: FC<{
           name="voucher"
           disabled
           render={() => (
-            <WithdrawalItem
+            <LabelItem
               label={t('table.voucher')}
               ContentDom={
                 depositInfo.voucher ? (
@@ -228,7 +228,7 @@ export const DepositInfoCard: FC<{
           name="orderNumber"
           disabled
           render={() => (
-            <WithdrawalItem
+            <LabelItem
               label={t('table.orderNumber')}
               ContentDom={<InfoItem info={depositInfo.orderNum || '-'} />}
             />
@@ -239,7 +239,7 @@ export const DepositInfoCard: FC<{
           name="orderId"
           disabled
           render={() => (
-            <WithdrawalItem
+            <LabelItem
               label={t('table.orderId')}
               ContentDom={<InfoItem info={depositInfo.orderId || '-'} />}
             />
@@ -250,7 +250,7 @@ export const DepositInfoCard: FC<{
           name="channelName"
           disabled
           render={() => (
-            <WithdrawalItem
+            <LabelItem
               label={t('table.channelName')}
               ContentDom={<InfoItem info={depositInfo.channelName || '-'} />}
             />
@@ -262,7 +262,7 @@ export const DepositInfoCard: FC<{
             name="directBroker"
             disabled
             render={() => (
-              <WithdrawalItem
+              <LabelItem
                 label={t('table.directAgent')}
                 ContentDom={<InfoItem info={directBroker || '-'} />}
               />
@@ -278,7 +278,7 @@ export const DepositInfoCard: FC<{
             name="accountInfoPaymentCurrency"
             disabled
             render={() => (
-              <WithdrawalItem
+              <LabelItem
                 label={t('table.paymentCurrency')}
                 ContentDom={<InfoItem info={depositInfo.depositCurrency} />}
               />

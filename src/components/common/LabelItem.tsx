@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-export const WithdrawalItem = ({
+export const LabelItem = ({
   label,
   ContentDom,
 }: {

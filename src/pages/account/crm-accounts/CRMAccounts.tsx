@@ -1,21 +1,18 @@
 import { CrmUserItem, CrmUserParams, useCrmUser, useTagUserCountList } from '@/api/hooks/account';
-import { TagUserItem } from '@/api/hooks/account';
-import { EmblaCarousel } from '@/components/common/EmblaCarousel';
 import { cn } from '@/lib/utils';
 import {
   ChevronDown,
   ChevronUp,
-  CircleChevronLeft,
-  Download,
   Ellipsis,
+  FileOutput,
   Funnel,
-  Menu,
   RefreshCcw,
   Search,
-  Settings,
-  Users,
+  Tag,
+  UserRoundCog,
+  UsersRound,
 } from 'lucide-react';
-import { FC, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { CRMAccountsForm, CRMFormRef } from './components/CRMAccountsForm';
 import { AddUserDialog } from './components/AddUserDialog';
 import { Button } from '@/components/ui/button';
@@ -32,36 +29,17 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { BasicParams } from '@/api/types';
 import { ResetPassword } from './components/ResetPassword';
 import { DeleteAccount } from './components/DeleteAccount';
-
-const TagItem: FC<TagUserItem & { setTags: (id: string) => void; className?: string }> = ({
-  userCount,
-  id,
-  tagName,
-  setTags,
-  className,
-}) => {
-  return (
-    <div
-      onClick={() => setTags(id)}
-      className={cn(
-        'bg-card group/tag border-border relative min-w-27.5 cursor-pointer rounded-lg border p-3',
-        className,
-      )}
-    >
-      <div className="mb-1 text-xs">{tagName}</div>
-      <div className="font-medium">{userCount}</div>
-      <Search className="absolute top-2 right-2 hidden size-3 group-hover/tag:block" />
-    </div>
-  );
-};
+import { AccountTags } from './components/AccountTags';
+import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const CRMAccounts = () => {
   const formRef = useRef<CRMFormRef>(null);
-  const [actionBtnsShow, setActionBtnsShow] = useState(false);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc'>('asc');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [tags, setTags] = useState('');
+  const [keyword, setKeyword] = useState('');
   const [params, setParams] = useState<CrmUserParams['params']>({
     threeCons: '',
     regEndTime: '',
@@ -369,100 +347,73 @@ export const CRMAccounts = () => {
   const [isResetFundsPasswordDialogOpen, setIsResetFundsPasswordDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [id, setId] = useState<string>('');
+  const btnsList = [
+    {
+      label: (
+        <RrhButton variant="ghost" className="flex w-full items-center justify-start">
+          <FileOutput className="size-4" />
+          <span>{t('CRMAccountPage.Export')}</span>
+        </RrhButton>
+      ),
+      value: 'export',
+    },
+
+    {
+      label: (
+        <RrhButton variant="ghost" className="flex w-full items-center justify-start">
+          <UserRoundCog className="size-4" />
+          <span>{t('CRMAccountPage.SetRolesInBatches')}</span>
+        </RrhButton>
+      ),
+      value: 'setRolesInBatches',
+    },
+    {
+      label: (
+        <RrhButton variant="ghost" className="flex w-full items-center justify-start">
+          <UsersRound className="size-4" />
+          <span>{t('CRMAccountPage.UserStatistics')}</span>
+        </RrhButton>
+      ),
+      value: 'userStatistics',
+    },
+    {
+      label: (
+        <RrhButton variant="ghost" className="flex w-full items-center justify-start">
+          <Tag className="size-4" />
+          <span>{t('CRMAccountPage.LifecycleAndUserTags')}</span>
+        </RrhButton>
+      ),
+      value: 'lifecycleAndUserTags',
+    },
+  ];
 
   return (
     <div>
       <PageInfo
         title={t('CRMAccountPage.title')}
         desc={t('CRMAccountPage.desc')}
-        wrapperCls="-mx-6 border-b px-6 pt-2 pb-4"
+        wrapperCls="-mx-6 px-6 pt-2 pb-4"
       />
-      <div className="group/swiper mt-4 flex items-center gap-4">
-        <TagItem
-          tagName="总计(客户)"
-          userCount={crmUsers?.total || '0'}
-          setTags={setTags}
-          id={''}
-          className="shrink-0"
-        />
-        {tagUserCountListLoading ? (
-          <div className="flex h-full basis-full animate-pulse items-center justify-center">
-            {t('common.loading')}
-          </div>
-        ) : (
-          <EmblaCarousel
-            options={{
-              align: 'start',
-              containScroll: 'trimSnaps',
-            }}
-            PreButton={({ onClick, disabled }) => (
-              <button
-                onClick={onClick}
-                disabled={disabled}
-                className="hidden h-full cursor-pointer group-hover/swiper:block disabled:cursor-not-allowed"
-              >
-                <CircleChevronLeft className="text-foreground" />
-              </button>
-            )}
-            NextButton={({ onClick, disabled }) => (
-              <button
-                onClick={onClick}
-                disabled={disabled}
-                className="hidden h-full cursor-pointer group-hover/swiper:block disabled:cursor-not-allowed"
-              >
-                <CircleChevronLeft className="text-foreground rotate-180" />
-              </button>
-            )}
-            wrapperCls="gap-1"
-          >
-            {tagUserCountList?.data.map(item => (
-              <TagItem
-                key={item.id}
-                id={item.id}
-                tagName={item.tagName}
-                userCount={item.userCount}
-                setTags={setTags}
-                className="shrink-0 grow-0"
-              />
-            ))}
-          </EmblaCarousel>
-        )}
-      </div>
-      <div className="mt-4">
-        <div className="mb-4 flex justify-between">
-          <div className="flex gap-4">
-            {actionBtnsShow && (
-              <>
-                <RrhButton variant="outline">
-                  <Download className="size-3.5" />
-                  <span>{t('CRMAccountPage.Export')}</span>
-                </RrhButton>
-                <RrhButton variant="outline">
-                  <Menu className="size-3.5" />
-                  <span>{t('CRMAccountPage.SetRolesInBatches')}</span>
-                </RrhButton>
-                <RrhButton variant="outline">
-                  <Users className="size-3.5" />
-                  <span>{t('CRMAccountPage.UserStatistics')}</span>
-                </RrhButton>
-                <RrhButton variant="outline">
-                  <Settings className="size-3.5" />
-                  <span>{t('CRMAccountPage.LifecycleAndUserTags')}</span>
-                </RrhButton>
-              </>
-            )}
-          </div>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-              <RefreshCcw className="size-3.5" />
-            </Button>
-            <Button
-              variant="ghost"
-              className="size-8 cursor-pointer"
-              onClick={() => setActionBtnsShow(!actionBtnsShow)}
-            >
-              <Ellipsis />
-            </Button>
+      <AccountTags
+        userCount={crmUsers?.total || '0'}
+        setTags={setTags}
+        tagUserCountList={tagUserCountList?.data || []}
+        tagUserCountListLoading={tagUserCountListLoading}
+      />
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div className="flex gap-2">
+            <RrhInputWithIcon
+              placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.NameOrAccountId') })}
+              className="h-9 w-95"
+              value={keyword}
+              onChange={e => setKeyword(e.target.value)}
+              leftIcon={<Search className="size-4" />}
+              onLeftIconClick={() => {
+                setParams(prev => ({ ...prev, threeCons: keyword }));
+                setPageNum(0);
+              }}
+            />
             <RrhDrawer
               headerShow={false}
               asChild
@@ -487,6 +438,13 @@ export const CRMAccounts = () => {
                 otherParams={otherParams}
               />
             </RrhDrawer>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+            <RrhDropdown Trigger={<Ellipsis className="size-4" />} dropdownList={btnsList} />
+
             <ColumnVisibilityButton
               columnMeta={columnMeta}
               visibleColumns={visibleColumns}
@@ -529,7 +487,7 @@ export const CRMAccounts = () => {
             setIsResetDialogOpen={setIsDeleteDialogOpen}
           />
         )}
-      </div>
+      </TableContentWrapper>
     </div>
   );
 };

@@ -211,7 +211,9 @@
     "deleteAccount": "Delete account",
     "pwdType": "Password type",
     "readOnlyPassword": "read-only password",
-    "tradingPassword": "Transaction password"
+    "tradingPassword": "Transaction password",
+    "detail": "{{field}} details",
+    "exportFailed": "Export failed"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -650,7 +652,17 @@
     "receiptAmount": "Amount received",
     "userShowId": "Account ID",
     "voucher": "certificate",
-    "account": "account"
+    "account": "account",
+    "flowInfo": "Running information",
+    "inflowAccount": "flow into account",
+    "internalTransfer": "internal transfer",
+    "internalTransferOut": "Internal transfer out",
+    "outflowAccount": "Outflow account",
+    "pointsProductExchange": "Redeem points for merchandise",
+    "pointsProductReturn": "Points product return",
+    "rebate": "Rebate",
+    "transfer": "transfer",
+    "withdrawOnDrawdown": "Withdrawal"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",

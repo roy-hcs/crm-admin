@@ -17,6 +17,7 @@ import { transformTotalList } from '@/lib/utils';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { commissionReviewOptions, settlementTypeOptions } from '@/lib/const';
 import { serverMap } from '@/lib/constant';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const ProfitSharingReviewPage = () => {
   const [params, setParams] = useState<PammCommissionListParams['params']>({
@@ -202,120 +203,122 @@ export const ProfitSharingReviewPage = () => {
   return (
     <div>
       <PageInfo title={t('profitSharingReview.title')} />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <div className="w-67 max-w-sm">
-          <RrhInputWithIcon
-            placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
-            className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-            rightIcon={<Search className="size-4" />}
-            onRightIconClick={() => {
-              setOtherParams(prev => ({ ...prev, projectName: keyword }));
-              setPageNum(0);
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </Button>
-          <RrhDrawer
-            asChild
-            Trigger={
-              <Button variant="ghost" className="size-8 cursor-pointer">
-                <Funnel className="size-4" />
-              </Button>
-            }
-            title="Filter"
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
-            }}
-            footerShow={false}
-          >
-            <ProfitSharingReviewForm
-              params={params}
-              otherParams={otherParams}
-              reset={reset}
-              setParams={setParams}
-              setOtherParams={setOtherParams}
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div className="w-67 max-w-sm">
+            <RrhInputWithIcon
+              placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
+              className="h-9"
+              value={keyword}
+              onChange={e => setKeyword(e.target.value)}
+              leftIcon={<Search className="size-4" />}
+              onLeftIconClick={() => {
+                setOtherParams(prev => ({ ...prev, projectName: keyword }));
+                setPageNum(0);
+              }}
             />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+            <RrhDrawer
+              asChild
+              Trigger={
+                <Button variant="ghost" className="size-8 cursor-pointer">
+                  <Funnel className="size-4" />
+                </Button>
+              }
+              title="Filter"
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+            >
+              <ProfitSharingReviewForm
+                params={params}
+                otherParams={otherParams}
+                reset={reset}
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={data?.rows || []}
-        pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={loading}
-        CustomRow={
-          <>
-            <TableCell colSpan={6}>{t('table.total')}</TableCell>
-            {loading ? (
-              <TableCell>{t('common.loading')}</TableCell>
-            ) : (
-              <>
-                {totalList.map(it => {
-                  // 收益
-                  if ('businessAmountToatl' in it) {
-                    return (
-                      <TableCell colSpan={1}>
-                        {(it['businessAmountToatl'] || []).map((i, index) => {
-                          return (
-                            <div key={index}>
-                              {(Number(i.amount) || 0).toFixed(2)} {i.currency}
-                            </div>
-                          );
-                        })}
-                      </TableCell>
-                    );
-                  }
-                  // 业绩报酬金额
-                  if ('rewardAmountToatl' in it) {
-                    return (
-                      <TableCell colSpan={2}>
-                        {(it['rewardAmountToatl'] || []).map((i, index) => {
-                          return (
-                            <div key={index}>
-                              {(Number(i.amount) || 0).toFixed(2)} {i.currency}
-                            </div>
-                          );
-                        })}
-                      </TableCell>
-                    );
-                  }
-                  // 代理分润
-                  if ('commissionToatl' in it) {
-                    return (
-                      <TableCell colSpan={1}>
-                        {(it['commissionToatl'] || []).map((i, index) => {
-                          return (
-                            <div key={index}>
-                              {(Number(i.amount) || 0).toFixed(2)} {i.currency}
-                            </div>
-                          );
-                        })}
-                      </TableCell>
-                    );
-                  }
-                })}
-              </>
-            )}
-          </>
-        }
-      />
+        <DataTable
+          columns={tableColumns}
+          data={data?.rows || []}
+          pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={loading}
+          CustomRow={
+            <>
+              <TableCell colSpan={6}>{t('table.total')}</TableCell>
+              {loading ? (
+                <TableCell>{t('common.loading')}</TableCell>
+              ) : (
+                <>
+                  {totalList.map(it => {
+                    // 收益
+                    if ('businessAmountToatl' in it) {
+                      return (
+                        <TableCell colSpan={1}>
+                          {(it['businessAmountToatl'] || []).map((i, index) => {
+                            return (
+                              <div key={index}>
+                                {(Number(i.amount) || 0).toFixed(2)} {i.currency}
+                              </div>
+                            );
+                          })}
+                        </TableCell>
+                      );
+                    }
+                    // 业绩报酬金额
+                    if ('rewardAmountToatl' in it) {
+                      return (
+                        <TableCell colSpan={2}>
+                          {(it['rewardAmountToatl'] || []).map((i, index) => {
+                            return (
+                              <div key={index}>
+                                {(Number(i.amount) || 0).toFixed(2)} {i.currency}
+                              </div>
+                            );
+                          })}
+                        </TableCell>
+                      );
+                    }
+                    // 代理分润
+                    if ('commissionToatl' in it) {
+                      return (
+                        <TableCell colSpan={1}>
+                          {(it['commissionToatl'] || []).map((i, index) => {
+                            return (
+                              <div key={index}>
+                                {(Number(i.amount) || 0).toFixed(2)} {i.currency}
+                              </div>
+                            );
+                          })}
+                        </TableCell>
+                      );
+                    }
+                  })}
+                </>
+              )}
+            </>
+          }
+        />
+      </TableContentWrapper>
     </div>
   );
 };

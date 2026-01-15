@@ -14,6 +14,7 @@ import { transactionTypeMap } from '@/lib/constant';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 const formatVolume = (serverType: number | undefined, volume: number, lotSize: number) => {
   if (serverType == 1) {
@@ -280,96 +281,98 @@ export const PositionOrderPage = () => {
   return (
     <div>
       <PageInfo title={t('positionOrderPage.positionOrder')} />
-      <div className="my-3.5 flex flex-wrap items-center justify-between gap-2">
-        <RrhInputWithIcon
-          placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
-          className="h-9"
-          value={keyword}
-          onChange={e => setKeyword(e.target.value)}
-          rightIcon={<Search className="size-4 cursor-pointer" />}
-          onRightIconClick={e => {
-            setParams(prev => ({ ...prev, positionFuzzyTicket: e }));
-            setPageNum(0);
-          }}
-        />
-        <div className="flex items-center justify-end gap-2">
-          <RrhButton variant="outline">{t('table.export')}</RrhButton>
-          <RrhButton variant="outline">{t('positionOrderPage.positionCost')}</RrhButton>
-          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </RrhButton>
-          <RrhDrawer
-            headerShow={false}
-            asChild
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
+      <TableContentWrapper>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
+            className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            leftIcon={<Search className="size-4 cursor-pointer" />}
+            onLeftIconClick={e => {
+              setParams(prev => ({ ...prev, positionFuzzyTicket: e }));
+              setPageNum(0);
             }}
-            footerShow={false}
-            Trigger={
-              <RrhButton variant="ghost" className="size-8">
-                <Funnel />
-              </RrhButton>
-            }
-          >
-            <PositionOrderForm
-              params={params}
-              otherParams={otherParams}
-              reset={reset}
-              serverListLoading={serverListLoading}
-              serverList={serverList?.rows || []}
-              setParams={setParams}
-              setOtherParams={setOtherParams}
-              loading={positionOrderListLoading}
-            />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
           />
+          <div className="flex items-center justify-end gap-2">
+            <RrhButton variant="outline">{t('table.export')}</RrhButton>
+            <RrhButton variant="outline">{t('positionOrderPage.positionCost')}</RrhButton>
+            <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </RrhButton>
+            <RrhDrawer
+              headerShow={false}
+              asChild
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+              Trigger={
+                <RrhButton variant="ghost" className="size-8">
+                  <Funnel />
+                </RrhButton>
+              }
+            >
+              <PositionOrderForm
+                params={params}
+                otherParams={otherParams}
+                reset={reset}
+                serverListLoading={serverListLoading}
+                serverList={serverList?.rows || []}
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+                loading={positionOrderListLoading}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={positionOrderList?.rows || []}
-        pageCount={Math.ceil(+(positionOrderList?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={positionOrderListLoading}
-        CustomRow={
-          <>
-            <TableCell colSpan={5}>{t('table.total')}</TableCell>
-            <TableCell colSpan={4}>
-              {(
-                positionOrderList?.totalList.reduce((pre, cur) => pre + cur.totalVolume, 0) || 0
-              ).toFixed(2)}
-            </TableCell>
-            <TableCell colSpan={1}>
-              {positionOrderList?.totalList.map(item => {
-                return (
-                  <div key={item.currency}>
-                    {item.totalProfit} {item.currency}
-                  </div>
-                );
-              })}
-            </TableCell>
-            <TableCell colSpan={1}>
-              {positionOrderList?.totalList.map(item => {
-                return (
-                  <div key={item.currency}>
-                    {item.totalSwaps} {item.currency}
-                  </div>
-                );
-              })}
-            </TableCell>
-          </>
-        }
-      />
+        <DataTable
+          columns={tableColumns}
+          data={positionOrderList?.rows || []}
+          pageCount={Math.ceil(+(positionOrderList?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={positionOrderListLoading}
+          CustomRow={
+            <>
+              <TableCell colSpan={5}>{t('table.total')}</TableCell>
+              <TableCell colSpan={4}>
+                {(
+                  positionOrderList?.totalList.reduce((pre, cur) => pre + cur.totalVolume, 0) || 0
+                ).toFixed(2)}
+              </TableCell>
+              <TableCell colSpan={1}>
+                {positionOrderList?.totalList.map(item => {
+                  return (
+                    <div key={item.currency}>
+                      {item.totalProfit} {item.currency}
+                    </div>
+                  );
+                })}
+              </TableCell>
+              <TableCell colSpan={1}>
+                {positionOrderList?.totalList.map(item => {
+                  return (
+                    <div key={item.currency}>
+                      {item.totalSwaps} {item.currency}
+                    </div>
+                  );
+                })}
+              </TableCell>
+            </>
+          }
+        />
+      </TableContentWrapper>
     </div>
   );
 };

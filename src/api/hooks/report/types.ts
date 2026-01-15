@@ -253,6 +253,7 @@ export type WalletTransactionItem = {
   mtOrder: string | null;
   remark: string | null;
   postAmount: string | null;
+  params?: Record<string, string> | null;
 };
 
 export type WalletTransactionResponse = BasicRes<WalletTransactionItem>;

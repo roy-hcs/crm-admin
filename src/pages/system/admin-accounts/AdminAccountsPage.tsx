@@ -13,6 +13,7 @@ import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const AdminAccountsPage = () => {
   const [params, setParams] = useState<UserListParams['params']>({
@@ -209,65 +210,67 @@ export const AdminAccountsPage = () => {
   return (
     <div>
       <PageInfo title={t('system.adminAccounts.title')} />
-      <div className="my-3.5 flex items-center justify-between">
-        <RrhInputWithIcon
-          placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
-          className="h-9"
-          value={keyword}
-          onChange={e => setKeyword(e.target.value)}
-          rightIcon={<Search className="size-4 cursor-pointer" />}
-          onRightIconClick={e => {
-            setParams(prev => ({ ...prev, userName: e }));
-            setPageNum(0);
-          }}
-        />
-        <div className="flex justify-end gap-2">
-          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </RrhButton>
-          <RrhDrawer
-            headerShow={false}
-            asChild
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
+      <TableContentWrapper>
+        <div className="mb-3 flex items-center justify-between">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
+            className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            leftIcon={<Search className="size-4 cursor-pointer" />}
+            onLeftIconClick={e => {
+              setParams(prev => ({ ...prev, userName: e }));
+              setPageNum(0);
             }}
-            footerShow={false}
-            Trigger={
-              <RrhButton variant="ghost" className="size-8">
-                <Funnel />
-              </RrhButton>
-            }
-          >
-            <AdminAccountsForm
-              params={params}
-              otherParams={otherParams}
-              setParams={setParams}
-              setOtherParams={setOtherParams}
-              loading={walletBalanceListLoading}
-              roleList={roleList?.rows || []}
-              reset={reset}
-            />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
           />
+          <div className="flex justify-end gap-2">
+            <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </RrhButton>
+            <RrhDrawer
+              headerShow={false}
+              asChild
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+              Trigger={
+                <RrhButton variant="ghost" className="size-8">
+                  <Funnel />
+                </RrhButton>
+              }
+            >
+              <AdminAccountsForm
+                params={params}
+                otherParams={otherParams}
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+                loading={walletBalanceListLoading}
+                roleList={roleList?.rows || []}
+                reset={reset}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={walletBalanceList?.rows || []}
-        pageCount={Math.ceil(+(walletBalanceList?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={walletBalanceListLoading}
-      />
+        <DataTable
+          columns={tableColumns}
+          data={walletBalanceList?.rows || []}
+          pageCount={Math.ceil(+(walletBalanceList?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={walletBalanceListLoading}
+        />
+      </TableContentWrapper>
     </div>
   );
 };

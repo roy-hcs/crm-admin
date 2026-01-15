@@ -101,15 +101,15 @@ export const VarietyManagementPage = () => {
   return (
     <div>
       <PageInfo title={t('varietyManagement.title')} />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
+      <div className="mb-3 flex justify-between">
         <div className="w-67 max-w-sm">
           <RrhInputWithIcon
             placeholder={t('common.pleaseInput', { field: t('varietyManagement.symbol') })}
             className="h-9"
             value={keyword}
             onChange={e => setKeyword(e.target.value)}
-            rightIcon={<Search className="size-4" />}
-            onRightIconClick={() => {
+            leftIcon={<Search className="size-4" />}
+            onLeftIconClick={() => {
               setOtherParams(prev => ({ ...prev, symbol: keyword }));
               setPageNum(0);
             }}

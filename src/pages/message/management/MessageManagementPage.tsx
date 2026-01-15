@@ -15,6 +15,7 @@ import { RrhTag } from '@/components/common/RrhTag';
 import { ToolTip } from '@/components/common/ToolTip';
 import { infoTypesMap } from '@/lib/constant';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export function MessageManagementPage() {
   const { t } = useTranslation();
@@ -162,68 +163,70 @@ export function MessageManagementPage() {
   return (
     <div>
       <PageInfo title={t('messageManagement.title')} />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <div className="w-67 max-w-sm">
-          <RrhInputWithIcon
-            placeholder={t('common.pleaseInput', { field: t('table.title') })}
-            className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-            rightIcon={<Search className="size-4" />}
-            onRightIconClick={() => {
-              setParams(prev => ({ ...prev, fuzzyTitle: keyword }));
-              setPageNum(0);
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <RrhButton onClick={reset}>{t('common.add')}</RrhButton>
-          <RrhButton variant="outline">{t('messageManagement.messageTempate')}</RrhButton>
-          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </Button>
-          <RrhDrawer
-            asChild
-            Trigger={
-              <Button variant="ghost" className="size-8 cursor-pointer">
-                <Funnel className="size-4" />
-              </Button>
-            }
-            title="Filter"
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
-            }}
-            footerShow={false}
-          >
-            <MessageManagementForm
-              reset={reset}
-              params={params}
-              otherParams={otherParams}
-              setParams={setParams}
-              setOtherParams={setOtherParams}
-              loading={msgListLoading}
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div className="w-67 max-w-sm">
+            <RrhInputWithIcon
+              placeholder={t('common.pleaseInput', { field: t('table.title') })}
+              className="h-9"
+              value={keyword}
+              onChange={e => setKeyword(e.target.value)}
+              leftIcon={<Search className="size-4" />}
+              onLeftIconClick={() => {
+                setParams(prev => ({ ...prev, fuzzyTitle: keyword }));
+                setPageNum(0);
+              }}
             />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
+          </div>
+          <div className="flex items-center gap-2">
+            <RrhButton onClick={reset}>{t('common.add')}</RrhButton>
+            <RrhButton variant="outline">{t('messageManagement.messageTempate')}</RrhButton>
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+            <RrhDrawer
+              asChild
+              Trigger={
+                <Button variant="ghost" className="size-8 cursor-pointer">
+                  <Funnel className="size-4" />
+                </Button>
+              }
+              title="Filter"
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+            >
+              <MessageManagementForm
+                reset={reset}
+                params={params}
+                otherParams={otherParams}
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+                loading={msgListLoading}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={msgList?.rows || []}
-        pageCount={Math.ceil(+(msgList?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={msgListLoading}
-      />
+        <DataTable
+          columns={tableColumns}
+          data={msgList?.rows || []}
+          pageCount={Math.ceil(+(msgList?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={msgListLoading}
+        />
+      </TableContentWrapper>
     </div>
   );
 }

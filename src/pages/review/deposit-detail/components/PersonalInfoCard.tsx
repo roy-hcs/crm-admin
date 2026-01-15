@@ -2,12 +2,12 @@ import { DepositDetail } from '@/api/hooks/review';
 import { RrhCard } from '@/components/common/RrhCard';
 import { Badge } from '@/components/ui/badge';
 import { useTranslation } from 'react-i18next';
-import { InfoItem } from './InfoItem';
-import { WithdrawalItem } from './WithdrawalItem';
 import { RrhButton } from '@/components/common/RrhButton';
 import { ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { LabelItem } from '@/components/common/LabelItem';
+import { InfoItem } from '@/components/common/InfoItem';
 
 export const PersonalInfoCard = ({
   depositInfo,
@@ -48,10 +48,7 @@ export const PersonalInfoCard = ({
             </span>
           </div>
         </div>
-        <WithdrawalItem
-          label={t('review.latestLogin')}
-          ContentDom={<InfoItem info={lastLoginTime} />}
-        />
+        <LabelItem label={t('review.latestLogin')} ContentDom={<InfoItem info={lastLoginTime} />} />
       </div>
     </RrhCard>
   );

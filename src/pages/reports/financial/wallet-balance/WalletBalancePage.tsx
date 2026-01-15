@@ -19,6 +19,7 @@ import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 function optPrecision(value: number, currency: string, currencyList: CurrencyListItem[]) {
   if (value !== undefined && currencyList && currencyList.length) {
@@ -171,93 +172,95 @@ export const WalletBalancePage = () => {
   return (
     <div>
       <PageInfo title={t('walletBalancePage.title')} />
-      <div className="my-3.5 flex items-center justify-between">
-        <RrhInputWithIcon
-          placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
-          className="h-9"
-          value={keyword}
-          onChange={e => setKeyword(e.target.value)}
-          rightIcon={<Search className="size-4 cursor-pointer" />}
-          onRightIconClick={e => {
-            setParams(prev => ({ ...prev, positionFuzzyTicket: e }));
-            setPageNum(0);
-          }}
-        />
-        <div className="flex justify-end gap-2">
-          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </RrhButton>
-          <RrhDrawer
-            headerShow={false}
-            asChild
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
+      <TableContentWrapper>
+        <div className="mb-3 flex items-center justify-between">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
+            className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            leftIcon={<Search className="size-4 cursor-pointer" />}
+            onLeftIconClick={e => {
+              setParams(prev => ({ ...prev, positionFuzzyTicket: e }));
+              setPageNum(0);
             }}
-            footerShow={false}
-            Trigger={
-              <RrhButton variant="ghost" className="size-8">
-                <Funnel />
-              </RrhButton>
-            }
-          >
-            <WalletBalanceForm
-              reset={reset}
-              params={params}
-              otherParams={otherParams}
-              setParams={setParams}
-              setOtherParams={setOtherParams}
-              loading={walletBalanceListLoading}
-            />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
           />
-        </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={walletBalanceList?.rows || []}
-        pageCount={Math.ceil(+(walletBalanceList?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={walletBalanceListLoading}
-        CustomRow={
-          <>
-            <TableCell colSpan={5}>{t('table.total')}</TableCell>
-            {!sumShow && (
-              <TableCell colSpan={5}>
-                <RrhButton variant="ghost" onClick={getSumData}>
-                  {t('table.clickToGetSum')}
+          <div className="flex justify-end gap-2">
+            <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </RrhButton>
+            <RrhDrawer
+              headerShow={false}
+              asChild
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+              Trigger={
+                <RrhButton variant="ghost" className="size-8">
+                  <Funnel />
                 </RrhButton>
-              </TableCell>
-            )}
-            {sumShow ? (
-              isPending ? (
-                <TableCell>{t('common.loading')}</TableCell>
-              ) : (
-                <>
-                  <TableCell>
-                    {sumData?.data?.map(item => {
-                      return (
-                        <div key={item.currency}>
-                          {(item.totalAmount || 0).toFixed(2)} {item.currency}
-                        </div>
-                      );
-                    })}
-                  </TableCell>
-                </>
-              )
-            ) : null}
-          </>
-        }
-      />
+              }
+            >
+              <WalletBalanceForm
+                reset={reset}
+                params={params}
+                otherParams={otherParams}
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+                loading={walletBalanceListLoading}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
+        </div>
+        <DataTable
+          columns={tableColumns}
+          data={walletBalanceList?.rows || []}
+          pageCount={Math.ceil(+(walletBalanceList?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={walletBalanceListLoading}
+          CustomRow={
+            <>
+              <TableCell colSpan={5}>{t('table.total')}</TableCell>
+              {!sumShow && (
+                <TableCell colSpan={5}>
+                  <RrhButton variant="ghost" onClick={getSumData}>
+                    {t('table.clickToGetSum')}
+                  </RrhButton>
+                </TableCell>
+              )}
+              {sumShow ? (
+                isPending ? (
+                  <TableCell>{t('common.loading')}</TableCell>
+                ) : (
+                  <>
+                    <TableCell>
+                      {sumData?.data?.map(item => {
+                        return (
+                          <div key={item.currency}>
+                            {(item.totalAmount || 0).toFixed(2)} {item.currency}
+                          </div>
+                        );
+                      })}
+                    </TableCell>
+                  </>
+                )
+              ) : null}
+            </>
+          }
+        />
+      </TableContentWrapper>
     </div>
   );
 };

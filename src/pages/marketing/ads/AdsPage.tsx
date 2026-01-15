@@ -11,6 +11,7 @@ import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { Switch } from '@/components/ui/switch';
 import { Ellipsis } from 'lucide-react';
 import { RrhSorter } from '@/components/common/RrhSorter';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const AdsPage = () => {
   const { t } = useTranslation();
@@ -166,30 +167,32 @@ export const AdsPage = () => {
   return (
     <div>
       <PageInfo title={t('marketing.ads.name')} />
-      <div className="mt-3.5 mb-3.5 flex items-center justify-end gap-2">
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </Button>
+      <TableContentWrapper>
+        <div className="mb-3 flex items-center justify-end gap-2">
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+          </div>
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
         </div>
-        <ColumnVisibilityButton
-          columnMeta={columnMeta}
-          visibleColumns={visibleColumns}
-          onToggle={toggleColumn}
-          onBatchReorder={batchUpdateColumns}
-          columns={columns}
+        <DataTable
+          columns={tableColumns}
+          data={data?.rows || []}
+          pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={loading}
         />
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={data?.rows || []}
-        pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={loading}
-      />
+      </TableContentWrapper>
     </div>
   );
 };

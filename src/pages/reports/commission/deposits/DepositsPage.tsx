@@ -12,6 +12,7 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
 import { DepositsForm } from './DepositsForm';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export function DepositsPage() {
   const { t } = useTranslation();
@@ -188,76 +189,78 @@ export function DepositsPage() {
   return (
     <div>
       <PageInfo title={t('commission.deposits.title')} />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <div className="w-67 max-w-sm">
-          <RrhInputWithIcon
-            placeholder={t('common.pleaseInput', { field: t('commission.trading.mtOrder') })}
-            className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-            rightIcon={<Search className="size-4" />}
-            onRightIconClick={e => {
-              // 触发查询逻辑, 这里简单调用一次刷新
-              setPageNum(0);
-              setCommonParams(prev => ({
-                ...prev,
-                mtOrder: e,
-              }));
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </Button>
-          <RrhDrawer
-            asChild
-            Trigger={
-              <Button variant="ghost" className="size-8 cursor-pointer">
-                <Funnel className="size-4" />
-              </Button>
-            }
-            title="Filter"
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
-            }}
-            footerShow={false}
-          >
-            <DepositsForm
-              params={params}
-              commonParams={commonParams}
-              reset={reset}
-              setParams={setParams}
-              setServerId={setServerId}
-              setCommonParams={setCommonParams}
-              serverOptions={server?.rows || []}
-              groupOptions={groupList || []}
-              RebateTradersOptions={RebateTraders || []}
-              initialServerId={serverId}
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div className="w-67 max-w-sm">
+            <RrhInputWithIcon
+              placeholder={t('common.pleaseInput', { field: t('commission.trading.mtOrder') })}
+              className="h-9"
+              value={keyword}
+              onChange={e => setKeyword(e.target.value)}
+              leftIcon={<Search className="size-4" />}
+              onLeftIconClick={e => {
+                // 触发查询逻辑, 这里简单调用一次刷新
+                setPageNum(0);
+                setCommonParams(prev => ({
+                  ...prev,
+                  mtOrder: e,
+                }));
+              }}
             />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+            <RrhDrawer
+              asChild
+              Trigger={
+                <Button variant="ghost" className="size-8 cursor-pointer">
+                  <Funnel className="size-4" />
+                </Button>
+              }
+              title="Filter"
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+            >
+              <DepositsForm
+                params={params}
+                commonParams={commonParams}
+                reset={reset}
+                setParams={setParams}
+                setServerId={setServerId}
+                setCommonParams={setCommonParams}
+                serverOptions={server?.rows || []}
+                groupOptions={groupList || []}
+                RebateTradersOptions={RebateTraders || []}
+                initialServerId={serverId}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={AgencyClientTracking?.rows || []}
-        pageCount={Math.ceil(+(AgencyClientTracking?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={
-          AgencyClientTrackingLoading || serverLoading || groupLoading || RebateTradersLoading
-        }
-      />
+        <DataTable
+          columns={tableColumns}
+          data={AgencyClientTracking?.rows || []}
+          pageCount={Math.ceil(+(AgencyClientTracking?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={
+            AgencyClientTrackingLoading || serverLoading || groupLoading || RebateTradersLoading
+          }
+        />
+      </TableContentWrapper>
     </div>
   );
 }

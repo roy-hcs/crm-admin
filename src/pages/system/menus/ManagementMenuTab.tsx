@@ -141,14 +141,14 @@ export const ManagementMenuTab = () => {
 
   return (
     <div>
-      <div className="mt-3.5 mb-3.5 flex justify-between">
+      <div className="mb-3 flex justify-between">
         <RrhInputWithIcon
           placeholder={t('common.pleaseInput', { field: t('menuManagement.menuName') })}
           className="h-9"
           value={keyword}
           onChange={e => setKeyword(e.target.value)}
-          rightIcon={<Search className="size-4" />}
-          onRightIconClick={() => {
+          leftIcon={<Search className="size-4" />}
+          onLeftIconClick={() => {
             setMenuName(keyword);
           }}
         />

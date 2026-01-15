@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import { FormField } from '@/components/ui/form';
-import { EditableItem } from './EditableItem';
+import { EditableItem } from '@/components/common/EditableItem';
 import { useTranslation } from 'react-i18next';
-import { WithdrawalItem } from './WithdrawalItem';
-import { InfoItem } from './InfoItem';
+import { InfoItem } from '../../../../components/common/InfoItem';
 import { useEditableFields } from '@/hooks/useEditableFields';
 import { WithdrawItem } from '@/api/hooks/review';
+import { LabelItem } from '@/components/common/LabelItem';
 
 type PayIdInfoField = 'dealTicket';
 
@@ -80,7 +80,7 @@ export const PayIdInfo: FC<Props> = ({ withdrawalInfo, isAudit }) => {
         <FormField
           key={key}
           name={name}
-          render={() => <WithdrawalItem label={label} ContentDom={<InfoItem info={value} />} />}
+          render={() => <LabelItem label={label} ContentDom={<InfoItem info={value} />} />}
         />
       ))}
       {fieldConfigs.map(({ key, label, name }) => (
@@ -88,7 +88,7 @@ export const PayIdInfo: FC<Props> = ({ withdrawalInfo, isAudit }) => {
           key={key}
           name={name}
           render={({ field }) => (
-            <WithdrawalItem
+            <LabelItem
               label={label}
               ContentDom={
                 <EditableItem

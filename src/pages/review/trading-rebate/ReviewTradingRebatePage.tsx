@@ -24,6 +24,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const ReviewTradingRebatePage = () => {
   const [params, setParams] = useState<RebateCommissionListParams['params']>({
@@ -363,108 +364,110 @@ export const ReviewTradingRebatePage = () => {
   return (
     <div>
       <PageInfo title={t('tradingRebateReview.title')} />
-      <div className="mt-3.5 mb-3.5 flex justify-between">
-        <div className="w-67 max-w-sm">
-          <RrhInputWithIcon
-            placeholder={t('common.pleaseInput', { field: t('table.rebateUser') })}
-            className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-            rightIcon={<Search className="size-4" />}
-            onRightIconClick={() => {
-              setOtherParams(prev => ({ ...prev, rebateTraderId: keyword }));
-              setPageNum(0);
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <RrhButton variant="outline">{t('table.export')}</RrhButton>
-          <RrhButton variant="outline">{t('table.batchDelete')}</RrhButton>
-          <RrhButton variant="outline">{t('table.batchAudit')}</RrhButton>
-          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </Button>
-          <RrhDrawer
-            asChild
-            Trigger={
-              <Button variant="ghost" className="size-8 cursor-pointer">
-                <Funnel className="size-4" />
-              </Button>
-            }
-            title="Filter"
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
-            }}
-            footerShow={false}
-          >
-            <ReviewTradingRebateForm
-              params={params}
-              otherParams={otherParams}
-              reset={reset}
-              setParams={setParams}
-              setOtherParams={setOtherParams}
-              serverListLoading={serverListLoading}
-              serverList={serverList?.rows || []}
-              rebateRuleList={rebateRuleList || []}
-              loading={isLoading}
+      <TableContentWrapper>
+        <div className="mb-3 flex justify-between">
+          <div className="w-67 max-w-sm">
+            <RrhInputWithIcon
+              placeholder={t('common.pleaseInput', { field: t('table.rebateUser') })}
+              className="h-9"
+              value={keyword}
+              onChange={e => setKeyword(e.target.value)}
+              leftIcon={<Search className="size-4" />}
+              onLeftIconClick={() => {
+                setOtherParams(prev => ({ ...prev, rebateTraderId: keyword }));
+                setPageNum(0);
+              }}
             />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
+          </div>
+          <div className="flex items-center gap-2">
+            <RrhButton variant="outline">{t('table.export')}</RrhButton>
+            <RrhButton variant="outline">{t('table.batchDelete')}</RrhButton>
+            <RrhButton variant="outline">{t('table.batchAudit')}</RrhButton>
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+            <RrhDrawer
+              asChild
+              Trigger={
+                <Button variant="ghost" className="size-8 cursor-pointer">
+                  <Funnel className="size-4" />
+                </Button>
+              }
+              title="Filter"
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+            >
+              <ReviewTradingRebateForm
+                params={params}
+                otherParams={otherParams}
+                reset={reset}
+                setParams={setParams}
+                setOtherParams={setOtherParams}
+                serverListLoading={serverListLoading}
+                serverList={serverList?.rows || []}
+                rebateRuleList={rebateRuleList || []}
+                loading={isLoading}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
 
-      <DataTable
-        columns={tableColumns}
-        data={data?.rows || []}
-        pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={isLoading}
-        CustomRow={
-          <>
-            <TableCell colSpan={6} className="text-center">
-              {t('table.total')}
-            </TableCell>
-            {!sumShow && (
-              <TableCell colSpan={5}>
-                <RrhButton variant="ghost" onClick={getSumData}>
-                  {t('table.clickToGetSum')}
-                </RrhButton>
+        <DataTable
+          columns={tableColumns}
+          data={data?.rows || []}
+          pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={isLoading}
+          CustomRow={
+            <>
+              <TableCell colSpan={6} className="text-center">
+                {t('table.total')}
               </TableCell>
-            )}
-            {sumShow ? (
-              isPending ? (
-                <TableCell>{t('common.loading')}</TableCell>
-              ) : (
-                <>
-                  <TableCell colSpan={1} className="text-center">
-                    {sumData?.data[0]?.totalVolume}
-                  </TableCell>
-                  <TableCell colSpan={2}></TableCell>
-                  <TableCell colSpan={1} className="text-center">
-                    {sumData?.data[0]?.totalList.map(item => {
-                      return (
-                        <div key={item.amtUnit}>
-                          {item.rebateFixedAmt} {item.amtUnit}
-                        </div>
-                      );
-                    })}
-                  </TableCell>
-                </>
-              )
-            ) : null}
-          </>
-        }
-      />
+              {!sumShow && (
+                <TableCell colSpan={5}>
+                  <RrhButton variant="ghost" onClick={getSumData}>
+                    {t('table.clickToGetSum')}
+                  </RrhButton>
+                </TableCell>
+              )}
+              {sumShow ? (
+                isPending ? (
+                  <TableCell>{t('common.loading')}</TableCell>
+                ) : (
+                  <>
+                    <TableCell colSpan={1} className="text-center">
+                      {sumData?.data[0]?.totalVolume}
+                    </TableCell>
+                    <TableCell colSpan={2}></TableCell>
+                    <TableCell colSpan={1} className="text-center">
+                      {sumData?.data[0]?.totalList.map(item => {
+                        return (
+                          <div key={item.amtUnit}>
+                            {item.rebateFixedAmt} {item.amtUnit}
+                          </div>
+                        );
+                      })}
+                    </TableCell>
+                  </>
+                )
+              ) : null}
+            </>
+          }
+        />
+      </TableContentWrapper>
     </div>
   );
 };

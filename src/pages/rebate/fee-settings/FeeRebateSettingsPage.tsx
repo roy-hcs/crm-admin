@@ -16,6 +16,7 @@ import { RebateFeeSettingsItem } from '@/api/hooks/rebate';
 import { Switch } from '@/components/ui/switch';
 import { ToolTip } from '@/components/common/ToolTip';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 function getServerTypeName(serverType: string) {
   switch (serverType) {
@@ -221,65 +222,67 @@ export const FeeRebateSettingsPage = () => {
   return (
     <div>
       <PageInfo title={t('FeeRebateSettings.title')} desc={t('FeeRebateSettings.warn')} />
-      <div className="mt-3.5 mb-3.5 flex flex-wrap justify-between gap-2">
-        <RrhInputWithIcon
-          placeholder={t('common.pleaseInput', { field: t('table.ruleName') })}
-          className="h-9"
-          value={keyword}
-          onChange={e => setKeyword(e.target.value)}
-          rightIcon={<Search className="size-4" />}
-          onRightIconClick={() => {
-            setOtherParams(prev => ({ ...prev, ruleName: keyword }));
-            setPageNum(0);
-          }}
-        />
-        <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline">{t('common.add')}</Button>
-          <Button variant="outline">{t('table.rebateTemplate')}</Button>
-          <Button variant="outline">{t('table.historyOrderRebate')}</Button>
-          <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-            <RefreshCcw className="size-3.5" />
-          </Button>
-          <RrhDrawer
-            asChild
-            Trigger={
-              <Button variant="ghost" className="size-8 cursor-pointer">
-                <Funnel className="size-4" />
-              </Button>
-            }
-            title="Filter"
-            responsiveDirection={{
-              mobile: 'bottom',
-              desktop: 'right',
+      <TableContentWrapper>
+        <div className="mb-3 flex flex-wrap justify-between gap-2">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('table.ruleName') })}
+            className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            leftIcon={<Search className="size-4" />}
+            onLeftIconClick={() => {
+              setOtherParams(prev => ({ ...prev, ruleName: keyword }));
+              setPageNum(0);
             }}
-            footerShow={false}
-          >
-            <FeeRebateSettingsForm
-              params={otherParams}
-              reset={reset}
-              setParams={setOtherParams}
-              serverTypes={serverTypes || []}
-            />
-          </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
           />
+          <div className="flex flex-wrap items-center gap-2">
+            <Button variant="outline">{t('common.add')}</Button>
+            <Button variant="outline">{t('table.rebateTemplate')}</Button>
+            <Button variant="outline">{t('table.historyOrderRebate')}</Button>
+            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+              <RefreshCcw className="size-3.5" />
+            </Button>
+            <RrhDrawer
+              asChild
+              Trigger={
+                <Button variant="ghost" className="size-8 cursor-pointer">
+                  <Funnel className="size-4" />
+                </Button>
+              }
+              title="Filter"
+              responsiveDirection={{
+                mobile: 'bottom',
+                desktop: 'right',
+              }}
+              footerShow={false}
+            >
+              <FeeRebateSettingsForm
+                params={otherParams}
+                reset={reset}
+                setParams={setOtherParams}
+                serverTypes={serverTypes || []}
+              />
+            </RrhDrawer>
+            <ColumnVisibilityButton
+              columnMeta={columnMeta}
+              visibleColumns={visibleColumns}
+              onToggle={toggleColumn}
+              onBatchReorder={batchUpdateColumns}
+              columns={columns}
+            />
+          </div>
         </div>
-      </div>
-      <DataTable
-        columns={tableColumns}
-        data={feeRebateSettings?.rows || []}
-        pageCount={Math.ceil(+(feeRebateSettings?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        onPageChange={setPageNum}
-        onPageSizeChange={setPageSize}
-        loading={feeRebateSettingsLoading}
-      />
+        <DataTable
+          columns={tableColumns}
+          data={feeRebateSettings?.rows || []}
+          pageCount={Math.ceil(+(feeRebateSettings?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={feeRebateSettingsLoading}
+        />
+      </TableContentWrapper>
     </div>
   );
 };
