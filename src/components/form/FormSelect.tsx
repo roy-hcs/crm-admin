@@ -13,6 +13,7 @@ interface FormSelectProps<T extends FieldValues, O extends BaseOption = BaseOpti
   className?: string;
   renderItem?: (option: O) => ReactNode;
   showRowValue?: boolean;
+  loading?: boolean;
 }
 
 export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOption>({
@@ -24,6 +25,7 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
   className,
   renderItem,
   showRowValue = true,
+  loading = false,
 }: FormSelectProps<T, O>) {
   const { form } = useCrmFormContext<T>();
   return (
@@ -47,15 +49,19 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
             <FormControl
               className={cn('grow-0', verticalLabel || !label ? 'basis-full' : 'basis-9/12')}
             >
-              <RrhSelect<O>
-                options={options}
-                value={field.value}
-                onValueChange={field.onChange}
-                className="w-full"
-                placeholder={placeholder}
-                renderItem={renderItem}
-                showRowValue={showRowValue}
-              />
+              {loading ? (
+                <div className="bg-muted h-10 w-full animate-pulse rounded-md" />
+              ) : (
+                <RrhSelect<O>
+                  options={options}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  className="w-full"
+                  placeholder={placeholder}
+                  renderItem={renderItem}
+                  showRowValue={showRowValue}
+                />
+              )}
             </FormControl>
           </div>
           <FormMessage className="text-end" />

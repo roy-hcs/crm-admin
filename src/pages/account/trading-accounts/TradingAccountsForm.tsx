@@ -7,7 +7,7 @@ import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import {
   useGetGroupByServer,
   CrmDealAccountListParams,
-  useGetDealAccountGroupList,
+  // useGetDealAccountGroupList,
 } from '@/api/hooks/account';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 
@@ -47,6 +47,7 @@ export const TradingAccountsForm = ({
   reset,
   params,
   otherParams,
+  dealAccountGroup,
 }: {
   setParams: Dispatch<SetStateAction<CrmDealAccountListParams['params']>>;
   setOtherParams: Dispatch<
@@ -59,9 +60,10 @@ export const TradingAccountsForm = ({
   reset: () => void;
   params: CrmDealAccountListParams['params'];
   otherParams: Omit<CrmDealAccountListParams, 'params' | keyof BasicParams>;
+  dealAccountGroup: { label: string; value: string }[];
 }) => {
   const { t } = useTranslation();
-  const { data: dealAccountGroupListData } = useGetDealAccountGroupList(); // 账户组数据
+  // const { data: dealAccountGroupListData } = useGetDealAccountGroupList(); // 账户组数据
 
   const form = useForm({
     defaultValues: {
@@ -179,12 +181,7 @@ export const TradingAccountsForm = ({
             name="accountGroupList"
             label={t('table.accountGroup')}
             placeholder={t('common.pleaseSelect')}
-            options={
-              dealAccountGroupListData?.map(item => ({
-                label: item.name,
-                value: item.id,
-              })) || []
-            }
+            options={dealAccountGroup}
           />
           <FormInput
             verticalLabel

@@ -544,3 +544,68 @@ export type AccountItem = {
   roleName: string | null;
   triggeringEvent: string | null;
 };
+
+export type MtServerItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: object;
+  id: string | null;
+  serviceType: number | null;
+  serviceProperty: number | null;
+  servicePropertyValue: string | null;
+  aliasName: string | null;
+  serverName: string | null;
+  serviceHost: string | null;
+  managerAccount: string | null;
+  managerSecret: string | null;
+  salt: string | null;
+  accountStart: string | null;
+  accountEnd: string | null;
+  status: number | null;
+  processStatus: number | null;
+  syncTime: string | null;
+  lastTicket: string | null;
+  checkTime: string | null;
+  port: string | null;
+  isBindAllowed: number | null;
+  pid: string | null;
+  flag: boolean | null;
+  sort: number | null;
+  generateType: number | null;
+  interType: string | null;
+  reportingHost: string | null;
+  reportingDbName: string | null;
+  reportingAccount: string | null;
+  reportingSecret: string | null;
+};
+
+export type AccountInfo = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: object;
+  id: string | null;
+  serverId: string | null;
+  groupName: string | null;
+  accountStart: number | null;
+  accountEnd: number | null;
+  maxAccount: string | null;
+  sort: string | null;
+};
+
+export type AddAccountParams = {
+  userId: string | null;
+  serviceProperty: string | null;
+  serviceType: string | null;
+  server: string | null;
+  serverGroup: string | null;
+  account: string | null;
+  lever: string | null;
+  accountGroupId: string | null;
+  directBroker: string | null;
+};

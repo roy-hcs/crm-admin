@@ -652,6 +652,7 @@
     "receiptAmount": "Amount received",
     "userShowId": "Account ID",
     "voucher": "certificate",
+    "account": "account",
     "flowInfo": "Running information",
     "inflowAccount": "flow into account",
     "internalTransfer": "internal transfer",
@@ -713,7 +714,11 @@
       "ticket": "Order number",
       "time": "time",
       "title": "Transaction account capital flow",
-      "type": "Operation Type"
+      "type": "Operation Type",
+      "accountPlaceholder": "Account range {{accountStart}}-{{accountEnd}}",
+      "addLogin": "Add new trading account",
+      "maxAccount": "The maximum account number in the MT group is {{maxAccount}}",
+      "serverType": "Server type"
     },
     "tradingAccountDataStats": {
       "advanceScale": "Prepayment ratio",

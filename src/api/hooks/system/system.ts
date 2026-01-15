@@ -26,6 +26,9 @@ import {
   UserInfoRes,
   AccountItem,
   WalletItem,
+  MtServerItem,
+  AccountInfo,
+  AddAccountParams,
 } from './types';
 
 // Note: useWithDrawReport, useFundFlowReport, useSymbolReport, useRegCountReport, useDepositAllReport, useCustomerTransactionsReport, useSumReport moved to @/api/hooks/workbench
@@ -326,5 +329,65 @@ export function useCrmUserConfirmRemoveInfo(userId: string) {
         accountList: AccountItem[];
         walletList: WalletItem[];
       }>(`/system/crmUser/confirmCrmRemoveInfo/${userId}`, {}),
+  });
+}
+
+/**
+ * crm账户-新增交易账号-获取服务器 /system/crmDealAccount/mtgroup/3/1
+ */
+export function useGetServer() {
+  return useMutation({
+    // 服务器类型 1 2 3 4 5
+    mutationFn: (serverType: string) =>
+      apiFormPostCustom<MtServerItem[]>(`/system/crmDealAccount/mtgroup/${serverType}/1`, {}),
+  });
+}
+
+/**
+ * crm账户-新增交易账号-获取杠杆
+ */
+export function useGetLever() {
+  return useMutation({
+    // 服务器类型 1 2 3 4 5
+    mutationFn: (serverType: string) =>
+      apiFormPostCustom<string[]>(`/system/crmDealAccount/mtlever/${serverType}`, {}),
+  });
+}
+
+/**
+ * crm账户-新增交易账号-获取组别 上面有相同的接口 这个接口不需要直接获取数据
+ */
+
+export function useGetGroup() {
+  return useMutation({
+    mutationFn: (serverId: string) =>
+      apiFormPostCustom<string[]>(`/system/crmDealAccount/getGroup/${serverId}`, {}),
+  });
+}
+
+/**
+ * crm账户-新增交易账号-选择组别后 获取账号信息
+ */
+export function useGetAccountInfo() {
+  return useMutation({
+    mutationFn: (params: { serverId: string; groupName: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: AccountInfo;
+      }>('/system/mtServerGroup/getMtServerGroupByServerIdAndGroupName', params),
+  });
+}
+/**
+ * crm账户-新增交易账号-提交
+ */
+export function useAddAccount() {
+  return useMutation({
+    mutationFn: (params: AddAccountParams) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: AccountInfo;
+      }>('/system/crmDealAccount/add', params),
   });
 }
