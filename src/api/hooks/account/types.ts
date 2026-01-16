@@ -244,11 +244,12 @@ export type CustomerRelationsPostParams = {
 };
 
 export type CustomerRelationsGetItem = {
-  id: string;
-  parentName: string;
   childNames: null | Array<string>;
   hasChildren: boolean;
-  crmRebateLevel: null;
+  id: string | null;
+  levelName: string | null;
+  rebateLevel: string | null;
+  userName: string | null;
 };
 
 export type CustomerRelationsPostRes = CustomerRelationsGetItem[];

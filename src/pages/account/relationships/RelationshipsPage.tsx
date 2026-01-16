@@ -91,8 +91,8 @@ export const RelationshipsPage = () => {
         }
 
         const childrenNodes: TreeNode[] = childrenArr.map((it: CustomerRelationsGetItem) => ({
-          id: it.id,
-          title: it.parentName || 'Unnamed',
+          id: it?.id || '',
+          title: it?.userName || 'null',
           hasChildren: !!it.hasChildren,
           children: null,
           expanded: false,
