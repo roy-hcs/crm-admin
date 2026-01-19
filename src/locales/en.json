@@ -662,7 +662,8 @@
     "pointsProductReturn": "Points product return",
     "rebate": "Rebate",
     "transfer": "transfer",
-    "withdrawOnDrawdown": "Withdrawal"
+    "withdrawOnDrawdown": "Withdrawal",
+    "select": "choose"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -718,7 +719,10 @@
       "accountPlaceholder": "Account range {{accountStart}}-{{accountEnd}}",
       "addLogin": "Add new trading account",
       "maxAccount": "The maximum account number in the MT group is {{maxAccount}}",
-      "serverType": "Server type"
+      "serverType": "Server type",
+      "atLeastOneAccount": "Choose at least one account!",
+      "batchSetAgents": "Set up direct agents in batches",
+      "selectedAccounts": "{{count}} accounts selected"
     },
     "tradingAccountDataStats": {
       "advanceScale": "Prepayment ratio",

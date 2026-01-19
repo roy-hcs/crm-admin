@@ -5,8 +5,9 @@ import {
   RowData,
   getExpandedRowModel,
   ExpandedState,
+  RowSelectionState,
 } from '@tanstack/react-table';
-import { useEffect, useMemo, useRef, forwardRef, useImperativeHandle } from 'react';
+import { useEffect, useMemo, useRef, forwardRef, useImperativeHandle, useState } from 'react';
 
 import {
   Table,
@@ -53,12 +54,18 @@ function createDataTable<TData extends RowData, TValue>() {
       CustomRow,
       treeConfig,
       tableWrapperCls,
+      onSelectionChange,
     }: DataTableProps<TData, TValue>,
     ref: React.Ref<DataTableRef>,
   ) {
     const tableRef = useRef<HTMLTableElement>(null);
     const { t } = useTranslation();
-
+    const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+    // 保存最新的 onSelectionChange，避免在 effect 依赖中导致重复执行
+    const latestOnSelectionChange = useRef<typeof onSelectionChange>(null);
+    useEffect(() => {
+      latestOnSelectionChange.current = onSelectionChange;
+    }, [onSelectionChange]);
     // Set up pagination state
     const pagination = useMemo(
       () => ({
@@ -73,6 +80,7 @@ function createDataTable<TData extends RowData, TValue>() {
       data,
       treeConfig,
     );
+
     const fixedColumnsResult = useFixedColumns(columns as CRMColumnDef<TData, unknown>[], tableRef);
     const { columnPinning } = fixedColumnsResult;
 
@@ -87,6 +95,7 @@ function createDataTable<TData extends RowData, TValue>() {
         expanded: treeConfig?.enabled ? expanded : undefined,
         // Enable TanStack's column pinning by providing state derived from columns
         columnPinning,
+        rowSelection, // 新增
       },
       onPaginationChange: updater => {
         if (typeof updater === 'function') {
@@ -110,7 +119,19 @@ function createDataTable<TData extends RowData, TValue>() {
       getCoreRowModel: getCoreRowModel(),
       getExpandedRowModel: treeConfig?.enabled ? getExpandedRowModel() : undefined,
       getSubRows: treeConfig?.enabled ? getSubRows : undefined,
+      onRowSelectionChange: updater => {
+        // 只更新内部 rowSelection，避免在渲染过程中直接触发父组件 setState
+        setRowSelection(prev => (typeof updater === 'function' ? updater(prev) : updater));
+      },
     });
+
+    // selection 变化后通过副作用安全地通知父组件
+    useEffect(() => {
+      if (!latestOnSelectionChange.current) return;
+      const selectedFlat = table.getSelectedRowModel().flatRows;
+      const selectedRows = selectedFlat.map(r => r.original as TData);
+      latestOnSelectionChange.current(selectedRows);
+    }, [rowSelection, table]);
 
     // Use pinned styles hook
     const { getPinnedStyles } = usePinnedStyles(table, columns, fixedColumnsResult);
@@ -145,6 +166,10 @@ function createDataTable<TData extends RowData, TValue>() {
         setExpandedRows: (newExpanded: ExpandedState) => {
           setExpanded(newExpanded);
           treeConfig?.onExpandedChange?.(newExpanded);
+        },
+        selectionClear: () => {
+          setRowSelection({});
+          table.resetRowSelection();
         },
       }),
       [table, treeConfig, expanded, setExpanded],

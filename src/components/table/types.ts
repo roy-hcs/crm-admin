@@ -31,6 +31,7 @@ export interface DataTableRef {
   isAllExpanded: () => boolean;
   getExpandedRows: () => ExpandedState;
   setExpandedRows: (expanded: ExpandedState) => void;
+  selectionClear: () => void;
 }
 
 export interface TreeConfig<TData = unknown> {
@@ -69,4 +70,7 @@ export interface DataTableProps<TData extends RowData, TValue> {
   /** Tree functionality configuration */
   treeConfig?: TreeConfig<TData>;
   tableWrapperCls?: string;
+
+  /** 行选择变化时回调：selectedRows 为原始数据 */
+  onSelectionChange?: (selectedRows: TData[]) => void;
 }

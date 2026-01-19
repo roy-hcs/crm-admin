@@ -3,24 +3,23 @@ import { RrhDialog } from '@/components/common/RrhDialog';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CircleAlert } from 'lucide-react';
 import { RrhRadioGroup } from '@/components/common/RrhRadioGroup';
 import { useCrmUserConfirmRemoveInfo, useCrmUserRemove } from '@/api/hooks/system/system';
-import { DialogClose, DialogFooter } from '@/components/ui/dialog';
-import { cn } from '@/lib/utils';
+import { RrhButton } from '@/components/common/RrhButton';
 type resetPasswordFormValues = {
   deleteType: string;
 };
 
-export const DeleteAccount = ({
-  isResetDialogOpen,
-  setIsResetDialogOpen,
+export const DeleteAccountDialog = ({
+  open,
+  setOpen,
   id,
   title,
 }: {
-  isResetDialogOpen: boolean;
-  setIsResetDialogOpen: (open: boolean) => void;
+  open: boolean;
+  setOpen: (open: boolean) => void;
   id: string;
   title: string;
 }) => {
@@ -36,12 +35,6 @@ export const DeleteAccount = ({
     },
   });
 
-  useEffect(() => {
-    if (!isResetDialogOpen) {
-      form.reset();
-    }
-  }, [form, isResetDialogOpen]);
-
   const onSubmit = async (values: resetPasswordFormValues) => {
     setIsSubmitting(true);
     try {
@@ -51,7 +44,7 @@ export const DeleteAccount = ({
       });
       if (res.code === 0) {
         toast.success(t('common.success'));
-        setIsResetDialogOpen(false);
+        setOpen(false);
       } else {
         toast.error(res.msg);
       }
@@ -62,15 +55,6 @@ export const DeleteAccount = ({
     }
   };
 
-  const handleConfirm = () => {
-    form.handleSubmit(onSubmit)();
-  };
-
-  const handleCancel = () => {
-    setIsResetDialogOpen(false);
-  };
-
-  // 计算真实和模拟账号数量
   const count = useMemo(() => {
     if (!data)
       return {
@@ -83,16 +67,23 @@ export const DeleteAccount = ({
     };
   }, [data]);
 
+  const onCancel = () => {
+    form.reset();
+    setOpen(false);
+  };
+
   return (
     <RrhDialog
       title={title}
       trigger={<button></button>}
-      open={isResetDialogOpen}
-      onOpenChange={handleCancel}
+      isConfirmDisabled={isSubmitting}
+      open={open}
+      onOpenChange={setOpen}
       footerShow={false}
-      className="w-full sm:w-112"
+      variant="small"
+      formLoading={isSubmitting}
     >
-      <div className="w-full sm:w-100">
+      <div>
         <div className="bg-destructive/5 mb-5 flex items-center gap-1 rounded-md p-2">
           <CircleAlert className="text-destructive h-4 w-4" />
           <span className="text-destructive text-sm leading-5 font-medium">
@@ -126,54 +117,42 @@ export const DeleteAccount = ({
                 />
               )}
             />
+            {!isLoading && (
+              <div className="text-foreground mt-6 text-sm leading-5">
+                {t('CRMAccountPage.DeleteAccountWalletBalance')}:
+                {data?.walletList?.map(it => (
+                  <span>{`${it.balance} ${it.currency},`}</span>
+                ))}
+              </div>
+            )}
+            {!isLoading && deleteType === '2' && (
+              <div className="text-foreground mt-6 text-sm leading-5">
+                <div>
+                  {t('CRMAccountPage.DeleteAccountWalletAndRealAccountBalance', {
+                    real: count.real,
+                    demo: count.demo,
+                  })}
+                </div>
+                {data?.accountList?.map(it => (
+                  <span>
+                    {`${it?.account}-${it.balance} ${it.currency}-${it.serviceProperty === 1 ? t('common.live') : t('common.demo')},`}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div className="border-muted col-span-full -mx-6 flex justify-end px-6 pt-6 pb-6 sm:pb-0">
+              <div className="flex justify-end gap-4">
+                <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
+                  {t('common.Cancel')}
+                </RrhButton>
+                <RrhButton type="submit" className="px-4 py-2">
+                  {t('common.Confirm')}
+                </RrhButton>
+              </div>
+            </div>
           </form>
         </Form>
-        {!isLoading && (
-          <div className="text-foreground mt-6 text-sm leading-5">
-            {t('CRMAccountPage.DeleteAccountWalletBalance')}:
-            {data?.walletList?.map(it => (
-              <span>{`${it.balance} ${it.currency},`}</span>
-            ))}
-          </div>
-        )}
-        {!isLoading && deleteType === '2' && (
-          <div className="text-foreground mt-6 text-sm leading-5">
-            <div>
-              {t('CRMAccountPage.DeleteAccountWalletAndRealAccountBalance', {
-                real: count.real,
-                demo: count.demo,
-              })}
-            </div>
-            {data?.accountList?.map(it => (
-              <span>
-                {`${it?.account}-${it.balance} ${it.currency}-${it.serviceProperty === 1 ? t('common.live') : t('common.demo')},`}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
-      <DialogFooter className="border-muted -mx-6 gap-2 border-t px-6 pt-6 sm:justify-end">
-        <DialogClose>
-          <div
-            className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-[#1E1E1E]"
-            onClick={handleCancel}
-          >
-            {t('common.Cancel')}
-          </div>
-        </DialogClose>
-        <div
-          onClick={() => {
-            if (isSubmitting) return;
-            handleConfirm();
-          }}
-          className={cn(
-            'bg-primary rounded-sm border px-4 py-2 text-white',
-            isSubmitting ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
-          )}
-        >
-          {t('common.Confirm')}
-        </div>
-      </DialogFooter>
     </RrhDialog>
   );
 };

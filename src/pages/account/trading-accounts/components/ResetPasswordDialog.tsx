@@ -14,7 +14,7 @@ import * as z from 'zod';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Eye, EyeClosed } from 'lucide-react';
 import { useCrmDealAccountResetPwd, useMtServerGroup } from '@/api/hooks/system/system';
 import { JSEncrypt } from 'jsencrypt';
@@ -23,8 +23,7 @@ import { FormProvider } from '@/contexts/form';
 
 import { passwordTypeOptions } from '@/lib/const';
 import { CrmDealAccountListItem } from '@/api/hooks/account';
-import { DialogClose, DialogFooter } from '@/components/ui/dialog';
-import { cn } from '@/lib/utils';
+import { RrhButton } from '@/components/common/RrhButton';
 type resetPasswordFormValues = {
   pwdType: string;
   newPassword: string;
@@ -109,16 +108,16 @@ const PasswordField = ({
   );
 };
 
-export const ResetPassword = ({
-  isResetDialogOpen,
-  setIsResetDialogOpen,
+export const ResetPasswordDialog = ({
   title,
   info,
+  open,
+  setOpen,
 }: {
-  isResetDialogOpen: boolean;
-  setIsResetDialogOpen: (open: boolean) => void;
   title: string;
+  open: boolean;
   info: CrmDealAccountListItem | null;
+  setOpen: (open: boolean) => void;
 }) => {
   /**
    * serviceType 1 MT5 5 XOH
@@ -158,7 +157,7 @@ export const ResetPassword = ({
 
       if (res.code === 0) {
         toast.success(t('common.success'));
-        setIsResetDialogOpen(false);
+        setOpen(false);
       } else {
         toast.error(res.msg);
       }
@@ -169,32 +168,23 @@ export const ResetPassword = ({
     }
   };
 
-  const handleConfirm = () => {
-    form.handleSubmit(onSubmit)();
-  };
-
-  const closeCallback = useCallback(() => {
+  const onCancel = () => {
     form.reset();
-    setShowNewPWD(false);
-    setShowAgainPWD(false);
-  }, [form]);
-
-  useEffect(() => {
-    if (!isResetDialogOpen) {
-      closeCallback();
-    }
-  }, [closeCallback, isResetDialogOpen]);
+    setOpen(false);
+  };
 
   return (
     <RrhDialog
       title={title}
       trigger={<button></button>}
-      open={isResetDialogOpen}
-      onOpenChange={setIsResetDialogOpen}
+      isConfirmDisabled={isSubmitting}
+      open={open}
+      onOpenChange={setOpen}
       footerShow={false}
-      className="w-full sm:w-112"
+      variant="small"
+      formLoading={isSubmitting}
     >
-      <div className="w-full sm:w-100">
+      <div>
         <FormProvider form={form}>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -239,32 +229,26 @@ export const ResetPassword = ({
                 show={showAgainPWD}
                 setShow={setShowAgainPWD}
               />
+
+              <div className="border-muted col-span-full -mx-6 flex justify-end px-6 pt-6 pb-6 sm:pb-0">
+                <div className="flex justify-end gap-4">
+                  <RrhButton
+                    variant="outline"
+                    type="button"
+                    className="px-4 py-2"
+                    onClick={onCancel}
+                  >
+                    {t('common.Cancel')}
+                  </RrhButton>
+                  <RrhButton type="submit" className="px-4 py-2">
+                    {t('common.Confirm')}
+                  </RrhButton>
+                </div>
+              </div>
             </form>
           </Form>
         </FormProvider>
       </div>
-      <DialogFooter className="border-muted -mx-6 gap-2 border-t px-6 pt-6 sm:justify-end">
-        <DialogClose>
-          <div
-            className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-[#1E1E1E]"
-            onClick={closeCallback}
-          >
-            {t('common.Cancel')}
-          </div>
-        </DialogClose>
-        <div
-          onClick={() => {
-            if (isSubmitting) return;
-            handleConfirm();
-          }}
-          className={cn(
-            'bg-primary rounded-sm border px-4 py-2 text-white',
-            isSubmitting ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
-          )}
-        >
-          {t('common.Confirm')}
-        </div>
-      </DialogFooter>
     </RrhDialog>
   );
 };
