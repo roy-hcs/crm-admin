@@ -1,4 +1,11 @@
-import { Form, FormField } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { FormProvider } from '@/contexts/form';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
@@ -6,20 +13,23 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
-import { SelectUser } from './SelectUser';
-import { useCrmDealAccountSetBroker } from '@/api/hooks/account';
+import { useBatchOrderSync } from '@/api/hooks/account';
 import { toast } from 'sonner';
+import FormDateRangeInput from '@/components/form/FormDateRangeInput';
+import { formatDate } from '@/lib/utils';
 
 type FormValues = {
-  broker: string;
+  orderTime: { from: string; to: string };
 };
 
-export const BatchSetDirectSubAgents = ({
+export const SetOrderAsyncDialog = ({
   onSuccess,
-  ids,
+  serverId,
+  accounts,
 }: {
   onSuccess?: () => void;
-  ids: string[];
+  serverId: string;
+  accounts: string[];
 }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -27,25 +37,28 @@ export const BatchSetDirectSubAgents = ({
 
   const form = useForm<FormValues>({
     defaultValues: {
-      broker: '',
+      orderTime: { from: '', to: '' },
     },
   });
-  const { mutateAsync: setBroker } = useCrmDealAccountSetBroker();
+  const { mutateAsync: setOrderAsync } = useBatchOrderSync();
 
   const onSubmit = async (data: FormValues) => {
     try {
       setIsSubmitting(true);
       const param = {
-        ...data,
-        broker: data.broker || '',
-        ids: ids.join(','),
+        startDate: formatDate(data.orderTime.from),
+        endDate: formatDate(data.orderTime.to),
+        accounts: accounts.join(','),
+        serverId: serverId,
       };
-      const res = await setBroker(param);
+      const res = await setOrderAsync(param);
       if (res.code === 0) {
         form.reset();
         toast.success(t('common.success'));
         setOpen(false);
         onSuccess?.();
+      } else {
+        toast.error(res.msg);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -64,7 +77,7 @@ export const BatchSetDirectSubAgents = ({
       trigger={
         <RrhButton
           onClick={e => {
-            if (ids && ids?.length > 0) {
+            if (accounts && accounts?.length > 0) {
               setOpen(true);
             } else {
               toast.error(t('financial.tradingAccountTransactions.atLeastOneAccount'));
@@ -74,10 +87,10 @@ export const BatchSetDirectSubAgents = ({
           type="button"
           Icon={<Plus className="size-3.5" />}
         >
-          {t('financial.tradingAccountTransactions.batchSetAgents')}
+          {t('financial.tradingAccountTransactions.batchOrderAsync')}
         </RrhButton>
       }
-      title={t('financial.tradingAccountTransactions.batchSetAgents')}
+      title={t('financial.tradingAccountTransactions.batchOrderAsync')}
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
@@ -91,14 +104,30 @@ export const BatchSetDirectSubAgents = ({
             onSubmit={form.handleSubmit(onSubmit)}
             className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-1"
           >
-            <div className="text-foreground text-sm leading-5 font-medium">
-              {t('financial.tradingAccountTransactions.selectedAccounts', { count: ids.length })}
+            <div className="bg-destructive/5 mb-5 flex items-center gap-1 rounded-md p-2">
+              <span className="text-destructive text-sm leading-5 font-medium">
+                {t('financial.tradingAccountTransactions.OrderAsyncTips')}
+              </span>
             </div>
+
+            <div className="mb-4 grid gap-2">
+              <div className="text-foreground text-sm leading-5 font-medium">
+                {t('table.account')}
+              </div>
+              <div className="text-muted-foreground text-sm leading-5">{accounts?.join(', ')}</div>
+            </div>
+
             <FormField
-              name="broker"
-              render={({ field }) => {
-                return <SelectUser verticalLabel field={field} title={t('table.directAgent')} />;
-              }}
+              name="orderTime"
+              render={() => (
+                <FormItem className="flex flex-col gap-2 text-sm">
+                  <FormLabel className="basis-3/12">{t('table.orderTime')}</FormLabel>
+                  <FormControl className="basis-9/12">
+                    <FormDateRangeInput name="orderTime" control={form.control} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
 
             <div className="col-span-full -mx-6 flex justify-end px-6 pt-6 pb-6 sm:pb-0">

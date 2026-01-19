@@ -1,12 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import {
   CrmDealAccountListItem,
   useCrmDealAccountList,
   useGetDealAccountGroupList,
 } from '@/api/hooks/account';
-import { useServerList } from '@/api/hooks/system/system';
-import { TradingAccountsForm } from './TradingAccountsForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
@@ -19,18 +17,21 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { PageInfo } from '@/components/common/PageInfo';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
-// import { ResetPassword } from './ResetPassword';
-// import { DeleteAccount } from './DeleteAccount';
 import { AddAccountDialog } from './components/AddAccountDialog';
 import { Checkbox } from '@/components/ui/checkbox';
-import { BatchSetDirectSubAgents } from './components/BatchSetDirectSubAgents';
+import { SetBrokerDialog } from './components/SetBrokerDialog';
 import { ResetPasswordDialog } from './components/ResetPasswordDialog';
 import { DeleteAccountDialog } from './components/DeleteAccountDialog';
+import { SetAccountGroupDialog } from './components/SetAccountGroupDialog';
+import { SetAccountBelong } from './components/SetAccountBelong';
+import { SetOrderAsyncDialog } from './components/SetOrderAsyncDialog';
+import { TradingAccountsForm } from './components/TradingAccountsForm';
+import { useServerId } from '@/hooks/useServerId';
 
 export function TradingAccountsPage() {
   const { t } = useTranslation();
   const tableRef = useRef<DataTableRef>(null);
-  const [serverId, setServerId] = useState('');
+  const { serverId, setServerId, server, serverLoading } = useServerId();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
@@ -50,15 +51,6 @@ export function TradingAccountsPage() {
     accounts: '',
     accountGroupList: '',
   });
-
-  const { data: server, isLoading: serverLoading } = useServerList();
-
-  useEffect(() => {
-    if (!serverId && server?.code === 0 && server?.rows?.length) {
-      // 只在还没选中时设置，避免无限循环
-      setServerId(server.rows[0].id);
-    }
-  }, [server, serverId]);
 
   const {
     data: data,
@@ -306,6 +298,7 @@ export function TradingAccountsPage() {
     useColumnVisibility('trading-accounts-table', allColumns);
 
   const [ids, setIds] = useState<string[]>([]);
+  const [accounts, setAccounts] = useState<string[]>([]);
 
   const onSuccess = () => {
     setIds([]);
@@ -315,7 +308,9 @@ export function TradingAccountsPage() {
 
   const onSelectionChange = (its: CrmDealAccountListItem[]) => {
     const ids = its.filter(i => i.id).map(j => j.id || '');
+    const as = its.filter(i => i.account).map(j => j.account || '');
     setIds(ids);
+    setAccounts(as);
   };
 
   return (
@@ -374,7 +369,14 @@ export function TradingAccountsPage() {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
-            <BatchSetDirectSubAgents onSuccess={onSuccess} ids={ids} />
+            <SetBrokerDialog onSuccess={onSuccess} ids={ids} />
+            <SetOrderAsyncDialog onSuccess={onSuccess} accounts={accounts} serverId={serverId} />
+            <SetAccountGroupDialog
+              onSuccess={onSuccess}
+              ids={ids}
+              dealAccountGroup={dealAccountGroup}
+            />
+            <SetAccountBelong onSuccess={onSuccess} ids={ids} />
             <AddAccountDialog onSuccess={refetch} dealAccountGroup={dealAccountGroup} />
           </div>
         </div>

@@ -129,7 +129,7 @@ export function useCustomerRelationsPost(params: CustomerRelationsPostParams) {
 /**
  * 交易账号-批量设置直属代理
  */
-export function useCrmDealAccountSetBroker() {
+export function useSetBroker() {
   return useMutation({
     mutationFn: (params: { broker: string; ids: string }) =>
       apiFormPostCustom<{
@@ -137,5 +137,51 @@ export function useCrmDealAccountSetBroker() {
         msg: string;
         data: null;
       }>('/system/crmDealAccount/setBroker', params),
+  });
+}
+
+/**
+ * 交易账号-批量设置账号组
+ */
+export function useSetAccountGroup() {
+  return useMutation({
+    mutationFn: (params: { accountGroup: string; ids: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/crmDealAccount/setAccountGroup', params),
+  });
+}
+/**
+ * 交易账号-批量设置账号归属
+ */
+export function useSetAccountBelong() {
+  return useMutation({
+    mutationFn: (params: { newUserId: string; ids: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/crmDealAccount/setAccountBelong', params),
+  });
+}
+
+/**
+ * 交易账号-批量账号订单同步
+ */
+export function useBatchOrderSync() {
+  return useMutation({
+    mutationFn: (params: {
+      startDate: string;
+      endDate: string;
+      accounts: string;
+      serverId: string;
+    }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/crmDealAccount/batchOrderSync', params),
   });
 }
