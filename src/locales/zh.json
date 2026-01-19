@@ -417,7 +417,10 @@
       "addLogin": "新增交易账号",
       "serverType": "服务器类型",
       "accountPlaceholder": "账号区间{{accountStart}}-{{accountEnd}}",
-      "maxAccount": "该MT组内最大账号为{{maxAccount}}"
+      "maxAccount": "该MT组内最大账号为{{maxAccount}}",
+      "batchSetAgents": "批量设置直属代理",
+      "atLeastOneAccount": "至少选择一个账户！",
+      "selectedAccounts": "已选择 {{count}} 个账户"
     },
     "refundFailLog": {
       "title": "资金回退失败日志",

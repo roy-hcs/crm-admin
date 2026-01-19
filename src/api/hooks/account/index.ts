@@ -125,3 +125,17 @@ export function useCustomerRelationsPost(params: CustomerRelationsPostParams) {
       apiFormPostCustom<CustomerRelationsPostRes>(`/system/crmUser/customerRelationsPost`, params),
   });
 }
+
+/**
+ * 交易账号-批量设置直属代理
+ */
+export function useCrmDealAccountSetBroker() {
+  return useMutation({
+    mutationFn: (params: { broker: string; ids: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/crmDealAccount/setBroker', params),
+  });
+}

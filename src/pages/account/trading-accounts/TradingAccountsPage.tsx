@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import {
   CrmDealAccountListItem,
@@ -13,26 +13,27 @@ import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
 import { CrmDealAccountListParams } from '@/api/hooks/account';
 import { BasicParams } from '@/api/types';
-import { CRMColumnDef, DataTable } from '@/components/table';
+import { CRMColumnDef, DataTable, DataTableRef } from '@/components/table';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { PageInfo } from '@/components/common/PageInfo';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
-import { ResetPassword } from './ResetPassword';
-import { DeleteAccount } from './DeleteAccount';
-import { AddAccountDialog } from './AddAccountDialog';
+// import { ResetPassword } from './ResetPassword';
+// import { DeleteAccount } from './DeleteAccount';
+import { AddAccountDialog } from './components/AddAccountDialog';
+import { Checkbox } from '@/components/ui/checkbox';
+import { BatchSetDirectSubAgents } from './components/BatchSetDirectSubAgents';
+import { ResetPasswordDialog } from './components/ResetPasswordDialog';
+import { DeleteAccountDialog } from './components/DeleteAccountDialog';
 
 export function TradingAccountsPage() {
   const { t } = useTranslation();
+  const tableRef = useRef<DataTableRef>(null);
   const [serverId, setServerId] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
-
-  const [isResetPasswordDialogOpen, setIsResetPasswordDialogOpen] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [info, setInfo] = useState<CrmDealAccountListItem | null>(null);
 
   const [params, setParams] = useState<CrmDealAccountListParams['params']>({
     regStartTime: '',
@@ -51,8 +52,8 @@ export function TradingAccountsPage() {
   });
 
   const { data: server, isLoading: serverLoading } = useServerList();
+
   useEffect(() => {
-    // 自动选择第一台服务器
     if (!serverId && server?.code === 0 && server?.rows?.length) {
       // 只在还没选中时设置，避免无限循环
       setServerId(server.rows[0].id);
@@ -88,6 +89,10 @@ export function TradingAccountsPage() {
     );
   }, [dealAccountGroupRes]);
 
+  const [isResetPasswordDialogOpen, setIsResetPasswordDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [info, setInfo] = useState<CrmDealAccountListItem | null>(null);
+
   const reset = () => {
     setParams({
       regStartTime: '',
@@ -107,6 +112,28 @@ export function TradingAccountsPage() {
     setPageSize(10);
   };
   const allColumns: CRMColumnDef<CrmDealAccountListItem, unknown>[] = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={value => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
     {
       id: 'No.',
       size: 50,
@@ -244,7 +271,10 @@ export function TradingAccountsPage() {
             Trigger={<Ellipsis className="size-4" />}
             dropdownList={[
               { label: t('common.View'), value: 'view' },
-              { label: t('common.resetPassword'), value: 'resetPassword' },
+              {
+                label: t('common.resetPassword'),
+                value: 'resetPassword',
+              },
               { label: t('common.delete'), value: 'delete' },
             ]}
             callToAction={action => {
@@ -273,6 +303,19 @@ export function TradingAccountsPage() {
   ];
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('trading-accounts-table', allColumns);
+
+  const [ids, setIds] = useState<string[]>([]);
+
+  const onSuccess = () => {
+    setIds([]);
+    tableRef.current?.selectionClear?.();
+    refetch();
+  };
+
+  const onSelectionChange = (its: CrmDealAccountListItem[]) => {
+    const ids = its.filter(i => i.id).map(j => j.id || '');
+    setIds(ids);
+  };
 
   return (
     <div>
@@ -330,10 +373,12 @@ export function TradingAccountsPage() {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <BatchSetDirectSubAgents onSuccess={onSuccess} ids={ids} />
             <AddAccountDialog onSuccess={refetch} dealAccountGroup={dealAccountGroup} />
           </div>
         </div>
         <DataTable
+          ref={tableRef}
           columns={tableColumns}
           data={data?.rows || []}
           pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
@@ -342,19 +387,20 @@ export function TradingAccountsPage() {
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
           loading={dataLoading || serverLoading}
+          onSelectionChange={onSelectionChange}
         />
-        <ResetPassword
+        <ResetPasswordDialog
           info={info}
           title={t('common.resetPassword')}
-          isResetDialogOpen={isResetPasswordDialogOpen}
-          setIsResetDialogOpen={setIsResetPasswordDialogOpen}
+          open={isResetPasswordDialogOpen}
+          setOpen={setIsResetPasswordDialogOpen}
         />
         {info?.id && (
-          <DeleteAccount
-            id={info.id}
+          <DeleteAccountDialog
+            id={info?.id}
             title={t('common.deleteAccount')}
-            isResetDialogOpen={isDeleteDialogOpen}
-            setIsResetDialogOpen={setIsDeleteDialogOpen}
+            open={isDeleteDialogOpen}
+            setOpen={setIsDeleteDialogOpen}
           />
         )}
       </TableContentWrapper>
