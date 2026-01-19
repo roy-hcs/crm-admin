@@ -662,7 +662,8 @@
     "pointsProductReturn": "Points product return",
     "rebate": "Rebate",
     "transfer": "transfer",
-    "withdrawOnDrawdown": "Withdrawal"
+    "withdrawOnDrawdown": "Withdrawal",
+    "select": "choose"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",

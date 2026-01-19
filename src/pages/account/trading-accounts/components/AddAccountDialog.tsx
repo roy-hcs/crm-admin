@@ -14,7 +14,6 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { FormSelect } from '@/components/form/FormSelect';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import { TFunction } from 'i18next';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
@@ -264,17 +263,11 @@ export const AddAccountDialog = ({
   return (
     <RrhDialog
       trigger={
-        <Button
-          variant="outline"
-          className="flex cursor-pointer items-center gap-1 border px-4 text-sm text-[#1E1E1E]"
-        >
-          <Plus className="size-3.5" />
-          <span>{t('financial.tradingAccountTransactions.addLogin')}</span>
-        </Button>
+        <RrhButton type="button" Icon={<Plus className="size-3.5" />}>
+          {t('financial.tradingAccountTransactions.addLogin')}
+        </RrhButton>
       }
       title={t('financial.tradingAccountTransactions.addLogin')}
-      cancelText={t('common.Cancel')}
-      confirmText={t('common.Confirm')}
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}

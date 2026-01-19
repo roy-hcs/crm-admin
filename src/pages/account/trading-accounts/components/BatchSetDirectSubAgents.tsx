@@ -4,7 +4,6 @@ import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { SelectUser } from './SelectUser';
@@ -63,9 +62,7 @@ export const BatchSetDirectSubAgents = ({
   return (
     <RrhDialog
       trigger={
-        <Button
-          variant="outline"
-          className="flex cursor-pointer items-center gap-1 border px-4 text-sm text-[#1E1E1E]"
+        <RrhButton
           onClick={e => {
             if (ids && ids?.length > 0) {
               setOpen(true);
@@ -74,14 +71,13 @@ export const BatchSetDirectSubAgents = ({
               e.preventDefault();
             }
           }}
+          type="button"
+          Icon={<Plus className="size-3.5" />}
         >
-          <Plus className="size-3.5" />
-          <span>{t('financial.tradingAccountTransactions.batchSetAgents')}</span>
-        </Button>
+          {t('financial.tradingAccountTransactions.batchSetAgents')}
+        </RrhButton>
       }
       title={t('financial.tradingAccountTransactions.batchSetAgents')}
-      cancelText={t('common.Cancel')}
-      confirmText={t('common.Confirm')}
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
@@ -105,7 +101,7 @@ export const BatchSetDirectSubAgents = ({
               }}
             />
 
-            <div className="border-muted col-span-full -mx-6 flex justify-end border-t px-6 pt-6 pb-6 sm:pb-0">
+            <div className="col-span-full -mx-6 flex justify-end px-6 pt-6 pb-6 sm:pb-0">
               <div className="flex justify-end gap-4">
                 <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
                   {t('common.Cancel')}

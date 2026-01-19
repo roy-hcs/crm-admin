@@ -114,6 +114,7 @@ export function TradingAccountsPage() {
   const allColumns: CRMColumnDef<CrmDealAccountListItem, unknown>[] = [
     {
       id: 'select',
+      label: t('table.select'),
       header: ({ table }) => (
         <Checkbox
           checked={

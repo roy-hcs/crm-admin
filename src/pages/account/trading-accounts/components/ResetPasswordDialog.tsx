@@ -176,10 +176,7 @@ export const ResetPasswordDialog = ({
   return (
     <RrhDialog
       title={title}
-      trigger={<div></div>}
-      className="w-full sm:w-112"
-      cancelText={t('common.Cancel')}
-      confirmText={t('common.Confirm')}
+      trigger={<button></button>}
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
@@ -187,7 +184,7 @@ export const ResetPasswordDialog = ({
       variant="small"
       formLoading={isSubmitting}
     >
-      <div className="w-full sm:w-100">
+      <div>
         <FormProvider form={form}>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>

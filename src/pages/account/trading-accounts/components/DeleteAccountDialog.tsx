@@ -75,10 +75,7 @@ export const DeleteAccountDialog = ({
   return (
     <RrhDialog
       title={title}
-      trigger={<div></div>}
-      className="w-full sm:w-112"
-      cancelText={t('common.Cancel')}
-      confirmText={t('common.Confirm')}
+      trigger={<button></button>}
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
@@ -86,7 +83,7 @@ export const DeleteAccountDialog = ({
       variant="small"
       formLoading={isSubmitting}
     >
-      <div className="w-full sm:w-100">
+      <div>
         <div className="bg-destructive/5 mb-5 flex items-center gap-1 rounded-md p-2">
           <CircleAlert className="text-destructive h-4 w-4" />
           <span className="text-destructive text-sm leading-5 font-medium">

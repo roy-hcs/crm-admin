@@ -782,6 +782,7 @@
     }
   },
   "table": {
+    "select": "选择",
     "orderId": "支付订单",
     "channelName": "支付方式",
     "firstSubscription": "首次订阅",
