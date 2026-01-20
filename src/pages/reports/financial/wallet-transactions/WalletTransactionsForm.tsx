@@ -133,7 +133,7 @@ export const WalletTransactionsForm = ({
           <FormSelect
             verticalLabel
             name="operationType"
-            label={t('financial.walletTransactions.operationType')}
+            label={t('table.operationType')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={
@@ -148,7 +148,7 @@ export const WalletTransactionsForm = ({
           <FormSelect
             verticalLabel
             name="inMethod"
-            label={t('financial.walletTransactions.inMethod')}
+            label={t('table.inMethod')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={inMethodOptions}

@@ -185,3 +185,24 @@ export function useBatchOrderSync() {
       }>('/system/crmDealAccount/batchOrderSync', params),
   });
 }
+
+/**
+ * 交易账号-余额调整
+ */
+export function useBalanceAdjust() {
+  return useMutation({
+    mutationFn: (params: {
+      serverId: string;
+      amount: string;
+      operationType: string;
+      remark: string;
+      logins: string;
+      opType: string;
+    }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/crmUserDeal/adjustBalances', params),
+  });
+}

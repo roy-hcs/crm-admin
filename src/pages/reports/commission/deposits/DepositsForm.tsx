@@ -22,6 +22,7 @@ import { formatDate } from '@/lib/utils';
 import { TradingParams } from '@/api/hooks/report';
 import { BasicParams } from '@/api/types';
 import { useGetGroup } from '@/api/hooks/system/system';
+import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 
 type FormData = {
   tradingTime: { from: string; to: string };
@@ -105,18 +106,7 @@ export const DepositsForm = ({
   const onReset = () => {
     setServerId(initialServerId || '');
     reset();
-    form.reset({
-      serverId: initialServerId || '',
-      tradingTime: { from: '', to: '' },
-      rebateTime: { from: '', to: '' },
-      accounts: '',
-      serverGroup: '',
-      mtOrder: '',
-      trderAccount: '',
-      taderType: '',
-      conditionName: '',
-      rebateTraderId: '',
-    });
+    form.reset();
   };
 
   useEffect(() => {
@@ -165,7 +155,7 @@ export const DepositsForm = ({
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <RrhServerSelector serverOptions={serverOptions} />
-          <FormSelect
+          <FormMultiSelect
             verticalLabel
             name="serverGroup"
             label={t('commission.trading.serverGroup')}

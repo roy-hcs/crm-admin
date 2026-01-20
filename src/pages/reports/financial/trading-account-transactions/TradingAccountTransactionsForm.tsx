@@ -171,7 +171,7 @@ export const TradingAccountTransactionsForm = ({
           <FormSelect
             verticalLabel
             name="opeTypeList"
-            label={t('financial.walletTransactions.operationType')}
+            label={t('table.operationType')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={

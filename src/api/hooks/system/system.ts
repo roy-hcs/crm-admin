@@ -92,6 +92,16 @@ export function useDictType(type: string, options?: { enabled?: boolean }) {
 }
 
 /**
+ * 获取操作类型 操作方式 非hook版本
+ */
+export function useGetDictType() {
+  return useMutation({
+    mutationFn: (type: string) =>
+      apiGetCustom<DictTypeResponse>(`/system/dict/type?dictType=${type}`, {}),
+  });
+}
+
+/**
  * 获取钱包货币
  */
 export function useCurrencyList() {

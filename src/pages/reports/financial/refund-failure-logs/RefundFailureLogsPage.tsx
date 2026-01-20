@@ -79,7 +79,7 @@ export function RefundFailureLogsPage() {
     },
     {
       id: 'operType',
-      header: t('common.operType'),
+      header: t('table.operationType'),
       accessorFn: row => row.operType,
     },
     {

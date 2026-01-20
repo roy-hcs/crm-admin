@@ -113,7 +113,7 @@ export function TradingAccountTransactionsPage() {
     {
       id: 'type',
       accessorKey: 'type',
-      header: t('financial.tradingAccountTransactions.type'),
+      header: t('table.operationType'),
       accessorFn: row => row.type,
     },
     {

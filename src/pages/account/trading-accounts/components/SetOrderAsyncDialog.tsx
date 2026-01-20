@@ -104,13 +104,13 @@ export const SetOrderAsyncDialog = ({
             onSubmit={form.handleSubmit(onSubmit)}
             className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-1"
           >
-            <div className="bg-destructive/5 mb-5 flex items-center gap-1 rounded-md p-2">
+            <div className="bg-destructive/5 flex items-center gap-1 rounded-md p-2">
               <span className="text-destructive text-sm leading-5 font-medium">
                 {t('financial.tradingAccountTransactions.OrderAsyncTips')}
               </span>
             </div>
 
-            <div className="mb-4 grid gap-2">
+            <div className="grid gap-2">
               <div className="text-foreground text-sm leading-5 font-medium">
                 {t('table.account')}
               </div>

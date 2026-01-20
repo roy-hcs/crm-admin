@@ -154,20 +154,6 @@ export const TradingAccountDataStatsForm = ({
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <RrhServerSelector serverOptions={serverOptions} />
-          {/* <FormMultiSelect
-            verticalLabel
-            name="serverGroupList"
-            label={t('table.groups')}
-            placeholder={t('common.pleaseSelect')}
-            options={
-              groupData
-                ?.filter(item => item)
-                .map(item => ({
-                  label: item,
-                  value: item,
-                })) || []
-            }
-          /> */}
           <FormMultiSelect
             verticalLabel
             name="serverGroupList"
