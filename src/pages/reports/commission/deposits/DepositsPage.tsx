@@ -13,7 +13,7 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { BasicParams } from '@/api/types';
 import { DepositsForm } from './DepositsForm';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
-import { useServerId } from '@/hooks/useServerId';
+import { useInitServerId } from '@/hooks/useInitServerId';
 
 export function DepositsPage() {
   const { t } = useTranslation();
@@ -37,7 +37,7 @@ export function DepositsPage() {
     rebateTraderId: '',
     serverGroup: '',
   });
-  const { serverId, setServerId, server, serverLoading } = useServerId();
+  const { serverId, setServerId, server, serverLoading } = useInitServerId();
   const { data: RebateTraders, isLoading: RebateTradersLoading } = useGetCrmRebateTraders('1');
 
   const { data: AgencyClientTracking, isLoading: AgencyClientTrackingLoading } = useRebateList(

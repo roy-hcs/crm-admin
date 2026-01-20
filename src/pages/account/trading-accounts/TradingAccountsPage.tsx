@@ -26,12 +26,12 @@ import { SetAccountGroupDialog } from './components/SetAccountGroupDialog';
 import { SetAccountBelong } from './components/SetAccountBelong';
 import { SetOrderAsyncDialog } from './components/SetOrderAsyncDialog';
 import { TradingAccountsForm } from './components/TradingAccountsForm';
-import { useServerId } from '@/hooks/useServerId';
+import { useInitServerId } from '@/hooks/useInitServerId';
 
 export function TradingAccountsPage() {
   const { t } = useTranslation();
   const tableRef = useRef<DataTableRef>(null);
-  const { serverId, setServerId, server, serverLoading } = useServerId();
+  const { serverId, setServerId, server, serverLoading } = useInitServerId();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');

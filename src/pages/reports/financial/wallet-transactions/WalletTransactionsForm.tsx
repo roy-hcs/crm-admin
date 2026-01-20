@@ -16,7 +16,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
-import { CurrencyItem, DictTypeItem } from '@/api/hooks/system/types';
+import { DictTypeItem } from '@/api/hooks/system/types';
 import { useDictType } from '@/api/hooks/system/system';
 import { useCurrencyList } from '@/api/hooks/system/system';
 import { formatDate } from '@/lib/utils';
@@ -57,13 +57,8 @@ export const WalletTransactionsForm = ({
   commonParams: Omit<CrmUserDealDetailParams, 'params' | keyof BasicParams>;
 }) => {
   const [inMethodOptions, setInMethodOptions] = useState<{ label: string; value: string }[]>([]);
-  const { data: currencyListResp } = useCurrencyList();
-  const { data: operationTypeResp } = useDictType('crm_wallet_opr_type');
-  // 统一归一化为数组
-  const operationTypeOptions: DictTypeItem[] = Array.isArray(operationTypeResp)
-    ? operationTypeResp
-    : [];
-  const currencyOptions: CurrencyItem[] = Array.isArray(currencyListResp) ? currencyListResp : [];
+  const { data: currencyListRes } = useCurrencyList();
+  const { data: operationTypeRes } = useDictType('crm_wallet_opr_type');
 
   const { t } = useTranslation();
   const form = useForm({
@@ -85,9 +80,7 @@ export const WalletTransactionsForm = ({
     enabled: !!inMethodDictKey,
   });
   useEffect(() => {
-    // 切换操作类型时清空已选方式
     form.setValue('inMethod', '');
-    // 未选择时直接清空选项
     if (!inMethodDictKey) {
       setInMethodOptions([]);
       return;
@@ -118,17 +111,7 @@ export const WalletTransactionsForm = ({
   };
   const onReset = () => {
     reset();
-    form.reset({
-      account: '',
-      selectOther: '',
-      inMethod: '',
-      currencyId: '',
-      operationTime: { from: '', to: '' },
-      accounts: '',
-      operationType: '',
-      serialNum: '',
-      mtOrder: '',
-    });
+    form.reset();
   };
 
   return (
@@ -153,10 +136,14 @@ export const WalletTransactionsForm = ({
             label={t('financial.walletTransactions.operationType')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
-            options={operationTypeOptions.map(i => ({
-              label: i.dictLabel,
-              value: i.dictValue,
-            }))}
+            options={
+              operationTypeRes
+                ?.filter(item => item)
+                .map(item => ({
+                  label: item.dictLabel,
+                  value: item.dictValue,
+                })) || []
+            }
           />
           <FormSelect
             verticalLabel
@@ -179,7 +166,14 @@ export const WalletTransactionsForm = ({
             name="serverId"
             label={t('financial.walletTransactions.wallet')}
             placeholder={t('common.pleaseSelect')}
-            options={currencyOptions?.map(i => ({ label: i.currencyAbbr, value: i.id })) || []}
+            options={
+              currencyListRes?.rows
+                ?.filter(item => item)
+                .map(item => ({
+                  label: item.currencyAbbr,
+                  value: item.id,
+                })) || []
+            }
           />
           <FormField
             name="operationTime"

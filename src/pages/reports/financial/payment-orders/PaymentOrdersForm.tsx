@@ -18,7 +18,6 @@ import { useTranslation } from 'react-i18next';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { OrderStatusOptions } from '@/lib/const';
 import { useChannelList } from '@/api/hooks/system/system';
-import { PaymentChannelItem } from '@/api/hooks/system/types';
 import { formatDate } from '@/lib/utils';
 import { PaymentOrderListParams } from '@/api/hooks/report';
 import { BasicParams } from '@/api/hooks/review/types';
@@ -47,9 +46,7 @@ export const PaymentOrdersForm = ({
   params: PaymentOrderListParams['params'];
   commonParams: Omit<PaymentOrderListParams, 'params' | keyof BasicParams>;
 }) => {
-  const { data: response } = useChannelList();
-  // 统一归一化为数组
-  const channelList: PaymentChannelItem[] = Array.isArray(response) ? response : [];
+  const { data: channelRes } = useChannelList();
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
@@ -80,15 +77,7 @@ export const PaymentOrdersForm = ({
   };
   const onReset = () => {
     reset();
-    form.reset({
-      userName: '',
-      account: '',
-      accounts: '',
-      operationTime: { from: '', to: '' },
-      channelId: '',
-      orderStatus: '',
-      orderId: '',
-    });
+    form.reset();
   };
 
   return (
@@ -120,7 +109,14 @@ export const PaymentOrdersForm = ({
             name="channelId"
             label={t('financial.paymentOrders.channelId')}
             placeholder={t('common.pleaseSelect')}
-            options={channelList.map(item => ({ label: item.channelName, value: item.id }))}
+            options={
+              channelRes
+                ?.filter(item => item)
+                .map(item => ({
+                  label: item.channelName,
+                  value: item.id,
+                })) || []
+            }
           />
           <FormSelect
             verticalLabel

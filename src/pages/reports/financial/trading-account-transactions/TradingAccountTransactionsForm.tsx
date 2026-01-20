@@ -1,13 +1,12 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { FormSelect } from '@/components/form/FormSelect';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
-import { useDictType } from '@/api/hooks/system/system';
-import { DictTypeItem } from '@/api/hooks/system/types';
-import { useGetGroupByServer, useGetDealAccountGroupList } from '@/api/hooks/account';
+import { useDictType, useGetGroup } from '@/api/hooks/system/system';
+import { useGetDealAccountGroupList } from '@/api/hooks/account';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 
 import {
@@ -62,18 +61,13 @@ export const TradingAccountTransactionsForm = ({
   params: CrmUserDealListParams['params'];
   commonParams: Omit<CrmUserDealListParams, 'params' | keyof BasicParams>;
 }) => {
-  const { data: dealAccountGroupListData } = useGetDealAccountGroupList();
-  // 获取操作类型 操作方式
-  const { data: operationTypeResp } = useDictType('crm_wallet_opr_type');
-  // 统一归一化为数组
-  const operationTypeItems: DictTypeItem[] = Array.isArray(operationTypeResp)
-    ? operationTypeResp
-    : [];
-  const operationTypeOptions = operationTypeItems.map(i => ({
-    label: i.dictLabel,
-    value: i.dictValue,
-  }));
   const { t } = useTranslation();
+  const [groupList, setGroupList] = useState<Array<{ label: string; value: string }>>([]);
+  const [groupLoading, setGroupLoading] = useState(false);
+  const { mutateAsync: getGroupData } = useGetGroup();
+  const { data: dealAccountGroupListData } = useGetDealAccountGroupList();
+  const { data: operationTypeRes } = useDictType('crm_wallet_opr_type');
+
   const form = useForm({
     defaultValues: {
       serverId: initialServerId || '',
@@ -94,14 +88,12 @@ export const TradingAccountTransactionsForm = ({
     },
   });
 
-  // 当父级提供初始 serverId 或服务器列表加载完成后自动填充
   if (!form.getValues('serverId') && (initialServerId || serverOptions[0])) {
     const auto = initialServerId || serverOptions[0]?.id || '';
     if (auto) form.setValue('serverId', auto, { shouldDirty: false, shouldTouch: false });
   }
-  const { data: groupData } = useGetGroupByServer({
-    serverId: form.watch('serverId'),
-  });
+
+  const serverId = form.watch('serverId');
 
   const onSubmit = (data: FormData) => {
     setParams({
@@ -127,22 +119,45 @@ export const TradingAccountTransactionsForm = ({
   const onReset = () => {
     reset();
     setServerId(initialServerId || '');
-    form.reset({
-      serverId: initialServerId || '',
-      ticket: '',
-      historyFuzzyName: '',
-      login: '',
-      comment: '',
-      accounts: '',
-      fuzzyCrmAccount: '',
-      operationTime: { from: '', to: '' },
-      opeTypeList: '',
-      opeType: '',
-      serverGroupList: [],
-      serverGroup: '',
-      accountGroupList: [],
-    });
+    form.reset();
   };
+
+  useEffect(() => {
+    if (!serverId) return;
+    let mounted = true;
+    const fetch = async (serverId?: string) => {
+      if (!serverId) {
+        if (mounted) setGroupList([]);
+        return;
+      }
+      if (mounted) setGroupLoading(true);
+      try {
+        const gruop = await getGroupData(serverId);
+        if (!mounted) return;
+        if (gruop?.length > 0) {
+          const leverOptions = gruop
+            .filter(i => i)
+            .map((item: string) => ({
+              label: item,
+              value: item,
+            }));
+          setGroupList(leverOptions);
+        } else {
+          setGroupList([]);
+        }
+      } catch (error) {
+        console.error(error);
+        if (mounted) setGroupList([]);
+      } finally {
+        if (mounted) setGroupLoading(false);
+      }
+    };
+    fetch(serverId);
+    form.setValue('serverGroup', '');
+    return () => {
+      mounted = false;
+    };
+  }, [form, getGroupData, serverId]);
 
   return (
     <FormProvider form={form}>
@@ -155,26 +170,29 @@ export const TradingAccountTransactionsForm = ({
           <RrhServerSelector serverOptions={serverOptions} />
           <FormSelect
             verticalLabel
-            name="operationType"
+            name="opeTypeList"
             label={t('financial.walletTransactions.operationType')}
             placeholder={t('common.pleaseSelect')}
-            options={operationTypeOptions}
+            showRowValue={false}
+            options={
+              operationTypeRes
+                ?.filter(item => item)
+                .map(item => ({
+                  label: item.dictLabel,
+                  value: item.dictValue,
+                })) || []
+            }
           />
 
           <FormMultiSelect
             verticalLabel
             name="serverGroupList"
-            label={t('table.groups')}
+            label={t('commission.trading.serverGroup')}
             placeholder={t('common.pleaseSelect')}
-            options={
-              groupData
-                ?.filter(item => item)
-                .map(item => ({
-                  label: item,
-                  value: item,
-                })) || []
-            }
+            options={groupList}
+            loading={groupLoading}
           />
+
           <FormInput
             verticalLabel
             name="ticket"

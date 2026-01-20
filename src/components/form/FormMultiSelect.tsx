@@ -14,6 +14,7 @@ interface FormMultiSelectProps<T extends FieldValues, O extends BaseOption = Bas
   className?: string;
   renderItem?: (option: O) => ReactNode;
   showRowValue?: boolean;
+  loading?: boolean;
 }
 
 export function FormMultiSelect<T extends FieldValues, O extends BaseOption = BaseOption>({
@@ -25,6 +26,7 @@ export function FormMultiSelect<T extends FieldValues, O extends BaseOption = Ba
   className,
   renderItem,
   showRowValue = true,
+  loading = false,
 }: FormMultiSelectProps<T, O>) {
   const { form } = useCrmFormContext<T>();
   return (
@@ -42,15 +44,19 @@ export function FormMultiSelect<T extends FieldValues, O extends BaseOption = Ba
           >
             <FormLabel className="shrink-0 basis-3/12">{label}</FormLabel>
             <FormControl className={cn('grow-0', verticalLabel ? 'w-full' : 'basis-9/12')}>
-              <RrhMultiSelect<O>
-                options={options}
-                value={field.value || []}
-                onValueChange={field.onChange}
-                className="w-full"
-                placeholder={placeholder}
-                renderItem={renderItem}
-                showRowValue={showRowValue}
-              />
+              {loading ? (
+                <div className="bg-muted h-10 w-full animate-pulse rounded-md" />
+              ) : (
+                <RrhMultiSelect<O>
+                  options={options}
+                  value={field.value || []}
+                  onValueChange={field.onChange}
+                  className="w-full"
+                  placeholder={placeholder}
+                  renderItem={renderItem}
+                  showRowValue={showRowValue}
+                />
+              )}
             </FormControl>
           </div>
           <FormMessage />

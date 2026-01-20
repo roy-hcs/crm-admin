@@ -1,4 +1,4 @@
-import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom, FormValue } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGetCustom, FormValue } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   CrmRebateTradersItem,
@@ -107,7 +107,7 @@ export function useCurrencyList() {
 export function useChannelList() {
   return useQuery({
     queryKey: ['getChannelList'],
-    queryFn: () => apiGet<ChannelListResponse>(`/system/userOrder/getChannelList`, {}),
+    queryFn: () => apiGetCustom<ChannelListResponse>(`/system/userOrder/getChannelList`, {}),
   });
 }
 
@@ -117,7 +117,7 @@ export function useChannelList() {
 export function useInfoTypeList() {
   return useQuery({
     queryKey: ['getInfoTypeList'],
-    queryFn: () => apiGet<InfoTypeItem[]>(`/system/crmInfoVerify/getInfoVerifyType`, {}),
+    queryFn: () => apiGetCustom<InfoTypeItem[]>(`/system/crmInfoVerify/getInfoVerifyType`, {}),
   });
 }
 

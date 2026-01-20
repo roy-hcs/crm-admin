@@ -3,7 +3,7 @@ import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
 import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
-import { useGetGroupByServer, useGetDealAccountGroupList } from '@/api/hooks/account';
+import { useGetDealAccountGroupList } from '@/api/hooks/account';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 
 import {
@@ -20,9 +20,10 @@ import { useTranslation } from 'react-i18next';
 import { ServerItem } from '@/api/hooks/system/types';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 import { formatDate } from '@/lib/utils';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { DataStatisticsParams } from '@/api/hooks/report';
 import { BasicParams } from '@/api/types';
+import { useGetGroup } from '@/api/hooks/system/system';
 type FormData = {
   serverId: string;
   onlyViewRebateAccount: string;
@@ -56,8 +57,11 @@ export const TradingAccountDataStatsForm = ({
   serverOptions: ServerItem[];
   initialServerId?: string;
 }) => {
-  const { data: dealAccountGroupListData } = useGetDealAccountGroupList();
   const { t } = useTranslation();
+  const [groupList, setGroupList] = useState<Array<{ label: string; value: string }>>([]);
+  const [groupLoading, setGroupLoading] = useState(false);
+  const { mutateAsync: getGroupData } = useGetGroup();
+  const { data: dealAccountGroupListData } = useGetDealAccountGroupList();
   const form = useForm({
     defaultValues: {
       serverId: initialServerId || '',
@@ -73,14 +77,12 @@ export const TradingAccountDataStatsForm = ({
     },
   });
 
-  // 当父级提供初始 serverId 或服务器列表加载完成后自动填充
   if (!form.getValues('serverId') && (initialServerId || serverOptions[0])) {
     const auto = initialServerId || serverOptions[0]?.id || '';
     if (auto) form.setValue('serverId', auto, { shouldDirty: false, shouldTouch: false });
   }
-  const { data: groupData } = useGetGroupByServer({
-    serverId: form.watch('serverId'),
-  });
+
+  const serverId = form.watch('serverId');
 
   const onSubmit = (data: FormData) => {
     setParams({
@@ -103,19 +105,45 @@ export const TradingAccountDataStatsForm = ({
   const onReset = () => {
     reset();
     setServerId(initialServerId || '');
-    form.reset({
-      serverId: initialServerId || '',
-      onlyViewRebateAccount: '',
-      serverGroupList: '',
-      fuzzyAccount: '',
-      fuzzyName: '',
-      statisticTime: { from: '', to: '' },
-      accounts: '',
-      accountGroupList: '',
-      username: '',
-      directBroker: '',
-    });
+    form.reset();
   };
+
+  useEffect(() => {
+    if (!serverId) return;
+    let mounted = true;
+    const fetch = async (serverId?: string) => {
+      if (!serverId) {
+        if (mounted) setGroupList([]);
+        return;
+      }
+      if (mounted) setGroupLoading(true);
+      try {
+        const gruop = await getGroupData(serverId);
+        if (!mounted) return;
+        if (gruop?.length > 0) {
+          const leverOptions = gruop
+            .filter(i => i)
+            .map((item: string) => ({
+              label: item,
+              value: item,
+            }));
+          setGroupList(leverOptions);
+        } else {
+          setGroupList([]);
+        }
+      } catch (error) {
+        console.error(error);
+        if (mounted) setGroupList([]);
+      } finally {
+        if (mounted) setGroupLoading(false);
+      }
+    };
+    fetch(serverId);
+    form.setValue('serverGroupList', '');
+    return () => {
+      mounted = false;
+    };
+  }, [form, getGroupData, serverId]);
 
   return (
     <FormProvider form={form}>
@@ -126,7 +154,7 @@ export const TradingAccountDataStatsForm = ({
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <RrhServerSelector serverOptions={serverOptions} />
-          <FormMultiSelect
+          {/* <FormMultiSelect
             verticalLabel
             name="serverGroupList"
             label={t('table.groups')}
@@ -139,6 +167,14 @@ export const TradingAccountDataStatsForm = ({
                   value: item,
                 })) || []
             }
+          /> */}
+          <FormMultiSelect
+            verticalLabel
+            name="serverGroupList"
+            label={t('commission.trading.serverGroup')}
+            placeholder={t('common.pleaseSelect')}
+            options={groupList}
+            loading={groupLoading}
           />
           <FormInput
             verticalLabel
