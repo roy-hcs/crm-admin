@@ -14,17 +14,17 @@ export const RrhSwitchGroup: FC<{
   return (
     <div className="flex gap-4">
       {switchItems.map(i => (
-        <div
+        <button
           className={cn(
-            'cursor-pointer rounded-full px-3 py-2',
+            'rounded-full px-3 py-2 text-xs leading-4 font-medium',
             value == i.value ? 'bg-primary text-primary-foreground' : 'text-foreground border',
             switchItemClassName,
           )}
           onClick={() => onValueChange?.(i.value)}
           key={i.value}
         >
-          <div className="text-xs leading-4 font-medium">{i.label}</div>
-        </div>
+          {i.label}
+        </button>
       ))}
     </div>
   );
