@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
   Form,
   FormControl,
@@ -21,6 +21,7 @@ import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 import { formatDate } from '@/lib/utils';
 import { TradingParams } from '@/api/hooks/report';
 import { BasicParams } from '@/api/types';
+import { useGetGroup } from '@/api/hooks/system/system';
 type FormData = {
   tradingTime: { from: string; to: string };
   rebateTime: { from: string; to: string };
@@ -39,7 +40,6 @@ export const FeesForm = ({
   initialServerId,
   setServerId,
   setCommonParams,
-  groupOptions,
   RebateTradersOptions,
   reset,
   params,
@@ -52,11 +52,13 @@ export const FeesForm = ({
   commonParams: Omit<TradingParams, 'params' | keyof BasicParams>;
   setServerId: (id: string) => void;
   serverOptions: ServerItem[];
-  groupOptions: string[];
   RebateTradersOptions: CrmRebateTradersItem[];
   initialServerId?: string;
 }) => {
   const { t } = useTranslation();
+  const [groupList, setGroupList] = useState<Array<{ label: string; value: string }>>([]);
+  const [groupLoading, setGroupLoading] = useState(false);
+  const { mutateAsync: getGroupData } = useGetGroup();
   const form = useForm({
     defaultValues: {
       serverId: initialServerId || '',
@@ -72,11 +74,12 @@ export const FeesForm = ({
     },
   });
 
-  // 当父级提供初始 serverId 或服务器列表加载完成后自动填充
   if (!form.getValues('serverId') && (initialServerId || serverOptions[0])) {
     const auto = initialServerId || serverOptions[0]?.id || '';
     if (auto) form.setValue('serverId', auto, { shouldDirty: false, shouldTouch: false });
   }
+
+  const serverId = form.watch('serverId');
 
   const onSubmit = (data: FormData) => {
     setParams({
@@ -113,6 +116,43 @@ export const FeesForm = ({
     });
   };
 
+  useEffect(() => {
+    if (!serverId) return;
+    let mounted = true;
+    const fetch = async (serverId?: string) => {
+      if (!serverId) {
+        if (mounted) setGroupList([]);
+        return;
+      }
+      if (mounted) setGroupLoading(true);
+      try {
+        const gruop = await getGroupData(serverId);
+        if (!mounted) return;
+        if (gruop?.length > 0) {
+          const leverOptions = gruop
+            .filter(i => i)
+            .map((item: string) => ({
+              label: item,
+              value: item,
+            }));
+          setGroupList(leverOptions);
+        } else {
+          setGroupList([]);
+        }
+      } catch (error) {
+        console.error(error);
+        if (mounted) setGroupList([]);
+      } finally {
+        if (mounted) setGroupLoading(false);
+      }
+    };
+    fetch(serverId);
+    form.setValue('serverGroup', '');
+    return () => {
+      mounted = false;
+    };
+  }, [form, getGroupData, serverId]);
+
   return (
     <FormProvider form={form}>
       <Form {...form}>
@@ -127,10 +167,8 @@ export const FeesForm = ({
             name="serverGroup"
             label={t('commission.trading.serverGroup')}
             placeholder={t('common.pleaseSelect')}
-            options={groupOptions.map((it: string, index) => ({
-              label: it + index,
-              value: it + index,
-            }))}
+            options={groupList}
+            loading={groupLoading}
           />
           <FormInput
             verticalLabel

@@ -722,7 +722,11 @@
       "serverType": "Server type",
       "atLeastOneAccount": "Choose at least one account!",
       "batchSetAgents": "Set up direct agents in batches",
-      "selectedAccounts": "{{count}} accounts selected"
+      "selectedAccounts": "{{count}} accounts selected",
+      "batchSetAccountBelong": "Set account ownership in batches",
+      "batchSetAccountGroup": "Set up account groups in batches",
+      "OrderAsyncTips": "Existing orders will not be saved repeatedly. \nSynchronized new orders will not calculate rebates.",
+      "batchOrderAsync": "Batch account order synchronization"
     },
     "tradingAccountDataStats": {
       "advanceScale": "Prepayment ratio",

@@ -419,8 +419,12 @@
       "accountPlaceholder": "账号区间{{accountStart}}-{{accountEnd}}",
       "maxAccount": "该MT组内最大账号为{{maxAccount}}",
       "batchSetAgents": "批量设置直属代理",
+      "batchSetAccountGroup": "批量设置账户组",
+      "batchSetAccountBelong": "批量设置账户归属",
+      "batchOrderAsync": "批量账号订单同步",
       "atLeastOneAccount": "至少选择一个账户！",
-      "selectedAccounts": "已选择 {{count}} 个账户"
+      "selectedAccounts": "已选择 {{count}} 个账户",
+      "OrderAsyncTips": "已存在的订单不会重复保存。同步的新订单不会计算返佣。"
     },
     "refundFailLog": {
       "title": "资金回退失败日志",
