@@ -13,7 +13,7 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
-import { useServerId } from '@/hooks/useServerId';
+import { useInitServerId } from '@/hooks/useInitServerId';
 export function FeesPage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
@@ -36,7 +36,7 @@ export function FeesPage() {
     rebateTraderId: '',
     serverGroup: '',
   });
-  const { serverId, setServerId, server, serverLoading } = useServerId();
+  const { serverId, setServerId, server, serverLoading } = useInitServerId();
   const { data: RebateTraders, isLoading: RebateTradersLoading } = useGetCrmRebateTraders('1');
 
   const { data: AgencyClientTracking, isLoading: AgencyClientTrackingLoading } = useRebateList(

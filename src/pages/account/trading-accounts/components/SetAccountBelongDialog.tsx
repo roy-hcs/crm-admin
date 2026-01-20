@@ -14,7 +14,13 @@ type FormValues = {
   newUserId: string;
 };
 
-export const SetAccountBelong = ({ onSuccess, ids }: { onSuccess?: () => void; ids: string[] }) => {
+export const SetAccountBelongDialog = ({
+  onSuccess,
+  ids,
+}: {
+  onSuccess?: () => void;
+  ids: string[];
+}) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);

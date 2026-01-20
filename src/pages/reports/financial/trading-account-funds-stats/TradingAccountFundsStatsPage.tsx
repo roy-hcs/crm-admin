@@ -6,7 +6,6 @@ import {
   TradingAccountFundsStatsParams,
   useTradingAccountFundsStats,
 } from '@/api/hooks/report';
-import { useServerList } from '@/api/hooks/system/system';
 import { TradingAccountTransactionsForm } from './TradingAccountTransactionsForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
@@ -17,10 +16,10 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useInitServerId } from '@/hooks/useInitServerId';
 
 export function TradingAccountFundsStatsPage() {
   const { t } = useTranslation();
-  const [serverId, setServerId] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
@@ -40,10 +39,7 @@ export function TradingAccountFundsStatsPage() {
     accountGroupList: '',
   });
 
-  const { data: server, isLoading: serverLoading } = useServerList();
-  if (!serverId && server?.code === 0 && server?.rows?.length) {
-    setServerId(server.rows[0].id);
-  }
+  const { serverId, setServerId, server, serverLoading } = useInitServerId();
 
   const { data: data, isLoading: dataLoading } = useTradingAccountFundsStats(
     {
@@ -261,6 +257,7 @@ export function TradingAccountFundsStatsPage() {
   ];
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('trading-account-funds-stats-table', allColumns);
+
   return (
     <div>
       <PageInfo title={t('financial.tradingAccountFundsStats.title')} desc={t('common.tips')} />
@@ -276,7 +273,6 @@ export function TradingAccountFundsStatsPage() {
                 setKeyword(e.target.value);
               }}
               onLeftIconClick={e => {
-                // 触发查询逻辑, 这里简单调用一次刷新
                 setPageNum(0);
                 setParams(prev => ({
                   ...prev,

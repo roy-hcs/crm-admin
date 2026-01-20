@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { DataStatisticsItem, DataStatisticsParams, useDataStatistics } from '@/api/hooks/report';
-import { useServerList } from '@/api/hooks/system/system';
 import { TradingAccountDataStatsForm } from './TradingAccountDataStatsForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
@@ -13,14 +12,13 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useInitServerId } from '@/hooks/useInitServerId';
 
 export function TradingAccountDataStatsPage() {
   const { t } = useTranslation();
-  const [serverId, setServerId] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
-  // 特殊参数
   const [params, setParams] = useState<DataStatisticsParams['params']>({
     onlyViewRebateAccount: '',
     serverGroupList: '',
@@ -30,7 +28,6 @@ export function TradingAccountDataStatsPage() {
     statisticEndTime: '',
     accounts: '',
   });
-  // 普通参数
   const [commonParams, setCommonParams] = useState<
     Omit<DataStatisticsParams, 'params' | keyof BasicParams>
   >({
@@ -40,12 +37,7 @@ export function TradingAccountDataStatsPage() {
     directBroker: '',
   });
 
-  const { data: server, isLoading: serverLoading } = useServerList();
-  // 自动选择第一台服务器
-  if (!serverId && server?.code === 0 && server?.rows?.length) {
-    // 只在还没选中时设置，避免无限循环
-    setServerId(server.rows[0].id);
-  }
+  const { serverId, setServerId, server, serverLoading } = useInitServerId();
 
   const { data: data, isLoading: dataLoading } = useDataStatistics(
     {
@@ -54,7 +46,6 @@ export function TradingAccountDataStatsPage() {
       ...commonParams,
       pageSize,
       pageNum: pageNum + 1,
-      // 下面是固定参数
       isAsc: 'asc',
       orderByColumn: '',
     },
@@ -437,7 +428,6 @@ export function TradingAccountDataStatsPage() {
               className="h-9"
               leftIcon={<Search className="size-4" />}
               onLeftIconClick={e => {
-                // 触发查询逻辑, 这里简单调用一次刷新
                 setPageNum(0);
                 setParams(prev => ({
                   ...prev,

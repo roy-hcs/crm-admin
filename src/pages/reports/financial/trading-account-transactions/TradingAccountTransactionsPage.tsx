@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { CrmUserDealItem, CrmUserDealListParams, useCrmUserDealList } from '@/api/hooks/report';
-import { useServerList } from '@/api/hooks/system/system';
 import { TradingAccountTransactionsForm } from './TradingAccountTransactionsForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
@@ -13,10 +12,10 @@ import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useInitServerId } from '@/hooks/useInitServerId';
 
 export function TradingAccountTransactionsPage() {
   const { t } = useTranslation();
-  const [serverId, setServerId] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
@@ -41,12 +40,7 @@ export function TradingAccountTransactionsPage() {
     accounts: '',
   });
 
-  const { data: server, isLoading: serverLoading } = useServerList();
-  // 自动选择第一台服务器
-  if (!serverId && server?.code === 0 && server?.rows?.length) {
-    // 只在还没选中时设置，避免无限循环
-    setServerId(server.rows[0].id);
-  }
+  const { serverId, setServerId, server, serverLoading } = useInitServerId();
 
   const { data: data, isLoading: dataLoading } = useCrmUserDealList(
     {
@@ -119,7 +113,7 @@ export function TradingAccountTransactionsPage() {
     {
       id: 'type',
       accessorKey: 'type',
-      header: t('financial.tradingAccountTransactions.type'),
+      header: t('table.operationType'),
       accessorFn: row => row.type,
     },
     {
@@ -172,7 +166,6 @@ export function TradingAccountTransactionsPage() {
               value={keyword}
               onChange={e => setKeyword(e.target.value)}
               onLeftIconClick={e => {
-                // 触发查询逻辑, 这里简单调用一次刷新
                 setPageNum(0);
                 setParams(prev => ({
                   ...prev,

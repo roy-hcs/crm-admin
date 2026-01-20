@@ -23,15 +23,16 @@ import { SetBrokerDialog } from './components/SetBrokerDialog';
 import { ResetPasswordDialog } from './components/ResetPasswordDialog';
 import { DeleteAccountDialog } from './components/DeleteAccountDialog';
 import { SetAccountGroupDialog } from './components/SetAccountGroupDialog';
-import { SetAccountBelong } from './components/SetAccountBelong';
+import { SetAccountBelongDialog } from './components/SetAccountBelongDialog';
 import { SetOrderAsyncDialog } from './components/SetOrderAsyncDialog';
 import { TradingAccountsForm } from './components/TradingAccountsForm';
-import { useServerId } from '@/hooks/useServerId';
+import { useInitServerId } from '@/hooks/useInitServerId';
+import { BalanceAdjustDialog } from './components/BalanceAdjustDialog';
 
 export function TradingAccountsPage() {
   const { t } = useTranslation();
   const tableRef = useRef<DataTableRef>(null);
-  const { serverId, setServerId, server, serverLoading } = useServerId();
+  const { serverId, setServerId, server, serverLoading } = useInitServerId();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
@@ -371,12 +372,13 @@ export function TradingAccountsPage() {
             />
             <SetBrokerDialog onSuccess={onSuccess} ids={ids} />
             <SetOrderAsyncDialog onSuccess={onSuccess} accounts={accounts} serverId={serverId} />
+            <BalanceAdjustDialog onSuccess={onSuccess} accounts={accounts} serverId={serverId} />
             <SetAccountGroupDialog
               onSuccess={onSuccess}
               ids={ids}
               dealAccountGroup={dealAccountGroup}
             />
-            <SetAccountBelong onSuccess={onSuccess} ids={ids} />
+            <SetAccountBelongDialog onSuccess={onSuccess} ids={ids} />
             <AddAccountDialog onSuccess={refetch} dealAccountGroup={dealAccountGroup} />
           </div>
         </div>

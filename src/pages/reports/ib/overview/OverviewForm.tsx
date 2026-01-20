@@ -72,7 +72,6 @@ export const OverviewForm = ({
     },
   });
 
-  // 当父级提供初始 serverId 或服务器列表加载完成后自动填充
   if (!form.getValues('serverId') && (initialServerId || serverOptions[0])) {
     const auto = initialServerId || serverOptions[0]?.id || '';
     if (auto) form.setValue('serverId', auto, { shouldDirty: false, shouldTouch: false });
@@ -92,13 +91,7 @@ export const OverviewForm = ({
   const onReset = () => {
     setServerId(initialServerId || '');
     reset();
-    form.reset({
-      serverId: initialServerId || '',
-      userName: '',
-      email: '',
-      beginTime: { from: '', to: '' },
-      level: '',
-    });
+    form.reset();
   };
 
   return (

@@ -72,7 +72,6 @@
     "demo": "simulation",
     "live": "reality",
     "subordinate": "Next level",
-    "operType": "Operation Type",
     "operationTime": "Operation time",
     "status": "state",
     "tips": "The data on this page will have a slight delay. \nFor instant data, please wait 1-2 minutes before refreshing the page for query.",
@@ -663,7 +662,11 @@
     "rebate": "Rebate",
     "transfer": "transfer",
     "withdrawOnDrawdown": "Withdrawal",
-    "select": "choose"
+    "select": "choose",
+    "creditAmountDeposit": "Credit limit deposit",
+    "creditAmountWithdrawal": "Credit limit withdrawal",
+    "inMethod": "Operation mode",
+    "operationAmount": "Operation amount"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -673,12 +676,10 @@
     "walletTransactions": {
       "account": "Name/Account ID",
       "amount": "Change amount",
-      "inMethod": "Operation method",
       "lastName": "Name",
       "mtOrder": "Transaction order number",
       "operationTime": "Operation time",
       "operationTimeTable": "Change time",
-      "operationType": "Operation Type",
       "postAmount": "Changeable amount",
       "preAmount": "Amount before change",
       "serialNum": "serial number",
@@ -715,7 +716,6 @@
       "ticket": "Order number",
       "time": "time",
       "title": "Transaction account capital flow",
-      "type": "Operation Type",
       "accountPlaceholder": "Account range {{accountStart}}-{{accountEnd}}",
       "addLogin": "Add new trading account",
       "maxAccount": "The maximum account number in the MT group is {{maxAccount}}",
@@ -726,7 +726,9 @@
       "batchSetAccountBelong": "Set account ownership in batches",
       "batchSetAccountGroup": "Set up account groups in batches",
       "OrderAsyncTips": "Existing orders will not be saved repeatedly. \nSynchronized new orders will not calculate rebates.",
-      "batchOrderAsync": "Batch account order synchronization"
+      "batchOrderAsync": "Batch account order synchronization",
+      "balanceAdjust": "Balance adjustment",
+      "balanceAdjustDescription": "This operation does not require review and can directly change the account balance."
     },
     "tradingAccountDataStats": {
       "advanceScale": "Prepayment ratio",

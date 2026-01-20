@@ -1,4 +1,4 @@
-import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom, FormValue } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGetCustom, FormValue } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   CrmRebateTradersItem,
@@ -92,6 +92,16 @@ export function useDictType(type: string, options?: { enabled?: boolean }) {
 }
 
 /**
+ * 获取操作类型 操作方式 非hook版本
+ */
+export function useGetDictType() {
+  return useMutation({
+    mutationFn: (type: string) =>
+      apiGetCustom<DictTypeResponse>(`/system/dict/type?dictType=${type}`, {}),
+  });
+}
+
+/**
  * 获取钱包货币
  */
 export function useCurrencyList() {
@@ -107,7 +117,7 @@ export function useCurrencyList() {
 export function useChannelList() {
   return useQuery({
     queryKey: ['getChannelList'],
-    queryFn: () => apiGet<ChannelListResponse>(`/system/userOrder/getChannelList`, {}),
+    queryFn: () => apiGetCustom<ChannelListResponse>(`/system/userOrder/getChannelList`, {}),
   });
 }
 
@@ -117,7 +127,7 @@ export function useChannelList() {
 export function useInfoTypeList() {
   return useQuery({
     queryKey: ['getInfoTypeList'],
-    queryFn: () => apiGet<InfoTypeItem[]>(`/system/crmInfoVerify/getInfoVerifyType`, {}),
+    queryFn: () => apiGetCustom<InfoTypeItem[]>(`/system/crmInfoVerify/getInfoVerifyType`, {}),
   });
 }
 

@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import { useCrmInfoVerifyList, CrmInfoVerifyListParams } from '@/api/hooks/review';
 import { Button } from '@/components/ui/button';
 import { useInfoTypeList } from '@/api/hooks/system/system';
-import { InfoTypeItem } from '@/api/hooks/system/types';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
@@ -21,10 +20,6 @@ import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export function InformationPage() {
   const { t } = useTranslation();
-  const { data: useInfoTyperesponse, isLoading: useInfoTypeloading } = useInfoTypeList();
-  const infoTypeList: InfoTypeItem[] = Array.isArray(useInfoTyperesponse)
-    ? useInfoTyperesponse
-    : [];
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('desc');
   const [orderByColumn, setOrderByColumn] = useState<string>('');
   const [pageNum, setPageNum] = useState(0);
@@ -40,6 +35,7 @@ export function InformationPage() {
     status: '',
     verifyUserName: '',
   });
+  const { data: useInfoTyperRes, isLoading: useInfoTypeloading } = useInfoTypeList();
   const { data: data, isLoading: loading } = useCrmInfoVerifyList({
     params,
     pageSize,
@@ -100,7 +96,7 @@ export function InformationPage() {
       },
       accessorKey: 'infoType',
       cell: ({ row }) => {
-        const infoType = infoTypeList.find(
+        const infoType = useInfoTyperRes?.find(
           item => Number(item.dictValue) === Number(row.original.infoType),
         );
         return <div>{infoType ? infoType.dictLabel : '-'}</div>;
@@ -233,7 +229,7 @@ export function InformationPage() {
                 reset={reset}
                 setParams={setParams}
                 setCommonParams={setCommonParams}
-                infoTypeList={infoTypeList}
+                infoTypeList={useInfoTyperRes || []}
               />
             </RrhDrawer>
             <ColumnVisibilityButton

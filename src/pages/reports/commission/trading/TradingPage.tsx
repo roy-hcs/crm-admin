@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { TradingItem, TradingParams, useRebateList } from '@/api/hooks/report';
@@ -6,16 +6,16 @@ import { TradingForm } from './TradingForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-import { useServerList, useGroupList, useGetCrmRebateTraders } from '@/api/hooks/system/system';
+import { useGetCrmRebateTraders } from '@/api/hooks/system/system';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useInitServerId } from '@/hooks/useInitServerId';
 export function TradingPage() {
   const { t } = useTranslation();
-  const [serverId, setServerId] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
@@ -36,35 +36,9 @@ export function TradingPage() {
     rebateTraderId: '',
     serverGroup: '',
   });
-  const { data: server, isLoading: serverLoading } = useServerList();
+  const { serverId, setServerId, server, serverLoading } = useInitServerId();
   const { data: RebateTraders, isLoading: RebateTradersLoading } = useGetCrmRebateTraders('1');
-  useEffect(() => {
-    // 自动选择第一台服务器
-    if (!serverId && server?.code === 0 && server?.rows?.length) {
-      // 只在还没选中时设置，避免无限循环
-      setServerId(server.rows[0].id);
-    }
-  }, [server, serverId]);
-  // 获取组别列表（queryKey 含 serverId，变化会自动重新获取）
-  const { data: groupList, isLoading: groupLoading } = useGroupList(serverId, {
-    enabled: !!serverId, // 没有 serverId 不请求
-  });
 
-  // 记录是否已完成首次自动初始化，避免首次设定 serverId 时就清空用户筛选
-  const firstServerSetRef = useRef(false);
-  useEffect(() => {
-    if (!serverId) return;
-    if (!firstServerSetRef.current) {
-      firstServerSetRef.current = true;
-      return; // 首次（自动）设定不重置
-    }
-    // 手动切换服务器：重置组别，重置分页
-    setCommonParams(prev => ({
-      ...prev,
-      serverGroup: '',
-    }));
-    setPageNum(0);
-  }, [serverId]);
   const { data: AgencyClientTracking, isLoading: AgencyClientTrackingLoading } = useRebateList(
     {
       params,
@@ -72,7 +46,6 @@ export function TradingPage() {
       pageSize,
       ...commonParams,
       pageNum: pageNum + 1,
-      // 接口要求传入两个相同的参数但是名称不同
       serverGroupList: commonParams.serverGroup,
       rebateTraderIdList: commonParams.rebateTraderId,
       isAsc: 'asc',
@@ -192,7 +165,6 @@ export function TradingPage() {
               className="h-9"
               leftIcon={<Search className="size-4" />}
               onLeftIconClick={e => {
-                // 触发查询逻辑, 这里简单调用一次刷新
                 setPageNum(0);
                 setCommonParams(prev => ({
                   ...prev,
@@ -227,7 +199,6 @@ export function TradingPage() {
                 setServerId={setServerId}
                 setCommonParams={setCommonParams}
                 serverOptions={server?.rows || []}
-                groupOptions={groupList || []}
                 RebateTradersOptions={RebateTraders || []}
                 initialServerId={serverId}
               />
@@ -249,9 +220,7 @@ export function TradingPage() {
           pageSize={pageSize}
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
-          loading={
-            AgencyClientTrackingLoading || serverLoading || groupLoading || RebateTradersLoading
-          }
+          loading={AgencyClientTrackingLoading || serverLoading || RebateTradersLoading}
         />
       </TableContentWrapper>
     </div>

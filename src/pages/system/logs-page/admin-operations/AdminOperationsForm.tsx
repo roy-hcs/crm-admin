@@ -114,7 +114,7 @@ export const AdminOperationsForm = ({
           <FormSelect
             verticalLabel
             name="businessTypes"
-            label={t('common.operType')}
+            label={t('table.operationType')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={operTypeList.map(i => ({ label: i.dictLabel, value: i.dictValue }))}

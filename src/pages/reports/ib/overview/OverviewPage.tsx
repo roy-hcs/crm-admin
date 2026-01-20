@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { useAgencyOverviewList, OverviewItem } from '@/api/hooks/report';
-import { useServerList, useRebateLevelList } from '@/api/hooks/system/system';
+import { useRebateLevelList } from '@/api/hooks/system/system';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
@@ -12,11 +12,11 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { OverviewForm } from './OverviewForm';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useInitServerId } from '@/hooks/useInitServerId';
 
 export function OverviewPage() {
   const { t } = useTranslation();
   const [isAsc, setIsAsc] = useState<'asc' | 'desc'>('asc');
-  const [serverId, setServerId] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
@@ -28,18 +28,8 @@ export function OverviewPage() {
     level: '',
   });
 
-  const { data: server, isLoading: serverLoading } = useServerList();
+  const { serverId, setServerId, server, serverLoading } = useInitServerId();
   const { data: rebateLevel } = useRebateLevelList();
-
-  // 初始化 serverId（只在第一次拿到数据且还没选中时设置）
-  useEffect(() => {
-    // 自动选择第一台服务器
-    if (!serverId && server?.code === 0 && server?.rows?.length) {
-      // 只在还没选中时设置，避免无限循环
-      setServerId(server.rows[0].id);
-    }
-  }, [server, serverId]);
-
   const { data: AgencyClientTracking, isLoading: AgencyClientTrackingLoading } =
     useAgencyOverviewList(
       {

@@ -79,11 +79,11 @@ const DetailInfo = ({ itemInfo }: { itemInfo: WalletTransactionItem }) => {
   ];
   const flowInfo = [
     {
-      label: t('financial.walletTransactions.operationType'),
+      label: t('table.operationType'),
       value: itemInfo.operationType ? t(OperationTypeMap[itemInfo.operationType]) : '',
     },
     {
-      label: t('financial.walletTransactions.inMethod'),
+      label: t('table.inMethod'),
       value: itemInfo.operationMethod ? t(OperationMethodMap[itemInfo.operationMethod]) : '',
     },
     {
@@ -232,12 +232,12 @@ export function WalletTransactionsPage() {
     },
     {
       id: 'operationType',
-      header: t('financial.walletTransactions.operationType'),
+      header: t('table.operationType'),
       accessorFn: row => (row.operationType ? t(OperationTypeMap[row.operationType]) : ''),
     },
     {
       id: 'operationMethod',
-      header: t('financial.walletTransactions.inMethod'),
+      header: t('table.inMethod'),
       accessorFn: row => (row.operationMethod ? t(OperationMethodMap[row.operationMethod]) : ''),
     },
     {

@@ -97,7 +97,6 @@
     "statisticTime": "统计时间",
     "verifyTime": "完结时间",
     "status": "状态",
-    "operType": "操作类型",
     "systemTip": "系统提示",
     "enable": "启用",
     "disable": "停用",
@@ -377,8 +376,6 @@
       "title": "钱包流水",
       "wallet": "钱包",
       "account": "姓名/账户ID",
-      "operationType": "操作类型",
-      "inMethod": "操作方式",
       "serialNum": "流水号",
       "operationTime": "操作时间",
       "mtOrder": "交易订单号",
@@ -408,7 +405,6 @@
       "login": "交易账号",
       "name": "姓名",
       "crmLastName": "归属CRM账号",
-      "type": "操作类型",
       "profit": "变动金额",
       "time": "时间",
       "ticket": "订单号",
@@ -424,7 +420,9 @@
       "batchOrderAsync": "批量账号订单同步",
       "atLeastOneAccount": "至少选择一个账户！",
       "selectedAccounts": "已选择 {{count}} 个账户",
-      "OrderAsyncTips": "已存在的订单不会重复保存。同步的新订单不会计算返佣。"
+      "OrderAsyncTips": "已存在的订单不会重复保存。同步的新订单不会计算返佣。",
+      "balanceAdjust": "余额调整",
+      "balanceAdjustDescription": "本操作无需审核，直接更改账号的余额。"
     },
     "refundFailLog": {
       "title": "资金回退失败日志",
@@ -786,6 +784,7 @@
     }
   },
   "table": {
+    "inMethod": "操作方式",
     "select": "选择",
     "orderId": "支付订单",
     "channelName": "支付方式",
@@ -1079,7 +1078,10 @@
     "internalTransfer": "内部转入",
     "internalTransferOut": "内部转出",
     "pointsProductReturn": "积分商品回退",
-    "pointsProductExchange": "积分商品兑换"
+    "pointsProductExchange": "积分商品兑换",
+    "operationAmount": "操作金额",
+    "creditAmountDeposit": "信用额入金",
+    "creditAmountWithdrawal": "信用额出金"
   },
   "review": {
     "settings": {

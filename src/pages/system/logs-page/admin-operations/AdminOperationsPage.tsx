@@ -80,7 +80,7 @@ export const AdminOperationsPage = () => {
     },
     {
       id: 'operatorType',
-      header: t('common.operType'),
+      header: t('table.operationType'),
       cell: ({ row }) => {
         const operType = (operTypeList || []).find(
           i => i.dictValue === String(row?.original?.operatorType),

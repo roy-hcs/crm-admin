@@ -22,6 +22,7 @@ import { formatDate } from '@/lib/utils';
 import { TradingParams } from '@/api/hooks/report';
 import { BasicParams } from '@/api/types';
 import { useGetGroup } from '@/api/hooks/system/system';
+import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 type FormData = {
   tradingTime: { from: string; to: string };
   rebateTime: { from: string; to: string };
@@ -162,7 +163,7 @@ export const FeesForm = ({
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20"
         >
           <RrhServerSelector serverOptions={serverOptions} />
-          <FormSelect
+          <FormMultiSelect
             verticalLabel
             name="serverGroup"
             label={t('commission.trading.serverGroup')}
