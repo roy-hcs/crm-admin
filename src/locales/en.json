@@ -120,7 +120,6 @@
       "reward": "award",
       "walletTest": "Wallet Test"
     },
-    "systemTip": "System prompts",
     "delete": "delete",
     "abnormal": "abnormal",
     "exchangeRate": "exchange rate",
@@ -212,7 +211,8 @@
     "readOnlyPassword": "read-only password",
     "tradingPassword": "Transaction password",
     "detail": "{{field}} details",
-    "exportFailed": "Export failed"
+    "exportFailed": "Export failed",
+    "selectUser": "Select user"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -951,7 +951,10 @@
     "title": "trading account"
   },
   "walletAccountsPage": {
-    "title": "wallet account"
+    "title": "wallet account",
+    "account": "Account",
+    "addWalletAccount": "Add account wallet",
+    "deleteTips": "Are you sure you want to delete this account wallet?"
   },
   "accountGroups": {
     "name": "Account group name",

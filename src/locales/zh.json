@@ -97,7 +97,6 @@
     "statisticTime": "统计时间",
     "verifyTime": "完结时间",
     "status": "状态",
-    "systemTip": "系统提示",
     "enable": "启用",
     "disable": "停用",
     "delete": "删除",
@@ -231,7 +230,8 @@
     "tradingPassword": "交易密码",
     "pwdType": "密码类型",
     "detail": "{{field}} 详细",
-    "exportFailed": "导出失败"
+    "exportFailed": "导出失败",
+    "selectUser": "选择用户"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -579,7 +579,10 @@
     "title": "交易账户"
   },
   "walletAccountsPage": {
-    "title": "钱包账户"
+    "title": "钱包账户",
+    "addWalletAccount": "新增账户钱包",
+    "account": "账户",
+    "deleteTips": "确定删除该 账户钱包？"
   },
   "accountGroups": {
     "title": "账户组设置",
