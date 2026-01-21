@@ -4,7 +4,6 @@ import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Ellipsis, Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { WalletAccountsForm } from './WalletAccountsForm';
 import {
   useWalletAccountsList,
   useWalletAccountsListSum,
@@ -19,6 +18,10 @@ import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { Checkbox } from '@/components/ui/checkbox';
+import { WalletAccountsForm } from './components/WalletAccountsForm';
+import { AddWalletDialog } from './components/AddWalletDialog';
+import { DeleteWalletDialog } from './components/DeleteWalletDialog';
 
 export const WalletAccountsPage = () => {
   const [params, setParams] = useState<WalletAccountsListParams['params']>({
@@ -36,7 +39,11 @@ export const WalletAccountsPage = () => {
   const [keyword, setKeyword] = useState('');
   const { t } = useTranslation();
   const { data: walletData, isLoading: walletLoading } = useCurrencyList();
-  const { data: data, isLoading: loading } = useWalletAccountsList({
+  const {
+    data: data,
+    isLoading: loading,
+    refetch: refetch,
+  } = useWalletAccountsList({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn: '',
@@ -72,6 +79,29 @@ export const WalletAccountsPage = () => {
     setPageNum(0);
   };
   const allColumns: CRMColumnDef<WalletAccountsItem, unknown>[] = [
+    {
+      id: 'select',
+      label: t('table.select'),
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={value => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
     {
       id: 'No',
       header: t('table.index'),
@@ -119,19 +149,25 @@ export const WalletAccountsPage = () => {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
+      cell: ({ row }) => (
         <div>
           <RrhDropdown
             Trigger={<Ellipsis className="size-4" />}
             dropdownList={[
               { label: t('common.View'), value: 'view' },
-              { label: t('common.Edit'), value: 'edit' },
+              { label: t('common.delete'), value: 'delete' },
             ]}
             callToAction={action => {
-              if (action === 'edit') {
-                // Handle edit action
-              } else if (action === 'view') {
-                // Handle view action
+              switch (action) {
+                case 'view':
+                  // View action
+                  break;
+                case 'delete':
+                  setId(row?.original?.id || '');
+                  setIsDeleteDialogOpen(true);
+                  break;
+                default:
+                  break;
               }
             }}
           />
@@ -143,6 +179,9 @@ export const WalletAccountsPage = () => {
   ];
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('wallet-accounts-table', allColumns);
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [id, setId] = useState('');
 
   return (
     <div>
@@ -195,6 +234,7 @@ export const WalletAccountsPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <AddWalletDialog onSuccess={refetch} />
           </div>
         </div>
         <DataTable
@@ -235,6 +275,12 @@ export const WalletAccountsPage = () => {
               ) : null}
             </>
           }
+        />
+        <DeleteWalletDialog
+          id={id}
+          title={t('common.SystemPrompt')}
+          open={isDeleteDialogOpen}
+          setOpen={setIsDeleteDialogOpen}
         />
       </TableContentWrapper>
     </div>

@@ -206,3 +206,31 @@ export function useBalanceAdjust() {
       }>('/system/crmUserDeal/adjustBalances', params),
   });
 }
+
+/**
+ * 钱包账户-新增钱包账户
+ */
+export function useAddWallet() {
+  return useMutation({
+    mutationFn: (params: { crmUserId: string; balance: string; currency: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/crmUserDealDetail/addWallet', params),
+  });
+}
+
+/**
+ * 钱包账户-删除钱包账户
+ */
+export function useDeleteWallet() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/crmUserWallet/remove', params),
+  });
+}

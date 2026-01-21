@@ -206,7 +206,7 @@ export const StatisticPage = () => {
           />
           <div className="flex justify-end gap-2">
             <RrhDialog
-              title={t('common.systemTip')}
+              title={t('common.SystemPrompt')}
               trigger={<RrhButton variant="outline">{t('table.export')}</RrhButton>}
               onConfirm={() =>
                 exportStatisticData({

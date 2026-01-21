@@ -401,3 +401,13 @@ export function useAddAccount() {
       }>('/system/crmDealAccount/add', params),
   });
 }
+
+/**
+ * 钱包账户-获取钱包
+ */
+export function useGetCurrencies() {
+  return useMutation({
+    mutationFn: (params: { userId: string }) =>
+      apiFormPostCustom<string[]>('/system/crmUserWallet/getCurrencies', params),
+  });
+}
