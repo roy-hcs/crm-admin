@@ -36,7 +36,7 @@ export const SettingsTable = ({
     },
     {
       id: 'sort',
-      header: t('review.settings.sort'),
+      header: t('table.sort'),
       accessorFn: row => row.sort || '-',
     },
     {
@@ -60,7 +60,7 @@ export const SettingsTable = ({
             Trigger={<Ellipsis className="size-4" />}
             dropdownList={[
               { label: t('review.settings.editAccess'), value: 'edit' },
-              { label: t('review.settings.sortingConfig'), value: 'sort' },
+              { label: t('table.sortingConfig'), value: 'sort' },
             ]}
             callToAction={action => {
               if (action === 'edit') {

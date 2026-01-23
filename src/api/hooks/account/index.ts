@@ -234,3 +234,60 @@ export function useDeleteWallet() {
       }>('/system/crmUserWallet/remove', params),
   });
 }
+
+/**
+ * 账户组-新增账户组
+ */
+
+export function useAddAccountGroup() {
+  return useMutation({
+    mutationFn: (params: { name: string; sort: string; id?: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/crmDealAccountGroup/add', params),
+  });
+}
+
+/**
+ * 账户组-编辑账户组
+ */
+export function useEditAccountGroup() {
+  return useMutation({
+    mutationFn: (params: { name: string; sort: string; id: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/crmDealAccountGroup/edit', params),
+  });
+}
+
+/**
+ * 账户组-删除账户组
+ */
+export function useRemoveAccountGroup() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/crmDealAccountGroup/remove', params),
+  });
+}
+
+/**
+ * 账户组-新增账户组之前校验名称是否存在
+ */
+export function useCheckGroupNameSingle() {
+  return useMutation({
+    mutationFn: (params: { name: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: boolean;
+      }>('/system/crmDealAccountGroup/checkGroupNameSingle', params),
+  });
+}

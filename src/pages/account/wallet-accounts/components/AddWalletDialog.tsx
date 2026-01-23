@@ -131,10 +131,7 @@ export const AddWalletDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
     >
       <FormProvider form={form}>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-1"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <FormField
               name="crmUserId"
               render={({ field }) => {
@@ -158,7 +155,7 @@ export const AddWalletDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
               loading={loading}
             />
 
-            <div className="col-span-full -mx-6 flex justify-end px-6 pt-6 pb-6 sm:pb-0">
+            <div className="col-span-full -mx-6 flex justify-end px-6 py-6 sm:pb-0">
               <div className="flex justify-end gap-4">
                 <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
                   {t('common.Cancel')}

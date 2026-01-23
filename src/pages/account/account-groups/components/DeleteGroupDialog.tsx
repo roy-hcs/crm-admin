@@ -1,40 +1,51 @@
-import { RrhDialog } from '@/components/common/RrhDialog';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
 import { useState } from 'react';
-import { CircleAlert } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
-import { useDeleteWallet } from '@/api/hooks/account';
+import { RrhDialog } from '@/components/common/RrhDialog';
+import { useRemoveAccountGroup } from '@/api/hooks/account';
+import { toast } from 'sonner';
+import { CircleAlert } from 'lucide-react';
 
-export const DeleteWalletDialog = ({
+type InitialValues = {
+  id: string;
+  name: string;
+};
+
+export const DeleteGroupDialog = ({
+  initialValues,
+  onSuccess,
   open,
   setOpen,
-  id,
-  title,
 }: {
+  initialValues?: InitialValues;
+  onSuccess?: () => void;
   open: boolean;
   setOpen: (open: boolean) => void;
-  id: string;
-  title: string;
 }) => {
   const { t } = useTranslation();
-  const { mutateAsync: deleteWallet } = useDeleteWallet();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const name = initialValues?.name;
+  const id = initialValues?.id;
+
+  const { mutateAsync: removeAccountGroup } = useRemoveAccountGroup();
+
   const onSubmit = async () => {
-    setIsSubmitting(true);
     try {
-      const res = await deleteWallet({
-        ids: id,
-      });
+      setIsSubmitting(true);
+      const param = {
+        ids: id || '',
+      };
+      const res = await removeAccountGroup(param);
       if (res.code === 0) {
         toast.success(t('common.success'));
         setOpen(false);
+        onSuccess?.();
       } else {
         toast.error(res.msg);
       }
-    } catch {
-      toast.error(t('common.AnErrorOccurred'));
+    } catch (error) {
+      console.error('Error submitting form:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -46,8 +57,8 @@ export const DeleteWalletDialog = ({
 
   return (
     <RrhDialog
-      title={title}
       trigger={<button></button>}
+      title={t('common.SystemPrompt')}
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
@@ -59,7 +70,7 @@ export const DeleteWalletDialog = ({
         <div className="bg-destructive/5 flex items-center gap-1 rounded-md p-2">
           <CircleAlert className="text-destructive size-4" />
           <span className="text-destructive text-sm leading-5 font-medium">
-            {t('walletAccountsPage.deleteTips')}
+            {t('accountGroups.deleteTips', { name: name })}
           </span>
         </div>
         <div className="col-span-full -mx-6 flex justify-end px-6 py-6 sm:pb-0">

@@ -306,7 +306,7 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
               }}
             />
 
-            <div className="border-muted col-span-full -mx-6 flex justify-between border-t px-6 pt-6 pb-6 sm:pb-0">
+            <div className="border-muted col-span-full -mx-6 flex justify-between border-t px-6 py-6 sm:pb-0">
               <FormField
                 name="status"
                 render={({ field }) => (

@@ -230,7 +230,7 @@ export const ResetPasswordDialog = ({
                 setShow={setShowAgainPWD}
               />
 
-              <div className="col-span-full -mx-6 flex justify-end px-6 pt-6 pb-6 sm:pb-0">
+              <div className="col-span-full -mx-6 flex justify-end px-6 py-6 sm:pb-0">
                 <div className="flex justify-end gap-4">
                   <RrhButton
                     variant="outline"

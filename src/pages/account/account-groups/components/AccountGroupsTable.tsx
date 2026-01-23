@@ -3,6 +3,9 @@ import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { CRMColumnDef, DataTable } from '@/components/table/DataTable';
 import { Ellipsis } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { AccountGroupDialog } from './AccountGroupDialog';
+import { DeleteGroupDialog } from './DeleteGroupDialog';
 
 export const AccountGroupsTable = ({
   data,
@@ -12,6 +15,7 @@ export const AccountGroupsTable = ({
   onPageChange,
   onPageSizeChange,
   loading = false,
+  onRefresh,
 }: {
   data: CrmDealAccountItem[];
   pageCount: number;
@@ -20,8 +24,12 @@ export const AccountGroupsTable = ({
   onPageChange: (pageIndex: number) => void;
   onPageSizeChange: (pageSize: number) => void;
   loading?: boolean;
+  onRefresh?: () => void;
 }) => {
   const { t } = useTranslation();
+  const [editingItem, setEditingItem] = useState<CrmDealAccountItem | null>(null);
+  const [open, setOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const columns: CRMColumnDef<CrmDealAccountItem, unknown>[] = [
     {
@@ -54,19 +62,21 @@ export const AccountGroupsTable = ({
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
+      cell: ({ row }) => (
         <div>
           <RrhDropdown
             Trigger={<Ellipsis className="size-4" />}
             dropdownList={[
-              { label: t('common.View'), value: 'view' },
               { label: t('common.Edit'), value: 'edit' },
+              { label: t('common.delete'), value: 'delete' },
             ]}
             callToAction={action => {
               if (action === 'edit') {
-                // Handle edit action
-              } else if (action === 'view') {
-                // Handle view action
+                setEditingItem(row.original);
+                setOpen(true);
+              } else if (action === 'delete') {
+                setEditingItem(row.original);
+                setDeleteOpen(true);
               }
             }}
           />
@@ -78,15 +88,53 @@ export const AccountGroupsTable = ({
   ];
 
   return (
-    <DataTable
-      columns={columns}
-      data={data}
-      pageCount={pageCount}
-      pageSize={pageSize}
-      pageIndex={pageIndex}
-      onPageChange={onPageChange}
-      onPageSizeChange={onPageSizeChange}
-      loading={loading}
-    />
+    <>
+      <DataTable
+        columns={columns}
+        data={data}
+        pageCount={pageCount}
+        pageSize={pageSize}
+        pageIndex={pageIndex}
+        onPageChange={onPageChange}
+        onPageSizeChange={onPageSizeChange}
+        loading={loading}
+      />
+      {editingItem && (
+        <AccountGroupDialog
+          mode="edit"
+          open={open}
+          onOpenChange={v => {
+            if (!v) setEditingItem(null);
+            setOpen(v);
+          }}
+          initialValues={{
+            id: editingItem.id || '',
+            name: editingItem.name || '',
+            sort: String(editingItem.sort) || '',
+          }}
+          onSuccess={() => {
+            setEditingItem(null);
+            onRefresh?.();
+          }}
+        />
+      )}
+      {editingItem && (
+        <DeleteGroupDialog
+          open={deleteOpen}
+          setOpen={v => {
+            if (!v) setEditingItem(null);
+            setDeleteOpen(v);
+          }}
+          initialValues={{
+            id: editingItem.id || '',
+            name: editingItem.name || '',
+          }}
+          onSuccess={() => {
+            setEditingItem(null);
+            onRefresh?.();
+          }}
+        />
+      )}
+    </>
   );
 };

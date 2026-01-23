@@ -98,7 +98,7 @@ export const DeleteAccount = ({
     >
       <div className="w-full sm:w-100">
         <div className="bg-destructive/5 mb-5 flex items-center gap-1 rounded-md p-2">
-          <CircleAlert className="text-destructive h-4 w-4" />
+          <CircleAlert className="text-destructive size-4" />
           <span className="text-destructive text-sm leading-5 font-medium">
             {deleteType === '1'
               ? t('CRMAccountPage.DeleteAccountWalletBalanceZero')
