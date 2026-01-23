@@ -588,7 +588,12 @@
     "title": "账户组设置",
     "name": "账户组名称",
     "num": "关联账户",
-    "relatedRebateRuleCount": "关联返佣规则"
+    "relatedRebateRuleCount": "关联返佣规则",
+    "addAccountGroup": "新增账户组",
+    "editAccountGroup": "编辑账户组",
+    "sortPlaceholder": "请输入数字，越大越靠前",
+    "nameAlreadyExists": "账户组名称已存在",
+    "deleteTips": "确定删除账户组\"{{name}}\"?"
   },
   "products": {
     "title": "商品列表",
@@ -1090,7 +1095,6 @@
     "settings": {
       "title": "审核设置",
       "nameText": "名称",
-      "sort": "排序",
       "indexReviewCount": "首页待审合计数展示",
       "val": "导航栏待审合计数展示",
       "desc": "开启/关闭“首页待审合计数展示”，则首页将展示/隐藏待审的记录数；开启/关闭“导航栏待审合计数展示”，则导航栏将展示/隐藏待审的记录数",

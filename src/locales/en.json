@@ -847,7 +847,6 @@
     "settings": {
       "indexReviewCount": "Home page to be reviewed total count display",
       "nameText": "name",
-      "sort": "Sort",
       "title": "Review Settings",
       "val": "Display of total count of navigation bar to be reviewed",
       "desc": "If you turn on/off the \"Display of the total number of pending review on the home page\", the home page will display/hide the number of records to be reviewed; if you turn on/off the \"Display of the total number of pending review on the navigation bar\", the number of records to be reviewed will be displayed/hidden on the navigation bar.",
@@ -960,7 +959,12 @@
     "name": "Account group name",
     "num": "Linked accounts",
     "relatedRebateRuleCount": "Related commission rules",
-    "title": "Account group settings"
+    "title": "Account group settings",
+    "addAccountGroup": "Add account group",
+    "deleteTips": "Are you sure you want to delete account group \"{{name}}\"?",
+    "editAccountGroup": "Edit account group",
+    "nameAlreadyExists": "Account group name already exists",
+    "sortPlaceholder": "Please enter a number, the bigger the number, the higher it is"
   },
   "products": {
     "confirm": {
