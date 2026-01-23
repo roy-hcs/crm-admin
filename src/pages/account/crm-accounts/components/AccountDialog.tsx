@@ -80,7 +80,7 @@ export const AccountDialog = ({
           onChange={e => setSearch(e.target.value)}
         />
         <RrhButton type="submit">
-          <Search className="h-4 w-4" />
+          <Search className="size-4" />
           <span>{t('common.Search')}</span>
         </RrhButton>
       </form>

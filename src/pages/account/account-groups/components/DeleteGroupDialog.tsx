@@ -68,12 +68,12 @@ export const DeleteGroupDialog = ({
     >
       <div>
         <div className="bg-destructive/5 flex items-center gap-1 rounded-md p-2">
-          <CircleAlert className="text-destructive h-4 w-4" />
+          <CircleAlert className="text-destructive size-4" />
           <span className="text-destructive text-sm leading-5 font-medium">
             {t('accountGroups.deleteTips', { name: name })}
           </span>
         </div>
-        <div className="col-span-full -mx-6 flex justify-end px-6 pt-6 pb-6 sm:pb-0">
+        <div className="col-span-full -mx-6 flex justify-end px-6 py-6 sm:pb-0">
           <div className="flex justify-end gap-4">
             <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
               {t('common.Cancel')}

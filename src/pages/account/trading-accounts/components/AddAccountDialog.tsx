@@ -388,7 +388,7 @@ export const AddAccountDialog = ({
               }}
             />
 
-            <div className="border-muted col-span-full -mx-6 flex justify-end border-t px-6 pt-6 pb-6 sm:pb-0">
+            <div className="border-muted col-span-full -mx-6 flex justify-end border-t px-6 py-6 sm:pb-0">
               <div className="flex justify-end gap-4">
                 <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
                   {t('common.Cancel')}

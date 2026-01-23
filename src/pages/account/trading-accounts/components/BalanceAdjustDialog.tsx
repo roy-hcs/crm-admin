@@ -175,12 +175,9 @@ export const BalanceAdjustDialog = ({
     >
       <FormProvider form={form}>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-1"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <div className="bg-destructive/5 flex items-center gap-1 rounded-md p-2">
-              <CircleAlert className="text-destructive h-4 w-4" />
+              <CircleAlert className="text-destructive size-4" />
               <span className="text-destructive text-sm leading-5 font-medium">
                 {t('financial.tradingAccountTransactions.balanceAdjustDescription')}
               </span>
@@ -230,7 +227,7 @@ export const BalanceAdjustDialog = ({
               placeholder={t('rules.limitLength', { field: 10 })}
             />
 
-            <div className="border-muted col-span-full -mx-6 flex justify-end border-t px-6 pt-6 pb-6 sm:pb-0">
+            <div className="border-muted col-span-full -mx-6 flex justify-end border-t px-6 py-6 sm:pb-0">
               <div className="flex justify-end gap-4">
                 <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
                   {t('common.Cancel')}

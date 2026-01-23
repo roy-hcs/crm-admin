@@ -46,22 +46,15 @@ export const AccountGroupDialog = ({
   const [openLocal, setOpenLocal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isControlled = typeof openProp !== 'undefined';
-  const open = isControlled ? !!openProp : openLocal;
-  const setOpen = (v: boolean) => {
-    if (isControlled) {
-      onOpenChange?.(v);
-    } else {
-      setOpenLocal(v);
-    }
-  };
+  const open = openProp ?? openLocal;
+  const setOpen = onOpenChange ?? setOpenLocal;
 
   const { mutateAsync: checkGroupNameSingle } = useCheckGroupNameSingle();
   const { mutateAsync: addAccountGroup } = useAddAccountGroup();
   const { mutateAsync: editAccountGroup } = useEditAccountGroup();
 
-  const initialName = initialValues?.name;
-  const initialSort = initialValues?.sort;
+  const initialName = initialValues?.name || '';
+  const initialSort = initialValues?.sort || '';
   const id = initialValues?.id;
 
   const schema = useMemo(() => {
@@ -100,33 +93,25 @@ export const AccountGroupDialog = ({
   const onSubmit = async (data: FormValues) => {
     try {
       setIsSubmitting(true);
+      const param = {
+        name: data.name,
+        sort: data.sort,
+        id: '',
+      };
       if (mode === 'edit' && id) {
-        const param = {
+        const res = await editAccountGroup({
+          ...param,
           id: id,
-          name: data.name,
-          sort: data.sort,
-        };
-        const res = await editAccountGroup(param);
+        });
         if (res.code === 0) {
-          form.reset();
-          toast.success(t('common.success'));
-          setOpen(false);
-          onSuccess?.();
+          successCallback();
         } else {
           toast.error(res.msg);
         }
       } else {
-        const param = {
-          name: data.name,
-          sort: data.sort,
-          id: '',
-        };
         const res = await addAccountGroup(param);
         if (res.code === 0) {
-          form.reset();
-          toast.success(t('common.success'));
-          setOpen(false);
-          onSuccess?.();
+          successCallback();
         } else {
           toast.error(res.msg);
         }
@@ -136,6 +121,13 @@ export const AccountGroupDialog = ({
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const successCallback = () => {
+    form.reset();
+    toast.success(t('common.success'));
+    setOpen(false);
+    onSuccess?.();
   };
 
   const onCancel = () => {
@@ -180,15 +172,13 @@ export const AccountGroupDialog = ({
               placeholder={t('accountGroups.sortPlaceholder')}
             />
 
-            <div className="col-span-full -mx-6 flex justify-end px-6 pt-6 pb-6 sm:pb-0">
-              <div className="flex justify-end gap-4">
-                <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
-                  {t('common.Cancel')}
-                </RrhButton>
-                <RrhButton type="submit" className="px-4 py-2">
-                  {t('common.Confirm')}
-                </RrhButton>
-              </div>
+            <div className="col-span-full -mx-6 flex justify-end gap-4 px-6 py-6 sm:pb-0">
+              <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
+                {t('common.Cancel')}
+              </RrhButton>
+              <RrhButton type="submit" className="px-4 py-2">
+                {t('common.Confirm')}
+              </RrhButton>
             </div>
           </form>
         </Form>
