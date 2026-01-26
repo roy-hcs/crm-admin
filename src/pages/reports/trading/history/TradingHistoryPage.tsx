@@ -14,12 +14,30 @@ import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { BasicParams } from '@/api/types';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
-import { transactionTypeMap } from '@/lib/constant';
+import { tradingHistoryTypeMap, transactionTypeMap } from '@/lib/constant';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+
+const formatVolume = (volume: number | null, serverType: number) => {
+  if (volume === null) {
+    return '-';
+  }
+  switch (serverType) {
+    case 1:
+      return (volume * 0.0001).toFixed(2);
+    case 2:
+      return (volume * 0.01).toFixed(2);
+    case 3:
+      return volume.toFixed(2);
+    case 4:
+      return (volume * 0.00001).toFixed(2);
+    default:
+      return volume.toString();
+  }
+};
 
 const TradingHistoryDetails = ({ data }: { data: TradingHistoryItem }) => {
   const { t } = useTranslation();
@@ -28,22 +46,39 @@ const TradingHistoryDetails = ({ data }: { data: TradingHistoryItem }) => {
     { label: t('table.tradingAccount'), value: data.login },
     {
       label: t('table.transactionType'),
-      value: transactionTypeMap[data.type as keyof typeof transactionTypeMap] || data.type,
+      value:
+        data.type === 0 || data.type === 1
+          ? transactionTypeMap[data.type as keyof typeof transactionTypeMap]
+          : t(tradingHistoryTypeMap[data.type as keyof typeof tradingHistoryTypeMap]) || data.type,
     },
     { label: t('table.symbol'), value: data.symbol },
     {
       label: t('table.volume'),
-      value: data.traderCount && data.lotSize ? (data.traderCount / data.lotSize).toFixed(2) : '-',
+      value: formatVolume(data.volume, data.serverType || 0),
+    },
+    {
+      label: t('table.price'),
+      value: data.price !== null ? `${data.price.toFixed(data.digits || 0)} ${data.currency}` : '-',
+      visible: data.serverType === 1,
+    },
+    {
+      label: t('table.tradingTime'),
+      value: data.time || '-',
+      visible: data.serverType === 1,
     },
     {
       label: t('table.profitAndLoss'),
       value: data.profit !== null ? `${data.profit.toFixed(2)} ${data.currency}` : '-',
+      visible: (data.type || 0) < 2,
     },
-
-    { label: t('table.openPrice'), value: data.openPrice },
-    { label: t('table.openTime'), value: data.openTime },
-    { label: t('table.closePrice'), value: data.closePrice },
-    { label: t('table.closeTime'), value: data.closeTime },
+    {
+      label: t('table.takeProfitPrice'),
+      value: data.tp !== null ? `${data.tp.toFixed(data.digits || 0)}` : '-',
+    },
+    {
+      label: t('table.stopLossPrice'),
+      value: data.sl !== null ? `${data.sl.toFixed(data.digits || 0)}` : '-',
+    },
     {
       label: t('table.commission'),
       value: data.commission !== null ? `${data.commission.toFixed(2)} ${data.currency}` : '-',
@@ -54,14 +89,14 @@ const TradingHistoryDetails = ({ data }: { data: TradingHistoryItem }) => {
     },
     { label: t('table.orderNumber'), value: data.ticket?.toString() || '-' },
     { label: t('table.comment'), value: data.comment },
-  ];
+  ].filter(item => item.visible !== false);
   return (
-    <div className="grid grid-cols-2 gap-4 p-4">
+    <div className="grid grid-cols-2 gap-x-0 gap-y-6">
       {detailsData.map((item, index) => {
         return (
-          <div className="flex items-center gap-2" key={`${item.label}-${index}`}>
-            <span>{item.label}:</span>
-            <span>{item.value}</span>
+          <div className="grid gap-2" key={`${item.label}-${index}`}>
+            <div className="text-foreground text-sm leading-5 font-medium">{item.label}</div>
+            <div className="text-muted-foreground text-sm leading-5">{item.value || '-'}</div>
           </div>
         );
       })}
@@ -308,6 +343,7 @@ export const TradingHistoryPage = () => {
               cancelText={t('common.close')}
               confirmShow={false}
               title={t('tradingHistoryPage.tradingHistoryDetail')}
+              variant="large"
             >
               <TradingHistoryDetails data={row.original} />
             </RrhDialog>

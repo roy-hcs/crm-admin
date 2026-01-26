@@ -500,7 +500,11 @@
   },
   "tradingHistoryPage": {
     "tradingHistoryDetail": "交易历史详情",
-    "tradingHistory": "交易历史"
+    "tradingHistory": "交易历史",
+    "dailyHandlingFee": "日常手续费",
+    "monthlyHandlingFee": "月度手续费",
+    "dailyAgencyFee": "日常代理手续费",
+    "monthlyAgencyFee": "月度代理手续费"
   },
   "positionOrderPage": {
     "positionOrderDetail": "持仓订单详情",
@@ -508,7 +512,8 @@
     "positionCost": "持仓成本"
   },
   "limitOrderPage": {
-    "limitOrder": "限价订单"
+    "limitOrder": "限价订单",
+    "limitOrderDetail": "限价订单详情"
   },
   "accountStatisticPage": {
     "accountStatistic": "交易账号交易历史统计"
@@ -792,6 +797,7 @@
     }
   },
   "table": {
+    "price": "交易价格",
     "inMethod": "操作方式",
     "select": "选择",
     "orderId": "支付订单",

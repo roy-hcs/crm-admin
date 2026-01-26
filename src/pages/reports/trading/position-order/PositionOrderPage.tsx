@@ -16,50 +16,65 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
-const formatVolume = (serverType: number | undefined, volume: number, lotSize: number) => {
-  if (serverType == 1) {
-    //MT5
-    return (volume / 10000.0).toFixed(4);
-  } else if (serverType == 4) {
-    //XForce
-    return (volume / (lotSize || 1.0)).toFixed(2);
-  } else if (serverType == 5) {
-    //XOH
-    return volume.toFixed(4);
-  } else {
-    return (volume / 100.0).toFixed(4);
+const formatVolume = (volume: number | null, serverType: number, lotSize: number | null) => {
+  if (volume === null) {
+    return '-';
+  }
+  switch (serverType) {
+    case 1:
+      return (volume / 10000.0).toFixed(2);
+    case 2:
+      return (volume / 100.0).toFixed(2);
+    case 3:
+      return (volume / 100.0).toFixed(2);
+    case 4:
+      return (volume / (lotSize || 1.0)).toFixed(2);
+    case 5:
+      return volume.toFixed(2);
+    default:
+      return volume.toString();
   }
 };
-const PositionOrderDetails = ({
-  data,
-  serviceType,
-}: {
-  data: PositionOrderItem;
-  serviceType: number | undefined;
-}) => {
+const PositionOrderDetails = ({ data }: { data: PositionOrderItem }) => {
   const { t } = useTranslation();
   const detailsData = [
     { label: t('table.fullName'), value: data.params.accountName },
     { label: t('table.tradingAccount'), value: data.login },
     {
       label: t('table.transactionType'),
-      value: transactionTypeMap[data.type as keyof typeof transactionTypeMap] || data.type,
+      value: data.type !== null ? (data.type % 2 === 0 ? 'buy' : 'sell') : '-',
     },
     { label: t('table.symbol'), value: data.symbol },
     {
       label: t('table.volume'),
-      value:
-        data.volume && data.lotSize ? formatVolume(serviceType, data.volume, data.lotSize) : '-',
+      value: data.volume ? formatVolume(data.volume, data.serverType || 0, data.lotSize) : '-',
     },
-    { label: t('table.openPrice'), value: data.price },
-    { label: t('table.openTime'), value: data.time },
-    // UI上存在以下字段，但接口返回数据中似乎没有相关数据，暂时隐藏
-    // { label: t('table.takeProfitPrice'), value: data.takeProfitPrice },
-    // { label: t('table.stopLossPrice'), value: data.stopLossPrice },
+    {
+      label: t('table.price'),
+      value: data.price || '-',
+      visible: data.serverType === 1,
+    },
+    { label: t('table.openPrice'), value: data.price, visible: data.serverType !== 1 },
+
+    {
+      label: t('table.tradingTime'),
+      value: data.time || '-',
+      visible: data.serverType === 1,
+    },
+    { label: t('table.openTime'), value: data.time, visible: data.serverType !== 1 },
 
     {
       label: t('table.profitAndLoss'),
       value: data.profit !== null ? `${data.profit.toFixed(2)} ${data.currency}` : '-',
+    },
+
+    {
+      label: t('table.takeProfitPrice'),
+      value: data.tp !== null ? `${data.tp.toFixed(data.digits || 0)}` : '-',
+    },
+    {
+      label: t('table.stopLossPrice'),
+      value: data.sl !== null ? `${data.sl.toFixed(data.digits || 0)}` : '-',
     },
 
     {
@@ -72,14 +87,14 @@ const PositionOrderDetails = ({
     },
     { label: t('table.comment'), value: data.comment },
     { label: t('table.orderNumber'), value: data.ticket?.toString() || '-' },
-  ];
+  ].filter(item => item.visible !== false);
   return (
-    <div className="grid grid-cols-2 gap-4 p-4">
+    <div className="grid grid-cols-2 gap-x-0 gap-y-6">
       {detailsData.map((item, index) => {
         return (
-          <div className="flex items-center gap-2" key={`${item.label}-${index}`}>
-            <span>{item.label}:</span>
-            <span>{item.value}</span>
+          <div className="grid gap-2" key={`${item.label}-${index}`}>
+            <div className="text-foreground text-sm leading-5 font-medium">{item.label}</div>
+            <div className="text-muted-foreground text-sm leading-5">{item.value || '-'}</div>
           </div>
         );
       })}
@@ -191,7 +206,9 @@ export const PositionOrderPage = () => {
         const rowData = row.original;
 
         return rowData.volume && rowData.lotSize ? (
-          <div>{formatVolume(selectedServer?.serviceType, rowData.volume, rowData.lotSize)}</div>
+          <div>
+            {formatVolume(rowData.volume, selectedServer?.serviceType || 0, rowData.lotSize)}
+          </div>
         ) : (
           <div>-</div>
         );
@@ -263,9 +280,10 @@ export const PositionOrderPage = () => {
               trigger={<RrhButton variant="ghost">{t('common.View')}</RrhButton>}
               cancelText={t('common.close')}
               confirmShow={false}
-              title={t('tradingHistoryPage.tradingHistoryDetail')}
+              title={t('positionOrderPage.positionOrderDetail')}
+              variant="large"
             >
-              <PositionOrderDetails data={row.original} serviceType={selectedServer?.serviceType} />
+              <PositionOrderDetails data={row.original} />
             </RrhDialog>
           </div>
         );
