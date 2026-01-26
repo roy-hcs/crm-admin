@@ -666,11 +666,16 @@
     "creditAmountDeposit": "Credit limit deposit",
     "creditAmountWithdrawal": "Credit limit withdrawal",
     "inMethod": "Operation mode",
-    "operationAmount": "Operation amount"
+    "operationAmount": "Operation amount",
+    "price": "transaction price"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
-    "tradingHistoryDetail": "Details of transaction history"
+    "tradingHistoryDetail": "Details of transaction history",
+    "dailyAgencyFee": "Daily agency fees",
+    "dailyHandlingFee": "daily handling fee",
+    "monthlyAgencyFee": "Monthly agency fee",
+    "monthlyHandlingFee": "monthly handling fee"
   },
   "financial": {
     "walletTransactions": {
@@ -781,7 +786,8 @@
     "accountStatistic": "Trading account transaction history statistics"
   },
   "limitOrderPage": {
-    "limitOrder": "Limit order"
+    "limitOrder": "Limit order",
+    "limitOrderDetail": "Limit order details"
   },
   "positionOrderPage": {
     "positionCost": "Position cost",

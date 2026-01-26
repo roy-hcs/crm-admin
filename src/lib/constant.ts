@@ -103,3 +103,14 @@ export const pammReportStatusMap: Record<string, string> = {
   '1': 'confirmed',
   '2': 'rejected',
 };
+
+// 交易报表-交易历史 类型映射
+export const tradingHistoryTypeMap: Record<number, string> = {
+  0: 'buy',
+  1: 'sell',
+  7: 'table.commission',
+  8: 'tradingHistoryPage.dailyHandlingFee',
+  9: 'tradingHistoryPage.monthlyHandlingFee',
+  10: 'tradingHistoryPage.dailyAgencyFee',
+  11: 'tradingHistoryPage.monthlyAgencyFee',
+};
