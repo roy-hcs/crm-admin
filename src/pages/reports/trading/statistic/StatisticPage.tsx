@@ -1,7 +1,6 @@
 import {
   useAccountStaticsSum,
   useAccountStatisticList,
-  useExportAccountStatisticList,
   AccountStatisticListParams,
   AccountStatisticListItem,
 } from '@/api/hooks/report';
@@ -76,7 +75,6 @@ export const StatisticPage = () => {
       },
       { enabled: otherParams.server !== '' },
     );
-  const { mutate: exportStatisticData } = useExportAccountStatisticList();
   const { mutate: getStatisticData, data: sumData, isPending } = useAccountStaticsSum();
   const [sumShow, setSumShow] = useState(false);
   const getSumData = () => {
@@ -220,20 +218,6 @@ export const StatisticPage = () => {
             }}
           />
           <div className="flex justify-end gap-2">
-            <RrhDialog
-              title={t('common.SystemPrompt')}
-              trigger={<RrhButton variant="outline">{t('table.export')}</RrhButton>}
-              onConfirm={() =>
-                exportStatisticData({
-                  ...otherParams,
-                  params: {
-                    ...params,
-                  },
-                })
-              }
-            >
-              {t('table.exportAllDataTip', { field: t('accountStatisticPage.accountStatistic') })}
-            </RrhDialog>
             <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </RrhButton>
