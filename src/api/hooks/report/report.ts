@@ -1,4 +1,4 @@
-import { apiFormPost, apiFormPostCustom, apiGetCustom } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   ClientTrackingParams,
@@ -42,6 +42,7 @@ import {
   CurrencyListRes,
   WalletTransactionSumParams,
   WalletTransactionSumRes,
+  PaymentOrderDepositItem,
 } from './types';
 
 /**
@@ -241,6 +242,28 @@ export function usePaymentOrderList(params: PaymentOrderListParams) {
     queryKey: ['paymentOrderList', params],
     queryFn: () =>
       apiFormPostCustom<PaymentOrderListResponse>('/system/userOrder/list', params || {}),
+  });
+}
+
+export function usePaymentOrderDepositDetail(id: string, enabled: boolean = false) {
+  return useQuery({
+    queryKey: ['paymentOrderDepositDetail', id],
+    queryFn: () => {
+      return apiGet<PaymentOrderDepositItem>(`/system/userOrder/detailInfo/${id}`);
+    },
+    enabled: enabled && !!id,
+    staleTime: 0,
+  });
+}
+
+export function usePaymentOrderExport() {
+  return useMutation({
+    mutationFn: (params: PaymentOrderListParams) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/userOrder/export', params),
   });
 }
 

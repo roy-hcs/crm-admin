@@ -286,6 +286,48 @@ export type PaymentOrderItem = {
   userName: string | null;
 };
 
+export type PaymentOrderDepositItem = {
+  showId: string;
+  accountName: string;
+  channelName: string;
+  userName: string;
+  order: {
+    createBy: string | null;
+    createTime: string;
+    updateBy: string | null;
+    updateTime: string | null;
+    remark: string;
+    params: Record<string, string>;
+    id: string;
+    orderId: string;
+    userId: string;
+    accountId: string;
+    accountType: number;
+    depositAmount: number;
+    commission: number;
+    payAmount: number;
+    payUrl: string | null;
+    payTime: string | null;
+    payResult: boolean | null;
+    orderStatus: number;
+    currencyPair: string;
+    exchangeRate: number;
+    payOrder: string | null;
+    channelId: number;
+    baseCurrency: string;
+    destCurrency: string;
+    serverId: string | null;
+    receiptAmount: string | null;
+    receiptCurrency: string | null;
+    createVerifyRecord: string | null;
+    accounts: string | null;
+    accountIds: string | null;
+    orderComment: string;
+    orderType: number;
+    channelConfig: string | null;
+  };
+};
+
 export type PaymentOrderListResponse = BasicRes<PaymentOrderItem>;
 
 // 交易账号资金流水

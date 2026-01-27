@@ -667,7 +667,10 @@
     "creditAmountWithdrawal": "Credit limit withdrawal",
     "inMethod": "Operation mode",
     "operationAmount": "Operation amount",
-    "price": "transaction price"
+    "price": "transaction price",
+    "orderInfo": "Order information",
+    "outerOrderNo": "External order number",
+    "paymentLink": "Payment link"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
