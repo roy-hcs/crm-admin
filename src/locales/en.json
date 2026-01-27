@@ -300,7 +300,8 @@
       "title": "IB Customer Tracking",
       "tradeClient": "Number of transaction users",
       "userName": "Agent name",
-      "withdrawTotalStr": "Accumulated amount of funds"
+      "withdrawTotalStr": "Accumulated amount of funds",
+      "directBroker": "direct customer"
     },
     "overview": {
       "Index": "Serial number",

@@ -283,6 +283,7 @@
   },
   "ib": {
     "CustomerTracking": {
+      "directBroker": "直客",
       "title": "IB客户跟踪",
       "Index": "序号",
       "userName": "代理姓名",

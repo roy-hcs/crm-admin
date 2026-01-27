@@ -6,7 +6,7 @@ import {
   ClientTrackingParams,
   useAgencyClientTrackingList,
 } from '@/api/hooks/report';
-import { Funnel, Search, RefreshCcw } from 'lucide-react';
+import { Funnel, Search, RefreshCcw, FileOutput } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { PageInfo } from '@/components/common/PageInfo';
@@ -15,6 +15,12 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { ClientTrackingForm } from './ClientTrackingForm';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useAgencyClientTrackingExport } from '@/api/hooks/report/report';
+import { RrhDialog } from '@/components/common/RrhDialog';
+import { RrhButton } from '@/components/common/RrhButton';
+import { toast } from 'sonner';
+import { downloadFile } from '@/lib/utils';
+import { Switch } from '@/components/ui/switch';
 
 export function ClientTrackingPage() {
   const { t } = useTranslation();
@@ -30,14 +36,15 @@ export function ClientTrackingPage() {
     statisticMonth: '',
     level: '',
   });
+  const [drirectFlag, setDrirectFlag] = useState(false);
 
-  const { data: AgencyClientTracking, isLoading: AgencyClientTrackingLoading } =
-    useAgencyClientTrackingList({
-      pageSize,
-      pageNum: pageNum + 1,
-      ...params,
-      isAsc,
-    });
+  const { data: AgencyClientTracking, isLoading } = useAgencyClientTrackingList({
+    pageSize,
+    pageNum: pageNum + 1,
+    ...params,
+    drirectFlag: drirectFlag ? '1' : '0',
+    isAsc,
+  });
 
   const reset = () => {
     setParams({
@@ -154,12 +161,31 @@ export function ClientTrackingPage() {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('client-tracking-reports-table', allColumns);
 
+  const [exportOpen, setExportOpen] = useState(false);
+  const { mutateAsync: exportFunction, isPending: exportLoading } = useAgencyClientTrackingExport();
+
+  const handleExport = async () => {
+    try {
+      const result = await exportFunction({
+        ...params,
+        drirectFlag: drirectFlag ? '1' : '0',
+      });
+
+      if (result?.code !== 0 && result?.msg) {
+        toast.error(result.msg, { duration: 5000 });
+      } else if (result?.code === 0 && result?.msg) {
+        downloadFile(result.msg);
+        setExportOpen(false);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(t('common.exportFailed'), { duration: 5000 });
+    }
+  };
+
   return (
     <div>
-      <PageInfo
-        title={t('ib.CustomerTracking.title')}
-        desc="View all of your account's information"
-      />
+      <PageInfo title={t('ib.CustomerTracking.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
@@ -170,7 +196,6 @@ export function ClientTrackingPage() {
               onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
               onLeftIconClick={() => {
-                // 触发查询逻辑, 这里简单调用一次刷新
                 setParams(prev => ({ ...prev, userName: keyword }));
                 setPageNum(0);
               }}
@@ -203,6 +228,45 @@ export function ClientTrackingPage() {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <RrhDialog
+              title={t('common.SystemPrompt')}
+              open={exportOpen}
+              onOpenChange={setExportOpen}
+              formLoading={exportLoading}
+              trigger={
+                <RrhButton variant="outline">
+                  <FileOutput />
+                  {t('table.export')}
+                </RrhButton>
+              }
+              variant="small"
+              footerShow={false}
+            >
+              <div>
+                <div>
+                  {t('table.exportAllDataTip', {
+                    field: t('ib.CustomerTracking.title'),
+                  })}
+                </div>
+                <div className="mt-4 flex justify-end gap-4 pb-4 md:pb-0">
+                  <RrhButton variant="outline" onClick={() => setExportOpen(false)}>
+                    {t('common.Cancel')}
+                  </RrhButton>
+                  <RrhButton variant="default" onClick={handleExport}>
+                    {t('common.Confirm')}
+                  </RrhButton>
+                </div>
+              </div>
+            </RrhDialog>
+            <div className="flex items-center justify-center gap-2">
+              <span>{t('ib.CustomerTracking.directBroker')}</span>
+              <Switch
+                checked={Boolean(drirectFlag)}
+                onCheckedChange={() => {
+                  setDrirectFlag(!drirectFlag);
+                }}
+              />
+            </div>
           </div>
         </div>
         <DataTable
@@ -213,7 +277,7 @@ export function ClientTrackingPage() {
           pageSize={pageSize}
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
-          loading={AgencyClientTrackingLoading}
+          loading={isLoading}
         />
       </TableContentWrapper>
     </div>
