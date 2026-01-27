@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { DailyRebateItem, DailyRebateParams, useDailyRebateList } from '@/api/hooks/report';
-import { Funnel, Search, RefreshCcw } from 'lucide-react';
+import { Funnel, Search, RefreshCcw, FileOutput } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { PageInfo } from '@/components/common/PageInfo';
@@ -13,8 +13,12 @@ import { BasicParams } from '@/api/types';
 import { RebateTypeOptions, RebateStatusOptions } from '@/lib/const';
 import { DailyRebateForm } from './DailyRebateForm';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { RrhDialog } from '@/components/common/RrhDialog';
+import { useRebateSettleExport } from '@/api/hooks/report/report';
+import { toast } from 'sonner';
+import { downloadFile } from '@/lib/utils';
+import { RrhButton } from '@/components/common/RrhButton';
 
-// DailyRebatePage component
 export function DailyRebatePage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
@@ -28,7 +32,7 @@ export function DailyRebatePage() {
   const [commonParams, setCommonParams] = useState<
     Omit<DailyRebateParams, 'params' | keyof BasicParams>
   >({
-    settleStyle: '1', // 日结
+    settleStyle: '1',
     rebateType: '',
     rebateStatus: '',
     id: '',
@@ -39,7 +43,6 @@ export function DailyRebatePage() {
     pageSize,
     ...commonParams,
     pageNum: pageNum + 1,
-    // 下面是固定参数
     isAsc: 'asc',
     orderByColumn: '',
   });
@@ -152,6 +155,37 @@ export function DailyRebatePage() {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('commission-daily-rebate-reports-table', allColumns);
 
+  const [exportOpen, setExportOpen] = useState(false);
+  const {
+    mutateAsync: exportRebate,
+    error: exportError,
+    isPending: exportLoading,
+  } = useRebateSettleExport();
+  useEffect(() => {
+    if (exportError) {
+      toast.error(t('common.exportFailed'), { duration: 5000 });
+    }
+  }, [exportError, t]);
+
+  const handleExport = async () => {
+    try {
+      const result = await exportRebate({
+        params,
+        ...commonParams,
+      });
+
+      if (result?.code !== 0 && result?.msg) {
+        toast.error(result.msg, { duration: 5000 });
+      } else if (result?.code === 0 && result?.msg) {
+        downloadFile(result.msg);
+        setExportOpen(false);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(t('common.exportFailed'), { duration: 5000 });
+    }
+  };
+
   return (
     <div>
       <PageInfo title={t('commission.daily-rebate.title')} />
@@ -165,7 +199,6 @@ export function DailyRebatePage() {
               onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
               onLeftIconClick={() => {
-                // 触发查询逻辑, 这里简单调用一次刷新
                 setParams(prev => ({ ...prev, account: keyword }));
                 setPageNum(0);
               }}
@@ -204,6 +237,36 @@ export function DailyRebatePage() {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <RrhDialog
+              title={t('common.SystemPrompt')}
+              open={exportOpen}
+              onOpenChange={setExportOpen}
+              formLoading={exportLoading}
+              trigger={
+                <RrhButton variant="outline">
+                  <FileOutput />
+                  {t('table.export')}
+                </RrhButton>
+              }
+              variant="small"
+              footerShow={false}
+            >
+              <div>
+                <div>
+                  {t('table.exportAllDataTip', {
+                    field: t('commission.daily-rebate.title'),
+                  })}
+                </div>
+                <div className="mt-4 flex justify-end gap-4 pb-4 md:pb-0">
+                  <RrhButton variant="outline" onClick={() => setExportOpen(false)}>
+                    {t('common.Cancel')}
+                  </RrhButton>
+                  <RrhButton variant="default" onClick={handleExport}>
+                    {t('common.Confirm')}
+                  </RrhButton>
+                </div>
+              </div>
+            </RrhDialog>
           </div>
         </div>
         <DataTable

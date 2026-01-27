@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { TradingItem, TradingParams, useRebateList } from '@/api/hooks/report';
-import { Funnel, Search, RefreshCcw } from 'lucide-react';
+import { Funnel, Search, RefreshCcw, FileOutput } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { useGetCrmRebateTraders } from '@/api/hooks/system/system';
@@ -14,6 +14,11 @@ import { BasicParams } from '@/api/types';
 import { DepositsForm } from './DepositsForm';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useInitServerId } from '@/hooks/useInitServerId';
+import { RrhDialog } from '@/components/common/RrhDialog';
+import { useDepositExport } from '@/api/hooks/report/report';
+import { toast } from 'sonner';
+import { downloadFile } from '@/lib/utils';
+import { RrhButton } from '@/components/common/RrhButton';
 
 export function DepositsPage() {
   const { t } = useTranslation();
@@ -36,6 +41,7 @@ export function DepositsPage() {
     conditionName: '',
     rebateTraderId: '',
     serverGroup: '',
+    rebateType: '3',
   });
   const { serverId, setServerId, server, serverLoading } = useInitServerId();
   const { data: RebateTraders, isLoading: RebateTradersLoading } = useGetCrmRebateTraders('1');
@@ -51,7 +57,6 @@ export function DepositsPage() {
       rebateTraderIdList: commonParams.rebateTraderId,
       isAsc: 'asc',
       orderByColumn: '',
-      rebateType: '3',
     },
     { enabled: !!serverId },
   );
@@ -155,6 +160,40 @@ export function DepositsPage() {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('commission-deposits-reports-table', allColumns);
 
+  const [exportOpen, setExportOpen] = useState(false);
+  const {
+    mutateAsync: exportRebate,
+    error: exportError,
+    isPending: exportLoading,
+  } = useDepositExport();
+  useEffect(() => {
+    if (exportError) {
+      toast.error(t('common.exportFailed'), { duration: 5000 });
+    }
+  }, [exportError, t]);
+
+  const handleExport = async () => {
+    try {
+      const result = await exportRebate({
+        params,
+        ...commonParams,
+        serverId,
+        serverGroupList: commonParams.serverGroup,
+        rebateTraderIdList: commonParams.rebateTraderId,
+      });
+
+      if (result?.code !== 0 && result?.msg) {
+        toast.error(result.msg, { duration: 5000 });
+      } else if (result?.code === 0 && result?.msg) {
+        downloadFile(result.msg);
+        setExportOpen(false);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(t('common.exportFailed'), { duration: 5000 });
+    }
+  };
+
   return (
     <div>
       <PageInfo title={t('commission.deposits.title')} />
@@ -213,6 +252,37 @@ export function DepositsPage() {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+
+            <RrhDialog
+              title={t('common.SystemPrompt')}
+              open={exportOpen}
+              onOpenChange={setExportOpen}
+              formLoading={exportLoading}
+              trigger={
+                <RrhButton variant="outline">
+                  <FileOutput />
+                  {t('table.export')}
+                </RrhButton>
+              }
+              variant="small"
+              footerShow={false}
+            >
+              <div>
+                <div>
+                  {t('table.exportAllDataTip', {
+                    field: t('commission.deposits.title'),
+                  })}
+                </div>
+                <div className="mt-4 flex justify-end gap-4 pb-4 md:pb-0">
+                  <RrhButton variant="outline" onClick={() => setExportOpen(false)}>
+                    {t('common.Cancel')}
+                  </RrhButton>
+                  <RrhButton variant="default" onClick={handleExport}>
+                    {t('common.Confirm')}
+                  </RrhButton>
+                </div>
+              </div>
+            </RrhDialog>
           </div>
         </div>
         <DataTable

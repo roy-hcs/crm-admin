@@ -323,6 +323,25 @@ export function WalletTransactionsPage() {
       toast.error(t('common.exportFailed'), { duration: 5000 });
     }
   }, [exportError, t]);
+
+  const handleExport = async () => {
+    try {
+      const result = await exportWalletTransactions({
+        params,
+        ...commonParams,
+      });
+
+      if (result?.code !== 0 && result?.msg) {
+        toast.error(result.msg, { duration: 5000 });
+      } else if (result?.code === 0 && result?.msg) {
+        downloadFile(result.msg);
+        setExportOpen(false);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(t('common.exportFailed'), { duration: 5000 });
+    }
+  };
   return (
     <div>
       <PageInfo title={t('financial.walletTransactions.title')} />
@@ -397,27 +416,7 @@ export function WalletTransactionsPage() {
                   <RrhButton variant="outline" onClick={() => setExportOpen(false)}>
                     {t('common.Cancel')}
                   </RrhButton>
-                  <RrhButton
-                    variant="default"
-                    onClick={async () => {
-                      try {
-                        const result = await exportWalletTransactions({
-                          params,
-                          ...commonParams,
-                        });
-
-                        if (result?.code !== 0 && result?.msg) {
-                          toast.error(result.msg, { duration: 5000 });
-                        } else if (result?.code === 0 && result?.msg) {
-                          downloadFile(result.msg);
-                          setExportOpen(false);
-                        }
-                      } catch (error) {
-                        console.error(error);
-                        toast.error(t('common.exportFailed'), { duration: 5000 });
-                      }
-                    }}
-                  >
+                  <RrhButton variant="default" onClick={handleExport}>
                     {t('common.Confirm')}
                   </RrhButton>
                 </div>
