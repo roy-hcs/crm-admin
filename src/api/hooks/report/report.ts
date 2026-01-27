@@ -178,6 +178,62 @@ export function useAccountStatisticExport() {
 }
 
 /**
+ * 交易佣金报表导出
+ */
+export function useRebateExport() {
+  return useMutation({
+    mutationFn: (params: TradingParams) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/statistics/rebate-export/1', params),
+  });
+}
+
+/**
+ * 手续费报表导出
+ */
+export function useFeeExport() {
+  return useMutation({
+    mutationFn: (params: TradingParams) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/statistics/rebate-export/2', params),
+  });
+}
+
+/**
+ *  入金报表导出
+ */
+export function useDepositExport() {
+  return useMutation({
+    mutationFn: (params: TradingParams) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/statistics/rebate-export/3', params),
+  });
+}
+
+/**
+ *  日结返佣报表导出
+ */
+export function useRebateSettleExport() {
+  return useMutation({
+    mutationFn: (params: DailyRebateParams) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/rebateSettle/export', params),
+  });
+}
+
+/**
  * 获取支付订单
  */
 export function usePaymentOrderList(params: PaymentOrderListParams) {
