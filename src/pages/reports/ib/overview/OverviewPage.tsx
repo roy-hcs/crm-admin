@@ -66,106 +66,106 @@ export function OverviewPage() {
   const allColumns: CRMColumnDef<OverviewItem, unknown>[] = [
     {
       id: 'No.',
-      header: t('ib.overview.Index'),
+      header: t('overview.Index'),
       cell: ({ row }) => <div>{row.index + 1}</div>,
     },
     {
       id: 'userName',
-      header: t('ib.overview.userName'),
+      header: t('overview.userName'),
       accessorFn: row => row.username,
     },
     {
       id: 'email',
-      header: t('ib.overview.email'),
+      header: t('overview.email'),
       accessorFn: row => row.email,
     },
     {
       id: 'rebateLevel',
-      header: t('ib.overview.rebateLevelId'),
+      header: t('overview.rebateLevelId'),
       accessorFn: row => row.rebateLevel,
     },
     {
       id: 'userNumber',
       accessorKey: 'userNumber',
-      header: t('ib.overview.userNumber'),
+      header: t('overview.userNumber'),
       accessorFn: row => row.userNumber,
     },
     {
       id: 'depositUserNumber',
       accessorKey: 'depositUserNumber',
-      header: t('ib.overview.depositUserNumber'),
+      header: t('overview.depositUserNumber'),
       accessorFn: row => row.depositUserNumber,
     },
     {
       id: 'accountNumber',
       accessorKey: 'accountNumber',
-      header: t('ib.overview.accountNumber'),
+      header: t('overview.accountNumber'),
       accessorFn: row => row.accountNumber,
     },
     {
       id: 'balance',
       accessorKey: 'balance',
-      header: t('ib.overview.balance'),
+      header: t('overview.balance'),
       accessorFn: row => row.balance,
     },
     {
       id: 'depositAmount',
       accessorKey: 'depositAmount',
-      header: t('ib.overview.depositAmount'),
+      header: t('overview.depositAmount'),
       accessorFn: row => row.depositAmount,
     },
     {
       id: 'withdrawAmount',
       accessorKey: 'withdrawAmount',
-      header: t('ib.overview.withdrawAmount'),
+      header: t('overview.withdrawAmount'),
       accessorFn: row => row.withdrawAmount,
     },
     {
       id: 'netDeposit',
       accessorKey: 'netDeposit',
-      header: t('ib.overview.netDeposit'),
+      header: t('overview.netDeposit'),
       accessorFn: row => row.netDeposit,
     },
     {
       id: 'volume',
       accessorKey: 'volume',
-      header: t('ib.overview.volume'),
+      header: t('overview.volume'),
       accessorFn: row => row.volume,
     },
     {
       id: 'profitAndLoss',
       accessorKey: 'profitAndLoss',
-      header: t('ib.overview.profitAndLoss'),
+      header: t('overview.profitAndLoss'),
       accessorFn: row => row.profitAndLoss,
     },
     {
       id: 'commission',
       accessorKey: 'commission',
-      header: t('ib.overview.commission'),
+      header: t('overview.commission'),
       accessorFn: row => row.commission,
     },
     {
       id: 'swaps',
       accessorKey: 'swaps',
-      header: t('ib.overview.swaps'),
+      header: t('overview.swaps'),
       accessorFn: row => row.swaps,
     },
     {
       id: 'rebateOnTrade',
       accessorKey: 'rebateOnTrade',
-      header: t('ib.overview.rebateOnTrade'),
+      header: t('overview.rebateOnTrade'),
       accessorFn: row => row.rebateOnTrade,
     },
     {
       id: 'rebateOnCommission',
       accessorKey: 'rebateOnCommission',
-      header: t('ib.overview.rebateOnCommission'),
+      header: t('overview.rebateOnCommission'),
       accessorFn: row => row.rebateOnCommission,
     },
     {
       id: 'rebateOnDeposit',
       accessorKey: 'rebateOnDeposit',
-      header: t('ib.overview.rebateOnDeposit'),
+      header: t('overview.rebateOnDeposit'),
       accessorFn: row => row.rebateOnDeposit,
     },
   ];
@@ -199,7 +199,7 @@ export function OverviewPage() {
 
   return (
     <div>
-      <PageInfo title={t('ib.overview.title')} />
+      <PageInfo title={t('overview.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
@@ -268,7 +268,7 @@ export function OverviewPage() {
               <div>
                 <div>
                   {t('table.exportAllDataTip', {
-                    field: t('ib.overview.title'),
+                    field: t('overview.title'),
                   })}
                 </div>
                 <div className="mt-4 flex justify-end gap-4 pb-4 md:pb-0">
@@ -282,7 +282,7 @@ export function OverviewPage() {
               </div>
             </RrhDialog>
             <div className="flex items-center justify-center gap-2">
-              <span>{t('ib.CustomerTracking.directBroker')}</span>
+              <span>{t('customerTracking.directBroker')}</span>
               <Switch
                 checked={Boolean(drirectFlag)}
                 onCheckedChange={() => {

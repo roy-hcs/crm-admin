@@ -62,12 +62,12 @@ export function ClientTrackingPage() {
   const allColumns: CRMColumnDef<AgencyClientTrackingItem, unknown>[] = [
     {
       id: 'No.',
-      header: t('ib.CustomerTracking.Index'),
+      header: t('customerTracking.Index'),
       cell: ({ row }) => <div>{row.index + 1}</div>,
     },
     {
       id: 'userName',
-      header: t('ib.CustomerTracking.userName'),
+      header: t('customerTracking.userName'),
       cell: ({ row }) => (
         <div>
           <div>{row.original.userName}</div>
@@ -77,7 +77,7 @@ export function ClientTrackingPage() {
     },
     {
       id: 'levelName',
-      header: t('ib.CustomerTracking.levelName'),
+      header: t('customerTracking.levelName'),
       cell: ({ row }) => (
         <div className="max-w-25 whitespace-pre-wrap">
           <span>{row.original.levelName}</span>
@@ -87,73 +87,73 @@ export function ClientTrackingPage() {
     },
     {
       id: 'statisticMonthStr',
-      header: t('ib.CustomerTracking.statisticMonthStr'),
+      header: t('customerTracking.statisticMonthStr'),
       accessorFn: row => row.statisticMonthStr,
     },
     {
       id: 'allFirstDeposit',
       accessorKey: 'allFirstDeposit',
-      header: t('ib.CustomerTracking.allFirstDeposit'),
+      header: t('customerTracking.allFirstDeposit'),
       accessorFn: row => row.allFirstDeposit,
     },
     {
       id: 'newClient',
       accessorKey: 'newClient',
-      header: t('ib.CustomerTracking.newClient'),
+      header: t('customerTracking.newClient'),
       accessorFn: row => row.newClient,
     },
     {
       id: 'kycProved',
       accessorKey: 'kycProved',
-      header: t('ib.CustomerTracking.kycProved'),
+      header: t('customerTracking.kycProved'),
       accessorFn: row => row.kycProved,
     },
     {
       id: 'taCreateLive',
       accessorKey: 'taCreateLive',
-      header: t('ib.CustomerTracking.taCreateLive'),
+      header: t('customerTracking.taCreateLive'),
       accessorFn: row => row.taCreateLive,
     },
     {
       id: 'newFirstDeposit',
       accessorKey: 'newFirstDeposit',
-      header: t('ib.CustomerTracking.newFirstDeposit'),
+      header: t('customerTracking.newFirstDeposit'),
       accessorFn: row => row.newFirstDeposit,
     },
     {
       id: 'depositClient',
       accessorKey: 'depositClient',
-      header: t('ib.CustomerTracking.depositClient'),
+      header: t('customerTracking.depositClient'),
       accessorFn: row => row.depositClient,
     },
     {
       id: 'tradeClient',
       accessorKey: 'tradeClient',
-      header: t('ib.CustomerTracking.tradeClient'),
+      header: t('customerTracking.tradeClient'),
       accessorFn: row => row.tradeClient,
     },
     {
       id: 'depositFirstStr',
       accessorKey: 'depositFirstStr',
-      header: t('ib.CustomerTracking.depositFirstStr'),
+      header: t('customerTracking.depositFirstStr'),
       accessorFn: row => row.depositFirstStr,
     },
     {
       id: 'depositTotalStr',
       accessorKey: 'depositTotalStr',
-      header: t('ib.CustomerTracking.depositTotalStr'),
+      header: t('customerTracking.depositTotalStr'),
       accessorFn: row => row.depositTotalStr,
     },
     {
       id: 'withdrawTotalStr',
       accessorKey: 'withdrawTotalStr',
-      header: t('ib.CustomerTracking.withdrawTotalStr'),
+      header: t('customerTracking.withdrawTotalStr'),
       accessorFn: row => row.withdrawTotalStr,
     },
     {
       id: 'netTotalStr',
       accessorKey: 'netTotalStr',
-      header: t('ib.CustomerTracking.netTotalStr'),
+      header: t('customerTracking.netTotalStr'),
       accessorFn: row => row.netTotalStr,
     },
   ];
@@ -185,12 +185,12 @@ export function ClientTrackingPage() {
 
   return (
     <div>
-      <PageInfo title={t('ib.CustomerTracking.title')} />
+      <PageInfo title={t('customerTracking.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
-              placeholder={t('ib.CustomerTracking.nameOrAccountId')}
+              placeholder={t('customerTracking.nameOrAccountId')}
               className="h-9"
               value={keyword}
               onChange={e => setKeyword(e.target.value)}
@@ -245,7 +245,7 @@ export function ClientTrackingPage() {
               <div>
                 <div>
                   {t('table.exportAllDataTip', {
-                    field: t('ib.CustomerTracking.title'),
+                    field: t('customerTracking.title'),
                   })}
                 </div>
                 <div className="mt-4 flex justify-end gap-4 pb-4 md:pb-0">
@@ -259,7 +259,7 @@ export function ClientTrackingPage() {
               </div>
             </RrhDialog>
             <div className="flex items-center justify-center gap-2">
-              <span>{t('ib.CustomerTracking.directBroker')}</span>
+              <span>{t('customerTracking.directBroker')}</span>
               <Switch
                 checked={Boolean(drirectFlag)}
                 onCheckedChange={() => {

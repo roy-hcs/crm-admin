@@ -107,19 +107,19 @@ export const OverviewForm = ({
             verticalLabel
             name="userName"
             label={t('CRMAccountPage.NameOrAccountId')}
-            placeholder={t('ib.CustomerTracking.nameOrAccountId')}
+            placeholder={t('customerTracking.nameOrAccountId')}
           />
           <FormInput
             verticalLabel
             name="email"
-            label={t('ib.CustomerTracking.email') + ':'}
-            placeholder={t('ib.CustomerTracking.enteremail')}
+            label={t('customerTracking.email') + ':'}
+            placeholder={t('customerTracking.enteremail')}
           />
           <FormField
             name="beginTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('ib.CustomerTracking.time') + ':'}</FormLabel>
+                <FormLabel className="basis-3/12">{t('customerTracking.time') + ':'}</FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="beginTime" control={form.control} />
                 </FormControl>
@@ -130,7 +130,7 @@ export const OverviewForm = ({
           <FormSelect
             verticalLabel
             name="level"
-            label={t('ib.CustomerTracking.levelName') + ':'}
+            label={t('customerTracking.levelName') + ':'}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={rebateLevelOptions.map(item => ({ label: item.levelName, value: item.id }))}

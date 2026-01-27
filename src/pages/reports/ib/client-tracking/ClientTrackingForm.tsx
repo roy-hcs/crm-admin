@@ -71,24 +71,24 @@ export const ClientTrackingForm = ({
             verticalLabel
             name="userName"
             label={t('CRMAccountPage.NameOrAccountId')}
-            placeholder={t('ib.CustomerTracking.nameOrAccountId')}
+            placeholder={t('customerTracking.nameOrAccountId')}
           />
           <FormInput
             verticalLabel
             name="email"
-            label={t('ib.CustomerTracking.email') + ':'}
-            placeholder={t('ib.CustomerTracking.enteremail')}
+            label={t('customerTracking.email') + ':'}
+            placeholder={t('customerTracking.enteremail')}
           />
           <FormMonthPicker
             control={form.control}
             name="statisticMonth"
-            label={t('ib.CustomerTracking.time') + ':'}
-            placeholder={t('ib.CustomerTracking.enterstatisticMonthStr')}
+            label={t('customerTracking.time') + ':'}
+            placeholder={t('customerTracking.enterstatisticMonthStr')}
           />
           <FormSelect
             verticalLabel
             name="level"
-            label={t('ib.CustomerTracking.levelName') + ':'}
+            label={t('customerTracking.levelName') + ':'}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={(rebateLevel?.rows || []).map(item => ({
