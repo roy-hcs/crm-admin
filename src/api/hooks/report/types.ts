@@ -38,7 +38,7 @@ export type OverviewParams = BasicParams & {
   beginTime: string;
   endTime: string;
   level: string;
-  drirectFlag?: string;
+  directClient?: string;
   serverId?: string;
   serverType?: string;
 };

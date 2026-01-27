@@ -76,7 +76,7 @@ export function TradingAccountFundsStatsPage() {
   const allColumns: CRMColumnDef<TradingAccountFundsStatsItem, unknown>[] = [
     {
       id: 'No.',
-      header: t('ib.overview.Index'),
+      header: t('overview.Index'),
       cell: ({ row }) => <div>{row.index + 1}</div>,
     },
     {
