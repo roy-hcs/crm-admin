@@ -136,6 +136,48 @@ export function useWalletTransactionListExport() {
 }
 
 /**
+ * 交易历史导出
+ */
+export function useTradingHistoryExport() {
+  return useMutation({
+    mutationFn: (params: TradingHistoryParams) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/statistics/history-export', params),
+  });
+}
+
+/**
+ * 持仓订单导出
+ */
+export function usePositionOrderExport() {
+  return useMutation({
+    mutationFn: (params: PositionOrderParams) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/statistics/position-export/1', params),
+  });
+}
+
+/**
+ * 交易账号交易历史统计导出
+ */
+export function useAccountStatisticExport() {
+  return useMutation({
+    mutationFn: (params: AccountStatisticListParams) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/statistics/account-export', params),
+  });
+}
+
+/**
  * 获取支付订单
  */
 export function usePaymentOrderList(params: PaymentOrderListParams) {
