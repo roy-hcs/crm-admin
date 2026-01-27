@@ -1,14 +1,13 @@
 import {
   useAccountStaticsSum,
   useAccountStatisticList,
-  useExportAccountStatisticList,
   AccountStatisticListParams,
   AccountStatisticListItem,
 } from '@/api/hooks/report';
 import { useServerList } from '@/api/hooks/system/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { Funnel, RefreshCcw, Search } from 'lucide-react';
+import { FileOutput, Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StatisticForm } from './StatisticForm';
@@ -19,6 +18,9 @@ import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { toast } from 'sonner';
+import { downloadFile } from '@/lib/utils';
+import { useAccountStatisticExport } from '@/api/hooks/report/report';
 
 const formatVolume = (serverType: number | undefined, volume: number) => {
   if (serverType == 1) {
@@ -73,7 +75,6 @@ export const StatisticPage = () => {
       },
       { enabled: otherParams.server !== '' },
     );
-  const { mutate: exportStatisticData } = useExportAccountStatisticList();
   const { mutate: getStatisticData, data: sumData, isPending } = useAccountStaticsSum();
   const [sumShow, setSumShow] = useState(false);
   const getSumData = () => {
@@ -188,6 +189,18 @@ export const StatisticPage = () => {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('trading-account-statistic-history-table', allColumns);
 
+  const [exportOpen, setExportOpen] = useState(false);
+  const {
+    mutateAsync: exportAccountStatistic,
+    error: exportError,
+    isPending: exportLoading,
+  } = useAccountStatisticExport();
+  useEffect(() => {
+    if (exportError) {
+      toast.error(t('common.exportFailed'), { duration: 5000 });
+    }
+  }, [exportError, t]);
+
   return (
     <div>
       <h1 className="text-title">{t('accountStatisticPage.accountStatistic')}</h1>
@@ -205,20 +218,6 @@ export const StatisticPage = () => {
             }}
           />
           <div className="flex justify-end gap-2">
-            <RrhDialog
-              title={t('common.SystemPrompt')}
-              trigger={<RrhButton variant="outline">{t('table.export')}</RrhButton>}
-              onConfirm={() =>
-                exportStatisticData({
-                  ...otherParams,
-                  params: {
-                    ...params,
-                  },
-                })
-              }
-            >
-              {t('table.exportAllDataTip', { field: t('accountStatisticPage.accountStatistic') })}
-            </RrhDialog>
             <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </RrhButton>
@@ -255,6 +254,57 @@ export const StatisticPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+
+            <RrhDialog
+              title={t('common.SystemPrompt')}
+              open={exportOpen}
+              onOpenChange={setExportOpen}
+              formLoading={exportLoading}
+              trigger={
+                <RrhButton variant="outline">
+                  <FileOutput />
+                  {t('table.export')}
+                </RrhButton>
+              }
+              variant="small"
+              footerShow={false}
+            >
+              <div>
+                <div>
+                  {t('table.exportAllDataTip', {
+                    field: t('accountStatisticPage.accountStatistic'),
+                  })}
+                </div>
+                <div className="mt-4 flex justify-end gap-4 pb-4 md:pb-0">
+                  <RrhButton variant="outline" onClick={() => setExportOpen(false)}>
+                    {t('common.Cancel')}
+                  </RrhButton>
+                  <RrhButton
+                    variant="default"
+                    onClick={async () => {
+                      try {
+                        const result = await exportAccountStatistic({
+                          params,
+                          ...otherParams,
+                        });
+
+                        if (result?.code !== 0 && result?.msg) {
+                          toast.error(result.msg, { duration: 5000 });
+                        } else if (result?.code === 0 && result?.msg) {
+                          downloadFile(result.msg);
+                          setExportOpen(false);
+                        }
+                      } catch (error) {
+                        console.error(error);
+                        toast.error(t('common.exportFailed'), { duration: 5000 });
+                      }
+                    }}
+                  >
+                    {t('common.Confirm')}
+                  </RrhButton>
+                </div>
+              </div>
+            </RrhDialog>
           </div>
         </div>
         <DataTable

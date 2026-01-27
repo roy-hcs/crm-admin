@@ -5,7 +5,7 @@ import {
 } from '@/api/hooks/report';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { Funnel, RefreshCcw, Search } from 'lucide-react';
+import { FileOutput, Funnel, RefreshCcw, Search } from 'lucide-react';
 import { TradingHistoryForm } from './TradingHistoryForm';
 import { useEffect, useState } from 'react';
 import { useServerList } from '@/api/hooks/system/system';
@@ -20,6 +20,9 @@ import { RrhDialog } from '@/components/common/RrhDialog';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useTradingHistoryExport } from '@/api/hooks/report/report';
+import { toast } from 'sonner';
+import { downloadFile } from '@/lib/utils';
 
 const formatVolume = (volume: number | null, serverType: number) => {
   if (volume === null) {
@@ -111,6 +114,7 @@ export const TradingHistoryPage = () => {
     historyCloseStartTime: '',
     historyCloseEndTime: '',
     accounts: '',
+    historyFuzzyName: '',
   });
   const [otherParams, setOtherParams] = useState<
     Omit<TradingHistoryParams, 'params' | keyof BasicParams>
@@ -127,6 +131,7 @@ export const TradingHistoryPage = () => {
     accounts: '',
     positionID: '',
     entry: '',
+    breedGroup: '',
   });
 
   const [pageNum, setPageNum] = useState(0);
@@ -146,7 +151,6 @@ export const TradingHistoryPage = () => {
   }, [serverList]);
   const { data, isLoading } = useTradingHistoryList(
     {
-      breedGroup: '',
       orderByColumn: '',
       isAsc: 'asc',
       pageNum: pageNum + 1,
@@ -160,6 +164,7 @@ export const TradingHistoryPage = () => {
       enabled: otherParams.serverId !== '' && otherParams.serverType !== '',
     },
   );
+
   const reset = () => {
     setParams({
       selectOther: '',
@@ -358,6 +363,18 @@ export const TradingHistoryPage = () => {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility<TradingHistoryItem>('trading-history-table', allColumns);
 
+  const [exportOpen, setExportOpen] = useState(false);
+  const {
+    mutateAsync: exportTradingHistory,
+    error: exportError,
+    isPending: exportLoading,
+  } = useTradingHistoryExport();
+  useEffect(() => {
+    if (exportError) {
+      toast.error(t('common.exportFailed'), { duration: 5000 });
+    }
+  }, [exportError, t]);
+
   return (
     <div>
       <PageInfo title={t('tradingHistoryPage.tradingHistory')} />
@@ -375,7 +392,6 @@ export const TradingHistoryPage = () => {
             }}
           />
           <div className="flex items-center justify-end gap-2">
-            <RrhButton variant="outline">{t('table.export')}</RrhButton>
             <RrhButton variant="outline">{t('table.batchDelete')}</RrhButton>
             <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
@@ -412,6 +428,54 @@ export const TradingHistoryPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <RrhDialog
+              title={t('common.SystemPrompt')}
+              open={exportOpen}
+              onOpenChange={setExportOpen}
+              formLoading={exportLoading}
+              trigger={
+                <RrhButton variant="outline">
+                  <FileOutput />
+                  {t('table.export')}
+                </RrhButton>
+              }
+              variant="small"
+              footerShow={false}
+            >
+              <div>
+                <div>
+                  {t('table.exportAllDataTip', { field: t('tradingHistoryPage.tradingHistory') })}
+                </div>
+                <div className="mt-4 flex justify-end gap-4 pb-4 md:pb-0">
+                  <RrhButton variant="outline" onClick={() => setExportOpen(false)}>
+                    {t('common.Cancel')}
+                  </RrhButton>
+                  <RrhButton
+                    variant="default"
+                    onClick={async () => {
+                      try {
+                        const result = await exportTradingHistory({
+                          params,
+                          ...otherParams,
+                        });
+
+                        if (result?.code !== 0 && result?.msg) {
+                          toast.error(result.msg, { duration: 5000 });
+                        } else if (result?.code === 0 && result?.msg) {
+                          downloadFile(result.msg);
+                          setExportOpen(false);
+                        }
+                      } catch (error) {
+                        console.error(error);
+                        toast.error(t('common.exportFailed'), { duration: 5000 });
+                      }
+                    }}
+                  >
+                    {t('common.Confirm')}
+                  </RrhButton>
+                </div>
+              </div>
+            </RrhDialog>
           </div>
         </div>
 
