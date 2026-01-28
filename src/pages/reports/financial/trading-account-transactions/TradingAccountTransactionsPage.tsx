@@ -13,6 +13,8 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useInitServerId } from '@/hooks/useInitServerId';
+import { useCrmUserDealExport } from '@/api/hooks/report/report';
+import { ExportButton } from '@/components/common/ExportButton';
 
 export function TradingAccountTransactionsPage() {
   const { t } = useTranslation();
@@ -20,10 +22,7 @@ export function TradingAccountTransactionsPage() {
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
   const [params, setParams] = useState<CrmUserDealListParams['params']>({
-    ticket: '',
     historyFuzzyName: '',
-    login: '',
-    comment: '',
     accounts: '',
     operationStart: '',
     operationEnd: '',
@@ -32,10 +31,11 @@ export function TradingAccountTransactionsPage() {
   const [commonParams, setCommonParams] = useState<
     Omit<CrmUserDealListParams, 'params' | keyof BasicParams>
   >({
+    ticket: '',
+    login: '',
+    comment: '',
     opeTypeList: '',
-    opeType: '',
     serverGroupList: '',
-    serverGroup: '',
     accountGroupList: '',
     accounts: '',
   });
@@ -57,10 +57,7 @@ export function TradingAccountTransactionsPage() {
 
   const reset = () => {
     setParams({
-      ticket: '',
       historyFuzzyName: '',
-      login: '',
-      comment: '',
       accounts: '',
       operationStart: '',
       operationEnd: '',
@@ -68,11 +65,12 @@ export function TradingAccountTransactionsPage() {
     });
     setCommonParams({
       opeTypeList: '',
-      opeType: '',
       serverGroupList: '',
-      serverGroup: '',
       accountGroupList: '',
       accounts: '',
+      ticket: '',
+      login: '',
+      comment: '',
     });
     setKeyword('');
     setPageNum(0);
@@ -151,6 +149,8 @@ export function TradingAccountTransactionsPage() {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('trading-account-transactions-table', allColumns);
 
+  const { mutateAsync: exportCrmUserDeal, isPending: exportLoading } = useCrmUserDealExport();
+
   return (
     <div>
       <PageInfo title={t('financial.tradingAccountTransactions.title')} desc={t('common.tips')} />
@@ -209,6 +209,16 @@ export function TradingAccountTransactionsPage() {
               onToggle={toggleColumn}
               onBatchReorder={batchUpdateColumns}
               columns={columns}
+            />
+            <ExportButton<CrmUserDealListParams>
+              title={t('financial.tradingAccountTransactions.title')}
+              exportFunction={exportCrmUserDeal}
+              params={{
+                params,
+                ...commonParams,
+                serverId,
+              }}
+              exportLoading={exportLoading}
             />
           </div>
         </div>

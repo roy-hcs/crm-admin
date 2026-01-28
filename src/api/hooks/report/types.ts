@@ -332,24 +332,21 @@ export type PaymentOrderListResponse = BasicRes<PaymentOrderItem>;
 
 // 交易账号资金流水
 export type CrmUserDealListParams = BasicParams & {
+  serverId?: string;
+  opeTypeList?: string;
+  serverGroupList?: string;
+  ticket?: string;
+  login?: string;
+  accountGroupList?: string;
+  comment?: string;
+  accounts?: string;
   params: {
-    ticket?: string;
     historyFuzzyName?: string;
-    login?: string;
-    comment?: string;
     accounts?: string;
     operationStart?: string;
     operationEnd?: string;
     fuzzyCrmAccount?: string;
   };
-  serverId?: string;
-  opeTypeList?: string;
-  opeType?: string;
-  serverGroupList?: string;
-  serverGroup?: string;
-  accountGroupList?: string;
-  accounts?: string;
-  isAsc?: 'asc' | 'desc';
 };
 
 export type PositionOrderParams = BasicParams & {
