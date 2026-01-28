@@ -42,6 +42,7 @@ import {
   CurrencyListRes,
   WalletTransactionSumParams,
   WalletTransactionSumRes,
+  PositionAverageItem,
 } from './types';
 
 /**
@@ -262,6 +263,20 @@ export function useAgencyOverviewExport() {
 }
 
 /**
+ * 交易历史批量删除
+ */
+export function useBatchDeleteTradingHistory() {
+  return useMutation({
+    mutationFn: (params: { ids: string; serverId: string; type: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: number;
+      }>('/system/crmUserDeal/batchRemove', params),
+  });
+}
+
+/**
  * 获取支付订单
  */
 export function usePaymentOrderList(params: PaymentOrderListParams) {
@@ -289,6 +304,23 @@ export function usePositionOrderList(params: PositionOrderParams, options: { ena
     queryKey: ['positionOrder', params],
     queryFn: () =>
       apiFormPostCustom<PositionOrderResponse>('/system/statistics/positionList/1', params || {}),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 此仓订单-此仓成本
+ */
+export function usePositionAverageList(params: PositionOrderParams, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['positionAverage', params],
+    queryFn: () =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string | null;
+        total: string;
+        rows: PositionAverageItem[];
+      }>(`/system/statistics/positionAverage?random=${params.params.random}`, params),
     enabled: options.enabled,
   });
 }

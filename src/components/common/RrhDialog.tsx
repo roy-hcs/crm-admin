@@ -88,7 +88,8 @@ export const RrhDialog: React.FC<DialogProps> = ({
             {
               'w-md': variant === 'small',
               'w-xl': variant === 'middle',
-              'w-3xl sm:max-w-full': variant === 'large',
+              //  768 / 1440 = 0.5333
+              'flex max-h-[53vh] w-3xl flex-col sm:max-w-full': variant === 'large',
             },
             className,
           )}

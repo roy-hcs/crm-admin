@@ -6,7 +6,7 @@ import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { FileOutput, Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PositionOrderForm } from './PositionOrderForm';
+// import { PositionOrderForm } from './PositionOrderForm';
 import { TableCell } from '@/components/ui/table';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
@@ -18,6 +18,8 @@ import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { toast } from 'sonner';
 import { usePositionOrderExport } from '@/api/hooks/report/report';
 import { downloadFile } from '@/lib/utils';
+import { PositionOrderForm } from './components/PositionOrderForm';
+import { PositionCostDialog } from './components/PositionCostDialog';
 
 const formatVolume = (volume: number | null, serverType: number, lotSize: number | null) => {
   if (volume === null) {
@@ -347,7 +349,6 @@ export const PositionOrderPage = () => {
             }}
           />
           <div className="flex items-center justify-end gap-2">
-            <RrhButton variant="outline">{t('positionOrderPage.positionCost')}</RrhButton>
             <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </RrhButton>
@@ -411,6 +412,11 @@ export const PositionOrderPage = () => {
                 </div>
               </div>
             </RrhDialog>
+            <PositionCostDialog
+              serverId={otherParams.server}
+              otherParams={otherParams}
+              params={params}
+            />
           </div>
         </div>
         <DataTable

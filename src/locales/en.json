@@ -674,7 +674,10 @@
     "dailyAgencyFee": "Daily agency fees",
     "dailyHandlingFee": "daily handling fee",
     "monthlyAgencyFee": "Monthly agency fee",
-    "monthlyHandlingFee": "monthly handling fee"
+    "monthlyHandlingFee": "monthly handling fee",
+    "atLeastOneOrder": "Select at least one order",
+    "deleteOrderConfirm": "Are you sure you want to delete the order?",
+    "selectedOrders": "{{count}} orders selected"
   },
   "financial": {
     "walletTransactions": {
@@ -791,7 +794,13 @@
   "positionOrderPage": {
     "positionCost": "Position cost",
     "positionOrder": "Position Order",
-    "positionOrderDetail": "Details of position orders"
+    "positionOrderDetail": "Details of position orders",
+    "buyPositionCost": "Buy position cost",
+    "buyPositionVolume": "Buy position",
+    "netPositionVolume": "Net position",
+    "netPositionVolumeTips": "Net position = Buy position - Sell position",
+    "sellPositionCost": "Sell ​​holding cost",
+    "sellPositionVolume": "Sell ​​position"
   },
   "systemFundOperationsPage": {
     "title": "System fund operation record"

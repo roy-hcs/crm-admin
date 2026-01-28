@@ -137,7 +137,7 @@ export type DailyRebateItem = {
 export type DailyRebateResponse = BasicRes<DailyRebateItem>;
 
 export type TradingHistoryParams = BasicParams & {
-  serverType: number | string;
+  serverType?: number | string;
   serverId?: string;
   serverGroupList?: string;
   serverGroup?: string;
@@ -426,6 +426,15 @@ export type PositionOrderResponse = {
     totalSwaps: number;
     totalVolume: number;
   }[];
+};
+
+export type PositionAverageItem = {
+  asset: string | null;
+  digits: number | null;
+  lotsBuy: number | null;
+  lotsSell: number | null;
+  totalBuy: number | null;
+  totalSell: number | null;
 };
 
 export type LimitOrderListResponse = PositionOrderResponse;
