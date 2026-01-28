@@ -9,10 +9,12 @@ export const BatchDeleteDialog = ({
   onSuccess,
   ids,
   serverId,
+  type,
 }: {
   onSuccess?: () => void;
   ids: string[];
   serverId: string;
+  type: 'd' | 'f';
 }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -25,7 +27,7 @@ export const BatchDeleteDialog = ({
       const param = {
         ids: ids.join(','),
         serverId: serverId,
-        type: 'd',
+        type,
       };
       const res = await batchDeleteFunc(param);
       if (res.code === 0) {

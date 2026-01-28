@@ -41,6 +41,7 @@ export const PammProductsForm = ({
     },
   });
   const onSubmit = (data: FormData) => {
+    reset?.();
     setOtherParams({
       profitType: '1',
       model: data.model,
@@ -50,9 +51,7 @@ export const PammProductsForm = ({
     });
   };
   const onReset = () => {
-    if (reset) {
-      reset();
-    }
+    reset?.();
     form.reset({
       projectName: '',
       model: '',

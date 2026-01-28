@@ -57,6 +57,7 @@ export const AdminOperationsForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       title: data.title,
       operName: data.operName,

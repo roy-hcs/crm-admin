@@ -29,6 +29,7 @@ export const ProductsForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       goodsName: data.goodsName,
     });

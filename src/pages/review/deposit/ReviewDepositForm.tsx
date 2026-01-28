@@ -75,6 +75,7 @@ export const ReviewDepositForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     const selectedAccounts = JSON.parse(data.accounts || '{"id": "", "label": ""}') as {
       id: string;
       label: string;

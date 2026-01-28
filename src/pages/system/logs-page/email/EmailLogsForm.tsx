@@ -55,6 +55,7 @@ export const EmailLogsForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams(pre => ({
       ...pre,
       sendStartTime: formatDate(data.sendTime.from),

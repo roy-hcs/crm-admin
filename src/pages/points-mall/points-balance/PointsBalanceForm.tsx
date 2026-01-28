@@ -47,6 +47,7 @@ export const PointsBalanceForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       fuzzyName: data.fuzzyName,
       email: data.email,

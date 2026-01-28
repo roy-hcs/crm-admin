@@ -41,6 +41,7 @@ export const ClientTrackingForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       userName: data.userName,
       email: data.email,

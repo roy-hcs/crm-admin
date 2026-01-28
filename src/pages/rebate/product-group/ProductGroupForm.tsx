@@ -48,6 +48,7 @@ export const ProductGroupForm = ({
   );
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       typeGroupName: data.typeGroupName,
       serverType: data.serverType,

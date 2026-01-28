@@ -231,7 +231,8 @@
     "pwdType": "密码类型",
     "detail": "{{field}} 详细",
     "exportFailed": "导出失败",
-    "selectUser": "选择用户"
+    "selectUser": "选择用户",
+    "modify": "修改 {{field}}"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -1108,7 +1109,8 @@
     "outerOrderNo": "外部订单号",
     "orderInfo": "订单信息",
     "createDepositVerifyRecord": "生成入金审核记录",
-    "statusChangeSuccess": "状态修改成功"
+    "statusChangeSuccess": "状态修改成功",
+    "modifyPaymentOrderTips": "请在支付通道方核实订单的支付状态后再做修改。"
   },
   "review": {
     "settings": {

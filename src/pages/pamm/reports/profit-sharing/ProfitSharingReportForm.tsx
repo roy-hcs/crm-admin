@@ -63,6 +63,7 @@ export const ProfitSharingReportForm = ({
     },
   });
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       serverId: data.serverId,
       projectName: data.projectName,

@@ -76,6 +76,7 @@ export const CRMAccountsForm = ({
   const { t } = useTranslation();
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       threeCons: data.name,
       regStartTime: formatDate(data.regStartTime.from),

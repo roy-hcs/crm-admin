@@ -64,6 +64,7 @@ export const ReviewAgentForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       name: data.name,
       mobile: data.mobile,

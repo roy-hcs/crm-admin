@@ -56,6 +56,7 @@ export const MessageManagementForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       type: data.type,
     });

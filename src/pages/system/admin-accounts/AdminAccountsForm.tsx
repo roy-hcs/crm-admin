@@ -60,6 +60,7 @@ export const AdminAccountsForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       userName: data.userName,
       roleId: data.roleId,

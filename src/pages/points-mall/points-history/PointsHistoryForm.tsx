@@ -60,6 +60,7 @@ export const PointsHistoryForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       fuzzyName: data.fuzzyName,
       fuzzyEmail: data.fuzzyEmail,

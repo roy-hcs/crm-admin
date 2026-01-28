@@ -341,6 +341,20 @@ export function useCrmUserDealList(params: CrmUserDealListParams, options: { ena
   });
 }
 
+/**
+ * 导出交易账号资金流水
+ */
+export function useCrmUserDealExport() {
+  return useMutation({
+    mutationFn: (params: CrmUserDealListParams) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/crmUserDeal/export', params),
+  });
+}
+
 export function usePositionOrderList(params: PositionOrderParams, options: { enabled: boolean }) {
   return useQuery({
     queryKey: ['positionOrder', params],

@@ -43,6 +43,7 @@ export const TicketUnassignedListForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       isAll: '0',
       orderId: data.orderId,

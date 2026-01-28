@@ -60,6 +60,7 @@ export const RewardRecordsForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       rewardId: data.rewardId,
     });

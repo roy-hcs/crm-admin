@@ -63,6 +63,7 @@ export const SignalReviewForm = ({
     },
   });
   const onSubmit = (data: FormData) => {
+    reset();
     setParams(pre => ({
       ...pre,
       beginTime: formatDate(data.Time.from),

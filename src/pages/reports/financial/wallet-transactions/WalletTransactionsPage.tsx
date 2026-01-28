@@ -10,7 +10,7 @@ import {
   WalletTransactionItem,
 } from '@/api/hooks/report';
 import { WalletTransactionsForm } from './WalletTransactionsForm';
-import { Funnel, Search, RefreshCcw, FileOutput } from 'lucide-react';
+import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { PageInfo } from '@/components/common/PageInfo';
@@ -22,8 +22,7 @@ import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { LabelItem } from '@/components/common/LabelItem';
 import { useWalletTransactionListExport } from '@/api/hooks/report/report';
-import { toast } from 'sonner';
-import { downloadFile } from '@/lib/utils';
+import { ExportButton } from '@/components/common/ExportButton';
 
 const OperationTypeMap: Record<number, string> = {
   1: 'table.Deposit',
@@ -177,7 +176,6 @@ export function WalletTransactionsPage() {
 
   const { mutate: getSum, data: sumData, isPending } = useWalletTransactionSum();
   const [sumShow, setSumShow] = useState(false);
-  const [exportOpen, setExportOpen] = useState(false);
   const getSumData = () => {
     setSumShow(true);
     getSum({
@@ -313,35 +311,8 @@ export function WalletTransactionsPage() {
   ];
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('wallet-transactions-table', allColumns);
-  const {
-    mutateAsync: exportWalletTransactions,
-    error: exportError,
-    isPending: exportLoading,
-  } = useWalletTransactionListExport();
-  useEffect(() => {
-    if (exportError) {
-      toast.error(t('common.exportFailed'), { duration: 5000 });
-    }
-  }, [exportError, t]);
-
-  const handleExport = async () => {
-    try {
-      const result = await exportWalletTransactions({
-        params,
-        ...commonParams,
-      });
-
-      if (result?.code !== 0 && result?.msg) {
-        toast.error(result.msg, { duration: 5000 });
-      } else if (result?.code === 0 && result?.msg) {
-        downloadFile(result.msg);
-        setExportOpen(false);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error(t('common.exportFailed'), { duration: 5000 });
-    }
-  };
+  const { mutateAsync: exportWalletTransactions, isPending: exportLoading } =
+    useWalletTransactionListExport();
   return (
     <div>
       <PageInfo title={t('financial.walletTransactions.title')} />
@@ -394,34 +365,12 @@ export function WalletTransactionsPage() {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
-            <RrhDialog
-              title={t('common.SystemPrompt')}
-              open={exportOpen}
-              onOpenChange={setExportOpen}
-              formLoading={exportLoading}
-              trigger={
-                <RrhButton variant="outline">
-                  <FileOutput />
-                  {t('table.export')}
-                </RrhButton>
-              }
-              variant="small"
-              footerShow={false}
-            >
-              <div>
-                <div>
-                  {t('table.exportAllDataTip', { field: t('financial.walletTransactions.title') })}
-                </div>
-                <div className="mt-4 flex justify-end gap-4 pb-4 md:pb-0">
-                  <RrhButton variant="outline" onClick={() => setExportOpen(false)}>
-                    {t('common.Cancel')}
-                  </RrhButton>
-                  <RrhButton variant="default" onClick={handleExport}>
-                    {t('common.Confirm')}
-                  </RrhButton>
-                </div>
-              </div>
-            </RrhDialog>
+            <ExportButton<CrmUserDealDetailParams>
+              title={t('financial.walletTransactions.title')}
+              exportFunction={exportWalletTransactions}
+              params={{ params, ...commonParams }}
+              exportLoading={exportLoading}
+            />
           </div>
         </div>
         <DataTable
