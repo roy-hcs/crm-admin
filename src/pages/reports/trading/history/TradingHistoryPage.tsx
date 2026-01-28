@@ -5,10 +5,8 @@ import {
 } from '@/api/hooks/report';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { FileOutput, Funnel, RefreshCcw, Search } from 'lucide-react';
-// import { TradingHistoryForm } from './TradingHistoryForm';
+import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-// import { useServerList } from '@/api/hooks/system/system';
 import { useTranslation } from 'react-i18next';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { BasicParams } from '@/api/types';
@@ -21,11 +19,10 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useTradingHistoryExport } from '@/api/hooks/report/report';
-import { toast } from 'sonner';
-import { downloadFile } from '@/lib/utils';
 import { TradingHistoryForm } from './components/TradingHistoryForm';
 import { BatchDeleteDialog } from './components/BatchDeleteDialog';
 import { useInitServerId } from '@/hooks/useInitServerId';
+import { ExportButton } from '@/components/common/ExportButton';
 
 const formatVolume = (volume: number | null, serverType: number) => {
   if (volume === null) {
@@ -368,27 +365,8 @@ export const TradingHistoryPage = () => {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility<TradingHistoryItem>('trading-history-table', allColumns);
 
-  const [exportOpen, setExportOpen] = useState(false);
   const { mutateAsync: exportTradingHistory, isPending: exportLoading } = useTradingHistoryExport();
 
-  const handleExport = async () => {
-    try {
-      const result = await exportTradingHistory({
-        params,
-        ...otherParams,
-      });
-
-      if (result?.code !== 0 && result?.msg) {
-        toast.error(result.msg, { duration: 5000 });
-      } else if (result?.code === 0 && result?.msg) {
-        downloadFile(result.msg);
-        setExportOpen(false);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error(t('common.exportFailed'), { duration: 5000 });
-    }
-  };
   const [ids, setIds] = useState<string[]>([]);
 
   const onSuccess = () => {
@@ -454,34 +432,15 @@ export const TradingHistoryPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
-            <RrhDialog
-              title={t('common.SystemPrompt')}
-              open={exportOpen}
-              onOpenChange={setExportOpen}
-              formLoading={exportLoading}
-              trigger={
-                <RrhButton variant="outline">
-                  <FileOutput />
-                  {t('table.export')}
-                </RrhButton>
-              }
-              variant="small"
-              footerShow={false}
-            >
-              <div>
-                <div>
-                  {t('table.exportAllDataTip', { field: t('tradingHistoryPage.tradingHistory') })}
-                </div>
-                <div className="mt-4 flex justify-end gap-4 pb-4 md:pb-0">
-                  <RrhButton variant="outline" onClick={() => setExportOpen(false)}>
-                    {t('common.Cancel')}
-                  </RrhButton>
-                  <RrhButton variant="default" onClick={handleExport}>
-                    {t('common.Confirm')}
-                  </RrhButton>
-                </div>
-              </div>
-            </RrhDialog>
+            <ExportButton<TradingHistoryParams>
+              title={t('tradingHistoryPage.tradingHistory')}
+              exportFunction={exportTradingHistory}
+              params={{
+                params,
+                ...otherParams,
+              }}
+              exportLoading={exportLoading}
+            />
             <BatchDeleteDialog onSuccess={onSuccess} ids={ids} serverId={serverId} />
           </div>
         </div>

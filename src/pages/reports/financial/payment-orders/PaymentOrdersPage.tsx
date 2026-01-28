@@ -3,7 +3,7 @@ import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { PaymentOrderItem, PaymentOrderListParams, usePaymentOrderList } from '@/api/hooks/report';
 import { PaymentOrdersForm } from './PaymentOrdersForm';
-import { Funnel, Search, RefreshCcw, Ellipsis, FileOutput } from 'lucide-react';
+import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
@@ -16,11 +16,8 @@ import { BasicParams } from '@/api/types';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { PaymentOrderDetailDialog } from './PaymentOrderDetailDialog';
 import { usePaymentOrderDepositDetail, usePaymentOrderExport } from '@/api/hooks/report/report';
-import { toast } from 'sonner';
-import { downloadFile } from '@/lib/utils';
-import { RrhDialog } from '@/components/common/RrhDialog';
-import { RrhButton } from '@/components/common/RrhButton';
 import { PaymentOrderEditDialog } from './PaymentOrderEditDialog';
+import { ExportButton } from '@/components/common/ExportButton';
 export function PaymentOrdersPage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
@@ -178,26 +175,7 @@ export function PaymentOrdersPage() {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('payment-orders-table', allColumns);
 
-  const [exportOpen, setExportOpen] = useState(false);
   const { mutateAsync: exportPaymentOrders, isPending: exportLoading } = usePaymentOrderExport();
-  const handleExport = async () => {
-    try {
-      const result = await exportPaymentOrders({
-        params,
-        ...commonParams,
-      });
-
-      if (result?.code !== 0 && result?.msg) {
-        toast.error(result.msg, { duration: 5000 });
-      } else if (result?.code === 0 && result?.msg) {
-        downloadFile(result.msg);
-        setExportOpen(false);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error(t('common.exportFailed'), { duration: 5000 });
-    }
-  };
   return (
     <div>
       <PageInfo title={t('financial.paymentOrders.title')} />
@@ -255,34 +233,12 @@ export function PaymentOrdersPage() {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
-            <RrhDialog
-              title={t('common.SystemPrompt')}
-              open={exportOpen}
-              onOpenChange={setExportOpen}
-              formLoading={exportLoading}
-              trigger={
-                <RrhButton variant="outline">
-                  <FileOutput />
-                  {t('table.export')}
-                </RrhButton>
-              }
-              variant="small"
-              footerShow={false}
-            >
-              <div>
-                <div>
-                  {t('table.exportAllDataTip', { field: t('financial.paymentOrders.title') })}
-                </div>
-                <div className="mt-4 flex justify-end gap-4 pb-4 md:pb-0">
-                  <RrhButton variant="outline" onClick={() => setExportOpen(false)}>
-                    {t('common.Cancel')}
-                  </RrhButton>
-                  <RrhButton variant="default" onClick={handleExport}>
-                    {t('common.Confirm')}
-                  </RrhButton>
-                </div>
-              </div>
-            </RrhDialog>
+            <ExportButton<PaymentOrderListParams>
+              title={t('financial.paymentOrders.title')}
+              exportFunction={exportPaymentOrders}
+              params={{ params, ...commonParams }}
+              exportLoading={exportLoading}
+            />
           </div>
         </div>
         <DataTable

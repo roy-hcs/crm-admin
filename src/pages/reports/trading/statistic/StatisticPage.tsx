@@ -7,20 +7,18 @@ import {
 import { useServerList } from '@/api/hooks/system/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { FileOutput, Funnel, RefreshCcw, Search } from 'lucide-react';
+import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StatisticForm } from './StatisticForm';
 import { TableCell } from '@/components/ui/table';
-import { RrhDialog } from '@/components/common/RrhDialog';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
-import { toast } from 'sonner';
-import { downloadFile } from '@/lib/utils';
 import { useAccountStatisticExport } from '@/api/hooks/report/report';
+import { ExportButton } from '@/components/common/ExportButton';
 
 const formatVolume = (serverType: number | undefined, volume: number) => {
   if (serverType == 1) {
@@ -189,36 +187,8 @@ export const StatisticPage = () => {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('trading-account-statistic-history-table', allColumns);
 
-  const [exportOpen, setExportOpen] = useState(false);
-  const {
-    mutateAsync: exportAccountStatistic,
-    error: exportError,
-    isPending: exportLoading,
-  } = useAccountStatisticExport();
-  useEffect(() => {
-    if (exportError) {
-      toast.error(t('common.exportFailed'), { duration: 5000 });
-    }
-  }, [exportError, t]);
-
-  const handleExport = async () => {
-    try {
-      const result = await exportAccountStatistic({
-        params,
-        ...otherParams,
-      });
-
-      if (result?.code !== 0 && result?.msg) {
-        toast.error(result.msg, { duration: 5000 });
-      } else if (result?.code === 0 && result?.msg) {
-        downloadFile(result.msg);
-        setExportOpen(false);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error(t('common.exportFailed'), { duration: 5000 });
-    }
-  };
+  const { mutateAsync: exportAccountStatistic, isPending: exportLoading } =
+    useAccountStatisticExport();
 
   return (
     <div>
@@ -273,37 +243,12 @@ export const StatisticPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
-
-            <RrhDialog
-              title={t('common.SystemPrompt')}
-              open={exportOpen}
-              onOpenChange={setExportOpen}
-              formLoading={exportLoading}
-              trigger={
-                <RrhButton variant="outline">
-                  <FileOutput />
-                  {t('table.export')}
-                </RrhButton>
-              }
-              variant="small"
-              footerShow={false}
-            >
-              <div>
-                <div>
-                  {t('table.exportAllDataTip', {
-                    field: t('accountStatisticPage.accountStatistic'),
-                  })}
-                </div>
-                <div className="mt-4 flex justify-end gap-4 pb-4 md:pb-0">
-                  <RrhButton variant="outline" onClick={() => setExportOpen(false)}>
-                    {t('common.Cancel')}
-                  </RrhButton>
-                  <RrhButton variant="default" onClick={handleExport}>
-                    {t('common.Confirm')}
-                  </RrhButton>
-                </div>
-              </div>
-            </RrhDialog>
+            <ExportButton<AccountStatisticListParams>
+              title={t('accountStatisticPage.accountStatistic')}
+              exportFunction={exportAccountStatistic}
+              params={{ params, ...otherParams }}
+              exportLoading={exportLoading}
+            />
           </div>
         </div>
         <DataTable
