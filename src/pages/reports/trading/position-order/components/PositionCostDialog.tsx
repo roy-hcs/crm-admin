@@ -47,7 +47,7 @@ export const PositionCostDialog = ({
       id: 'lotsBuy',
       header: t('positionOrderPage.buyPositionCost'),
       accessorFn: row => {
-        return row.lotsBuy == 0
+        return row.lotsBuy === 0
           ? 0
           : ((row.totalBuy || 0) / (row.lotsBuy || 0)).toFixed((row.digits || 0) + 3);
       },
@@ -61,7 +61,7 @@ export const PositionCostDialog = ({
       id: 'totalSell',
       header: t('positionOrderPage.sellPositionCost'),
       accessorFn: row => {
-        return row.lotsSell == 0
+        return row.lotsSell === 0
           ? 0
           : ((row.totalSell || 0) / (row.lotsSell || 0)).toFixed((row.digits || 0) + 3);
       },
