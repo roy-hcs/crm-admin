@@ -50,6 +50,7 @@ export const PipValueForm = ({
   );
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       pointValueName: data.pointValueName,
       serverType: data.serverType,

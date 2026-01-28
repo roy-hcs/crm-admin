@@ -441,7 +441,7 @@ export const TradingHistoryPage = () => {
               }}
               exportLoading={exportLoading}
             />
-            <BatchDeleteDialog onSuccess={onSuccess} ids={ids} serverId={serverId} />
+            <BatchDeleteDialog type="d" onSuccess={onSuccess} ids={ids} serverId={serverId} />
           </div>
         </div>
 

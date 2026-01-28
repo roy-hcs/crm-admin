@@ -85,6 +85,7 @@ export const TradingAccountDataStatsForm = ({
   const serverId = form.watch('serverId');
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       onlyViewRebateAccount: data.onlyViewRebateAccount,
       serverGroupList: data.serverGroupList,

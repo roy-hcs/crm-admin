@@ -35,6 +35,7 @@ export const MenuForm = ({
     },
   });
   const onSubmit = (data: FormData) => {
+    reset();
     setMenuName(data.menuName);
     setMenuState(data.menuState === 'all' ? '' : data.menuState);
   };

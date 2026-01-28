@@ -93,6 +93,7 @@ export const WalletTransactionsForm = ({
   }, [inMethodResp, inMethodDictKey]);
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       account: data.account,
       selectOther: data.selectOther,

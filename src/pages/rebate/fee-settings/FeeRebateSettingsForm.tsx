@@ -50,6 +50,7 @@ export const FeeRebateSettingsForm = ({
   );
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       rebateType: '2',
       model: '1',

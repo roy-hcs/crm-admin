@@ -97,6 +97,7 @@ export const TradingHistoryForm = ({
   const selectedServer = serverList.find(item => item.id === form.watch('serverId'));
 
   const onSubmit = (data: FormData) => {
+    reset();
     const selectedServer = serverList.find(item => item.id === data.serverId);
     if (!selectedServer) return;
     // 需要一个函数来处理selectOther的值，当data中除了serverId之外，任意一个字段值不为空（其中openTime和closeTime对应from和to有值）时，selectOther值为‘1’，否则为‘0’

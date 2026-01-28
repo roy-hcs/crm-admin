@@ -23,11 +23,11 @@ export function ExportButton<T>({
     try {
       const result = await exportFunction(params);
 
-      if (result?.code !== 0 && result?.msg) {
-        toast.error(result.msg, { duration: 5000 });
-      } else if (result?.code === 0 && result?.msg) {
+      if (result.code === 0 && result.msg) {
         downloadFile(result.msg);
         setExportOpen(false);
+      } else {
+        toast.error(result.msg || t('common.exportFailed'), { duration: 5000 });
       }
     } catch (error) {
       console.error(error);

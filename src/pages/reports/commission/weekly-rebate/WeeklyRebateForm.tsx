@@ -63,6 +63,7 @@ export const WeeklyRebateForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       beginTime: formatDate(data.settlementTime.from),
       endTime: formatDate(data.settlementTime.to),

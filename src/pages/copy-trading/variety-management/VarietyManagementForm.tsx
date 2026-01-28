@@ -36,6 +36,7 @@ export const VarietyManagementForm = ({
     },
   });
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams(pre => ({
       ...pre,
       symbolCategory: data.symbolCategory,

@@ -67,6 +67,7 @@ export const CommissionReviewForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       beginTime: formatDate(data.beginTime.from),
       endTime: formatDate(data.beginTime.to),

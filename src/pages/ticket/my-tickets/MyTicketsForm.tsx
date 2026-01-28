@@ -45,6 +45,7 @@ export const MyTicketsForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     const submitData: Omit<CrmTicketParams, keyof BasicParams> = {
       orderId: data.orderId,
       content: data.content,

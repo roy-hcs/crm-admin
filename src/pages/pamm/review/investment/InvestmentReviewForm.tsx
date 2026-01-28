@@ -52,6 +52,7 @@ export const InvestmentReviewForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       projectName: data.projectName,
       investor: data.investor,

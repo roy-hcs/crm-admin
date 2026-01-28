@@ -55,6 +55,7 @@ export const AdminLoginForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       ipaddr: data.ipaddr,
       status: data.status === '3' ? '' : data.status,

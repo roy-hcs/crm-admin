@@ -50,6 +50,7 @@ export const DepositRebateSettingsForm = ({
   );
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       rebateType: '3',
       model: '1',

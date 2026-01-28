@@ -92,6 +92,7 @@ export const TradingAccountTransactionsForm = ({
   const serverId = form.watch('serverId');
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       historyFuzzyName: data.historyFuzzyName,
       accounts: data.accounts,
