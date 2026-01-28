@@ -504,12 +504,21 @@
     "dailyHandlingFee": "日常手续费",
     "monthlyHandlingFee": "月度手续费",
     "dailyAgencyFee": "日常代理手续费",
-    "monthlyAgencyFee": "月度代理手续费"
+    "monthlyAgencyFee": "月度代理手续费",
+    "deleteOrderConfirm": "确定删除订单?",
+    "selectedOrders": "已选择 {{count}} 条订单",
+    "atLeastOneOrder": "至少选择一笔订单"
   },
   "positionOrderPage": {
     "positionOrderDetail": "持仓订单详情",
     "positionOrder": "持仓订单",
-    "positionCost": "持仓成本"
+    "positionCost": "持仓成本",
+    "buyPositionVolume": "Buy持仓量",
+    "buyPositionCost": "Buy持仓成本",
+    "sellPositionVolume": "Sell持仓量",
+    "sellPositionCost": "Sell持仓成本",
+    "netPositionVolume": "净持仓量",
+    "netPositionVolumeTips": "净持仓量=Buy持仓量-Sell持仓量"
   },
   "limitOrderPage": {
     "limitOrder": "限价订单",
