@@ -85,17 +85,18 @@ const SortableColumnItem = ({
         onClick={handleItemClick}
       >
         <div className="flex items-center gap-2">
-          <Check size={16} className={cn('text-foreground', isVisible ? '' : 'opacity-0')} />
+          <div
+            className="cursor-grab touch-none p-2 active:cursor-grabbing"
+            data-dnd-handle="true"
+            {...attributes}
+            {...listeners}
+          >
+            <GripVertical className="text-muted-foreground size-4" />
+          </div>
+
           <span className="flex-1">{column.label}</span>
         </div>
-        <div
-          className="cursor-grab touch-none p-2 active:cursor-grabbing"
-          data-dnd-handle="true"
-          {...attributes}
-          {...listeners}
-        >
-          <GripVertical className="text-muted-foreground size-4" />
-        </div>
+        <Check size={16} className={cn('text-foreground', isVisible ? '' : 'opacity-0')} />
       </div>
     );
   }
@@ -107,6 +108,9 @@ const SortableColumnItem = ({
       className="hover:bg-accent flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1"
       onClick={handleItemClick}
     >
+      <div className="cursor-grab active:cursor-grabbing" {...attributes} {...listeners}>
+        <GripVertical className="text-muted-foreground size-4" />
+      </div>
       <DropdownMenuCheckboxItem
         checked={isVisible}
         onSelect={e => e.preventDefault()} // 阻止选择时关闭下拉框
@@ -114,9 +118,6 @@ const SortableColumnItem = ({
       >
         {column.label}
       </DropdownMenuCheckboxItem>
-      <div className="cursor-grab active:cursor-grabbing" {...attributes} {...listeners}>
-        <GripVertical className="text-muted-foreground size-4" />
-      </div>
     </div>
   );
 };

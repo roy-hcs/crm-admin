@@ -28,7 +28,7 @@ import { RrhCircleLoading } from './RrhCircleLoading';
 interface DialogProps {
   title?: string;
   description?: string;
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   children?: React.ReactNode;
   cancelText?: string;
   confirmText?: string;
