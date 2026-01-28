@@ -20,12 +20,14 @@ import { toast } from 'sonner';
 import { downloadFile } from '@/lib/utils';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { RrhButton } from '@/components/common/RrhButton';
+import { PaymentOrderEditDialog } from './PaymentOrderEditDialog';
 export function PaymentOrdersPage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [detailId, setDetailId] = useState<string>('');
   const [params, setParams] = useState<PaymentOrderListParams['params']>({
     userName: '',
@@ -43,7 +45,11 @@ export function PaymentOrdersPage() {
     accounts: '',
   });
 
-  const { data: data, isLoading: loading } = usePaymentOrderList({
+  const {
+    data: data,
+    isLoading: loading,
+    refetch,
+  } = usePaymentOrderList({
     params,
     pageSize,
     ...commonParams,
@@ -53,11 +59,15 @@ export function PaymentOrdersPage() {
   });
   const { data: depositDetail, isLoading: depositDetailLoading } = usePaymentOrderDepositDetail(
     detailId,
-    detailDialogOpen && !!detailId,
+    (detailDialogOpen || editDialogOpen) && !!detailId,
   );
   const openDepositDetail = (id: string) => {
     setDetailId(id);
     setDetailDialogOpen(true);
+  };
+  const openDepositEdit = (id: string) => {
+    setDetailId(id);
+    setEditDialogOpen(true);
   };
   const reset = () => {
     setParams({
@@ -151,7 +161,9 @@ export function PaymentOrdersPage() {
             ]}
             callToAction={async action => {
               if (action === 'edit') {
-                // Handle edit action
+                if (row.original.id) {
+                  await openDepositEdit(row.original.id);
+                }
               } else if (action === 'view') {
                 if (row.original.id) {
                   await openDepositDetail(row.original.id);
@@ -290,6 +302,15 @@ export function PaymentOrdersPage() {
           paymentOrderItem={depositDetail.data}
           open={detailDialogOpen}
           setOpen={setDetailDialogOpen}
+        />
+      )}
+      {depositDetail?.data && (
+        <PaymentOrderEditDialog
+          isLoading={depositDetailLoading}
+          paymentOrderItem={depositDetail.data}
+          open={editDialogOpen}
+          setOpen={setEditDialogOpen}
+          onStatusChange={refetch}
         />
       )}
     </div>

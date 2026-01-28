@@ -54,7 +54,7 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
               ) : (
                 <RrhSelect<O>
                   options={options}
-                  value={field.value}
+                  value={field.value?.toString()}
                   onValueChange={field.onChange}
                   className="w-full"
                   placeholder={placeholder}

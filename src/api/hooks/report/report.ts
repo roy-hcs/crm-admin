@@ -245,6 +245,7 @@ export function usePaymentOrderList(params: PaymentOrderListParams) {
   });
 }
 
+// 获取支付订单详情
 export function usePaymentOrderDepositDetail(id: string, enabled: boolean = false) {
   return useQuery({
     queryKey: ['paymentOrderDepositDetail', id],
@@ -256,6 +257,7 @@ export function usePaymentOrderDepositDetail(id: string, enabled: boolean = fals
   });
 }
 
+// 导出支付订单
 export function usePaymentOrderExport() {
   return useMutation({
     mutationFn: (params: PaymentOrderListParams) =>
@@ -264,6 +266,23 @@ export function usePaymentOrderExport() {
         msg: string;
         data: null;
       }>('/system/userOrder/export', params),
+  });
+}
+
+// 改变支付订单状态
+export function useChangePaymentOrderStatus() {
+  return useMutation({
+    mutationFn: (params: {
+      id: string;
+      userId: string;
+      orderStatus: number;
+      createVerifyRecord: boolean;
+    }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/userOrder/changeStatus', params),
   });
 }
 

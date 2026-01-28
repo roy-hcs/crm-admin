@@ -1098,7 +1098,9 @@
     "creditAmountWithdrawal": "信用额出金",
     "paymentLink": "支付链接",
     "outerOrderNo": "外部订单号",
-    "orderInfo": "订单信息"
+    "orderInfo": "订单信息",
+    "createDepositVerifyRecord": "生成入金审核记录",
+    "statusChangeSuccess": "状态修改成功"
   },
   "review": {
     "settings": {

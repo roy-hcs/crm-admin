@@ -670,7 +670,9 @@
     "price": "transaction price",
     "orderInfo": "Order information",
     "outerOrderNo": "External order number",
-    "paymentLink": "Payment link"
+    "paymentLink": "Payment link",
+    "createDepositVerifyRecord": "Generate deposit audit records",
+    "statusChangeSuccess": "Status modified successfully"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
