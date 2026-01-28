@@ -45,14 +45,14 @@ export const TradingHistoryForm = ({
   setOtherParams,
   setParams,
   serverList,
-  serverListLoading,
+  serverLoading,
   loading,
   reset,
   params,
   otherParams,
 }: {
   serverList: ServerItem[];
-  serverListLoading: boolean;
+  serverLoading: boolean;
   setOtherParams: Dispatch<
     SetStateAction<Omit<TradingHistoryParams, 'params' | keyof BasicParams>>
   >;
@@ -84,7 +84,7 @@ export const TradingHistoryForm = ({
     },
   });
 
-  if (!form.getValues('serverId') && serverList.length && !serverListLoading) {
+  if (!form.getValues('serverId') && serverList.length && !serverLoading) {
     form.setValue('serverId', serverList[0].id, { shouldDirty: false, shouldTouch: false });
   }
 
@@ -146,21 +146,7 @@ export const TradingHistoryForm = ({
   };
   const onReset = () => {
     reset();
-    form.reset({
-      serverId: '',
-      serverGroupList: [],
-      type: '',
-      symbol: '',
-      ticket: '',
-      name: '',
-      login: '',
-      accounts: '',
-      positionID: '',
-      entry: '',
-      accountGroupList: [],
-      openTime: { from: '', to: '' },
-      closeTime: { from: '', to: '' },
-    });
+    form.reset();
   };
 
   return (

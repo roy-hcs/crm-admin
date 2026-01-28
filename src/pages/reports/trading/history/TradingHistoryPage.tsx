@@ -6,14 +6,14 @@ import {
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { FileOutput, Funnel, RefreshCcw, Search } from 'lucide-react';
-import { TradingHistoryForm } from './TradingHistoryForm';
-import { useEffect, useState } from 'react';
-import { useServerList } from '@/api/hooks/system/system';
+// import { TradingHistoryForm } from './TradingHistoryForm';
+import { useEffect, useRef, useState } from 'react';
+// import { useServerList } from '@/api/hooks/system/system';
 import { useTranslation } from 'react-i18next';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { BasicParams } from '@/api/types';
 import { PageInfo } from '@/components/common/PageInfo';
-import { CRMColumnDef, DataTable } from '@/components/table';
+import { CRMColumnDef, DataTable, DataTableRef } from '@/components/table';
 import { tradingHistoryTypeMap, transactionTypeMap } from '@/lib/constant';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RrhDialog } from '@/components/common/RrhDialog';
@@ -23,6 +23,9 @@ import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useTradingHistoryExport } from '@/api/hooks/report/report';
 import { toast } from 'sonner';
 import { downloadFile } from '@/lib/utils';
+import { TradingHistoryForm } from './components/TradingHistoryForm';
+import { BatchDeleteDialog } from './components/BatchDeleteDialog';
+import { useInitServerId } from '@/hooks/useInitServerId';
 
 const formatVolume = (volume: number | null, serverType: number) => {
   if (volume === null) {
@@ -107,6 +110,10 @@ const TradingHistoryDetails = ({ data }: { data: TradingHistoryItem }) => {
   );
 };
 export const TradingHistoryPage = () => {
+  const { t } = useTranslation();
+  const tableRef = useRef<DataTableRef>(null);
+  const { serverId, server, serverLoading } = useInitServerId();
+
   const [params, setParams] = useState<TradingHistoryParams['params']>({
     selectOther: '',
     historyDealBJStartTime: '',
@@ -137,19 +144,17 @@ export const TradingHistoryPage = () => {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
-  const { t } = useTranslation();
 
-  const { data: serverList, isLoading: serverListLoading } = useServerList();
   useEffect(() => {
-    if (serverList && serverList.rows && serverList.rows.length > 0) {
+    if (server && server.rows && server.rows.length > 0) {
       setOtherParams(prev => ({
         ...prev,
-        serverId: serverList.rows[0].id,
-        serverType: serverList.rows[0].serviceType.toString(),
+        serverType: server?.rows?.[0]?.serviceType?.toString() || '',
+        serverId: server?.rows?.[0]?.id || '',
       }));
     }
-  }, [serverList]);
-  const { data, isLoading } = useTradingHistoryList(
+  }, [server]);
+  const { data, isLoading, refetch } = useTradingHistoryList(
     {
       orderByColumn: '',
       isAsc: 'asc',
@@ -161,7 +166,7 @@ export const TradingHistoryPage = () => {
       },
     },
     {
-      enabled: otherParams.serverId !== '' && otherParams.serverType !== '',
+      enabled: !!serverId,
     },
   );
 
@@ -175,8 +180,8 @@ export const TradingHistoryPage = () => {
       accounts: '',
     });
     setOtherParams({
-      serverType: serverList?.rows[0].serviceType.toString() || '',
-      serverId: serverList?.rows[0].id || '',
+      serverType: server?.rows?.[0]?.serviceType?.toString() || '',
+      serverId: server?.rows?.[0]?.id || '',
       serverGroupList: '',
       serverGroup: '',
       type: '',
@@ -364,16 +369,7 @@ export const TradingHistoryPage = () => {
     useColumnVisibility<TradingHistoryItem>('trading-history-table', allColumns);
 
   const [exportOpen, setExportOpen] = useState(false);
-  const {
-    mutateAsync: exportTradingHistory,
-    error: exportError,
-    isPending: exportLoading,
-  } = useTradingHistoryExport();
-  useEffect(() => {
-    if (exportError) {
-      toast.error(t('common.exportFailed'), { duration: 5000 });
-    }
-  }, [exportError, t]);
+  const { mutateAsync: exportTradingHistory, isPending: exportLoading } = useTradingHistoryExport();
 
   const handleExport = async () => {
     try {
@@ -393,6 +389,18 @@ export const TradingHistoryPage = () => {
       toast.error(t('common.exportFailed'), { duration: 5000 });
     }
   };
+  const [ids, setIds] = useState<string[]>([]);
+
+  const onSuccess = () => {
+    setIds([]);
+    tableRef.current?.selectionClear?.();
+    refetch();
+  };
+
+  const onSelectionChange = (its: TradingHistoryItem[]) => {
+    const ids = its.filter(i => i.uuid).map(j => j.uuid || '');
+    setIds(ids);
+  };
 
   return (
     <div>
@@ -411,7 +419,6 @@ export const TradingHistoryPage = () => {
             }}
           />
           <div className="flex items-center justify-end gap-2">
-            <RrhButton variant="outline">{t('table.batchDelete')}</RrhButton>
             <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </RrhButton>
@@ -433,11 +440,11 @@ export const TradingHistoryPage = () => {
                 params={params}
                 otherParams={otherParams}
                 reset={reset}
-                serverListLoading={serverListLoading}
-                serverList={serverList?.rows || []}
+                loading={isLoading}
+                serverLoading={serverLoading}
+                serverList={server?.rows || []}
                 setParams={setParams}
                 setOtherParams={setOtherParams}
-                loading={isLoading}
               />
             </RrhDrawer>
             <ColumnVisibilityButton
@@ -475,10 +482,12 @@ export const TradingHistoryPage = () => {
                 </div>
               </div>
             </RrhDialog>
+            <BatchDeleteDialog onSuccess={onSuccess} ids={ids} serverId={serverId} />
           </div>
         </div>
 
         <DataTable
+          ref={tableRef}
           columns={tableColumns}
           data={data?.rows || []}
           pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
@@ -487,6 +496,7 @@ export const TradingHistoryPage = () => {
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
           loading={isLoading}
+          onSelectionChange={onSelectionChange}
         />
       </TableContentWrapper>
     </div>
