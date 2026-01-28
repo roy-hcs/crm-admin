@@ -1,4 +1,4 @@
-import { apiFormPost, apiFormPostCustom, apiGetCustom } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   ClientTrackingParams,
@@ -42,6 +42,7 @@ import {
   CurrencyListRes,
   WalletTransactionSumParams,
   WalletTransactionSumRes,
+  PaymentOrderDepositItem,
 } from './types';
 
 /**
@@ -269,6 +270,47 @@ export function usePaymentOrderList(params: PaymentOrderListParams) {
     queryKey: ['paymentOrderList', params],
     queryFn: () =>
       apiFormPostCustom<PaymentOrderListResponse>('/system/userOrder/list', params || {}),
+  });
+}
+
+// 获取支付订单详情
+export function usePaymentOrderDepositDetail(id: string, enabled: boolean = false) {
+  return useQuery({
+    queryKey: ['paymentOrderDepositDetail', id],
+    queryFn: () => {
+      return apiGet<PaymentOrderDepositItem>(`/system/userOrder/detailInfo/${id}`);
+    },
+    enabled: enabled && !!id,
+    staleTime: 0,
+  });
+}
+
+// 导出支付订单
+export function usePaymentOrderExport() {
+  return useMutation({
+    mutationFn: (params: PaymentOrderListParams) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/userOrder/export', params),
+  });
+}
+
+// 改变支付订单状态
+export function useChangePaymentOrderStatus() {
+  return useMutation({
+    mutationFn: (params: {
+      id: string;
+      userId: string;
+      orderStatus: number;
+      createVerifyRecord: boolean;
+    }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/userOrder/changeStatus', params),
   });
 }
 

@@ -3,7 +3,7 @@ import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { PaymentOrderItem, PaymentOrderListParams, usePaymentOrderList } from '@/api/hooks/report';
 import { PaymentOrdersForm } from './PaymentOrdersForm';
-import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
+import { Funnel, Search, RefreshCcw, Ellipsis, FileOutput } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
@@ -14,11 +14,21 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { PageInfo } from '@/components/common/PageInfo';
 import { BasicParams } from '@/api/types';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { PaymentOrderDetailDialog } from './PaymentOrderDetailDialog';
+import { usePaymentOrderDepositDetail, usePaymentOrderExport } from '@/api/hooks/report/report';
+import { toast } from 'sonner';
+import { downloadFile } from '@/lib/utils';
+import { RrhDialog } from '@/components/common/RrhDialog';
+import { RrhButton } from '@/components/common/RrhButton';
+import { PaymentOrderEditDialog } from './PaymentOrderEditDialog';
 export function PaymentOrdersPage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [detailId, setDetailId] = useState<string>('');
   const [params, setParams] = useState<PaymentOrderListParams['params']>({
     userName: '',
     account: '',
@@ -35,7 +45,11 @@ export function PaymentOrdersPage() {
     accounts: '',
   });
 
-  const { data: data, isLoading: loading } = usePaymentOrderList({
+  const {
+    data: data,
+    isLoading: loading,
+    refetch,
+  } = usePaymentOrderList({
     params,
     pageSize,
     ...commonParams,
@@ -43,6 +57,18 @@ export function PaymentOrdersPage() {
     isAsc: 'asc',
     orderByColumn: '',
   });
+  const { data: depositDetail, isLoading: depositDetailLoading } = usePaymentOrderDepositDetail(
+    detailId,
+    (detailDialogOpen || editDialogOpen) && !!detailId,
+  );
+  const openDepositDetail = (id: string) => {
+    setDetailId(id);
+    setDetailDialogOpen(true);
+  };
+  const openDepositEdit = (id: string) => {
+    setDetailId(id);
+    setEditDialogOpen(true);
+  };
   const reset = () => {
     setParams({
       userName: '',
@@ -125,7 +151,7 @@ export function PaymentOrdersPage() {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
+      cell: ({ row }) => (
         <div>
           <RrhDropdown
             Trigger={<Ellipsis className="size-4" />}
@@ -133,11 +159,15 @@ export function PaymentOrdersPage() {
               { label: t('common.View'), value: 'view' },
               { label: t('common.Edit'), value: 'edit' },
             ]}
-            callToAction={action => {
+            callToAction={async action => {
               if (action === 'edit') {
-                // Handle edit action
+                if (row.original.id) {
+                  await openDepositEdit(row.original.id);
+                }
               } else if (action === 'view') {
-                // Handle view action
+                if (row.original.id) {
+                  await openDepositDetail(row.original.id);
+                }
               }
             }}
           />
@@ -147,6 +177,27 @@ export function PaymentOrdersPage() {
   ];
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('payment-orders-table', allColumns);
+
+  const [exportOpen, setExportOpen] = useState(false);
+  const { mutateAsync: exportPaymentOrders, isPending: exportLoading } = usePaymentOrderExport();
+  const handleExport = async () => {
+    try {
+      const result = await exportPaymentOrders({
+        params,
+        ...commonParams,
+      });
+
+      if (result?.code !== 0 && result?.msg) {
+        toast.error(result.msg, { duration: 5000 });
+      } else if (result?.code === 0 && result?.msg) {
+        downloadFile(result.msg);
+        setExportOpen(false);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(t('common.exportFailed'), { duration: 5000 });
+    }
+  };
   return (
     <div>
       <PageInfo title={t('financial.paymentOrders.title')} />
@@ -204,6 +255,34 @@ export function PaymentOrdersPage() {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <RrhDialog
+              title={t('common.SystemPrompt')}
+              open={exportOpen}
+              onOpenChange={setExportOpen}
+              formLoading={exportLoading}
+              trigger={
+                <RrhButton variant="outline">
+                  <FileOutput />
+                  {t('table.export')}
+                </RrhButton>
+              }
+              variant="small"
+              footerShow={false}
+            >
+              <div>
+                <div>
+                  {t('table.exportAllDataTip', { field: t('financial.paymentOrders.title') })}
+                </div>
+                <div className="mt-4 flex justify-end gap-4 pb-4 md:pb-0">
+                  <RrhButton variant="outline" onClick={() => setExportOpen(false)}>
+                    {t('common.Cancel')}
+                  </RrhButton>
+                  <RrhButton variant="default" onClick={handleExport}>
+                    {t('common.Confirm')}
+                  </RrhButton>
+                </div>
+              </div>
+            </RrhDialog>
           </div>
         </div>
         <DataTable
@@ -217,6 +296,23 @@ export function PaymentOrdersPage() {
           loading={loading}
         />
       </TableContentWrapper>
+      {depositDetail?.data && (
+        <PaymentOrderDetailDialog
+          isLoading={depositDetailLoading}
+          paymentOrderItem={depositDetail.data}
+          open={detailDialogOpen}
+          setOpen={setDetailDialogOpen}
+        />
+      )}
+      {depositDetail?.data && (
+        <PaymentOrderEditDialog
+          isLoading={depositDetailLoading}
+          paymentOrderItem={depositDetail.data}
+          open={editDialogOpen}
+          setOpen={setEditDialogOpen}
+          onStatusChange={refetch}
+        />
+      )}
     </div>
   );
 }
