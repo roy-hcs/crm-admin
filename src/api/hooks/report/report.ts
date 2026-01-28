@@ -235,6 +235,34 @@ export function useRebateSettleExport() {
 }
 
 /**
+ * ib客户追踪导出
+ */
+export function useAgencyClientTrackingExport() {
+  return useMutation({
+    mutationFn: (params: ClientTrackingParams) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/statistics/agencyClientTrackingExport', params),
+  });
+}
+
+/**
+ * ib数据总览导出
+ */
+export function useAgencyOverviewExport() {
+  return useMutation({
+    mutationFn: (params: OverviewParams) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/statistics/agencyOverviewExport', params),
+  });
+}
+
+/**
  * 获取支付订单
  */
 export function usePaymentOrderList(params: PaymentOrderListParams) {

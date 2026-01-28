@@ -77,7 +77,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'No.',
       size: 50,
-      header: t('ib.overview.Index'),
+      header: t('overview.Index'),
       cell: ({ row }) => <div>{row.index + 1}</div>,
     },
     {
