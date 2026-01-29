@@ -14,7 +14,6 @@ import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { useAgencyPreference, useGetAgencyPreference } from '@/api/hooks/report/report';
-import { cn } from '@/lib/utils';
 import { RrhCheckBoxGroup } from '@/components/common/RrhCheckBoxGroup';
 import { toast } from 'sonner';
 
@@ -117,8 +116,8 @@ export const PreferDialog = ({ onSuccess }: { onSuccess: () => void }) => {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <div className={cn('text-foreground text-sm')}>
-                      <FormLabel className={cn('mb-6')}>{t('table.depositWay')}</FormLabel>
+                    <div className="text-foreground text-sm">
+                      <FormLabel className="mb-6">{t('table.depositWay')}</FormLabel>
                       <FormControl>
                         <RrhCheckBoxGroup
                           onValueChange={v => field.onChange(v)}
@@ -163,8 +162,8 @@ export const PreferDialog = ({ onSuccess }: { onSuccess: () => void }) => {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <div className={cn('text-foreground text-sm')}>
-                      <FormLabel className={cn('mb-6')}>{t('table.withdrawMethods')}</FormLabel>
+                    <div className="text-foreground text-sm">
+                      <FormLabel className="mb-6">{t('table.withdrawMethods')}</FormLabel>
                       <FormControl>
                         <RrhCheckBoxGroup
                           onValueChange={v => field.onChange(v)}
