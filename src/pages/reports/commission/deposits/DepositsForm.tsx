@@ -158,7 +158,7 @@ export const DepositsForm = ({
           <FormMultiSelect
             verticalLabel
             name="serverGroup"
-            label={t('commission.trading.serverGroup')}
+            label={t('trading.serverGroup')}
             placeholder={t('common.pleaseSelect')}
             options={groupList}
             loading={groupLoading}
@@ -166,26 +166,26 @@ export const DepositsForm = ({
           <FormInput
             verticalLabel
             name="mtOrder"
-            label={t('commission.trading.mtOrder')}
-            placeholder={t('common.pleaseInput', { field: t('commission.trading.mtOrder') })}
+            label={t('trading.mtOrder')}
+            placeholder={t('common.pleaseInput', { field: t('trading.mtOrder') })}
           />
           <FormInput
             verticalLabel
             name="trderAccount"
-            label={t('commission.trading.trderAccount')}
-            placeholder={t('common.pleaseInput', { field: t('commission.trading.trderAccount') })}
+            label={t('trading.trderAccount')}
+            placeholder={t('common.pleaseInput', { field: t('trading.trderAccount') })}
           />
           <FormInput
             verticalLabel
             name="taderType"
-            label={t('commission.trading.taderType')}
-            placeholder={t('common.pleaseInput', { field: t('commission.trading.taderType') })}
+            label={t('trading.taderType')}
+            placeholder={t('common.pleaseInput', { field: t('trading.taderType') })}
           />
           <FormField
             name="tradingTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('commission.trading.traderTime')}</FormLabel>
+                <FormLabel className="basis-3/12">{t('trading.traderTime')}</FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="tradingTime" control={form.control} />
                 </FormControl>
@@ -196,16 +196,16 @@ export const DepositsForm = ({
           <FormInput
             verticalLabel
             name="conditionName"
-            label={t('commission.trading.conditionName')}
+            label={t('trading.conditionName')}
             placeholder={t('common.pleaseInput', {
-              field: t('commission.trading.conditionName'),
+              field: t('trading.conditionName'),
             })}
           />
           <FormField
             name="rebateTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('commission.trading.rebateTime')}</FormLabel>
+                <FormLabel className="basis-3/12">{t('trading.rebateTime')}</FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="rebateTime" control={form.control} />
                 </FormControl>
@@ -216,7 +216,7 @@ export const DepositsForm = ({
           <FormSelect
             verticalLabel
             name="rebateTraderId"
-            label={t('commission.trading.rebateTraderId')}
+            label={t('trading.rebateTraderId')}
             placeholder={t('common.pleaseSelect')}
             options={RebateTradersOptions.map((it: CrmRebateTradersItem) => ({
               label: it.ruleName,

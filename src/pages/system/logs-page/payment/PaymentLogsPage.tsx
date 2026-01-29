@@ -120,7 +120,7 @@ export const PaymentLogsPage = () => {
     },
     {
       id: 'orderStatus',
-      header: t('financial.paymentOrders.orderStatus'),
+      header: t('paymentOrders.orderStatus'),
       cell: ({ row }) => {
         const status = OrderStatusOptions.find(
           item => item.value === row.original.orderStatus.toString(),

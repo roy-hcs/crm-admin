@@ -187,7 +187,7 @@ export const TradingAccountTransactionsForm = ({
           <FormMultiSelect
             verticalLabel
             name="serverGroupList"
-            label={t('commission.trading.serverGroup')}
+            label={t('trading.serverGroup')}
             placeholder={t('common.pleaseSelect')}
             options={groupList}
             loading={groupLoading}
@@ -196,25 +196,25 @@ export const TradingAccountTransactionsForm = ({
           <FormInput
             verticalLabel
             name="ticket"
-            label={t('financial.tradingAccountTransactions.ticket')}
+            label={t('tradingAccountTransactions.ticket')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.tradingAccountTransactions.ticket'),
+              field: t('tradingAccountTransactions.ticket'),
             })}
           />
           <FormInput
             verticalLabel
             name="historyFuzzyName"
-            label={t('financial.tradingAccountTransactions.name')}
+            label={t('tradingAccountTransactions.name')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.tradingAccountTransactions.name'),
+              field: t('tradingAccountTransactions.name'),
             })}
           />
           <FormInput
             verticalLabel
             name="login"
-            label={t('financial.tradingAccountTransactions.login')}
+            label={t('tradingAccountTransactions.login')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.tradingAccountTransactions.login'),
+              field: t('tradingAccountTransactions.login'),
             })}
           />
 
@@ -233,9 +233,9 @@ export const TradingAccountTransactionsForm = ({
           <FormInput
             verticalLabel
             name="comment"
-            label={t('financial.tradingAccountTransactions.comment')}
+            label={t('tradingAccountTransactions.comment')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.tradingAccountTransactions.comment'),
+              field: t('tradingAccountTransactions.comment'),
             })}
           />
           <FormField
@@ -259,9 +259,9 @@ export const TradingAccountTransactionsForm = ({
           <FormInput
             verticalLabel
             name="fuzzyCrmAccount"
-            label={t('financial.tradingAccountTransactions.crmLastName')}
+            label={t('tradingAccountTransactions.crmLastName')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.tradingAccountTransactions.crmLastName'),
+              field: t('tradingAccountTransactions.crmLastName'),
             })}
           />
           <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">

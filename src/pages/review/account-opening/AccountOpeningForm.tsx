@@ -107,9 +107,9 @@ export const AccountOpeningForm = ({
           <FormInput
             verticalLabel
             name="userId"
-            label={t('financial.paymentOrders.userName')}
+            label={t('paymentOrders.userName')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.paymentOrders.userName'),
+              field: t('paymentOrders.userName'),
             })}
           />
           <FormSelect

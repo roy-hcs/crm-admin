@@ -20,7 +20,7 @@ export const PaymentOrderDetailDialog = ({
   const orderInfo = paymentOrderItem.order;
   const accountInfo = [
     {
-      label: t('financial.walletTransactions.lastName'),
+      label: t('walletTransactions.lastName'),
       value: paymentOrderItem.userName || '',
     },
     {
@@ -62,7 +62,7 @@ export const PaymentOrderDetailDialog = ({
       value: orderInfo.remark || '-',
     },
     {
-      label: t('financial.paymentOrders.orderStatus'),
+      label: t('paymentOrders.orderStatus'),
       value: <RrhOrderStatusTag status={String(orderInfo.orderStatus)} />,
     },
     {
@@ -102,7 +102,7 @@ export const PaymentOrderDetailDialog = ({
   ];
   return (
     <RrhDialog
-      title={t('common.detail', { field: t('financial.paymentOrders.title') })}
+      title={t('common.detail', { field: t('paymentOrders.title') })}
       open={open}
       onOpenChange={setOpen}
       confirmShow={false}

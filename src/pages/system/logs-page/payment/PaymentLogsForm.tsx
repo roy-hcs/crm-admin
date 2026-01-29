@@ -116,7 +116,7 @@ export const PaymentLogsForm = ({
           <FormSelect
             verticalLabel
             name="orderStatus"
-            label={t('financial.paymentOrders.orderStatus')}
+            label={t('paymentOrders.orderStatus')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={OrderStatusOptions.map(item => ({ label: t(item.label), value: item.value }))}
@@ -130,7 +130,7 @@ export const PaymentLogsForm = ({
           <FormSelect
             verticalLabel
             name="channelName"
-            label={t('financial.paymentOrders.channelName')}
+            label={t('paymentOrders.channelName')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={

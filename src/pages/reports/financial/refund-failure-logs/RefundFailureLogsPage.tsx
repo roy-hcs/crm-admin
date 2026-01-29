@@ -64,7 +64,7 @@ export function RefundFailureLogsPage() {
     },
     {
       id: 'userName',
-      header: t('financial.paymentOrders.userName'),
+      header: t('paymentOrders.userName'),
       cell: ({ row }) => {
         if (row.original.lastName || row.original.name || row.original.showId) {
           return (
@@ -89,12 +89,12 @@ export function RefundFailureLogsPage() {
     },
     {
       id: 'refundAmount',
-      header: t('financial.refundFailLog.refundAmount'),
+      header: t('refundFailLog.refundAmount'),
       accessorFn: row => row.refundAmount,
     },
     {
       id: 'refundAccount',
-      header: t('financial.refundFailLog.refundAccount'),
+      header: t('refundFailLog.refundAccount'),
       cell: ({ row }) => {
         const name = row?.original?.refundAccount?.split('</br>') ?? [];
         if (name.length === 0) {
@@ -147,13 +147,13 @@ export function RefundFailureLogsPage() {
 
   return (
     <div>
-      <PageInfo title={t('financial.refundFailLog.title')} />
+      <PageInfo title={t('refundFailLog.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
               placeholder={t('common.pleaseInput', {
-                field: t('financial.paymentOrders.userName'),
+                field: t('paymentOrders.userName'),
               })}
               className="h-9"
               leftIcon={<Search className="size-4" />}

@@ -81,17 +81,17 @@ export function TradingAccountFundsStatsPage() {
     },
     {
       id: 'name',
-      header: t('financial.tradingAccountTransactions.name'),
+      header: t('tradingAccountTransactions.name'),
       accessorFn: row => row.name,
     },
     {
       id: 'login',
-      header: t('financial.tradingAccountTransactions.login'),
+      header: t('tradingAccountTransactions.login'),
       accessorFn: row => row.login,
     },
     {
       id: 'balance',
-      header: t('financial.tradingAccountFundsStats.balance') + ' (+)',
+      header: t('tradingAccountFundsStats.balance') + ' (+)',
       cell: ({ row }) => {
         return (
           <div>
@@ -105,7 +105,7 @@ export function TradingAccountFundsStatsPage() {
     },
     {
       id: 'inputAmountCount',
-      header: t('financial.tradingAccountFundsStats.inputAmountCount'),
+      header: t('tradingAccountFundsStats.inputAmountCount'),
       cell: ({ row }) => {
         return (
           <div>
@@ -119,7 +119,7 @@ export function TradingAccountFundsStatsPage() {
     },
     {
       id: 'sysInputAmountCount',
-      header: t('financial.tradingAccountFundsStats.sysInputAmountCount'),
+      header: t('tradingAccountFundsStats.sysInputAmountCount'),
       cell: ({ row }) => {
         return (
           <div>
@@ -133,7 +133,7 @@ export function TradingAccountFundsStatsPage() {
     },
     {
       id: 'commissionInputAmountCount',
-      header: t('financial.tradingAccountFundsStats.commissionInputAmountCount'),
+      header: t('tradingAccountFundsStats.commissionInputAmountCount'),
       cell: ({ row }) => {
         return (
           <div>
@@ -148,7 +148,7 @@ export function TradingAccountFundsStatsPage() {
     },
     {
       id: 'insideTransferInputAmountCount',
-      header: t('financial.tradingAccountFundsStats.insideTransferInputAmountCount'),
+      header: t('tradingAccountFundsStats.insideTransferInputAmountCount'),
       cell: ({ row }) => {
         return (
           <div>
@@ -163,7 +163,7 @@ export function TradingAccountFundsStatsPage() {
     },
     {
       id: 'negativeBalanceCount',
-      header: t('financial.tradingAccountFundsStats.negativeBalanceCount') + ' (-)',
+      header: t('tradingAccountFundsStats.negativeBalanceCount') + ' (-)',
       cell: ({ row }) => {
         return (
           <div>
@@ -177,7 +177,7 @@ export function TradingAccountFundsStatsPage() {
     },
     {
       id: 'outAmountCount',
-      header: t('financial.tradingAccountFundsStats.outAmountCount'),
+      header: t('tradingAccountFundsStats.outAmountCount'),
       cell: ({ row }) => {
         return (
           <div>
@@ -189,7 +189,7 @@ export function TradingAccountFundsStatsPage() {
     },
     {
       id: 'sysOutAmountCount',
-      header: t('financial.tradingAccountFundsStats.sysOutAmountCount'),
+      header: t('tradingAccountFundsStats.sysOutAmountCount'),
       cell: ({ row }) => {
         return (
           <div>
@@ -203,7 +203,7 @@ export function TradingAccountFundsStatsPage() {
     },
     {
       id: 'insideTransferOutAmountCount',
-      header: t('financial.tradingAccountFundsStats.insideTransferOutAmountCount'),
+      header: t('tradingAccountFundsStats.insideTransferOutAmountCount'),
       cell: ({ row }) => {
         return (
           <div>
@@ -218,7 +218,7 @@ export function TradingAccountFundsStatsPage() {
     },
     {
       id: 'creditInputAmountCount',
-      header: t('financial.tradingAccountFundsStats.creditInputAmountCount'),
+      header: t('tradingAccountFundsStats.creditInputAmountCount'),
       cell: ({ row }) => {
         return (
           <div>
@@ -232,7 +232,7 @@ export function TradingAccountFundsStatsPage() {
     },
     {
       id: 'creditOutAmountCount',
-      header: t('financial.tradingAccountFundsStats.creditOutAmountCount'),
+      header: t('tradingAccountFundsStats.creditOutAmountCount'),
       cell: ({ row }) => {
         return (
           <div>
@@ -246,12 +246,12 @@ export function TradingAccountFundsStatsPage() {
     },
     {
       id: 'profitLoss',
-      header: t('financial.tradingAccountFundsStats.profitLoss'),
+      header: t('tradingAccountFundsStats.profitLoss'),
       accessorFn: row => row.profitLoss || `0${row.currency}`,
     },
     {
       id: 'currentBalance',
-      header: t('financial.tradingAccountFundsStats.currentbalance'),
+      header: t('tradingAccountFundsStats.currentbalance'),
       accessorFn: row => row.balance || `0${row.currency}`,
     },
   ];
@@ -260,7 +260,7 @@ export function TradingAccountFundsStatsPage() {
 
   return (
     <div>
-      <PageInfo title={t('financial.tradingAccountFundsStats.title')} desc={t('common.tips')} />
+      <PageInfo title={t('tradingAccountFundsStats.title')} desc={t('common.tips')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">

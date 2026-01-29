@@ -97,7 +97,7 @@ export function PaymentOrdersPage() {
     },
     {
       id: 'userName',
-      header: t('financial.paymentOrders.userName'),
+      header: t('paymentOrders.userName'),
       cell: ({ row }) => {
         const name = row?.original?.userName?.split('<br/>') ?? [];
         if (name.length === 0) {
@@ -113,37 +113,37 @@ export function PaymentOrdersPage() {
     },
     {
       id: 'account',
-      header: t('financial.paymentOrders.account'),
+      header: t('paymentOrders.account'),
       accessorFn: row => row.account,
     },
     {
       id: 'payAmount',
-      header: t('financial.paymentOrders.payAmount'),
+      header: t('paymentOrders.payAmount'),
       accessorFn: row => row.payAmount,
     },
     {
       id: 'receiptAmount',
-      header: t('financial.paymentOrders.receiptAmount'),
+      header: t('paymentOrders.receiptAmount'),
       accessorFn: row => row.receiptAmount || '--',
     },
     {
       id: 'orderStatus',
-      header: t('financial.paymentOrders.orderStatus'),
+      header: t('paymentOrders.orderStatus'),
       cell: ({ row }) => <RrhOrderStatusTag status={String(row.original.orderStatus)} />,
     },
     {
       id: 'channelName',
-      header: t('financial.paymentOrders.channelName'),
+      header: t('paymentOrders.channelName'),
       accessorFn: row => row.channelName || '--',
     },
     {
       id: 'createTime',
-      header: t('financial.paymentOrders.createTime'),
+      header: t('paymentOrders.createTime'),
       accessorFn: row => row.createTime || '--',
     },
     {
       id: 'orderId',
-      header: t('financial.paymentOrders.orderId'),
+      header: t('paymentOrders.orderId'),
       accessorFn: row => row.orderId || '--',
     },
     {
@@ -200,13 +200,13 @@ export function PaymentOrdersPage() {
   };
   return (
     <div>
-      <PageInfo title={t('financial.paymentOrders.title')} />
+      <PageInfo title={t('paymentOrders.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
               placeholder={t('common.pleaseInput', {
-                field: t('financial.paymentOrders.userName'),
+                field: t('paymentOrders.userName'),
               })}
               className="h-9"
               value={keyword}
@@ -270,9 +270,7 @@ export function PaymentOrdersPage() {
               footerShow={false}
             >
               <div>
-                <div>
-                  {t('table.exportAllDataTip', { field: t('financial.paymentOrders.title') })}
-                </div>
+                <div>{t('table.exportAllDataTip', { field: t('paymentOrders.title') })}</div>
                 <div className="mt-4 flex justify-end gap-4 pb-4 md:pb-0">
                   <RrhButton variant="outline" onClick={() => setExportOpen(false)}>
                     {t('common.Cancel')}

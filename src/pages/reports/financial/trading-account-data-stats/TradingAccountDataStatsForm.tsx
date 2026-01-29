@@ -157,7 +157,7 @@ export const TradingAccountDataStatsForm = ({
           <FormMultiSelect
             verticalLabel
             name="serverGroupList"
-            label={t('commission.trading.serverGroup')}
+            label={t('trading.serverGroup')}
             placeholder={t('common.pleaseSelect')}
             options={groupList}
             loading={groupLoading}
@@ -165,17 +165,17 @@ export const TradingAccountDataStatsForm = ({
           <FormInput
             verticalLabel
             name="fuzzyAccount"
-            label={t('financial.tradingAccountFundsStats.fuzzyAccount')}
+            label={t('tradingAccountFundsStats.fuzzyAccount')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.tradingAccountFundsStats.fuzzyAccount'),
+              field: t('tradingAccountFundsStats.fuzzyAccount'),
             })}
           />
           <FormInput
             verticalLabel
             name="fuzzyName"
-            label={t('financial.tradingAccountTransactions.name')}
+            label={t('tradingAccountTransactions.name')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.tradingAccountTransactions.name'),
+              field: t('tradingAccountTransactions.name'),
             })}
           />
           <FormField
@@ -211,17 +211,17 @@ export const TradingAccountDataStatsForm = ({
           <FormInput
             verticalLabel
             name="username"
-            label={t('financial.tradingAccountDataStats.username')}
+            label={t('tradingAccountDataStats.username')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.tradingAccountDataStats.username'),
+              field: t('tradingAccountDataStats.username'),
             })}
           />
           <FormInput
             verticalLabel
             name="directBroker"
-            label={t('financial.tradingAccountDataStats.directBroker')}
+            label={t('tradingAccountDataStats.directBroker')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.tradingAccountDataStats.directBroker'),
+              field: t('tradingAccountDataStats.directBroker'),
             })}
           />
           <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">

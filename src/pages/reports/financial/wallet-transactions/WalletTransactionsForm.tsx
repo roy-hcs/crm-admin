@@ -125,9 +125,9 @@ export const WalletTransactionsForm = ({
           <FormInput
             verticalLabel
             name="account"
-            label={t('financial.walletTransactions.account')}
+            label={t('walletTransactions.account')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.walletTransactions.account'),
+              field: t('walletTransactions.account'),
             })}
           />
           <FormSelect
@@ -156,15 +156,15 @@ export const WalletTransactionsForm = ({
           <FormInput
             verticalLabel
             name="serialNum"
-            label={t('financial.walletTransactions.serialNum')}
+            label={t('walletTransactions.serialNum')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.walletTransactions.serialNum'),
+              field: t('walletTransactions.serialNum'),
             })}
           />
           <FormSelect
             verticalLabel
             name="serverId"
-            label={t('financial.walletTransactions.wallet')}
+            label={t('walletTransactions.wallet')}
             placeholder={t('common.pleaseSelect')}
             options={
               currencyListRes?.rows
@@ -180,7 +180,7 @@ export const WalletTransactionsForm = ({
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
                 <FormLabel className="basis-3/12">
-                  {t('financial.walletTransactions.operationTime')}
+                  {t('walletTransactions.operationTime')}
                 </FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="operationTime" control={form.control} />
@@ -198,9 +198,9 @@ export const WalletTransactionsForm = ({
           <FormInput
             verticalLabel
             name="mtOrder"
-            label={t('financial.walletTransactions.mtOrder')}
+            label={t('walletTransactions.mtOrder')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.walletTransactions.mtOrder'),
+              field: t('walletTransactions.mtOrder'),
             })}
           />
           <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">

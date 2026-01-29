@@ -136,12 +136,12 @@ export function TradingAccountsPage() {
     },
     {
       id: 'name',
-      header: t('financial.tradingAccountTransactions.name'),
+      header: t('tradingAccountTransactions.name'),
       accessorFn: row => row.name || '-',
     },
     {
       id: 'account',
-      header: t('financial.tradingAccountTransactions.login'),
+      header: t('tradingAccountTransactions.login'),
       cell: ({ row }) => {
         return (
           <div>
@@ -164,7 +164,7 @@ export function TradingAccountsPage() {
     },
     {
       id: 'userName',
-      header: t('financial.tradingAccountDataStats.username'),
+      header: t('tradingAccountDataStats.username'),
       cell: ({ row }) => {
         if (row.original.userId == null || row.original.params?.aspShowId == null) {
           return '-';
@@ -321,7 +321,7 @@ export function TradingAccountsPage() {
         <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon
             placeholder={t('common.pleaseInput', {
-              field: t('financial.tradingAccountTransactions.login'),
+              field: t('tradingAccountTransactions.login'),
             })}
             className="h-9"
             value={keyword}

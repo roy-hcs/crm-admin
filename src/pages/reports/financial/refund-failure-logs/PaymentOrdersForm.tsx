@@ -84,9 +84,9 @@ export const RefundFailureLogsForm = ({
           <FormInput
             verticalLabel
             name="userId"
-            label={t('financial.paymentOrders.userName')}
+            label={t('paymentOrders.userName')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.paymentOrders.userName'),
+              field: t('paymentOrders.userName'),
             })}
           />
           <FormSelect
@@ -111,9 +111,9 @@ export const RefundFailureLogsForm = ({
           <FormInput
             verticalLabel
             name="refundAccount"
-            label={t('financial.refundFailLog.refundAccount')}
+            label={t('refundFailLog.refundAccount')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.refundFailLog.refundAccount'),
+              field: t('refundFailLog.refundAccount'),
             })}
           />
           <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">

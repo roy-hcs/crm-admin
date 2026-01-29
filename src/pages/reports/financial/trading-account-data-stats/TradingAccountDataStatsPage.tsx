@@ -82,19 +82,19 @@ export function TradingAccountDataStatsPage() {
     },
     {
       id: 'name',
-      header: t('financial.tradingAccountTransactions.name'),
+      header: t('tradingAccountTransactions.name'),
       accessorFn: row => row.name,
     },
     {
       id: 'login',
 
-      header: t('financial.tradingAccountTransactions.login'),
+      header: t('tradingAccountTransactions.login'),
       accessorFn: row => row.login,
     },
     {
       id: 'username',
 
-      header: t('financial.tradingAccountDataStats.username'),
+      header: t('tradingAccountDataStats.username'),
 
       cell: ({ row }) => {
         if (row?.original?.username) {
@@ -106,7 +106,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'userLevel',
 
-      header: t('financial.tradingAccountDataStats.userLevel'),
+      header: t('tradingAccountDataStats.userLevel'),
 
       cell: ({ row }) => {
         if (row?.original?.userLevel) {
@@ -118,7 +118,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'directBrokerName',
 
-      header: t('financial.tradingAccountDataStats.directBrokerName'),
+      header: t('tradingAccountDataStats.directBrokerName'),
 
       cell: ({ row }) => {
         if (row?.original?.directBrokerName) {
@@ -130,7 +130,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'positiveBalance',
 
-      header: t('financial.tradingAccountDataStats.positiveBalance'),
+      header: t('tradingAccountDataStats.positiveBalance'),
 
       cell: ({ row }) => {
         if (row?.original?.positiveBalanceCount || row?.original?.positiveBalance) {
@@ -148,7 +148,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'negativeBalance',
 
-      header: t('financial.tradingAccountDataStats.negativeBalance'),
+      header: t('tradingAccountDataStats.negativeBalance'),
 
       cell: ({ row }) => {
         if (row?.original?.negativeBalanceCount || row?.original?.negativeBalance) {
@@ -166,7 +166,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'netDeposit',
 
-      header: t('financial.tradingAccountDataStats.netDeposit'),
+      header: t('tradingAccountDataStats.netDeposit'),
 
       cell: ({ row }) => {
         if (row?.original?.positiveBalance || row?.original?.negativeBalance) {
@@ -184,7 +184,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'balance',
 
-      header: t('financial.tradingAccountDataStats.balance'),
+      header: t('tradingAccountDataStats.balance'),
 
       cell: ({ row }) => {
         return (
@@ -198,7 +198,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'netWorth',
 
-      header: t('financial.tradingAccountDataStats.netWorth'),
+      header: t('tradingAccountDataStats.netWorth'),
 
       cell: ({ row }) => {
         return (
@@ -212,7 +212,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'credit',
 
-      header: t('financial.tradingAccountDataStats.credit'),
+      header: t('tradingAccountDataStats.credit'),
 
       cell: ({ row }) => {
         return (
@@ -226,7 +226,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'usedAdvance',
 
-      header: t('financial.tradingAccountDataStats.usedAdvance'),
+      header: t('tradingAccountDataStats.usedAdvance'),
 
       cell: ({ row }) => {
         return (
@@ -240,7 +240,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'usableAdvance',
 
-      header: t('financial.tradingAccountDataStats.usableAdvance'),
+      header: t('tradingAccountDataStats.usableAdvance'),
 
       cell: ({ row }) => {
         return (
@@ -254,7 +254,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'advanceScale',
 
-      header: t('financial.tradingAccountDataStats.advanceScale'),
+      header: t('tradingAccountDataStats.advanceScale'),
 
       cell: ({ row }) => {
         if (row?.original?.advanceScale) {
@@ -266,7 +266,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'riskScale',
 
-      header: t('financial.tradingAccountDataStats.riskScale'),
+      header: t('tradingAccountDataStats.riskScale'),
 
       cell: ({ row }) => {
         if (row?.original?.riskScale) {
@@ -278,7 +278,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'profitPosition',
 
-      header: t('financial.tradingAccountDataStats.profitPosition'),
+      header: t('tradingAccountDataStats.profitPosition'),
 
       cell: ({ row }) => {
         return (
@@ -292,14 +292,14 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'volumePosition',
 
-      header: t('financial.tradingAccountDataStats.volumePosition'),
+      header: t('tradingAccountDataStats.volumePosition'),
 
       accessorFn: row => row.volumePosition || 0,
     },
     {
       id: 'swapsPosition',
 
-      header: t('financial.tradingAccountDataStats.swapsPosition'),
+      header: t('tradingAccountDataStats.swapsPosition'),
 
       cell: ({ row }) => {
         return (
@@ -313,7 +313,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'profitLoss',
 
-      header: t('financial.tradingAccountDataStats.profitLoss'),
+      header: t('tradingAccountDataStats.profitLoss'),
 
       cell: ({ row }) => {
         return (
@@ -327,14 +327,14 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'volumeLoss',
 
-      header: t('financial.tradingAccountDataStats.volumeLoss'),
+      header: t('tradingAccountDataStats.volumeLoss'),
 
       accessorFn: row => row.volumeLoss || 0,
     },
     {
       id: 'commission',
 
-      header: t('financial.tradingAccountDataStats.commission'),
+      header: t('tradingAccountDataStats.commission'),
 
       cell: ({ row }) => {
         return (
@@ -348,7 +348,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'swaps',
 
-      header: t('financial.tradingAccountDataStats.swaps'),
+      header: t('tradingAccountDataStats.swaps'),
 
       cell: ({ row }) => {
         return (
@@ -362,7 +362,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'netProfit',
 
-      header: t('financial.tradingAccountDataStats.netProfit'),
+      header: t('tradingAccountDataStats.netProfit'),
 
       cell: ({ row }) => {
         return (
@@ -376,7 +376,7 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'netProfitRatio',
 
-      header: t('financial.tradingAccountDataStats.netProfitRatio'),
+      header: t('tradingAccountDataStats.netProfitRatio'),
 
       cell: ({ row }) => {
         if (row?.original?.netProfitRatio) {
@@ -388,21 +388,21 @@ export function TradingAccountDataStatsPage() {
     {
       id: 'rebateTraderAmount',
 
-      header: t('financial.tradingAccountDataStats.rebateTraderAmount'),
+      header: t('tradingAccountDataStats.rebateTraderAmount'),
 
       accessorFn: row => row.rebateTraderAmount || 0,
     },
     {
       id: 'rebateCommissionAmount',
 
-      header: t('financial.tradingAccountDataStats.rebateCommissionAmount'),
+      header: t('tradingAccountDataStats.rebateCommissionAmount'),
 
       accessorFn: row => row.rebateCommissionAmount || 0,
     },
     {
       id: 'rebateDepositAmount',
 
-      header: t('financial.tradingAccountDataStats.rebateDepositAmount'),
+      header: t('tradingAccountDataStats.rebateDepositAmount'),
 
       accessorFn: row => row.rebateDepositAmount || 0,
     },
@@ -412,14 +412,14 @@ export function TradingAccountDataStatsPage() {
 
   return (
     <div>
-      <PageInfo title={t('financial.tradingAccountDataStats.title')} />
+      <PageInfo title={t('tradingAccountDataStats.title')} />
       <div className="text-sm leading-6 font-normal text-neutral-900">{t('common.tips')}</div>
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
               placeholder={t('common.pleaseInput', {
-                field: t('financial.tradingAccountTransactions.name'),
+                field: t('tradingAccountTransactions.name'),
               })}
               value={keyword}
               onChange={e => {

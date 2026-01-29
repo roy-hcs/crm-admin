@@ -61,17 +61,17 @@ export const SetBrokerDialog = ({ onSuccess, ids }: { onSuccess?: () => void; id
             if (ids && ids?.length > 0) {
               setOpen(true);
             } else {
-              toast.error(t('financial.tradingAccountTransactions.atLeastOneAccount'));
+              toast.error(t('tradingAccountTransactions.atLeastOneAccount'));
               e.preventDefault();
             }
           }}
           type="button"
           Icon={<Plus className="size-3.5" />}
         >
-          {t('financial.tradingAccountTransactions.batchSetAgents')}
+          {t('tradingAccountTransactions.batchSetAgents')}
         </RrhButton>
       }
-      title={t('financial.tradingAccountTransactions.batchSetAgents')}
+      title={t('tradingAccountTransactions.batchSetAgents')}
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
@@ -83,7 +83,7 @@ export const SetBrokerDialog = ({ onSuccess, ids }: { onSuccess?: () => void; id
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <div className="text-foreground text-sm leading-5 font-medium">
-              {t('financial.tradingAccountTransactions.selectedAccounts', { count: ids.length })}
+              {t('tradingAccountTransactions.selectedAccounts', { count: ids.length })}
             </div>
             <FormField
               name="broker"

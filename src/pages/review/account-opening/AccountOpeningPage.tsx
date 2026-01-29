@@ -228,7 +228,7 @@ export function AccountOpeningPage() {
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
               placeholder={t('common.pleaseInput', {
-                field: t('financial.paymentOrders.userName'),
+                field: t('paymentOrders.userName'),
               })}
               className="h-9"
               value={keyword}

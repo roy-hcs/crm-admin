@@ -99,7 +99,7 @@ export const PaymentOrderEditDialog = ({
   };
   return (
     <RrhDialog
-      title={t('common.detail', { field: t('financial.paymentOrders.title') })}
+      title={t('common.detail', { field: t('paymentOrders.title') })}
       open={open}
       onOpenChange={setOpen}
       confirmShow={false}
