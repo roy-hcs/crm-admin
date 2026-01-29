@@ -271,8 +271,10 @@ export const AddAccountDialog = ({
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
-      footerShow={false}
+      onCancel={onCancel}
+      onConfirm={() => form.handleSubmit(onSubmit)()}
       variant="large"
+      type="submit"
       formLoading={isSubmitting}
     >
       <FormProvider form={form}>
@@ -387,17 +389,6 @@ export const AddAccountDialog = ({
                 return <SelectUser verticalLabel field={field} title={t('table.directAgent')} />;
               }}
             />
-
-            <div className="border-muted col-span-full -mx-6 flex justify-end border-t px-6 py-6 sm:pb-0">
-              <div className="flex justify-end gap-4">
-                <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
-                  {t('common.Cancel')}
-                </RrhButton>
-                <RrhButton type="submit" className="px-4 py-2" disabled={isSubmitting}>
-                  {t('common.Confirm')}
-                </RrhButton>
-              </div>
-            </div>
           </form>
         </Form>
       </FormProvider>
