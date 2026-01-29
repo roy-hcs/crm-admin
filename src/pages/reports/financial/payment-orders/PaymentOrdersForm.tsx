@@ -61,6 +61,7 @@ export const PaymentOrdersForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       userName: data.userName,
       account: data.account,

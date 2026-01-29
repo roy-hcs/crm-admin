@@ -58,6 +58,7 @@ export const InformationForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams(pre => ({
       ...pre,
       beginTime: formatDate(data.time.from),

@@ -55,6 +55,7 @@ export const CrmUserLoginForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       ipaddr: data.ipaddr,
       userName: data.userName,

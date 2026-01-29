@@ -42,6 +42,7 @@ export const RewardConfigForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams(pre => ({
       ...pre,
       rewardTitle: data.rewardTitle,

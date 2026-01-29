@@ -76,6 +76,7 @@ export const StatisticForm = ({
   const { data: dealAccountGroupListData } = useGetDealAccountGroupList();
 
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       server: data.serverId,
       accountGroupList: data.accountGroupList.join(','),

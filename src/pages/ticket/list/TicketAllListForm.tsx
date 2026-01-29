@@ -50,6 +50,7 @@ export const TicketAllListForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       isAll: '1',
       orderId: data.orderId,

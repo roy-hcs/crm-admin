@@ -35,9 +35,7 @@ type FormData = {
   fuzzyCrmAccount: string;
   operationTime: { from: string; to: string };
   opeTypeList: string;
-  opeType: string;
   serverGroupList: string[];
-  serverGroup: string;
   accountGroupList: string[];
 };
 export const TradingAccountTransactionsForm = ({
@@ -71,17 +69,15 @@ export const TradingAccountTransactionsForm = ({
   const form = useForm({
     defaultValues: {
       serverId: initialServerId || '',
-      ticket: params.ticket || '',
+      ticket: commonParams.ticket || '',
       historyFuzzyName: params.historyFuzzyName || '',
-      login: params.login || '',
-      comment: params.comment || '',
+      login: commonParams.login || '',
+      comment: commonParams.comment || '',
       accounts: params.accounts || '',
       fuzzyCrmAccount: params.fuzzyCrmAccount || '',
       operationTime: { from: params.operationStart || '', to: params.operationEnd || '' },
       opeTypeList: commonParams.opeTypeList || '',
-      opeType: commonParams.opeType || '',
       serverGroupList: commonParams.serverGroupList ? commonParams.serverGroupList.split(',') : [],
-      serverGroup: commonParams.serverGroup || '',
       accountGroupList: commonParams.accountGroupList
         ? commonParams.accountGroupList.split(',')
         : [],
@@ -96,11 +92,9 @@ export const TradingAccountTransactionsForm = ({
   const serverId = form.watch('serverId');
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
-      ticket: data.ticket,
       historyFuzzyName: data.historyFuzzyName,
-      login: data.login,
-      comment: data.comment,
       accounts: data.accounts,
       operationStart: formatDate(data.operationTime.from),
       operationEnd: formatDate(data.operationTime.to),
@@ -108,18 +102,31 @@ export const TradingAccountTransactionsForm = ({
     });
     setCommonParams({
       opeTypeList: data.opeTypeList,
-      opeType: data.opeType,
       serverGroupList: data.serverGroupList.join(','),
-      serverGroup: data.serverGroup,
       accountGroupList: data.accountGroupList.join(','),
       accounts: data.accounts,
+      ticket: data.ticket,
+      login: data.login,
+      comment: data.comment,
     });
     setServerId(data.serverId);
   };
   const onReset = () => {
     reset();
     setServerId(initialServerId || '');
-    form.reset();
+    form.reset({
+      serverId: initialServerId || '',
+      ticket: '',
+      historyFuzzyName: '',
+      login: '',
+      comment: '',
+      accounts: '',
+      fuzzyCrmAccount: '',
+      operationTime: { from: '', to: '' },
+      opeTypeList: '',
+      serverGroupList: [],
+      accountGroupList: [],
+    });
   };
 
   useEffect(() => {
@@ -132,10 +139,10 @@ export const TradingAccountTransactionsForm = ({
       }
       if (mounted) setGroupLoading(true);
       try {
-        const gruop = await getGroupData(serverId);
+        const group = await getGroupData(serverId);
         if (!mounted) return;
-        if (gruop?.length > 0) {
-          const leverOptions = gruop
+        if (group?.length > 0) {
+          const leverOptions = group
             .filter(i => i)
             .map((item: string) => ({
               label: item,
@@ -153,7 +160,6 @@ export const TradingAccountTransactionsForm = ({
       }
     };
     fetch(serverId);
-    form.setValue('serverGroup', '');
     return () => {
       mounted = false;
     };

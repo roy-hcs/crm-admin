@@ -50,6 +50,7 @@ export const TradingRebateSettingsForm = ({
   );
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       rebateType: '1',
       model: '1',

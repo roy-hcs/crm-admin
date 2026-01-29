@@ -63,6 +63,7 @@ export const CommissionReportForm = ({
     },
   });
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       serverId: data.serverId,
       projectName: data.projectName,

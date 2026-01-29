@@ -90,6 +90,7 @@ export const ReviewDepositRebateForm = ({
   const selectedServer = serverList.find(item => item.id === form.watch('serverId'));
 
   const onSubmit = (data: FormData) => {
+    reset();
     const selectedServer = serverList.find(item => item.id === data.serverId);
     if (!selectedServer) return;
     setParams({

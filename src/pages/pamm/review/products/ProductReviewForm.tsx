@@ -50,6 +50,7 @@ export const ProductReviewForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       projectName: data.projectName,
       investmentManager: data.investmentManager,

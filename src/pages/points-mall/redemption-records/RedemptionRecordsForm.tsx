@@ -61,6 +61,7 @@ export const RedemptionRecordsForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       fuzzyName: data.fuzzyName,
       fuzzyEmail: data.fuzzyEmail,

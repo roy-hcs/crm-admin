@@ -61,6 +61,7 @@ export const SignalsForm = ({
     },
   });
   const onSubmit = (data: FormData) => {
+    reset();
     setParams(pre => ({
       ...pre,
       beginTime: formatDate(data.Time.from),

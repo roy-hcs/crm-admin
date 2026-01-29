@@ -85,6 +85,7 @@ export const DepositsForm = ({
   const serverId = form.watch('serverId');
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       startTraderTime: formatDate(data.tradingTime.from),
       endTraderTime: formatDate(data.tradingTime.to),

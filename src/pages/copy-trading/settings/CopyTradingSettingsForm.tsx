@@ -37,6 +37,7 @@ export const CopyTradingSettingsForm = ({
     },
   });
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       name: data.protocolName,
       applicableScenarios: data.applicableScenarios,

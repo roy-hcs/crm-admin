@@ -61,6 +61,7 @@ export const LeverageForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams(pre => ({
       ...pre,
       server: data.server,

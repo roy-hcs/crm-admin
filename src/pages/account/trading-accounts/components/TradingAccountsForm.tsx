@@ -84,6 +84,7 @@ export const TradingAccountsForm = ({
   const serverId = form.watch('serverId');
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       regStartTime: formatDate(data.Time.from),
       regEndTime: formatDate(data.Time.to),

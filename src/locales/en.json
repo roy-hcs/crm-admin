@@ -212,7 +212,8 @@
     "tradingPassword": "Transaction password",
     "detail": "{{field}} details",
     "exportFailed": "Export failed",
-    "selectUser": "Select user"
+    "selectUser": "Select user",
+    "modify": "Modify {{field}}"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -675,7 +676,9 @@
     "statusChangeSuccess": "Status modified successfully",
     "other": "other",
     "pammDeposit": "PAMM deposit",
-    "pammWithdrawal": "PAMM Withdrawal"
+    "pammWithdrawal": "PAMM Withdrawal",
+    "comments": "Comment",
+    "modifyPaymentOrderTips": "Please verify the payment status of the order at the payment channel before making any changes."
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",

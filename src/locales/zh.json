@@ -231,7 +231,8 @@
     "pwdType": "密码类型",
     "detail": "{{field}} 详细",
     "exportFailed": "导出失败",
-    "selectUser": "选择用户"
+    "selectUser": "选择用户",
+    "modify": "修改 {{field}}"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -1110,7 +1111,9 @@
     "statusChangeSuccess": "状态修改成功",
     "pammDeposit": "PAMM入金",
     "pammWithdrawal": "PAMM出金",
-    "other": "其他"
+    "other": "其他",
+    "modifyPaymentOrderTips": "请在支付通道方核实订单的支付状态后再做修改。",
+    "comments": "注释"
   },
   "review": {
     "settings": {

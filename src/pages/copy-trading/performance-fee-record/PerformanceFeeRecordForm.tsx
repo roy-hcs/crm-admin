@@ -67,6 +67,7 @@ export const PerformanceFeeRecordForm = ({
     },
   });
   const onSubmit = (data: FormData) => {
+    reset();
     setParams(pre => ({
       ...pre,
       signalSourceOwner: data.signalSourceOwner,

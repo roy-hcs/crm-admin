@@ -54,6 +54,7 @@ export const WalletAccountsForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       currency: data.currency,
     });

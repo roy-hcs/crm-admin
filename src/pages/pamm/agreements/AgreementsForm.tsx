@@ -41,6 +41,7 @@ export const AgreementsForm = ({
     },
   });
   const onSubmit = (data: FormData) => {
+    reset?.();
     setOtherParams({
       name: data.name,
       projectId: data.projectId,
@@ -48,9 +49,7 @@ export const AgreementsForm = ({
     });
   };
   const onReset = () => {
-    if (reset) {
-      reset();
-    }
+    reset?.();
     form.reset({
       projectId: '',
       name: '',

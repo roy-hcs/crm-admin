@@ -7,6 +7,7 @@ import { FormSelect } from '@/components/form/FormSelect';
 import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
 import { FormProvider } from '@/contexts/form';
+import { CircleAlert } from 'lucide-react';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -99,7 +100,7 @@ export const PaymentOrderEditDialog = ({
   };
   return (
     <RrhDialog
-      title={t('common.detail', { field: t('paymentOrders.title') })}
+      title={t('common.modify', { field: t('paymentOrders.title') })}
       open={open}
       onOpenChange={setOpen}
       confirmShow={false}
@@ -110,7 +111,10 @@ export const PaymentOrderEditDialog = ({
       <FormProvider form={form}>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <h3 className="text-card-foreground font-semibold">{t('table.orderInfo')}</h3>
+            <div className="text-primary bg-primary/5 mb-3 flex items-center gap-1 rounded-lg p-2 text-sm">
+              <CircleAlert className="size-4" />
+              <span>{t('table.modifyPaymentOrderTips')}</span>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2">
               {orderInfos.map(item => (
                 <LabelItem

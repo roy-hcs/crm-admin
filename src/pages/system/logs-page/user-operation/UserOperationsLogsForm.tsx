@@ -60,6 +60,7 @@ export const UserOperationsLogsForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams(pre => ({
       ...pre,
       beginTime: formatDate(data.operationTime.from),

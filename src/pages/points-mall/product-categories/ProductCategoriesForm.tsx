@@ -32,6 +32,7 @@ export const ProductCategoriesForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset?.();
     setOtherParams({
       searchName: data.searchName,
     });
@@ -44,7 +45,7 @@ export const ProductCategoriesForm = ({
     form.reset({
       searchName: '',
     });
-    if (reset) reset();
+    reset?.();
   };
 
   return (

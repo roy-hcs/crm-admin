@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { CrmUserDealItem, CrmUserDealListParams, useCrmUserDealList } from '@/api/hooks/report';
@@ -8,22 +8,26 @@ import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { PageInfo } from '@/components/common/PageInfo';
 import { BasicParams } from '@/api/types';
-import { CRMColumnDef, DataTable } from '@/components/table';
+import { CRMColumnDef, DataTable, DataTableRef } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useInitServerId } from '@/hooks/useInitServerId';
+import { useCrmUserDealExport, useCrmUserDealListDetail } from '@/api/hooks/report/report';
+import { ExportButton } from '@/components/common/ExportButton';
+import { Checkbox } from '@/components/ui/checkbox';
+import { RrhButton } from '@/components/common/RrhButton';
+import { BatchDeleteDialog } from '../../trading/history/components/BatchDeleteDialog';
+import { TradingAccountTransactionDetailDialog } from './TradingAccountTransactionDetailDialog';
 
 export function TradingAccountTransactionsPage() {
   const { t } = useTranslation();
+  const tableRef = useRef<DataTableRef>(null);
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
   const [params, setParams] = useState<CrmUserDealListParams['params']>({
-    ticket: '',
     historyFuzzyName: '',
-    login: '',
-    comment: '',
     accounts: '',
     operationStart: '',
     operationEnd: '',
@@ -32,17 +36,23 @@ export function TradingAccountTransactionsPage() {
   const [commonParams, setCommonParams] = useState<
     Omit<CrmUserDealListParams, 'params' | keyof BasicParams>
   >({
+    ticket: '',
+    login: '',
+    comment: '',
     opeTypeList: '',
-    opeType: '',
     serverGroupList: '',
-    serverGroup: '',
     accountGroupList: '',
     accounts: '',
   });
 
   const { serverId, setServerId, server, serverLoading } = useInitServerId();
-
-  const { data: data, isLoading: dataLoading } = useCrmUserDealList(
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  const [detailId, setDetailId] = useState<string>('');
+  const {
+    data: data,
+    isLoading: dataLoading,
+    refetch,
+  } = useCrmUserDealList(
     {
       params,
       pageSize,
@@ -57,10 +67,7 @@ export function TradingAccountTransactionsPage() {
 
   const reset = () => {
     setParams({
-      ticket: '',
       historyFuzzyName: '',
-      login: '',
-      comment: '',
       accounts: '',
       operationStart: '',
       operationEnd: '',
@@ -68,17 +75,52 @@ export function TradingAccountTransactionsPage() {
     });
     setCommonParams({
       opeTypeList: '',
-      opeType: '',
       serverGroupList: '',
-      serverGroup: '',
       accountGroupList: '',
       accounts: '',
+      ticket: '',
+      login: '',
+      comment: '',
     });
     setKeyword('');
     setPageNum(0);
     setPageSize(10);
   };
+  const { data: depositDetail, isLoading: depositDetailLoading } = useCrmUserDealListDetail(
+    detailId,
+    detailDialogOpen && !!detailId,
+  );
+  const openDepositDetail = (id: string) => {
+    setDetailId(id);
+    setDetailDialogOpen(true);
+  };
+
   const allColumns: CRMColumnDef<CrmUserDealItem, unknown>[] = [
+    {
+      id: 'select',
+      label: t('common.select'),
+      header: ({ table }) => (
+        <Checkbox
+          className="data-[state=checked]:border-slate-700"
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          className="data-[state=checked]:border-slate-700"
+          checked={row.getIsSelected()}
+          onCheckedChange={value => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
     {
       id: 'No.',
       size: 50,
@@ -146,10 +188,42 @@ export function TradingAccountTransactionsPage() {
       header: t('tradingAccountTransactions.comment'),
       accessorFn: row => row.comment,
     },
+    {
+      id: 'operate',
+      header: () => {
+        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      },
+      cell: ({ row }) => {
+        return (
+          <div>
+            <RrhButton variant="ghost" onClick={() => openDepositDetail(row.original.id || '')}>
+              {t('common.View')}
+            </RrhButton>
+          </div>
+        );
+      },
+      fixed: 'right',
+      size: 50,
+      label: t('common.Operation'),
+    },
   ];
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('trading-account-transactions-table', allColumns);
+
+  const { mutateAsync: exportCrmUserDeal, isPending: exportLoading } = useCrmUserDealExport();
+  const [ids, setIds] = useState<string[]>([]);
+
+  const onSuccess = () => {
+    setIds([]);
+    tableRef.current?.selectionClear?.();
+    refetch();
+  };
+
+  const onSelectionChange = (items: CrmUserDealItem[]) => {
+    const ids = items.map(item => item.id || '');
+    setIds(ids);
+  };
 
   return (
     <div>
@@ -210,10 +284,22 @@ export function TradingAccountTransactionsPage() {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <ExportButton<CrmUserDealListParams>
+              title={t('financial.tradingAccountTransactions.title')}
+              exportFunction={exportCrmUserDeal}
+              params={{
+                params,
+                ...commonParams,
+                serverId,
+              }}
+              exportLoading={exportLoading}
+            />
+            <BatchDeleteDialog type="f" onSuccess={onSuccess} ids={ids} serverId={serverId} />
           </div>
         </div>
         <DataTable
           columns={tableColumns}
+          ref={tableRef}
           data={data?.rows || []}
           pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
           pageIndex={pageNum}
@@ -221,8 +307,17 @@ export function TradingAccountTransactionsPage() {
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
           loading={dataLoading || serverLoading}
+          onSelectionChange={onSelectionChange}
         />
       </TableContentWrapper>
+      {depositDetail?.data && (
+        <TradingAccountTransactionDetailDialog
+          isLoading={depositDetailLoading}
+          transactionDetail={depositDetail.data}
+          open={detailDialogOpen}
+          setOpen={setDetailDialogOpen}
+        />
+      )}
     </div>
   );
 }

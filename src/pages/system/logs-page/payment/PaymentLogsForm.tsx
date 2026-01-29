@@ -61,6 +61,7 @@ export const PaymentLogsForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams(pre => ({
       ...pre,
       operationStart: formatDate(data.operationTime.from),

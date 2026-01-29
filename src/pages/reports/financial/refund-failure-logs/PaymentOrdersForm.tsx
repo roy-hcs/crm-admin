@@ -53,6 +53,7 @@ export const RefundFailureLogsForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       beginTime: formatDate(data.operationTime.from),
       endTime: formatDate(data.operationTime.to),

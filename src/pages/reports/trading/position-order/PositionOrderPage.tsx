@@ -3,7 +3,7 @@ import { useServerList } from '@/api/hooks/system/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
-import { FileOutput, Funnel, RefreshCcw, Search } from 'lucide-react';
+import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 // import { PositionOrderForm } from './PositionOrderForm';
@@ -15,11 +15,10 @@ import { RrhDialog } from '@/components/common/RrhDialog';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
-import { toast } from 'sonner';
 import { usePositionOrderExport } from '@/api/hooks/report/report';
-import { downloadFile } from '@/lib/utils';
 import { PositionOrderForm } from './components/PositionOrderForm';
 import { PositionCostDialog } from './components/PositionCostDialog';
+import { ExportButton } from '@/components/common/ExportButton';
 
 const formatVolume = (volume: number | null, serverType: number, lotSize: number | null) => {
   if (volume === null) {
@@ -298,36 +297,7 @@ export const PositionOrderPage = () => {
     },
   ];
 
-  const [exportOpen, setExportOpen] = useState(false);
-  const {
-    mutateAsync: exportPositionOrder,
-    error: exportError,
-    isPending: exportLoading,
-  } = usePositionOrderExport();
-  useEffect(() => {
-    if (exportError) {
-      toast.error(t('common.exportFailed'), { duration: 5000 });
-    }
-  }, [exportError, t]);
-
-  const handleExport = async () => {
-    try {
-      const result = await exportPositionOrder({
-        params,
-        ...otherParams,
-      });
-
-      if (result?.code !== 0 && result?.msg) {
-        toast.error(result.msg, { duration: 5000 });
-      } else if (result?.code === 0 && result?.msg) {
-        downloadFile(result.msg);
-        setExportOpen(false);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error(t('common.exportFailed'), { duration: 5000 });
-    }
-  };
+  const { mutateAsync: exportPositionOrder, isPending: exportLoading } = usePositionOrderExport();
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility<PositionOrderItem>('position-orders-table', allColumns);
@@ -384,34 +354,15 @@ export const PositionOrderPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
-            <RrhDialog
-              title={t('common.SystemPrompt')}
-              open={exportOpen}
-              onOpenChange={setExportOpen}
-              formLoading={exportLoading}
-              trigger={
-                <RrhButton variant="outline">
-                  <FileOutput />
-                  {t('table.export')}
-                </RrhButton>
-              }
-              variant="small"
-              footerShow={false}
-            >
-              <div>
-                <div>
-                  {t('table.exportAllDataTip', { field: t('positionOrderPage.positionOrder') })}
-                </div>
-                <div className="mt-4 flex justify-end gap-4 pb-4 md:pb-0">
-                  <RrhButton variant="outline" onClick={() => setExportOpen(false)}>
-                    {t('common.Cancel')}
-                  </RrhButton>
-                  <RrhButton variant="default" onClick={handleExport}>
-                    {t('common.Confirm')}
-                  </RrhButton>
-                </div>
-              </div>
-            </RrhDialog>
+            <ExportButton<PositionOrderParams>
+              title={t('positionOrderPage.positionOrder')}
+              exportFunction={exportPositionOrder}
+              params={{
+                params,
+                ...otherParams,
+              }}
+              exportLoading={exportLoading}
+            />
             <PositionCostDialog
               serverId={otherParams.server}
               otherParams={otherParams}

@@ -55,6 +55,7 @@ export const SystemFundOperationsForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       type: data.way,
     });

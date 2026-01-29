@@ -89,6 +89,7 @@ export const PositionOrderForm = ({
   const { data: dealAccountGroupListData } = useGetDealAccountGroupList();
 
   const onSubmit = (data: FormData) => {
+    reset();
     const selectedAccounts = JSON.parse(data.accounts || '{"id": "", "label": ""}') as {
       id: string;
       label: string;

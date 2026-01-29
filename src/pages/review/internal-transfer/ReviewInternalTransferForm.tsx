@@ -57,6 +57,7 @@ export const ReviewInternalTransferForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    reset();
     setOtherParams({
       userId: data.name,
       status: data.status,

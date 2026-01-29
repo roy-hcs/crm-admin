@@ -80,6 +80,7 @@ export const TradingAccountTransactionsForm = ({
   const serverId = form.watch('serverId');
 
   const onSubmit = (data: FormData) => {
+    reset();
     setParams({
       serverGroupList: data.serverGroupList,
       fuzzyAccount: data.fuzzyAccount,
