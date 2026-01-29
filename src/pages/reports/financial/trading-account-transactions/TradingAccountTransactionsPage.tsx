@@ -13,12 +13,12 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useInitServerId } from '@/hooks/useInitServerId';
-import { useCrmUserDealExport } from '@/api/hooks/report/report';
+import { useCrmUserDealExport, useCrmUserDealListDetail } from '@/api/hooks/report/report';
 import { ExportButton } from '@/components/common/ExportButton';
 import { Checkbox } from '@/components/ui/checkbox';
-import { RrhDialog } from '@/components/common/RrhDialog';
 import { RrhButton } from '@/components/common/RrhButton';
 import { BatchDeleteDialog } from '../../trading/history/components/BatchDeleteDialog';
+import { TradingAccountTransactionDetailDialog } from './TradingAccountTransactionDetailDialog';
 
 export function TradingAccountTransactionsPage() {
   const { t } = useTranslation();
@@ -46,7 +46,8 @@ export function TradingAccountTransactionsPage() {
   });
 
   const { serverId, setServerId, server, serverLoading } = useInitServerId();
-
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  const [detailId, setDetailId] = useState<string>('');
   const {
     data: data,
     isLoading: dataLoading,
@@ -85,6 +86,15 @@ export function TradingAccountTransactionsPage() {
     setPageNum(0);
     setPageSize(10);
   };
+  const { data: depositDetail, isLoading: depositDetailLoading } = useCrmUserDealListDetail(
+    detailId,
+    detailDialogOpen && !!detailId,
+  );
+  const openDepositDetail = (id: string) => {
+    setDetailId(id);
+    setDetailDialogOpen(true);
+  };
+
   const allColumns: CRMColumnDef<CrmUserDealItem, unknown>[] = [
     {
       id: 'select',
@@ -184,25 +194,11 @@ export function TradingAccountTransactionsPage() {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
       cell: ({ row }) => {
-        const onClick = (data: CrmUserDealItem) => {
-          console.log('Operate on row:', data);
-        };
         return (
           <div>
-            <RrhDialog
-              trigger={
-                <RrhButton variant="ghost" onClick={() => onClick(row.original)}>
-                  {t('common.View')}
-                </RrhButton>
-              }
-              cancelText={t('common.close')}
-              confirmShow={false}
-              title={t('financial.tradingAccountTransactions.title')}
-              variant="large"
-            >
-              <div>detail</div>
-              {/* <TradingHistoryDetails data={row.original} /> */}
-            </RrhDialog>
+            <RrhButton variant="ghost" onClick={() => openDepositDetail(row.original.id || '')}>
+              {t('common.View')}
+            </RrhButton>
           </div>
         );
       },
@@ -314,6 +310,14 @@ export function TradingAccountTransactionsPage() {
           onSelectionChange={onSelectionChange}
         />
       </TableContentWrapper>
+      {depositDetail?.data && (
+        <TradingAccountTransactionDetailDialog
+          isLoading={depositDetailLoading}
+          transactionDetail={depositDetail.data}
+          open={detailDialogOpen}
+          setOpen={setDetailDialogOpen}
+        />
+      )}
     </div>
   );
 }
