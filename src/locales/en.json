@@ -212,7 +212,8 @@
     "tradingPassword": "Transaction password",
     "detail": "{{field}} details",
     "exportFailed": "Export failed",
-    "selectUser": "Select user"
+    "selectUser": "Select user",
+    "modify": "Modify {{field}}"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -671,7 +672,9 @@
     "outerOrderNo": "External order number",
     "paymentLink": "Payment link",
     "createDepositVerifyRecord": "Generate deposit audit records",
-    "statusChangeSuccess": "Status modified successfully"
+    "statusChangeSuccess": "Status modified successfully",
+    "comments": "Comment",
+    "modifyPaymentOrderTips": "Please verify the payment status of the order at the payment channel before making any changes."
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",

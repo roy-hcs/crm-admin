@@ -1110,7 +1110,8 @@
     "orderInfo": "订单信息",
     "createDepositVerifyRecord": "生成入金审核记录",
     "statusChangeSuccess": "状态修改成功",
-    "modifyPaymentOrderTips": "请在支付通道方核实订单的支付状态后再做修改。"
+    "modifyPaymentOrderTips": "请在支付通道方核实订单的支付状态后再做修改。",
+    "comments": "注释"
   },
   "review": {
     "settings": {

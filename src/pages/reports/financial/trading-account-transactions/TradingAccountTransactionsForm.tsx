@@ -139,10 +139,10 @@ export const TradingAccountTransactionsForm = ({
       }
       if (mounted) setGroupLoading(true);
       try {
-        const gruop = await getGroupData(serverId);
+        const group = await getGroupData(serverId);
         if (!mounted) return;
-        if (gruop?.length > 0) {
-          const leverOptions = gruop
+        if (group?.length > 0) {
+          const leverOptions = group
             .filter(i => i)
             .map((item: string) => ({
               label: item,

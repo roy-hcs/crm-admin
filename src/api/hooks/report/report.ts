@@ -44,6 +44,7 @@ import {
   WalletTransactionSumRes,
   PositionAverageItem,
   PaymentOrderDepositItem,
+  CrmUserDealListDetailRes,
 } from './types';
 
 /**
@@ -352,6 +353,19 @@ export function useCrmUserDealExport() {
         msg: string;
         data: null;
       }>('/system/crmUserDeal/export', params),
+  });
+}
+/**
+ * 获取交易账号资金流水详情
+ */
+export function useCrmUserDealListDetail(id: string, enabled: boolean = false) {
+  return useQuery({
+    queryKey: ['userDealListDetail', id],
+    queryFn: () => {
+      return apiGet<CrmUserDealListDetailRes>(`system/crmUserDeal/detailInfo/${id}`);
+    },
+    enabled: enabled && !!id,
+    staleTime: 0,
   });
 }
 
