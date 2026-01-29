@@ -325,7 +325,10 @@
     "rebateOnTrade": "交易返佣",
     "rebateOnCommission": "手续费返佣",
     "rebateOnDeposit": "入金返佣",
-    "serverId": "服务器"
+    "serverId": "服务器",
+    "preferenceSettings": "偏好设置",
+    "depositWithdrawPreference": "入金和出金类型偏好",
+    "preferenceSettingsDescription": "一旦提交偏好设置，将在下次预定时间生效"
   },
   "commission": {
     "trading": {
@@ -1108,7 +1111,10 @@
     "outerOrderNo": "外部订单号",
     "orderInfo": "订单信息",
     "createDepositVerifyRecord": "生成入金审核记录",
-    "statusChangeSuccess": "状态修改成功"
+    "statusChangeSuccess": "状态修改成功",
+    "pammDeposit": "PAMM入金",
+    "pammWithdrawal": "PAMM出金",
+    "other": "其他"
   },
   "review": {
     "settings": {

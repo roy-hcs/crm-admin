@@ -86,18 +86,14 @@ export const PositionCostDialog = ({
     <RrhDialog
       trigger={<RrhButton variant="outline">{t('positionOrderPage.positionCost')}</RrhButton>}
       title={t('positionOrderPage.positionCost')}
+      cancelText={t('common.close')}
+      confirmShow={false}
       open={open}
       onOpenChange={setOpen}
-      footerShow={false}
       variant="large"
     >
       <div className="overflow-y-auto">
         <DataTable columns={columns} data={data?.rows || []} loading={isLoading} />
-      </div>
-      <div className="flex justify-end gap-4 pb-4 md:pb-0">
-        <RrhButton variant="outline" onClick={() => setOpen(false)}>
-          {t('common.close')}
-        </RrhButton>
       </div>
     </RrhDialog>
   );

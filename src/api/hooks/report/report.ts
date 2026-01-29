@@ -71,6 +71,37 @@ export function useAgencyOverviewList(params: OverviewParams, options?: { enable
     enabled: options?.enabled ?? true,
   });
 }
+/**
+ * ib数据总览-获取偏好设置
+ */
+export function useGetAgencyPreference() {
+  return useMutation({
+    mutationFn: () =>
+      apiGetCustom<{
+        code: number;
+        msg: string;
+        data: {
+          depositMethods: string;
+          preferenceShowPamm: string;
+          withdrawMethods: string;
+        };
+      }>('/system/statistics/getAgencyPreference?bizType=2', {}),
+  });
+}
+
+/**
+ * ib数据总览-提交偏好设置
+ */
+export function useAgencyPreference() {
+  return useMutation({
+    mutationFn: (params: { bizType: string; depositMethods: string; withdrawMethods: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/statistics/agencyPreference', params),
+  });
+}
 
 /**
  * 获取佣金报表-交易佣金报表 手续费 入金 通用接口

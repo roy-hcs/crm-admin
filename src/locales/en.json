@@ -322,7 +322,10 @@
     "userName": "Agent name",
     "userNumber": "Number of CRM accounts",
     "volume": "Trading volume",
-    "withdrawAmount": "Withdrawal (statistics)"
+    "withdrawAmount": "Withdrawal (statistics)",
+    "depositWithdrawPreference": "Deposit and Withdrawal Type Preferences",
+    "preferenceSettings": "Preferences",
+    "preferenceSettingsDescription": "Once your preferences are submitted, they will take effect at the next scheduled time"
   },
   "commission": {
     "daily-rebate": {
@@ -671,7 +674,10 @@
     "outerOrderNo": "External order number",
     "paymentLink": "Payment link",
     "createDepositVerifyRecord": "Generate deposit audit records",
-    "statusChangeSuccess": "Status modified successfully"
+    "statusChangeSuccess": "Status modified successfully",
+    "other": "other",
+    "pammDeposit": "PAMM deposit",
+    "pammWithdrawal": "PAMM Withdrawal"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
