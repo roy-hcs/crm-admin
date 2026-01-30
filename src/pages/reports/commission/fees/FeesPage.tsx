@@ -79,41 +79,41 @@ export function FeesPage() {
     },
     {
       id: 'serverName',
-      header: t('commission.trading.serverName'),
+      header: t('trading.serverName'),
       accessorFn: row => row.serverName,
     },
     {
       id: 'mtOrder',
-      header: t('commission.trading.mtOrder'),
+      header: t('trading.mtOrder'),
       accessorFn: row => row.mtOrder,
     },
     {
       id: 'login',
-      header: t('commission.trading.login'),
+      header: t('trading.login'),
       accessorFn: row => row.login,
     },
     {
       id: 'symbol',
       accessorKey: 'symbol',
-      header: t('commission.trading.symbol'),
+      header: t('trading.symbol'),
       accessorFn: row => row.symbol,
     },
     {
       id: 'volume',
       accessorKey: 'volume',
-      header: t('commission.trading.volume'),
+      header: t('trading.volume'),
       accessorFn: row => row.volume,
     },
     {
       id: 'traderTime',
       accessorKey: 'traderTime',
-      header: t('commission.trading.traderTime'),
+      header: t('trading.traderTime'),
       accessorFn: row => row.traderTime,
     },
     {
       id: 'userName',
       accessorKey: 'userName',
-      header: t('commission.trading.userName'),
+      header: t('trading.userName'),
       cell: ({ row }) => (
         <div>
           <div>{row.original.userName}</div>
@@ -124,7 +124,7 @@ export function FeesPage() {
     {
       id: 'rebateTotalAmt',
       accessorKey: 'rebateTotalAmt',
-      header: t('commission.trading.rebateTotalAmt'),
+      header: t('trading.rebateTotalAmt'),
       cell: ({ row }) => (
         <div>
           <div>{(row.original.rebateTotalAmt || '') + (row.original.currency || '')}</div>
@@ -137,19 +137,19 @@ export function FeesPage() {
     {
       id: 'rebateAccountName',
       accessorKey: 'rebateAccountName',
-      header: t('commission.trading.rebateAccountName'),
+      header: t('trading.rebateAccountName'),
       accessorFn: row => row.rebateAccountName,
     },
     {
       id: 'rebateTime',
       accessorKey: 'rebateTime',
-      header: t('commission.trading.rebateTime'),
+      header: t('trading.rebateTime'),
       accessorFn: row => row.rebateTime,
     },
     {
       id: 'rebateTraderName',
       accessorKey: 'rebateTraderName',
-      header: t('commission.trading.rebateTraderName'),
+      header: t('trading.rebateTraderName'),
       accessorFn: row => row.rebateTraderName,
     },
   ];
@@ -161,12 +161,12 @@ export function FeesPage() {
 
   return (
     <div>
-      <PageInfo title={t('commission.fees.title')} />
+      <PageInfo title={t('fees.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
-              placeholder={t('common.pleaseInput', { field: t('commission.trading.mtOrder') })}
+              placeholder={t('common.pleaseInput', { field: t('trading.mtOrder') })}
               className="h-9"
               value={keyword}
               onChange={e => setKeyword(e.target.value)}
@@ -227,7 +227,7 @@ export function FeesPage() {
                 rebateTraderIdList: commonParams.rebateTraderId,
               }}
               exportLoading={exportLoading}
-              title={t('commission.fees.title')}
+              title={t('fees.title')}
             />
           </div>
         </div>

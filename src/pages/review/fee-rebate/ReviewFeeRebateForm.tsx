@@ -201,8 +201,8 @@ export const ReviewFeeRebateForm = ({
           <FormInput
             verticalLabel
             name="tradeType"
-            label={t('commission.trading.taderType')}
-            placeholder={t('common.pleaseInput', { field: t('commission.trading.taderType') })}
+            label={t('trading.taderType')}
+            placeholder={t('common.pleaseInput', { field: t('trading.taderType') })}
           />
           <FormSelect
             verticalLabel

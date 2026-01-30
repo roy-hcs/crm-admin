@@ -63,12 +63,12 @@ export function DailyRebatePage() {
     },
     {
       id: 'settleTime',
-      header: t('commission.daily-rebate.settleTime'),
+      header: t('daily-rebate.settleTime'),
       accessorFn: row => row.settleTime,
     },
     {
       id: 'lastName',
-      header: t('commission.daily-rebate.userName'),
+      header: t('daily-rebate.userName'),
       cell: ({ row }) => (
         <div>
           <div>{(row.original.lastName || '') + (row.original.name || '')}</div>
@@ -78,7 +78,7 @@ export function DailyRebatePage() {
     },
     {
       id: 'rebateType',
-      header: t('commission.daily-rebate.rebateType'),
+      header: t('daily-rebate.rebateType'),
       accessorFn: row => row.rebateType,
       cell: ({ row }) => {
         const find = RebateTypeOptions.find(item => item.value === row.original.rebateType);
@@ -91,7 +91,7 @@ export function DailyRebatePage() {
     {
       id: 'account',
       accessorKey: 'account',
-      header: t('commission.daily-rebate.account'),
+      header: t('daily-rebate.account'),
       cell: ({ row }) => {
         if (row.original.account) {
           return row.original.account;
@@ -102,18 +102,18 @@ export function DailyRebatePage() {
     {
       id: 'volume',
       accessorKey: 'volume',
-      header: t('commission.daily-rebate.volume'),
+      header: t('daily-rebate.volume'),
       accessorFn: row => row.volume,
     },
     {
       id: 'rebateTotalAmt',
       accessorKey: 'rebateTotalAmt',
-      header: t('commission.daily-rebate.rebateTotalAmt'),
+      header: t('daily-rebate.rebateTotalAmt'),
     },
     {
       id: 'rebateStatus',
       accessorKey: 'rebateStatus',
-      header: t('commission.daily-rebate.rebateStatus'),
+      header: t('daily-rebate.rebateStatus'),
       cell: ({ row }) => {
         const find = RebateStatusOptions.find(
           item => String(item.value) === String(row.original.rebateStatus),
@@ -127,7 +127,7 @@ export function DailyRebatePage() {
     {
       id: 'updateTime',
       accessorKey: 'updateTime',
-      header: t('commission.daily-rebate.updateTime'),
+      header: t('daily-rebate.updateTime'),
       cell: ({ row }) => {
         if (row.original.updateTime) {
           return row.original.updateTime;
@@ -138,13 +138,13 @@ export function DailyRebatePage() {
     {
       id: 'relatedCount',
       accessorKey: 'relatedCount',
-      header: t('commission.daily-rebate.relatedCount'),
+      header: t('daily-rebate.relatedCount'),
       accessorFn: row => row.relatedCount,
     },
     {
       id: 'id',
       accessorKey: 'id',
-      header: t('commission.daily-rebate.id'),
+      header: t('daily-rebate.id'),
       accessorFn: row => row.id,
     },
   ];
@@ -156,12 +156,12 @@ export function DailyRebatePage() {
 
   return (
     <div>
-      <PageInfo title={t('commission.daily-rebate.title')} />
+      <PageInfo title={t('daily-rebate.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
-              placeholder={t('common.pleaseInput', { field: t('commission.daily-rebate.account') })}
+              placeholder={t('common.pleaseInput', { field: t('daily-rebate.account') })}
               className="h-9"
               value={keyword}
               onChange={e => setKeyword(e.target.value)}
@@ -212,7 +212,7 @@ export function DailyRebatePage() {
                 ...commonParams,
               }}
               exportLoading={exportLoading}
-              title={t('commission.daily-rebate.title')}
+              title={t('daily-rebate.title')}
             />
           </div>
         </div>

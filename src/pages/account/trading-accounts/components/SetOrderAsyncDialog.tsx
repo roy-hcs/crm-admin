@@ -80,17 +80,17 @@ export const SetOrderAsyncDialog = ({
             if (accounts && accounts?.length > 0) {
               setOpen(true);
             } else {
-              toast.error(t('financial.tradingAccountTransactions.atLeastOneAccount'));
+              toast.error(t('tradingAccountTransactions.atLeastOneAccount'));
               e.preventDefault();
             }
           }}
           type="button"
           Icon={<Plus className="size-3.5" />}
         >
-          {t('financial.tradingAccountTransactions.batchOrderAsync')}
+          {t('tradingAccountTransactions.batchOrderAsync')}
         </RrhButton>
       }
-      title={t('financial.tradingAccountTransactions.batchOrderAsync')}
+      title={t('tradingAccountTransactions.batchOrderAsync')}
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
@@ -103,7 +103,7 @@ export const SetOrderAsyncDialog = ({
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <div className="bg-destructive/5 flex items-center gap-1 rounded-md p-2">
               <span className="text-destructive text-sm leading-5 font-medium">
-                {t('financial.tradingAccountTransactions.OrderAsyncTips')}
+                {t('tradingAccountTransactions.OrderAsyncTips')}
               </span>
             </div>
 

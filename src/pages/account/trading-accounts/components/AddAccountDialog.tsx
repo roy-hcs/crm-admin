@@ -49,7 +49,7 @@ const addUserSchema = (t: TFunction<'translation', undefined>) => {
     serviceProperty: z.string().min(1, t('rules.required', { field: t('common.type') })),
     serviceType: z
       .string()
-      .min(1, t('rules.required', { field: t('financial.tradingAccountTransactions.serverType') })),
+      .min(1, t('rules.required', { field: t('tradingAccountTransactions.serverType') })),
     server: z.string().min(1, t('rules.required', { field: t('table.server') })),
     serverGroup: z.string().min(1, t('rules.required', { field: t('table.groups') })),
     account: z.string().optional(),
@@ -264,15 +264,17 @@ export const AddAccountDialog = ({
     <RrhDialog
       trigger={
         <RrhButton type="button" Icon={<Plus className="size-3.5" />}>
-          {t('financial.tradingAccountTransactions.addLogin')}
+          {t('tradingAccountTransactions.addLogin')}
         </RrhButton>
       }
-      title={t('financial.tradingAccountTransactions.addLogin')}
+      title={t('tradingAccountTransactions.addLogin')}
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
-      footerShow={false}
+      onCancel={onCancel}
+      onConfirm={() => form.handleSubmit(onSubmit)()}
       variant="large"
+      type="submit"
       formLoading={isSubmitting}
     >
       <FormProvider form={form}>
@@ -297,7 +299,7 @@ export const AddAccountDialog = ({
 
             <FormSelect
               name="serviceType"
-              label={t('financial.tradingAccountTransactions.serverType')}
+              label={t('tradingAccountTransactions.serverType')}
               verticalLabel
               placeholder={`${t('common.pleaseSelect')}`}
               showRowValue={false}
@@ -337,7 +339,7 @@ export const AddAccountDialog = ({
                           className={cn('h-9 w-full border px-2')}
                           placeholder={
                             (accountInfo?.accountStart || 0) > 0
-                              ? t('financial.tradingAccountTransactions.accountPlaceholder', {
+                              ? t('tradingAccountTransactions.accountPlaceholder', {
                                   accountStart: accountInfo?.accountStart,
                                   accountEnd: accountInfo?.accountEnd,
                                 })
@@ -350,7 +352,7 @@ export const AddAccountDialog = ({
                         />
                         {accountInfo?.maxAccount && (
                           <div className="text-muted-foreground mt-2 text-sm leading-5">
-                            {t('financial.tradingAccountTransactions.maxAccount', {
+                            {t('tradingAccountTransactions.maxAccount', {
                               maxAccount: accountInfo?.maxAccount,
                             })}
                           </div>
@@ -387,17 +389,6 @@ export const AddAccountDialog = ({
                 return <SelectUser verticalLabel field={field} title={t('table.directAgent')} />;
               }}
             />
-
-            <div className="border-muted col-span-full -mx-6 flex justify-end border-t px-6 py-6 sm:pb-0">
-              <div className="flex justify-end gap-4">
-                <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
-                  {t('common.Cancel')}
-                </RrhButton>
-                <RrhButton type="submit" className="px-4 py-2" disabled={isSubmitting}>
-                  {t('common.Confirm')}
-                </RrhButton>
-              </div>
-            </div>
           </form>
         </Form>
       </FormProvider>

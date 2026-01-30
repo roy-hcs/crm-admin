@@ -92,23 +92,23 @@ export const PaymentOrdersForm = ({
           <FormInput
             verticalLabel
             name="userName"
-            label={t('financial.paymentOrders.userName')}
+            label={t('paymentOrders.userName')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.paymentOrders.userName'),
+              field: t('paymentOrders.userName'),
             })}
           />
           <FormInput
             verticalLabel
             name="account"
-            label={t('financial.paymentOrders.account')}
+            label={t('paymentOrders.account')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.paymentOrders.account'),
+              field: t('paymentOrders.account'),
             })}
           />
           <FormSelect
             verticalLabel
             name="channelId"
-            label={t('financial.paymentOrders.channelId')}
+            label={t('paymentOrders.channelId')}
             placeholder={t('common.pleaseSelect')}
             options={
               channelRes
@@ -122,16 +122,16 @@ export const PaymentOrdersForm = ({
           <FormSelect
             verticalLabel
             name="orderStatus"
-            label={t('financial.paymentOrders.orderStatus')}
+            label={t('paymentOrders.orderStatus')}
             placeholder={t('common.pleaseSelect')}
             options={OrderStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
           />
           <FormInput
             verticalLabel
             name="orderId"
-            label={t('financial.paymentOrders.orderId')}
+            label={t('paymentOrders.orderId')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.paymentOrders.orderId'),
+              field: t('paymentOrders.orderId'),
             })}
           />
           <FormField
@@ -144,9 +144,7 @@ export const PaymentOrdersForm = ({
             name="operationTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">
-                  {t('financial.paymentOrders.orderTime')}
-                </FormLabel>
+                <FormLabel className="basis-3/12">{t('paymentOrders.orderTime')}</FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="operationTime" control={form.control} />
                 </FormControl>

@@ -156,7 +156,7 @@ export const TradingAccountsForm = ({
           <FormMultiSelect
             verticalLabel
             name="serverGroupList"
-            label={t('commission.trading.serverGroup')}
+            label={t('trading.serverGroup')}
             placeholder={t('common.pleaseSelect')}
             options={groupList}
             loading={groupLoading}
@@ -176,17 +176,17 @@ export const TradingAccountsForm = ({
           <FormInput
             verticalLabel
             name="fuzzyAccount"
-            label={t('financial.tradingAccountTransactions.login')}
+            label={t('tradingAccountTransactions.login')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.tradingAccountTransactions.login'),
+              field: t('tradingAccountTransactions.login'),
             })}
           />
           <FormInput
             verticalLabel
             name="fuzzyName"
-            label={t('financial.tradingAccountTransactions.name')}
+            label={t('tradingAccountTransactions.name')}
             placeholder={t('common.pleaseInput', {
-              field: t('financial.tradingAccountTransactions.name'),
+              field: t('tradingAccountTransactions.name'),
             })}
           />
           <FormField

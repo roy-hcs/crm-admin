@@ -24,6 +24,7 @@ import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { RrhCircleLoading } from './RrhCircleLoading';
+import { RrhButton } from './RrhButton';
 
 interface DialogProps {
   title?: string;
@@ -35,7 +36,7 @@ interface DialogProps {
   isConfirmDisabled?: boolean;
   className?: string;
   onCancel?: () => void;
-  onConfirm?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onConfirm?: () => void;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   footerShow?: boolean;
@@ -43,6 +44,7 @@ interface DialogProps {
   variant?: 'default' | 'small' | 'middle' | 'large';
   titleCls?: string;
   formLoading?: boolean;
+  type?: 'view' | 'submit';
 }
 
 export const RrhDialog: React.FC<DialogProps> = ({
@@ -63,6 +65,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
   variant = 'default',
   titleCls,
   formLoading = false,
+  type = 'view',
 }) => {
   const handleCancel = () => {
     onCancel?.();
@@ -70,8 +73,8 @@ export const RrhDialog: React.FC<DialogProps> = ({
     onOpenChange(false);
   };
 
-  const handleConfirm = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    await onConfirm?.(e);
+  const handleConfirm = async () => {
+    await onConfirm?.();
     if (!onOpenChange) return;
     onOpenChange(false);
   };
@@ -155,22 +158,31 @@ export const RrhDialog: React.FC<DialogProps> = ({
                   {cancelText || t('common.Cancel')}
                 </div>
               </DialogClose>
-              {confirmShow && (
-                <DialogClose>
-                  <div
-                    onClick={e => {
-                      if (isConfirmDisabled) return;
-                      handleConfirm?.(e);
-                    }}
-                    className={cn(
-                      'bg-primary rounded-sm border px-4 py-2 text-white',
-                      isConfirmDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
-                    )}
+              {confirmShow &&
+                (type === 'view' ? (
+                  <DialogClose>
+                    <div
+                      onClick={() => {
+                        if (isConfirmDisabled) return;
+                        handleConfirm?.();
+                      }}
+                      className={cn(
+                        'bg-primary rounded-sm border px-4 py-2 text-white',
+                        isConfirmDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+                      )}
+                    >
+                      {confirmText || t('common.Confirm')}
+                    </div>
+                  </DialogClose>
+                ) : (
+                  <RrhButton
+                    className="px-4 py-2"
+                    disabled={isConfirmDisabled}
+                    onClick={() => onConfirm?.()}
                   >
                     {confirmText || t('common.Confirm')}
-                  </div>
-                </DialogClose>
-              )}
+                  </RrhButton>
+                ))}
             </DialogFooter>
           )}
         </DialogContent>
@@ -226,22 +238,31 @@ export const RrhDialog: React.FC<DialogProps> = ({
                 {cancelText || t('common.Cancel')}
               </div>
             </DrawerClose>
-            {confirmShow && (
-              <DrawerClose>
-                <div
-                  onClick={e => {
-                    if (isConfirmDisabled) return;
-                    handleConfirm?.(e);
-                  }}
-                  className={cn(
-                    'bg-primary w-full rounded-sm border px-4 py-2 text-center text-white',
-                    isConfirmDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
-                  )}
+            {confirmShow &&
+              (type === 'view' ? (
+                <DrawerClose>
+                  <div
+                    onClick={() => {
+                      if (isConfirmDisabled) return;
+                      handleConfirm?.();
+                    }}
+                    className={cn(
+                      'bg-primary w-full rounded-sm border px-4 py-2 text-center text-white',
+                      isConfirmDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+                    )}
+                  >
+                    {confirmText || t('common.Confirm')}
+                  </div>
+                </DrawerClose>
+              ) : (
+                <RrhButton
+                  className="px-4 py-2"
+                  disabled={isConfirmDisabled}
+                  onClick={() => onConfirm?.()}
                 >
                   {confirmText || t('common.Confirm')}
-                </div>
-              </DrawerClose>
-            )}
+                </RrhButton>
+              ))}
           </DrawerFooter>
         )}
       </DrawerContent>

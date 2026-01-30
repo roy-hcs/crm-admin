@@ -100,9 +100,7 @@ export const WeeklyRebateForm = ({
             name="settlementTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">
-                  {t('commission.daily-rebate.settleTime')}
-                </FormLabel>
+                <FormLabel className="basis-3/12">{t('daily-rebate.settleTime')}</FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="settlementTime" control={form.control} />
                 </FormControl>
@@ -113,29 +111,29 @@ export const WeeklyRebateForm = ({
           <FormInput
             verticalLabel
             name="account"
-            label={t('commission.daily-rebate.account')}
-            placeholder={t('common.pleaseInput', { field: t('commission.daily-rebate.account') })}
+            label={t('daily-rebate.account')}
+            placeholder={t('common.pleaseInput', { field: t('daily-rebate.account') })}
           />
           <FormSelect
             verticalLabel
             name="rebateType"
-            label={t('commission.daily-rebate.rebateType')}
+            label={t('daily-rebate.rebateType')}
             placeholder={t('common.pleaseSelect')}
             options={RebateTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
           />
           <FormSelect
             verticalLabel
             name="rebateStatus"
-            label={t('commission.daily-rebate.rebateStatus')}
+            label={t('daily-rebate.rebateStatus')}
             placeholder={t('common.pleaseSelect')}
             options={RebateStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
           />
           <FormInput
             verticalLabel
             name="id"
-            label={t('commission.daily-rebate.id')}
+            label={t('daily-rebate.id')}
             placeholder={t('common.pleaseInput', {
-              field: t('commission.daily-rebate.id'),
+              field: t('daily-rebate.id'),
             })}
           />
           <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">

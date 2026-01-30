@@ -69,17 +69,17 @@ export const SetAccountGroupDialog = ({
             if (ids && ids?.length > 0) {
               setOpen(true);
             } else {
-              toast.error(t('financial.tradingAccountTransactions.atLeastOneAccount'));
+              toast.error(t('tradingAccountTransactions.atLeastOneAccount'));
               e.preventDefault();
             }
           }}
           type="button"
           Icon={<Plus className="size-3.5" />}
         >
-          {t('financial.tradingAccountTransactions.batchSetAccountGroup')}
+          {t('tradingAccountTransactions.batchSetAccountGroup')}
         </RrhButton>
       }
-      title={t('financial.tradingAccountTransactions.batchSetAccountGroup')}
+      title={t('tradingAccountTransactions.batchSetAccountGroup')}
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
@@ -91,7 +91,7 @@ export const SetAccountGroupDialog = ({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <div className="text-foreground text-sm leading-5 font-medium">
-              {t('financial.tradingAccountTransactions.selectedAccounts', { count: ids.length })}
+              {t('tradingAccountTransactions.selectedAccounts', { count: ids.length })}
             </div>
 
             <FormSelect

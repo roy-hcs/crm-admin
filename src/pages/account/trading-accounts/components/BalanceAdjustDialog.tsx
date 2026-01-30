@@ -155,17 +155,17 @@ export const BalanceAdjustDialog = ({
             if (accounts && accounts?.length > 0) {
               setOpen(true);
             } else {
-              toast.error(t('financial.tradingAccountTransactions.atLeastOneAccount'));
+              toast.error(t('tradingAccountTransactions.atLeastOneAccount'));
               e.preventDefault();
             }
           }}
           type="button"
           Icon={<Plus className="size-3.5" />}
         >
-          {t('financial.tradingAccountTransactions.balanceAdjust')}
+          {t('tradingAccountTransactions.balanceAdjust')}
         </RrhButton>
       }
-      title={t('financial.tradingAccountTransactions.balanceAdjust')}
+      title={t('tradingAccountTransactions.balanceAdjust')}
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
@@ -179,11 +179,11 @@ export const BalanceAdjustDialog = ({
             <div className="bg-destructive/5 flex items-center gap-1 rounded-md p-2">
               <CircleAlert className="text-destructive size-4" />
               <span className="text-destructive text-sm leading-5 font-medium">
-                {t('financial.tradingAccountTransactions.balanceAdjustDescription')}
+                {t('tradingAccountTransactions.balanceAdjustDescription')}
               </span>
             </div>
             <div className="text-foreground text-sm leading-5 font-medium">
-              {t('financial.tradingAccountTransactions.selectedAccounts', {
+              {t('tradingAccountTransactions.selectedAccounts', {
                 count: accounts.length,
               })}
             </div>

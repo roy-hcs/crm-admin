@@ -68,7 +68,7 @@ const DetailInfo = ({ itemInfo }: { itemInfo: WalletTransactionItem }) => {
 
   const accountInfo = [
     {
-      label: t('financial.walletTransactions.lastName'),
+      label: t('walletTransactions.lastName'),
       value: `${itemInfo.lastName || ''} ${itemInfo.name || ''}`,
     },
     {
@@ -86,23 +86,23 @@ const DetailInfo = ({ itemInfo }: { itemInfo: WalletTransactionItem }) => {
       value: itemInfo.operationMethod ? t(OperationMethodMap[itemInfo.operationMethod]) : '',
     },
     {
-      label: t('financial.walletTransactions.preAmount'),
+      label: t('walletTransactions.preAmount'),
       value: `${itemInfo.preAmount || ''} ${itemInfo.currency}`,
     },
     {
-      label: t('financial.walletTransactions.amount'),
+      label: t('walletTransactions.amount'),
       value: `${itemInfo.amount || ''} ${itemInfo.currency}`,
     },
     {
-      label: t('financial.walletTransactions.postAmount'),
+      label: t('walletTransactions.postAmount'),
       value: `${itemInfo.postAmount || ''} ${itemInfo.currency}`,
     },
     {
-      label: t('financial.walletTransactions.operationTimeTable'),
+      label: t('walletTransactions.operationTimeTable'),
       value: itemInfo.operationTime || '',
     },
     {
-      label: t('financial.walletTransactions.serialNumTable'),
+      label: t('walletTransactions.serialNumTable'),
       value: itemInfo.serialNum || '',
     },
     {
@@ -118,7 +118,7 @@ const DetailInfo = ({ itemInfo }: { itemInfo: WalletTransactionItem }) => {
       value: inflowAccount,
     },
     {
-      label: t('financial.walletTransactions.mtOrder'),
+      label: t('walletTransactions.mtOrder'),
       value: itemInfo.mtOrder || '',
     },
   ];
@@ -220,7 +220,7 @@ export function WalletTransactionsPage() {
     },
     {
       id: 'lastName',
-      header: t('financial.walletTransactions.lastName'),
+      header: t('walletTransactions.lastName'),
       cell: ({ row }) => (
         <div>
           <div>{(row.original.lastName ?? '') + (row.original.name ?? '')}</div>
@@ -241,43 +241,43 @@ export function WalletTransactionsPage() {
     {
       id: 'currency',
       accessorKey: 'currency',
-      header: t('financial.walletTransactions.wallet'),
+      header: t('walletTransactions.wallet'),
       accessorFn: row => row.currency,
     },
     {
       id: 'preAmount',
       accessorKey: 'preAmount',
-      header: t('financial.walletTransactions.preAmount'),
+      header: t('walletTransactions.preAmount'),
       accessorFn: row => row.preAmount,
     },
     {
       id: 'amount',
       accessorKey: 'amount',
-      header: t('financial.walletTransactions.amount'),
+      header: t('walletTransactions.amount'),
       accessorFn: row => row.amount,
     },
     {
       id: 'postAmount',
       accessorKey: 'postAmount',
-      header: t('financial.walletTransactions.postAmount'),
+      header: t('walletTransactions.postAmount'),
       accessorFn: row => row.postAmount,
     },
     {
       id: 'operationTime',
       accessorKey: 'operationTime',
-      header: t('financial.walletTransactions.operationTimeTable'),
+      header: t('walletTransactions.operationTimeTable'),
       accessorFn: row => row.operationTime,
     },
     {
       id: 'serialNum',
       accessorKey: 'serialNum',
-      header: t('financial.walletTransactions.serialNumTable'),
+      header: t('walletTransactions.serialNumTable'),
       accessorFn: row => row.serialNum,
     },
     {
       id: 'mtOrder',
       accessorKey: 'mtOrder',
-      header: t('financial.walletTransactions.mtOrder'),
+      header: t('walletTransactions.mtOrder'),
       accessorFn: row => row.mtOrder || '--',
     },
     {
@@ -293,7 +293,7 @@ export function WalletTransactionsPage() {
       },
       cell: ({ row }) => (
         <RrhDialog
-          title={t('common.detail', { field: t('financial.walletTransactions.title') })}
+          title={t('common.detail', { field: t('walletTransactions.title') })}
           trigger={
             <RrhButton variant="ghost" type="button">
               {t('common.View')}
@@ -315,7 +315,7 @@ export function WalletTransactionsPage() {
     useWalletTransactionListExport();
   return (
     <div>
-      <PageInfo title={t('financial.walletTransactions.title')} />
+      <PageInfo title={t('walletTransactions.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
@@ -326,7 +326,6 @@ export function WalletTransactionsPage() {
               value={keyword}
               onChange={e => setKeyword(e.target.value)}
               onLeftIconClick={() => {
-                // 触发查询逻辑, 这里简单调用一次刷新
                 setParams(prev => ({ ...prev, account: keyword }));
                 setPageNum(0);
               }}
@@ -366,7 +365,7 @@ export function WalletTransactionsPage() {
               columns={columns}
             />
             <ExportButton<CrmUserDealDetailParams>
-              title={t('financial.walletTransactions.title')}
+              title={t('walletTransactions.title')}
               exportFunction={exportWalletTransactions}
               params={{ params, ...commonParams }}
               exportLoading={exportLoading}

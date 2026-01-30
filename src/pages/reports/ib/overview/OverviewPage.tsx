@@ -10,11 +10,12 @@ import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
-import { OverviewForm } from './OverviewForm';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useInitServerId } from '@/hooks/useInitServerId';
 import { useAgencyOverviewExport } from '@/api/hooks/report/report';
 import { Switch } from '@/components/ui/switch';
+import { OverviewForm } from './components/OverviewForm';
+import { PreferDialog } from './components/PreferDialog';
 import { ExportButton } from '@/components/common/ExportButton';
 
 export function OverviewPage() {
@@ -34,7 +35,11 @@ export function OverviewPage() {
 
   const { serverId, setServerId, server, serverLoading } = useInitServerId();
   const { data: rebateLevel } = useRebateLevelList();
-  const { data: AgencyClientTracking, isLoading } = useAgencyOverviewList(
+  const {
+    data: AgencyClientTracking,
+    isLoading,
+    refetch,
+  } = useAgencyOverviewList(
     {
       pageSize,
       pageNum: pageNum + 1,
@@ -244,6 +249,7 @@ export function OverviewPage() {
                 }}
               />
             </div>
+            <PreferDialog onSuccess={refetch} />
           </div>
         </div>
         <DataTable

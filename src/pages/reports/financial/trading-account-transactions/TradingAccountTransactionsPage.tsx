@@ -129,17 +129,17 @@ export function TradingAccountTransactionsPage() {
     },
     {
       id: 'login',
-      header: t('financial.tradingAccountTransactions.login'),
+      header: t('tradingAccountTransactions.login'),
       accessorFn: row => row.login,
     },
     {
       id: 'name',
-      header: t('financial.tradingAccountTransactions.name'),
+      header: t('tradingAccountTransactions.name'),
       accessorFn: row => row.name,
     },
     {
       id: 'crmLastName',
-      header: t('financial.tradingAccountTransactions.crmLastName'),
+      header: t('tradingAccountTransactions.crmLastName'),
       cell: ({ row }) => {
         if (row?.original?.crmLastName || row?.original?.crmName || row?.original?.crmShowId) {
           return (
@@ -161,31 +161,31 @@ export function TradingAccountTransactionsPage() {
     {
       id: 'profit',
       accessorKey: 'profit',
-      header: t('financial.tradingAccountTransactions.profit'),
+      header: t('tradingAccountTransactions.profit'),
       accessorFn: row => row.profit,
     },
     {
       id: 'time',
       accessorKey: 'time',
-      header: t('financial.tradingAccountTransactions.time'),
+      header: t('tradingAccountTransactions.time'),
       accessorFn: row => row.time,
     },
     {
       id: 'ticket',
       accessorKey: 'ticket',
-      header: t('financial.tradingAccountTransactions.ticket'),
+      header: t('tradingAccountTransactions.ticket'),
       accessorFn: row => row.ticket,
     },
     {
       id: 'order_num',
       accessorKey: 'order_num',
-      header: t('financial.tradingAccountTransactions.order_num'),
+      header: t('tradingAccountTransactions.order_num'),
       accessorFn: row => row.order_num,
     },
     {
       id: 'comment',
       accessorKey: 'comment',
-      header: t('financial.tradingAccountTransactions.comment'),
+      header: t('tradingAccountTransactions.comment'),
       accessorFn: row => row.comment,
     },
     {
@@ -227,13 +227,13 @@ export function TradingAccountTransactionsPage() {
 
   return (
     <div>
-      <PageInfo title={t('financial.tradingAccountTransactions.title')} desc={t('common.tips')} />
+      <PageInfo title={t('tradingAccountTransactions.title')} desc={t('common.tips')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
               placeholder={t('common.pleaseInput', {
-                field: t('financial.tradingAccountTransactions.name'),
+                field: t('tradingAccountTransactions.name'),
               })}
               className="h-9"
               leftIcon={<Search className="size-4" />}
