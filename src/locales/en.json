@@ -932,7 +932,11 @@
     "title": "Payment log"
   },
   "rewardConfigPage": {
-    "title": "Reward configuration"
+    "title": "Reward configuration",
+    "allowMultipleBonusHits": "When turned on, when multiple rewards are met, one deposit will be rewarded multiple times (rewarded in order)",
+    "confirmDeleteTips": "Are you sure to delete this data? \nData will not be recoverable after deletion.",
+    "confirmRunTips": "Are you sure you want to enable this deposit bonus configuration?",
+    "confirmStopTips": "Are you sure you want to deactivate this deposit bonus configuration?"
   },
   "system": {
     "adminAccounts": {
