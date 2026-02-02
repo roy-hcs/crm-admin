@@ -625,6 +625,7 @@
     "viewCount": "浏览量",
     "exchangeCount": "累计兑换数",
     "updateBy": "操作人",
+    "confirmDeleteTips": "确定删除该记录？",
     "confirm": {
       "stop": "确认要停用该商品信息吗？",
       "open": "确认要启用该商品信息吗？"

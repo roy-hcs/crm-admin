@@ -1010,7 +1010,8 @@
     "title": "Product list",
     "updateBy": "operator",
     "viewCount": "Views",
-    "virtualGoods": "virtual goods"
+    "virtualGoods": "virtual goods",
+    "confirmDeleteTips": "Are you sure you want to delete this record?"
   },
   "profile": {
     "gooleKey": "Google token",
