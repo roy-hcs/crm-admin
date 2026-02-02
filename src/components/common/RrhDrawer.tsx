@@ -56,7 +56,7 @@ export const RrhDrawer: FC<
       <DrawerTrigger asChild={asChild} className="cursor-pointer">
         {Trigger}
       </DrawerTrigger>
-      <DrawerContent className="flex flex-col">
+      <DrawerContent className="flex flex-col data-[vaul-drawer-direction=right]:sm:max-w-1/3">
         <DrawerHeader className={cn(headerShow ? 'block' : 'hidden')}>
           <DrawerTitle>{title}</DrawerTitle>
           <DrawerDescription>{description}</DrawerDescription>
