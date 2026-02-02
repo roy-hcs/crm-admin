@@ -14,7 +14,7 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { BasicParams } from '@/api/types';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { Switch } from '@/components/ui/switch';
-import { Alert } from '@/components/common/Alert';
+import { RrhAlert } from '@/components/common/RrhAlert';
 import { useChangeMamSignalSource } from '@/api/hooks/copyTrading';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
@@ -46,7 +46,7 @@ const StatusCell = ({ row }: { row: Row<MamSignalSourceItem> }) => {
         checked={row.original.publicShow === 1}
         onClick={() => setIsOpen(true)}
       />
-      <Alert
+      <RrhAlert
         trigger={null}
         open={isOpen}
         onOpenChange={setIsOpen}
