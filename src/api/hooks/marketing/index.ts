@@ -1,6 +1,6 @@
 // Marketing module API hooks
-import { apiFormPostCustom } from '@/api/client';
-import { useQuery } from '@tanstack/react-query';
+import { apiFormPostCustom, apiGetCustom, apiPost } from '@/api/client';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   BonusSettingListParams,
   BonusSettingListRes,
@@ -20,6 +20,58 @@ export function useBonusSettingList(params: BonusSettingListParams) {
     queryKey: ['bonusSettingList', params],
     queryFn: () =>
       apiFormPostCustom<BonusSettingListRes>(`/system/marketing/bonusSetting/list`, params),
+  });
+}
+
+/**
+ * 奖励配置 是否允许命中多条奖励状态
+ */
+export function useManyBonusStatus() {
+  return useMutation({
+    mutationFn: () =>
+      apiGetCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/marketing/bonusSetting/manyBonusStatus', {}),
+  });
+}
+
+/**
+ * 奖励配置 是否允许命中多条奖励
+ */
+export function useBonusSettingManyBonus() {
+  return useMutation({
+    mutationFn: (params: { bonusSetting: boolean }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/marketing/bonusSetting/manyBonus', params),
+  });
+}
+
+/**
+ * 奖励配置 启用/禁用
+ */
+export function useBonusSettingSwitch() {
+  return useMutation({
+    mutationFn: (params: { id: string; status: number }) =>
+      apiPost('/system/marketing/bonusSetting/switch', params),
+  });
+}
+
+/**
+ * 删除奖励配置
+ */
+export function useBonusSettingRemove() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/marketing/bonusSetting/remove', params),
   });
 }
 

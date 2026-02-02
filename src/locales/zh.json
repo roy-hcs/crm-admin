@@ -586,7 +586,11 @@
     "title": "支付日志"
   },
   "rewardConfigPage": {
-    "title": "奖励配置"
+    "title": "奖励配置",
+    "allowMultipleBonusHits": "开启时，当符合多个奖励时，一笔入金执行多次奖励(按排序依次奖励)",
+    "confirmStopTips": "确认要停用该入金奖励配置吗？",
+    "confirmRunTips": "确认要启用该入金奖励配置吗？",
+    "confirmDeleteTips": "是否确认删除该条数据？删除后数据将不可恢复。"
   },
   "tradingAccounts": {
     "title": "交易账户"
