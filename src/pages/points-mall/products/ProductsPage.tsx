@@ -9,56 +9,14 @@ import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
-import { ProductsForm } from './ProductsForm';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { useCallback } from 'react';
-import { Switch } from '@/components/ui/switch';
-import { Alert } from '@/components/common/Alert';
-import { useQueryClient } from '@tanstack/react-query';
-import { useChangeGoodsStatus } from '@/api/hooks/pointsMall';
 import { Ellipsis } from 'lucide-react';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
-
-const StatusCell = ({ row }: { row: { original: GoodsListItem } }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const changeStatusMutation = useChangeGoodsStatus();
-  const queryClient = useQueryClient();
-  const { t } = useTranslation();
-
-  const onConfirm = useCallback(async () => {
-    const res = await changeStatusMutation.mutateAsync({
-      id: row.original.id,
-      status: row.original.status === 1 ? 0 : 1,
-    });
-    if (res.code === 0) {
-      queryClient.invalidateQueries({ queryKey: ['crmDealGoodsList'] });
-    }
-  }, [changeStatusMutation, queryClient, row.original.id, row.original.status]);
-
-  return (
-    <>
-      <Switch
-        className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
-        checked={row.original.status === 1}
-        onClick={() => setIsOpen(true)}
-      />
-      <Alert
-        trigger={null}
-        open={isOpen}
-        onOpenChange={setIsOpen}
-        cancelText={t('common.Cancel')}
-        confirmText={t('common.Confirm')}
-        title={t('common.SystemPrompt')}
-        content={
-          row.original.status === 1 ? t('products.confirm.stop') : t('products.confirm.open')
-        }
-        onConfirm={onConfirm}
-      />
-    </>
-  );
-};
+import { ProductsForm } from './components/ProductsForm';
+import { StatusCell } from './components/StatusCell';
+import { DeleteAlert } from './components/DeleteAlert';
 
 export const ProductsPage = () => {
   const { t } = useTranslation();
@@ -70,8 +28,14 @@ export const ProductsPage = () => {
   const [keyword, setKeyword] = useState('');
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
   const [orderByColumn, setOrderByColumn] = useState('');
+  const [row, setRow] = useState<GoodsListItem>();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-  const { data: data, isLoading: loading } = useCrmDealGoodsList({
+  const {
+    data: data,
+    isLoading: loading,
+    refetch,
+  } = useCrmDealGoodsList({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn,
@@ -174,7 +138,7 @@ export const ProductsPage = () => {
       header: t('table.status'),
       accessorFn: row => row.status,
       cell: ({ row }) => {
-        return <StatusCell row={row} />;
+        return <StatusCell row={row} onSuccess={refetch} />;
       },
     },
     {
@@ -251,19 +215,20 @@ export const ProductsPage = () => {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
+      cell: ({ row }) => (
         <div>
           <RrhDropdown
             Trigger={<Ellipsis className="size-4" />}
             dropdownList={[
-              { label: t('common.View'), value: 'view' },
               { label: t('common.Edit'), value: 'edit' },
+              { label: t('common.delete'), value: 'delete' },
             ]}
             callToAction={action => {
               if (action === 'edit') {
                 // Handle edit action
-              } else if (action === 'view') {
-                // Handle view action
+              } else if (action === 'delete') {
+                setRow(row.original);
+                setIsDeleteDialogOpen(true);
               }
             }}
           />
@@ -333,6 +298,12 @@ export const ProductsPage = () => {
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
           loading={loading}
+        />
+        <DeleteAlert
+          row={row}
+          open={isDeleteDialogOpen}
+          setOpen={setIsDeleteDialogOpen}
+          onSuccess={refetch}
         />
       </TableContentWrapper>
     </div>

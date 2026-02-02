@@ -36,6 +36,20 @@ export function useChangeGoodsStatus() {
 }
 
 /**
+ * 删除商品
+ */
+export function useRemoveGoods() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/points/goods/remove', params),
+  });
+}
+
+/**
  * 获取商品兑换记录
  */
 export function usePointsHistoryList(params: PointsHistoryListParams) {
