@@ -110,33 +110,35 @@ export const PaymentOrderEditDialog = ({
     >
       <FormProvider form={form}>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="text-primary bg-primary/5 mb-3 flex items-center gap-1 rounded-lg p-2 text-sm">
-              <CircleAlert className="size-4" />
-              <span>{t('table.modifyPaymentOrderTips')}</span>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex h-full min-h-0 flex-col">
+            <div className="min-h-0 flex-1 overflow-y-auto">
+              <div className="text-primary bg-primary/5 mb-3 flex items-center gap-1 rounded-lg p-2 text-sm">
+                <CircleAlert className="size-4" />
+                <span>{t('table.modifyPaymentOrderTips')}</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                {orderInfos.map(item => (
+                  <LabelItem
+                    key={item.label}
+                    label={item.label}
+                    ContentDom={<div>{item.value}</div>}
+                  />
+                ))}
+              </div>
+              <FormSelect
+                verticalLabel
+                name="orderStatus"
+                label={t('table.payResult')}
+                placeholder={t('common.pleaseSelect')}
+                showRowValue={false}
+                options={[
+                  { label: t('common.order.status.completed'), value: 1 },
+                  { label: t('common.order.status.canceled'), value: 2 },
+                ]}
+                className="mb-6 py-3"
+              />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              {orderInfos.map(item => (
-                <LabelItem
-                  key={item.label}
-                  label={item.label}
-                  ContentDom={<div>{item.value}</div>}
-                />
-              ))}
-            </div>
-            <FormSelect
-              verticalLabel
-              name="orderStatus"
-              label={t('table.payResult')}
-              placeholder={t('common.pleaseSelect')}
-              showRowValue={false}
-              options={[
-                { label: t('common.order.status.completed'), value: 1 },
-                { label: t('common.order.status.canceled'), value: 2 },
-              ]}
-              className="mb-6 py-3"
-            />
-            <div className="border-muted col-span-full -mx-6 flex justify-between border-t px-6 py-6 sm:pb-0">
+            <div className="border-muted bg-background col-span-full -mx-6 flex justify-between border-t p-6 sm:pb-0">
               <FormField
                 name="createVerifyRecord"
                 render={({ field }) => (

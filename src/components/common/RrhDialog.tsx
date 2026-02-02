@@ -94,6 +94,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
               //  768 / 1440 = 0.5333
               'flex max-h-[53vh] w-3xl flex-col sm:max-w-full': variant === 'large',
             },
+            '!px-0',
             className,
           )}
           showCloseButton={false}
@@ -126,7 +127,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
             <DialogHeader>
               <DialogTitle
                 className={cn(
-                  'border-muted -mx-6 px-6 pb-6 text-lg font-semibold',
+                  'border-muted px-6 pb-6 text-lg font-semibold',
                   variant === 'small' ? '' : 'border-b',
                   titleCls,
                 )}
@@ -142,11 +143,11 @@ export const RrhDialog: React.FC<DialogProps> = ({
               )}
             </DialogHeader>
           )}
-          {children}
+          <div className="flex flex-col overflow-y-auto px-6">{children}</div>
           {footerShow && (
             <DialogFooter
               className={cn(
-                'border-muted -mx-6 gap-2 px-6 pt-6 sm:justify-end',
+                'border-muted gap-2 px-6 pt-6 sm:justify-end',
                 variant === 'small' ? '' : 'border-t',
               )}
             >

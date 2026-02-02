@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,16 +15,15 @@ import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { useChangeGoodsClassificationStatus } from '@/api/hooks/pointsMall';
-import { Alert } from '@/components/common/Alert';
+import { RrhAlert } from '@/components/common/RrhAlert';
 import { Switch } from '@/components/ui/switch';
 import { useQueryClient } from '@tanstack/react-query';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { Ellipsis } from 'lucide-react';
-import { useCallback, useState as useStateHook } from 'react';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 const StatusCell = ({ row }: { row: { original: GoodsClassificationItem } }) => {
-  const [isOpen, setIsOpen] = useStateHook(false);
+  const [isOpen, setIsOpen] = useState(false);
   const changeStatusMutation = useChangeGoodsClassificationStatus();
   const queryClient = useQueryClient();
   const { t } = useTranslation();
@@ -46,7 +45,7 @@ const StatusCell = ({ row }: { row: { original: GoodsClassificationItem } }) => 
         checked={row.original.status === 1}
         onClick={() => setIsOpen(true)}
       />
-      <Alert
+      <RrhAlert
         trigger={null}
         open={isOpen}
         onOpenChange={setIsOpen}

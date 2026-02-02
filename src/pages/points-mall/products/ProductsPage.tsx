@@ -14,7 +14,7 @@ import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useCallback } from 'react';
 import { Switch } from '@/components/ui/switch';
-import { Alert } from '@/components/common/Alert';
+import { RrhAlert } from '@/components/common/RrhAlert';
 import { useQueryClient } from '@tanstack/react-query';
 import { useChangeGoodsStatus } from '@/api/hooks/pointsMall';
 import { Ellipsis } from 'lucide-react';
@@ -44,7 +44,7 @@ const StatusCell = ({ row }: { row: { original: GoodsListItem } }) => {
         checked={row.original.status === 1}
         onClick={() => setIsOpen(true)}
       />
-      <Alert
+      <RrhAlert
         trigger={null}
         open={isOpen}
         onOpenChange={setIsOpen}
