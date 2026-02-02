@@ -24,7 +24,7 @@ export interface AlertDialogProps {
   onOpenChange?: (open: boolean) => void;
 }
 
-export const Alert = ({
+export const RrhAlert = ({
   trigger,
   title,
   content,

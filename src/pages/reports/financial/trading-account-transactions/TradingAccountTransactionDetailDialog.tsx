@@ -36,7 +36,7 @@ export const TradingAccountTransactionDetailDialog = ({
   }, [dealAccountInfo.serviceType]);
   const accountInfo = [
     {
-      label: t('financial.walletTransactions.lastName'),
+      label: t('walletTransactions.lastName'),
       value: dealAccountInfo.name || '',
     },
     {
@@ -72,7 +72,7 @@ export const TradingAccountTransactionDetailDialog = ({
       value: transactionDetail.typeName || '',
     },
     {
-      label: t('financial.tradingAccountTransactions.profit'),
+      label: t('tradingAccountTransactions.profit'),
       value: (
         <div>
           {`${userDealInfo.profit > 0 ? '+' : ''}${userDealInfo.profit} ${userDealInfo.currency}`}
@@ -80,7 +80,7 @@ export const TradingAccountTransactionDetailDialog = ({
       ),
     },
     {
-      label: t('financial.walletTransactions.operationTimeTable'),
+      label: t('walletTransactions.operationTimeTable'),
       value: userDealInfo.timeStr || '',
     },
     {
@@ -92,7 +92,7 @@ export const TradingAccountTransactionDetailDialog = ({
       value: userDealInfo.comment || '',
     },
     {
-      label: t('financial.tradingAccountTransactions.order_num'),
+      label: t('tradingAccountTransactions.order_num'),
       value: userDealInfo.orderNum || '',
     },
     {
@@ -102,7 +102,7 @@ export const TradingAccountTransactionDetailDialog = ({
   ];
   return (
     <RrhDialog
-      title={t('common.detail', { field: t('financial.tradingAccountTransactions.title') })}
+      title={t('common.detail', { field: t('tradingAccountTransactions.title') })}
       open={open}
       onOpenChange={setOpen}
       confirmShow={false}

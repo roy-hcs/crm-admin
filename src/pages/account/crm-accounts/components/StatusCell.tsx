@@ -1,5 +1,5 @@
 import { CrmUserItem, useChangeUserStatus } from '@/api/hooks/account';
-import { Alert } from '@/components/common/Alert';
+import { RrhAlert } from '@/components/common/RrhAlert';
 import { Switch } from '@/components/ui/switch';
 import { useQueryClient } from '@tanstack/react-query';
 import { Row } from '@tanstack/react-table';
@@ -29,7 +29,7 @@ export const StatusCell = ({ row }: { row: Row<CrmUserItem> }) => {
         checked={row.original.status === 1}
         onClick={() => setIsOpen(true)}
       />
-      <Alert
+      <RrhAlert
         trigger={null}
         open={isOpen}
         onOpenChange={setIsOpen}

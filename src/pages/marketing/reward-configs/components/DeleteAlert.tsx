@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useCallback } from 'react';
 import { BonusSettingListItem, useBonusSettingRemove } from '@/api/hooks/marketing';
-import { Alert } from '@/components/common/Alert';
+import { RrhAlert } from '@/components/common/RrhAlert';
 
 export const DeleteAlert = ({
   open,
@@ -28,7 +28,7 @@ export const DeleteAlert = ({
     }
   }, [deleteFunc, row?.id, t, onSuccess]);
   return (
-    <Alert
+    <RrhAlert
       trigger={null}
       open={open}
       onOpenChange={setOpen}

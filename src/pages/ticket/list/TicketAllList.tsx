@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { useTicketList } from '@/api/hooks/ticket/ticket';
@@ -17,12 +17,11 @@ import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { useTicketFollow } from '@/api/hooks/ticket/ticket';
 import { useQueryClient } from '@tanstack/react-query';
 import { cn } from '@/lib/utils';
-import { useCallback, useState as useHookState } from 'react';
-import { Alert } from '@/components/common/Alert';
+import { RrhAlert } from '@/components/common/RrhAlert';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 const FollowCell = ({ row }: { row: { original: CrmTicketItem } }) => {
-  const [isOpen, setIsOpen] = useHookState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const changeStatusMutation = useTicketFollow();
   const queryClient = useQueryClient();
   const { t } = useTranslation();
@@ -55,7 +54,7 @@ const FollowCell = ({ row }: { row: { original: CrmTicketItem } }) => {
         onClick={handleClick}
         className={cn(row.original.isFollow === 1 ? 'text-yellow-400' : '')}
       />
-      <Alert
+      <RrhAlert
         trigger={null}
         open={isOpen}
         onOpenChange={setIsOpen}

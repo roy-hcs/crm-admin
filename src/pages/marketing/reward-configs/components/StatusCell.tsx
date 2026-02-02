@@ -1,6 +1,6 @@
 import { useBonusSettingSwitch } from '@/api/hooks/marketing';
 import { BonusSettingListItem } from '@/api/hooks/marketing/types';
-import { Alert } from '@/components/common/Alert';
+import { RrhAlert } from '@/components/common/RrhAlert';
 import { Switch } from '@/components/ui/switch';
 import { Row } from '@tanstack/react-table';
 import { useCallback, useState } from 'react';
@@ -36,7 +36,7 @@ export const StatusCell = ({
         checked={row.original.status === 1}
         onClick={() => setIsOpen(true)}
       />
-      <Alert
+      <RrhAlert
         trigger={null}
         open={isOpen}
         onOpenChange={setIsOpen}

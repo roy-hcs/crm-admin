@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useCallback } from 'react';
-import { Alert } from '@/components/common/Alert';
 import { GoodsListItem } from '@/api/hooks/pointsMall/types';
 import { useRemoveGoods } from '@/api/hooks/pointsMall';
+import { RrhAlert } from '@/components/common/RrhAlert';
 
 export const DeleteAlert = ({
   open,
@@ -31,7 +31,7 @@ export const DeleteAlert = ({
     }
   }, [deleteFunc, row?.id, t, onSuccess]);
   return (
-    <Alert
+    <RrhAlert
       trigger={null}
       open={open}
       onOpenChange={setOpen}
