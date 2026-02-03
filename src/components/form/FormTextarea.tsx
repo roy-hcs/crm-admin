@@ -27,8 +27,8 @@ export function FormTextarea<T extends FieldValues>({
       control={form.control}
       name={name}
       render={({ field }) => {
-        const current = String(field.value ?? '').length;
-        const max = props.maxLength ?? 100;
+        const current = String(field.value).length;
+        const max = props.maxLength;
         return (
           <FormItem
             className={cn(
@@ -51,11 +51,13 @@ export function FormTextarea<T extends FieldValues>({
                     onBlur?.(e);
                   }}
                 />
-                <div className="absolute right-3 bottom-3">
-                  <span className="text-input text-sm leading-5 font-medium">
-                    {current}/{max}
-                  </span>
-                </div>
+                {max && (
+                  <div className="absolute right-3 bottom-3">
+                    <span className="text-input text-sm leading-5 font-medium">
+                      {current}/{max}
+                    </span>
+                  </div>
+                )}
               </div>
             </FormControl>
             <FormMessage className="text-end" />
