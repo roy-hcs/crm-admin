@@ -637,9 +637,15 @@
     "gooleKey": "Google 令牌"
   },
   "redemptionRecords": {
+    "redemptionStatus": "兑换状态",
+    "receiveAddress": "收货地址",
+    "pay": "支付",
+    "payMent": "支付方案",
+    "exchangeAccount": "兑换账号",
     "title": "商品兑换记录",
     "orderNo": "订单ID",
     "goodsId": "兑换商品ID",
+    "goodsName": "兑换商品",
     "payType": "支付类型",
     "pointsPayment": "积分支付",
     "combinedPayment": "组合支付",
@@ -652,7 +658,9 @@
       "rejected": "拒绝",
       "approved": "通过",
       "underReview": "待审"
-    }
+    },
+    "confirmStatus": "确认状态",
+    "pointsDeduction": "积分扣除"
   },
   "PointsHistory": {
     "title": "积分变动记录",

@@ -1,8 +1,9 @@
-import { apiFormPostCustom, apiPost } from '@/api/client';
+import { apiFormPostCustom, apiGetCustom, apiPost } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   CrmDealGoodsListParams,
   CrmDealGoodsListRes,
+  GoodDetailInfo,
   GoodsClassificationParams,
   GoodsClassificationRes,
   PointsBalanceParams,
@@ -56,6 +57,30 @@ export function usePointsHistoryList(params: PointsHistoryListParams) {
   return useQuery({
     queryKey: ['pointsHistoryList', params],
     queryFn: () => apiFormPostCustom<PointsHistoryListRes>(`/system/points/exchange/list`, params),
+  });
+}
+
+/**
+ * 商品兑换记录审核
+ */
+export function useExchangeVerify() {
+  return useMutation({
+    mutationFn: (params: { id: string; remark: string; verifyStatus: string }) =>
+      apiPost('/system/points/exchange/verify', params),
+  });
+}
+
+/**
+ * 商品兑换记录审核详情
+ */
+export function useExchangeDetailInfo() {
+  return useMutation({
+    mutationFn: (params: { id: string }) =>
+      apiGetCustom<{
+        code: number;
+        msg: string;
+        data: GoodDetailInfo;
+      }>(`/system/points/exchange/detailinfo/${params.id}`, {}),
   });
 }
 
