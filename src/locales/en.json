@@ -938,41 +938,37 @@
     "confirmRunTips": "Are you sure you want to enable this deposit bonus configuration?",
     "confirmStopTips": "Are you sure you want to deactivate this deposit bonus configuration?"
   },
-  "system": {
-    "adminAccounts": {
-      "roleName": "Account role",
-      "title": "Administrator account"
-    },
-    "adminLogin": {
-      "browser": "Operate the browser",
-      "name": "Name/account number",
-      "os": "operating system",
-      "title": "Administrator login log"
-    },
-    "adminOperations": {
-      "systemModule": "system module",
-      "title": "Administrator operation log"
-    },
-    "crmUserLogin": {
-      "title": "CRM user login log"
+  "adminAccounts": {
+    "roleName": "Account role",
+    "title": "Administrator account"
+  },
+  "adminLogin": {
+    "browser": "Operate the browser",
+    "name": "Name/account number",
+    "os": "operating system",
+    "title": "Administrator login log"
+  },
+  "adminOperations": {
+    "systemModule": "system module",
+    "title": "Administrator operation log"
+  },
+  "crmUserLogin": {
+    "title": "CRM user login log"
+  },
+  "ads": {
+    "clickCount": "Clicks",
+    "name": "Advertising management",
+    "position": "Location",
+    "positionType": {
+      "1": "Client home page"
     }
   },
-  "marketing": {
-    "ads": {
-      "clickCount": "Clicks",
-      "name": "Advertising management",
-      "position": "Location",
-      "positionType": {
-        "1": "Client home page"
-      }
-    },
-    "rewardRecords": {
-      "amount": "Reward amount",
-      "lockStatus": "Rewards locked",
-      "rewardTarget": "Reward object",
-      "rewardType": "Reward type",
-      "title": "Award record"
-    }
+  "rewardRecords": {
+    "amount": "Reward amount",
+    "lockStatus": "Rewards locked",
+    "rewardTarget": "Reward object",
+    "rewardType": "Reward type",
+    "title": "Award record"
   },
   "tradingAccounts": {
     "title": "trading account"
@@ -1047,7 +1043,15 @@
       "approved": "pass",
       "rejected": "reject",
       "underReview": "Pending trial"
-    }
+    },
+    "confirmStatus": "Confirm status",
+    "exchangeAccount": "Redeem account",
+    "goodsName": "Redeem goods",
+    "pay": "pay",
+    "payMent": "Payment plan",
+    "pointsDeduction": "Points deduction",
+    "receiveAddress": "Shipping address",
+    "redemptionStatus": "Redemption status"
   },
   "pointspBalance": {
     "CRMID": "CRM ID",

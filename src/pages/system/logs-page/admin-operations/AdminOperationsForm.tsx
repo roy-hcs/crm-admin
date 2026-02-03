@@ -99,9 +99,9 @@ export const AdminOperationsForm = ({
           <FormInput
             verticalLabel
             name="title"
-            label={t('system.adminOperations.systemModule')}
+            label={t('adminOperations.systemModule')}
             placeholder={t('common.pleaseInput', {
-              field: t('system.adminOperations.systemModule'),
+              field: t('adminOperations.systemModule'),
             })}
           />
           <FormInput

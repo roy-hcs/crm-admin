@@ -118,21 +118,21 @@ export const RewardRecordsPage = () => {
     },
     {
       id: 'rewardType',
-      header: t('marketing.rewardRecords.rewardType'),
+      header: t('rewardRecords.rewardType'),
       cell: ({ row }) => {
         return <div>{row?.original?.rewardType || '-'}</div>;
       },
     },
     {
       id: 'rewardTarget',
-      header: t('marketing.rewardRecords.rewardTarget'),
+      header: t('rewardRecords.rewardTarget'),
       cell: ({ row }) => {
         return <div>{row?.original?.rewardTarget || '-'}</div>;
       },
     },
     {
       id: 'amount',
-      header: t('marketing.rewardRecords.amount'),
+      header: t('rewardRecords.amount'),
       cell: ({ row }) => {
         return <div>{row?.original?.amount || '-'}</div>;
       },
@@ -187,7 +187,7 @@ export const RewardRecordsPage = () => {
     },
     {
       id: 'lockStatus',
-      header: t('marketing.rewardRecords.lockStatus'),
+      header: t('rewardRecords.lockStatus'),
       cell: ({ row }) => {
         return <div>{row?.original?.lockStatus || '-'}</div>;
       },
@@ -246,7 +246,7 @@ export const RewardRecordsPage = () => {
 
   return (
     <div>
-      <PageInfo title={t('marketing.rewardRecords.title')} />
+      <PageInfo title={t('rewardRecords.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">

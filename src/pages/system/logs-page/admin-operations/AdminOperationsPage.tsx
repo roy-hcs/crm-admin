@@ -73,7 +73,7 @@ export const AdminOperationsPage = () => {
     },
     {
       id: 'title',
-      header: t('system.adminOperations.systemModule'),
+      header: t('adminOperations.systemModule'),
       cell: ({ row }) => {
         return <div>{row?.original?.title || '-'}</div>;
       },
@@ -170,7 +170,7 @@ export const AdminOperationsPage = () => {
 
   return (
     <div>
-      <PageInfo title={t('system.adminOperations.title')} />
+      <PageInfo title={t('adminOperations.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon

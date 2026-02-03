@@ -42,7 +42,7 @@ export const AdsPage = () => {
     },
     {
       id: 'name',
-      header: t('marketing.ads.name'),
+      header: t('ads.name'),
       accessorFn: row => row.name,
       cell: ({ row }) => {
         return <div>{row?.original?.name || '-'}</div>;
@@ -50,10 +50,10 @@ export const AdsPage = () => {
     },
     {
       id: 'position',
-      header: t('marketing.ads.position'),
+      header: t('ads.position'),
       accessorFn: row => row.position,
       cell: ({ row }) => {
-        return <div>{t(`marketing.ads.positionType.${row?.original?.position}`) || '-'}</div>;
+        return <div>{t(`ads.positionType.${row?.original?.position}`) || '-'}</div>;
       },
     },
     {
@@ -86,10 +86,10 @@ export const AdsPage = () => {
     },
     {
       id: 'clickCount',
-      label: t('marketing.ads.clickCount'),
+      label: t('ads.clickCount'),
       header: () => (
         <div className="flex items-center gap-1">
-          {t('marketing.ads.clickCount')}
+          {t('ads.clickCount')}
           <RrhSorter
             setIsAsc={setIsAsc}
             isAsc={isAsc}
@@ -166,7 +166,7 @@ export const AdsPage = () => {
 
   return (
     <div>
-      <PageInfo title={t('marketing.ads.name')} />
+      <PageInfo title={t('ads.name')} />
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-end gap-2">
           <div className="flex items-center gap-2">

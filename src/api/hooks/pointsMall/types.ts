@@ -150,3 +150,29 @@ export type GoodsClassificationItem = BaseEntity & {
 };
 
 export type GoodsClassificationRes = BasicRes<GoodsClassificationItem>;
+
+export type GoodDetailInfo = {
+  receivePhone: string | null;
+  amount: string | null;
+  exchangePoints: string | null;
+  receiveAddress: string | null;
+  goodsId: string | null;
+  virtualGoodsType: string | null;
+  exchangeTime: string | null;
+  exchangeType: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  userName: string | null;
+  paymentAmount: string | null;
+  goodsType: string | null;
+  showId: string | null;
+  receiveName: string | null;
+  payType: string | null;
+  verifyStatus: string | null;
+  updateBy: string | null;
+  currency: string | null;
+  id: string | null;
+  goodsName: string | null;
+  email: string | null;
+  exchangeAccount: string | null;
+};

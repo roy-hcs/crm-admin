@@ -13,7 +13,6 @@ import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
-import { RedemptionRecordsForm } from './RedemptionRecordsForm';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { RrhTag } from '@/components/common/RrhTag';
 import { withdrawalReviewStatusMap } from '@/lib/constant';
@@ -21,6 +20,9 @@ import { Ellipsis } from 'lucide-react';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { BasicParams } from '@/api/types';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { RedemptionRecordsForm } from './components/RedemptionRecordsForm';
+import { CheckDialog } from './components/CheckDialog';
+import { ViewDialog } from './components/ViewDialog';
 
 export const RedemptionRecordsPage = () => {
   const { t } = useTranslation();
@@ -45,7 +47,15 @@ export const RedemptionRecordsPage = () => {
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
   const [orderByColumn, setOrderByColumn] = useState('');
 
-  const { data: data, isLoading: loading } = usePointsHistoryList({
+  const [row, setRow] = useState<PointsHistoryItem>();
+  const [isCheckDialogOpen, setIsCheckDialogOpen] = useState(false);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+
+  const {
+    data: data,
+    isLoading: loading,
+    refetch,
+  } = usePointsHistoryList({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn,
@@ -105,6 +115,12 @@ export const RedemptionRecordsPage = () => {
       header: t('redemptionRecords.goodsId'),
       accessorFn: row => row.goodsId,
       cell: ({ row }) => <div>{row?.original?.goodsId || '-'}</div>,
+    },
+    {
+      id: 'goodsName',
+      header: t('redemptionRecords.goodsName'),
+      accessorFn: row => row.goodsName || '-',
+      // cell: ({ row }) => <div>{row?.original?.goodsId || '-'}</div>,
     },
     {
       id: 'payType',
@@ -226,19 +242,21 @@ export const RedemptionRecordsPage = () => {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
+      cell: ({ row }) => (
         <div>
           <RrhDropdown
             Trigger={<Ellipsis className="size-4" />}
             dropdownList={[
+              { label: t('table.audit'), value: 'edit' },
               { label: t('common.View'), value: 'view' },
-              { label: t('common.Edit'), value: 'edit' },
             ]}
             callToAction={action => {
               if (action === 'edit') {
-                // Handle edit action
+                setRow(row.original);
+                setIsCheckDialogOpen(true);
               } else if (action === 'view') {
-                // Handle view action
+                setRow(row.original);
+                setIsViewDialogOpen(true);
               }
             }}
           />
@@ -316,6 +334,13 @@ export const RedemptionRecordsPage = () => {
           onPageSizeChange={setPageSize}
           loading={loading}
         />
+        <CheckDialog
+          id={row?.id || ''}
+          open={isCheckDialogOpen}
+          setOpen={setIsCheckDialogOpen}
+          onSuccess={refetch}
+        />
+        <ViewDialog id={row?.id || ''} open={isViewDialogOpen} setOpen={setIsViewDialogOpen} />
       </TableContentWrapper>
     </div>
   );

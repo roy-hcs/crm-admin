@@ -114,14 +114,14 @@ export const AdminLoginPage = () => {
     },
     {
       id: 'browser',
-      header: t('system.adminLogin.browser'),
+      header: t('adminLogin.browser'),
       cell: ({ row }) => {
         return <div>{row?.original?.browser || '-'}</div>;
       },
     },
     {
       id: 'os',
-      header: t('system.adminLogin.os'),
+      header: t('adminLogin.os'),
       cell: ({ row }) => {
         return <div>{row?.original?.os || '-'}</div>;
       },
@@ -138,11 +138,11 @@ export const AdminLoginPage = () => {
     useColumnVisibility('admin-login-logs-table', allColumns);
   return (
     <div>
-      <PageInfo title={t('system.adminLogin.title')} />
+      <PageInfo title={t('adminLogin.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon
-            placeholder={t('common.pleaseInput', { field: t('system.adminLogin.name') })}
+            placeholder={t('common.pleaseInput', { field: t('adminLogin.name') })}
             className="h-9"
             value={keyword}
             onChange={e => setKeyword(e.target.value)}

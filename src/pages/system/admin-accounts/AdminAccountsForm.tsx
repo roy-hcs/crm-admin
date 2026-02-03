@@ -112,7 +112,7 @@ export const AdminAccountsForm = ({
           <FormSelect
             verticalLabel
             name="roleId"
-            label={t('system.adminAccounts.roleName')}
+            label={t('adminAccounts.roleName')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={roleList.map(i => ({ label: i.roleName, value: i.roleId }))}

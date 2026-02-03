@@ -637,9 +637,15 @@
     "gooleKey": "Google 令牌"
   },
   "redemptionRecords": {
+    "redemptionStatus": "兑换状态",
+    "receiveAddress": "收货地址",
+    "pay": "支付",
+    "payMent": "支付方案",
+    "exchangeAccount": "兑换账号",
     "title": "商品兑换记录",
     "orderNo": "订单ID",
     "goodsId": "兑换商品ID",
+    "goodsName": "兑换商品",
     "payType": "支付类型",
     "pointsPayment": "积分支付",
     "combinedPayment": "组合支付",
@@ -652,7 +658,9 @@
       "rejected": "拒绝",
       "approved": "通过",
       "underReview": "待审"
-    }
+    },
+    "confirmStatus": "确认状态",
+    "pointsDeduction": "积分扣除"
   },
   "PointsHistory": {
     "title": "积分变动记录",
@@ -1177,41 +1185,37 @@
     "times": "次",
     "shortTimeLargeWithdrawalWarning": "用户短期大额出金："
   },
-  "system": {
-    "adminAccounts": {
-      "title": "管理员账户",
-      "roleName": "账户角色"
-    },
-    "adminOperations": {
-      "title": "管理员操作日志",
-      "systemModule": "系统模块"
-    },
-    "adminLogin": {
-      "title": "管理员登录日志",
-      "name": "姓名/账号",
-      "browser": "操作浏览器",
-      "os": "操作系统"
-    },
-    "crmUserLogin": {
-      "title": "CRM用户登录日志"
+  "adminAccounts": {
+    "title": "管理员账户",
+    "roleName": "账户角色"
+  },
+  "adminOperations": {
+    "title": "管理员操作日志",
+    "systemModule": "系统模块"
+  },
+  "adminLogin": {
+    "title": "管理员登录日志",
+    "name": "姓名/账号",
+    "browser": "操作浏览器",
+    "os": "操作系统"
+  },
+  "crmUserLogin": {
+    "title": "CRM用户登录日志"
+  },
+  "ads": {
+    "name": "广告管理",
+    "position": "位置",
+    "clickCount": "点击量",
+    "positionType": {
+      "1": "用户端首页"
     }
   },
-  "marketing": {
-    "ads": {
-      "name": "广告管理",
-      "position": "位置",
-      "clickCount": "点击量",
-      "positionType": {
-        "1": "用户端首页"
-      }
-    },
-    "rewardRecords": {
-      "title": "奖励记录",
-      "rewardType": "奖励类型",
-      "rewardTarget": "奖励对象",
-      "amount": "奖励金额",
-      "lockStatus": "奖励锁定"
-    }
+  "rewardRecords": {
+    "title": "奖励记录",
+    "rewardType": "奖励类型",
+    "rewardTarget": "奖励对象",
+    "amount": "奖励金额",
+    "lockStatus": "奖励锁定"
   },
   "messageManagement": {
     "title": "消息管理",
