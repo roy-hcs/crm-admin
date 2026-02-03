@@ -103,8 +103,8 @@ export const AdminLoginForm = ({
           <FormInput
             verticalLabel
             name="userName"
-            label={t('system.adminLogin.name')}
-            placeholder={t('common.pleaseInput', { field: t('system.adminLogin.name') })}
+            label={t('adminLogin.name')}
+            placeholder={t('common.pleaseInput', { field: t('adminLogin.name') })}
           />
           <FormSelect
             verticalLabel

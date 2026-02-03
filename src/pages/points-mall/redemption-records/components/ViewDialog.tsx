@@ -36,7 +36,7 @@ export const ViewDialog = ({
 
     return [
       {
-        label: t('marketing.rewardRecords.rewardTarget'),
+        label: t('rewardRecords.rewardTarget'),
         value: `${detailsData?.userName}(${detailsData?.showId}) - ${detailsData?.email}`,
       },
       {

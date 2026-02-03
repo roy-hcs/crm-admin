@@ -107,7 +107,7 @@ export const CheckDialog = ({
     const payMentPlan = pointsHistoryPayType.find(i => i.value === detailsData?.payType)?.label;
     return [
       {
-        label: t('marketing.rewardRecords.rewardTarget'),
+        label: t('rewardRecords.rewardTarget'),
         value: `${detailsData?.userName}(${detailsData?.showId}) - ${detailsData?.email}`,
       },
       {

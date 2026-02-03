@@ -82,7 +82,7 @@ export const AdminAccountsPage = () => {
     },
     {
       id: 'roleName',
-      header: t('system.adminAccounts.roleName'),
+      header: t('adminAccounts.roleName'),
       cell: ({ row }) => {
         return !row.original?.roles?.[0]?.roleName ? (
           <div className="text-center">-</div>
@@ -93,7 +93,7 @@ export const AdminAccountsPage = () => {
     },
     {
       id: 'onlineStatus',
-      header: t('system.adminAccounts.roleName'),
+      header: t('adminAccounts.roleName'),
       cell: ({ row }) => {
         if (row.original?.onlineStatus === 1) {
           return <div>{t('common.onlineStatus.online')}</div>;
@@ -209,7 +209,7 @@ export const AdminAccountsPage = () => {
 
   return (
     <div>
-      <PageInfo title={t('system.adminAccounts.title')} />
+      <PageInfo title={t('adminAccounts.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon

@@ -66,7 +66,7 @@ export const CrmUserLoginPage = () => {
     },
     {
       id: 'loginName',
-      header: t('system.adminLogin.name'),
+      header: t('adminLogin.name'),
       cell: ({ row }) => {
         if (row.original?.loginName) {
           return <div>{row.original.loginName}</div>;
@@ -113,14 +113,14 @@ export const CrmUserLoginPage = () => {
     },
     {
       id: 'browser',
-      header: t('system.adminLogin.browser'),
+      header: t('adminLogin.browser'),
       cell: ({ row }) => {
         return <div>{row?.original?.browser || '-'}</div>;
       },
     },
     {
       id: 'os',
-      header: t('system.adminLogin.os'),
+      header: t('adminLogin.os'),
       cell: ({ row }) => {
         return <div>{row?.original?.os || '-'}</div>;
       },
@@ -131,11 +131,11 @@ export const CrmUserLoginPage = () => {
 
   return (
     <div>
-      <PageInfo title={t('system.crmUserLogin.title')} />
+      <PageInfo title={t('crmUserLogin.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon
-            placeholder={t('common.pleaseInput', { field: t('system.adminLogin.name') })}
+            placeholder={t('common.pleaseInput', { field: t('adminLogin.name') })}
             className="h-9"
             value={keyword}
             onChange={e => setKeyword(e.target.value)}
