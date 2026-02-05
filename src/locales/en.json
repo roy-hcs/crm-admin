@@ -213,7 +213,9 @@
     "detail": "{{field}} details",
     "exportFailed": "Export failed",
     "selectUser": "Select user",
-    "modify": "Modify {{field}}"
+    "modify": "Modify {{field}}",
+    "next": "Next step",
+    "selectAll": "Select all"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1068,7 +1070,14 @@
       "stop": "Are you sure you want to deactivate this product category information?"
     },
     "parentClassificationName": "Parent category",
-    "title": "Product category list"
+    "title": "Product category list",
+    "addSort": "Add new category",
+    "classificationNameSimplified": "Category name ({{language}})",
+    "displayLanguage": "display language",
+    "editSort": "Edit category",
+    "enterClassificationName": "Please enter the category name",
+    "parentId": "Superior classification",
+    "zhName": "Simplified Chinese"
   },
   "messageManagement": {
     "emailNotification": "Email notification",

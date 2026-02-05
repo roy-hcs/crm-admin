@@ -1,35 +1,34 @@
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useCallback } from 'react';
-import { GoodsListItem } from '@/api/hooks/pointsMall/types';
-import { useRemoveGoods } from '@/api/hooks/pointsMall';
 import { RrhAlert } from '@/components/common/RrhAlert';
 
-export const DeleteAlert = ({
+export function RrhDeleteAlert<T>({
   open,
   setOpen,
-  row,
   onSuccess,
+  confirmFunction,
+  params,
+  tipsText,
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
-  row: GoodsListItem | undefined;
   onSuccess: () => void;
-}) => {
+  confirmFunction: (params: T) => Promise<{ code: number; msg: string }>;
+  params: T;
+  tipsText: string;
+}) {
   const { t } = useTranslation();
-  const { mutateAsync: deleteFunc } = useRemoveGoods();
 
   const onConfirm = useCallback(async () => {
-    const res = await deleteFunc({
-      ids: row?.id || '',
-    });
+    const res = await confirmFunction(params);
     if (res.code === 0) {
       toast.success(t('common.success'));
       onSuccess();
     } else {
       toast.error(res.msg);
     }
-  }, [deleteFunc, row?.id, t, onSuccess]);
+  }, [confirmFunction, params, t, onSuccess]);
   return (
     <RrhAlert
       trigger={null}
@@ -38,8 +37,8 @@ export const DeleteAlert = ({
       cancelText={t('common.Cancel')}
       confirmText={t('common.Confirm')}
       title={t('common.SystemPrompt')}
-      content={t('products.confirmDeleteTips')}
+      content={tipsText}
       onConfirm={onConfirm}
     />
   );
-};
+}

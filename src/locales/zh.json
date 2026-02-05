@@ -66,6 +66,8 @@
     "RememberMe": "记住我"
   },
   "common": {
+    "selectAll": "全选",
+    "next": "下一步",
     "loading": "加载中...",
     "NoData": "暂无数据",
     "Previous": "上一页",
@@ -690,7 +692,14 @@
     "confirm": {
       "stop": "确认要停用该商品分类信息吗？",
       "open": "确认要启用该商品分类信息吗？"
-    }
+    },
+    "addSort": "新增分类",
+    "editSort": "编辑分类",
+    "classificationNameSimplified": "分类名称({{language}})",
+    "enterClassificationName": "请输入分类名称",
+    "parentId": "上级分类",
+    "zhName": "简体中文",
+    "displayLanguage": "展示语言"
   },
   "relationships": {
     "title": "客户关系"

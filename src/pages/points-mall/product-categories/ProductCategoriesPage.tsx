@@ -1,12 +1,12 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import {
   GoodsClassificationItem,
   GoodsClassificationParams,
   useGoodsClassification,
+  useRemoveGoodsClassification,
 } from '@/api/hooks/pointsMall';
-import { ProductCategoriesForm } from './ProductCategoriesForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
@@ -15,53 +15,15 @@ import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { useChangeGoodsClassificationStatus } from '@/api/hooks/pointsMall';
-import { RrhAlert } from '@/components/common/RrhAlert';
-import { Switch } from '@/components/ui/switch';
-import { useQueryClient } from '@tanstack/react-query';
+
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { Ellipsis } from 'lucide-react';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
-
-const StatusCell = ({ row }: { row: { original: GoodsClassificationItem } }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const changeStatusMutation = useChangeGoodsClassificationStatus();
-  const queryClient = useQueryClient();
-  const { t } = useTranslation();
-
-  const onConfirm = useCallback(async () => {
-    const res = await changeStatusMutation.mutateAsync({
-      id: String(row.original.id),
-      status: row.original.status === 1 ? 0 : 1,
-    });
-    if (res.code === 0) {
-      queryClient.invalidateQueries({ queryKey: ['goodsClassification'] });
-    }
-  }, [changeStatusMutation, queryClient, row.original.id, row.original.status]);
-
-  return (
-    <>
-      <Switch
-        className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
-        checked={row.original.status === 1}
-        onClick={() => setIsOpen(true)}
-      />
-      <RrhAlert
-        trigger={null}
-        open={isOpen}
-        onOpenChange={setIsOpen}
-        cancelText={t('common.Cancel')}
-        confirmText={t('common.Confirm')}
-        title={t('common.SystemPrompt')}
-        content={
-          row.original.status === 1
-            ? t('productCategories.confirm.stop')
-            : t('productCategories.confirm.open')
-        }
-        onConfirm={onConfirm}
-      />
-    </>
-  );
-};
+import { RrhStatusAlert } from '@/components/common/RrhStatusAlert';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
+import { ProductCategoriesForm } from './components/ProductCategoriesForm';
+import { GoodSortDialog } from './components/GoodSortDialog';
+import { useDictType } from '@/api/hooks/system';
 
 export function ProductCategoriesPage() {
   const { t } = useTranslation();
@@ -73,13 +35,23 @@ export function ProductCategoriesPage() {
   >({
     searchName: '',
   });
-
-  const { data: data, isLoading: loading } = useGoodsClassification({
+  const { mutateAsync: changeStatusMutation } = useChangeGoodsClassificationStatus();
+  const { mutateAsync: removeClassificationMutation } = useRemoveGoodsClassification();
+  const { data: languageOptions, isLoading: languageLoading } = useDictType('sys_language');
+  const {
+    data: data,
+    isLoading: loading,
+    refetch,
+  } = useGoodsClassification({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn: '',
     isAsc: 'asc',
     ...otherParams,
+  });
+  const { data: parentList, isLoading: parentListLoading } = useGoodsClassification({
+    parentId: 0,
+    status: 0,
   });
 
   const reset = () => {
@@ -90,6 +62,11 @@ export function ProductCategoriesPage() {
     setPageNum(0);
     setPageSize(10);
   };
+
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  const [ids, setIds] = useState('');
+  const [editingItem, setEditingItem] = useState<GoodsClassificationItem | null>(null);
+  const [editOpen, setEditOpen] = useState(false);
 
   const allColumns: CRMColumnDef<GoodsClassificationItem, unknown>[] = [
     {
@@ -119,7 +96,25 @@ export function ProductCategoriesPage() {
       id: 'status',
       header: t('table.status'),
       cell: ({ row }) => {
-        return <StatusCell row={row} />;
+        return (
+          <RrhStatusAlert<{
+            id: string;
+            status: number;
+          }>
+            params={{
+              id: String(row.original.id),
+              status: row.original.status === 1 ? 0 : 1,
+            }}
+            tipsText={
+              row.original.status === 1
+                ? t('productCategories.confirm.stop')
+                : t('productCategories.confirm.open')
+            }
+            checked={row.original.status === 1}
+            confirmFunction={changeStatusMutation}
+            onSuccess={refetch}
+          />
+        );
       },
     },
     {
@@ -137,12 +132,26 @@ export function ProductCategoriesPage() {
     {
       id: 'operate',
       header: t('common.Operation'),
-      cell: () => (
+      cell: ({ row }) => (
         <div>
           <RrhDropdown
             Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[{ label: t('common.View'), value: 'view' }]}
-            callToAction={() => {}}
+            dropdownList={[
+              { label: t('common.Edit'), value: 'edit' },
+              { label: t('common.delete'), value: 'delete' },
+            ]}
+            callToAction={action => {
+              switch (action) {
+                case 'edit':
+                  setEditingItem(row.original);
+                  setEditOpen(true);
+                  break;
+                case 'delete':
+                  setIds(String(row?.original.id));
+                  setDeleteAlert(true);
+                  break;
+              }
+            }}
           />
         </div>
       ),
@@ -199,6 +208,22 @@ export function ProductCategoriesPage() {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <GoodSortDialog
+              mode="add"
+              onSuccess={refetch}
+              languageOptions={
+                languageOptions?.map(i => ({
+                  label: i.dictLabel,
+                  value: i.dictValue,
+                })) || []
+              }
+              parentOptions={
+                parentList?.rows.map(i => ({
+                  label: i.classificationName,
+                  value: String(i.id),
+                })) || []
+              }
+            />
           </div>
         </div>
         <DataTable
@@ -209,7 +234,39 @@ export function ProductCategoriesPage() {
           pageSize={pageSize}
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
-          loading={loading}
+          loading={loading || languageLoading || parentListLoading}
+        />
+        <RrhDeleteAlert<{
+          ids: string;
+        }>
+          open={deleteAlert}
+          setOpen={setDeleteAlert}
+          onSuccess={refetch}
+          confirmFunction={removeClassificationMutation}
+          params={{ ids: ids }}
+          tipsText={t('rewardConfigPage.confirmDeleteTips')}
+        />
+        <GoodSortDialog
+          mode="edit"
+          open={editOpen}
+          onOpenChange={v => {
+            if (!v) setEditingItem(null);
+            setEditOpen(v);
+          }}
+          detail={editingItem || undefined}
+          onSuccess={refetch}
+          languageOptions={
+            languageOptions?.map(i => ({
+              label: i.dictLabel,
+              value: i.dictValue,
+            })) || []
+          }
+          parentOptions={
+            parentList?.rows.map(i => ({
+              label: i.classificationName,
+              value: String(i.id),
+            })) || []
+          }
         />
       </TableContentWrapper>
     </div>

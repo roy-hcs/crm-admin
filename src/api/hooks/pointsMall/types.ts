@@ -133,6 +133,8 @@ export type PointsBalanceRes = BasicRes<PointsBalanceItem>;
 export type GoodsClassificationParams = BasicParams & {
   isAsc?: 'asc' | 'desc';
   searchName?: string;
+  parentId?: number; // 用来获取一级分类列表
+  status?: number; // 用来获取一级分类列表
 };
 
 export type GoodsClassificationItem = BaseEntity & {
@@ -175,4 +177,49 @@ export type GoodDetailInfo = {
   goodsName: string | null;
   email: string | null;
   exchangeAccount: string | null;
+};
+
+export type LanguageItem = {
+  classificationName: string;
+  language: string;
+};
+
+export type AddGoodsClassificationParams = {
+  classificationName: string;
+  parentId: string;
+  sort: string;
+  languageList: LanguageItem[];
+};
+
+export type languageItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: object;
+  id: string | null;
+  classificationId: string | null;
+  classificationName: string | null;
+  language: string | null;
+};
+
+export type GoodsClassificationDetail = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: object;
+  id: string | null;
+  parentId: string | null;
+  status: string | null;
+  sort: string | null;
+  classificationName: string | null;
+  parentClassificationName: string | null;
+  languageList: languageItem[];
+  secondClassificationList: string | null;
+  language: string | null;
+  searchName: string | null;
+  classificationLanguageId: string | null;
 };

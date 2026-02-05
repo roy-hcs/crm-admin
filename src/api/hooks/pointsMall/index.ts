@@ -1,9 +1,11 @@
 import { apiFormPostCustom, apiGetCustom, apiPost } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
+  AddGoodsClassificationParams,
   CrmDealGoodsListParams,
   CrmDealGoodsListRes,
   GoodDetailInfo,
+  GoodsClassificationDetail,
   GoodsClassificationParams,
   GoodsClassificationRes,
   PointsBalanceParams,
@@ -123,5 +125,65 @@ export function useChangeGoodsClassificationStatus() {
   return useMutation({
     mutationFn: (params: { id: string; status: number }) =>
       apiPost('/system/points/goodsClassification/switch', params),
+  });
+}
+
+/**
+ * 校验商品名称
+ */
+export function useCheckClassificationName() {
+  return useMutation({
+    mutationFn: (params: { classificationName: string; language: string; id?: string }) =>
+      apiPost('/system/points/goodsClassification/checkClassificationName', params),
+  });
+}
+
+/**
+ * 新增商品分类
+ */
+export function useAddGoodsClassification() {
+  return useMutation({
+    mutationFn: (params: AddGoodsClassificationParams) =>
+      apiPost('/system/points/goodsClassification/add', params),
+  });
+}
+
+/**
+ * 编辑商品分类/
+ */
+export function useEditGoodsClassification() {
+  return useMutation({
+    mutationFn: (params: AddGoodsClassificationParams) =>
+      apiPost('/system/points/goodsClassification/edit', params),
+  });
+}
+
+/**
+ * 获取商品分类详情
+ */
+export function useGoodsClassificationDetail() {
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiGetCustom<{
+        code: number;
+        msg: string;
+        data: {
+          goodsClassification: GoodsClassificationDetail;
+        };
+      }>(`/system/points/goodsClassification/detailInfo/${id}`),
+  });
+}
+
+/**
+ * 删除商品分类
+ */
+export function useRemoveGoodsClassification() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPostCustom<{
+        code: number;
+        msg: string;
+        data: null;
+      }>('/system/points/goodsClassification/remove', params),
   });
 }
