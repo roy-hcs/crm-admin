@@ -27,7 +27,7 @@ export function FormTextarea<T extends FieldValues>({
       control={form.control}
       name={name}
       render={({ field }) => {
-        const current = String(field.value).length;
+        const current = String(field.value ?? '').length;
         const max = props.maxLength;
         return (
           <FormItem
@@ -45,6 +45,7 @@ export function FormTextarea<T extends FieldValues>({
                 <Textarea
                   {...props}
                   {...field}
+                  className="min-h-25.5"
                   placeholder={placeholder}
                   onBlur={e => {
                     field.onBlur();

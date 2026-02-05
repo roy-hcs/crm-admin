@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCrmDealGoodsList, CrmDealGoodsListParams, GoodsListItem } from '@/api/hooks/pointsMall';
+import {
+  useCrmDealGoodsList,
+  CrmDealGoodsListParams,
+  GoodsListItem,
+  useChangeGoodsStatus,
+  useRemoveGoods,
+} from '@/api/hooks/pointsMall';
 import { PageInfo } from '@/components/common/PageInfo';
 import { Button } from '@/components/ui/button';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
@@ -15,8 +21,8 @@ import { Ellipsis } from 'lucide-react';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { ProductsForm } from './components/ProductsForm';
-import { StatusCell } from './components/StatusCell';
-import { DeleteAlert } from './components/DeleteAlert';
+import { RrhStatusAlert } from '@/components/common/RrhStatusAlert';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 
 export const ProductsPage = () => {
   const { t } = useTranslation();
@@ -28,9 +34,10 @@ export const ProductsPage = () => {
   const [keyword, setKeyword] = useState('');
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
   const [orderByColumn, setOrderByColumn] = useState('');
-  const [row, setRow] = useState<GoodsListItem>();
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  const [ids, setIds] = useState('');
+  const { mutateAsync: changeGoodsStatus } = useChangeGoodsStatus();
+  const { mutateAsync: deleteGoods } = useRemoveGoods();
   const {
     data: data,
     isLoading: loading,
@@ -138,7 +145,23 @@ export const ProductsPage = () => {
       header: t('table.status'),
       accessorFn: row => row.status,
       cell: ({ row }) => {
-        return <StatusCell row={row} onSuccess={refetch} />;
+        return (
+          <RrhStatusAlert<{
+            id: string;
+            status: number;
+          }>
+            params={{
+              id: String(row.original.id),
+              status: row.original.status === 1 ? 0 : 1,
+            }}
+            tipsText={
+              row.original.status === 1 ? t('products.confirm.stop') : t('products.confirm.open')
+            }
+            checked={row.original.status === 1}
+            confirmFunction={changeGoodsStatus}
+            onSuccess={refetch}
+          />
+        );
       },
     },
     {
@@ -224,11 +247,13 @@ export const ProductsPage = () => {
               { label: t('common.delete'), value: 'delete' },
             ]}
             callToAction={action => {
-              if (action === 'edit') {
-                // Handle edit action
-              } else if (action === 'delete') {
-                setRow(row.original);
-                setIsDeleteDialogOpen(true);
+              switch (action) {
+                case 'edit':
+                  break;
+                case 'delete':
+                  setIds(String(row?.original.id));
+                  setDeleteAlert(true);
+                  break;
               }
             }}
           />
@@ -299,11 +324,15 @@ export const ProductsPage = () => {
           onPageSizeChange={setPageSize}
           loading={loading}
         />
-        <DeleteAlert
-          row={row}
-          open={isDeleteDialogOpen}
-          setOpen={setIsDeleteDialogOpen}
+        <RrhDeleteAlert<{
+          ids: string;
+        }>
+          open={deleteAlert}
+          setOpen={setDeleteAlert}
           onSuccess={refetch}
+          confirmFunction={deleteGoods}
+          params={{ ids: ids }}
+          tipsText={t('products.confirmDeleteTips')}
         />
       </TableContentWrapper>
     </div>

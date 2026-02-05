@@ -1,40 +1,40 @@
-import { GoodsListItem, useChangeGoodsStatus } from '@/api/hooks/pointsMall';
 import { RrhAlert } from '@/components/common/RrhAlert';
 import { Switch } from '@/components/ui/switch';
-import { Row } from '@tanstack/react-table';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
-export const StatusCell = ({
-  row,
+export function RrhStatusAlert<T>({
+  confirmFunction,
+  params,
+  tipsText,
+  checked,
   onSuccess,
 }: {
-  row: Row<GoodsListItem>;
+  confirmFunction: (params: T) => Promise<{ code: number; msg: string }>;
+  params: T;
+  tipsText: string;
+  checked: boolean;
   onSuccess: () => void;
-}) => {
+}) {
   const [isOpen, setIsOpen] = useState(false);
-  const { mutateAsync: changeFunc } = useChangeGoodsStatus();
   const { t } = useTranslation();
 
   const onConfirm = useCallback(async () => {
-    const res = await changeFunc({
-      id: row.original.id,
-      status: row.original.status === 1 ? 0 : 1,
-    });
+    const res = await confirmFunction(params);
     if (res.code === 0) {
       onSuccess();
       toast.success(t('common.success'));
     } else {
       toast.error(res.msg);
     }
-  }, [changeFunc, onSuccess, row.original.id, row.original.status, t]);
+  }, [confirmFunction, onSuccess, params, t]);
 
   return (
     <>
       <Switch
         className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
-        checked={row.original.status === 1}
+        checked={checked}
         onClick={() => setIsOpen(true)}
       />
       <RrhAlert
@@ -44,11 +44,9 @@ export const StatusCell = ({
         cancelText={t('common.Cancel')}
         confirmText={t('common.Confirm')}
         title={t('common.SystemPrompt')}
-        content={
-          row.original.status === 1 ? t('products.confirm.stop') : t('products.confirm.open')
-        }
+        content={tipsText}
         onConfirm={onConfirm}
       />
     </>
   );
-};
+}
