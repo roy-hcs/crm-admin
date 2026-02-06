@@ -7,7 +7,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { FormProvider } from '@/contexts/form';
-import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -26,13 +25,16 @@ export const SetOrderAsyncDialog = ({
   onSuccess,
   serverId,
   accounts,
+  open,
+  setOpen,
 }: {
   onSuccess?: () => void;
   serverId: string;
   accounts: string[];
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }) => {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<FormValues>({
@@ -74,22 +76,6 @@ export const SetOrderAsyncDialog = ({
 
   return (
     <RrhDialog
-      trigger={
-        <RrhButton
-          onClick={e => {
-            if (accounts && accounts?.length > 0) {
-              setOpen(true);
-            } else {
-              toast.error(t('tradingAccountTransactions.atLeastOneAccount'));
-              e.preventDefault();
-            }
-          }}
-          type="button"
-          Icon={<Plus className="size-3.5" />}
-        >
-          {t('tradingAccountTransactions.batchOrderAsync')}
-        </RrhButton>
-      }
       title={t('tradingAccountTransactions.batchOrderAsync')}
       isConfirmDisabled={isSubmitting}
       open={open}

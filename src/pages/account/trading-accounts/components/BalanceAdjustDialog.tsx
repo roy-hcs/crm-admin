@@ -1,10 +1,9 @@
 import { Form, FormField } from '@/components/ui/form';
 import { FormProvider } from '@/contexts/form';
-import { CircleAlert, Plus } from 'lucide-react';
+import { CircleAlert } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { useBalanceAdjust } from '@/api/hooks/account';
 import { toast } from 'sonner';
@@ -37,16 +36,19 @@ export const BalanceAdjustDialog = ({
   onSuccess,
   accounts,
   serverId,
+  open,
+  setOpen,
 }: {
   onSuccess?: () => void;
   accounts: string[];
   serverId: string;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }) => {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hideFlag, setHideFlag] = useState(true);
-  const [opTypeptions, setOpTypeptions] = useState<Array<{ label: string; value: string }>>([]);
+  const [typeOptions, setTypeOptions] = useState<Array<{ label: string; value: string }>>([]);
   const [operationTypeLoading, setOperationTypeLoading] = useState(false);
   const { mutateAsync: getOperationTypeData } = useGetDictType();
   const { mutateAsync: balanceAdjust } = useBalanceAdjust();
@@ -84,6 +86,8 @@ export const BalanceAdjustDialog = ({
         toast.success(t('common.success'));
         setOpen(false);
         onSuccess?.();
+      } else {
+        toast.error(res.msg);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -97,19 +101,28 @@ export const BalanceAdjustDialog = ({
     setOpen(false);
   };
 
+  const onConfirm = () => {
+    form.handleSubmit(onSubmit)();
+  };
+
+  const onClose = (open: boolean) => {
+    setOpen(open);
+    form.reset();
+  };
+
   useEffect(() => {
     // 2 3 不需要请求操作类型
     if (['2', '3'].includes(operationType)) {
       form.setValue('opType', '');
       setHideFlag(false);
-      setOpTypeptions([]);
+      setTypeOptions([]);
       return;
     }
     setHideFlag(true);
     let mounted = true;
     const fetch = async (operationType?: string) => {
       if (!operationType) {
-        if (mounted) setOpTypeptions([]);
+        if (mounted) setTypeOptions([]);
         return;
       }
       if (mounted) setOperationTypeLoading(true);
@@ -120,22 +133,22 @@ export const BalanceAdjustDialog = ({
           '1': 'crm_adjust_out_type',
         };
         const key = operationType as keyof typeof typeMenu;
-        const operType = await getOperationTypeData(typeMenu[key]);
+        const type = await getOperationTypeData(typeMenu[key]);
         if (!mounted) return;
-        if (operType?.length > 0) {
-          const operTypeOptions = operType
+        if (type?.length > 0) {
+          const typeOptions = type
             .filter(i => i)
             .map(i => ({
               label: i.dictLabel,
               value: i.dictValue,
             }));
-          setOpTypeptions(operTypeOptions);
+          setTypeOptions(typeOptions);
         } else {
-          setOpTypeptions([]);
+          setTypeOptions([]);
         }
       } catch (error) {
         console.error(error);
-        if (mounted) setOpTypeptions([]);
+        if (mounted) setTypeOptions([]);
       } finally {
         if (mounted) setOperationTypeLoading(false);
       }
@@ -149,28 +162,14 @@ export const BalanceAdjustDialog = ({
 
   return (
     <RrhDialog
-      trigger={
-        <RrhButton
-          onClick={e => {
-            if (accounts && accounts?.length > 0) {
-              setOpen(true);
-            } else {
-              toast.error(t('tradingAccountTransactions.atLeastOneAccount'));
-              e.preventDefault();
-            }
-          }}
-          type="button"
-          Icon={<Plus className="size-3.5" />}
-        >
-          {t('tradingAccountTransactions.balanceAdjust')}
-        </RrhButton>
-      }
       title={t('tradingAccountTransactions.balanceAdjust')}
       isConfirmDisabled={isSubmitting}
       open={open}
-      onOpenChange={setOpen}
-      footerShow={false}
       variant="middle"
+      onOpenChange={onClose}
+      onCancel={onCancel}
+      onConfirm={onConfirm}
+      type="submit"
       formLoading={isSubmitting}
     >
       <FormProvider form={form}>
@@ -208,7 +207,7 @@ export const BalanceAdjustDialog = ({
                 verticalLabel
                 placeholder={`${t('common.pleaseSelect')}`}
                 showRowValue={false}
-                options={opTypeptions}
+                options={typeOptions}
                 loading={operationTypeLoading}
               />
             )}
@@ -218,6 +217,7 @@ export const BalanceAdjustDialog = ({
               label={t('table.operationAmount')}
               verticalLabel
               placeholder={t('rules.limitLength', { field: 11 })}
+              maxLength={11}
             />
 
             <FormInput
@@ -225,18 +225,8 @@ export const BalanceAdjustDialog = ({
               label={t('table.remarks')}
               verticalLabel
               placeholder={t('rules.limitLength', { field: 10 })}
+              maxLength={10}
             />
-
-            <div className="border-muted col-span-full -mx-6 flex justify-end border-t px-6 py-6 sm:pb-0">
-              <div className="flex justify-end gap-4">
-                <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
-                  {t('common.Cancel')}
-                </RrhButton>
-                <RrhButton type="submit" className="px-4 py-2" disabled={isSubmitting}>
-                  {t('common.Confirm')}
-                </RrhButton>
-              </div>
-            </div>
           </form>
         </Form>
       </FormProvider>

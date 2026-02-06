@@ -1,6 +1,5 @@
 import { Form } from '@/components/ui/form';
 import { FormProvider } from '@/contexts/form';
-import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -18,13 +17,16 @@ export const SetAccountGroupDialog = ({
   onSuccess,
   ids,
   dealAccountGroup,
+  open,
+  setOpen,
 }: {
   onSuccess?: () => void;
   ids: string[];
   dealAccountGroup: Array<{ label: string; value: string }>;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }) => {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<FormValues>({
@@ -48,6 +50,8 @@ export const SetAccountGroupDialog = ({
         toast.success(t('common.success'));
         setOpen(false);
         onSuccess?.();
+      } else {
+        toast.error(res.msg);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -63,22 +67,6 @@ export const SetAccountGroupDialog = ({
 
   return (
     <RrhDialog
-      trigger={
-        <RrhButton
-          onClick={e => {
-            if (ids && ids?.length > 0) {
-              setOpen(true);
-            } else {
-              toast.error(t('tradingAccountTransactions.atLeastOneAccount'));
-              e.preventDefault();
-            }
-          }}
-          type="button"
-          Icon={<Plus className="size-3.5" />}
-        >
-          {t('tradingAccountTransactions.batchSetAccountGroup')}
-        </RrhButton>
-      }
       title={t('tradingAccountTransactions.batchSetAccountGroup')}
       isConfirmDisabled={isSubmitting}
       open={open}

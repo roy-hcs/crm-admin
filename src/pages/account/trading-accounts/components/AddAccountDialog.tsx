@@ -73,12 +73,12 @@ export const AddAccountDialog = ({
   const [serverList, setServerList] = useState<Array<{ label: string; value: string }>>([]); // 服务器列表
   const [leverList, setLeverList] = useState<Array<{ label: string; value: string }>>([]); // 杠杆列表
   const [groupList, setGroupList] = useState<Array<{ label: string; value: string }>>([]); // 组别列表
-  const [groupLoading, setGroupLoading] = useState(false); // 组别加载状态
+  const [groupLoading, setGroupLoading] = useState(false);
   const [accountInfo, setAccountInfo] = useState<{
     accountStart: number;
     accountEnd: number;
     maxAccount: number;
-  }>(); // 账号信息
+  }>();
 
   const schema = useMemo(() => z.object(addUserSchema(t)), [t]);
 
@@ -256,6 +256,11 @@ export const AddAccountDialog = ({
     setOpen(false);
   };
 
+  const onClose = (open: boolean) => {
+    setOpen(open);
+    form.reset();
+  };
+
   const serverTypeList = useMemo(() => {
     return Object.keys(serverMap).map(key => ({ label: serverMap[Number(key)], value: key }));
   }, []);
@@ -270,7 +275,7 @@ export const AddAccountDialog = ({
       title={t('tradingAccountTransactions.addLogin')}
       isConfirmDisabled={isSubmitting}
       open={open}
-      onOpenChange={setOpen}
+      onOpenChange={onClose}
       onCancel={onCancel}
       onConfirm={() => form.handleSubmit(onSubmit)()}
       variant="large"
