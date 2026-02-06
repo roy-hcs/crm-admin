@@ -21,6 +21,7 @@ export const SelectType = ({
         <FormControl>
           <RrhRadioGroup
             value={field.value ?? '1'}
+            orientation="vertical"
             onValueChange={value => {
               field.onChange(value);
             }}

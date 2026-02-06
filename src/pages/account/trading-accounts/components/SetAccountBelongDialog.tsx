@@ -1,6 +1,5 @@
 import { Form, FormField } from '@/components/ui/form';
 import { FormProvider } from '@/contexts/form';
-import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -17,12 +16,15 @@ type FormValues = {
 export const SetAccountBelongDialog = ({
   onSuccess,
   ids,
+  open,
+  setOpen,
 }: {
   onSuccess?: () => void;
   ids: string[];
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }) => {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<FormValues>({
@@ -46,6 +48,8 @@ export const SetAccountBelongDialog = ({
         toast.success(t('common.success'));
         setOpen(false);
         onSuccess?.();
+      } else {
+        toast.error(res.msg);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -61,22 +65,6 @@ export const SetAccountBelongDialog = ({
 
   return (
     <RrhDialog
-      trigger={
-        <RrhButton
-          onClick={e => {
-            if (ids && ids?.length > 0) {
-              setOpen(true);
-            } else {
-              toast.error(t('tradingAccountTransactions.atLeastOneAccount'));
-              e.preventDefault();
-            }
-          }}
-          type="button"
-          Icon={<Plus className="size-3.5" />}
-        >
-          {t('tradingAccountTransactions.batchSetAccountBelong')}
-        </RrhButton>
-      }
       title={t('tradingAccountTransactions.batchSetAccountBelong')}
       isConfirmDisabled={isSubmitting}
       open={open}

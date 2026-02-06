@@ -17,17 +17,19 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { PageInfo } from '@/components/common/PageInfo';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
-import { AddAccountDialog } from './components/AddAccountDialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { SetBrokerDialog } from './components/SetBrokerDialog';
 import { ResetPasswordDialog } from './components/ResetPasswordDialog';
 import { DeleteAccountDialog } from './components/DeleteAccountDialog';
-import { SetAccountGroupDialog } from './components/SetAccountGroupDialog';
-import { SetAccountBelongDialog } from './components/SetAccountBelongDialog';
-import { SetOrderAsyncDialog } from './components/SetOrderAsyncDialog';
+
 import { TradingAccountsForm } from './components/TradingAccountsForm';
 import { useInitServerId } from '@/hooks/useInitServerId';
+import { toast } from 'sonner';
+import { SetOrderAsyncDialog } from './components/SetOrderAsyncDialog';
 import { BalanceAdjustDialog } from './components/BalanceAdjustDialog';
+import { SetAccountGroupDialog } from './components/SetAccountGroupDialog';
+import { AddAccountDialog } from './components/AddAccountDialog';
+import { SetAccountBelongDialog } from './components/SetAccountBelongDialog';
 
 export function TradingAccountsPage() {
   const { t } = useTranslation();
@@ -73,7 +75,6 @@ export function TradingAccountsPage() {
   const { data: dealAccountGroupRes } = useGetDealAccountGroupList(); // 账户组数据 表单 弹窗都有使用
 
   const dealAccountGroup = useMemo(() => {
-    // 表单 账户组选项
     return (
       dealAccountGroupRes?.map(item => ({
         label: item.name,
@@ -274,7 +275,6 @@ export function TradingAccountsPage() {
             callToAction={action => {
               switch (action) {
                 case 'view':
-                  // View action
                   break;
                 case 'resetPassword':
                   setInfo(row.original);
@@ -300,6 +300,14 @@ export function TradingAccountsPage() {
 
   const [ids, setIds] = useState<string[]>([]);
   const [accounts, setAccounts] = useState<string[]>([]);
+  type DialogKey =
+    | 'broker'
+    | 'orderAsync'
+    | 'balanceAdjust'
+    | 'accountGroup'
+    | 'accountBelong'
+    | null;
+  const [openDialog, setOpenDialog] = useState<DialogKey>(null);
 
   const onSuccess = () => {
     setIds([]);
@@ -309,9 +317,9 @@ export function TradingAccountsPage() {
 
   const onSelectionChange = (its: CrmDealAccountListItem[]) => {
     const ids = its.filter(i => i.id).map(j => j.id || '');
-    const as = its.filter(i => i.account).map(j => j.account || '');
+    const accounts = its.filter(i => i.account).map(j => j.account || '');
     setIds(ids);
-    setAccounts(as);
+    setAccounts(accounts);
   };
 
   return (
@@ -332,7 +340,7 @@ export function TradingAccountsPage() {
               setPageNum(0);
             }}
           />
-          <div className="flex justify-end gap-2">
+          <div className="flex items-center gap-2">
             <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </RrhButton>
@@ -363,6 +371,33 @@ export function TradingAccountsPage() {
                 dealAccountGroup={dealAccountGroup}
               />
             </RrhDrawer>
+            <RrhDropdown
+              Trigger={
+                <RrhButton variant="ghost" className="size-8 cursor-pointer">
+                  <Ellipsis className="size-4" />
+                </RrhButton>
+              }
+              dropdownList={[
+                { label: t('tradingAccountTransactions.batchSetAgents'), value: 'broker' },
+                { label: t('tradingAccountTransactions.batchOrderAsync'), value: 'orderAsync' },
+                { label: t('tradingAccountTransactions.balanceAdjust'), value: 'balanceAdjust' },
+                {
+                  label: t('tradingAccountTransactions.batchSetAccountGroup'),
+                  value: 'accountGroup',
+                },
+                {
+                  label: t('tradingAccountTransactions.batchSetAccountBelong'),
+                  value: 'accountBelong',
+                },
+              ]}
+              callToAction={action => {
+                if (ids && ids?.length === 0) {
+                  toast.error(t('tradingAccountTransactions.atLeastOneAccount'));
+                  return;
+                }
+                setOpenDialog(action as DialogKey);
+              }}
+            />
             <ColumnVisibilityButton
               columnMeta={columnMeta}
               visibleColumns={visibleColumns}
@@ -370,15 +405,6 @@ export function TradingAccountsPage() {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
-            <SetBrokerDialog onSuccess={onSuccess} ids={ids} />
-            <SetOrderAsyncDialog onSuccess={onSuccess} accounts={accounts} serverId={serverId} />
-            <BalanceAdjustDialog onSuccess={onSuccess} accounts={accounts} serverId={serverId} />
-            <SetAccountGroupDialog
-              onSuccess={onSuccess}
-              ids={ids}
-              dealAccountGroup={dealAccountGroup}
-            />
-            <SetAccountBelongDialog onSuccess={onSuccess} ids={ids} />
             <AddAccountDialog onSuccess={refetch} dealAccountGroup={dealAccountGroup} />
           </div>
         </div>
@@ -408,6 +434,39 @@ export function TradingAccountsPage() {
             setOpen={setIsDeleteDialogOpen}
           />
         )}
+        <SetBrokerDialog
+          onSuccess={onSuccess}
+          ids={ids}
+          open={openDialog === 'broker'}
+          setOpen={val => (val ? setOpenDialog('broker') : setOpenDialog(null))}
+        />
+        <SetOrderAsyncDialog
+          open={openDialog === 'orderAsync'}
+          setOpen={val => (val ? setOpenDialog('orderAsync') : setOpenDialog(null))}
+          onSuccess={onSuccess}
+          accounts={accounts}
+          serverId={serverId}
+        />
+        <BalanceAdjustDialog
+          open={openDialog === 'balanceAdjust'}
+          setOpen={val => (val ? setOpenDialog('balanceAdjust') : setOpenDialog(null))}
+          onSuccess={onSuccess}
+          accounts={accounts}
+          serverId={serverId}
+        />
+        <SetAccountGroupDialog
+          open={openDialog === 'accountGroup'}
+          setOpen={val => (val ? setOpenDialog('accountGroup') : setOpenDialog(null))}
+          onSuccess={onSuccess}
+          ids={ids}
+          dealAccountGroup={dealAccountGroup}
+        />
+        <SetAccountBelongDialog
+          open={openDialog === 'accountBelong'}
+          setOpen={val => (val ? setOpenDialog('accountBelong') : setOpenDialog(null))}
+          onSuccess={onSuccess}
+          ids={ids}
+        />
       </TableContentWrapper>
     </div>
   );

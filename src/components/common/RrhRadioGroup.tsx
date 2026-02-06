@@ -13,9 +13,24 @@ export const RrhRadioGroup: FC<{
   labelClassName?: string;
   value: string;
   onValueChange?: (value: string) => void;
-}> = ({ defaultValue, radioItems, radioItemClassName, labelClassName, value, onValueChange }) => {
+  vertical?: boolean;
+  orientation?: 'horizontal' | 'vertical';
+}> = ({
+  defaultValue,
+  radioItems,
+  radioItemClassName,
+  labelClassName,
+  value,
+  onValueChange,
+  orientation = 'horizontal',
+}) => {
   return (
-    <RadioGroup defaultValue={defaultValue} value={value} onValueChange={onValueChange}>
+    <RadioGroup
+      className={cn(orientation === 'horizontal' ? '' : 'flex')}
+      defaultValue={defaultValue}
+      value={value}
+      onValueChange={onValueChange}
+    >
       {radioItems.map(item => (
         <div className={cn('flex items-center gap-3', radioItemClassName)} key={item.value}>
           <RadioGroupItem className="size-4 [&_svg]:h-2" value={item.value} id={item.value} />

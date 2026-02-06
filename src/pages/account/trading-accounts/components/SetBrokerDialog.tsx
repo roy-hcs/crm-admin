@@ -1,6 +1,6 @@
 import { Form, FormField } from '@/components/ui/form';
 import { FormProvider } from '@/contexts/form';
-import { Plus } from 'lucide-react';
+// import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -14,9 +14,18 @@ type FormValues = {
   broker: string;
 };
 
-export const SetBrokerDialog = ({ onSuccess, ids }: { onSuccess?: () => void; ids: string[] }) => {
+export const SetBrokerDialog = ({
+  onSuccess,
+  ids,
+  open,
+  setOpen,
+}: {
+  onSuccess?: () => void;
+  ids: string[];
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}) => {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<FormValues>({
@@ -55,22 +64,6 @@ export const SetBrokerDialog = ({ onSuccess, ids }: { onSuccess?: () => void; id
 
   return (
     <RrhDialog
-      trigger={
-        <RrhButton
-          onClick={e => {
-            if (ids && ids?.length > 0) {
-              setOpen(true);
-            } else {
-              toast.error(t('tradingAccountTransactions.atLeastOneAccount'));
-              e.preventDefault();
-            }
-          }}
-          type="button"
-          Icon={<Plus className="size-3.5" />}
-        >
-          {t('tradingAccountTransactions.batchSetAgents')}
-        </RrhButton>
-      }
       title={t('tradingAccountTransactions.batchSetAgents')}
       isConfirmDisabled={isSubmitting}
       open={open}
