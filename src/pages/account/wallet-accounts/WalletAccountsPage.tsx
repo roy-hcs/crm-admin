@@ -21,7 +21,8 @@ import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { Checkbox } from '@/components/ui/checkbox';
 import { WalletAccountsForm } from './components/WalletAccountsForm';
 import { AddWalletDialog } from './components/AddWalletDialog';
-import { DeleteWalletDialog } from './components/DeleteWalletDialog';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
+import { useDeleteWallet } from '@/api/hooks/account';
 
 export const WalletAccountsPage = () => {
   const [params, setParams] = useState<WalletAccountsListParams['params']>({
@@ -37,7 +38,10 @@ export const WalletAccountsPage = () => {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  const [ids, setIds] = useState('');
   const { t } = useTranslation();
+  const { mutateAsync: deleteWallet } = useDeleteWallet();
   const { data: walletData, isLoading: walletLoading } = useCurrencyList();
   const {
     data: data,
@@ -163,8 +167,8 @@ export const WalletAccountsPage = () => {
                   // View action
                   break;
                 case 'delete':
-                  setId(row?.original?.id || '');
-                  setIsDeleteDialogOpen(true);
+                  setIds(String(row?.original.id));
+                  setDeleteAlert(true);
                   break;
                 default:
                   break;
@@ -179,9 +183,6 @@ export const WalletAccountsPage = () => {
   ];
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('wallet-accounts-table', allColumns);
-
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [id, setId] = useState('');
 
   return (
     <div>
@@ -276,11 +277,15 @@ export const WalletAccountsPage = () => {
             </>
           }
         />
-        <DeleteWalletDialog
-          id={id}
-          title={t('common.SystemPrompt')}
-          open={isDeleteDialogOpen}
-          setOpen={setIsDeleteDialogOpen}
+        <RrhDeleteAlert<{
+          ids: string;
+        }>
+          open={deleteAlert}
+          setOpen={setDeleteAlert}
+          onSuccess={refetch}
+          confirmFunction={deleteWallet}
+          params={{ ids: ids }}
+          tipsText={t('walletAccountsPage.deleteTips')}
         />
       </TableContentWrapper>
     </div>
