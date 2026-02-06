@@ -58,29 +58,11 @@ export const AccountGroupDialog = ({
   const id = initialValues?.id;
 
   const schema = useMemo(() => {
-    return z
-      .object({
-        name: z.string().min(1, t('rules.required', { field: t('accountGroups.name') })),
-        sort: z.string().min(1, t('rules.required', { field: t('table.sort') })),
-      })
-      .superRefine(async (data, ctx) => {
-        if (!data.name) return;
-        // 如果是编辑且名称未改变，则跳过唯一性检查
-        if (mode === 'edit' && data.name === initialName) return;
-        try {
-          const res = await checkGroupNameSingle({ name: data.name });
-          if (res?.code === 0 && res?.data) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: t('accountGroups.nameAlreadyExists'),
-              path: ['name'],
-            });
-          }
-        } catch (error) {
-          console.error('Error checking group name uniqueness:', error);
-        }
-      });
-  }, [t, mode, initialName, checkGroupNameSingle]);
+    return z.object({
+      name: z.string().min(1, t('rules.required', { field: t('accountGroups.name') })),
+      sort: z.string().min(1, t('rules.required', { field: t('table.sort') })),
+    });
+  }, [t]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -90,8 +72,33 @@ export const AccountGroupDialog = ({
     },
   });
 
+  // 异步校验组名唯一性（在 onBlur 时触发防止请求过多）
+  const validateName = async (value: string) => {
+    try {
+      if (!value || !String(value).trim()) {
+        form.clearErrors('name');
+        return true;
+      }
+      const params: { name: string; id?: string } = { name: value };
+      if (mode === 'edit' && id) params.id = String(id);
+      const res = await checkGroupNameSingle(params);
+      if (res?.code === 0 && res?.data) {
+        form.setError('name', { type: 'manual', message: t('accountGroups.nameAlreadyExists') });
+        return false;
+      }
+      form.clearErrors('name');
+      return true;
+    } catch (error) {
+      console.error('Error checking group name uniqueness:', error);
+      return false;
+    }
+  };
+
   const onSubmit = async (data: FormValues) => {
     try {
+      // 提交前再次校验，防止用户直接提交表单而不触发 onBlur
+      const ok = await validateName(data.name);
+      if (!ok) return;
       setIsSubmitting(true);
       const param = {
         name: data.name,
@@ -99,22 +106,13 @@ export const AccountGroupDialog = ({
         id: '',
       };
       if (mode === 'edit' && id) {
-        const res = await editAccountGroup({
-          ...param,
-          id: id,
-        });
-        if (res.code === 0) {
-          successCallback();
-        } else {
-          toast.error(res.msg);
-        }
+        Object.assign(param, { id: String(id) });
+      }
+      const res = mode === 'add' ? await addAccountGroup(param) : await editAccountGroup(param);
+      if (res?.code === 0) {
+        successCallback();
       } else {
-        const res = await addAccountGroup(param);
-        if (res.code === 0) {
-          successCallback();
-        } else {
-          toast.error(res.msg);
-        }
+        toast.error(res.msg);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -135,6 +133,15 @@ export const AccountGroupDialog = ({
     setOpen(false);
   };
 
+  const onClose = (open: boolean) => {
+    setOpen(open);
+    form.reset();
+  };
+
+  const onConfirm = () => {
+    form.handleSubmit(onSubmit)();
+  };
+
   return (
     <RrhDialog
       trigger={
@@ -151,9 +158,11 @@ export const AccountGroupDialog = ({
       }
       isConfirmDisabled={isSubmitting}
       open={open}
-      onOpenChange={setOpen}
-      footerShow={false}
+      onOpenChange={onClose}
+      onCancel={onCancel}
+      onConfirm={onConfirm}
       variant="small"
+      type="submit"
       formLoading={isSubmitting}
     >
       <FormProvider form={form}>
@@ -164,6 +173,8 @@ export const AccountGroupDialog = ({
               label={t('accountGroups.name')}
               verticalLabel
               placeholder={t('rules.limitLength', { field: 32 })}
+              onBlur={e => validateName(String((e.target as HTMLInputElement).value))}
+              maxLength={32}
             />
             <FormInput
               name="sort"
@@ -171,15 +182,6 @@ export const AccountGroupDialog = ({
               verticalLabel
               placeholder={t('accountGroups.sortPlaceholder')}
             />
-
-            <div className="col-span-full -mx-6 flex justify-end gap-4 px-6 py-6 sm:pb-0">
-              <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
-                {t('common.Cancel')}
-              </RrhButton>
-              <RrhButton type="submit" className="px-4 py-2">
-                {t('common.Confirm')}
-              </RrhButton>
-            </div>
           </form>
         </Form>
       </FormProvider>

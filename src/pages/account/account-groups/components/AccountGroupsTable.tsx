@@ -5,7 +5,9 @@ import { Ellipsis } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { AccountGroupDialog } from './AccountGroupDialog';
-import { DeleteGroupDialog } from './DeleteGroupDialog';
+// import { DeleteGroupDialog } from './DeleteGroupDialog';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
+import { useRemoveAccountGroup } from '@/api/hooks/account';
 
 export const AccountGroupsTable = ({
   data,
@@ -24,12 +26,13 @@ export const AccountGroupsTable = ({
   onPageChange: (pageIndex: number) => void;
   onPageSizeChange: (pageSize: number) => void;
   loading?: boolean;
-  onRefresh?: () => void;
+  onRefresh: () => void;
 }) => {
   const { t } = useTranslation();
   const [editingItem, setEditingItem] = useState<CrmDealAccountItem | null>(null);
   const [open, setOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  const { mutateAsync: removeAccountGroup } = useRemoveAccountGroup();
 
   const columns: CRMColumnDef<CrmDealAccountItem, unknown>[] = [
     {
@@ -76,7 +79,7 @@ export const AccountGroupsTable = ({
                 setOpen(true);
               } else if (action === 'delete') {
                 setEditingItem(row.original);
-                setDeleteOpen(true);
+                setDeleteAlert(true);
               }
             }}
           />
@@ -118,23 +121,16 @@ export const AccountGroupsTable = ({
           }}
         />
       )}
-      {editingItem && (
-        <DeleteGroupDialog
-          open={deleteOpen}
-          setOpen={v => {
-            if (!v) setEditingItem(null);
-            setDeleteOpen(v);
-          }}
-          initialValues={{
-            id: editingItem.id || '',
-            name: editingItem.name || '',
-          }}
-          onSuccess={() => {
-            setEditingItem(null);
-            onRefresh?.();
-          }}
-        />
-      )}
+      <RrhDeleteAlert<{
+        ids: string;
+      }>
+        open={deleteAlert}
+        setOpen={setDeleteAlert}
+        onSuccess={onRefresh}
+        confirmFunction={removeAccountGroup}
+        params={{ ids: editingItem?.id || '' }}
+        tipsText={t('accountGroups.deleteTips', { name: editingItem?.name })}
+      />
     </>
   );
 };

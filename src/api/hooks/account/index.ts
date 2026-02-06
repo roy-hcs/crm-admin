@@ -283,7 +283,7 @@ export function useRemoveAccountGroup() {
  */
 export function useCheckGroupNameSingle() {
   return useMutation({
-    mutationFn: (params: { name: string }) =>
+    mutationFn: (params: { name: string; id?: string }) =>
       apiFormPostCustom<{
         code: number;
         msg: string;
