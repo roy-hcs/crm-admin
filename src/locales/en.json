@@ -970,7 +970,12 @@
     "lockStatus": "Rewards locked",
     "rewardTarget": "Reward object",
     "rewardType": "Reward type",
-    "title": "Award record"
+    "title": "Award record",
+    "accountOpeningReward": "Account opening-rewards",
+    "depositRewardCredit": "Deposit Bonus Credit",
+    "orderClosingReward": "Order closing-reward",
+    "rewardAutoReviewConfig": "Reward automatic review configuration",
+    "tips": "Use the following to control whether the rewards issued are automatically approved."
   },
   "tradingAccounts": {
     "title": "trading account"
