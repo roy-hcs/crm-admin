@@ -2,7 +2,7 @@ import { Form, FormField } from '@/components/ui/form';
 import { FormProvider } from '@/contexts/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { FormSelect } from '@/components/form/FormSelect';
@@ -97,8 +97,6 @@ export const AddDialog = ({
   const onConfirm = async () => {
     form.handleSubmit(onSubmit)();
   };
-
-  useEffect(() => {}, []);
 
   return (
     <RrhDialog
