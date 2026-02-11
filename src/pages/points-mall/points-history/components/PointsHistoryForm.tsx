@@ -28,7 +28,7 @@ type FormData = {
 export const PointsHistoryForm = ({
   setParams,
   setOtherParams,
-  operTypeList,
+  operationTypeList,
   loading,
   params,
   otherParams,
@@ -40,7 +40,7 @@ export const PointsHistoryForm = ({
       Omit<PointsChangeListParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
     >
   >;
-  operTypeList: { dictLabel: string; dictValue: string }[];
+  operationTypeList: { dictLabel: string; dictValue: string }[];
   loading: boolean;
   params: PointsChangeListParams['params'];
   otherParams: Omit<
@@ -109,10 +109,10 @@ export const PointsHistoryForm = ({
           <FormSelect
             verticalLabel
             name="businessType"
-            label={t('PointsHistory.businessType')}
+            label={t('table.triggerBusiness')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
-            options={operTypeList.map(i => ({ label: i.dictLabel, value: i.dictValue }))}
+            options={operationTypeList.map(i => ({ label: i.dictLabel, value: i.dictValue }))}
           />
           <FormField
             name="time"

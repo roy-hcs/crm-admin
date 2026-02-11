@@ -66,6 +66,8 @@
     "RememberMe": "记住我"
   },
   "common": {
+    "increase": "增加",
+    "subtract": "扣除",
     "selectAll": "全选",
     "next": "下一步",
     "loading": "加载中...",
@@ -497,7 +499,8 @@
     "passwordComplexity": "请输入密码,{{min}}-{{max}}位英文(大小写)+数字",
     "emailAlreadyUsed": "当前邮箱已被使用",
     "phoneAlreadyUsed": "当前号码已被使用",
-    "crmAccountPassword": "{{min}}-{{max}}位（数字+大写字母+小写字母+特殊字符组合）"
+    "crmAccountPassword": "{{min}}-{{max}}位（数字+大写字母+小写字母+特殊字符组合）",
+    "integer": "{{field}}请输入正整数"
   },
   "tradingHistoryPage": {
     "tradingHistoryDetail": "交易历史详情",
@@ -666,9 +669,10 @@
   },
   "PointsHistory": {
     "title": "积分变动记录",
-    "businessType": "触发业务",
     "bonusPoints": "数值",
     "pointsBalance": "积分余额",
+    "pointsAdjustment": "积分调整",
+    "bonusPointsPlaceholder": "请输入积分数值(正整数)",
     "operTypeList": {
       "10": "积分兑换",
       "11": "订单扣除",
@@ -1135,7 +1139,8 @@
     "pammWithdrawal": "PAMM出金",
     "other": "其他",
     "modifyPaymentOrderTips": "请在支付通道方核实订单的支付状态后再做修改。",
-    "comments": "注释"
+    "comments": "注释",
+    "bonusPoints": "积分数值"
   },
   "review": {
     "settings": {

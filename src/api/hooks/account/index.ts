@@ -32,6 +32,14 @@ export function useCrmUser(params: CrmUserParams, query?: string) {
   });
 }
 
+// CRM User not hooks
+export function useMutationCrmUser() {
+  return useMutation({
+    mutationFn: (params: CrmUserParams) =>
+      apiFormPostCustom<CrmUserResponse>(`/system/crmUser/list`, params),
+  });
+}
+
 export function useTagUserCountList() {
   return useQuery({
     queryKey: ['tagUserCountList'],

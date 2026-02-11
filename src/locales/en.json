@@ -215,7 +215,9 @@
     "selectUser": "Select user",
     "modify": "Modify {{field}}",
     "next": "Next step",
-    "selectAll": "Select all"
+    "selectAll": "Select all",
+    "increase": "Increase",
+    "subtract": "deduct"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -680,7 +682,8 @@
     "pammDeposit": "PAMM deposit",
     "pammWithdrawal": "PAMM Withdrawal",
     "comments": "Comment",
-    "modifyPaymentOrderTips": "Please verify the payment status of the order at the payment channel before making any changes."
+    "modifyPaymentOrderTips": "Please verify the payment status of the order at the payment channel before making any changes.",
+    "bonusPoints": "Points value"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1023,7 +1026,6 @@
   },
   "PointsHistory": {
     "bonusPoints": "numerical value",
-    "businessType": "Trigger business",
     "operTypeList": {
       "10": "Points redemption",
       "11": "Order deduction",
@@ -1032,7 +1034,9 @@
       "14": "Inactive deduction"
     },
     "pointsBalance": "Points balance",
-    "title": "Points change record"
+    "title": "Points change record",
+    "bonusPointsPlaceholder": "Please enter the points value (positive integer)",
+    "pointsAdjustment": "Points adjustment"
   },
   "redemptionRecords": {
     "combinedPayment": "combination payment",
@@ -1290,6 +1294,7 @@
     "phoneAlreadyUsed": "Current number is already in use",
     "pwdPlaceholder": "Please enter your password, 8-20 English digits (uppercase and lowercase) numbers",
     "pwdTips": "If no password is added, the system will automatically create a login password for the account and send the login password via email.",
-    "crmAccountPassword": "{{min}}-{{max}} digits (numbers, uppercase letters, lowercase letters, special character combinations)"
+    "crmAccountPassword": "{{min}}-{{max}} digits (numbers, uppercase letters, lowercase letters, special character combinations)",
+    "integer": "{{field}}Please enter a positive integer"
   }
 }
