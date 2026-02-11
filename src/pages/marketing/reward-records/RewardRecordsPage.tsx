@@ -18,6 +18,7 @@ import { RewardRecordsForm } from './RewardRecordsForm';
 import { depositRebateStatusMap } from '@/lib/constant';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { RewardReviewDialog } from './components/RewardReviewDialog';
 
 export const RewardRecordsPage = () => {
   const [params, setParams] = useState<RewardRecordsListParams['params']>({
@@ -37,7 +38,11 @@ export const RewardRecordsPage = () => {
   const [keyword, setKeyword] = useState('');
   const { t } = useTranslation();
   const { data: bonusDictType } = useDictType('sys_bonus_business_type');
-  const { data: data, isLoading: loading } = useRewardRecordsList({
+  const {
+    data: data,
+    isLoading: loading,
+    refetch,
+  } = useRewardRecordsList({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn: '',
@@ -213,8 +218,7 @@ export const RewardRecordsPage = () => {
       },
       fixed: 'right',
       size: 50,
-      cell: ({ row }) => {
-        console.log(row);
+      cell: () => {
         return (
           <div>
             <RrhDropdown
@@ -296,6 +300,7 @@ export const RewardRecordsPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <RewardReviewDialog onSuccess={refetch} />
           </div>
         </div>
         <DataTable

@@ -1229,7 +1229,12 @@
     "rewardType": "奖励类型",
     "rewardTarget": "奖励对象",
     "amount": "奖励金额",
-    "lockStatus": "奖励锁定"
+    "lockStatus": "奖励锁定",
+    "rewardAutoReviewConfig": "奖励自动审核配置",
+    "accountOpeningReward": "开户-奖励",
+    "depositRewardCredit": "入金奖励信用金",
+    "orderClosingReward": "订单平仓-奖励",
+    "tips": "通过下方来控制发放的奖励是否自动审批通过"
   },
   "messageManagement": {
     "title": "消息管理",

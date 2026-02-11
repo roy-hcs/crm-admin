@@ -95,3 +95,38 @@ export function useRewardRecordsList(params: RewardRecordsListParams) {
       apiFormPostCustom<RewardRecordsListRes>(`/system/marketing/rewardRecord/list`, params),
   });
 }
+
+/**
+ * 设置奖励自动审核配置
+ */
+export function useRewardRecordSetVerifyConfig() {
+  return useMutation({
+    mutationFn: (params: {
+      depositRewardChecked: string;
+      closePositionRewardChecked: string;
+      openAccountRewardChecked: string;
+    }) =>
+      apiPost(
+        `/system/marketing/rewardRecord/setVerifyConfig?depositRewardChecked=${params.depositRewardChecked}&closePositionRewardChecked=${params.closePositionRewardChecked}&openAccountRewardChecked=${params.openAccountRewardChecked}`,
+        {},
+      ),
+  });
+}
+
+/**
+ * 获取奖励自动审核配置
+ */
+export function useGetRewardRecordSetVerifyConfig() {
+  return useMutation({
+    mutationFn: () =>
+      apiGetCustom<{
+        code: number;
+        msg: string;
+        data: {
+          depositRewardChecked: string;
+          closePositionRewardChecked: string;
+          openAccountRewardChecked: string;
+        };
+      }>(`/system/marketing/rewardRecord/getVerifyConfig`),
+  });
+}

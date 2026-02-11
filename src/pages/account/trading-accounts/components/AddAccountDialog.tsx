@@ -30,6 +30,7 @@ import {
 import { MtServerItem } from '@/api/hooks/system';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
 
 type FormValues = {
   userId: string;
@@ -240,9 +241,12 @@ export const AddAccountDialog = ({
       };
       const res = await addAccountData(param);
       if (res.code === 0) {
+        toast.success(t('common.success'));
         form.reset();
         setOpen(false);
         onSuccess?.();
+      } else {
+        toast.error(res.msg);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
