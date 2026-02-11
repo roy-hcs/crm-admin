@@ -15,17 +15,20 @@ import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
-import { PointsHistoryForm } from './PointsHistoryForm';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { Ellipsis } from 'lucide-react';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { BasicParams } from '@/api/types';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { PointsHistoryForm } from './components/PointsHistoryForm';
+import { AddDialog } from './components/AddDialog';
 
 export const PointsHistoryPage = () => {
+  const searchParams = new URLSearchParams(window.location.search);
+  const showId = searchParams.get('showId');
   const { t } = useTranslation();
   const [params, setParams] = useState<PointsChangeListParams['params']>({
-    fuzzyName: '',
+    fuzzyName: showId || '',
     fuzzyEmail: '',
     timeStart: '',
     timeEnd: '',
@@ -41,9 +44,9 @@ export const PointsHistoryPage = () => {
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
   const [orderByColumn, setOrderByColumn] = useState('');
 
-  const { data: operTypeList } = useDictType('sys_points_business_type');
+  const { data: operationType } = useDictType('sys_points_business_type');
   // 把后端字典与本地常量合并为相同的 DictTypeItem 结构，避免修改全局常量
-  const mergedOperTypeList = (operTypeList || []).concat(
+  const operationTypeList = (operationType || []).concat(
     PointsOperTypeList.map(i => ({
       createBy: null,
       createTime: null,
@@ -65,7 +68,11 @@ export const PointsHistoryPage = () => {
     })),
   );
 
-  const { data: data, isLoading: loading } = usePointsChangeList({
+  const {
+    data: data,
+    isLoading: loading,
+    refetch,
+  } = usePointsChangeList({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn,
@@ -118,10 +125,10 @@ export const PointsHistoryPage = () => {
     },
     {
       id: 'businessType',
-      header: t('PointsHistory.businessType'),
+      header: t('table.triggerBusiness'),
       accessorFn: row => row.businessType,
       cell: ({ row }) => {
-        const type = mergedOperTypeList?.find(
+        const type = operationTypeList?.find(
           item => item.dictValue === String(row?.original?.businessType),
         );
         return <div>{type ? type.dictLabel : '-'}</div>;
@@ -255,7 +262,7 @@ export const PointsHistoryPage = () => {
                 reset={reset}
                 setParams={setParams}
                 setOtherParams={setOtherParams}
-                operTypeList={mergedOperTypeList}
+                operationTypeList={operationTypeList}
                 loading={loading}
                 params={params}
                 otherParams={otherParams}
@@ -268,6 +275,7 @@ export const PointsHistoryPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <AddDialog onSuccess={refetch} operationTypeList={operationTypeList} />
           </div>
         </div>
         <DataTable

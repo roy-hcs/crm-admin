@@ -97,6 +97,21 @@ export function usePointsChangeList(params: PointsChangeListParams) {
 }
 
 /**
+ * 新增积分
+ */
+export function useAddPoints() {
+  return useMutation({
+    mutationFn: (params: {
+      bonusPoints: string;
+      bonusType: string;
+      businessType: string;
+      remark: string;
+      userId: string;
+    }) => apiPost(`/system/points/change/add`, params),
+  });
+}
+
+/**
  * 获取积分余额
  */
 export function usePointsBalance(params: PointsBalanceParams) {

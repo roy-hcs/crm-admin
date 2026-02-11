@@ -13,9 +13,11 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useNavigate } from 'react-router-dom';
 
 export function PointsBalancePage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
@@ -138,20 +140,14 @@ export function PointsBalancePage() {
     {
       id: 'operate',
       header: t('common.Operation'),
-      cell: () => (
+      cell: ({ row }) => (
         <div>
           <RrhDropdown
             Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.View'), value: 'view' },
-              { label: t('common.Edit'), value: 'edit' },
-            ]}
-            callToAction={action => {
-              if (action === 'edit') {
-                // Handle edit action
-              } else if (action === 'view') {
-                // Handle view action
-              }
+            dropdownList={[{ label: t('common.View'), value: 'view' }]}
+            callToAction={() => {
+              // 跳转到积分变动记录页面，带上showId参数
+              navigate(`/points-mall/points-history?showId=${row?.original?.showId || ''}`);
             }}
           />
         </div>
