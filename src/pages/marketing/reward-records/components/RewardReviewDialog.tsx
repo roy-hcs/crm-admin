@@ -39,10 +39,17 @@ export const RewardReviewDialog = ({ onSuccess }: { onSuccess: () => void }) => 
       async function fetchConfig() {
         try {
           const res = await getConfig();
+          console.log(res, '/system/marketing/rewardRecord/rewardVerifyConfigs');
           if (res?.code === 0 && res?.data) {
-            form.setValue('depositRewardChecked', res?.data?.depositRewardChecked);
-            form.setValue('closePositionRewardChecked', res?.data?.closePositionRewardChecked);
-            form.setValue('openAccountRewardChecked', res?.data?.openAccountRewardChecked);
+            form.setValue('depositRewardChecked', String(res?.data?.depositRewardChecked || '0'));
+            form.setValue(
+              'closePositionRewardChecked',
+              String(res?.data?.closePositionRewardChecked || '0'),
+            );
+            form.setValue(
+              'openAccountRewardChecked',
+              String(res?.data?.openAccountRewardChecked || '0'),
+            );
           } else {
             form.reset({
               depositRewardChecked: '0',

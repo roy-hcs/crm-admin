@@ -127,6 +127,6 @@ export function useGetRewardRecordSetVerifyConfig() {
           closePositionRewardChecked: string;
           openAccountRewardChecked: string;
         };
-      }>(`/system/marketing/rewardRecord/getVerifyConfig`),
+      }>(`/system/marketing/rewardRecord/rewardVerifyConfigs`),
   });
 }
