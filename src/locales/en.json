@@ -217,7 +217,9 @@
     "next": "Next step",
     "selectAll": "Select all",
     "increase": "Increase",
-    "subtract": "deduct"
+    "subtract": "deduct",
+    "addField": "Add {{field}}",
+    "selectField": "Select {{field}}"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1099,7 +1101,13 @@
     "title": "customer relations"
   },
   "ProductGroup": {
-    "title": "Variety group settings"
+    "title": "Variety group settings",
+    "addProductGroup": "Add new variety group",
+    "deleteTips": "Are you sure you want to delete this category group?",
+    "editProductGroup": "Edit symbol group",
+    "searchTypeNamePlaceholder": "Enter the variety keyword query",
+    "selectTypeNameBelow": "Please select a variety below",
+    "selectTypeNameDesc": "If you do not choose to save directly, it will be deemed that all varieties are selected."
   },
   "RebateLevelSettings": {
     "title": "Rebate level settings"

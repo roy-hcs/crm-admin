@@ -1,7 +1,10 @@
 // Rebate module API hooks
-import { apiFormPostCustom } from '@/api/client';
-import { useQuery } from '@tanstack/react-query';
+import { apiFormPost, apiFormPostCustom } from '@/api/client';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
+  AddRebateBaseTypeParams,
+  EditRebateBaseTypeParams,
+  MtRebateBaseTypeRes,
   RebateBasePointParams,
   RebateBasePointRes,
   RebateBaseTypeParams,
@@ -52,6 +55,48 @@ export function useRebateBaseTypeList(params: RebateBaseTypeParams) {
   return useQuery({
     queryKey: ['getRebateBaseTypeList', params],
     queryFn: () => apiFormPostCustom<RebateBaseTypeRes>('/system/crmRebateBaseType/list', params),
+  });
+}
+/**
+ * 获取mt品种组列表
+ */
+export function useMtRebateBaseTypeList(serverId: string, { enabled }: { enabled?: boolean } = {}) {
+  return useQuery({
+    queryKey: ['getRebateBaseTypeList', serverId],
+    queryFn: () =>
+      apiFormPostCustom<MtRebateBaseTypeRes>(
+        `/system/crmRebateBaseType/mt/getAllSymbol?serverId=${serverId}`,
+        {},
+      ),
+    enabled,
+  });
+}
+/**
+ * 新增品种组
+ */
+export function useAddRebateBaseType() {
+  return useMutation({
+    mutationFn: (params: AddRebateBaseTypeParams) =>
+      apiFormPost('/system/crmRebateBaseType/add', params),
+  });
+}
+/**
+ * 编辑品种组
+ */
+export function useEditRebateBaseType() {
+  return useMutation({
+    mutationFn: (params: EditRebateBaseTypeParams) =>
+      apiFormPost('/system/crmRebateBaseType/edit', params),
+  });
+}
+
+/**
+ * 删除品种组
+ */
+export function useDeleteRebateBaseType() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost('/system/crmRebateBaseType/remove', params),
   });
 }
 
