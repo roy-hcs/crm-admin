@@ -236,7 +236,9 @@
     "detail": "{{field}} 详细",
     "exportFailed": "导出失败",
     "selectUser": "选择用户",
-    "modify": "修改 {{field}}"
+    "modify": "修改 {{field}}",
+    "addField": "新增 {{field}}",
+    "selectField": "选择 {{field}}"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -1248,7 +1250,13 @@
     "warn": "点值相同的品种请归在同一个点值组内，组内的品种会以相同的点值返佣。未设置点值的品种默认按0处理。如存在重复的品种点值，将以排序最靠前的点值计算返佣。"
   },
   "ProductGroup": {
-    "title": "品种组设置"
+    "title": "品种组设置",
+    "addProductGroup": "新增品种组",
+    "editProductGroup": "编辑品种组",
+    "selectTypeNameBelow": "请在下方选择品种",
+    "selectTypeNameDesc": "未选择直接保存则视为选中全部品种",
+    "searchTypeNamePlaceholder": "输入品种关键字查询",
+    "deleteTips": "确定删除该品种组?"
   },
   "RebateLevelSettings": {
     "title": "返佣层级设置"

@@ -52,11 +52,24 @@ export type RebateBaseTypeItem = BaseEntity & {
   accountId: string | null;
   typeName: string;
   typeGroupName: string;
-  serverType: number;
+  serverType: string;
   serverName: string;
   flag: boolean;
   serverId: string;
 };
+
+export type MtRebateBaseTypeRes = {
+  path: string;
+  symbols: string[];
+}[];
+
+export type AddRebateBaseTypeParams = {
+  typeGroupName: string;
+  serverType: string;
+  typeName: string;
+  serverId: string;
+};
+export type EditRebateBaseTypeParams = AddRebateBaseTypeParams & { id: string };
 
 export type RebateBaseTypeRes = BasicRes<RebateBaseTypeItem>;
 export type RebateBaseTypeParams = BasicParams & {
