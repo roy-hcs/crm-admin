@@ -80,12 +80,16 @@ export const SelectMtTypeGroup = ({
             variant="large"
             title={t('common.selectField', { field: t('table.typeGroup') })}
             open={open}
-            onOpenChange={setOpen}
+            onOpenChange={isOpen => {
+              if (!serverId) return;
+              setOpen(isOpen);
+            }}
             trigger={
               <div
                 className={cn(
                   'flex h-9 basis-9/12 items-center rounded-md border',
                   verticalLabel ? 'w-full' : '',
+                  !serverId && 'cursor-not-allowed opacity-50',
                 )}
               >
                 <Input
@@ -93,9 +97,15 @@ export const SelectMtTypeGroup = ({
                   type="text"
                   value={getSelectedSymbolsString() || defaultValue}
                   readOnly
+                  disabled={!serverId}
                   placeholder={t('common.pleaseSelect')}
                 />
-                <RrhButton variant="ghost" className="rounded-l-none" type="button">
+                <RrhButton
+                  variant="ghost"
+                  className="rounded-l-none"
+                  type="button"
+                  disabled={!serverId}
+                >
                   {t('common.select')}
                 </RrhButton>
               </div>

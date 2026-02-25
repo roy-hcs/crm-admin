@@ -502,7 +502,8 @@
     "emailAlreadyUsed": "当前邮箱已被使用",
     "phoneAlreadyUsed": "当前号码已被使用",
     "crmAccountPassword": "{{min}}-{{max}}位（数字+大写字母+小写字母+特殊字符组合）",
-    "integer": "{{field}}请输入正整数"
+    "integer": "{{field}}请输入正整数",
+    "greaterThanZero": "{{field}}必须大于0"
   },
   "tradingHistoryPage": {
     "tradingHistoryDetail": "交易历史详情",
@@ -1142,7 +1143,9 @@
     "other": "其他",
     "modifyPaymentOrderTips": "请在支付通道方核实订单的支付状态后再做修改。",
     "comments": "注释",
-    "bonusPoints": "积分数值"
+    "bonusPoints": "积分数值",
+    "pointValueCalculationFormula": "点值计算公式",
+    "pointValueCurrency": "清算货币"
   },
   "review": {
     "settings": {
@@ -1247,7 +1250,10 @@
   },
   "pipValueSettings": {
     "title": "点值设置",
-    "warn": "点值相同的品种请归在同一个点值组内，组内的品种会以相同的点值返佣。未设置点值的品种默认按0处理。如存在重复的品种点值，将以排序最靠前的点值计算返佣。"
+    "warn": "点值相同的品种请归在同一个点值组内，组内的品种会以相同的点值返佣。未设置点值的品种默认按0处理。如存在重复的品种点值，将以排序最靠前的点值计算返佣。",
+    "pointValuePlaceholder": "请输入点值，限正数",
+    "sortPlaceholder": "请输入数字，越大越靠前",
+    "deleteTips": "确定删除该点值?"
   },
   "ProductGroup": {
     "title": "品种组设置",

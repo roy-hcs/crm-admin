@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { useGetRebateBasePoint, RebateBasePointParams } from '@/api/hooks/rebate';
+import {
+  useGetRebateBasePoint,
+  RebateBasePointParams,
+  useDeleteRebateBasePoint,
+} from '@/api/hooks/rebate';
 import { PipValueForm } from './PipValueForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
@@ -17,6 +21,9 @@ import { serverMap } from '@/lib/constant';
 import { ToolTip } from '@/components/common/ToolTip';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { AddPipValueButton } from './components/AddPipValueButton';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
+import { EditPipValueDialog } from './components/EditPipValueDialog';
 
 export const PipValuePage = () => {
   const { t } = useTranslation();
@@ -31,8 +38,16 @@ export const PipValuePage = () => {
   });
 
   const { data: serverTypes } = useDictType('sys_mt_service_type');
+  const [currentItem, setCurrentItem] = useState<RebateBasePointItem | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const { mutateAsync: deleteRebateBasePoint } = useDeleteRebateBasePoint();
 
-  const { data: rebateBasePoint, isLoading: rebateBasePointLoading } = useGetRebateBasePoint({
+  const {
+    data: rebateBasePoint,
+    isLoading: rebateBasePointLoading,
+    refetch,
+  } = useGetRebateBasePoint({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn: '',
@@ -141,14 +156,24 @@ export const PipValuePage = () => {
       label: t('common.Operation'),
       fixed: 'right',
       size: 50,
-      cell: () => (
+      cell: ({ row }) => (
         <RrhDropdown
           Trigger={<Ellipsis className="size-4" />}
           dropdownList={[
             { label: t('common.Edit'), value: 'edit' },
             { label: t('common.delete'), value: 'delete' },
           ]}
-          callToAction={() => {}}
+          callToAction={action => {
+            setCurrentItem(row.original);
+            switch (action) {
+              case 'edit':
+                setEditDialogOpen(true);
+                break;
+              case 'delete':
+                setDeleteDialogOpen(true);
+                break;
+            }
+          }}
         />
       ),
     },
@@ -157,6 +182,10 @@ export const PipValuePage = () => {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('pip-value-reports-table', allColumns);
 
+  const onSuccess = () => {
+    reset();
+    refetch();
+  };
   return (
     <div>
       <PageInfo title={t('pipValueSettings.title')} desc={t('pipValueSettings.warn')} />
@@ -207,6 +236,7 @@ export const PipValuePage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <AddPipValueButton serverTypes={serverTypes || []} onSuccess={onSuccess} />
           </div>
         </div>
         <DataTable
@@ -220,6 +250,21 @@ export const PipValuePage = () => {
           loading={rebateBasePointLoading}
         />
       </TableContentWrapper>
+      <RrhDeleteAlert<{ ids: string }>
+        open={deleteDialogOpen}
+        setOpen={setDeleteDialogOpen}
+        onSuccess={onSuccess}
+        confirmFunction={deleteRebateBasePoint}
+        params={{ ids: currentItem?.id || '' }}
+        tipsText={t('pipValueSettings.deleteTips')}
+      />
+      <EditPipValueDialog
+        serverTypes={serverTypes || []}
+        onSuccess={onSuccess}
+        open={editDialogOpen}
+        setOpen={setEditDialogOpen}
+        productGroupItem={currentItem}
+      />
     </div>
   );
 };
