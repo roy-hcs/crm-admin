@@ -13,7 +13,7 @@ import { FormProvider } from '@/contexts/form';
 import { serverMap } from '@/lib/constant';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { SelectMtTypeGroup } from './SelectMtTypeGroup';
+import { SelectMtTypeGroup } from '../../../../components/common/SelectMtTypeGroup';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DictTypeItem } from '@/api/hooks/system/types';
@@ -32,7 +32,10 @@ export const TypeGroupForm = ({
 }) => {
   const { t } = useTranslation();
   const addTypeGroupSchema = z.object({
-    typeGroupName: z.string().min(1, t('rules.required', { field: t('table.typeGroup') })),
+    typeGroupName: z
+      .string()
+      .min(1, t('rules.required', { field: t('table.typeGroup') }))
+      .max(16, t('rules.limitLength', { field: 16 })),
     id: z.optional(z.string()),
     serverType: z.string().min(1, t('rules.required', { field: t('table.transactionPlatform') })),
     serverId: z.string().min(1, t('rules.required', { field: t('table.server') })),

@@ -8,6 +8,19 @@ export type RebateBasePointParams = BasicParams & {
   serverId?: string;
   pointValueType?: string;
 };
+export type AddRebateBasePointParams = {
+  pointValueName: string;
+  serverType: string;
+  serverId: string;
+  pointValueType: string;
+  rebateType: string;
+  pointValue: string;
+  pointValueLots?: string;
+  pointValueRules: string;
+  pointValueCurrency: string;
+  serialNumber?: string;
+};
+export type EditRebateBasePointParams = AddRebateBasePointParams & { id: string };
 
 export type RebateBasePointRes = BasicRes<RebateBasePointItem>;
 
@@ -19,7 +32,7 @@ export type RebateBasePointItem = BaseEntity & {
   pointValue: string;
   pointValueName: string;
   rebateType: string;
-  serverType: number;
+  serverType: string;
   serverName: string;
   serverId: string;
   pointValueType: number;

@@ -2,10 +2,11 @@ import { DictTypeItem } from '@/api/hooks/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { Plus } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import { TypeGroupForm } from './TypeGroupForm';
-export const AddProductGroupButton = ({
+import { PointValueForm } from './PointValueForm';
+import { useTranslation } from 'react-i18next';
+
+export const AddPipValueButton = ({
   serverTypes,
   onSuccess,
 }: {
@@ -19,7 +20,7 @@ export const AddProductGroupButton = ({
     <RrhDialog
       open={open}
       onOpenChange={setOpen}
-      title={t('ProductGroup.addProductGroup')}
+      title={t('common.addField', { field: t('table.pointValue') })}
       trigger={
         <RrhButton>
           <Plus />
@@ -28,7 +29,7 @@ export const AddProductGroupButton = ({
       }
       footerShow={false}
     >
-      <TypeGroupForm
+      <PointValueForm
         serverTypes={serverTypes}
         onSuccess={onSuccess}
         onCancel={() => setOpen(false)}

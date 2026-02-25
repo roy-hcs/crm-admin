@@ -2,7 +2,9 @@
 import { apiFormPost, apiFormPostCustom } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
+  AddRebateBasePointParams,
   AddRebateBaseTypeParams,
+  EditRebateBasePointParams,
   EditRebateBaseTypeParams,
   MtRebateBaseTypeRes,
   RebateBasePointParams,
@@ -31,6 +33,33 @@ export function useGetRebateBasePoint(params: RebateBasePointParams) {
     queryKey: ['getRebateBasePoint', params],
     queryFn: () =>
       apiFormPostCustom<RebateBasePointRes>('/system/crmRebateBasePointValue/list', params),
+  });
+}
+/**
+ * 新增点值
+ */
+export function useAddRebateBasePoint() {
+  return useMutation({
+    mutationFn: (params: AddRebateBasePointParams) =>
+      apiFormPost('/system/crmRebateBasePointValue/add', params),
+  });
+}
+/**
+ * 编辑点值
+ */
+export function useEditRebateBasePoint() {
+  return useMutation({
+    mutationFn: (params: EditRebateBasePointParams) =>
+      apiFormPost('/system/crmRebateBasePointValue/edit', params),
+  });
+}
+/**
+ * 删除点值
+ */
+export function useDeleteRebateBasePoint() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost('/system/crmRebateBasePointValue/remove', params),
   });
 }
 

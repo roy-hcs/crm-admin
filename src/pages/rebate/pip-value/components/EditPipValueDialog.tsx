@@ -1,37 +1,36 @@
 import { DictTypeItem } from '@/api/hooks/system';
-import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
-import { Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
-import { TypeGroupForm } from './TypeGroupForm';
-export const AddProductGroupButton = ({
+import { PointValueForm } from './PointValueForm';
+import { RebateBasePointItem } from '@/api/hooks/rebate';
+
+export const EditPipValueDialog = ({
   serverTypes,
   onSuccess,
+  open,
+  setOpen,
+  productGroupItem,
 }: {
   serverTypes: DictTypeItem[];
   onSuccess: () => void;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  productGroupItem: RebateBasePointItem | null;
 }) => {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
 
   return (
     <RrhDialog
       open={open}
       onOpenChange={setOpen}
-      title={t('ProductGroup.addProductGroup')}
-      trigger={
-        <RrhButton>
-          <Plus />
-          {t('common.add')}
-        </RrhButton>
-      }
+      title={t('common.modify', { field: t('table.pointValue') })}
       footerShow={false}
     >
-      <TypeGroupForm
+      <PointValueForm
         serverTypes={serverTypes}
         onSuccess={onSuccess}
         onCancel={() => setOpen(false)}
+        productGroupItem={productGroupItem}
       />
     </RrhDialog>
   );
