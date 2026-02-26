@@ -411,3 +411,13 @@ export function useGetCurrencies() {
       apiFormPostCustom<string[]>('/system/crmUserWallet/getCurrencies', params),
   });
 }
+
+/*
+ * 获取系统配置信息
+ */
+export function useGetSysConfig(key: string) {
+  return useQuery({
+    queryKey: ['GetSysConfig', key],
+    queryFn: () => apiGetCustom<number | string>(`/system/config/getConfig?key=${key}`),
+  });
+}

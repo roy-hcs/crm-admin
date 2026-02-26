@@ -358,7 +358,7 @@ export const PointValueForm = ({
             verticalLabel
             placeholder={t('pipValueSettings.sortPlaceholder')}
           />
-          <div className="border-border -mx-6 flex justify-end gap-4 border-t px-6 pt-6">
+          <div className="border-border -mx-6 flex justify-end gap-4 border-t px-6 pt-3 pb-3 md:pt-6 md:pb-0">
             <RrhButton type="button" variant="outline" disabled={isPending} onClick={onCancel}>
               {t('common.Cancel')}
             </RrhButton>

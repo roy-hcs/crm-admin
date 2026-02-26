@@ -114,3 +114,6 @@ export const tradingHistoryTypeMap: Record<number, string> = {
   10: 'tradingHistoryPage.dailyAgencyFee',
   11: 'tradingHistoryPage.monthlyAgencyFee',
 };
+
+export const REBATE_MODEL_SETTING = 'sys.rebate.base.setting';
+export const REBATE_LEVEL_SETTING = 'sys.rebate.level.model2.flat.leapfrog.setting';

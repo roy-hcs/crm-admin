@@ -238,7 +238,8 @@
     "selectUser": "选择用户",
     "modify": "修改 {{field}}",
     "addField": "新增 {{field}}",
-    "selectField": "选择 {{field}}"
+    "selectField": "选择 {{field}}",
+    "confirmToProceed": "确定进行操作？"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -503,7 +504,8 @@
     "phoneAlreadyUsed": "当前号码已被使用",
     "crmAccountPassword": "{{min}}-{{max}}位（数字+大写字母+小写字母+特殊字符组合）",
     "integer": "{{field}}请输入正整数",
-    "greaterThanZero": "{{field}}必须大于0"
+    "greaterThanZero": "{{field}}必须大于0",
+    "levelNameAlreadyUsed": "该层级名称已存在"
   },
   "tradingHistoryPage": {
     "tradingHistoryDetail": "交易历史详情",
@@ -1265,7 +1267,17 @@
     "deleteTips": "确定删除该品种组?"
   },
   "RebateLevelSettings": {
-    "title": "返佣层级设置"
+    "title": "返佣层级设置",
+    "levelPlaceholder": "请输入层级，当前可输入最高层级为14",
+    "rebateLevel": "返佣层级",
+    "levelSkippingSettings": "平级越级设置",
+    "settingOne": "不允许平级或越级",
+    "settingOneDesc": "下级的层级数字只能大于上级的层级数字",
+    "settingTwo": "允许平级",
+    "settingTwoDesc": "下级的层级数字只能大于或等于上级的层级数字",
+    "settingThree": "允许平级越级",
+    "settingThreeDesc": "下级的层级数字允许小于或等于或大于上级的层级数字",
+    "confirmWarning": "本次修改会清空现有的用户返佣层级和佣金设置，请谨慎操作"
   },
   "TradingRebateSettings": {
     "title": "交易返佣设置",
