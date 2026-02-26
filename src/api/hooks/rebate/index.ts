@@ -138,6 +138,52 @@ export function useRebateLevelList(params: RebateLevelParams) {
     queryFn: () => apiFormPostCustom<RebateLevelRes>('/system/crmRebateLevel/list', params),
   });
 }
+/**
+ * 返佣层级名称唯一性检查
+ */
+export function useGetUniqueName() {
+  return useMutation({
+    mutationFn: (params: { name: string }) =>
+      apiFormPostCustom<number>('/system/crmRebateLevel/getUniqueName', params),
+  });
+}
+
+/**
+ * 新增返佣层级
+ */
+export function useAddRebateLevel() {
+  return useMutation({
+    mutationFn: (params: { level: string; levelName: string }) =>
+      apiFormPost('/system/crmRebateLevel/add', params),
+  });
+}
+/**
+ * 编辑返佣层级
+ */
+export function useEditRebateLevel() {
+  return useMutation({
+    mutationFn: (params: { id: string; level: string; levelName: string }) =>
+      apiFormPost('/system/crmRebateLevel/edit', params),
+  });
+}
+/**
+ * 删除返佣层级
+ */
+export function useDeleteRebateLevel() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) => apiFormPost('/system/crmRebateLevel/remove', params),
+  });
+}
+
+/**
+ * 修改平越级设置
+ */
+export function useEditLevelSkippingSetting() {
+  return useMutation({
+    mutationFn: (params: { setting: string }) =>
+      apiFormPost('/system/crmRebateLevel/setRebatePlatSetting', params),
+  });
+}
 
 /**
  * 获取交易返佣设置

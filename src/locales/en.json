@@ -219,7 +219,8 @@
     "increase": "Increase",
     "subtract": "deduct",
     "addField": "Add {{field}}",
-    "selectField": "Select {{field}}"
+    "selectField": "Select {{field}}",
+    "confirmToProceed": "Are you sure you want to proceed?"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1112,7 +1113,17 @@
     "selectTypeNameDesc": "If you do not choose to save directly, it will be deemed that all varieties are selected."
   },
   "RebateLevelSettings": {
-    "title": "Rebate level settings"
+    "title": "Rebate level settings",
+    "confirmWarning": "This modification will clear the existing user rebate levels and commission settings, please operate with caution",
+    "levelPlaceholder": "Please enter the level. Currently, the highest level that can be entered is 14.",
+    "levelSkippingSettings": "Level skipping settings",
+    "rebateLevel": "Rebate level",
+    "settingOne": "Leveling or skipping is not allowed",
+    "settingOneDesc": "The subordinate level number can only be greater than the superior level number",
+    "settingThree": "Allow level skipping",
+    "settingThreeDesc": "The subordinate level number is allowed to be less than, equal to, or greater than the superior level number.",
+    "settingTwo": "Allow leveling",
+    "settingTwoDesc": "The subordinate level number can only be greater than or equal to the superior level number."
   },
   "TradingRebateSettings": {
     "title": "Trading rebate settings",
@@ -1309,6 +1320,7 @@
     "pwdTips": "If no password is added, the system will automatically create a login password for the account and send the login password via email.",
     "crmAccountPassword": "{{min}}-{{max}} digits (numbers, uppercase letters, lowercase letters, special character combinations)",
     "integer": "{{field}}Please enter a positive integer",
-    "greaterThanZero": "{{field}} must be greater than 0"
+    "greaterThanZero": "{{field}} must be greater than 0",
+    "levelNameAlreadyUsed": "The level name already exists"
   }
 }
