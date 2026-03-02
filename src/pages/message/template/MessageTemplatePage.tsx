@@ -63,13 +63,12 @@ export function MessageTemplatePage() {
               { label: t('common.delete'), value: 'delete' },
             ]}
             callToAction={action => {
+              setDetail(row.original);
               switch (action) {
                 case 'edit':
-                  setDetail(row.original);
                   setEditOpen(true);
                   break;
                 case 'delete':
-                  setDetail(row.original);
                   setDeleteAlert(true);
                   break;
               }

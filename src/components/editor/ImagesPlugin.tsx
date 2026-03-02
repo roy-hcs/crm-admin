@@ -39,7 +39,7 @@ export function ImagesPlugin({ onUploadImage }: Props) {
   return (
     <>
       <button type="button" onClick={handleChoose}>
-        插入图片
+        upload image
       </button>
       <input
         ref={inputRef}

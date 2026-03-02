@@ -136,3 +136,25 @@ export type MsgDetail = {
   allTags: string[] | null;
   msgTagSelected: string[] | null;
 };
+
+export type AddMsgParams = {
+  accountNames: string;
+  accounts?: string;
+  expire?: string | null;
+  isNow: string;
+  language: string[];
+  msgLangs: {
+    content: string;
+    language: string;
+    title: string;
+  }[];
+  primaryLanguage: string;
+  receiveType: string;
+  roles?: string[] | null;
+  sendEmail: string[];
+  sendEmails: string[];
+  sendTime: string;
+  tags?: string[] | null;
+  type: string;
+  userIds?: string[] | null;
+};

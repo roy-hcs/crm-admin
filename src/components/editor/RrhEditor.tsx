@@ -25,6 +25,7 @@ import { $generateNodesFromDOM, $generateHtmlFromNodes } from '@lexical/html';
 import { ImageNode } from './ImageNode';
 import { ImagesPlugin } from './ImagesPlugin';
 import { ToolbarPlugin } from './ToolbarPlugin';
+import { useTranslation } from 'react-i18next';
 
 type RrhEditorProps = {
   placeholder?: string;
@@ -38,6 +39,7 @@ const theme = {
 };
 
 export function RrhEditor({ placeholder, value, onChange, onUploadImage }: RrhEditorProps) {
+  const { t } = useTranslation();
   const initialConfig = {
     namespace: 'MyEditor',
     theme,
@@ -92,7 +94,7 @@ export function RrhEditor({ placeholder, value, onChange, onUploadImage }: RrhEd
     });
   };
 
-  const placeholderText = placeholder ?? '请输入内容…';
+  const placeholderText = placeholder ?? t('common.pleaseInput', { field: '...' });
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
@@ -100,7 +102,7 @@ export function RrhEditor({ placeholder, value, onChange, onUploadImage }: RrhEd
         <ToolbarPlugin />
         <div className="relative">
           <RichTextPlugin
-            contentEditable={<ContentEditable className="min-h-[120px] outline-none" />}
+            contentEditable={<ContentEditable className="min-h-30 outline-none" />}
             placeholder={
               <div className="pointer-events-none absolute top-2 left-3 text-gray-400">
                 {placeholderText}

@@ -1,7 +1,8 @@
 // Message module API hooks
-import { apiFormPostCustom, apiGetCustom, apiPost } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGet, apiPost } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
+  AddMsgParams,
   GetMsgListParams,
   GetMsgListRes,
   MsgDetail,
@@ -27,14 +28,7 @@ export function useGetMsgList(params: GetMsgListParams) {
 export function useGetEmailConfig() {
   return useQuery({
     queryKey: ['EmailConfig'],
-    queryFn: () =>
-      apiGetCustom<{
-        code: number;
-        data: Array<{
-          id: string;
-          email: string;
-        }>;
-      }>('/system/msg/getEmailConfig'),
+    queryFn: () => apiGet<Array<{ id: string; email: string }>>('/system/msg/getEmailConfig'),
   });
 }
 
@@ -95,27 +89,7 @@ export function useRemoveMsgTemplate() {
  */
 export function useMsgAdd() {
   return useMutation({
-    mutationFn: (params: {
-      accountNames: string;
-      accounts?: string;
-      expire?: string | null;
-      isNow: string;
-      language: string[];
-      msgLangs: {
-        content: string;
-        language: string;
-        title: string;
-      }[];
-      primaryLanguage: string;
-      receiveType: string;
-      roles?: string[] | null;
-      sendEmail: string[];
-      sendEmails: string[];
-      sendTime: string;
-      tags?: string[] | null;
-      type: string;
-      userIds?: string[] | null;
-    }) => apiPost('/system/msg/add', params),
+    mutationFn: (params: AddMsgParams) => apiPost('/system/msg/add', params),
   });
 }
 /**
@@ -123,28 +97,7 @@ export function useMsgAdd() {
  */
 export function useMsgEdit() {
   return useMutation({
-    mutationFn: (params: {
-      id: string;
-      accountNames: string;
-      accounts?: string;
-      expire?: string | null;
-      isNow: string;
-      language: string[];
-      msgLangs: {
-        content: string;
-        language: string;
-        title: string;
-      }[];
-      primaryLanguage: string;
-      receiveType: string;
-      roles?: string[] | null;
-      sendEmail: string[];
-      sendEmails: string[];
-      sendTime: string;
-      tags?: string[] | null;
-      type: string;
-      userIds?: string[] | null;
-    }) => apiPost('/system/msg/edit', params),
+    mutationFn: (params: AddMsgParams & { id: string }) => apiPost('/system/msg/edit', params),
   });
 }
 /**
@@ -152,11 +105,7 @@ export function useMsgEdit() {
  */
 export function useMsgDetail() {
   return useMutation({
-    mutationFn: (id: string) =>
-      apiGetCustom<{
-        code: number;
-        data: MsgDetail;
-      }>(`/system/msg/detail/${id}?number=1`),
+    mutationFn: (id: string) => apiGet<MsgDetail>(`/system/msg/detail/${id}?number=1`),
   });
 }
 
@@ -165,11 +114,6 @@ export function useMsgDetail() {
  */
 export function useRemoveMsg() {
   return useMutation({
-    mutationFn: (params: { ids: string }) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('system/msg/remove', params),
+    mutationFn: (params: { ids: string }) => apiFormPost('system/msg/remove', params),
   });
 }

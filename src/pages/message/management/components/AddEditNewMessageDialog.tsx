@@ -296,22 +296,6 @@ export const AddEditNewMessageDialog = ({
     setStep('one');
   };
 
-  function confirmTextFun() {
-    if (step === 'one') {
-      return t('common.next');
-    } else {
-      return t('common.Confirm');
-    }
-  }
-
-  function cancelTextFun() {
-    if (step === 'one') {
-      return t('common.Cancel');
-    } else {
-      return t('common.previous');
-    }
-  }
-
   useEffect(() => {
     // 编辑模式 初始数据
     if (mode !== 'edit' || !id) return;
@@ -388,8 +372,8 @@ export const AddEditNewMessageDialog = ({
       title={mode === 'add' ? t('messageManagement.addMsg') : t('messageManagement.resend')}
       isConfirmDisabled={isSubmitting}
       open={open}
-      cancelText={cancelTextFun()}
-      confirmText={confirmTextFun()}
+      cancelText={step === 'one' ? t('common.Cancel') : t('common.previous')}
+      confirmText={step === 'one' ? t('common.next') : t('common.Confirm')}
       onOpenChange={onClose}
       onCancel={onCancel}
       onConfirm={onConfirm}

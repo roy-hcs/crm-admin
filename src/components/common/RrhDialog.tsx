@@ -154,14 +154,22 @@ export const RrhDialog: React.FC<DialogProps> = ({
                 variant === 'small' ? '' : 'border-t',
               )}
             >
-              {/* <DialogClose> */}
-              <div
-                className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-[#1E1E1E]"
-                onClick={handleCancel}
-              >
-                {cancelText || t('common.Cancel')}
-              </div>
-              {/* </DialogClose> */}
+              {/* 防止非受控模式下 点击取消 无法关闭 */}
+              {onCancel ? (
+                <div
+                  className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-[#1E1E1E]"
+                  onClick={handleCancel}
+                >
+                  {cancelText || t('common.Cancel')}
+                </div>
+              ) : (
+                <DialogClose>
+                  <div className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-[#1E1E1E]">
+                    {cancelText || t('common.Cancel')}
+                  </div>
+                </DialogClose>
+              )}
+
               {confirmShow &&
                 (type === 'view' ? (
                   <DialogClose>
@@ -234,14 +242,22 @@ export const RrhDialog: React.FC<DialogProps> = ({
         <div className="overflow-y-auto px-6">{children}</div>
         {footerShow && (
           <DrawerFooter className="flex flex-row justify-end gap-2 px-6">
-            {/* <DrawerClose> */}
-            <div
-              className="w-full cursor-pointer rounded-sm border bg-white px-4 py-2 text-center text-[#1E1E1E]"
-              onClick={handleCancel}
-            >
-              {cancelText || t('common.Cancel')}
-            </div>
-            {/* </DrawerClose> */}
+            {/* 防止非受控模式下 点击取消 无法关闭 */}
+            {onCancel ? (
+              <div
+                className="w-full cursor-pointer rounded-sm border bg-white px-4 py-2 text-center text-[#1E1E1E]"
+                onClick={handleCancel}
+              >
+                {cancelText || t('common.Cancel')}
+              </div>
+            ) : (
+              <DrawerClose>
+                <div className="w-full cursor-pointer rounded-sm border bg-white px-4 py-2 text-center text-[#1E1E1E]">
+                  {cancelText || t('common.Cancel')}
+                </div>
+              </DrawerClose>
+            )}
+
             {confirmShow &&
               (type === 'view' ? (
                 <DrawerClose>

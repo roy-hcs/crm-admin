@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import {
@@ -195,6 +195,34 @@ export function MessageManagementPage() {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('message-management-table', allColumns);
 
+  const languageOptions = useMemo(
+    () =>
+      languageList?.map(i => ({
+        label: i.dictLabel,
+        value: i.dictValue,
+      })) || [],
+    [languageList],
+  );
+
+  const emailOptions = useMemo(
+    () =>
+      emailList?.data?.map(i => ({
+        label: i.email,
+        value: i.id,
+      })) || [],
+    [emailList],
+  );
+
+  const msgTemplateOptions = useMemo(
+    () =>
+      msgTemplateList?.rows?.map(i => ({
+        label: i.title || '',
+        value: i.id || '',
+        content: i.content || '',
+      })) || [],
+    [msgTemplateList?.rows],
+  );
+
   return (
     <div>
       <PageInfo title={t('messageManagement.title')} />
@@ -250,25 +278,9 @@ export function MessageManagementPage() {
             <AddEditNewMessageDialog
               mode="add"
               onSuccess={refetch}
-              languageOptions={
-                languageList?.map(i => ({
-                  label: i.dictLabel,
-                  value: i.dictValue,
-                })) || []
-              }
-              emailOptions={
-                emailList?.data?.map(i => ({
-                  label: i.email,
-                  value: i.id,
-                })) || []
-              }
-              msgTemplateOptions={
-                msgTemplateList?.rows?.map(i => ({
-                  label: i.title || '',
-                  value: i.id || '',
-                  content: i.content || '',
-                })) || []
-              }
+              languageOptions={languageOptions}
+              emailOptions={emailOptions}
+              msgTemplateOptions={msgTemplateOptions}
             />
             <RrhButton
               type="button"
@@ -300,25 +312,9 @@ export function MessageManagementPage() {
           }}
           id={id}
           onSuccess={refetch}
-          languageOptions={
-            languageList?.map(i => ({
-              label: i.dictLabel,
-              value: i.dictValue,
-            })) || []
-          }
-          emailOptions={
-            emailList?.data?.map(i => ({
-              label: i.email,
-              value: i.id,
-            })) || []
-          }
-          msgTemplateOptions={
-            msgTemplateList?.rows?.map(i => ({
-              label: i.title || '',
-              value: i.id || '',
-              content: i.content || '',
-            })) || []
-          }
+          languageOptions={languageOptions}
+          emailOptions={emailOptions}
+          msgTemplateOptions={msgTemplateOptions}
         />
         <RrhDeleteAlert<{
           ids: string;
