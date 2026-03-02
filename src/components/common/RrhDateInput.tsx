@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { Calendar as CalenderIcon } from 'lucide-react';
 import { Calendar } from '../ui/calendar';
 import { Input } from '../ui/input';
+import { useTranslation } from 'react-i18next';
 
 export const RrhDateInput = ({
   name,
@@ -27,6 +28,7 @@ export const RrhDateInput = ({
   const displayFormat = showTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd';
 
   const timeString = date ? format(date, 'HH:mm:ss') : '';
+  const { t } = useTranslation();
 
   const handleDateSelect = (selectedDate?: Date) => {
     if (!onChange) return;
@@ -103,7 +105,9 @@ export const RrhDateInput = ({
           />
           {showTime && (
             <div className="mt-2 flex items-center gap-2">
-              <span className="text-muted-foreground text-sm whitespace-nowrap">时间</span>
+              <span className="text-muted-foreground text-sm whitespace-nowrap">
+                {t('table.time')}
+              </span>
               <Input
                 type="time"
                 step={1}
