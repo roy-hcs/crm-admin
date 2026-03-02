@@ -95,7 +95,7 @@ export const RrhDateInput = ({
       <PopoverContent className="bg-background w-auto p-0" align="start">
         <div className="flex flex-col gap-2 p-2">
           <Calendar
-            required={true}
+            required
             mode="single"
             selected={date}
             onSelect={handleDateSelect}
@@ -110,7 +110,7 @@ export const RrhDateInput = ({
                 value={timeString}
                 onChange={e => handleTimeChange(e.target.value)}
                 disabled={disabled}
-                className="h-8 w-[140px]"
+                className="h-8 w-35"
               />
             </div>
           )}

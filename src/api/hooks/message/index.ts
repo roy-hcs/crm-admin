@@ -48,11 +48,7 @@ export function useMsgTemplateList(params: MsgTemplateListParams) {
 export function useAddMsgTemplate() {
   return useMutation({
     mutationFn: (params: { title: string; content: string }) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('/system/msgTemplate/add', params),
+      apiFormPost('/system/msgTemplate/add', params),
   });
 }
 
@@ -62,11 +58,7 @@ export function useAddMsgTemplate() {
 export function useEditMsgTemplate() {
   return useMutation({
     mutationFn: (params: { id: string; title: string; content: string }) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('/system/msgTemplate/edit', params),
+      apiFormPost('/system/msgTemplate/edit', params),
   });
 }
 
@@ -75,12 +67,7 @@ export function useEditMsgTemplate() {
  */
 export function useRemoveMsgTemplate() {
   return useMutation({
-    mutationFn: (params: { ids: string }) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('/system/msgTemplate/remove', params),
+    mutationFn: (params: { ids: string }) => apiFormPost('/system/msgTemplate/remove', params),
   });
 }
 
