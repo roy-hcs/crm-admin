@@ -1,7 +1,12 @@
 // Rebate module API hooks
-import { apiFormPostCustom } from '@/api/client';
-import { useQuery } from '@tanstack/react-query';
+import { apiFormPost, apiFormPostCustom } from '@/api/client';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
+  AddRebateBasePointParams,
+  AddRebateBaseTypeParams,
+  EditRebateBasePointParams,
+  EditRebateBaseTypeParams,
+  MtRebateBaseTypeRes,
   RebateBasePointParams,
   RebateBasePointRes,
   RebateBaseTypeParams,
@@ -30,6 +35,33 @@ export function useGetRebateBasePoint(params: RebateBasePointParams) {
       apiFormPostCustom<RebateBasePointRes>('/system/crmRebateBasePointValue/list', params),
   });
 }
+/**
+ * 新增点值
+ */
+export function useAddRebateBasePoint() {
+  return useMutation({
+    mutationFn: (params: AddRebateBasePointParams) =>
+      apiFormPost('/system/crmRebateBasePointValue/add', params),
+  });
+}
+/**
+ * 编辑点值
+ */
+export function useEditRebateBasePoint() {
+  return useMutation({
+    mutationFn: (params: EditRebateBasePointParams) =>
+      apiFormPost('/system/crmRebateBasePointValue/edit', params),
+  });
+}
+/**
+ * 删除点值
+ */
+export function useDeleteRebateBasePoint() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost('/system/crmRebateBasePointValue/remove', params),
+  });
+}
 
 /**
  * 获取服务器列表（用于选择）
@@ -54,6 +86,48 @@ export function useRebateBaseTypeList(params: RebateBaseTypeParams) {
     queryFn: () => apiFormPostCustom<RebateBaseTypeRes>('/system/crmRebateBaseType/list', params),
   });
 }
+/**
+ * 获取mt品种组列表
+ */
+export function useMtRebateBaseTypeList(serverId: string, { enabled }: { enabled?: boolean } = {}) {
+  return useQuery({
+    queryKey: ['getRebateBaseTypeList', serverId],
+    queryFn: () =>
+      apiFormPostCustom<MtRebateBaseTypeRes>(
+        `/system/crmRebateBaseType/mt/getAllSymbol?serverId=${serverId}`,
+        {},
+      ),
+    enabled,
+  });
+}
+/**
+ * 新增品种组
+ */
+export function useAddRebateBaseType() {
+  return useMutation({
+    mutationFn: (params: AddRebateBaseTypeParams) =>
+      apiFormPost('/system/crmRebateBaseType/add', params),
+  });
+}
+/**
+ * 编辑品种组
+ */
+export function useEditRebateBaseType() {
+  return useMutation({
+    mutationFn: (params: EditRebateBaseTypeParams) =>
+      apiFormPost('/system/crmRebateBaseType/edit', params),
+  });
+}
+
+/**
+ * 删除品种组
+ */
+export function useDeleteRebateBaseType() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost('/system/crmRebateBaseType/remove', params),
+  });
+}
 
 /**
  * 获取返佣层级列表
@@ -62,6 +136,52 @@ export function useRebateLevelList(params: RebateLevelParams) {
   return useQuery({
     queryKey: ['getRebateLevelList', params],
     queryFn: () => apiFormPostCustom<RebateLevelRes>('/system/crmRebateLevel/list', params),
+  });
+}
+/**
+ * 返佣层级名称唯一性检查
+ */
+export function useGetUniqueName() {
+  return useMutation({
+    mutationFn: (params: { name: string }) =>
+      apiFormPostCustom<number>('/system/crmRebateLevel/getUniqueName', params),
+  });
+}
+
+/**
+ * 新增返佣层级
+ */
+export function useAddRebateLevel() {
+  return useMutation({
+    mutationFn: (params: { level: string; levelName: string }) =>
+      apiFormPost('/system/crmRebateLevel/add', params),
+  });
+}
+/**
+ * 编辑返佣层级
+ */
+export function useEditRebateLevel() {
+  return useMutation({
+    mutationFn: (params: { id: string; level: string; levelName: string }) =>
+      apiFormPost('/system/crmRebateLevel/edit', params),
+  });
+}
+/**
+ * 删除返佣层级
+ */
+export function useDeleteRebateLevel() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) => apiFormPost('/system/crmRebateLevel/remove', params),
+  });
+}
+
+/**
+ * 修改平越级设置
+ */
+export function useEditLevelSkippingSetting() {
+  return useMutation({
+    mutationFn: (params: { setting: string }) =>
+      apiFormPost('/system/crmRebateLevel/setRebatePlatSetting', params),
   });
 }
 

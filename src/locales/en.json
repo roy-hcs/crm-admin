@@ -218,7 +218,10 @@
     "selectAll": "Select all",
     "increase": "Increase",
     "subtract": "deduct",
-    "previous": "Previous step"
+    "previous": "Previous step",
+    "addField": "Add {{field}}",
+    "selectField": "Select {{field}}",
+    "confirmToProceed": "Are you sure you want to proceed?"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -685,7 +688,9 @@
     "comments": "Comment",
     "modifyPaymentOrderTips": "Please verify the payment status of the order at the payment channel before making any changes.",
     "bonusPoints": "Points value",
-    "content": "content"
+    "content": "content",
+    "pointValueCalculationFormula": "Point value calculation formula",
+    "pointValueCurrency": "liquidation currency"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1123,10 +1128,26 @@
     "title": "customer relations"
   },
   "ProductGroup": {
-    "title": "Variety group settings"
+    "title": "Variety group settings",
+    "addProductGroup": "Add new variety group",
+    "deleteTips": "Are you sure you want to delete this category group?",
+    "editProductGroup": "Edit symbol group",
+    "searchTypeNamePlaceholder": "Enter the variety keyword query",
+    "selectTypeNameBelow": "Please select a variety below",
+    "selectTypeNameDesc": "If you do not choose to save directly, it will be deemed that all varieties are selected."
   },
   "RebateLevelSettings": {
-    "title": "Rebate level settings"
+    "title": "Rebate level settings",
+    "confirmWarning": "This modification will clear the existing user rebate levels and commission settings, please operate with caution",
+    "levelPlaceholder": "Please enter the level. Currently, the highest level that can be entered is 14.",
+    "levelSkippingSettings": "Level skipping settings",
+    "rebateLevel": "Rebate level",
+    "settingOne": "Leveling or skipping is not allowed",
+    "settingOneDesc": "The subordinate level number can only be greater than the superior level number",
+    "settingThree": "Allow level skipping",
+    "settingThreeDesc": "The subordinate level number is allowed to be less than, equal to, or greater than the superior level number.",
+    "settingTwo": "Allow leveling",
+    "settingTwoDesc": "The subordinate level number can only be greater than or equal to the superior level number."
   },
   "TradingRebateSettings": {
     "title": "Trading rebate settings",
@@ -1145,7 +1166,10 @@
   },
   "pipValueSettings": {
     "title": "Point value settings",
-    "warn": "Products with the same point value should be placed in the same point value group. The products in the group will receive commissions with the same point value. \nVarieties with no point value set are treated as 0 by default. \nIf there are duplicate product point values, the rebate will be calculated based on the highest sorted point value."
+    "warn": "Products with the same point value should be placed in the same point value group. The products in the group will receive commissions with the same point value. \nVarieties with no point value set are treated as 0 by default. \nIf there are duplicate product point values, the rebate will be calculated based on the highest sorted point value.",
+    "deleteTips": "Are you sure you want to delete this point value?",
+    "pointValuePlaceholder": "Please enter a point value, positive numbers only",
+    "sortPlaceholder": "Please enter a number, the bigger the number, the higher it is"
   },
   "ticketList": {
     "belongUser": "Belong to user",
@@ -1325,6 +1349,9 @@
     "add": "Add message template",
     "deleteMsg": "Are you sure you want to delete this message template?",
     "edit": "Modify message template",
-    "title": "Message template"
+    "title": "Message template",
+    "integer": "{{field}}Please enter a positive integer",
+    "greaterThanZero": "{{field}} must be greater than 0",
+    "levelNameAlreadyUsed": "The level name already exists"
   }
 }

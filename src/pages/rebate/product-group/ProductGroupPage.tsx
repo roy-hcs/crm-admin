@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { RebateBaseTypeParams, useRebateBaseTypeList } from '@/api/hooks/rebate';
+import {
+  RebateBaseTypeParams,
+  useDeleteRebateBaseType,
+  useRebateBaseTypeList,
+} from '@/api/hooks/rebate';
 import { ProductGroupForm } from './ProductGroupForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
@@ -17,6 +21,9 @@ import { serverMap } from '@/lib/constant';
 import { ToolTip } from '@/components/common/ToolTip';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { AddProductGroupButton } from './components/AddProductGroupButton';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
+import { EditProductGroupDialog } from './components/EditProductGroupDialog';
 
 export const ProductGroupPage = () => {
   const { t } = useTranslation();
@@ -30,8 +37,15 @@ export const ProductGroupPage = () => {
   });
 
   const { data: serverTypes } = useDictType('sys_mt_service_type');
+  const [currentItem, setCurrentItem] = useState<RebateBaseTypeItem | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
 
-  const { data: rebateBasePoint, isLoading: rebateBasePointLoading } = useRebateBaseTypeList({
+  const {
+    data: rebateBasePoint,
+    isLoading: rebateBasePointLoading,
+    refetch,
+  } = useRebateBaseTypeList({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn: '',
@@ -84,7 +98,9 @@ export const ProductGroupPage = () => {
         return exceedLength ? (
           <ToolTip
             maxWidth="800px"
-            content={<div className="break-all">{row.original.typeName}</div>}
+            content={
+              <div className="max-h-[50vh] overflow-y-auto break-all">{row.original.typeName}</div>
+            }
           >
             <div>{content}</div>
           </ToolTip>
@@ -99,14 +115,24 @@ export const ProductGroupPage = () => {
       label: t('common.Operation'),
       fixed: 'right',
       size: 50,
-      cell: () => (
+      cell: ({ row }) => (
         <RrhDropdown
           Trigger={<Ellipsis className="size-4" />}
           dropdownList={[
             { label: t('common.Edit'), value: 'edit' },
             { label: t('common.delete'), value: 'delete' },
           ]}
-          callToAction={() => {}}
+          callToAction={action => {
+            setCurrentItem(row.original);
+            switch (action) {
+              case 'edit':
+                setEditDialogOpen(true);
+                break;
+              case 'delete':
+                setDeleteDialogOpen(true);
+                break;
+            }
+          }}
         />
       ),
     },
@@ -115,6 +141,11 @@ export const ProductGroupPage = () => {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('product-group-reports-table', allColumns);
 
+  const { mutateAsync: deleteRebateBaseType } = useDeleteRebateBaseType();
+  const onSuccess = () => {
+    reset();
+    refetch();
+  };
   return (
     <div>
       <PageInfo title={t('ProductGroup.title')} />
@@ -165,6 +196,7 @@ export const ProductGroupPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <AddProductGroupButton serverTypes={serverTypes || []} onSuccess={onSuccess} />
           </div>
         </div>
         <DataTable
@@ -178,6 +210,21 @@ export const ProductGroupPage = () => {
           loading={rebateBasePointLoading}
         />
       </TableContentWrapper>
+      <RrhDeleteAlert<{ ids: string }>
+        open={deleteDialogOpen}
+        setOpen={setDeleteDialogOpen}
+        onSuccess={onSuccess}
+        confirmFunction={deleteRebateBaseType}
+        params={{ ids: currentItem?.id || '' }}
+        tipsText={t('ProductGroup.deleteTips')}
+      />
+      <EditProductGroupDialog
+        serverTypes={serverTypes || []}
+        onSuccess={onSuccess}
+        open={editDialogOpen}
+        setOpen={setEditDialogOpen}
+        productGroupItem={currentItem}
+      />
     </div>
   );
 };

@@ -8,6 +8,7 @@ export const RrhRadioGroup: FC<{
   radioItems: {
     value: string;
     label: string;
+    desc?: string;
   }[];
   radioItemClassName?: string;
   labelClassName?: string;
@@ -32,11 +33,18 @@ export const RrhRadioGroup: FC<{
       onValueChange={onValueChange}
     >
       {radioItems.map(item => (
-        <div className={cn('flex items-center gap-3', radioItemClassName)} key={item.value}>
-          <RadioGroupItem className="size-4 [&_svg]:h-2" value={item.value} id={item.value} />
-          <Label className={cn('text-sm', labelClassName)} htmlFor={item.value}>
-            {item.label}
-          </Label>
+        <div className={cn('flex gap-3', radioItemClassName)} key={item.value}>
+          <RadioGroupItem
+            className="mt-0.5 size-4 [&_svg]:h-2"
+            value={item.value}
+            id={item.value}
+          />
+          <div>
+            <Label className={cn('text-sm', labelClassName)} htmlFor={item.value}>
+              {item.label}
+            </Label>
+            {item.desc && <p className="text-muted-foreground text-xs">{item.desc}</p>}
+          </div>
         </div>
       ))}
     </RadioGroup>

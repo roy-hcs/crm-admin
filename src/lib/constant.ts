@@ -1,9 +1,9 @@
-export const serverMap: Record<number, string> = {
-  1: 'MT5',
-  2: 'MT4',
-  3: 'Sirix',
-  4: 'Fortex',
-  5: 'XOH',
+export const serverMap: Record<string, string> = {
+  '1': 'MT5',
+  '2': 'MT4',
+  '3': 'Sirix',
+  '4': 'Fortex',
+  '5': 'XOH',
 };
 
 export const transactionTypeMap: Record<number, string> = {
@@ -114,3 +114,6 @@ export const tradingHistoryTypeMap: Record<number, string> = {
   10: 'tradingHistoryPage.dailyAgencyFee',
   11: 'tradingHistoryPage.monthlyAgencyFee',
 };
+
+export const REBATE_MODEL_SETTING = 'sys.rebate.base.setting';
+export const REBATE_LEVEL_SETTING = 'sys.rebate.level.model2.flat.leapfrog.setting';
