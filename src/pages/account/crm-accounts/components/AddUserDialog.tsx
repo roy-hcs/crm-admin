@@ -264,7 +264,7 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
               name="preferenceLanguage"
               label={`${t('rules.preferenceLanguage')}`}
               verticalLabel
-              placeholder={`${t('common.pleaseSelect')}`}
+              placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={(languageList || []).map(i => ({
                 label: i.dictLabel,
@@ -275,7 +275,7 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
               name="accountType"
               label={`${t('CRMAccountPage.CRMAccountType')}`}
               verticalLabel
-              placeholder={`${t('common.pleaseSelect')}`}
+              placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
             />
@@ -283,7 +283,7 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
               name="roleId"
               label={`${t('CRMAccountPage.Role')}`}
               verticalLabel
-              placeholder={`${t('common.pleaseSelect')}`}
+              placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={roleOptions.map(i => ({ label: t(i.label), value: i.value }))}
             />

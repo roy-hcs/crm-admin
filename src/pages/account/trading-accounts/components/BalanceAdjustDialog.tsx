@@ -205,7 +205,7 @@ export const BalanceAdjustDialog = ({
                 name="opType"
                 label={t('table.operationType')}
                 verticalLabel
-                placeholder={`${t('common.pleaseSelect')}`}
+                placeholder={t('common.pleaseSelect')}
                 showRowValue={false}
                 options={typeOptions}
                 loading={operationTypeLoading}

@@ -12,7 +12,7 @@ export const RrhSwitchGroup: FC<{
   onValueChange?: (value: string) => void;
 }> = ({ value, switchItems, switchItemClassName, onValueChange }) => {
   return (
-    <div className="flex gap-4">
+    <div className="flex flex-wrap gap-4">
       {switchItems.map(i => (
         <button
           className={cn(

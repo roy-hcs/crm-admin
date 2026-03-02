@@ -310,7 +310,7 @@ export const AddAccountDialog = ({
               name="serviceType"
               label={t('tradingAccountTransactions.serverType')}
               verticalLabel
-              placeholder={`${t('common.pleaseSelect')}`}
+              placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={serverTypeList}
             />
@@ -319,7 +319,7 @@ export const AddAccountDialog = ({
               name="server"
               label={t('table.server')}
               verticalLabel
-              placeholder={`${t('common.pleaseSelect')}`}
+              placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={serverList}
             />
@@ -328,7 +328,7 @@ export const AddAccountDialog = ({
               name="serverGroup"
               label={t('table.groups')}
               verticalLabel
-              placeholder={`${t('common.pleaseSelect')}`}
+              placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={groupList}
               loading={groupLoading}
@@ -378,7 +378,7 @@ export const AddAccountDialog = ({
               name="lever"
               label={t('common.level')}
               verticalLabel
-              placeholder={`${t('common.pleaseSelect')}`}
+              placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={leverList}
             />
@@ -387,7 +387,7 @@ export const AddAccountDialog = ({
               name="accountGroupId"
               label={t('table.accountGroup')}
               verticalLabel
-              placeholder={`${t('common.pleaseSelect')}`}
+              placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={dealAccountGroup}
             />

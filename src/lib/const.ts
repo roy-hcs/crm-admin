@@ -185,3 +185,41 @@ export const passwordTypeOptions = [
   { label: 'common.readOnlyPassword', value: '1' },
   { label: 'common.tradingPassword', value: '2' },
 ];
+
+export const infoTypeOptions = [
+  {
+    label: 'messageManagement.emailNotification',
+    value: '2',
+  },
+  {
+    label: 'messageManagement.internalMessageNotification',
+    value: '1',
+  },
+  {
+    label: 'messageManagement.popupNotification',
+    value: '0',
+  },
+];
+
+export const receiveTypeOptions = [
+  {
+    value: '1',
+    label: 'messageManagement.receiveTypeOption.1',
+  },
+  {
+    value: '2',
+    label: 'messageManagement.receiveTypeOption.2',
+  },
+  {
+    value: '0',
+    label: 'messageManagement.receiveTypeOption.0',
+  },
+  {
+    value: '3',
+    label: 'messageManagement.receiveTypeOption.3',
+  },
+  {
+    value: '4',
+    label: 'messageManagement.receiveTypeOption.4',
+  },
+];
