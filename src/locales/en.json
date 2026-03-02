@@ -218,6 +218,7 @@
     "selectAll": "Select all",
     "increase": "Increase",
     "subtract": "deduct",
+    "previous": "Previous step",
     "addField": "Add {{field}}",
     "selectField": "Select {{field}}",
     "confirmToProceed": "Are you sure you want to proceed?"
@@ -687,6 +688,7 @@
     "comments": "Comment",
     "modifyPaymentOrderTips": "Please verify the payment status of the order at the payment channel before making any changes.",
     "bonusPoints": "Points value",
+    "content": "content",
     "pointValueCalculationFormula": "Point value calculation formula",
     "pointValueCurrency": "liquidation currency"
   },
@@ -1098,7 +1100,29 @@
     "inSiteMsgNotification": "Site message",
     "messageTempate": "Message template",
     "popupNotification": "Pop-up notification",
-    "title": "Message management"
+    "title": "Message management",
+    "addMsg": "Add new message",
+    "deleteMsg": "Are you sure you want to delete this message?",
+    "detail": "Details",
+    "expireTime": "Expiration time",
+    "immediate": "Instant delivery",
+    "inputContent": "Content({{field}})",
+    "inputTitle": "Title({{field}})",
+    "internalMessageNotification": "In-site message notification",
+    "mainLanguage": "main language",
+    "messageTemplate": "Message template",
+    "receiveTypeOption": {
+      "0": "Specify user",
+      "1": "All CRM users",
+      "2": "Specify user role",
+      "3": "Designated user-subordinate",
+      "4": "Label"
+    },
+    "resend": "Send message again",
+    "scheduled": "Send regularly",
+    "sendLanguage": "Send language",
+    "sendMethod": "Send method",
+    "sendStatus": "Send status"
   },
   "relationships": {
     "title": "customer relations"
@@ -1319,6 +1343,13 @@
     "pwdPlaceholder": "Please enter your password, 8-20 English digits (uppercase and lowercase) numbers",
     "pwdTips": "If no password is added, the system will automatically create a login password for the account and send the login password via email.",
     "crmAccountPassword": "{{min}}-{{max}} digits (numbers, uppercase letters, lowercase letters, special character combinations)",
+    "integer": "{{field}}Please enter a positive integer"
+  },
+  "messageTemplate": {
+    "add": "Add message template",
+    "deleteMsg": "Are you sure you want to delete this message template?",
+    "edit": "Modify message template",
+    "title": "Message template",
     "integer": "{{field}}Please enter a positive integer",
     "greaterThanZero": "{{field}} must be greater than 0",
     "levelNameAlreadyUsed": "The level name already exists"

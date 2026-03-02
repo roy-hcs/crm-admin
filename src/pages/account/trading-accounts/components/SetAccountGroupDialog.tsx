@@ -86,7 +86,7 @@ export const SetAccountGroupDialog = ({
               name="accountGroup"
               label={t('table.accountGroup')}
               verticalLabel
-              placeholder={`${t('common.pleaseSelect')}`}
+              placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={dealAccountGroup}
             />

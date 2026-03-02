@@ -1,4 +1,10 @@
-import { apiFormPost, apiFormPostCustom, apiGetCustom, FormValue } from '@/api/client';
+import {
+  apiFormPost,
+  apiFormPostCustom,
+  apiGetCustom,
+  apiPostFormData,
+  FormValue,
+} from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   CrmRebateTradersItem,
@@ -412,6 +418,19 @@ export function useGetCurrencies() {
   });
 }
 
+/**
+ * 上传图片 common/upload
+ */
+export function useUploadImage() {
+  return useMutation({
+    // 直接传入 File，由 hook 内部构造 FormData
+    mutationFn: (file: File) => {
+      const formData = new FormData();
+      formData.append('file', file);
+      return apiPostFormData<{ url: string; code: number }>('/common/upload', formData);
+    },
+  });
+}
 /*
  * 获取系统配置信息
  */

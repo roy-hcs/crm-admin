@@ -149,7 +149,7 @@ export const AddWalletDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
               name="currency"
               label={t('table.wallet')}
               verticalLabel
-              placeholder={`${t('common.pleaseSelect')}`}
+              placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={walletList}
               loading={loading}
