@@ -973,7 +973,24 @@
     "position": "Location",
     "positionType": {
       "1": "Client home page"
-    }
+    },
+    "add": "Add advertising management",
+    "adsName": "Advertisement name",
+    "announcementDetail": "Announcement/Message Details",
+    "appPicture": "Advertising image - mobile version (if not uploaded, the WEB image will be used by default)",
+    "appPictureDescription": "Upload at most one piece, recommended size is 750x250, maximum not exceeding 10M, format: jpg/png/jpeg",
+    "confirm": {
+      "open": "Are you sure you want to enable it?",
+      "stop": "Are you sure you want to disable it?"
+    },
+    "customLink": "Custom link",
+    "edit": "Edit ad management",
+    "entering": "Please enter the link address",
+    "jumpPath": "Jump path",
+    "uploader": "Upload failed",
+    "visibleRole": "Visible role",
+    "webPicture": "Advertising picture-WEB side",
+    "webPictureDescription": "Upload at most one piece, recommended size is 1200x200, maximum not exceeding 10M, format: jpg/png/jpeg"
   },
   "rewardRecords": {
     "amount": "Reward amount",
@@ -1098,7 +1115,6 @@
   "messageManagement": {
     "emailNotification": "Email notification",
     "inSiteMsgNotification": "Site message",
-    "messageTempate": "Message template",
     "popupNotification": "Pop-up notification",
     "title": "Message management",
     "addMsg": "Add new message",
@@ -1343,15 +1359,14 @@
     "pwdPlaceholder": "Please enter your password, 8-20 English digits (uppercase and lowercase) numbers",
     "pwdTips": "If no password is added, the system will automatically create a login password for the account and send the login password via email.",
     "crmAccountPassword": "{{min}}-{{max}} digits (numbers, uppercase letters, lowercase letters, special character combinations)",
-    "integer": "{{field}}Please enter a positive integer"
+    "integer": "{{field}}Please enter a positive integer",
+    "greaterThanZero": "{{field}} must be greater than 0",
+    "levelNameAlreadyUsed": "The level name already exists"
   },
   "messageTemplate": {
     "add": "Add message template",
     "deleteMsg": "Are you sure you want to delete this message template?",
     "edit": "Modify message template",
-    "title": "Message template",
-    "integer": "{{field}}Please enter a positive integer",
-    "greaterThanZero": "{{field}} must be greater than 0",
-    "levelNameAlreadyUsed": "The level name already exists"
+    "title": "Message template"
   }
 }

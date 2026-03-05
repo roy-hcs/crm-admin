@@ -1,5 +1,5 @@
 // Marketing module API hooks
-import { apiFormPostCustom, apiGetCustom, apiPost } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom, apiPost } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   BonusSettingListParams,
@@ -8,6 +8,8 @@ import {
   AdsListRes,
   RewardRecordsListParams,
   RewardRecordsListRes,
+  AddAdsParams,
+  AdsDetail,
 } from './types';
 
 export * from './types';
@@ -82,6 +84,54 @@ export function useAdsList(params: AdsListParams) {
   return useQuery({
     queryKey: ['adsList', params],
     queryFn: () => apiFormPostCustom<AdsListRes>(`/system/marketing/advertise/list`, params),
+  });
+}
+
+/**
+ * 修改广告状态
+ */
+export function useChangeAdsStatus() {
+  return useMutation({
+    mutationFn: (params: { id: string; status: number }) =>
+      apiPost('/system/marketing/advertise/switch', params),
+  });
+}
+
+/**
+ * 删除广告
+ */
+export function useRemoveAds() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost('/system/marketing/advertise/remove', params),
+  });
+}
+
+/**
+ * 获取广告详情
+ */
+export function useAdsDetail() {
+  return useMutation({
+    mutationFn: (id: string) => apiGet<AdsDetail>(`/system/marketing/advertise/detail/${id}`),
+  });
+}
+
+/**
+ * 添加广告
+ */
+export function useAddAds() {
+  return useMutation({
+    mutationFn: (params: AddAdsParams) => apiPost('/system/marketing/advertise/add', params),
+  });
+}
+
+/**
+ * 编辑广告
+ */
+export function useEditAds() {
+  return useMutation({
+    mutationFn: (params: AddAdsParams & { id: string }) =>
+      apiPost('/system/marketing/advertise/edit', params),
   });
 }
 
