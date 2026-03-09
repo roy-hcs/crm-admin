@@ -124,3 +124,46 @@ export type RewardRecordsListItem = {
 };
 
 export type RewardRecordsListRes = BasicRes<RewardRecordsListItem>;
+
+export type AddAdsParams = {
+  name: string;
+  position: string;
+  sort: string;
+  status: string;
+  webPicture: string;
+  appPicture: string;
+  jumpType: string;
+  customLink: string;
+  msgId: string | null;
+  crmRoleIds: string | null;
+  languageList: Array<{
+    language: string;
+    webPicture: string;
+    appPicture: string;
+  }>;
+};
+
+export type AdsDetail = {
+  advertise: {
+    createBy: string;
+    createTime: string;
+    updateBy: string;
+    updateTime: string;
+    remark: string | null;
+    params: Record<string, unknown>;
+    id: string;
+    name: string;
+    position: number;
+    sort: string;
+    status: number;
+    clickCount: number;
+    webPicture: string;
+    appPicture: string;
+    jumpType: number;
+    customLink: string;
+    msgId: string | null;
+    crmRoleIds: string;
+    delFlag: string | null;
+    languageList: string | null;
+  };
+};

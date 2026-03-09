@@ -218,6 +218,7 @@
     "selectAll": "Select all",
     "increase": "Increase",
     "subtract": "deduct",
+    "previous": "Previous step",
     "addField": "Add {{field}}",
     "selectField": "Select {{field}}",
     "confirmToProceed": "Are you sure you want to proceed?"
@@ -687,6 +688,7 @@
     "comments": "Comment",
     "modifyPaymentOrderTips": "Please verify the payment status of the order at the payment channel before making any changes.",
     "bonusPoints": "Points value",
+    "content": "content",
     "pointValueCalculationFormula": "Point value calculation formula",
     "pointValueCurrency": "liquidation currency"
   },
@@ -971,7 +973,24 @@
     "position": "Location",
     "positionType": {
       "1": "Client home page"
-    }
+    },
+    "add": "Add advertising management",
+    "adsName": "Advertisement name",
+    "announcementDetail": "Announcement/Message Details",
+    "appPicture": "Advertising image - mobile version (if not uploaded, the WEB image will be used by default)",
+    "appPictureDescription": "Upload at most one piece, recommended size is 750x250, maximum not exceeding 10M, format: jpg/png/jpeg",
+    "confirm": {
+      "open": "Are you sure you want to enable it?",
+      "stop": "Are you sure you want to disable it?"
+    },
+    "customLink": "Custom link",
+    "edit": "Edit ad management",
+    "entering": "Please enter the link address",
+    "jumpPath": "Jump path",
+    "uploader": "Upload failed",
+    "visibleRole": "Visible role",
+    "webPicture": "Advertising picture-WEB side",
+    "webPictureDescription": "Upload at most one piece, recommended size is 1200x200, maximum not exceeding 10M, format: jpg/png/jpeg"
   },
   "rewardRecords": {
     "amount": "Reward amount",
@@ -1096,9 +1115,30 @@
   "messageManagement": {
     "emailNotification": "Email notification",
     "inSiteMsgNotification": "Site message",
-    "messageTempate": "Message template",
     "popupNotification": "Pop-up notification",
-    "title": "Message management"
+    "title": "Message management",
+    "addMsg": "Add new message",
+    "deleteMsg": "Are you sure you want to delete this message?",
+    "detail": "Details",
+    "expireTime": "Expiration time",
+    "immediate": "Instant delivery",
+    "inputContent": "Content({{field}})",
+    "inputTitle": "Title({{field}})",
+    "internalMessageNotification": "In-site message notification",
+    "mainLanguage": "main language",
+    "messageTemplate": "Message template",
+    "receiveTypeOption": {
+      "0": "Specify user",
+      "1": "All CRM users",
+      "2": "Specify user role",
+      "3": "Designated user-subordinate",
+      "4": "Label"
+    },
+    "resend": "Send message again",
+    "scheduled": "Send regularly",
+    "sendLanguage": "Send language",
+    "sendMethod": "Send method",
+    "sendStatus": "Send status"
   },
   "relationships": {
     "title": "customer relations"
@@ -1322,5 +1362,11 @@
     "integer": "{{field}}Please enter a positive integer",
     "greaterThanZero": "{{field}} must be greater than 0",
     "levelNameAlreadyUsed": "The level name already exists"
+  },
+  "messageTemplate": {
+    "add": "Add message template",
+    "deleteMsg": "Are you sure you want to delete this message template?",
+    "edit": "Modify message template",
+    "title": "Message template"
   }
 }

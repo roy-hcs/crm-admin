@@ -71,6 +71,7 @@
     "selectAll": "全选",
     "previousStep": "上一步",
     "next": "下一步",
+    "previous": "上一步",
     "loading": "加载中...",
     "NoData": "暂无数据",
     "Previous": "上一页",
@@ -1011,6 +1012,7 @@
     "operationParams": "操作参数",
     "acceptEmail": "收件邮箱",
     "title": "标题",
+    "content": "内容",
     "sendTime": "发送时间",
     "sendSuccess": "发送成功",
     "sendFailed": "发送失败",
@@ -1235,12 +1237,29 @@
     "title": "CRM用户登录日志"
   },
   "ads": {
+    "add": "新增广告管理",
+    "edit": "修改广告管理",
     "name": "广告管理",
+    "adsName": "广告名称",
     "position": "位置",
     "clickCount": "点击量",
+    "confirm": {
+      "stop": "确认要停用吗？",
+      "open": "确认要启用吗？"
+    },
     "positionType": {
       "1": "用户端首页"
-    }
+    },
+    "webPicture": "广告图-WEB端",
+    "appPicture": "广告图-移动端（若未上传则默认使用WEB端图片）",
+    "webPictureDescription": "最多上传一张，建议尺寸1200x200，最大不超过10M, 格式: jpg/png/jpeg",
+    "appPictureDescription": "最多上传一张，建议尺寸750x250，最大不超过10M，格式：jpg/png/jpeg",
+    "jumpPath": "跳转路径",
+    "entering": "请输入链接地址",
+    "visibleRole": "可见角色",
+    "customLink": "自定义链接",
+    "announcementDetail": "公告/消息详情",
+    "uploader": "上传失败"
   },
   "rewardRecords": {
     "title": "奖励记录",
@@ -1257,9 +1276,36 @@
   "messageManagement": {
     "title": "消息管理",
     "popupNotification": "弹窗通知",
+    "internalMessageNotification": "站内信通知",
     "inSiteMsgNotification": "站内信消息",
     "emailNotification": "邮件通知",
-    "messageTempate": "消息模板"
+    "messageTemplate": "消息模板",
+    "sendMethod": "发送方式",
+    "immediate": "即时发送",
+    "scheduled": "定时发送",
+    "mainLanguage": "主语言",
+    "sendLanguage": "发送语言",
+    "receiveTypeOption": {
+      "1": "全部CRM用户",
+      "2": "指定用户角色",
+      "0": "指定用户",
+      "3": "指定用户-下级",
+      "4": "标签"
+    },
+    "inputTitle": "标题({{field}})",
+    "inputContent": "内容({{field}})",
+    "expireTime": "失效时间",
+    "addMsg": "新增消息",
+    "resend": "再次发送消息",
+    "deleteMsg": "确定删除该 消息？",
+    "detail": "详情",
+    "sendStatus": "发送状态"
+  },
+  "messageTemplate": {
+    "title": "消息模板",
+    "add": "新增消息模板",
+    "edit": "修改消息模板",
+    "deleteMsg": "确定删除该 消息模板？"
   },
   "pipValueSettings": {
     "title": "点值设置",

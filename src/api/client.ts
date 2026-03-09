@@ -16,9 +16,13 @@ export async function fetchWithAuth<T>(
   // TODO: this system does not use token to authenticate, it uses session cookie, need to remove it later
   const token = localStorage.getItem('authToken');
 
+  const isFormData = options.body instanceof FormData;
+
   // Add authorization header if token exists
   const headers = {
-    'Content-Type': 'application/json',
+    // For JSON and x-www-form-urlencoded we set content-type explicitly;
+    // for FormData we let the browser set the correct multipart boundary.
+    ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...options.headers,
   };
@@ -185,4 +189,17 @@ export function apiFormPostCustom<T>(
   options?: RequestInit,
 ): Promise<T> {
   return apiFormPostBase<T>(url, params, options);
+}
+
+// For multipart/form-data uploads using FormData
+export function apiPostFormData<T>(
+  url: string,
+  formData: FormData,
+  options?: RequestInit,
+): Promise<T> {
+  return fetchWithAuth<T>(url, {
+    ...options,
+    method: 'POST',
+    body: formData,
+  });
 }

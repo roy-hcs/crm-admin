@@ -1,9 +1,15 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { MsgListItem, GetMsgListParams, useGetMsgList } from '@/api/hooks/message';
-import { MessageManagementForm } from './MessageManagementForm';
-import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
+import {
+  MsgListItem,
+  GetMsgListParams,
+  useGetMsgList,
+  useGetEmailConfig,
+  useMsgTemplateList,
+  useRemoveMsg,
+} from '@/api/hooks/message';
+import { Funnel, Search, RefreshCcw, Ellipsis, ReceiptText } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { PageInfo } from '@/components/common/PageInfo';
@@ -16,9 +22,16 @@ import { ToolTip } from '@/components/common/ToolTip';
 import { infoTypesMap } from '@/lib/constant';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { MessageManagementForm } from './components/MessageManagementForm';
+import { useDictType } from '@/api/hooks/system';
+import { AddEditNewMessageDialog } from './components/AddEditNewMessageDialog';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
+import { NewMessageDetailDialog } from './components/NewMessageDetailDialog';
+import { useNavigate } from 'react-router-dom';
 
 export function MessageManagementPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
@@ -31,8 +44,17 @@ export function MessageManagementPage() {
   const [otherParams, setOtherParams] = useState<Omit<GetMsgListParams, 'params'>>({
     type: '',
   });
-
-  const { data: msgList, isLoading: msgListLoading } = useGetMsgList({
+  const [editOpen, setEditOpen] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [id, setId] = useState('');
+  const { data: languageList, isLoading: languageLoading } = useDictType('sys_language');
+  const { data: emailList, isLoading: emailListLoading } = useGetEmailConfig();
+  const { data: msgTemplateList, isLoading: msgTemplateListLoading } = useMsgTemplateList({});
+  const {
+    data: msgList,
+    isLoading: msgListLoading,
+    refetch,
+  } = useGetMsgList({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn: '',
@@ -57,6 +79,9 @@ export function MessageManagementPage() {
     setPageNum(0);
     setPageSize(10);
   };
+
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  const { mutateAsync: removeMsg } = useRemoveMsg();
 
   const allColumns: CRMColumnDef<MsgListItem, unknown>[] = [
     {
@@ -136,20 +161,30 @@ export function MessageManagementPage() {
     {
       id: 'operate',
       header: t('common.Operation'),
-      cell: () => {
-        // TODO: need to add view detail page later
+      cell: ({ row }) => {
         return (
-          <div>
-            <RrhDropdown
-              Trigger={<Ellipsis className="size-4" />}
-              dropdownList={[
-                { label: t('common.View'), value: 'view' },
-                { label: t('table.sendAgain'), value: 'sendAgain' },
-                { label: t('common.delete'), value: 'delete' },
-              ]}
-              callToAction={() => {}}
-            />
-          </div>
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.View'), value: 'view' },
+              { label: t('table.sendAgain'), value: 'sendAgain' },
+              { label: t('common.delete'), value: 'delete' },
+            ]}
+            callToAction={action => {
+              setId(row.original.id || '');
+              switch (action) {
+                case 'view':
+                  setDetailOpen(true);
+                  break;
+                case 'sendAgain':
+                  setEditOpen(true);
+                  break;
+                case 'delete':
+                  setDeleteAlert(true);
+                  break;
+              }
+            }}
+          />
         );
       },
       fixed: 'right',
@@ -159,6 +194,34 @@ export function MessageManagementPage() {
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('message-management-table', allColumns);
+
+  const languageOptions = useMemo(
+    () =>
+      languageList?.map(i => ({
+        label: i.dictLabel,
+        value: i.dictValue,
+      })) || [],
+    [languageList],
+  );
+
+  const emailOptions = useMemo(
+    () =>
+      emailList?.data?.map(i => ({
+        label: i.email,
+        value: i.id,
+      })) || [],
+    [emailList],
+  );
+
+  const msgTemplateOptions = useMemo(
+    () =>
+      msgTemplateList?.rows?.map(i => ({
+        label: i.title || '',
+        value: i.id || '',
+        content: i.content || '',
+      })) || [],
+    [msgTemplateList?.rows],
+  );
 
   return (
     <div>
@@ -179,8 +242,6 @@ export function MessageManagementPage() {
             />
           </div>
           <div className="flex items-center gap-2">
-            <RrhButton onClick={reset}>{t('common.add')}</RrhButton>
-            <RrhButton variant="outline">{t('messageManagement.messageTempate')}</RrhButton>
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </Button>
@@ -214,6 +275,22 @@ export function MessageManagementPage() {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <AddEditNewMessageDialog
+              mode="add"
+              onSuccess={refetch}
+              languageOptions={languageOptions}
+              emailOptions={emailOptions}
+              msgTemplateOptions={msgTemplateOptions}
+            />
+            <RrhButton
+              type="button"
+              Icon={<ReceiptText className="size-3.5" />}
+              onClick={() => {
+                navigate('/message/msgTemplate');
+              }}
+            >
+              {t('messageManagement.messageTemplate')}
+            </RrhButton>
           </div>
         </div>
         <DataTable
@@ -224,8 +301,32 @@ export function MessageManagementPage() {
           pageSize={pageSize}
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
-          loading={msgListLoading}
+          loading={msgListLoading || languageLoading || emailListLoading || msgTemplateListLoading}
         />
+        <AddEditNewMessageDialog
+          mode="edit"
+          open={editOpen}
+          onOpenChange={v => {
+            if (!v) setId('');
+            setEditOpen(v);
+          }}
+          id={id}
+          onSuccess={refetch}
+          languageOptions={languageOptions}
+          emailOptions={emailOptions}
+          msgTemplateOptions={msgTemplateOptions}
+        />
+        <RrhDeleteAlert<{
+          ids: string;
+        }>
+          open={deleteAlert}
+          setOpen={setDeleteAlert}
+          onSuccess={refetch}
+          confirmFunction={removeMsg}
+          params={{ ids: id || '' }}
+          tipsText={t('messageManagement.deleteMsg')}
+        />
+        <NewMessageDetailDialog open={detailOpen} setOpen={setDetailOpen} id={id || ''} />
       </TableContentWrapper>
     </div>
   );
