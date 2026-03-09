@@ -91,7 +91,9 @@ export type RebateBaseTypeParams = BasicParams & {
   serverId?: string;
 };
 
-export type RebateLevelParams = BasicParams;
+export type RebateLevelParams = BasicParams & {
+  model?: number;
+};
 export type RebateLevelRes = BasicRes<RebateLevelItem>;
 export type RebateLevelItem = BaseEntity & {
   id: string;
@@ -146,6 +148,108 @@ export type RebateTraderDealItem = BaseEntity & {
   accountGroupNames: string;
 };
 
+// CRM rebate trader information
+interface CrmRebateTrader {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: string;
+  userId: string | null;
+  accountId: string | null;
+  serialNumber: string;
+  ruleName: string;
+  hasUsed: string; // Could be '1' or '0'
+  rebateGroupType: string | null;
+  mtGroup: string | null;
+  settleUnit: string;
+  highestRebateLevel: string;
+  relatedAccountCount: number | null;
+  relatedRebateTemplateCount: number | null;
+  serverType: string | null;
+  serverName: string | null;
+  serverId: string;
+  groupTypeId: string | null;
+  rebateType: number;
+  accountGroups: string | null;
+  model: number;
+  settleType: number;
+  commissionSettlementTiming: number;
+  suitType: number;
+  settleValue: number;
+  highestLevel: string | null;
+  crmRebateLevels: string[] | null;
+  ruleAndModel: string;
+  traderServers: TraderServer[] | null;
+  traderLanguages: string[] | null;
+}
+
+// Default language information
+interface DefaultLanguage {
+  isDefault: string; // 'Y' or 'N'
+  language: string;
+  id: string | null;
+  languageName: string;
+}
+
+// Account group information
+interface AccountGroup {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: string;
+  name: string;
+  sort: number;
+  num: number | null;
+  flag: boolean;
+  delFlag: boolean;
+  relatedRebateRuleCount: number | null;
+}
+
+// Server information
+export interface TraderServerInfo {
+  id: string;
+  rebateTraderId: string;
+  serverId: string;
+  serverName: string;
+  serverType: string;
+  mtGroups: string[] | null;
+  mtGroup: string | null;
+  rebateGroupTypes: string[] | null;
+  rebateGroupType: string | null;
+}
+
+// Language information
+interface LanguageInfo {
+  id: string;
+  rebateTraderId: string;
+  language: string;
+  ruleName: string;
+}
+
+// Information list item
+interface InfoListItem {
+  isDefault: string; // 'Y' or 'N'
+  language: string;
+  id: string | null;
+  languageName: string;
+}
+
+export type RebateTraderDealDetail = {
+  crmRebateTrader: CrmRebateTrader;
+  defaultLanguage: DefaultLanguage;
+  allDealAccountGroup: AccountGroup[];
+  serverList: TraderServerInfo[];
+  model: string;
+  languageList: LanguageInfo[];
+  infoList: InfoListItem[];
+};
+
 export type TraderServer = {
   id: string;
   rebateTraderId: string;
@@ -165,3 +269,34 @@ export type RebateFeeSettingsItem = RebateTraderDealItem;
 export type RebateDepositSettingsListParams = RebateTraderDealListParams;
 export type RebateDepositSettingsListRes = RebateTraderDealListRes;
 export type RebateDepositSettingsItem = RebateTraderDealItem;
+export type AddTradingRebateRuleParams = {
+  rebateType: string;
+  model: string;
+  ruleName: string;
+  accountGroups?: string[];
+  hasUsed: string;
+  settleType: string;
+  settleValue: string;
+  settleUnit: string;
+  highestRebateLevel: string;
+  serialNumber: string;
+  commissionSettlementTiming: string;
+  remark?: string;
+  traderServers: Array<{
+    serverType: string;
+    serverId: string;
+    serverName: string;
+    mtGroups?: string[];
+    rebateGroupTypes?: string[];
+  }>;
+  traderLanguages: Array<{
+    ruleName?: string;
+    language: string;
+    isDefault: string;
+  }>;
+};
+export type GetMtAndRebateTypeRes = {
+  code: number;
+  groups: string[];
+  types: RebateBaseTypeItem[];
+};

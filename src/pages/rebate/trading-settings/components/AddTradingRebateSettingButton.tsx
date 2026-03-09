@@ -1,0 +1,51 @@
+import { RrhButton } from '@/components/common/RrhButton';
+import { RrhDialog } from '@/components/common/RrhDialog';
+import { Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { RebateRuleForm } from './RebateRuleForm';
+import { DictTypeResponse, ServerListResponse } from '@/api/hooks/system';
+import { RebateLevelRes } from '@/api/hooks/rebate';
+import { DealAccountGroupListResponse } from '@/api/hooks/account';
+export const AddTradingRebateSettingButton = ({
+  onSuccess,
+  model,
+  serverList,
+  levelList,
+  languageList,
+  dealAccountGroupListRes,
+}: {
+  onSuccess: () => void;
+  model?: number;
+  serverList?: ServerListResponse;
+  levelList?: RebateLevelRes;
+  languageList?: DictTypeResponse;
+  dealAccountGroupListRes?: DealAccountGroupListResponse;
+}) => {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <RrhDialog
+      open={open}
+      onOpenChange={setOpen}
+      title={t('common.addField', { field: t('trading.rebateTraderName') })}
+      trigger={
+        <RrhButton>
+          <Plus />
+          {t('common.add')}
+        </RrhButton>
+      }
+      footerShow={false}
+    >
+      <RebateRuleForm
+        onSuccess={onSuccess}
+        model={model}
+        serverList={serverList}
+        levelList={levelList}
+        languageList={languageList}
+        dealAccountGroupListRes={dealAccountGroupListRes}
+      />
+    </RrhDialog>
+  );
+};

@@ -3,6 +3,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/
 import { useCrmFormContext } from '@/contexts/form';
 import { cn } from '@/lib/utils';
 import { Input } from '../ui/input';
+import { ReactElement } from 'react';
 
 interface FormInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -10,6 +11,8 @@ interface FormInputProps<T extends FieldValues> {
   placeholder: string;
   className?: string;
   verticalLabel?: boolean;
+  rightElement?: ReactElement;
+  inputCls?: string;
 }
 
 export function FormInput<T extends FieldValues>({
@@ -18,7 +21,9 @@ export function FormInput<T extends FieldValues>({
   verticalLabel = false,
   placeholder,
   className,
+  rightElement,
   onBlur,
+  inputCls,
   ...props
 }: FormInputProps<T> & React.ComponentPropsWithoutRef<'input'>) {
   const { form } = useCrmFormContext<T>();
@@ -41,12 +46,17 @@ export function FormInput<T extends FieldValues>({
               {label}
             </FormLabel>
             <FormControl className="shrink-0 basis-9/12">
-              <div className="relative">
+              <div className={cn('relative', rightElement ? 'flex' : '')}>
                 <Input
                   type="text"
                   {...props}
                   {...field}
-                  className={cn('h-9 w-full border px-2', max ? 'pr-12' : '')}
+                  className={cn(
+                    'h-9 w-full border px-2',
+                    max ? 'pr-12' : '',
+                    rightElement ? 'flex-1' : '',
+                    inputCls,
+                  )}
                   placeholder={placeholder}
                   onBlur={e => {
                     field.onBlur();
@@ -60,6 +70,7 @@ export function FormInput<T extends FieldValues>({
                     </span>
                   </div>
                 )}
+                {rightElement}
               </div>
             </FormControl>
             <FormMessage className="text-end" />

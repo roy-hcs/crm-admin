@@ -3,7 +3,9 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/
 import { BaseOption, RrhSelect } from '../common/RrhSelect';
 import { useCrmFormContext } from '@/contexts/form';
 import { cn } from '@/lib/utils';
-import { ReactNode } from 'react';
+import { ComponentPropsWithoutRef, ReactNode } from 'react';
+import * as SelectPrimitive from '@radix-ui/react-select';
+
 interface FormSelectProps<T extends FieldValues, O extends BaseOption = BaseOption> {
   name: FieldPath<T>;
   label?: string;
@@ -14,7 +16,13 @@ interface FormSelectProps<T extends FieldValues, O extends BaseOption = BaseOpti
   renderItem?: (option: O) => ReactNode;
   showRowValue?: boolean;
   loading?: boolean;
+  disabled?: boolean;
+  selectCls?: string;
 }
+
+// 提取 Select 组件额外支持的属性
+type SelectRootProps = ComponentPropsWithoutRef<typeof SelectPrimitive.Root>;
+type SelectExtraProps = Omit<SelectRootProps, 'value' | 'onValueChange' | 'disabled'>;
 
 export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOption>({
   options,
@@ -26,7 +34,10 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
   renderItem,
   showRowValue = true,
   loading = false,
-}: FormSelectProps<T, O>) {
+  disabled = false,
+  selectCls,
+  ...props
+}: FormSelectProps<T, O> & SelectExtraProps) {
   const { form } = useCrmFormContext<T>();
   return (
     <FormField
@@ -56,10 +67,12 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
                   options={options}
                   value={field.value?.toString()}
                   onValueChange={field.onChange}
-                  className="w-full"
+                  className={cn('w-full', selectCls)}
                   placeholder={placeholder}
                   renderItem={renderItem}
                   showRowValue={showRowValue}
+                  disabled={disabled}
+                  {...props}
                 />
               )}
             </FormControl>

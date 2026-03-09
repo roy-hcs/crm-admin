@@ -34,8 +34,6 @@ export type SymbolReportParams = {
 export type SymbolReportRowItem = BaseReportItem;
 export type SymbolReportResponse = BasicRes<SymbolReportRowItem>;
 
-// Note: ServerItem and ServerListResponse are in @/api/hooks/system (shared across multiple modules)
-
 // 注册统计报表
 export type RegCountReportItem = Record<string, [number, number, number]>;
 
