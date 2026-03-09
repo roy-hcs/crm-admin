@@ -271,3 +271,18 @@ export type AddCrmUserParams = {
   source: string;
   status: string;
 };
+
+export type WalletBalanceChangeParams = {
+  line: number;
+  username: string;
+  showId: number;
+  email: string;
+  phone: string;
+  currency: string;
+  operateName: string;
+  operationType: number;
+  opTypeName: string;
+  opType: number | null;
+  amount: number;
+  remark: string;
+};
