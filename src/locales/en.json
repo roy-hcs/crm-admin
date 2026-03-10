@@ -1011,7 +1011,33 @@
     "title": "wallet account",
     "account": "Account",
     "addWalletAccount": "Add account wallet",
-    "deleteTips": "Are you sure you want to delete this account wallet?"
+    "deleteTips": "Are you sure you want to delete this account wallet?",
+    "notImported": "Not imported",
+    "downloadFailedData": "Download failed data",
+    "downloadSuccessData": "Download successful data",
+    "downloadUnImportedData": "Download unimported data",
+    "Excel": "Excel batch adjustment",
+    "batchWallet": "Batch wallet balance adjustment",
+    "dataTransferInterrupted": "Interrupt data transfer",
+    "download": "download",
+    "excelTemplateUpdate": "The Excel template has been updated, please download the latest template.",
+    "importFailed": "Import failed",
+    "importSuccess": "Import successful",
+    "item": "strip",
+    "percentageText": {
+      "1": "1/3-Upload excel",
+      "2": "2/3-Data importing",
+      "3": "3/3-Import completed, please confirm the data"
+    },
+    "pleaseUploadFile": "Please upload files",
+    "tipsText": {
+      "1": "To ensure the accuracy of the data, please fill it in strictly in accordance with the template excel format, and before submitting for import, please double-check the accuracy of the imported data!",
+      "2": "The import process may take some time, so please wait patiently; while waiting, please do not close this pop-up window to avoid interrupting the imported data.",
+      "3": "When using batch balance adjustment, there may be some data that cannot be imported successfully; if there is failed data, you can download it, adjust the data, and import it again.",
+      "4": "Data import is interrupted, you can download relevant data below;"
+    },
+    "walletTemplate": "Wallet balance adjustment template",
+    "templateFormatError": "The template format is incorrect, please check and resubmit."
   },
   "accountGroups": {
     "name": "Account group name",

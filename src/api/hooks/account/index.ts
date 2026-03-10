@@ -1,5 +1,5 @@
 // Account module API hooks
-import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom, apiPost } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   CrmUserParams,
@@ -19,6 +19,7 @@ import {
   CustomerRelationsPostParams,
   CustomerRelationsPostRes,
   AddCrmUserParams,
+  WalletBalanceChangeParams,
 } from './types';
 
 export * from './types';
@@ -297,5 +298,15 @@ export function useCheckGroupNameSingle() {
         msg: string;
         data: boolean;
       }>('/system/crmDealAccountGroup/checkGroupNameSingle', params),
+  });
+}
+
+/**
+ * 钱包账户-钱包余额调整
+ */
+export function useWalletBalanceChange() {
+  return useMutation({
+    mutationFn: (params: WalletBalanceChangeParams) =>
+      apiPost('/system/crmUserDealDetail/walletBalanceChange', params),
   });
 }

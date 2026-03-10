@@ -23,6 +23,7 @@ import { WalletAccountsForm } from './components/WalletAccountsForm';
 import { AddWalletDialog } from './components/AddWalletDialog';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 import { useDeleteWallet } from '@/api/hooks/account';
+import { BatchWalletDialog } from './components/BatchWalletDialog';
 
 export const WalletAccountsPage = () => {
   const [params, setParams] = useState<WalletAccountsListParams['params']>({
@@ -236,6 +237,7 @@ export const WalletAccountsPage = () => {
               columns={columns}
             />
             <AddWalletDialog onSuccess={refetch} />
+            <BatchWalletDialog />
           </div>
         </div>
         <DataTable
