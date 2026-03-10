@@ -17,6 +17,8 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { BasicParams } from '@/api/types';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useInitServerId } from '@/hooks/useInitServerId';
+import { ExportButton } from '@/components/common/ExportButton';
+import { useStatisticsExport } from '@/api/hooks/report/report';
 
 export function TradingAccountFundsStatsPage() {
   const { t } = useTranslation();
@@ -258,6 +260,8 @@ export function TradingAccountFundsStatsPage() {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('trading-account-funds-stats-table', allColumns);
 
+  const { mutateAsync: exportStatistics, isPending: exportLoading } = useStatisticsExport();
+
   return (
     <div>
       <PageInfo title={t('tradingAccountFundsStats.title')} desc={t('common.tips')} />
@@ -316,6 +320,16 @@ export function TradingAccountFundsStatsPage() {
               onToggle={toggleColumn}
               onBatchReorder={batchUpdateColumns}
               columns={columns}
+            />
+            <ExportButton<TradingAccountFundsStatsParams>
+              exportFunction={exportStatistics}
+              params={{
+                server: serverId,
+                params,
+                ...commonParams,
+              }}
+              exportLoading={exportLoading}
+              title={t('tradingAccountFundsStats.title')}
             />
           </div>
         </div>

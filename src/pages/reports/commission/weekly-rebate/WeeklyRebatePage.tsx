@@ -13,6 +13,8 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { BasicParams } from '@/api/types';
 import { RebateTypeOptions, RebateStatusOptions } from '@/lib/const';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { ExportButton } from '@/components/common/ExportButton';
+import { useWeekRebateSettleExport } from '@/api/hooks/report/report';
 
 export function WeeklyRebatePage() {
   const { t } = useTranslation();
@@ -151,6 +153,8 @@ export function WeeklyRebatePage() {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('commission-weekly-rebate-reports-table', allColumns);
 
+  const { mutateAsync: exportWeek, isPending: exportLoading } = useWeekRebateSettleExport();
+
   return (
     <div>
       <PageInfo title={t('weekly-rebate.title')} />
@@ -202,6 +206,15 @@ export function WeeklyRebatePage() {
               onToggle={toggleColumn}
               onBatchReorder={batchUpdateColumns}
               columns={columns}
+            />
+            <ExportButton<DailyRebateParams>
+              exportFunction={exportWeek}
+              params={{
+                params,
+                ...commonParams,
+              }}
+              exportLoading={exportLoading}
+              title={t('weekly-rebate.title')}
             />
           </div>
         </div>
