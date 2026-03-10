@@ -635,7 +635,8 @@
     "notImported": "未导入",
     "downloadFailedData": "下载失败数据",
     "downloadSuccessData": "下载成功数据",
-    "downloadUnImportedData": "下载未导入数据"
+    "downloadUnImportedData": "下载未导入数据",
+    "templateFormatError": "模版格式有误，请核对后重新提交"
   },
   "accountGroups": {
     "title": "账户组设置",

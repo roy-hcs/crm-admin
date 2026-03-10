@@ -1036,7 +1036,8 @@
       "3": "When using batch balance adjustment, there may be some data that cannot be imported successfully; if there is failed data, you can download it, adjust the data, and import it again.",
       "4": "Data import is interrupted, you can download relevant data below;"
     },
-    "walletTemplate": "Wallet balance adjustment template"
+    "walletTemplate": "Wallet balance adjustment template",
+    "templateFormatError": "The template format is incorrect, please check and resubmit."
   },
   "accountGroups": {
     "name": "Account group name",
