@@ -857,3 +857,54 @@ export type DepositReviewDetailRes = {
     factDepositScale: number;
   };
 };
+
+export type LeverageReviewDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    detail: {
+      aliasName: string | null;
+      verifyStep: string | null;
+      vUserLastName: string | null;
+      verifyUserName: string | null;
+      currentLever: string | null;
+      verifyUser: string | null;
+      remark: string | null;
+      verifyTime: string | null;
+      login: string | null;
+      userName: string | null;
+      vUserName: string | null;
+      userId: string | null;
+      serverId: string | null;
+      subTime: string | null;
+      targetLever: string | null;
+      userLastName: string | null;
+      userShowId: string | null;
+      id: string | null;
+      status: number | null;
+    };
+    reviewer: {
+      createBy: string | null;
+      createTime: string | null;
+      updateBy: string | null;
+      updateTime: string | null;
+      remark: string | null;
+      params: Record<string, unknown>;
+      id: string | null;
+      preferenceId: string | null;
+      roleId: string | null;
+      userId: string | null;
+      sort: number | null;
+      userName: string | null;
+      userLastName: string | null;
+      roleName: string | null;
+    };
+    verifyLogs: VerifyLogItem[];
+  };
+};
+export type LeverageVerifyParams = {
+  id: string;
+  status: string;
+  remark: string;
+  verifyStep: string;
+};

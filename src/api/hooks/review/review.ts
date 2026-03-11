@@ -1,4 +1,4 @@
-import { apiFormPostCustom, apiGetCustom } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGetCustom } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AgentApplyListParams,
@@ -35,6 +35,8 @@ import {
   SumWithdrawalAmountRes,
   DepositReviewDetailRes,
   DepositVerifyParams,
+  LeverageReviewDetailRes,
+  LeverageVerifyParams,
 } from './types';
 
 export function useAgentApplyList(params: AgentApplyListParams, options: { enabled: boolean }) {
@@ -244,6 +246,28 @@ export function useDepositVerify() {
   return useMutation({
     mutationFn: (params: DepositVerifyParams) =>
       apiFormPostCustom(`/system/crmDepositVerify/verify`, params),
+  });
+}
+
+/**
+ * 获取杠杆审核详情
+ */
+export function useLeverageReviewDetail(leverId: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['leverageReviewDetail', leverId],
+    queryFn: () =>
+      apiGetCustom<LeverageReviewDetailRes>(`/system/crmLeverVerify/detail/${leverId}`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 杠杆审核提交
+ */
+export function useLeverageVerify() {
+  return useMutation({
+    mutationFn: (params: LeverageVerifyParams) =>
+      apiFormPost(`/system/crmLeverVerify/verify`, params),
   });
 }
 
