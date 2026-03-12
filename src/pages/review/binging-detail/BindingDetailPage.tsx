@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { BindingInfoCard } from './components/BindingInfoCard';
 import { BindingVerifyParams } from '@/api/hooks/review/types';
 import { CheckInfoCard } from './components/checkInfoCard';
+import { PageInfo } from '@/components/common/PageInfo';
 
 export const BindingDetailPage = () => {
   const [searchParams] = useSearchParams();
@@ -104,7 +105,7 @@ export const BindingDetailPage = () => {
   };
   return (
     <div>
-      <h1 className="text-title mt-3 mb-3">{t('review.binding.bindingReviewDetail')}</h1>
+      <PageInfo wrapperCls="py-3" title={t('review.binding.bindingReviewDetail')} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">

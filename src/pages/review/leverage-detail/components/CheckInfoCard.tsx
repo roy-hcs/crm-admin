@@ -26,7 +26,7 @@ export const CheckInfoCard = ({
             ContentDom={
               <InfoItem
                 info={
-                  reviewer.userId != null
+                  reviewer.userId !== null
                     ? reviewer.userLastName + ' ' + reviewer.userName
                     : `${reviewer.roleName}`
                 }

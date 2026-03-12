@@ -11,6 +11,7 @@ import { LeverageInfoCard } from './components/LeverageInfoCard';
 import { CheckInfoCard } from './components/CheckInfoCard';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
+import { PageInfo } from '@/components/common/PageInfo';
 
 export const LeverageDetailPage = () => {
   const [searchParams] = useSearchParams();
@@ -105,7 +106,7 @@ export const LeverageDetailPage = () => {
   };
   return (
     <div>
-      <h1 className="text-title mt-3 mb-3">{t('review.leverage.leverageReviewDetail')}</h1>
+      <PageInfo wrapperCls="py-3" title={t('review.leverage.leverageReviewDetail')} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
