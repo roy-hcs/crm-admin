@@ -221,7 +221,6 @@ export function LeveragePage() {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
       label: t('common.Operation'),
-      // cell: () => <RrhButton variant="ghost">{t('table.audit')}</RrhButton>,
       cell: ({ row }) => (
         <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
           {String(row?.original?.status) !== '2' ? t('common.View') : t('table.audit')}

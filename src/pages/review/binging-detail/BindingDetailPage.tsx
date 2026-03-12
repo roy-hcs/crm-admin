@@ -1,32 +1,31 @@
 import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useLeverageReviewDetail, useLeverageVerify } from '@/api/hooks/review/review';
+import { useBindingReviewDetail, useBindingVerify } from '@/api/hooks/review/review';
 import { useTranslation } from 'react-i18next';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
-import { LeverageVerifyParams } from '@/api/hooks/review/types';
 import { RrhStepProps } from '@/components/common/RrhStep';
 import { ReviewStepsCard } from '../withdrawal-detail/components/ReviewStepsCard';
-import { LeverageInfoCard } from './components/LeverageInfoCard';
-import { CheckInfoCard } from './components/CheckInfoCard';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
+import { BindingInfoCard } from './components/BindingInfoCard';
+import { BindingVerifyParams } from '@/api/hooks/review/types';
+import { CheckInfoCard } from './components/checkInfoCard';
 
-export const LeverageDetailPage = () => {
+export const BindingDetailPage = () => {
   const [searchParams] = useSearchParams();
-  const leverageId = searchParams.get('id');
-  const { data: leverageRes, isLoading } = useLeverageReviewDetail(leverageId || '', {
-    enabled: !!leverageId,
+  const bindingId = searchParams.get('id');
+  const { data: bindingRes, isLoading } = useBindingReviewDetail(bindingId || '', {
+    enabled: !!bindingId,
   });
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const leverageInfo = leverageRes?.data?.detail;
-  const reviewer = leverageRes?.data?.reviewer;
+  const bindingInfo = bindingRes?.data?.detail;
   const isAudit = searchParams.get('type') === 'audit';
 
-  const { mutateAsync: verifyLeverage } = useLeverageVerify();
-  const form = useForm<LeverageVerifyParams>({
+  const { mutateAsync: verifyBinding } = useBindingVerify();
+  const form = useForm<BindingVerifyParams>({
     defaultValues: {
       id: '',
       status: '1',
@@ -36,15 +35,15 @@ export const LeverageDetailPage = () => {
   });
 
   useEffect(() => {
-    if (leverageInfo?.status === 1 || leverageInfo?.status === 0) {
+    if (bindingInfo?.status === 1 || bindingInfo?.status === 0) {
       form.reset({
-        id: leverageInfo?.id || '',
-        status: `${leverageInfo?.status}`,
-        remark: leverageInfo.remark || '',
-        verifyStep: leverageInfo.verifyStep || '',
+        id: bindingInfo?.id || '',
+        status: `${bindingInfo?.status}`,
+        remark: bindingInfo.remark || '',
+        verifyStep: `${bindingInfo?.verifyStep}`,
       });
     }
-  }, [form, leverageInfo]);
+  }, [form, bindingInfo]);
 
   if (isLoading) {
     <div className="h-100">
@@ -52,22 +51,22 @@ export const LeverageDetailPage = () => {
     </div>;
   }
 
-  if (!leverageId || !leverageInfo) {
+  if (!bindingId || !bindingInfo) {
     return <div></div>;
   }
-  const leverageData = leverageRes.data;
+  const bindingData = bindingRes.data;
 
   const reviewSteps = [
     {
-      label: leverageData.detail.subTime,
+      label: bindingData.detail.subTime,
       content:
-        leverageData.detail.userLastName +
+        bindingData.detail.userLastName +
         ' ' +
-        leverageData.detail.userName +
+        bindingData.detail.userName +
         t('review.submitForReview'),
       status: 'complete',
     },
-    ...leverageData.verifyLogs.map(log => {
+    ...bindingData.verifyLogs.map(log => {
       const isPass = log.verifyStatus === 1;
       return {
         label: log.verifyTime,
@@ -81,41 +80,41 @@ export const LeverageDetailPage = () => {
     }),
   ] as RrhStepProps['steps'];
 
-  const onSubmit = async (val: LeverageVerifyParams) => {
+  const onSubmit = async (val: BindingVerifyParams) => {
     try {
       const params = {
-        id: leverageInfo.id || '',
+        id: bindingInfo.id || '',
         status: val.status,
         remark: val.remark,
-        verifyStep: leverageInfo.verifyStep || '',
+        verifyStep: `${bindingInfo?.verifyStep}`,
       };
-      const res = await verifyLeverage(params);
+      const res = await verifyBinding(params);
       if (res.code === 0) {
         toast.success(res.msg);
         // 成功后返回上一页面
         setTimeout(() => {
-          navigate('/review/leverage');
+          navigate('/review/binding');
         }, 500);
       } else {
         toast.error(res.msg);
       }
     } catch {
-      console.error('Leverage review verification failed');
+      console.error('Binding review verification failed');
     }
   };
   return (
     <div>
-      <h1 className="text-title mt-3 mb-3">{t('review.leverage.leverageReviewDetail')}</h1>
+      <h1 className="text-title mt-3 mb-3">{t('review.binding.bindingReviewDetail')}</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
             <div className="flex-1 gap-3 overflow-auto">
-              <LeverageInfoCard data={leverageData} />
+              <BindingInfoCard data={bindingData} />
             </div>
             <div className="relative md:w-76">
               <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
                 <ReviewStepsCard reviewSteps={reviewSteps} />
-                {isAudit && reviewer && <CheckInfoCard reviewer={reviewer} />}
+                {isAudit && <CheckInfoCard />}
               </div>
             </div>
           </div>

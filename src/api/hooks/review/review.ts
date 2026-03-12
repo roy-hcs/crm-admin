@@ -37,6 +37,8 @@ import {
   DepositVerifyParams,
   LeverageReviewDetailRes,
   LeverageVerifyParams,
+  BindingReviewDetailRes,
+  BindingVerifyParams,
 } from './types';
 
 export function useAgentApplyList(params: AgentApplyListParams, options: { enabled: boolean }) {
@@ -268,6 +270,28 @@ export function useLeverageVerify() {
   return useMutation({
     mutationFn: (params: LeverageVerifyParams) =>
       apiFormPost(`/system/crmLeverVerify/verify`, params),
+  });
+}
+
+/**
+ * 获取绑定审核详情
+ */
+export function useBindingReviewDetail(bindingId: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['bindingReviewDetail', bindingId],
+    queryFn: () =>
+      apiGetCustom<BindingReviewDetailRes>(`/system/crmUserBindVerify/detail/${bindingId}`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 绑定审核提交
+ */
+export function useBindingVerify() {
+  return useMutation({
+    mutationFn: (params: BindingVerifyParams) =>
+      apiFormPost(`/system/crmUserBindVerify/verify`, params),
   });
 }
 

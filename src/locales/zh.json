@@ -1199,7 +1199,9 @@
     },
     "binding": {
       "title": "绑定审核",
-      "source": "推广邀请码"
+      "source": "推广邀请码",
+      "bindingReviewDetail": "绑定审核详情",
+      "bindingInfo": "绑定信息"
     },
     "leverage": {
       "title": "杠杆审核",

@@ -14,6 +14,7 @@ import { ReviewWithdrawalDetailPage } from '@/pages/review/withdrawal-detail/Rev
 import { ReviewDepositDetailPage } from '@/pages/review/deposit-detail/ReviewDepositDetailPage';
 import { InformationPage } from '@/pages/review/in-formation/InformationPage';
 import { LeverageDetailPage } from '@/pages/review/leverage-detail/LeverageDetailPage';
+import { BindingDetailPage } from '@/pages/review/binging-detail/BindingDetailPage';
 
 const ReviewWithdrawalDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();
@@ -28,6 +29,11 @@ const ReviewDepositDetailPageWrapper = () => {
 const LeverageDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();
   return <LeverageDetailPage key={searchParams.get('id')} />;
+};
+
+const BindingDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <BindingDetailPage key={searchParams.get('id')} />;
 };
 
 /**
@@ -64,6 +70,10 @@ export const reviewRoutes: RouteObject[] = [
   {
     path: '/review/binding',
     element: <BindingPage />,
+  },
+  {
+    path: '/review/binding/detail',
+    element: <BindingDetailPageWrapper />,
   },
   {
     path: '/review/leverage',

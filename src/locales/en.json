@@ -867,7 +867,9 @@
     },
     "binding": {
       "source": "Promotion invitation code",
-      "title": "Binding audit"
+      "title": "Binding audit",
+      "bindingInfo": "binding information",
+      "bindingReviewDetail": "Binding review details"
     },
     "information": {
       "infoType": "Information Type",
@@ -878,7 +880,10 @@
     "leverage": {
       "currentLever": "Current leverage",
       "targetLever": "Target leverage",
-      "title": "Leverage Review"
+      "title": "Leverage Review",
+      "accountInfo": "Account information",
+      "leverageInfo": "Leverage information",
+      "leverageReviewDetail": "Leverage review details"
     },
     "settings": {
       "indexReviewCount": "Home page to be reviewed total count display",

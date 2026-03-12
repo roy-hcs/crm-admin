@@ -1,12 +1,12 @@
-import { LeverageReviewDetailRes } from '@/api/hooks/review';
+import { BindingReviewDetailRes } from '@/api/hooks/review';
 import { RrhCard } from '@/components/common/RrhCard';
 import { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const LeverageInfoCard: FC<{
-  data: LeverageReviewDetailRes['data'];
+export const BindingInfoCard: FC<{
+  data: BindingReviewDetailRes['data'];
 }> = ({ data }) => {
-  const depositInfo = data.detail;
+  const Info = data.detail;
 
   const { t } = useTranslation();
 
@@ -14,38 +14,38 @@ export const LeverageInfoCard: FC<{
     return [
       {
         label: 'table.fullName',
-        value: `${depositInfo.userLastName} ${depositInfo.userName}`,
+        value: `${Info.userLastName} ${Info.userName}`,
       },
       {
         label: 'table.userShowId',
-        value: depositInfo.userShowId,
+        value: Info.userShowId,
       },
     ];
-  }, [depositInfo]);
+  }, [Info]);
 
   const otherInfo = useMemo(() => {
     return [
       {
+        label: 'common.type',
+        value: Info.serverProperty,
+      },
+      {
         label: 'common.server',
-        value: depositInfo.aliasName,
+        value: Info.aliasName,
       },
       {
-        label: 'table.login',
-        value: depositInfo.login,
+        label: 'table.tradingAccount',
+        value: Info.login,
       },
       {
-        label: 'review.leverage.currentLever',
-        value: depositInfo.currentLever ? `1:${depositInfo.currentLever}` : '-',
-      },
-      {
-        label: 'review.leverage.targetLever',
-        value: depositInfo.targetLever ? `1:${depositInfo.targetLever}` : '-',
+        label: 'table.remarks',
+        value: Info.remark || '-',
       },
     ];
-  }, [depositInfo]);
+  }, [Info]);
 
   return (
-    <RrhCard title={t('review.leverage.leverageInfo')} className="flex-1 md:px-10 md:py-6">
+    <RrhCard title={t('review.binding.bindingInfo')} className="flex-1 md:px-10 md:py-6">
       <div className="max-w-125">
         <div>
           <h2 className="text-normal py-1.5 text-base font-bold md:py-3 md:text-lg">
@@ -62,7 +62,7 @@ export const LeverageInfoCard: FC<{
         </div>
         <div>
           <h2 className="text-normal py-1.5 text-base font-bold md:py-3 md:text-lg">
-            {t('review.leverage.accountInfo')}
+            {t('review.binding.bindingInfo')}
           </h2>
           {otherInfo.map(item => (
             <div key={item.label} className="flex flex-col gap-2 py-3">

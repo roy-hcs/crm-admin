@@ -858,51 +858,97 @@ export type DepositReviewDetailRes = {
   };
 };
 
+export type LeverageDetail = {
+  aliasName: string | null;
+  verifyStep: string | null;
+  vUserLastName: string | null;
+  verifyUserName: string | null;
+  currentLever: string | null;
+  verifyUser: string | null;
+  remark: string | null;
+  verifyTime: string | null;
+  login: string | null;
+  userName: string | null;
+  vUserName: string | null;
+  userId: string | null;
+  serverId: string | null;
+  subTime: string | null;
+  targetLever: string | null;
+  userLastName: string | null;
+  userShowId: string | null;
+  id: string | null;
+  status: number | null;
+};
+
+export type BindDetail = {
+  aliasName: string | null;
+  verifyStep: number | null;
+  vUserLastName: string | null;
+  verifyUserName: string | null;
+  serverName: string | null;
+  verifyUser: string | null;
+  remark: string | null;
+  verifyTime: string | null;
+  login: string | null;
+  userName: string | null;
+  vUserName: string | null;
+  serverProperty: string | null;
+  userId: string | null;
+  serverId: string | null;
+  subTime: string | null;
+  severProperty: number | null;
+  userLastName: string | null;
+  serverType: string | null;
+  userShowId: string | null;
+  subRemark: string | null;
+  id: string | null;
+  status: number | null;
+};
+
+export type LeverageReview = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string | null;
+  preferenceId: string | null;
+  roleId: string | null;
+  userId: string | null;
+  sort: number | null;
+  userName: string | null;
+  userLastName: string | null;
+  roleName: string | null;
+};
+
 export type LeverageReviewDetailRes = {
   code: number;
   msg: string;
   data: {
-    detail: {
-      aliasName: string | null;
-      verifyStep: string | null;
-      vUserLastName: string | null;
-      verifyUserName: string | null;
-      currentLever: string | null;
-      verifyUser: string | null;
-      remark: string | null;
-      verifyTime: string | null;
-      login: string | null;
-      userName: string | null;
-      vUserName: string | null;
-      userId: string | null;
-      serverId: string | null;
-      subTime: string | null;
-      targetLever: string | null;
-      userLastName: string | null;
-      userShowId: string | null;
-      id: string | null;
-      status: number | null;
-    };
-    reviewer: {
-      createBy: string | null;
-      createTime: string | null;
-      updateBy: string | null;
-      updateTime: string | null;
-      remark: string | null;
-      params: Record<string, unknown>;
-      id: string | null;
-      preferenceId: string | null;
-      roleId: string | null;
-      userId: string | null;
-      sort: number | null;
-      userName: string | null;
-      userLastName: string | null;
-      roleName: string | null;
-    };
+    detail: LeverageDetail;
+    reviewer: LeverageReview;
     verifyLogs: VerifyLogItem[];
   };
 };
 export type LeverageVerifyParams = {
+  id: string;
+  status: string;
+  remark: string;
+  verifyStep: string;
+};
+
+export type BindingReviewDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    detail: BindDetail;
+    reviewer: LeverageReview;
+    verifyLogs: VerifyLogItem[];
+  };
+};
+
+export type BindingVerifyParams = {
   id: string;
   status: string;
   remark: string;
