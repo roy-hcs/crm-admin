@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { BindingForm } from './BindingForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
@@ -16,6 +16,7 @@ import { RrhOrderStatusTag } from '@/components/common/RrhOrderStatusTag';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { RrhButton } from '@/components/common/RrhButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export function BindingPage() {
   const { t } = useTranslation();
@@ -55,6 +56,21 @@ export function BindingPage() {
     setKeyword('');
     setPageNum(0);
   };
+
+  const { openTab } = useTabActions();
+
+  const goToDetail = useCallback(
+    (row: BindVerifyListItem) => {
+      const type = ![-1, 2].includes(Number(row.status)) ? 'detail' : 'audit';
+      const url = `/review/binding/detail?type=${type}&id=${row.id}`;
+      openTab({
+        key: url,
+        title: t('review.binding.bindingReviewDetail'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
 
   const allColumns: CRMColumnDef<BindVerifyListItem, unknown>[] = [
     {
@@ -179,7 +195,11 @@ export function BindingPage() {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
       label: t('common.Operation'),
-      cell: () => <RrhButton variant="ghost">{t('table.audit')}</RrhButton>,
+      cell: ({ row }) => (
+        <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+          {String(row?.original?.status) !== '2' ? t('common.View') : t('table.audit')}
+        </RrhButton>
+      ),
       fixed: 'right',
       size: 50,
     },

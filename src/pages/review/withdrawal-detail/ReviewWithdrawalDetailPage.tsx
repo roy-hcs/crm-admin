@@ -13,6 +13,7 @@ import { PersonalInfoCard } from './components/PersonalInfoCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DepositRecordPage } from './components/DepositRecordPage';
 import { WithdrawalRecordPage } from './components/WithdrawalRecordPage';
+import { PageInfo } from '@/components/common/PageInfo';
 
 export type WithdrawalFormData = {
   withdrawAmount: string;
@@ -173,7 +174,7 @@ export const ReviewWithdrawalDetailPage = () => {
   };
   return (
     <div>
-      <h1 className="text-title mt-3 mb-3">{t('review.withdrawalReviewDetail')}</h1>
+      <PageInfo wrapperCls="py-3" title={t('review.withdrawalReviewDetail')} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">

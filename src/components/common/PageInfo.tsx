@@ -11,7 +11,7 @@ export const PageInfo: FC<{
   return (
     <div className={wrapperCls}>
       <h1 className={cn('text-foreground text-xl font-semibold', titleCls)}>{title}</h1>
-      <div className={cn('text-muted-foreground mt-1', descCls)}>{desc}</div>
+      {desc && <div className={cn('text-muted-foreground mt-1', descCls)}>{desc}</div>}
     </div>
   );
 };
