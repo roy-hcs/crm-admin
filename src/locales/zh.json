@@ -452,7 +452,8 @@
     "creditInputAmountCount": "系统信用额入金",
     "creditOutAmountCount": "系统信用额出金",
     "profitLoss": "已平仓盈亏",
-    "currentbalance": "当前余额"
+    "currentbalance": "当前余额",
+    "onlyViewRebateAccount": "仅看返佣帐户"
   },
   "tradingAccountDataStats": {
     "title": "交易账号数据统计",

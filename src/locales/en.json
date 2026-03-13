@@ -804,7 +804,8 @@
     "profitLoss": "Closed position profit and loss",
     "sysInputAmountCount": "System deposit",
     "sysOutAmountCount": "System withdrawal",
-    "title": "Trading account funds statistics"
+    "title": "Trading account funds statistics",
+    "onlyViewRebateAccount": "Only view rebate accounts"
   },
   "accountStatisticPage": {
     "accountStatistic": "Trading account transaction history statistics"
