@@ -22,7 +22,7 @@ export const CheckInfoCard = ({
         disabled
         render={() => (
           <LabelItem
-            label={t('review.information.verifyUserName')}
+            label={t('information.verifyUserName')}
             ContentDom={
               <InfoItem
                 info={

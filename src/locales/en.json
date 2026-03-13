@@ -861,40 +861,40 @@
     "title": "Withdrawal review",
     "withdrawalReviewDetail": "Withdrawal review details"
   },
+  "settings": {
+    "indexReviewCount": "Home page to be reviewed total count display",
+    "nameText": "name",
+    "title": "Review Settings",
+    "val": "Display of total count of navigation bar to be reviewed",
+    "desc": "If you turn on/off the \"Display of the total number of pending review on the home page\", the home page will display/hide the number of records to be reviewed; if you turn on/off the \"Display of the total number of pending review on the navigation bar\", the number of records to be reviewed will be displayed/hidden on the navigation bar.",
+    "editAccess": "Edit permissions",
+    "sortingConfig": "Sorting configuration"
+  },
+  "accountOpening": {
+    "source": "Promotion invitation code",
+    "title": "Account opening review"
+  },
+  "binding": {
+    "source": "Promotion invitation code",
+    "title": "Binding audit",
+    "bindingInfo": "binding information",
+    "bindingReviewDetail": "Binding review details"
+  },
+  "information": {
+    "infoType": "Information Type",
+    "title": "Information audit",
+    "verifyTime": "Finishing time",
+    "verifyUserName": "Current reviewer"
+  },
+  "leverage": {
+    "currentLever": "Current leverage",
+    "targetLever": "Target leverage",
+    "title": "Leverage Review",
+    "accountInfo": "Account information",
+    "leverageInfo": "Leverage information",
+    "leverageReviewDetail": "Leverage review details"
+  },
   "review": {
-    "accountOpening": {
-      "source": "Promotion invitation code",
-      "title": "Account opening review"
-    },
-    "binding": {
-      "source": "Promotion invitation code",
-      "title": "Binding audit",
-      "bindingInfo": "binding information",
-      "bindingReviewDetail": "Binding review details"
-    },
-    "information": {
-      "infoType": "Information Type",
-      "title": "Information audit",
-      "verifyTime": "Finishing time",
-      "verifyUserName": "Current reviewer"
-    },
-    "leverage": {
-      "currentLever": "Current leverage",
-      "targetLever": "Target leverage",
-      "title": "Leverage Review",
-      "accountInfo": "Account information",
-      "leverageInfo": "Leverage information",
-      "leverageReviewDetail": "Leverage review details"
-    },
-    "settings": {
-      "indexReviewCount": "Home page to be reviewed total count display",
-      "nameText": "name",
-      "title": "Review Settings",
-      "val": "Display of total count of navigation bar to be reviewed",
-      "desc": "If you turn on/off the \"Display of the total number of pending review on the home page\", the home page will display/hide the number of records to be reviewed; if you turn on/off the \"Display of the total number of pending review on the navigation bar\", the number of records to be reviewed will be displayed/hidden on the navigation bar.",
-      "editAccess": "Edit permissions",
-      "sortingConfig": "Sorting configuration"
-    },
     "advancePaymentRatio": "Current account prepayment ratio",
     "amountCumulative": "Amount (cumulative)",
     "depositRecord": "Deposit record",

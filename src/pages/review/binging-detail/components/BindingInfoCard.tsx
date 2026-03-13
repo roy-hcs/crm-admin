@@ -45,7 +45,7 @@ export const BindingInfoCard: FC<{
   }, [Info]);
 
   return (
-    <RrhCard title={t('review.binding.bindingInfo')} className="flex-1 md:px-10 md:py-6">
+    <RrhCard title={t('binding.bindingInfo')} className="flex-1 md:px-10 md:py-6">
       <div className="max-w-125">
         <div>
           <h2 className="text-normal py-1.5 text-base font-bold md:py-3 md:text-lg">
@@ -62,7 +62,7 @@ export const BindingInfoCard: FC<{
         </div>
         <div>
           <h2 className="text-normal py-1.5 text-base font-bold md:py-3 md:text-lg">
-            {t('review.binding.bindingInfo')}
+            {t('binding.bindingInfo')}
           </h2>
           {otherInfo.map(item => (
             <div key={item.label} className="flex flex-col gap-2 py-3">

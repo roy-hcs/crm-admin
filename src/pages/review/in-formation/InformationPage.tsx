@@ -79,11 +79,11 @@ export function InformationPage() {
     },
     {
       id: 'infoType',
-      label: t('review.information.infoType'),
+      label: t('information.infoType'),
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>{t('review.information.infoType')}</div>
+            <div>{t('information.infoType')}</div>
             <RrhSorter
               orderByColumn={orderByColumn}
               isAsc={isAsc}
@@ -146,17 +146,17 @@ export function InformationPage() {
     },
     {
       id: 'verifyUserName',
-      header: t('review.information.verifyUserName'),
+      header: t('information.verifyUserName'),
       accessorKey: 'verifyUserName',
       cell: ({ row }) => row.original.verifyUserName || '-',
     },
     {
       id: 'verifyTime',
-      label: t('review.information.verifyTime'),
+      label: t('information.verifyTime'),
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>{t('review.information.verifyTime')}</div>
+            <div>{t('information.verifyTime')}</div>
             <RrhSorter
               orderByColumn={orderByColumn}
               isAsc={isAsc}
@@ -187,13 +187,13 @@ export function InformationPage() {
 
   return (
     <div>
-      <PageInfo title={t('review.information.title')} />
+      <PageInfo title={t('information.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
               placeholder={t('common.pleaseInput', {
-                field: t('review.information.verifyUserName'),
+                field: t('information.verifyUserName'),
               })}
               className="h-9"
               value={keyword}

@@ -1178,40 +1178,40 @@
     "pointValueCalculationFormula": "点值计算公式",
     "pointValueCurrency": "清算货币"
   },
+  "settings": {
+    "title": "审核设置",
+    "nameText": "名称",
+    "indexReviewCount": "首页待审合计数展示",
+    "val": "导航栏待审合计数展示",
+    "desc": "开启/关闭“首页待审合计数展示”，则首页将展示/隐藏待审的记录数；开启/关闭“导航栏待审合计数展示”，则导航栏将展示/隐藏待审的记录数",
+    "editAccess": "编辑权限",
+    "sortingConfig": "排序配置"
+  },
+  "information": {
+    "title": "信息审核",
+    "infoType": "信息类型",
+    "verifyUserName": "当前审核人",
+    "verifyTime": "完结时间"
+  },
+  "accountOpening": {
+    "title": "开户审核",
+    "source": "推广邀请码"
+  },
+  "binding": {
+    "title": "绑定审核",
+    "source": "推广邀请码",
+    "bindingReviewDetail": "绑定审核详情",
+    "bindingInfo": "绑定信息"
+  },
+  "leverage": {
+    "title": "杠杆审核",
+    "currentLever": "当前杠杆",
+    "targetLever": "目标杠杆",
+    "leverageReviewDetail": "杠杆审核详情",
+    "leverageInfo": "杠杆信息",
+    "accountInfo": "账号信息"
+  },
   "review": {
-    "settings": {
-      "title": "审核设置",
-      "nameText": "名称",
-      "indexReviewCount": "首页待审合计数展示",
-      "val": "导航栏待审合计数展示",
-      "desc": "开启/关闭“首页待审合计数展示”，则首页将展示/隐藏待审的记录数；开启/关闭“导航栏待审合计数展示”，则导航栏将展示/隐藏待审的记录数",
-      "editAccess": "编辑权限",
-      "sortingConfig": "排序配置"
-    },
-    "information": {
-      "title": "信息审核",
-      "infoType": "信息类型",
-      "verifyUserName": "当前审核人",
-      "verifyTime": "完结时间"
-    },
-    "accountOpening": {
-      "title": "开户审核",
-      "source": "推广邀请码"
-    },
-    "binding": {
-      "title": "绑定审核",
-      "source": "推广邀请码",
-      "bindingReviewDetail": "绑定审核详情",
-      "bindingInfo": "绑定信息"
-    },
-    "leverage": {
-      "title": "杠杆审核",
-      "currentLever": "当前杠杆",
-      "targetLever": "目标杠杆",
-      "leverageReviewDetail": "杠杆审核详情",
-      "leverageInfo": "杠杆信息",
-      "accountInfo": "账号信息"
-    },
     "submitForReview": "提交审核",
     "reviewPass": "审核通过",
     "reviewReject": "审核拒绝",

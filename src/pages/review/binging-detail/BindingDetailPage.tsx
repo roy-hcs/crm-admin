@@ -105,7 +105,7 @@ export const BindingDetailPage = () => {
   };
   return (
     <div>
-      <PageInfo wrapperCls="py-3" title={t('review.binding.bindingReviewDetail')} />
+      <PageInfo wrapperCls="py-3" title={t('binding.bindingReviewDetail')} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">

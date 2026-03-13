@@ -106,7 +106,7 @@ export const LeverageDetailPage = () => {
   };
   return (
     <div>
-      <PageInfo wrapperCls="py-3" title={t('review.leverage.leverageReviewDetail')} />
+      <PageInfo wrapperCls="py-3" title={t('leverage.leverageReviewDetail')} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
