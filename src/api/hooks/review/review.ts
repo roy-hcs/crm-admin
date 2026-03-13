@@ -39,6 +39,8 @@ import {
   LeverageVerifyParams,
   BindingReviewDetailRes,
   BindingVerifyParams,
+  InternalTransferReviewDetailRes,
+  InternalTransferVerifyParams,
 } from './types';
 
 export function useAgentApplyList(params: AgentApplyListParams, options: { enabled: boolean }) {
@@ -292,6 +294,30 @@ export function useBindingVerify() {
   return useMutation({
     mutationFn: (params: BindingVerifyParams) =>
       apiFormPost(`/system/crmUserBindVerify/verify`, params),
+  });
+}
+
+/**
+ * 获取内部转账审核详情
+ */
+export function useInternalTransferReviewDetail(transferId: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['internalTransferReviewDetail', transferId],
+    queryFn: () =>
+      apiGetCustom<InternalTransferReviewDetailRes>(
+        `/system/crmInternalTransferVerify/detail/${transferId}`,
+      ),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 内部转账审核提交
+ */
+export function useInternalTransferVerify() {
+  return useMutation({
+    mutationFn: (params: InternalTransferVerifyParams) =>
+      apiFormPost(`/system/crmInternalTransferVerify/verify`, params),
   });
 }
 

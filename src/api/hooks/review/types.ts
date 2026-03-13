@@ -954,3 +954,63 @@ export type BindingVerifyParams = {
   remark: string;
   verifyStep: string;
 };
+
+export type InternalTransferDetail = {
+  orderComment: string | null;
+  verifyStep: number;
+  verifyUser: string | null;
+  marginlevelTip: number;
+  remark: string | null;
+  verifyTime: string | null;
+  outAccount: string;
+  type: string | null;
+  vUserName: string | null;
+  subTime: string;
+  inMoney: string;
+  maxAdvanceScale: number;
+  rate: string | null;
+  inAccount: string;
+  isNeedDeposit: string | null;
+  userLastName: string;
+  minAdvanceScale: number;
+  userShowId: string;
+  id: string;
+  marginlevel: number;
+  aliasName: string;
+  currencyPair: string;
+  inServer: string;
+  dealTicket: string | null;
+  vUserLastName: string | null;
+  marginlevelTime: string;
+  verifyUserName: string | null;
+  inUnit: string;
+  outMoney: string;
+  userName: string;
+  userId: string;
+  outAliasName: string;
+  outUnit: string;
+  outStatus: number;
+  outServer: string;
+  inAliasName: string;
+  status: number;
+};
+
+export type InternalTransferReviewDetailRes = {
+  code: number;
+  data: {
+    detail: InternalTransferDetail;
+    reviewer: LeverageReview;
+    verifyLogs: VerifyLogItem[];
+  };
+};
+
+export type InternalTransferVerifyParams = {
+  id: string;
+  status: string;
+  remark: string;
+  rate: string;
+  inMoney: string;
+  isNeedDeposit: string;
+  orderComment?: string;
+  outMoney?: string;
+};
