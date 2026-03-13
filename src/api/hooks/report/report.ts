@@ -263,6 +263,16 @@ export function useAgencyOverviewExport() {
 }
 
 /**
+ *  交易账号数据统计导出
+ */
+export function useDealDataExport() {
+  return useMutation({
+    mutationFn: (params: DataStatisticsParams) =>
+      apiFormPost('system/statistics/deal-data-export', params),
+  });
+}
+
+/**
  * 交易历史批量删除
  */
 export function useBatchDeleteTradingHistory() {
