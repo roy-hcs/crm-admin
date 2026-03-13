@@ -65,7 +65,7 @@ export function BindingPage() {
       const url = `/review/binding/detail?type=${type}&id=${row.id}`;
       openTab({
         key: url,
-        title: t('review.binding.bindingReviewDetail'),
+        title: t('binding.bindingReviewDetail'),
         path: url,
       });
     },
@@ -165,7 +165,7 @@ export function BindingPage() {
     },
     {
       id: 'verifyUserName',
-      header: t('review.information.verifyUserName'),
+      header: t('information.verifyUserName'),
       accessorKey: 'verifyUserName',
       cell: ({ row }) => row.original.verifyUserName || '-',
     },
@@ -210,7 +210,7 @@ export function BindingPage() {
 
   return (
     <div>
-      <PageInfo title={t('review.binding.title')} />
+      <PageInfo title={t('binding.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">

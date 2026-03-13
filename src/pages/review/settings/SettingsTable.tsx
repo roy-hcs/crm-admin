@@ -31,7 +31,7 @@ export const SettingsTable = ({
     },
     {
       id: 'nameText',
-      header: t('review.settings.nameText'),
+      header: t('settings.nameText'),
       accessorFn: row => row.nameText || '-',
     },
     {
@@ -41,12 +41,12 @@ export const SettingsTable = ({
     },
     {
       id: 'indexReviewCount',
-      header: t('review.settings.indexReviewCount'),
+      header: t('settings.indexReviewCount'),
       cell: ({ row }) => <Switch checked={row.original.indexReviewCount === 1} />,
     },
     {
       id: 'val',
-      header: t('review.settings.val'),
+      header: t('settings.val'),
       cell: ({ row }) => <Switch checked={row.original.val === 1} />,
     },
     {
@@ -59,7 +59,7 @@ export const SettingsTable = ({
           <RrhDropdown
             Trigger={<Ellipsis className="size-4" />}
             dropdownList={[
-              { label: t('review.settings.editAccess'), value: 'edit' },
+              { label: t('settings.editAccess'), value: 'edit' },
               { label: t('table.sortingConfig'), value: 'sort' },
             ]}
             callToAction={action => {

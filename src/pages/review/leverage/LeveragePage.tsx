@@ -64,7 +64,7 @@ export function LeveragePage() {
       const url = `/review/leverage/detail?type=${type}&id=${row.id}`;
       openTab({
         key: url,
-        title: t('review.leverage.leverageReviewDetail'),
+        title: t('leverage.leverageReviewDetail'),
         path: url,
       });
     },
@@ -112,7 +112,7 @@ export function LeveragePage() {
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>{t('review.leverage.currentLever')}</div>
+            <div>{t('leverage.currentLever')}</div>
             <RrhSorter
               orderByColumn={orderByColumn}
               isAsc={isAsc}
@@ -123,7 +123,7 @@ export function LeveragePage() {
           </div>
         );
       },
-      label: t('review.leverage.currentLever'),
+      label: t('leverage.currentLever'),
       accessorKey: 'currentLever',
       cell: ({ row }) => (row.original.currentLever ? `1:${row.original.currentLever}` : '-'),
     },
@@ -132,7 +132,7 @@ export function LeveragePage() {
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>{t('review.leverage.targetLever')}</div>
+            <div>{t('leverage.targetLever')}</div>
             <RrhSorter
               orderByColumn={orderByColumn}
               isAsc={isAsc}
@@ -143,7 +143,7 @@ export function LeveragePage() {
           </div>
         );
       },
-      label: t('review.leverage.targetLever'),
+      label: t('leverage.targetLever'),
       accessorKey: 'targetLever',
       cell: ({ row }) => (row.original.targetLever ? `1:${row.original.targetLever}` : '-'),
     },
@@ -191,7 +191,7 @@ export function LeveragePage() {
     },
     {
       id: 'verifyUserName',
-      header: t('review.information.verifyUserName'),
+      header: t('information.verifyUserName'),
       accessorKey: 'verifyUserName',
       cell: ({ row }) => row.original.verifyUserName || '-',
     },
@@ -236,7 +236,7 @@ export function LeveragePage() {
 
   return (
     <div>
-      <PageInfo title={t('review.leverage.title')} />
+      <PageInfo title={t('leverage.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">

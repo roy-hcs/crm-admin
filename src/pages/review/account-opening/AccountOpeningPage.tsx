@@ -133,7 +133,7 @@ export function AccountOpeningPage() {
     },
     {
       id: 'source',
-      header: t('review.accountOpening.source'),
+      header: t('accountOpening.source'),
       accessorKey: 'source',
       cell: ({ row }) => row.original.source || '-',
     },
@@ -181,7 +181,7 @@ export function AccountOpeningPage() {
     },
     {
       id: 'verifyUserName',
-      header: t('review.information.verifyUserName'),
+      header: t('information.verifyUserName'),
       accessorKey: 'verifyUserName',
       cell: ({ row }) => row.original.verifyUserName || '-',
     },
@@ -222,7 +222,7 @@ export function AccountOpeningPage() {
 
   return (
     <div>
-      <PageInfo title={t('review.accountOpening.title')} />
+      <PageInfo title={t('accountOpening.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">

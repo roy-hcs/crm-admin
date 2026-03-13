@@ -175,9 +175,9 @@ export const AccountOpeningForm = ({
           <FormInput
             verticalLabel
             name="source"
-            label={t('review.accountOpening.source')}
+            label={t('accountOpening.source')}
             placeholder={t('common.pleaseInput', {
-              field: t('review.accountOpening.source'),
+              field: t('accountOpening.source'),
             })}
           />
           <FormField
@@ -195,9 +195,9 @@ export const AccountOpeningForm = ({
           <FormInput
             verticalLabel
             name="verifyUserName"
-            label={t('review.information.verifyUserName')}
+            label={t('information.verifyUserName')}
             placeholder={t('common.pleaseInput', {
-              field: t('review.information.verifyUserName'),
+              field: t('information.verifyUserName'),
             })}
           />
           <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
