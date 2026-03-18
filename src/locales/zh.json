@@ -567,7 +567,8 @@
     "checkTips": "当前账户预付款比例 {{field}},",
     "checkTimeTips": "查询时间：{{field}}",
     "higherThan": "高于{{field}},",
-    "lowerThan": "低于{{field}},"
+    "lowerThan": "低于{{field}},",
+    "selectWithOrder": "选择关联订单"
   },
   "withdrawalReview": {
     "title": "出金审核",

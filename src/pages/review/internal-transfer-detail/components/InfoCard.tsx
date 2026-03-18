@@ -6,6 +6,7 @@ import { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { LabelItem } from '@/components/common/LabelItem';
+import { RelatedOrders } from './RelatedOrders';
 
 export const InfoCard: FC<{
   detailData: InternalTransferReviewDetailRes['data'];
@@ -91,6 +92,7 @@ export const InfoCard: FC<{
               />
             )}
           />
+
           <FormField
             name="inMoney"
             render={({ field }) => (
@@ -120,6 +122,16 @@ export const InfoCard: FC<{
                     onChange={field.onChange}
                   />
                 }
+              />
+            )}
+          />
+
+          <FormField
+            name="userId"
+            render={({ field }) => (
+              <LabelItem
+                label={t('table.tradingServerOrderNumber')}
+                ContentDom={<RelatedOrders field={field} />}
               />
             )}
           />

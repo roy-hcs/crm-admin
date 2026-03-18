@@ -1014,3 +1014,17 @@ export type InternalTransferVerifyParams = {
   orderComment?: string;
   outMoney?: string;
 };
+
+export type InternalTransferDealTicketListParams = BasicParams & {
+  ticket: string;
+};
+
+export type InternalTransferDealTicketItem = {
+  id: string;
+  dealTicket: string;
+  amount: string;
+  time: string;
+  comment: string;
+};
+
+export type InternalTransferDealTicketListRes = BasicRes<InternalTransferDealTicketItem>;

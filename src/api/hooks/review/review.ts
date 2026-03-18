@@ -41,6 +41,8 @@ import {
   BindingVerifyParams,
   InternalTransferReviewDetailRes,
   InternalTransferVerifyParams,
+  InternalTransferDealTicketListParams,
+  InternalTransferDealTicketListRes,
 } from './types';
 
 export function useAgentApplyList(params: AgentApplyListParams, options: { enabled: boolean }) {
@@ -318,6 +320,26 @@ export function useInternalTransferVerify() {
   return useMutation({
     mutationFn: (params: InternalTransferVerifyParams) =>
       apiFormPost(`/system/crmInternalTransferVerify/verify`, params),
+  });
+}
+
+/**
+ * 内部转账交易服务器订单列表
+ */
+export function useInternalTransferDealTicketList({
+  id,
+  params,
+}: {
+  id: string;
+  params: InternalTransferDealTicketListParams;
+}) {
+  return useQuery({
+    queryKey: ['InternalTransferDealTicketList', params, id],
+    queryFn: () =>
+      apiFormPostCustom<InternalTransferDealTicketListRes>(
+        `/system/crmInternalTransferVerify/dealTicket/list/${id}`,
+        params,
+      ),
   });
 }
 

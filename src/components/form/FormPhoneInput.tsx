@@ -40,47 +40,38 @@ export function FormPhoneInput<T extends FieldValues>({
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className={className}>
+          <FormLabel className={cn(verticalLabel ? '' : 'basis-3/12', 'leading-5')}>
+            {label}
+          </FormLabel>
           <div
-            className={cn(
-              'text-foreground text-sm',
-              verticalLabel ? '' : 'flex items-center',
-              className,
-            )}
+            className={cn('flex items-center', verticalLabel ? 'w-full basis-full' : 'basis-9/12')}
           >
-            <FormLabel className={cn(verticalLabel ? 'mb-2' : 'basis-3/12')}>{label}</FormLabel>
-            <div
-              className={cn(
-                'flex items-center',
-                verticalLabel ? 'w-full basis-full' : 'basis-9/12',
-              )}
-            >
-              <div className="relative basis-3/12">
-                <div className="flex h-9 flex-nowrap items-center justify-center gap-1 rounded-l-lg border-y border-r-0 border-l px-1">
-                  <span>{mzone?.replace(/-.*/, '')}</span>
-                  <ChevronDown className="size-3.5" />
-                </div>
-                <RrhSelect
-                  options={mobileZoneOptions}
-                  value={mzone}
-                  showRowValue={true}
-                  onValueChange={value =>
-                    form.setValue(mzoneFieldName, value as PathValue<T, typeof mzoneFieldName>)
-                  }
-                  className="absolute inset-0 basis-3/12 cursor-pointer opacity-0"
-                />
+            <div className="relative basis-3/12">
+              <div className="flex h-9 flex-nowrap items-center justify-center gap-1 rounded-l-lg border-y border-r-0 border-l px-1">
+                <span>{mzone?.replace(/-.*/, '')}</span>
+                <ChevronDown className="size-3.5" />
               </div>
-              <Input
-                type="text"
-                {...field}
-                placeholder={placeholder}
-                className="h-9 w-full basis-9/12 rounded-l-none border-y border-r border-l-0 px-2 text-sm"
-                onBlur={e => {
-                  field.onBlur();
-                  onBlur?.(e);
-                }}
+              <RrhSelect
+                options={mobileZoneOptions}
+                value={mzone}
+                showRowValue={true}
+                onValueChange={value =>
+                  form.setValue(mzoneFieldName, value as PathValue<T, typeof mzoneFieldName>)
+                }
+                className="absolute inset-0 basis-3/12 cursor-pointer opacity-0"
               />
             </div>
+            <Input
+              type="text"
+              {...field}
+              placeholder={placeholder}
+              className="h-9 w-full basis-9/12 rounded-l-none border-y border-r border-l-0 px-2 text-sm"
+              onBlur={e => {
+                field.onBlur();
+                onBlur?.(e);
+              }}
+            />
           </div>
           <FormMessage className="text-end" />
         </FormItem>

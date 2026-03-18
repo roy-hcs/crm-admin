@@ -47,6 +47,7 @@ interface DialogProps {
   formLoading?: boolean;
   type?: 'view' | 'submit';
   leftDom?: React.ReactNode;
+  modal?: boolean;
 }
 
 export const RrhDialog: React.FC<DialogProps> = ({
@@ -70,6 +71,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
   formLoading = false,
   type = 'view',
   leftDom,
+  modal = true,
 }) => {
   const handleCancel = () => {
     if (onCancel) {
@@ -91,7 +93,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
   // Desktop mode: use Dialog
   if (isDesktop) {
     return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
+      <Dialog open={open} onOpenChange={onOpenChange} modal={modal}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
         <DialogContent
           className={cn(
@@ -209,7 +211,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
 
   // Mobile mode: use Drawer
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
+    <Drawer open={open} onOpenChange={onOpenChange} modal={modal}>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent
         onInteractOutside={e => {
