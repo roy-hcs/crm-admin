@@ -14,47 +14,47 @@ export const TradingRebateInfoCard: FC<{
     return [
       {
         label: 'table.server',
-        value: `${Info.serverName}`,
+        value: Info.serverName || '-',
       },
       {
         label: 'table.traderAccount',
-        value: Info.trderAccount,
+        value: Info.trderAccount || '-',
       },
       {
         label: 'table.tradingOrderNumber',
-        value: `${Info.ticket}`,
+        value: Info.ticket || '-',
       },
       {
         label: 'table.symbol',
-        value: `${Info.taderType}`,
+        value: Info.taderType || '-',
       },
       {
         label: 'table.volume',
-        value: `${Info.volume}`,
+        value: Info.volume || '-',
       },
       {
         label: 'table.tradingTime',
-        value: `${Info.traderTime}`,
+        value: Info.traderTime || '-',
       },
       {
         label: 'table.rebateAmount',
-        value: `${Info.totalAmtText}`,
+        value: Info.totalAmtText || '-',
       },
       {
         label: 'table.rebateUser',
-        value: `${Info.rebateUser}`,
+        value: Info.rebateUser || '-',
       },
       {
         label: 'table.orderNumber',
-        value: `${Info.id}`,
+        value: Info.id || '-',
       },
       {
         label: 'table.targetRule',
-        value: `${Info.rebateTraderRuleId || '-'}`,
+        value: Info.rebateTraderRuleId || '-',
       },
       {
         label: 'table.commissionAccount',
-        value: `${Info.commissionBase || '-'}`,
+        value: Info.commissionBase || '-',
       },
     ];
   }, [Info]);
