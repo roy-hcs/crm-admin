@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { ReviewInternalTransferForm } from './ReviewInternalTransferForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
@@ -16,6 +16,7 @@ import { internalTransferReviewStatusMap } from '@/lib/constant';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export const ReviewInternalTransferPage = () => {
   const { t } = useTranslation();
@@ -67,6 +68,21 @@ export const ReviewInternalTransferPage = () => {
     setKeyword('');
     setPageNum(0);
   };
+
+  const { openTab } = useTabActions();
+
+  const goToDetail = useCallback(
+    (row: InternalTransferItem) => {
+      const type = ![-1, 2].includes(row.status) ? 'detail' : 'audit';
+      const url = `/review/internal-transfer/detail?type=${type}&id=${row.id}`;
+      openTab({
+        key: url,
+        title: t('internalTransferReview.internalTransferReviewDetail'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
 
   const allColumns: CRMColumnDef<InternalTransferItem, unknown>[] = [
     {
@@ -240,8 +256,8 @@ export const ReviewInternalTransferPage = () => {
       },
       label: t('common.Operation'),
       cell: ({ row }) => (
-        <RrhButton variant="ghost">
-          {row.original.status === 2 ? t('table.audit') : t('common.View')}
+        <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+          {row.original.status !== 2 ? t('common.View') : t('table.audit')}
         </RrhButton>
       ),
       fixed: 'right',

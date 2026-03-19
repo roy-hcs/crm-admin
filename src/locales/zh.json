@@ -560,7 +560,15 @@
     "title": "交易返佣审核"
   },
   "internalTransferReview": {
-    "title": "内部转账审核"
+    "title": "内部转账审核",
+    "internalTransferReviewDetail": "内部转账审核详情",
+    "internalTransferReviewInfo": "内部转账审核信息",
+    "internalTransferInfo": "内部转账信息",
+    "checkTips": "当前账户预付款比例 {{field}},",
+    "checkTimeTips": "查询时间：{{field}}",
+    "higherThan": "高于{{field}},",
+    "lowerThan": "低于{{field}},",
+    "selectWithOrder": "选择关联订单"
   },
   "withdrawalReview": {
     "title": "出金审核",
@@ -1176,7 +1184,9 @@
     "comments": "注释",
     "bonusPoints": "积分数值",
     "pointValueCalculationFormula": "点值计算公式",
-    "pointValueCurrency": "清算货币"
+    "pointValueCurrency": "清算货币",
+    "transferOutAmount": "转出金额",
+    "transferInAmount": "转入金额"
   },
   "settings": {
     "title": "审核设置",

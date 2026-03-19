@@ -690,7 +690,9 @@
     "bonusPoints": "Points value",
     "content": "content",
     "pointValueCalculationFormula": "Point value calculation formula",
-    "pointValueCurrency": "liquidation currency"
+    "pointValueCurrency": "liquidation currency",
+    "transferInAmount": "Transfer amount",
+    "transferOutAmount": "Transfer amount"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -852,7 +854,15 @@
     "title": "Processing fee rebate review"
   },
   "internalTransferReview": {
-    "title": "Internal transfer review"
+    "title": "Internal transfer review",
+    "checkTimeTips": "Query time: {{field}}",
+    "checkTips": "Current account prepayment ratio {{field}},",
+    "higherThan": "Higher than {{field}},",
+    "internalTransferInfo": "Internal transfer information",
+    "internalTransferReviewDetail": "Internal transfer review details",
+    "internalTransferReviewInfo": "Internal transfer review information",
+    "lowerThan": "Below {{field}},",
+    "selectWithOrder": "Select associated order"
   },
   "tradingRebateReview": {
     "title": "Transaction rebate review"
