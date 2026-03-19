@@ -692,7 +692,9 @@
     "pointValueCalculationFormula": "Point value calculation formula",
     "pointValueCurrency": "liquidation currency",
     "transferInAmount": "Transfer amount",
-    "transferOutAmount": "Transfer amount"
+    "transferOutAmount": "Transfer amount",
+    "commissionAccount": "Rebate account",
+    "traderAccount": "trading account"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -865,7 +867,10 @@
     "selectWithOrder": "Select associated order"
   },
   "tradingRebateReview": {
-    "title": "Transaction rebate review"
+    "title": "Transaction rebate review",
+    "commissionReviewDetail": "Commission review details",
+    "rebateInfo": "Rebate information",
+    "reviewInfo": "Review information"
   },
   "withdrawalReview": {
     "title": "Withdrawal review",

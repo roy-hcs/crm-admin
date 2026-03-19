@@ -16,6 +16,7 @@ import { InformationPage } from '@/pages/review/in-formation/InformationPage';
 import { LeverageDetailPage } from '@/pages/review/leverage-detail/LeverageDetailPage';
 import { BindingDetailPage } from '@/pages/review/binging-detail/BindingDetailPage';
 import { InternalTransferDetailPage } from '@/pages/review/internal-transfer-detail/InternalTransferDetailPage';
+import { TradingRebateDetailPage } from '@/pages/review/trading-rebate-detail/TradingRebateDetailPage';
 
 const ReviewWithdrawalDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();
@@ -40,6 +41,11 @@ const BindingDetailPageWrapper = () => {
 const InternalTransferDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();
   return <InternalTransferDetailPage key={searchParams.get('id')} />;
+};
+
+const TradingRebateDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <TradingRebateDetailPage key={searchParams.get('id')} />;
 };
 
 /**
@@ -116,6 +122,10 @@ export const reviewRoutes: RouteObject[] = [
   {
     path: '/review/trading-rebate',
     element: <ReviewTradingRebatePage />,
+  },
+  {
+    path: '/review/trading-rebate/detail',
+    element: <TradingRebateDetailPageWrapper />,
   },
   {
     path: '/review/fee-rebate',

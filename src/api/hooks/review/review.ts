@@ -43,6 +43,8 @@ import {
   InternalTransferVerifyParams,
   InternalTransferDealTicketListParams,
   InternalTransferDealTicketListRes,
+  RebateReviewDetailRes,
+  RebateVerifyParams,
 } from './types';
 
 export function useAgentApplyList(params: AgentApplyListParams, options: { enabled: boolean }) {
@@ -340,6 +342,28 @@ export function useInternalTransferDealTicketList({
         `/system/crmInternalTransferVerify/dealTicket/list/${id}`,
         params,
       ),
+  });
+}
+
+/**
+ * 获取返佣审核1详情
+ */
+export function useRebateDetail(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['rebateDetail', id],
+    queryFn: () =>
+      apiGetCustom<RebateReviewDetailRes>(`/system/crmRebateCommission/detail/1/${id}`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 返佣审核提交
+ */
+export function useRebateVerify() {
+  return useMutation({
+    mutationFn: (params: RebateVerifyParams) =>
+      apiFormPost(`/system/crmRebateCommission/verify/1`, params),
   });
 }
 

@@ -557,7 +557,10 @@
     "title": "手续费返佣审核"
   },
   "tradingRebateReview": {
-    "title": "交易返佣审核"
+    "title": "交易返佣审核",
+    "commissionReviewDetail": "返佣审核详情",
+    "reviewInfo": "审核信息",
+    "rebateInfo": "返佣信息"
   },
   "internalTransferReview": {
     "title": "内部转账审核",
@@ -1186,7 +1189,9 @@
     "pointValueCalculationFormula": "点值计算公式",
     "pointValueCurrency": "清算货币",
     "transferOutAmount": "转出金额",
-    "transferInAmount": "转入金额"
+    "transferInAmount": "转入金额",
+    "traderAccount": "交易帐户",
+    "commissionAccount": "返佣帐户"
   },
   "settings": {
     "title": "审核设置",
