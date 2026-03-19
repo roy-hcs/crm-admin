@@ -1028,3 +1028,81 @@ export type InternalTransferDealTicketItem = {
 };
 
 export type InternalTransferDealTicketListRes = BasicRes<InternalTransferDealTicketItem>;
+
+export type rebateCommissionDetail = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string | null;
+  userId: string | null;
+  orderId: string | null;
+  mtOrder: string | null;
+  serverName: string | null;
+  serverId: string | null;
+  serverType: number | null;
+  taderType: string | null;
+  lastName: string | null;
+  name: string | null;
+  showId: string | null;
+  rebateTotalAmt: string | null;
+  rebateFixedAmt: string | null;
+  rebatePointsAmt: string | null;
+  rebateTime: string | null;
+  rebateStatus: number | null;
+  trderAccount: string | null;
+  trderCount: string | null;
+  amtUnit: string | null;
+  verifyId: string | null;
+  traderTime: string | null;
+  traderTimeStr: string | null;
+  verifyTime: string | null;
+  rebateTraderId: string | null;
+  rebateCommissionId: string | null;
+  rebateType: number | null;
+  rebateTraderRuleId: string | null;
+  commissionBase: string | null;
+  accountGroupList: string | null;
+  model: number | null;
+  rebateAccountType: string | null;
+  rebateAccount: string | null;
+  settleStyle: number | null;
+  ticket: string | null;
+  deal: string | null;
+  login: string | null;
+  symbol: string | null;
+  volume: string | null;
+  userName: string | null;
+  rebateUser: string | null;
+  totalAmtText: string | null;
+  currency: string | null;
+  inMoneyAmt: string | null;
+  percentage: string | null;
+  commission: string | null;
+  rebateTraderName: string | null;
+  verifyName: string | null;
+  rebateAccountName: string | null;
+  verifyStep: number | null;
+  verifyUserName: string | null;
+  orderComment: string | null;
+  accountName: string | null;
+};
+
+export type RebateReviewDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    detail: rebateCommissionDetail;
+    reviewer: LeverageReview;
+    verifyLogs: VerifyLogItem[];
+  };
+};
+
+export type RebateVerifyParams = {
+  id: string;
+  rebateStatus: string;
+  remark: string;
+  verifyStep: string;
+};
