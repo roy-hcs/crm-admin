@@ -5,8 +5,16 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhTextarea } from '@/components/common/RrhTextarea';
 import { RrhCard } from '@/components/common/RrhCard';
 import { LabelItem } from '@/components/common/LabelItem';
+import { InfoItem } from '@/components/common/InfoItem';
+import { LeverageReview } from '@/api/hooks/review';
 
-export const CheckInfoCard = ({ back }: { back: () => void }) => {
+export const CheckInfoCard = ({
+  back,
+  reviewer,
+}: {
+  back: () => void;
+  reviewer: LeverageReview;
+}) => {
   const { t } = useTranslation();
 
   const cancel = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -16,6 +24,24 @@ export const CheckInfoCard = ({ back }: { back: () => void }) => {
 
   return (
     <RrhCard title={t('review.review')}>
+      <FormField
+        name="reviewer"
+        disabled
+        render={() => (
+          <LabelItem
+            label={t('information.verifyUserName')}
+            ContentDom={
+              <InfoItem
+                info={
+                  reviewer.userId != null
+                    ? reviewer.userLastName + ' ' + reviewer.userName
+                    : `${reviewer.roleName}`
+                }
+              />
+            }
+          />
+        )}
+      />
       <FormField
         name="rebateStatus"
         render={({ field }) => (

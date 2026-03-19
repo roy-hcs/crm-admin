@@ -131,7 +131,7 @@ export const ReviewTradingRebatePage = () => {
 
   const goToDetail = useCallback(
     (row: RebateCommissionItem) => {
-      const type = ![-1, 2].includes(Number(row.rebateStatus)) ? 'detail' : 'audit';
+      const type = ![3, 2].includes(Number(row.rebateStatus)) ? 'detail' : 'audit';
       const url = `/review/trading-rebate/detail?type=${type}&id=${row.id}`;
       openTab({
         key: url,

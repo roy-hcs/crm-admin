@@ -554,7 +554,8 @@
     "title": "入金返佣审核"
   },
   "feeRebateReview": {
-    "title": "手续费返佣审核"
+    "title": "手续费返佣审核",
+    "feeRebateReviewDetail": "手续费返佣审核详情"
   },
   "tradingRebateReview": {
     "title": "交易返佣审核",

@@ -853,7 +853,8 @@
     "orderCommentPlaceholder": "This content will be synchronized to the trading platform (exceeding characters will be truncated)"
   },
   "feeRebateReview": {
-    "title": "Processing fee rebate review"
+    "title": "Processing fee rebate review",
+    "feeRebateReviewDetail": "Details of handling fee rebate review"
   },
   "internalTransferReview": {
     "title": "Internal transfer review",

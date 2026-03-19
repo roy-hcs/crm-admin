@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { ReviewFeeRebateForm } from './ReviewFeeRebateForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
@@ -25,6 +25,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export const ReviewFeeRebatePage = () => {
   const [params, setParams] = useState<RebateCommissionListParams['params']>({
@@ -126,6 +127,21 @@ export const ReviewFeeRebatePage = () => {
     setKeyword('');
     setPageNum(0);
   };
+
+  const { openTab } = useTabActions();
+
+  const goToDetail = useCallback(
+    (row: RebateCommissionItem) => {
+      const type = ![3, 2].includes(Number(row.rebateStatus)) ? 'detail' : 'audit';
+      const url = `/review/fee-rebate/detail?type=${type}&id=${row.id}`;
+      openTab({
+        key: url,
+        title: t('feeRebateReview.feeRebateReviewDetail'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
 
   const allColumns: CRMColumnDef<RebateCommissionItem, unknown>[] = [
     {
@@ -354,14 +370,22 @@ export const ReviewFeeRebatePage = () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
       label: t('common.Operation'),
-      cell: () => (
+      cell: ({ row }) => (
         <RrhDropdown
           Trigger={<Ellipsis className="size-4" />}
           dropdownList={[
-            { label: t('table.audit'), value: 'audit' },
+            {
+              label:
+                String(row?.original?.rebateStatus) !== '2' ? t('common.View') : t('table.audit'),
+              value: 'audit',
+            },
             { label: t('common.delete'), value: 'delete' },
           ]}
-          callToAction={() => {}}
+          callToAction={value => {
+            if (value === 'audit') {
+              goToDetail(row.original);
+            }
+          }}
         />
       ),
       fixed: 'right',
