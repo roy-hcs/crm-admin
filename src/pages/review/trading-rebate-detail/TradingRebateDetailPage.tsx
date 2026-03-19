@@ -39,9 +39,9 @@ export const TradingRebateDetailPage = () => {
     if (rebateInfo?.rebateStatus === 1 || rebateInfo?.rebateStatus === 0) {
       form.reset({
         id: rebateInfo?.id || '',
-        rebateStatus: `${rebateInfo?.rebateStatus}`,
+        rebateStatus: `${rebateInfo.rebateStatus || ''}`,
         remark: rebateInfo.remark || '',
-        verifyStep: `${rebateInfo?.verifyStep}`,
+        verifyStep: `${rebateInfo?.verifyStep || ''}`,
       });
     }
   }, [form, rebateInfo]);
@@ -79,7 +79,7 @@ export const TradingRebateDetailPage = () => {
         id: rebateInfo.id || '',
         rebateStatus: val.rebateStatus,
         remark: val.remark,
-        verifyStep: `${rebateInfo?.verifyStep}`,
+        verifyStep: `${rebateInfo?.verifyStep || ''}`,
       };
       const res = await verifyRebate(params);
       if (res.code === 0) {
