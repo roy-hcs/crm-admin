@@ -46,6 +46,7 @@ import {
   RebateReviewDetailRes,
   RebateVerifyParams,
   FeeRebateReviewDetailRes,
+  DepositRebateReviewDetailRes,
 } from './types';
 
 export function useAgentApplyList(params: AgentApplyListParams, options: { enabled: boolean }) {
@@ -387,6 +388,28 @@ export function useFeeRebateVerify() {
   return useMutation({
     mutationFn: (params: RebateVerifyParams) =>
       apiFormPost(`/system/crmRebateCommission/verify/2`, params),
+  });
+}
+
+/**
+ * 获取入金返佣审核详情
+ */
+export function useDepositRebateDetail(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['depositRebateDetail', id],
+    queryFn: () =>
+      apiGetCustom<DepositRebateReviewDetailRes>(`/system/crmRebateCommission/detail/3/${id}`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 入金返佣审核提交
+ */
+export function useDepositRebateVerify() {
+  return useMutation({
+    mutationFn: (params: RebateVerifyParams) =>
+      apiFormPost(`/system/crmRebateCommission/verify/3`, params),
   });
 }
 

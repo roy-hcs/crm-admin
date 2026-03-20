@@ -551,7 +551,8 @@
     "title": "代理审核"
   },
   "depositRebateReview": {
-    "title": "入金返佣审核"
+    "title": "入金返佣审核",
+    "depositRebateReviewDetail": "入金返佣审核详情"
   },
   "feeRebateReview": {
     "title": "手续费返佣审核",
