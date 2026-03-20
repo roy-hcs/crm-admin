@@ -1,7 +1,7 @@
 import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useRebateDetail, useRebateVerify } from '@/api/hooks/review/review';
+import { useFeeRebateDetail, useFeeRebateVerify } from '@/api/hooks/review/review';
 import { useTranslation } from 'react-i18next';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
 import { RrhStepProps } from '@/components/common/RrhStep';
@@ -10,13 +10,13 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 import { RebateVerifyParams } from '@/api/hooks/review/types';
 import { PageInfo } from '@/components/common/PageInfo';
-import { TradingRebateInfoCard } from './components/TradingRebateInfoCard';
-import { CheckInfoCard } from './components/CheckInfoCard';
+import { CheckInfoCard } from '../trading-rebate-detail/components/CheckInfoCard';
+import { FeeRebateInfoCard } from './components/FeeRebateInfoCard';
 
-export const TradingRebateDetailPage = () => {
+export const FeeRebateDetailPage = () => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get('id');
-  const { data: data, isLoading } = useRebateDetail(id || '', {
+  const { data: data, isLoading } = useFeeRebateDetail(id || '', {
     enabled: !!id,
   });
   const { t } = useTranslation();
@@ -26,7 +26,7 @@ export const TradingRebateDetailPage = () => {
   const reviewer = data?.data?.reviewer;
   const isAudit = searchParams.get('type') === 'audit';
 
-  const { mutateAsync: verifyRebate } = useRebateVerify();
+  const { mutateAsync: verifyRebate } = useFeeRebateVerify();
   const form = useForm<RebateVerifyParams>({
     defaultValues: {
       id: '',
@@ -93,21 +93,21 @@ export const TradingRebateDetailPage = () => {
         toast.error(res.msg);
       }
     } catch {
-      console.error('Trading rebate review verification failed');
+      console.error('Fee rebate review verification failed');
     }
   };
 
   const back = () => {
-    navigate('/review/trading-rebate');
+    navigate('/review/fee-rebate');
   };
   return (
     <div>
-      <PageInfo wrapperCls="py-3" title={t('tradingRebateReview.commissionReviewDetail')} />
+      <PageInfo wrapperCls="py-3" title={t('feeRebateReview.feeRebateReviewDetail')} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
             <div className="flex-1 gap-3 overflow-auto">
-              <TradingRebateInfoCard data={rebateData} />
+              <FeeRebateInfoCard data={rebateData} />
             </div>
             <div className="relative md:w-76">
               <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">

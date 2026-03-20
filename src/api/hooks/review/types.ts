@@ -1106,3 +1106,15 @@ export type RebateVerifyParams = {
   remark: string;
   verifyStep: string;
 };
+
+export type FeeRebateDetail = rebateCommissionDetail;
+
+export type FeeRebateReviewDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    detail: FeeRebateDetail;
+    reviewer: LeverageReview;
+    verifyLogs: VerifyLogItem[];
+  };
+};
