@@ -1118,3 +1118,14 @@ export type FeeRebateReviewDetailRes = {
     verifyLogs: VerifyLogItem[];
   };
 };
+export type DepositRebateDetail = rebateCommissionDetail;
+
+export type DepositRebateReviewDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    detail: DepositRebateDetail;
+    reviewer: LeverageReview;
+    verifyLogs: VerifyLogItem[];
+  };
+};

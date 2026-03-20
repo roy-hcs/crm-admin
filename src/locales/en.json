@@ -842,7 +842,8 @@
     "title": "Agent audit"
   },
   "depositRebateReview": {
-    "title": "Deposit Rebate Review"
+    "title": "Deposit Rebate Review",
+    "depositRebateReviewDetail": "Deposit rebate review details"
   },
   "depositReview": {
     "title": "Deposit review",
