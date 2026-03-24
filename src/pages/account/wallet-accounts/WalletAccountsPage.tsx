@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Ellipsis, Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   useWalletAccountsList,
@@ -24,6 +24,7 @@ import { AddWalletDialog } from './components/AddWalletDialog';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 import { useDeleteWallet } from '@/api/hooks/account';
 import { BatchWalletDialog } from './components/BatchWalletDialog';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export const WalletAccountsPage = () => {
   const [params, setParams] = useState<WalletAccountsListParams['params']>({
@@ -83,6 +84,21 @@ export const WalletAccountsPage = () => {
     setKeyword('');
     setPageNum(0);
   };
+
+  const { openTab } = useTabActions();
+
+  const goToDetail = useCallback(
+    (row: WalletAccountsItem) => {
+      const detail = JSON.stringify(row);
+      const url = `/account/wallet-accounts/detail?id=${row.id}&detail=${encodeURIComponent(detail)}`;
+      openTab({
+        key: url,
+        title: t('walletAccountsPage.walletAccountsDetail'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
   const allColumns: CRMColumnDef<WalletAccountsItem, unknown>[] = [
     {
       id: 'select',
@@ -165,7 +181,7 @@ export const WalletAccountsPage = () => {
             callToAction={action => {
               switch (action) {
                 case 'view':
-                  // View action
+                  goToDetail(row.original);
                   break;
                 case 'delete':
                   setIds(String(row?.original.id));
