@@ -5,6 +5,7 @@ import { TradingAccountsPage } from '@/pages/account/trading-accounts/TradingAcc
 import { WalletAccountsPage } from '@/pages/account/wallet-accounts/WalletAccountsPage';
 import { AccountGroupsPage } from '@/pages/account/account-groups/AccountGroupsPage';
 import { RelationshipsPage } from '@/pages/account/relationships/RelationshipsPage';
+import { WalletAccountsDetailPage } from '@/pages/account/wallet-accounts-detail/WalletAccountsDetailPage';
 // Import other account pages as they are developed
 
 /**
@@ -35,6 +36,10 @@ export const accountRoutes: RouteObject[] = [
   {
     path: '/account/wallet-accounts',
     element: <WalletAccountsPage />,
+  },
+  {
+    path: '/account/wallet-accounts/detail',
+    element: <WalletAccountsDetailPage />,
   },
   {
     path: 'account/account-groups',

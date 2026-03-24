@@ -20,6 +20,9 @@ import {
   CustomerRelationsPostRes,
   AddCrmUserParams,
   WalletBalanceChangeParams,
+  WalletPerm,
+  FundFlowParams,
+  FundFlowListRes,
 } from './types';
 
 export * from './types';
@@ -308,5 +311,36 @@ export function useWalletBalanceChange() {
   return useMutation({
     mutationFn: (params: WalletBalanceChangeParams) =>
       apiPost('/system/crmUserDealDetail/walletBalanceChange', params),
+  });
+}
+
+/**
+ * 钱包账户-查询用户钱包权限
+ */
+export function useGetWalletPerm() {
+  return useMutation({
+    mutationFn: (crmUserId: string) =>
+      apiGet<WalletPerm>(`/system/crmUserDealDetail/walletPerm/${crmUserId}`),
+  });
+}
+
+/**
+ * 钱包账户-设置用户钱包权限
+ */
+export function useSetWalletPerm() {
+  return useMutation({
+    mutationFn: (params: { id: string; permissionJson: string }) =>
+      apiFormPost('/system/crmUserWallet/edit', params),
+  });
+}
+
+/**
+ * 钱包账户-资金流水
+ */
+export function useFundFlowList(params: FundFlowParams) {
+  return useQuery({
+    queryKey: ['fundFlowList', params],
+    queryFn: () =>
+      apiFormPostCustom<FundFlowListRes>(`/system/crmUserDealDetail/oneWalletList`, params),
   });
 }

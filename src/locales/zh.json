@@ -650,7 +650,8 @@
     "downloadFailedData": "下载失败数据",
     "downloadSuccessData": "下载成功数据",
     "downloadUnImportedData": "下载未导入数据",
-    "templateFormatError": "模版格式有误，请核对后重新提交"
+    "templateFormatError": "模版格式有误，请核对后重新提交",
+    "walletAccountsDetail": "钱包账户详情"
   },
   "accountGroups": {
     "title": "账户组设置",
@@ -1193,7 +1194,9 @@
     "transferOutAmount": "转出金额",
     "transferInAmount": "转入金额",
     "traderAccount": "交易帐户",
-    "commissionAccount": "返佣帐户"
+    "commissionAccount": "返佣帐户",
+    "accountDetail": "账号详情",
+    "accountPermission": "账号权限"
   },
   "settings": {
     "title": "审核设置",

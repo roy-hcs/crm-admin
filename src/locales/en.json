@@ -694,7 +694,9 @@
     "transferInAmount": "Transfer amount",
     "transferOutAmount": "Transfer amount",
     "commissionAccount": "Rebate account",
-    "traderAccount": "trading account"
+    "traderAccount": "trading account",
+    "accountDetail": "Account details",
+    "accountPermission": "Account permissions"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1060,7 +1062,8 @@
       "4": "Data import is interrupted, you can download relevant data below;"
     },
     "walletTemplate": "Wallet balance adjustment template",
-    "templateFormatError": "The template format is incorrect, please check and resubmit."
+    "templateFormatError": "The template format is incorrect, please check and resubmit.",
+    "walletAccountsDetail": "Wallet account details"
   },
   "accountGroups": {
     "name": "Account group name",

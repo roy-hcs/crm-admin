@@ -286,3 +286,49 @@ export type WalletBalanceChangeParams = {
   amount: number;
   remark: string;
 };
+
+export type WalletPerm = {
+  insideTransfer: number;
+  outMoney: number;
+};
+
+export type FundFlowParams = BasicParams & {
+  walletId?: string;
+  operationType?: string;
+  serialNum?: string;
+  params: {
+    inMethod?: string;
+    outMethod?: string;
+    transMethod?: string;
+    remaidMethod?: string;
+    operationStart?: string;
+    operationEnd?: string;
+  };
+};
+
+export type FundFlowItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: string | null;
+  walletId: string | null;
+  preAmount: string | null;
+  amount: string | null;
+  serialNum: string | null;
+  operationType: number | null;
+  operationMethod: number | null;
+  operationTime: string | null;
+  dealServerId: string | null;
+  dealAccount: string | null;
+  mtOrder: string | null;
+  rebateId: string | null;
+  crmUserId: string | null;
+  currency: string | null;
+  accounts: string | null;
+  postAmount: string | null;
+};
+
+export type FundFlowListRes = BasicRes<FundFlowItem>;

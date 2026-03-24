@@ -1,31 +1,21 @@
-import { useEffect, useState } from 'react';
-import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { Button } from '@/components/ui/button';
-import { TableCell } from '@/components/ui/table';
 import { RrhButton } from '@/components/common/RrhButton';
-import {
-  CrmUserDealDetailParams,
-  useWalletTransactionList,
-  useWalletTransactionSum,
-  WalletTransactionItem,
-} from '@/api/hooks/report';
-import { WalletTransactionsForm } from './WalletTransactionsForm';
-import { Funnel, Search, RefreshCcw } from 'lucide-react';
+import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
+import { Funnel, RefreshCcw, Search } from 'lucide-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PageInfo } from '@/components/common/PageInfo';
+import { FundFlowItem, FundFlowParams, useFundFlowList } from '@/api/hooks/account';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
-import { BasicParams } from '@/api/types';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { FundFlowForm } from './FundFlowForm';
+import { useDictType } from '@/api/hooks/system';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { LabelItem } from '@/components/common/LabelItem';
-import { useWalletTransactionListExport } from '@/api/hooks/report/report';
-import { ExportButton } from '@/components/common/ExportButton';
 import { OperationMethodMap, OperationTypeMap } from '@/lib/constant';
 
-const DetailInfo = ({ itemInfo }: { itemInfo: WalletTransactionItem }) => {
+const DetailInfo = ({ itemInfo }: { itemInfo: FundFlowItem }) => {
   const { t } = useTranslation();
   let outflowAccount = '';
   if (itemInfo.operationType === 2 || itemInfo.operationMethod === 7) {
@@ -48,11 +38,11 @@ const DetailInfo = ({ itemInfo }: { itemInfo: WalletTransactionItem }) => {
   const accountInfo = [
     {
       label: t('walletTransactions.lastName'),
-      value: `${itemInfo.lastName || ''} ${itemInfo.name || ''}`,
+      value: `${itemInfo.accounts || ''}`,
     },
     {
       label: t('table.userShowId'),
-      value: itemInfo.showId || '',
+      value: itemInfo.id || '',
     },
   ];
   const flowInfo = [
@@ -122,148 +112,108 @@ const DetailInfo = ({ itemInfo }: { itemInfo: WalletTransactionItem }) => {
     </div>
   );
 };
-export function WalletTransactionsPage() {
-  const { t } = useTranslation();
+
+export const FundFlowPage = () => {
+  const [params, setParams] = useState<FundFlowParams['params']>({
+    inMethod: '',
+    outMethod: '',
+    transMethod: '',
+    remaidMethod: '',
+    operationStart: '',
+    operationEnd: '',
+  });
+  const [otherParams, setOtherParams] = useState<
+    Omit<FundFlowParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
+  >({
+    walletId: '',
+    operationType: '',
+    serialNum: '',
+  });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
-  const [params, setParams] = useState<CrmUserDealDetailParams['params']>({
-    account: '',
-    selectOther: '',
-    inMethod: '',
-    currencyId: '',
-    operationStart: '',
-    operationEnd: '',
-    accounts: '',
-  });
-  const [commonParams, setCommonParams] = useState<
-    Omit<CrmUserDealDetailParams, 'params' | keyof BasicParams>
-  >({
-    operationType: '',
-    serialNum: '',
-    accounts: '',
-    mtOrder: '',
-  });
-  const { data: data, isLoading: loading } = useWalletTransactionList({
-    params,
+  const { t } = useTranslation();
+  const { data: typeRes, isLoading: typeResloading } = useDictType('crm_wallet_opr_type');
+  const { data: data, isLoading: loading } = useFundFlowList({
     pageSize,
-    ...commonParams,
     pageNum: pageNum + 1,
-    isAsc: 'asc',
     orderByColumn: '',
+    isAsc: 'asc',
+    ...otherParams,
+    params,
   });
-
-  const { mutate: getSum, data: sumData, isPending } = useWalletTransactionSum();
-  const [sumShow, setSumShow] = useState(false);
-  const getSumData = () => {
-    setSumShow(true);
-    getSum({
-      ...commonParams,
-      params: {
-        ...params,
-      },
-    });
-  };
-  useEffect(() => {
-    setSumShow(false);
-  }, [data]);
 
   const reset = () => {
-    setParams({
-      account: '',
-      selectOther: '',
+    setParams(pre => ({
+      ...pre,
       inMethod: '',
-      currencyId: '',
+      outMethod: '',
+      transMethod: '',
+      remaidMethod: '',
       operationStart: '',
       operationEnd: '',
-      accounts: '',
-    });
-    setCommonParams({
+    }));
+    setOtherParams({
+      walletId: '',
       operationType: '',
       serialNum: '',
-      accounts: '',
-      mtOrder: '',
     });
-    setPageNum(0);
     setKeyword('');
-    setPageSize(10);
+    setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<WalletTransactionItem, unknown>[] = [
+  const allColumns: CRMColumnDef<FundFlowItem, unknown>[] = [
     {
-      fixed: true,
-      id: 'No.',
-      header: t('overview.Index'),
+      id: 'No',
+      header: t('table.index'),
       cell: ({ row }) => <div>{row.index + 1}</div>,
-      size: 50,
-    },
-    {
-      id: 'lastName',
-      header: t('walletTransactions.lastName'),
-      cell: ({ row }) => (
-        <div>
-          <div>{(row.original.lastName ?? '') + (row.original.name ?? '')}</div>
-          <div>{row.original.showId}</div>
-        </div>
-      ),
     },
     {
       id: 'operationType',
       header: t('table.operationType'),
-      accessorFn: row => (row.operationType ? t(OperationTypeMap[row.operationType]) : ''),
+      cell: ({ row }) => {
+        const type = typeRes?.find(item => item.dictValue === String(row.original.operationType));
+        return type ? type.dictLabel : '-';
+      },
     },
     {
       id: 'operationMethod',
       header: t('table.inMethod'),
-      accessorFn: row => (row.operationMethod ? t(OperationMethodMap[row.operationMethod]) : ''),
-    },
-    {
-      id: 'currency',
-      accessorKey: 'currency',
-      header: t('walletTransactions.wallet'),
-      accessorFn: row => row.currency,
+      cell: ({ row }) => {
+        return row.original.operationMethod
+          ? t(OperationMethodMap[row.original.operationMethod])
+          : '-';
+      },
     },
     {
       id: 'preAmount',
-      accessorKey: 'preAmount',
       header: t('walletTransactions.preAmount'),
-      accessorFn: row => row.preAmount,
+      cell: ({ row }) => row?.original?.preAmount || '-',
     },
     {
       id: 'amount',
-      accessorKey: 'amount',
       header: t('walletTransactions.amount'),
-      accessorFn: row => row.amount,
+      cell: ({ row }) => row?.original?.amount || '-',
     },
     {
       id: 'postAmount',
-      accessorKey: 'postAmount',
       header: t('walletTransactions.postAmount'),
-      accessorFn: row => row.postAmount,
+      cell: ({ row }) => row?.original?.postAmount || '-',
     },
     {
       id: 'operationTime',
-      accessorKey: 'operationTime',
       header: t('walletTransactions.operationTimeTable'),
-      accessorFn: row => row.operationTime,
+      cell: ({ row }) => row?.original?.operationTime || '-',
     },
     {
       id: 'serialNum',
-      accessorKey: 'serialNum',
       header: t('walletTransactions.serialNumTable'),
-      accessorFn: row => row.serialNum,
+      cell: ({ row }) => row?.original?.serialNum || '-',
     },
     {
       id: 'mtOrder',
-      accessorKey: 'mtOrder',
-      header: t('walletTransactions.mtOrder'),
-      accessorFn: row => row.mtOrder || '--',
-    },
-    {
-      id: 'remark',
-      accessorKey: 'remark',
-      header: t('table.remarks'),
-      accessorFn: row => row.remark || '--',
+      header: t('table.tradingOrderNumber'),
+      cell: ({ row }) => row?.original?.mtOrder || '-',
     },
     {
       id: 'operation',
@@ -289,51 +239,49 @@ export function WalletTransactionsPage() {
     },
   ];
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility('wallet-transactions-table', allColumns);
-  const { mutateAsync: exportWalletTransactions, isPending: exportLoading } =
-    useWalletTransactionListExport();
+    useColumnVisibility('wallet-accounts-table', allColumns);
+
   return (
     <div>
-      <PageInfo title={t('walletTransactions.title')} />
       <TableContentWrapper>
-        <div className="mb-3 flex justify-between">
-          <div className="w-67 max-w-sm">
-            <RrhInputWithIcon
-              placeholder={t('table.nameOrEmail')}
-              className="h-9"
-              leftIcon={<Search className="size-4" />}
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
-              onLeftIconClick={() => {
-                setParams(prev => ({ ...prev, account: keyword }));
-                setPageNum(0);
-              }}
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+        <div className="mb-3 flex items-center justify-between">
+          <RrhInputWithIcon
+            placeholder={t('common.pleaseInput', { field: t('walletTransactions.serialNum') })}
+            className="h-9"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            leftIcon={<Search className="size-4 cursor-pointer" />}
+            onLeftIconClick={e => {
+              setOtherParams(prev => ({ ...prev, serialNum: e }));
+              setPageNum(0);
+            }}
+          />
+          <div className="flex items-center justify-end gap-2">
+            <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
-            </Button>
+            </RrhButton>
             <RrhDrawer
+              headerShow={false}
               asChild
-              Trigger={
-                <Button variant="ghost" className="size-8 cursor-pointer">
-                  <Funnel className="size-4" />
-                </Button>
-              }
-              title="Filter"
               responsiveDirection={{
                 mobile: 'bottom',
                 desktop: 'right',
               }}
               footerShow={false}
+              Trigger={
+                <RrhButton variant="ghost" className="size-8">
+                  <Funnel />
+                </RrhButton>
+              }
             >
-              <WalletTransactionsForm
-                reset={reset}
-                params={params}
-                commonParams={commonParams}
+              <FundFlowForm
                 setParams={setParams}
-                setCommonParams={setCommonParams}
+                setOtherParams={setOtherParams}
+                loading={loading || typeResloading}
+                reset={reset}
+                typeOptions={
+                  typeRes?.map(res => ({ label: res.dictLabel, value: res.dictValue })) || []
+                }
               />
             </RrhDrawer>
             <ColumnVisibilityButton
@@ -342,12 +290,6 @@ export function WalletTransactionsPage() {
               onToggle={toggleColumn}
               onBatchReorder={batchUpdateColumns}
               columns={columns}
-            />
-            <ExportButton<CrmUserDealDetailParams>
-              title={t('walletTransactions.title')}
-              exportFunction={exportWalletTransactions}
-              params={{ params, ...commonParams }}
-              exportLoading={exportLoading}
             />
           </div>
         </div>
@@ -359,38 +301,9 @@ export function WalletTransactionsPage() {
           pageSize={pageSize}
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
-          loading={loading}
-          CustomRow={
-            <>
-              <TableCell colSpan={6}>{t('table.total')}</TableCell>
-              {!sumShow && (
-                <TableCell colSpan={6}>
-                  <RrhButton variant="ghost" onClick={getSumData}>
-                    {t('table.clickToGetSum')}
-                  </RrhButton>
-                </TableCell>
-              )}
-              {sumShow ? (
-                isPending ? (
-                  <TableCell>{t('common.loading')}</TableCell>
-                ) : (
-                  <>
-                    <TableCell>
-                      {sumData?.data?.map((i, index) => {
-                        return (
-                          <div key={index}>
-                            {(Number(i.totalAmount) || 0).toFixed(2)} {i.currency}
-                          </div>
-                        );
-                      })}
-                    </TableCell>
-                  </>
-                )
-              ) : null}
-            </>
-          }
+          loading={loading || typeResloading}
         />
       </TableContentWrapper>
     </div>
   );
-}
+};
