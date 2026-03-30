@@ -26,9 +26,8 @@ export const EditableItem = ({
   value: string;
   onValueChange: (val: string) => void;
 }) => {
-  if (!info) return null;
   return !isAudit ? (
-    <InfoItem info={info} />
+    <InfoItem info={info || '-'} />
   ) : (
     <div className="flex w-full items-center justify-between gap-1">
       {infoEditable ? (

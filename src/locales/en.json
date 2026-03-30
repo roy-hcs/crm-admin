@@ -221,7 +221,8 @@
     "previous": "Previous step",
     "addField": "Add {{field}}",
     "selectField": "Select {{field}}",
-    "confirmToProceed": "Are you sure you want to proceed?"
+    "confirmToProceed": "Are you sure you want to proceed?",
+    "readOnly": "read only"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -266,7 +267,8 @@
     "quantity": "Order quantity",
     "quantityThisMonth": "Order volume (this month)",
     "quantityToday": "Order volume (today)",
-    "todo": "To-do items"
+    "todo": "To-do items",
+    "enableInternalTransferOut": "Internal transfer out"
   },
   "loginPage": {
     "EnterYourEmailBelowToSignInYourAccount": "Enter your email below to log in to your account",
@@ -372,7 +374,17 @@
     "traderTime": "Trading time",
     "trderAccount": "Trading account",
     "userName": "Rebate object",
-    "volume": "Trading volume"
+    "volume": "Trading volume",
+    "allowPasswordChange": "Allow password changes",
+    "allowTrackingStopLoss": "Allow trailing stops",
+    "enablTransaction": "Enable transaction",
+    "enableDayReport": "Enable daily report",
+    "enableDynamicPassword": "Enable dynamic password",
+    "enableEATransactions": "Enable Expert Advisor",
+    "enableThisAccount": "Activate this account",
+    "enableWebAPILinks": "Enable Web API link",
+    "nextLoginChangePassword": "Force password change next time you log in",
+    "tradingAccountDetail": "Trading account details"
   },
   "weekly-rebate": {
     "title": "Weekly commission rebate statement"
@@ -696,7 +708,10 @@
     "commissionAccount": "Rebate account",
     "traderAccount": "trading account",
     "accountDetail": "Account details",
-    "accountPermission": "Account permissions"
+    "accountPermission": "Account permissions",
+    "accountOperations": "Account operations",
+    "sendReport": "Send report",
+    "usedAdvance": "Advance payment used"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -764,7 +779,23 @@
     "OrderAsyncTips": "Existing orders will not be saved repeatedly. \nSynchronized new orders will not calculate rebates.",
     "batchOrderAsync": "Batch account order synchronization",
     "balanceAdjust": "Balance adjustment",
-    "balanceAdjustDescription": "This operation does not require review and can directly change the account balance."
+    "balanceAdjustDescription": "This operation does not require review and can directly change the account balance.",
+    "directBroker": "Account ownership",
+    "type": {
+      "1": "Deposit",
+      "2": "Withdraw funds",
+      "3": "System deposit",
+      "4": "System withdrawal",
+      "5": "System credit deposit",
+      "6": "System credit withdrawal",
+      "7": "Rebate deposit",
+      "8": "Internal transfer deposit",
+      "9": "Internal transfer and withdrawal",
+      "10": "Deposit money from simulated account",
+      "11": "Demo account withdrawal",
+      "12": "cost",
+      "13": "correct"
+    }
   },
   "tradingAccountDataStats": {
     "advanceScale": "Prepayment ratio",

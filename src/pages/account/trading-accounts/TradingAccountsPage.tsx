@@ -30,6 +30,7 @@ import { BalanceAdjustDialog } from './components/BalanceAdjustDialog';
 import { SetAccountGroupDialog } from './components/SetAccountGroupDialog';
 import { AddAccountDialog } from './components/AddAccountDialog';
 import { SetAccountBelongDialog } from './components/SetAccountBelongDialog';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export function TradingAccountsPage() {
   const { t } = useTranslation();
@@ -54,6 +55,8 @@ export function TradingAccountsPage() {
     accounts: '',
     accountGroupList: '',
   });
+
+  const { openTab } = useTabActions();
 
   const {
     data: data,
@@ -274,8 +277,15 @@ export function TradingAccountsPage() {
             ]}
             callToAction={action => {
               switch (action) {
-                case 'view':
+                case 'view': {
+                  const url = `/account/trading-accounts/detail?id=${row.original.id}&serviceType=${row.original.serviceType}`;
+                  openTab({
+                    key: url,
+                    title: t('trading.tradingAccountDetail'),
+                    path: url,
+                  });
                   break;
+                }
                 case 'resetPassword':
                   setInfo(row.original);
                   setIsResetPasswordDialogOpen(true);
