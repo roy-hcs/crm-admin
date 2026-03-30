@@ -23,6 +23,18 @@ import {
   WalletPerm,
   FundFlowParams,
   FundFlowListRes,
+  accountOperateInfoPerm,
+  AccountInfo,
+  CrmDealAccountFundFlowRes,
+  CrmDealAccountFundFlowParams,
+  CrmDealAccountFundHistoryParams,
+  CrmDealAccountFundHistoryRes,
+  CrmDealAccountPositionOrderParams,
+  CrmDealAccountPositionOrderRes,
+  CrmDealAccountLimitOrderParams,
+  CrmDealAccountLimitOrderRes,
+  AccountDetailInfo,
+  DetailInfoEditParams,
 } from './types';
 
 export * from './types';
@@ -342,5 +354,121 @@ export function useFundFlowList(params: FundFlowParams) {
     queryKey: ['fundFlowList', params],
     queryFn: () =>
       apiFormPostCustom<FundFlowListRes>(`/system/crmUserDealDetail/oneWalletList`, params),
+  });
+}
+/**
+ * 交易账户-详情-查询账号详情
+ */
+export function useGetDetailInfo(id: string) {
+  return useQuery({
+    queryKey: ['getDetailInfo', id],
+    queryFn: () => apiGet<AccountDetailInfo>(`/system/crmDealAccount/detailInfo/${id}`),
+  });
+}
+
+/**
+ * 交易账户-详情-设置账号详情
+ */
+export function useSetDetailInfoEdit() {
+  return useMutation({
+    mutationFn: (params: DetailInfoEditParams) =>
+      apiFormPost(`/system/crmDealAccount/edit`, params),
+  });
+}
+
+/**
+ * 交易账户-详情-查询账号权限
+ */
+export function useGetAuthorityInfoPerm() {
+  return useMutation({
+    mutationFn: (id: string) => apiGet<AccountInfo>(`/system/crmDealAccount/authorityInfo/${id}`),
+  });
+}
+
+/**
+ * 交易账户-详情-设置账号权限
+ */
+export function useSetAuthorityInfoPerm() {
+  return useMutation({
+    mutationFn: (params: { accountInitAuthSetting: string; id: string }) =>
+      apiFormPost(`/system/crmDealAccount/editAuth/${params.id}`, {
+        accountInitAuthSetting: params.accountInitAuthSetting,
+      }),
+  });
+}
+
+/**
+ * 交易账户-详情-查询账号操作权限
+ */
+export function useGetAccountOperateInfo() {
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiGet<accountOperateInfoPerm>(`/system/crmDealAccount/accountOperateInfo/${id}`),
+  });
+}
+
+/**
+ * 交易账户-详情-设置账号操作权限
+ */
+export function useSetAccountOperateInfo() {
+  return useMutation({
+    mutationFn: (params: { id: string; permissionJson: string; crmAuthority: string }) =>
+      apiFormPost('/system/crmDealAccount/editAccountOperate', params),
+  });
+}
+
+/**
+ * 交易账户-详情-资金流水
+ */
+export function useCrmDealAccountFundFlow(id: string, params: CrmDealAccountFundFlowParams) {
+  return useQuery({
+    queryKey: ['crmDealAccountFundFlow', id, params],
+    queryFn: () =>
+      apiFormPostCustom<CrmDealAccountFundFlowRes>(`/system/crmDealAccount/fundFlow/${id}`, params),
+  });
+}
+
+/**
+ * 交易账户-详情-交易历史
+ */
+export function useCrmDealAccountFundHistory(id: string, params: CrmDealAccountFundHistoryParams) {
+  return useQuery({
+    queryKey: ['crmDealAccountFundHistory', id, params],
+    queryFn: () =>
+      apiFormPostCustom<CrmDealAccountFundHistoryRes>(
+        `/system/crmDealAccount/fundHistory/${id}`,
+        params,
+      ),
+  });
+}
+
+/**
+ * 交易账户-详情-持仓订单
+ */
+export function useCrmDealAccountPositionOrder(
+  id: string,
+  params: CrmDealAccountPositionOrderParams,
+) {
+  return useQuery({
+    queryKey: ['crmDealAccountPositionOrder', id, params],
+    queryFn: () =>
+      apiFormPostCustom<CrmDealAccountPositionOrderRes>(
+        `/system/crmDealAccount/positionOrder/1/${id}`,
+        params,
+      ),
+  });
+}
+
+/**
+ * 交易账户-详情-限价订单
+ */
+export function useCrmDealAccountLimitOrder(id: string, params: CrmDealAccountLimitOrderParams) {
+  return useQuery({
+    queryKey: ['crmDealAccountLimitOrder', id, params],
+    queryFn: () =>
+      apiFormPostCustom<CrmDealAccountLimitOrderRes>(
+        `/system/crmDealAccount/positionOrder/2/${id}`,
+        params,
+      ),
   });
 }

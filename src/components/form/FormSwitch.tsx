@@ -23,6 +23,7 @@ export function FormSwitch<T extends FieldValues>({
       control={form.control}
       name={name}
       render={({ field }) => {
+        const value = String(field.value);
         return (
           <FormItem
             className={cn(
@@ -37,9 +38,9 @@ export function FormSwitch<T extends FieldValues>({
             <FormControl className="shrink-0 basis-9/12">
               <Switch
                 className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
-                checked={field.value === '1'}
+                checked={value === '1'}
                 onClick={() => {
-                  const newValue = field.value === '1' ? '0' : '1';
+                  const newValue = value === '1' ? '0' : '1';
                   field.onChange(newValue);
                 }}
               />

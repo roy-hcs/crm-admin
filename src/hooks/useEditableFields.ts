@@ -17,6 +17,22 @@ export function useEditableFields<T extends string>(
   // 临时编辑值
   const [editingValues, setEditingValues] = useState<Partial<Record<T, string>>>({});
 
+  // 将外部数据重新同步到 hook 内部（例如接口异步返回后）
+  const resetFields = useCallback(
+    (nextData?: Partial<Record<T, string>>) => {
+      setFields(prev => {
+        const next = { ...prev };
+        editableKeys.forEach(key => {
+          next[key] = nextData?.[key] ?? initialData[key] ?? '';
+          next[`${key}Editable`] = false;
+        });
+        return next;
+      });
+      setEditingValues({});
+    },
+    [editableKeys, initialData],
+  );
+
   // 切换编辑状态
   const toggleEditable = useCallback((key: T) => {
     setFields(prev => ({
@@ -110,5 +126,6 @@ export function useEditableFields<T extends string>(
     getDisplayValue,
     isEditing,
     getConfirmedData,
+    resetFields,
   };
 }
