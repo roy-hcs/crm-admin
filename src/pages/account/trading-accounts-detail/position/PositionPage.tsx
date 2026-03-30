@@ -21,12 +21,12 @@ import { PositionForm } from './PositionForm';
 
 function formatVolume(row: CrmDealAccountPositionOrderItem, serverType: number) {
   if (!row.volume) return '-';
-  if (serverType == 1) {
-    return (row.volume / 10000.0).toFixed(2);
-  } else if (serverType == 2) {
-    return (row.volume / 100.0).toFixed(2);
-  } else if (serverType == 4) {
-    const lotSize = row.lotSize ? row.lotSize : 1.0;
+  if (serverType === 1) {
+    return (row.volume / 10000).toFixed(2);
+  } else if (serverType === 2) {
+    return (row.volume / 100).toFixed(2);
+  } else if (serverType === 4) {
+    const lotSize = row.lotSize ? row.lotSize : 1;
     return (row.volume / lotSize).toFixed(2);
   } else {
     return row.volume;
@@ -35,12 +35,12 @@ function formatVolume(row: CrmDealAccountPositionOrderItem, serverType: number) 
 
 function totalFormatVolume(volume: number, serverType: number) {
   if (!volume) return '-';
-  if (serverType == 1) {
-    return (volume / 10000.0).toFixed(2);
-  } else if (serverType == 2) {
-    return (volume / 100.0).toFixed(2);
-  } else if (serverType == 4) {
-    const lotSize = 1.0;
+  if (serverType === 1) {
+    return (volume / 10000).toFixed(2);
+  } else if (serverType === 2) {
+    return (volume / 100).toFixed(2);
+  } else if (serverType === 4) {
+    const lotSize = 1;
     return (volume / lotSize).toFixed(2);
   } else {
     return volume;
