@@ -157,7 +157,7 @@ export function AccountPermission({ id }: { id: string }) {
           setServiceType(serviceType);
           form.reset(EMPTY_FORM_VALUES);
           if (authority) {
-            if (serviceType == 1) {
+            if (serviceType === 1) {
               if ((authority & 1) == 1) {
                 form.setValue('enableThisAccount', 1);
               }
@@ -185,7 +185,7 @@ export function AccountPermission({ id }: { id: string }) {
               if ((authority & 2048) == 2048) {
                 form.setValue('enableDynamicPassword', 1);
               }
-            } else if (serviceType == 2) {
+            } else if (serviceType === 2) {
               if ((authority & 16) == 16) {
                 form.setValue('enable4', 1);
               }
@@ -201,7 +201,7 @@ export function AccountPermission({ id }: { id: string }) {
               if ((authority & 2) == 2) {
                 form.setValue('dynamicPassword4', 1);
               }
-            } else if (serviceType == 3) {
+            } else if (serviceType === 3) {
               if ((authority & 4) == 4) {
                 form.setValue('readOnlyLx', 1);
               }
@@ -211,7 +211,7 @@ export function AccountPermission({ id }: { id: string }) {
               if ((authority & 1) == 1) {
                 form.setValue('sendReportLx', 1);
               }
-            } else if (serviceType == 5) {
+            } else if (serviceType === 5) {
               if ((authority & 4) == 4) {
                 form.setValue('enablTransactionXoh', 1);
               }
