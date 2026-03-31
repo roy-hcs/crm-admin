@@ -45,7 +45,7 @@ export function RrhFollowAlert<T>({
 
   return (
     <>
-      <Star onClick={handleClick} className={cn(checked ? 'text-yellow-400' : '')} />
+      <Star onClick={handleClick} className={cn(checked ? 'text-yellow-400' : '', 'size-3.5')} />
       <RrhAlert
         trigger={null}
         open={isOpen}
