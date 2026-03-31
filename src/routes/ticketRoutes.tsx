@@ -1,5 +1,6 @@
-import { TicketListPage } from '@/pages/ticket/list/TicketListPage';
+// import { TicketListPage } from '@/pages/ticket/list/TicketListPage';
 import { MyTicketsPage } from '@/pages/ticket/my-tickets/MyTicketsPage';
+import { TicketListPage } from '@/pages/ticket/ticket-list/TicketListPage';
 import { RouteObject } from 'react-router-dom';
 
 /**

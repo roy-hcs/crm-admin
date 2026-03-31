@@ -1,87 +1,103 @@
-import React, { useState, useCallback, useMemo, Dispatch, SetStateAction, useRef } from 'react';
-import { useMyTicketAllList, useTicketRemove } from '@/api/hooks/ticket/ticket';
-import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
-import { Button } from '@/components/ui/button';
+import { useState, useRef } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
+import { Button } from '@/components/ui/button';
+import { useTicketList, useTicketRemove } from '@/api/hooks/ticket/ticket';
+import { TicketAllListForm } from './TicketAllListForm';
+import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
+import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-import { CrmTicketParams, TicketTabsParams, CrmTicketItem } from '@/api/hooks/ticket/types';
-import { BasicParams } from '@/api/types';
-import { Funnel, RefreshCcw, Search, Ellipsis } from 'lucide-react';
-import { MyTicketsForm } from '../MyTicketsForm';
+import { useRoleList, useUserList } from '@/api/hooks/system';
 import { CRMColumnDef, DataTable, DataTableRef } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
+import { BasicParams } from '@/api/types';
+import { CrmTicketParams, CrmTicketItem } from '@/api/hooks/ticket/types';
 import { ToolTip } from '@/components/common/ToolTip';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { useTicketFollow } from '@/api/hooks/ticket/ticket';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
-import { RrhFollowAlert } from '@/components/common/RrhFollowAlert';
-import { AddTicketDialog } from '../../ticket-list/components/AddTicketDialog';
-import { useRoleList, useUserList } from '@/api/hooks/system';
 import { toast } from 'sonner';
-import { CloseOrderDialog } from '../../ticket-list/components/CloseOrderDialog';
+import { AssignOrderDialog } from '../components/AssignOrderDialog';
+import { Checkbox } from '@/components/ui/checkbox';
+import { CancelOrderDialog } from '../components/CancelOrderDialog';
+import { CloseOrderDialog } from '../components/CloseOrderDialog';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
+import { AddTicketDialog } from '../components/AddTicketDialog';
+import { RrhFollowAlert } from '@/components/common/RrhFollowAlert';
 
-type Props = {
-  mode: TicketTabsParams;
-  setOtherParams: Dispatch<SetStateAction<Omit<CrmTicketParams, keyof BasicParams>>>;
-  otherParams: Omit<CrmTicketParams, keyof BasicParams>;
-  onReset: () => void;
-};
-
-export const GenericTicketList: React.FC<Props> = ({
-  mode,
-  otherParams,
-  setOtherParams,
-  onReset,
-}) => {
+export const TicketAll = () => {
   const { t } = useTranslation();
   const [keyword, setKeyword] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-
-  const listParams = useMemo(
-    () => ({
-      pageSize,
-      pageNum: pageNum + 1,
-      orderByColumn: '',
-      isAsc: 'asc',
-      ...otherParams,
-    }),
-    [pageNum, pageSize, otherParams],
-  );
-
-  const { data, isLoading: loading, refetch } = useMyTicketAllList(listParams, mode);
+  const [otherParams, setOtherParams] = useState<Omit<CrmTicketParams, keyof BasicParams>>({
+    isAll: '1',
+    orderId: '',
+    content: '',
+    priority: '-1',
+    startDate: '',
+    endDate: '',
+    status: '-1',
+    receiverId: '',
+    belongUser: '',
+  });
   const { mutateAsync: modifyStatus } = useTicketFollow();
 
+  const {
+    data: ticketData,
+    isLoading: ticketLoading,
+    refetch,
+  } = useTicketList({
+    pageSize,
+    pageNum: pageNum + 1,
+    orderByColumn: '',
+    isAsc: 'asc',
+    ...otherParams,
+  });
   const { data: userData, isLoading: userDataLoading } = useUserList();
   const { data: roleData, isLoading: roleDataLoading } = useRoleList();
 
-  const reset = useCallback(() => {
-    onReset();
+  const reset = () => {
+    setOtherParams({
+      isAll: '1',
+      orderId: '',
+      content: '',
+      priority: '-1',
+      startDate: '',
+      endDate: '',
+      status: '-1',
+      receiverId: '',
+      belongUser: '',
+    });
     setKeyword('');
     setPageNum(0);
     setPageSize(10);
-  }, [onReset]);
-
-  const showStatus = useMemo(() => {
-    switch (mode) {
-      case 'all':
-        return true;
-      case 'unprocessed':
-        return false;
-      case 'processing':
-        return false;
-      case 'concerned':
-        return true;
-      case 'ccme':
-        return true;
-      case 'created':
-        return true;
-    }
-  }, [mode]);
+  };
 
   const allColumns: CRMColumnDef<CrmTicketItem, unknown>[] = [
+    {
+      id: 'select',
+      label: t('table.select'),
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={value => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
     {
       id: 'No.',
       header: t('table.index'),
@@ -164,20 +180,16 @@ export const GenericTicketList: React.FC<Props> = ({
       header: t('ticketList.receiverId'),
       accessorFn: row => row.receiver || '-',
     },
-    ...(showStatus
-      ? [
-          {
-            id: 'status',
-            header: t('common.status'),
-            cell: ({ row }: { row: { original: CrmTicketItem } }) => {
-              if ([0, 1, 2].includes(row.original.status)) {
-                return <div>{t(`ticketList.statusOptions.${row.original.status}`)}</div>;
-              }
-              return '-';
-            },
-          },
-        ]
-      : []),
+    {
+      id: 'status',
+      header: t('common.status'),
+      cell: ({ row }) => {
+        if ([0, 1, 2].includes(row.original.status)) {
+          return <div>{t(`ticketList.statusOptions.${row.original.status}`)}</div>;
+        }
+        return '-';
+      },
+    },
     {
       id: 'recentReplyTime',
       header: t('ticketList.recentReplyTime'),
@@ -217,11 +229,11 @@ export const GenericTicketList: React.FC<Props> = ({
   ];
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility(`my-tickets-${mode}-table`, allColumns);
+    useColumnVisibility('ticket-all-list-table', allColumns);
 
   const tableRef = useRef<DataTableRef>(null);
   const [ids, setIds] = useState<string[]>([]);
-  type DialogKey = 'CloseOrder' | null;
+  type DialogKey = 'AssignOrder' | 'CancelOrder' | 'CloseOrder' | null;
   const [openDialog, setOpenDialog] = useState<DialogKey>(null);
 
   const onSelectionChange = (its: CrmTicketItem[]) => {
@@ -241,8 +253,8 @@ export const GenericTicketList: React.FC<Props> = ({
   const { mutateAsync: removeTicket } = useTicketRemove();
 
   return (
-    <TableContentWrapper>
-      <div className="mb-3 flex flex-wrap justify-between gap-2">
+    <TableContentWrapper className="grid gap-3">
+      <div className="flex flex-wrap justify-between gap-2">
         <RrhInputWithIcon
           placeholder={t('common.pleaseInput', { field: t('ticketList.orderId') })}
           className="h-9"
@@ -272,23 +284,18 @@ export const GenericTicketList: React.FC<Props> = ({
             }}
             footerShow={false}
           >
-            <MyTicketsForm
+            <TicketAllListForm
               params={otherParams}
               reset={reset}
               setParams={setOtherParams}
-              showStatus={showStatus}
+              userData={userData?.rows || []}
             />
           </RrhDrawer>
-          <ColumnVisibilityButton
-            columnMeta={columnMeta}
-            visibleColumns={visibleColumns}
-            onToggle={toggleColumn}
-            onBatchReorder={batchUpdateColumns}
-            columns={columns}
-          />
           <RrhDropdown
             Trigger={<Ellipsis className="size-4" />}
             dropdownList={[
+              { label: t('ticketList.assignTicket'), value: 'AssignOrder' },
+              { label: t('ticketList.cancelAssign'), value: 'CancelOrder' },
               { label: t('ticketList.closeTicket'), value: 'CloseOrder' },
               { label: t('common.delete'), value: 'delete' },
             ]}
@@ -306,6 +313,13 @@ export const GenericTicketList: React.FC<Props> = ({
               setOpenDialog(action as DialogKey);
             }}
           />
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
+          />
           <AddTicketDialog
             onSuccess={refetch}
             roleOptions={(roleData?.rows || []).map(i => ({ label: i.roleName, value: i.roleId }))}
@@ -316,20 +330,31 @@ export const GenericTicketList: React.FC<Props> = ({
           />
         </div>
       </div>
-
       <DataTable
         ref={tableRef}
         columns={tableColumns}
-        data={data?.rows || []}
-        pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
+        data={ticketData?.rows || []}
+        pageCount={Math.ceil(+(ticketData?.total || 0) / pageSize)}
         pageIndex={pageNum}
         pageSize={pageSize}
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
-        loading={loading || userDataLoading || roleDataLoading}
+        loading={ticketLoading || userDataLoading || roleDataLoading}
         onSelectionChange={onSelectionChange}
       />
-
+      <AssignOrderDialog
+        onSuccess={onSuccess}
+        ids={ids}
+        open={openDialog === 'AssignOrder'}
+        setOpen={val => (val ? setOpenDialog('AssignOrder') : setOpenDialog(null))}
+        roleOptions={(roleData?.rows || []).map(i => ({ label: i.roleName, value: i.roleId }))}
+      />
+      <CancelOrderDialog
+        onSuccess={onSuccess}
+        ids={ids}
+        open={openDialog === 'CancelOrder'}
+        setOpen={val => (val ? setOpenDialog('CancelOrder') : setOpenDialog(null))}
+      />
       <CloseOrderDialog
         onSuccess={onSuccess}
         ids={ids}
