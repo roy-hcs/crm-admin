@@ -382,11 +382,7 @@ export function TradingAccountsPage() {
               />
             </RrhDrawer>
             <RrhDropdown
-              Trigger={
-                <RrhButton variant="ghost" className="size-8 cursor-pointer">
-                  <Ellipsis className="size-4" />
-                </RrhButton>
-              }
+              Trigger={<Ellipsis className="size-4" />}
               dropdownList={[
                 { label: t('tradingAccountTransactions.batchSetAgents'), value: 'broker' },
                 { label: t('tradingAccountTransactions.batchOrderAsync'), value: 'orderAsync' },

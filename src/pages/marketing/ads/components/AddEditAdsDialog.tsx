@@ -25,7 +25,7 @@ import { FormSelect } from '@/components/form/FormSelect';
 import { FormSwitch } from '@/components/form/FormSwitch';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { UploadFile } from './components/UploadFile';
-import { useUploadImage } from '@/api/hooks/system/system';
+import { useUploadFile } from '@/api/hooks/system/system';
 import { cloneDeep } from 'es-toolkit';
 
 type FormValues = {
@@ -110,7 +110,7 @@ export const AddEditAdsDialog = ({
       mobile: {},
     },
   });
-  const { mutateAsync: upload } = useUploadImage();
+  const { mutateAsync: upload } = useUploadFile();
   const { mutateAsync: add } = useAddAds();
   const { mutateAsync: edit } = useEditAds();
   const { mutateAsync: getAdsDetail } = useAdsDetail();

@@ -50,3 +50,57 @@ export type TicketTabsParams =
   | 'concerned'
   | 'ccme'
   | 'created';
+
+export type TicketAddParams = {
+  belongUserId: string;
+  content: string;
+  receiverId: string;
+  carbonCopy: string;
+  priority: string;
+  isFollow: string;
+  fileUrls: string;
+  fileNames: string;
+};
+
+export type AllocatedUsersItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  userId: string;
+  roleId: string | null;
+  loginName: string | null;
+  userName: string;
+  userLastName: string;
+  email: string;
+  mzone: string;
+  phonenumber: string;
+  sex: string | null;
+  avatar: string | null;
+  password: string | null;
+  salt: string | null;
+  status: '1';
+  delFlag: string | null;
+  loginIp: string | null;
+  loginDate: string | null;
+  chatId: string | null;
+  userRole: {
+    userId: string;
+    roleId: string | null;
+    role: string | null;
+  };
+  roles: Array<string>;
+  roleIds: Array<string> | null;
+  postIds: Array<string> | null;
+  googleKey: string | null;
+  boundGoogle: string | null;
+  onlineStatus: string | null;
+  userType: string | null;
+  expiryTime: string | null;
+  duration: string | null;
+  admin: boolean;
+  wholeName: string;
+};
+export type AllocatedUsers = BasicRes<AllocatedUsersItem>;

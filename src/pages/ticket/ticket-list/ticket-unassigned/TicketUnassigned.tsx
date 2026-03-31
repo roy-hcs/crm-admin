@@ -1,13 +1,12 @@
-import { useState, useCallback } from 'react';
+import { useState, useRef } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { useTicketList } from '@/api/hooks/ticket/ticket';
-import { TicketAllListForm } from './TicketAllListForm';
-import { Funnel, Search, RefreshCcw, Ellipsis, Star } from 'lucide-react';
+import { useTicketList, useTicketRemove } from '@/api/hooks/ticket/ticket';
+import { TicketUnassignedListForm } from './TicketUnassignedListForm';
+import { Funnel, Search, RefreshCcw, Ellipsis, Handshake, X } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-import { useUserList } from '@/api/hooks/system';
-import { CRMColumnDef, DataTable } from '@/components/table';
+import { CRMColumnDef, DataTable, DataTableRef } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
@@ -15,94 +14,35 @@ import { CrmTicketParams, CrmTicketItem } from '@/api/hooks/ticket/types';
 import { ToolTip } from '@/components/common/ToolTip';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { useTicketFollow } from '@/api/hooks/ticket/ticket';
-import { useQueryClient } from '@tanstack/react-query';
-import { cn } from '@/lib/utils';
-import { RrhAlert } from '@/components/common/RrhAlert';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
+import { Checkbox } from '@/components/ui/checkbox';
+import { RrhButton } from '@/components/common/RrhButton';
+import { AssignOrderDialog } from '../components/AssignOrderDialog';
+import { useRoleList } from '@/api/hooks/system';
+import { toast } from 'sonner';
+import { RrhFollowAlert } from '@/components/common/RrhFollowAlert';
 
-const FollowCell = ({ row }: { row: { original: CrmTicketItem } }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const changeStatusMutation = useTicketFollow();
-  const queryClient = useQueryClient();
-  const { t } = useTranslation();
-
-  const onConfirm = useCallback(async () => {
-    const res = await changeStatusMutation.mutateAsync({
-      id: String(row.original.id),
-      follow: row.original.isFollow === 1 ? 0 : 1,
-    });
-    if (res.code === 0) {
-      queryClient.invalidateQueries({ queryKey: ['TicketList'] });
-    }
-  }, [changeStatusMutation, queryClient, row.original.id, row.original.isFollow]);
-
-  const handleClick = () => {
-    /**
-     * 如果是取关弹出二次确认
-     * 否则直接关注
-     */
-    if (row.original.isFollow === 1) {
-      setIsOpen(true);
-    } else {
-      onConfirm();
-    }
-  };
-
-  return (
-    <>
-      <Star
-        onClick={handleClick}
-        className={cn(row.original.isFollow === 1 ? 'text-yellow-400' : '')}
-      />
-      <RrhAlert
-        trigger={null}
-        open={isOpen}
-        onOpenChange={setIsOpen}
-        cancelText={t('common.Cancel')}
-        confirmText={t('common.Confirm')}
-        title={t('common.SystemPrompt')}
-        content={t('ticketList.confirm.stop')}
-        onConfirm={onConfirm}
-      />
-    </>
-  );
-};
-
-export const TicketAllList = () => {
+export const TicketUnassigned = () => {
   const { t } = useTranslation();
   const [keyword, setKeyword] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [otherParams, setOtherParams] = useState<Omit<CrmTicketParams, keyof BasicParams>>({
-    isAll: '1',
+    isAll: '0',
     orderId: '',
     content: '',
     priority: '-1',
     startDate: '',
     endDate: '',
-    status: '-1',
-    receiverId: '',
     belongUser: '',
   });
 
-  const { data: userData, isLoading: userDataLoading } = useUserList({
-    pageSize,
-    pageNum: pageNum + 1,
-    orderByColumn: '',
-    isAsc: 'asc',
-    userName: '',
-    roleId: '',
-    status: '',
-    phonenumber: '',
-    email: '',
-    onlineStatus: '',
-    params: {
-      beginTime: '',
-      endTime: '',
-    },
-  });
-
-  const { data: ticketData, isLoading: ticketLoading } = useTicketList({
+  const {
+    data: ticketData,
+    isLoading: ticketLoading,
+    refetch,
+  } = useTicketList({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn: '',
@@ -110,16 +50,16 @@ export const TicketAllList = () => {
     ...otherParams,
   });
 
+  const { data: roleData, isLoading: roleDataLoading } = useRoleList();
+  const { mutateAsync: modifyStatus } = useTicketFollow();
   const reset = () => {
     setOtherParams({
-      isAll: '1',
+      isAll: '0',
       orderId: '',
       content: '',
       priority: '-1',
       startDate: '',
       endDate: '',
-      status: '-1',
-      receiverId: '',
       belongUser: '',
     });
     setKeyword('');
@@ -127,7 +67,51 @@ export const TicketAllList = () => {
     setPageSize(10);
   };
 
+  const tableRef = useRef<DataTableRef>(null);
+  const [ids, setIds] = useState<string[]>([]);
+  type DialogKey = 'AssignOrder' | null;
+  const [openDialog, setOpenDialog] = useState<DialogKey>(null);
+
+  const onSelectionChange = (its: CrmTicketItem[]) => {
+    const ids = its.filter(i => i.id).map(j => j.id || '');
+    setIds(ids);
+  };
+
+  const onSuccess = () => {
+    setIds([]);
+    tableRef.current?.selectionClear?.();
+    refetch();
+  };
+
+  const [params, setParams] = useState<{ ids: string }>({ ids: '' });
+  const [tipsText, setTipsText] = useState('');
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  const { mutateAsync: removeTicket } = useTicketRemove();
+
   const allColumns: CRMColumnDef<CrmTicketItem, unknown>[] = [
+    {
+      id: 'select',
+      label: t('table.select'),
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={value => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
     {
       id: 'No.',
       header: t('table.index'),
@@ -137,7 +121,21 @@ export const TicketAllList = () => {
       id: 'isFollow',
       header: t('ticketList.isFollow'),
       cell: ({ row }) => {
-        return <FollowCell row={row} />;
+        return (
+          <RrhFollowAlert<{
+            id: string;
+            follow: number;
+          }>
+            params={{
+              id: String(row.original.id),
+              follow: row.original.isFollow === 1 ? 0 : 1,
+            }}
+            tipsText={row.original.isFollow === 1 ? t('ticketList.confirm.stop') : ''}
+            checked={row.original.isFollow === 1}
+            confirmFunction={modifyStatus}
+            onSuccess={refetch}
+          />
+        );
       },
     },
     {
@@ -192,11 +190,6 @@ export const TicketAllList = () => {
       },
     },
     {
-      id: 'receiver',
-      header: t('ticketList.receiverId'),
-      accessorFn: row => row.receiver || '-',
-    },
-    {
       id: 'status',
       header: t('common.status'),
       cell: ({ row }) => {
@@ -205,11 +198,6 @@ export const TicketAllList = () => {
         }
         return '-';
       },
-    },
-    {
-      id: 'recentReplyTime',
-      header: t('ticketList.recentReplyTime'),
-      accessorFn: row => row.recentReplyTime || '-',
     },
     {
       id: 'createTime',
@@ -222,21 +210,30 @@ export const TicketAllList = () => {
       label: t('common.Operation'),
       fixed: 'right',
       size: 50,
-      cell: () => (
+      cell: ({ row }) => (
         <RrhDropdown
           Trigger={<Ellipsis className="size-4" />}
           dropdownList={[
             { label: t('common.View'), value: 'view' },
-            { label: t('common.Edit'), value: 'edit' },
+            { label: t('common.delete'), value: 'delete' },
           ]}
-          callToAction={() => {}}
+          callToAction={action => {
+            if (action === 'view') {
+              // setEditingItem(row.original);
+              // setOpen(true);
+            } else if (action === 'delete') {
+              setParams({ ids: row.original.id ? String(row.original.id) : '' });
+              setTipsText(t('ticketList.deleteTips'));
+              setDeleteAlert(true);
+            }
+          }}
         />
       ),
     },
   ];
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility('ticket-all-list-table', allColumns);
+    useColumnVisibility('ticket-unassigned-list-table', allColumns);
 
   return (
     <TableContentWrapper>
@@ -253,7 +250,6 @@ export const TicketAllList = () => {
           }}
         />
         <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline">{t('common.add')}</Button>
           <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
           </Button>
@@ -271,11 +267,10 @@ export const TicketAllList = () => {
             }}
             footerShow={false}
           >
-            <TicketAllListForm
+            <TicketUnassignedListForm
               params={otherParams}
               reset={reset}
               setParams={setOtherParams}
-              userData={userData?.rows || []}
             />
           </RrhDrawer>
           <ColumnVisibilityButton
@@ -285,9 +280,38 @@ export const TicketAllList = () => {
             onBatchReorder={batchUpdateColumns}
             columns={columns}
           />
+          <RrhButton
+            onClick={() => {
+              if (ids && ids.length === 0) {
+                toast.error(t('ticketList.atLeastOneTicket'));
+                return;
+              }
+              setOpenDialog('AssignOrder');
+            }}
+            type="button"
+            Icon={<Handshake className="size-3.5" />}
+          >
+            {t('ticketList.assignTicket')}
+          </RrhButton>
+          <RrhButton
+            onClick={() => {
+              if (ids && ids.length === 0) {
+                toast.error(t('ticketList.atLeastOneTicket'));
+                return;
+              }
+              setTipsText(t('ticketList.deleteSelectedTips', { count: ids.length }));
+              setParams({ ids: ids.join(',') });
+              setDeleteAlert(true);
+            }}
+            type="button"
+            Icon={<X className="size-3.5" />}
+          >
+            {t('common.delete')}
+          </RrhButton>
         </div>
       </div>
       <DataTable
+        ref={tableRef}
         columns={tableColumns}
         data={ticketData?.rows || []}
         pageCount={Math.ceil(+(ticketData?.total || 0) / pageSize)}
@@ -295,7 +319,25 @@ export const TicketAllList = () => {
         pageSize={pageSize}
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
-        loading={ticketLoading || userDataLoading}
+        loading={ticketLoading || roleDataLoading}
+        onSelectionChange={onSelectionChange}
+      />
+      <AssignOrderDialog
+        onSuccess={onSuccess}
+        ids={ids}
+        open={openDialog === 'AssignOrder'}
+        setOpen={val => (val ? setOpenDialog('AssignOrder') : setOpenDialog(null))}
+        roleOptions={(roleData?.rows || []).map(i => ({ label: i.roleName, value: i.roleId }))}
+      />
+      <RrhDeleteAlert<{
+        ids: string;
+      }>
+        open={deleteAlert}
+        setOpen={setDeleteAlert}
+        onSuccess={onSuccess}
+        confirmFunction={removeTicket}
+        params={params}
+        tipsText={tipsText}
       />
     </TableContentWrapper>
   );

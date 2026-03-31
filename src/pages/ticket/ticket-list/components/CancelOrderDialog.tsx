@@ -1,19 +1,18 @@
-import { Form, FormField } from '@/components/ui/form';
+import { Form } from '@/components/ui/form';
 import { FormProvider } from '@/contexts/form';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
-import { SelectUser } from './SelectUser';
-import { useSetBroker } from '@/api/hooks/account';
 import { toast } from 'sonner';
+import { useClearAssignee } from '@/api/hooks/ticket/ticket';
 
 type FormValues = {
   broker: string;
 };
 
-export const SetBrokerDialog = ({
+export const CancelOrderDialog = ({
   onSuccess,
   ids,
   open,
@@ -32,22 +31,21 @@ export const SetBrokerDialog = ({
       broker: '',
     },
   });
-  const { mutateAsync: setBroker } = useSetBroker();
+  const { mutateAsync: clear } = useClearAssignee();
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async () => {
     try {
       setIsSubmitting(true);
       const param = {
-        ...data,
-        broker: data.broker || '',
         ids: ids.join(','),
       };
-      const res = await setBroker(param);
+      const res = await clear(param);
       if (res.code === 0) {
-        form.reset();
+        onCancel();
         toast.success(t('common.success'));
-        setOpen(false);
         onSuccess?.();
+      } else {
+        toast.error(res.msg);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -63,7 +61,7 @@ export const SetBrokerDialog = ({
 
   return (
     <RrhDialog
-      title={t('tradingAccountTransactions.batchSetAgents')}
+      title={t('ticketList.cancelAssign')}
       isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
@@ -75,15 +73,9 @@ export const SetBrokerDialog = ({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <div className="text-foreground text-sm leading-5 font-medium">
-              {t('tradingAccountTransactions.selectedAccounts', { count: ids.length })}
+              {t('ticketList.selectedTickets', { count: ids.length })}
             </div>
-            <FormField
-              name="broker"
-              render={({ field }) => {
-                return <SelectUser verticalLabel field={field} title={t('table.directAgent')} />;
-              }}
-            />
-
+            <div className="text-muted-foreground text-sm">{t('ticketList.clearAssignee')}</div>
             <div className="col-span-full -mx-6 flex justify-end px-6 py-6 sm:pb-0">
               <div className="flex justify-end gap-4">
                 <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>

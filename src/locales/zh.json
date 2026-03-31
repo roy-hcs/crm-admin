@@ -535,7 +535,8 @@
     "crmAccountPassword": "{{min}}-{{max}}位（数字+大写字母+小写字母+特殊字符组合）",
     "integer": "{{field}}请输入正整数",
     "greaterThanZero": "{{field}}必须大于0",
-    "levelNameAlreadyUsed": "该层级名称已存在"
+    "levelNameAlreadyUsed": "该层级名称已存在",
+    "maxSize": "最大不超过{{maxSize}}MB"
   },
   "tradingHistoryPage": {
     "tradingHistoryDetail": "交易历史详情",
@@ -804,7 +805,20 @@
     "confirm": {
       "stop": "确认要取消关注吗？"
     },
-    "recentReplyTime": "最后回复时间"
+    "recentReplyTime": "最后回复时间",
+    "atLeastOneTicket": "至少选择一条工单",
+    "addTicket": "新增工单",
+    "assignTicket": "分配工单",
+    "cancelAssign": "取消分配",
+    "closeTicket": "关闭工单",
+    "deleteTips": "确定删除该 工单？",
+    "deleteSelectedTips": "确认要删除选中的 {{count}} 条数据吗?",
+    "carbonCopy": "抄送",
+    "attachment": "附件",
+    "attachmentDescription": "支持的文件类型: {{fileTypes}}，最大不超过{{maxSize}}MB",
+    "selectedTickets": "已选择 {{count}} 条工单",
+    "clearAssignee": "确定清除受理人？",
+    "closeOrder": "确定关闭工单？关闭工单，状态将更改为已完成。"
   },
   "myTicket": {
     "title": "我的工单",
