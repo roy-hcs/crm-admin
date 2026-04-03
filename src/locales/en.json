@@ -219,7 +219,8 @@
     "addField": "Add {{field}}",
     "selectField": "Select {{field}}",
     "confirmToProceed": "Are you sure you want to proceed?",
-    "readOnly": "read only"
+    "readOnly": "read only",
+    "idCardName": "ID name"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -707,7 +708,10 @@
     "accountPermission": "Account permissions",
     "accountOperations": "Account operations",
     "sendReport": "Send report",
-    "usedAdvance": "Advance payment used"
+    "usedAdvance": "Advance payment used",
+    "countryOrRegion": "Country/Region",
+    "initialAmount": "Initial deposit",
+    "productSource": "Customer source"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -923,9 +927,16 @@
     "accountOpeningReviewDetail": "Account opening review details",
     "accountOverview": "Account overview",
     "kycVerifyStatus": {
+      "0": "reject",
+      "1": "Approved",
+      "2": "Under review",
       "-1": "Under review",
       "-2": "Not submitted"
-    }
+    },
+    "lastLogin": "Recently logged in",
+    "openAccountInformation": "Account opening information",
+    "sendInformation": "Send message",
+    "sendPasswordOnly": "Send only read-only password"
   },
   "binding": {
     "source": "Promotion invitation code",
