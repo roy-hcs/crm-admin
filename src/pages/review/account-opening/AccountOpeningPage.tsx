@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { AccountOpeningForm } from './AccountOpeningForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
@@ -17,6 +17,7 @@ import { RrhOrderStatusTag } from '@/components/common/RrhOrderStatusTag';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { RrhButton } from '@/components/common/RrhButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export function AccountOpeningPage() {
   const { t } = useTranslation();
@@ -57,6 +58,22 @@ export function AccountOpeningPage() {
     setKeyword('');
     setPageNum(0);
   };
+
+  const { openTab } = useTabActions();
+
+  const goToDetail = useCallback(
+    (row: CrmNewLoginVerifyItem) => {
+      // status: 2:待审核 -1:审核中
+      const type = [-1, 2].includes(Number(row.status)) ? 'audit' : 'detail';
+      const url = `/review/account-opening/detail?type=${type}&id=${row.id}`;
+      openTab({
+        key: url,
+        title: t('accountOpening.accountOpeningReviewDetail'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
 
   const allColumns: CRMColumnDef<CrmNewLoginVerifyItem, unknown>[] = [
     {
@@ -211,7 +228,11 @@ export function AccountOpeningPage() {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
       label: t('common.Operation'),
-      cell: () => <RrhButton variant="ghost">{t('table.audit')}</RrhButton>,
+      cell: ({ row }) => (
+        <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+          {[-1, 2].includes(Number(row?.original?.status)) ? t('table.audit') : t('common.View')}
+        </RrhButton>
+      ),
       fixed: 'right',
       size: 50,
     },

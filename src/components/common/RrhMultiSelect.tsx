@@ -20,7 +20,13 @@ export const RrhMultiSelect = <T extends BaseOption>({
   className,
   renderItem,
   searchSupport = false,
+  searchValue,
+  searchPlaceholder = 'Search',
+  onSearchChange,
   showRowValue = true,
+  onDropdownReachEnd,
+  loadingMore = false,
+  hasMore = false,
 }: {
   options: T[];
   value?: string[];
@@ -29,7 +35,13 @@ export const RrhMultiSelect = <T extends BaseOption>({
   className?: string;
   renderItem?: (option: T) => ReactNode;
   searchSupport?: boolean;
+  searchValue?: string;
+  searchPlaceholder?: string;
+  onSearchChange?: (value: string) => void;
   showRowValue?: boolean;
+  onDropdownReachEnd?: () => void;
+  loadingMore?: boolean;
+  hasMore?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   const selectedOptions = options.filter(option => value.includes(option.value.toString()));
@@ -56,6 +68,15 @@ export const RrhMultiSelect = <T extends BaseOption>({
     event.stopPropagation();
     if (!onValueChange) return;
     onValueChange(value.filter(v => v !== optionValue));
+  };
+
+  const handleListScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    if (!onDropdownReachEnd || loadingMore || !hasMore) return;
+    const target = e.currentTarget;
+    const reachBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 8;
+    if (reachBottom) {
+      onDropdownReachEnd();
+    }
   };
 
   return (
@@ -107,10 +128,19 @@ export const RrhMultiSelect = <T extends BaseOption>({
         align="start"
         sideOffset={4}
       >
-        <Command className="overflow-hidden">
-          {searchSupport && <CommandInput placeholder={placeholder} />}
+        <Command className="overflow-hidden" shouldFilter={onSearchChange ? false : undefined}>
+          {searchSupport && (
+            <CommandInput
+              value={searchValue}
+              onValueChange={onSearchChange}
+              placeholder={searchPlaceholder}
+            />
+          )}
           <CommandEmpty>No item found.</CommandEmpty>
-          <CommandGroup className="scrollbar-thin max-h-60 overflow-y-auto">
+          <CommandGroup
+            className="scrollbar-thin max-h-60 overflow-y-auto"
+            onScroll={handleListScroll}
+          >
             {options.map(option => (
               <CommandItem
                 key={option.value}
@@ -129,6 +159,9 @@ export const RrhMultiSelect = <T extends BaseOption>({
                 {renderItem ? renderItem(option) : option.label}
               </CommandItem>
             ))}
+            {loadingMore && (
+              <div className="text-muted-foreground px-2 py-1 text-xs">Loading...</div>
+            )}
           </CommandGroup>
         </Command>
       </PopoverContent>

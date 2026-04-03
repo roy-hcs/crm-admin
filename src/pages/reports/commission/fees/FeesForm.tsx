@@ -167,7 +167,7 @@ export const FeesForm = ({
           <FormMultiSelect
             verticalLabel
             name="serverGroup"
-            label={t('trading.serverGroup')}
+            label={t('table.groups')}
             placeholder={t('common.pleaseSelect')}
             options={groupList}
             loading={groupLoading}

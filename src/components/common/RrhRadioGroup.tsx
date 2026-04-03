@@ -1,7 +1,7 @@
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { cn } from '@/lib/utils';
-import { FC } from 'react';
+import { FC, useId } from 'react';
 
 export const RrhRadioGroup: FC<{
   defaultValue?: string;
@@ -13,6 +13,7 @@ export const RrhRadioGroup: FC<{
   radioItemClassName?: string;
   labelClassName?: string;
   value: string;
+  idPrefix?: string;
   onValueChange?: (value: string) => void;
   vertical?: boolean;
   orientation?: 'horizontal' | 'vertical';
@@ -22,9 +23,12 @@ export const RrhRadioGroup: FC<{
   radioItemClassName,
   labelClassName,
   value,
+  idPrefix,
   onValueChange,
   orientation = 'horizontal',
 }) => {
+  const autoIdPrefix = useId();
+  const groupIdPrefix = idPrefix || autoIdPrefix;
   return (
     <RadioGroup
       className={cn(orientation === 'horizontal' ? '' : 'flex')}
@@ -32,21 +36,20 @@ export const RrhRadioGroup: FC<{
       value={value}
       onValueChange={onValueChange}
     >
-      {radioItems.map(item => (
-        <div className={cn('flex gap-3', radioItemClassName)} key={item.value}>
-          <RadioGroupItem
-            className="mt-0.5 size-4 [&_svg]:h-2"
-            value={item.value}
-            id={item.value}
-          />
-          <div>
-            <Label className={cn('text-sm', labelClassName)} htmlFor={item.value}>
-              {item.label}
-            </Label>
-            {item.desc && <p className="text-muted-foreground text-xs">{item.desc}</p>}
+      {radioItems.map((item, index) => {
+        const radioId = `${groupIdPrefix}-${item.value}-${index}`;
+        return (
+          <div className={cn('flex gap-3', radioItemClassName)} key={`${item.value}-${index}`}>
+            <RadioGroupItem className="mt-0.5 size-4 [&_svg]:h-2" value={item.value} id={radioId} />
+            <div>
+              <Label className={cn('text-sm', labelClassName)} htmlFor={radioId}>
+                {item.label}
+              </Label>
+              {item.desc && <p className="text-muted-foreground text-xs">{item.desc}</p>}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </RadioGroup>
   );
 };

@@ -365,7 +365,7 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
             />
             <FormSelect
               name="roleId"
-              label={`${t('CRMAccountPage.Role')}`}
+              label={`${t('table.role')}`}
               verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}

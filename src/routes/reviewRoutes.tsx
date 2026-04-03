@@ -19,6 +19,7 @@ import { InternalTransferDetailPage } from '@/pages/review/internal-transfer-det
 import { TradingRebateDetailPage } from '@/pages/review/trading-rebate-detail/TradingRebateDetailPage';
 import { FeeRebateDetailPage } from '@/pages/review/fee-rebate-detail/FeeRebateDetailPage';
 import { DepositRebateDetailPage } from '@/pages/review/deposit-rebate-detail/DepositRebateDetailPage';
+import { AccountOpeningDetailPage } from '@/pages/review/account-opening-detail/AccountOpeningDetail';
 
 const ReviewWithdrawalDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();
@@ -60,6 +61,11 @@ const DepositRebateDetailPageWrapper = () => {
   return <DepositRebateDetailPage key={searchParams.get('id')} />;
 };
 
+const AccountOpeningDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <AccountOpeningDetailPage key={searchParams.get('id')} />;
+};
+
 /**
  * Review routes - corresponds to "审核" menu item
  *
@@ -90,6 +96,10 @@ export const reviewRoutes: RouteObject[] = [
   {
     path: '/review/account-opening',
     element: <AccountOpeningPage />,
+  },
+  {
+    path: '/review/account-opening/detail',
+    element: <AccountOpeningDetailPageWrapper />,
   },
   {
     path: '/review/binding',

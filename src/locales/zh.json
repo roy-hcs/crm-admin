@@ -7,11 +7,9 @@
     "Status": "状态",
     "Mobile": "手机号",
     "CRMAccountType": "CRM账户类型",
-    "Role": "角色",
     "Level": "层级",
     "TagsName": "标签名称",
     "LatestFollowupTime": "最近跟进",
-    "RegisterTime": "注册时间",
     "Upper": "上级",
     "UpperEmail": "上级邮箱",
     "RealAccount": "真实账号",
@@ -23,7 +21,6 @@
     "NameOrAccountId": "姓名/账户ID",
     "ID": "证件号码",
     "status": "状态",
-    "role": "角色",
     "registerTime": "注册时间",
     "tagName": "标签名称",
     "Export": "导出",
@@ -241,7 +238,8 @@
     "addField": "新增 {{field}}",
     "selectField": "选择 {{field}}",
     "confirmToProceed": "确定进行操作？",
-    "readOnly": "只读"
+    "readOnly": "只读",
+    "idCardName": "证件姓名"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -949,7 +947,6 @@
     "firstNameOrLastName": "姓/名",
     "tradingAccount": "交易账号",
     "accountGroup": "账户组",
-    "accountScope": "账户范围",
     "openTime": "开仓时间",
     "closeTime": "平仓时间",
     "volume": "交易量",
@@ -1241,7 +1238,10 @@
     "accountPermission": "账号权限",
     "accountOperations": "账户操作",
     "sendReport": "发送报告",
-    "usedAdvance": "已用预付款"
+    "usedAdvance": "已用预付款",
+    "initialAmount": "初始存款",
+    "countryOrRegion": "国家/地区",
+    "productSource": "客户来源"
   },
   "settings": {
     "title": "审核设置",
@@ -1260,7 +1260,21 @@
   },
   "accountOpening": {
     "title": "开户审核",
-    "source": "推广邀请码"
+    "source": "推广邀请码",
+    "accountOpeningReviewDetail": "开户审核详情",
+    "accountOverview": "账户概览",
+    "KYCInfo": "KYC信息",
+    "openAccountInformation": "开户信息",
+    "sendPasswordOnly": "只发送只读密码",
+    "lastLogin": "最近登陆",
+    "sendInformation": "发送信息",
+    "kycVerifyStatus": {
+      "-2": "未提交",
+      "-1": "审核中",
+      "0": "拒绝",
+      "1": "审核通过",
+      "2": "审核中"
+    }
   },
   "binding": {
     "title": "绑定审核",

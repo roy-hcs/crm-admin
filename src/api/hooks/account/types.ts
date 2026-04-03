@@ -94,7 +94,7 @@ export type CustomRelationsItem = {
   crmRebateLevel: string;
   id: string;
   hasChildren: boolean;
-  parentName: string;
+  userName: string;
 };
 
 // Trading Account related types

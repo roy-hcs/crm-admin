@@ -35,6 +35,10 @@ import {
   MtServerItem,
   AccountInfo,
   AddAccountParams,
+  CrmUsers,
+  CrmUsersParams,
+  CrmUsersTagsParams,
+  CrmUsersTags,
 } from './types';
 
 // Note: useWithDrawReport, useFundFlowReport, useSymbolReport, useRegCountReport, useDepositAllReport, useCustomerTransactionsReport, useSumReport moved to @/api/hooks/workbench
@@ -438,5 +442,24 @@ export function useGetSysConfig(key: string) {
   return useQuery({
     queryKey: ['GetSysConfig', key],
     queryFn: () => apiGetCustom<number | string>(`/system/config/getConfig?key=${key}`),
+  });
+}
+/**
+ * 获取crm用户
+ */
+export function useCrmUsers() {
+  return useMutation({
+    mutationFn: (params: CrmUsersParams) =>
+      apiFormPostCustom<CrmUsers>('/system/crmUser/listBase', params),
+  });
+}
+
+/**
+ * 获取crm用户标签
+ */
+export function useCrmUserTags() {
+  return useMutation({
+    mutationFn: (params: CrmUsersTagsParams) =>
+      apiFormPostCustom<CrmUsersTags>('/system/crmUserTag/list', params),
   });
 }

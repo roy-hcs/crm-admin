@@ -194,7 +194,7 @@ export function TradingAccountsPage() {
     },
     {
       id: 'roleName',
-      header: t('CRMAccountPage.Role'),
+      header: t('table.role'),
       accessorFn: row => row.roleName || '-',
     },
     {
@@ -255,7 +255,7 @@ export function TradingAccountsPage() {
     },
     {
       id: 'registerTimeStr',
-      header: t('CRMAccountPage.RegisterTime'),
+      header: t('CRMAccountPage.registerTime'),
       accessorFn: row => row.registerTimeStr || '-',
     },
     {

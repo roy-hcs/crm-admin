@@ -32,7 +32,7 @@ import { DeleteAccount } from './components/DeleteAccount';
 import { AccountTags } from './components/AccountTags';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
-
+type DialogType = 'password' | 'fundPassword' | 'delete' | null;
 export const CRMAccounts = () => {
   const formRef = useRef<CRMFormRef>(null);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc'>('asc');
@@ -170,7 +170,7 @@ export const CRMAccounts = () => {
     {
       id: 'role',
       accessorKey: 'role',
-      header: t('CRMAccountPage.Role'),
+      header: t('table.role'),
     },
     {
       id: 'crmRebateLevel',
@@ -239,7 +239,7 @@ export const CRMAccounts = () => {
     {
       id: 'createTime',
       accessorKey: 'createTime',
-      header: t('CRMAccountPage.RegisterTime'),
+      header: t('CRMAccountPage.registerTime'),
       cell: ({ row }) => {
         const createTimeArr = (row.original.createTime || '-').split(' ');
         return (
@@ -312,21 +312,19 @@ export const CRMAccounts = () => {
               { label: t('common.delete'), value: 'delete' },
             ]}
             callToAction={action => {
+              setId(row.original.id);
               switch (action) {
                 case 'view':
                   // View action
                   break;
                 case 'resetPassword':
-                  setId(row.original.id);
-                  setIsResetPasswordDialogOpen(true);
+                  setDialogOpen('password');
                   break;
                 case 'resetFundPassword':
-                  setId(row.original.id);
-                  setIsResetFundsPasswordDialogOpen(true);
+                  setDialogOpen('fundPassword');
                   break;
                 case 'delete':
-                  setId(row.original.id);
-                  setIsDeleteDialogOpen(true);
+                  setDialogOpen('delete');
                   break;
                 default:
                   break;
@@ -342,10 +340,7 @@ export const CRMAccounts = () => {
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, columnMeta, tableColumns } =
     useColumnVisibility('crm-accounts-table', allColumns);
-
-  const [isResetPasswordDialogOpen, setIsResetPasswordDialogOpen] = useState(false);
-  const [isResetFundsPasswordDialogOpen, setIsResetFundsPasswordDialogOpen] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState<DialogType>(null);
   const [id, setId] = useState<string>('');
   const btnsList = [
     {
@@ -469,22 +464,28 @@ export const CRMAccounts = () => {
           id={id}
           type="password"
           title={t('common.resetPassword')}
-          isResetDialogOpen={isResetPasswordDialogOpen}
-          setIsResetDialogOpen={setIsResetPasswordDialogOpen}
+          isResetDialogOpen={dialogOpen === 'password'}
+          setIsResetDialogOpen={(val: boolean) => {
+            if (!val) setDialogOpen(null);
+          }}
         />
         <ResetPassword
           id={id}
           type="fundPassword"
           title={t('common.resetFundPassword')}
-          isResetDialogOpen={isResetFundsPasswordDialogOpen}
-          setIsResetDialogOpen={setIsResetFundsPasswordDialogOpen}
+          isResetDialogOpen={dialogOpen === 'fundPassword'}
+          setIsResetDialogOpen={(val: boolean) => {
+            if (!val) setDialogOpen(null);
+          }}
         />
         {id && (
           <DeleteAccount
             id={id}
             title={t('common.deleteAccount')}
-            isResetDialogOpen={isDeleteDialogOpen}
-            setIsResetDialogOpen={setIsDeleteDialogOpen}
+            isResetDialogOpen={dialogOpen === 'delete'}
+            setIsResetDialogOpen={(val: boolean) => {
+              if (!val) setDialogOpen(null);
+            }}
           />
         )}
       </TableContentWrapper>

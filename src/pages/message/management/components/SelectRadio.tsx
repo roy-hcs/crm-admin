@@ -25,6 +25,7 @@ export const SelectRadio = ({
         <FormLabel className={cn(verticalLabel ? 'mb-2' : 'basis-3/12')}>{title}</FormLabel>
         <FormControl>
           <RrhRadioGroup
+            idPrefix={field.name}
             value={field.value ?? '1'}
             orientation={orientation}
             onValueChange={value => {
