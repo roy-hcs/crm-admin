@@ -1,4 +1,4 @@
-import { apiFormPostCustom, apiGetCustom } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGetCustom } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AgentApplyListParams,
@@ -35,6 +35,18 @@ import {
   SumWithdrawalAmountRes,
   DepositReviewDetailRes,
   DepositVerifyParams,
+  LeverageReviewDetailRes,
+  LeverageVerifyParams,
+  BindingReviewDetailRes,
+  BindingVerifyParams,
+  InternalTransferReviewDetailRes,
+  InternalTransferVerifyParams,
+  InternalTransferDealTicketListParams,
+  InternalTransferDealTicketListRes,
+  RebateReviewDetailRes,
+  RebateVerifyParams,
+  FeeRebateReviewDetailRes,
+  DepositRebateReviewDetailRes,
 } from './types';
 
 export function useAgentApplyList(params: AgentApplyListParams, options: { enabled: boolean }) {
@@ -244,6 +256,160 @@ export function useDepositVerify() {
   return useMutation({
     mutationFn: (params: DepositVerifyParams) =>
       apiFormPostCustom(`/system/crmDepositVerify/verify`, params),
+  });
+}
+
+/**
+ * 获取杠杆审核详情
+ */
+export function useLeverageReviewDetail(leverId: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['leverageReviewDetail', leverId],
+    queryFn: () =>
+      apiGetCustom<LeverageReviewDetailRes>(`/system/crmLeverVerify/detail/${leverId}`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 杠杆审核提交
+ */
+export function useLeverageVerify() {
+  return useMutation({
+    mutationFn: (params: LeverageVerifyParams) =>
+      apiFormPost(`/system/crmLeverVerify/verify`, params),
+  });
+}
+
+/**
+ * 获取绑定审核详情
+ */
+export function useBindingReviewDetail(bindingId: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['bindingReviewDetail', bindingId],
+    queryFn: () =>
+      apiGetCustom<BindingReviewDetailRes>(`/system/crmUserBindVerify/detail/${bindingId}`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 绑定审核提交
+ */
+export function useBindingVerify() {
+  return useMutation({
+    mutationFn: (params: BindingVerifyParams) =>
+      apiFormPost(`/system/crmUserBindVerify/verify`, params),
+  });
+}
+
+/**
+ * 获取内部转账审核详情
+ */
+export function useInternalTransferReviewDetail(transferId: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['internalTransferReviewDetail', transferId],
+    queryFn: () =>
+      apiGetCustom<InternalTransferReviewDetailRes>(
+        `/system/crmInternalTransferVerify/detail/${transferId}`,
+      ),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 内部转账审核提交
+ */
+export function useInternalTransferVerify() {
+  return useMutation({
+    mutationFn: (params: InternalTransferVerifyParams) =>
+      apiFormPost(`/system/crmInternalTransferVerify/verify`, params),
+  });
+}
+
+/**
+ * 内部转账交易服务器订单列表
+ */
+export function useInternalTransferDealTicketList({
+  id,
+  params,
+}: {
+  id: string;
+  params: InternalTransferDealTicketListParams;
+}) {
+  return useQuery({
+    queryKey: ['InternalTransferDealTicketList', params, id],
+    queryFn: () =>
+      apiFormPostCustom<InternalTransferDealTicketListRes>(
+        `/system/crmInternalTransferVerify/dealTicket/list/${id}`,
+        params,
+      ),
+  });
+}
+
+/**
+ * 获取交易返佣审核详情
+ */
+export function useRebateDetail(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['rebateDetail', id],
+    queryFn: () =>
+      apiGetCustom<RebateReviewDetailRes>(`/system/crmRebateCommission/detail/1/${id}`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 交易返佣审核提交
+ */
+export function useRebateVerify() {
+  return useMutation({
+    mutationFn: (params: RebateVerifyParams) =>
+      apiFormPost(`/system/crmRebateCommission/verify/1`, params),
+  });
+}
+
+/**
+ * 获取手续费返佣审核详情
+ */
+export function useFeeRebateDetail(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['feeRebateDetail', id],
+    queryFn: () =>
+      apiGetCustom<FeeRebateReviewDetailRes>(`/system/crmRebateCommission/detail/2/${id}`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 手续费返佣审核提交
+ */
+export function useFeeRebateVerify() {
+  return useMutation({
+    mutationFn: (params: RebateVerifyParams) =>
+      apiFormPost(`/system/crmRebateCommission/verify/2`, params),
+  });
+}
+
+/**
+ * 获取入金返佣审核详情
+ */
+export function useDepositRebateDetail(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['depositRebateDetail', id],
+    queryFn: () =>
+      apiGetCustom<DepositRebateReviewDetailRes>(`/system/crmRebateCommission/detail/3/${id}`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 入金返佣审核提交
+ */
+export function useDepositRebateVerify() {
+  return useMutation({
+    mutationFn: (params: RebateVerifyParams) =>
+      apiFormPost(`/system/crmRebateCommission/verify/3`, params),
   });
 }
 

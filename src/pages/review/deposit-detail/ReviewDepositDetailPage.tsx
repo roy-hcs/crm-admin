@@ -11,6 +11,7 @@ import { PersonalInfoCard } from './components/PersonalInfoCard';
 import { RrhStepProps } from '@/components/common/RrhStep';
 import { ReviewInfoCard } from './components/ReviewInfoCard';
 import { ReviewStepsCard } from '../withdrawal-detail/components/ReviewStepsCard';
+import { PageInfo } from '@/components/common/PageInfo';
 
 export const ReviewDepositDetailPage = () => {
   const [searchParams] = useSearchParams();
@@ -113,7 +114,7 @@ export const ReviewDepositDetailPage = () => {
   };
   return (
     <div>
-      <h1 className="text-title mt-3 mb-3">{t('depositReview.depositReviewDetail')}</h1>
+      <PageInfo wrapperCls="py-3" title={t('depositReview.depositReviewDetail')} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">

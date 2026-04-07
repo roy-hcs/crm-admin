@@ -292,19 +292,17 @@ export const RewardConfigPage = () => {
           </div>
           <div className="flex items-center gap-2">
             <RrhButton variant="outline">{t('common.add')}</RrhButton>
-            <div>
-              <ToolTip content={t('rewardConfigPage.allowMultipleBonusHits')}>
-                <div className="flex items-center justify-center gap-2">
-                  <span>{t('table.allowMultipleBonusHits')}</span>
-                  <Switch
-                    checked={Boolean(isFlag)}
-                    onCheckedChange={() => {
-                      setManyBonus(!isFlag);
-                    }}
-                  />
-                </div>
-              </ToolTip>
-            </div>
+            <ToolTip content={t('rewardConfigPage.allowMultipleBonusHits')}>
+              <div className="flex items-center justify-center gap-2">
+                <span>{t('table.allowMultipleBonusHits')}</span>
+                <Switch
+                  checked={Boolean(isFlag)}
+                  onCheckedChange={() => {
+                    setManyBonus(!isFlag);
+                  }}
+                />
+              </div>
+            </ToolTip>
 
             <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />

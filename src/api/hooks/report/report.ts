@@ -175,11 +175,7 @@ export function useWalletTransactionListExport() {
 export function useTradingHistoryExport() {
   return useMutation({
     mutationFn: (params: TradingHistoryParams) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('/system/statistics/history-export', params),
+      apiFormPost('/system/statistics/history-export', params),
   });
 }
 
@@ -189,11 +185,7 @@ export function useTradingHistoryExport() {
 export function usePositionOrderExport() {
   return useMutation({
     mutationFn: (params: PositionOrderParams) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('/system/statistics/position-export/1', params),
+      apiFormPost('/system/statistics/position-export/1', params),
   });
 }
 
@@ -203,11 +195,7 @@ export function usePositionOrderExport() {
 export function useAccountStatisticExport() {
   return useMutation({
     mutationFn: (params: AccountStatisticListParams) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('/system/statistics/account-export', params),
+      apiFormPost('/system/statistics/account-export', params),
   });
 }
 
@@ -217,11 +205,7 @@ export function useAccountStatisticExport() {
 export function useRebateExport() {
   return useMutation({
     mutationFn: (params: TradingParams) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('/system/statistics/rebate-export/1', params),
+      apiFormPost('/system/statistics/rebate-export/1', params),
   });
 }
 
@@ -231,11 +215,7 @@ export function useRebateExport() {
 export function useFeeExport() {
   return useMutation({
     mutationFn: (params: TradingParams) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('/system/statistics/rebate-export/2', params),
+      apiFormPost('/system/statistics/rebate-export/2', params),
   });
 }
 
@@ -258,12 +238,7 @@ export function useDepositExport() {
  */
 export function useRebateSettleExport() {
   return useMutation({
-    mutationFn: (params: DailyRebateParams) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('/system/rebateSettle/export', params),
+    mutationFn: (params: DailyRebateParams) => apiFormPost('/system/rebateSettle/export', params),
   });
 }
 
@@ -273,11 +248,7 @@ export function useRebateSettleExport() {
 export function useAgencyClientTrackingExport() {
   return useMutation({
     mutationFn: (params: ClientTrackingParams) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('/system/statistics/agencyClientTrackingExport', params),
+      apiFormPost('/system/statistics/agencyClientTrackingExport', params),
   });
 }
 
@@ -287,11 +258,17 @@ export function useAgencyClientTrackingExport() {
 export function useAgencyOverviewExport() {
   return useMutation({
     mutationFn: (params: OverviewParams) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('/system/statistics/agencyOverviewExport', params),
+      apiFormPost('/system/statistics/agencyOverviewExport', params),
+  });
+}
+
+/**
+ *  交易账号数据统计导出
+ */
+export function useDealDataExport() {
+  return useMutation({
+    mutationFn: (params: DataStatisticsParams) =>
+      apiFormPost('system/statistics/deal-data-export', params),
   });
 }
 
@@ -335,12 +312,7 @@ export function usePaymentOrderDepositDetail(id: string, enabled: boolean = fals
 // 导出支付订单
 export function usePaymentOrderExport() {
   return useMutation({
-    mutationFn: (params: PaymentOrderListParams) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('/system/userOrder/export', params),
+    mutationFn: (params: PaymentOrderListParams) => apiFormPost('/system/userOrder/export', params),
   });
 }
 
@@ -379,11 +351,7 @@ export function useCrmUserDealList(params: CrmUserDealListParams, options: { ena
 export function useCrmUserDealExport() {
   return useMutation({
     mutationFn: (params: CrmUserDealListParams) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('/system/crmUserDeal/export', params),
+      apiFormPost('/system/crmUserDeal/export', params),
   });
 }
 /**
@@ -393,7 +361,7 @@ export function useCrmUserDealListDetail(id: string, enabled: boolean = false) {
   return useQuery({
     queryKey: ['userDealListDetail', id],
     queryFn: () => {
-      return apiGet<CrmUserDealListDetailRes>(`system/crmUserDeal/detailInfo/${id}`);
+      return apiGet<CrmUserDealListDetailRes>(`/system/crmUserDeal/detailInfo/${id}`);
     },
     enabled: enabled && !!id,
     staleTime: 0,
@@ -571,5 +539,24 @@ export function useAllCurrencies() {
   return useQuery({
     queryKey: ['allCurrencies'],
     queryFn: () => apiGetCustom<string[]>('/system/crmUserWallet/getAllWalletCurrencies'),
+  });
+}
+
+/**
+ *  交易账号资金统计导出
+ */
+export function useStatisticsExport() {
+  return useMutation({
+    mutationFn: (params: TradingAccountFundsStatsParams) =>
+      apiFormPost('/system/statistics/deal-export', params),
+  });
+}
+
+/**
+ *  周结返佣报表导出
+ */
+export function useWeekRebateSettleExport() {
+  return useMutation({
+    mutationFn: (params: DailyRebateParams) => apiFormPost('/system/rebateSettle/export', params),
   });
 }

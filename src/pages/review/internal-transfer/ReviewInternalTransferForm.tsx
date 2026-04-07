@@ -107,7 +107,7 @@ export const ReviewInternalTransferForm = ({
           />
           <FormSelect
             verticalLabel
-            name="verifyStatus"
+            name="status"
             label={t('table.status')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}

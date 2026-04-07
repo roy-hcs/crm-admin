@@ -23,28 +23,7 @@ import { RrhDialog } from '@/components/common/RrhDialog';
 import { LabelItem } from '@/components/common/LabelItem';
 import { useWalletTransactionListExport } from '@/api/hooks/report/report';
 import { ExportButton } from '@/components/common/ExportButton';
-
-const OperationTypeMap: Record<number, string> = {
-  1: 'table.Deposit',
-  2: 'table.Withdrawal',
-  3: 'table.transfer',
-  4: 'table.rebate',
-};
-
-const OperationMethodMap: Record<number, string> = {
-  1: 'table.internationalTransfer',
-  2: 'table.bankTransfer',
-  3: 'table.withdrawOnDrawdown',
-  4: 'table.SystemDeposit',
-  5: 'table.SystemWithdrawal',
-  6: 'table.internalTransfer',
-  7: 'table.internalTransferOut',
-  8: 'table.RebateDeposit',
-  13: 'table.payID',
-  14: 'table.pointsProductReturn',
-  15: 'table.pointsProductExchange',
-  16: 'table.thirdPayment',
-};
+import { OperationMethodMap, OperationTypeMap } from '@/lib/constant';
 
 const DetailInfo = ({ itemInfo }: { itemInfo: WalletTransactionItem }) => {
   const { t } = useTranslation();

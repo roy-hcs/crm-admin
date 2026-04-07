@@ -41,10 +41,13 @@ interface DialogProps {
   onOpenChange?: (open: boolean) => void;
   footerShow?: boolean;
   confirmShow?: boolean;
+  cancelShow?: boolean;
   variant?: 'default' | 'small' | 'middle' | 'large';
   titleCls?: string;
   formLoading?: boolean;
   type?: 'view' | 'submit';
+  leftDom?: React.ReactNode;
+  modal?: boolean;
 }
 
 export const RrhDialog: React.FC<DialogProps> = ({
@@ -62,10 +65,13 @@ export const RrhDialog: React.FC<DialogProps> = ({
   onOpenChange,
   footerShow = true,
   confirmShow = true,
+  cancelShow = true,
   variant = 'default',
   titleCls,
   formLoading = false,
   type = 'view',
+  leftDom,
+  modal = true,
 }) => {
   const handleCancel = () => {
     if (onCancel) {
@@ -87,7 +93,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
   // Desktop mode: use Dialog
   if (isDesktop) {
     return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
+      <Dialog open={open} onOpenChange={onOpenChange} modal={modal}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
         <DialogContent
           className={cn(
@@ -154,22 +160,23 @@ export const RrhDialog: React.FC<DialogProps> = ({
                 variant === 'small' ? '' : 'border-t',
               )}
             >
+              {leftDom && <div className="mr-auto">{leftDom}</div>}
               {/* 防止非受控模式下 点击取消 无法关闭 */}
-              {onCancel ? (
-                <div
-                  className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-[#1E1E1E]"
-                  onClick={handleCancel}
-                >
-                  {cancelText || t('common.Cancel')}
-                </div>
-              ) : (
-                <DialogClose>
-                  <div className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-[#1E1E1E]">
+              {cancelShow &&
+                (onCancel ? (
+                  <div
+                    className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-[#1E1E1E]"
+                    onClick={handleCancel}
+                  >
                     {cancelText || t('common.Cancel')}
                   </div>
-                </DialogClose>
-              )}
-
+                ) : (
+                  <DialogClose>
+                    <div className="cursor-pointer rounded-sm border bg-white px-4 py-2 text-[#1E1E1E]">
+                      {cancelText || t('common.Cancel')}
+                    </div>
+                  </DialogClose>
+                ))}
               {confirmShow &&
                 (type === 'view' ? (
                   <DialogClose>
@@ -204,7 +211,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
 
   // Mobile mode: use Drawer
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
+    <Drawer open={open} onOpenChange={onOpenChange} modal={modal}>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent
         onInteractOutside={e => {
@@ -242,22 +249,20 @@ export const RrhDialog: React.FC<DialogProps> = ({
         <div className="overflow-y-auto px-6">{children}</div>
         {footerShow && (
           <DrawerFooter className="flex flex-row justify-end gap-2 px-6">
+            {leftDom && <div className="mr-auto">{leftDom}</div>}
             {/* 防止非受控模式下 点击取消 无法关闭 */}
-            {onCancel ? (
-              <div
-                className="w-full cursor-pointer rounded-sm border bg-white px-4 py-2 text-center text-[#1E1E1E]"
-                onClick={handleCancel}
-              >
-                {cancelText || t('common.Cancel')}
-              </div>
-            ) : (
-              <DrawerClose>
-                <div className="w-full cursor-pointer rounded-sm border bg-white px-4 py-2 text-center text-[#1E1E1E]">
+            {cancelShow &&
+              (onCancel ? (
+                <RrhButton variant="outline" className="px-4 py-2" onClick={handleCancel}>
                   {cancelText || t('common.Cancel')}
-                </div>
-              </DrawerClose>
-            )}
-
+                </RrhButton>
+              ) : (
+                <DrawerClose>
+                  <RrhButton variant="outline" className="px-4 py-2" onClick={handleCancel}>
+                    {cancelText || t('common.Cancel')}
+                  </RrhButton>
+                </DrawerClose>
+              ))}
             {confirmShow &&
               (type === 'view' ? (
                 <DrawerClose>

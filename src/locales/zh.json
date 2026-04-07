@@ -250,7 +250,8 @@
     "addFieldSuccess": "添加 {{field}} 成功",
     "modifyFieldSuccess": "修改 {{field}} 成功",
     "addFieldFailed": "添加 {{field}} 失败",
-    "modifyFieldFailed": "修改 {{field}} 失败"
+    "modifyFieldFailed": "修改 {{field}} 失败",
+    "readOnly": "只读"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -295,7 +296,8 @@
     "quantity": "订单量",
     "quantityThisMonth": "订单量(本月)",
     "quantityToday": "订单量(今日)",
-    "todo": "代办事项"
+    "todo": "代办事项",
+    "enableInternalTransferOut": "内部转账转出"
   },
   "workBench": {
     "title": "数据概览"
@@ -366,7 +368,17 @@
     "serverGroup": "组别",
     "trderAccount": "交易账号",
     "taderType": "交易品种",
-    "rebateTraderId": "命中规则"
+    "rebateTraderId": "命中规则",
+    "tradingAccountDetail": "交易账号详情",
+    "enableThisAccount": "启用此账号",
+    "enablTransaction": "启用交易",
+    "allowPasswordChange": "允许修改密码",
+    "allowTrackingStopLoss": "允许跟踪止损",
+    "enableDynamicPassword": "启用动态密码",
+    "enableEATransactions": "启用EA交易",
+    "enableWebAPILinks": "启用Web API链接",
+    "enableDayReport": "启用日报",
+    "nextLoginChangePassword": "下次登录强制修改密码"
   },
   "fees": {
     "title": "手续费佣金报表"
@@ -440,7 +452,23 @@
     "selectedAccounts": "已选择 {{count}} 个账户",
     "OrderAsyncTips": "已存在的订单不会重复保存。同步的新订单不会计算返佣。",
     "balanceAdjust": "余额调整",
-    "balanceAdjustDescription": "本操作无需审核，直接更改账号的余额。"
+    "balanceAdjustDescription": "本操作无需审核，直接更改账号的余额。",
+    "type": {
+      "1": "入金",
+      "2": "出金",
+      "3": "系统入金",
+      "4": "系统出金",
+      "5": "系统信用额入金",
+      "6": "系统信用额出金",
+      "7": "返佣入金",
+      "8": "内部转账入金",
+      "9": "内部转账出金",
+      "10": "模拟账号入金",
+      "11": "模拟账号出金",
+      "12": "费用",
+      "13": "更正"
+    },
+    "directBroker": "账户归属"
   },
   "refundFailLog": {
     "title": "资金回退失败日志",
@@ -462,7 +490,8 @@
     "creditInputAmountCount": "系统信用额入金",
     "creditOutAmountCount": "系统信用额出金",
     "profitLoss": "已平仓盈亏",
-    "currentbalance": "当前余额"
+    "currentbalance": "当前余额",
+    "onlyViewRebateAccount": "仅看返佣帐户"
   },
   "tradingAccountDataStats": {
     "title": "交易账号数据统计",
@@ -516,7 +545,8 @@
     "crmAccountPassword": "{{min}}-{{max}}位（数字+大写字母+小写字母+特殊字符组合）",
     "integer": "{{field}}请输入正整数",
     "greaterThanZero": "{{field}}必须大于0",
-    "levelNameAlreadyUsed": "该层级名称已存在"
+    "levelNameAlreadyUsed": "该层级名称已存在",
+    "maxSize": "最大不超过{{maxSize}}MB"
   },
   "tradingHistoryPage": {
     "tradingHistoryDetail": "交易历史详情",
@@ -560,16 +590,29 @@
     "title": "代理审核"
   },
   "depositRebateReview": {
-    "title": "入金返佣审核"
+    "title": "入金返佣审核",
+    "depositRebateReviewDetail": "入金返佣审核详情"
   },
   "feeRebateReview": {
-    "title": "手续费返佣审核"
+    "title": "手续费返佣审核",
+    "feeRebateReviewDetail": "手续费返佣审核详情"
   },
   "tradingRebateReview": {
-    "title": "交易返佣审核"
+    "title": "交易返佣审核",
+    "commissionReviewDetail": "返佣审核详情",
+    "reviewInfo": "审核信息",
+    "rebateInfo": "返佣信息"
   },
   "internalTransferReview": {
-    "title": "内部转账审核"
+    "title": "内部转账审核",
+    "internalTransferReviewDetail": "内部转账审核详情",
+    "internalTransferReviewInfo": "内部转账审核信息",
+    "internalTransferInfo": "内部转账信息",
+    "checkTips": "当前账户预付款比例 {{field}},",
+    "checkTimeTips": "查询时间：{{field}}",
+    "higherThan": "高于{{field}},",
+    "lowerThan": "低于{{field}},",
+    "selectWithOrder": "选择关联订单"
   },
   "withdrawalReview": {
     "title": "出金审核",
@@ -620,7 +663,34 @@
     "title": "钱包账户",
     "addWalletAccount": "新增账户钱包",
     "account": "账户",
-    "deleteTips": "确定删除该 账户钱包？"
+    "deleteTips": "确定删除该 账户钱包？",
+    "Excel": "Excel批量调整",
+    "batchWallet": "批量钱包余额调整",
+    "excelTemplateUpdate": "Excel模板有更新，请下载最新模版。",
+    "download": "下载",
+    "dataTransferInterrupted": "中断数据传输",
+    "pleaseUploadFile": "请上传文件",
+    "item": "条",
+    "tipsText": {
+      "1": "为保障数据准确性，请您根据严格按照模版excel格式填写，且提交导入前，请再次核对导入数据的准确性！",
+      "2": "导入过程中，可能会消耗一些时间，请您耐心等待；等待过程中，请不要关闭本弹窗，以免导致导入数据中断。",
+      "3": "使用批量余额调整，可能会存在一些数据无法导入成功；若存在失败数据，  您可下载后，调整数据，重新导入。",
+      "4": "数据导入中断，您可以在下方下载相关数据；"
+    },
+    "percentageText": {
+      "1": "1/3-上传excel",
+      "2": "2/3-数据导入中",
+      "3": "3/3-导入完成，请确认数据"
+    },
+    "walletTemplate": "钱包余额调整模版",
+    "importSuccess": "导入成功",
+    "importFailed": "导入失败",
+    "notImported": "未导入",
+    "downloadFailedData": "下载失败数据",
+    "downloadSuccessData": "下载成功数据",
+    "downloadUnImportedData": "下载未导入数据",
+    "templateFormatError": "模版格式有误，请核对后重新提交",
+    "walletAccountsDetail": "钱包账户详情"
   },
   "accountGroups": {
     "title": "账户组设置",
@@ -744,7 +814,20 @@
     "confirm": {
       "stop": "确认要取消关注吗？"
     },
-    "recentReplyTime": "最后回复时间"
+    "recentReplyTime": "最后回复时间",
+    "atLeastOneTicket": "至少选择一条工单",
+    "addTicket": "新增工单",
+    "assignTicket": "分配工单",
+    "cancelAssign": "取消分配",
+    "closeTicket": "关闭工单",
+    "deleteTips": "确定删除该 工单？",
+    "deleteSelectedTips": "确认要删除选中的 {{count}} 条数据吗?",
+    "carbonCopy": "抄送",
+    "attachment": "附件",
+    "attachmentDescription": "支持的文件类型: {{fileTypes}}，最大不超过{{maxSize}}MB",
+    "selectedTickets": "已选择 {{count}} 条工单",
+    "clearAssignee": "确定清除受理人？",
+    "closeOrder": "确定关闭工单？关闭工单，状态将更改为已完成。"
   },
   "myTicket": {
     "title": "我的工单",
@@ -1160,37 +1243,51 @@
     "pointValueCalculationFormula": "点值计算公式",
     "pointValueCurrency": "清算货币",
     "description": "描述",
-    "allAccountGroup": "全部账户组"
+    "allAccountGroup": "全部账户组",
+    "transferOutAmount": "转出金额",
+    "transferInAmount": "转入金额",
+    "traderAccount": "交易帐户",
+    "commissionAccount": "返佣帐户",
+    "accountDetail": "账号详情",
+    "accountPermission": "账号权限",
+    "accountOperations": "账户操作",
+    "sendReport": "发送报告",
+    "usedAdvance": "已用预付款"
+  },
+  "settings": {
+    "title": "审核设置",
+    "nameText": "名称",
+    "indexReviewCount": "首页待审合计数展示",
+    "val": "导航栏待审合计数展示",
+    "desc": "开启/关闭“首页待审合计数展示”，则首页将展示/隐藏待审的记录数；开启/关闭“导航栏待审合计数展示”，则导航栏将展示/隐藏待审的记录数",
+    "editAccess": "编辑权限",
+    "sortingConfig": "排序配置"
+  },
+  "information": {
+    "title": "信息审核",
+    "infoType": "信息类型",
+    "verifyUserName": "当前审核人",
+    "verifyTime": "完结时间"
+  },
+  "accountOpening": {
+    "title": "开户审核",
+    "source": "推广邀请码"
+  },
+  "binding": {
+    "title": "绑定审核",
+    "source": "推广邀请码",
+    "bindingReviewDetail": "绑定审核详情",
+    "bindingInfo": "绑定信息"
+  },
+  "leverage": {
+    "title": "杠杆审核",
+    "currentLever": "当前杠杆",
+    "targetLever": "目标杠杆",
+    "leverageReviewDetail": "杠杆审核详情",
+    "leverageInfo": "杠杆信息",
+    "accountInfo": "账号信息"
   },
   "review": {
-    "settings": {
-      "title": "审核设置",
-      "nameText": "名称",
-      "indexReviewCount": "首页待审合计数展示",
-      "val": "导航栏待审合计数展示",
-      "desc": "开启/关闭“首页待审合计数展示”，则首页将展示/隐藏待审的记录数；开启/关闭“导航栏待审合计数展示”，则导航栏将展示/隐藏待审的记录数",
-      "editAccess": "编辑权限",
-      "sortingConfig": "排序配置"
-    },
-    "information": {
-      "title": "信息审核",
-      "infoType": "信息类型",
-      "verifyUserName": "当前审核人",
-      "verifyTime": "完结时间"
-    },
-    "accountOpening": {
-      "title": "开户审核",
-      "source": "推广邀请码"
-    },
-    "binding": {
-      "title": "绑定审核",
-      "source": "推广邀请码"
-    },
-    "leverage": {
-      "title": "杠杆审核",
-      "currentLever": "当前杠杆",
-      "targetLever": "目标杠杆"
-    },
     "submitForReview": "提交审核",
     "reviewPass": "审核通过",
     "reviewReject": "审核拒绝",

@@ -191,7 +191,7 @@ export function useUserOrderLogList(params: UserOrderLogListParams) {
 /**
  * 系统管理-管理员账户
  */
-export function useUserList(params: UserListParams) {
+export function useUserList(params?: UserListParams) {
   return useQuery({
     queryKey: ['userList', params],
     queryFn: () => apiFormPostCustom<UserListRes>(`/system/user/list`, params || {}),
@@ -410,9 +410,9 @@ export function useGetCurrencies() {
 }
 
 /**
- * 上传图片 common/upload
+ * 上传文件 common/upload
  */
-export function useUploadImage() {
+export function useUploadFile() {
   return useMutation({
     // 直接传入 File，由 hook 内部构造 FormData
     mutationFn: (file: File) => {

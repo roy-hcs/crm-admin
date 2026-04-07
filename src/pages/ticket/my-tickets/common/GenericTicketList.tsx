@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useMemo, Dispatch, SetStateAction } from 'react';
-import { useMyTicketAllList } from '@/api/hooks/ticket/ticket';
+import React, { useState, useCallback, useMemo, Dispatch, SetStateAction, useRef } from 'react';
+import { useMyTicketAllList, useTicketRemove } from '@/api/hooks/ticket/ticket';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Button } from '@/components/ui/button';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
@@ -8,64 +8,19 @@ import { CrmTicketParams, TicketTabsParams, CrmTicketItem } from '@/api/hooks/ti
 import { BasicParams } from '@/api/types';
 import { Funnel, RefreshCcw, Search, Ellipsis } from 'lucide-react';
 import { MyTicketsForm } from '../MyTicketsForm';
-import { CRMColumnDef, DataTable } from '@/components/table';
+import { CRMColumnDef, DataTable, DataTableRef } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { ToolTip } from '@/components/common/ToolTip';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { useTicketFollow } from '@/api/hooks/ticket/ticket';
-import { useQueryClient } from '@tanstack/react-query';
-import { cn } from '@/lib/utils';
-import { RrhAlert } from '@/components/common/RrhAlert';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
-
-const FollowCell = ({ row }: { row: { original: CrmTicketItem } }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const changeStatusMutation = useTicketFollow();
-  const queryClient = useQueryClient();
-  const { t } = useTranslation();
-
-  const onConfirm = useCallback(async () => {
-    const res = await changeStatusMutation.mutateAsync({
-      id: String(row.original.id),
-      follow: row.original.isFollow === 1 ? 0 : 1,
-    });
-    if (res.code === 0) {
-      queryClient.invalidateQueries({ queryKey: ['MyTicketAllList'] });
-    }
-  }, [changeStatusMutation, queryClient, row.original.id, row.original.isFollow]);
-
-  const handleClick = () => {
-    /**
-     * 如果是取关弹出二次确认
-     * 否则直接关注
-     */
-    if (row.original.isFollow === 1) {
-      setIsOpen(true);
-    } else {
-      onConfirm();
-    }
-  };
-
-  return (
-    <>
-      <Ellipsis
-        onClick={handleClick}
-        className={cn(row.original.isFollow === 1 ? 'text-yellow-400' : '')}
-      />
-      <RrhAlert
-        trigger={null}
-        open={isOpen}
-        onOpenChange={setIsOpen}
-        cancelText={t('common.Cancel')}
-        confirmText={t('common.Confirm')}
-        title={t('common.SystemPrompt')}
-        content={t('ticketList.confirm.stop')}
-        onConfirm={onConfirm}
-      />
-    </>
-  );
-};
+import { RrhFollowAlert } from '@/components/common/RrhFollowAlert';
+import { AddTicketDialog } from '../../ticket-list/components/AddTicketDialog';
+import { useRoleList, useUserList } from '@/api/hooks/system';
+import { toast } from 'sonner';
+import { CloseOrderDialog } from '../../ticket-list/components/CloseOrderDialog';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 
 type Props = {
   mode: TicketTabsParams;
@@ -85,7 +40,7 @@ export const GenericTicketList: React.FC<Props> = ({
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
 
-  const params = useMemo(
+  const listParams = useMemo(
     () => ({
       pageSize,
       pageNum: pageNum + 1,
@@ -96,7 +51,11 @@ export const GenericTicketList: React.FC<Props> = ({
     [pageNum, pageSize, otherParams],
   );
 
-  const { data, isLoading: loading } = useMyTicketAllList(params, mode);
+  const { data, isLoading: loading, refetch } = useMyTicketAllList(listParams, mode);
+  const { mutateAsync: modifyStatus } = useTicketFollow();
+
+  const { data: userData, isLoading: userDataLoading } = useUserList();
+  const { data: roleData, isLoading: roleDataLoading } = useRoleList();
 
   const reset = useCallback(() => {
     onReset();
@@ -132,7 +91,21 @@ export const GenericTicketList: React.FC<Props> = ({
       id: 'isFollow',
       header: t('ticketList.isFollow'),
       cell: ({ row }) => {
-        return <FollowCell row={row} />;
+        return (
+          <RrhFollowAlert<{
+            id: string;
+            follow: number;
+          }>
+            params={{
+              id: String(row.original.id),
+              follow: row.original.isFollow === 1 ? 0 : 1,
+            }}
+            tipsText={row.original.isFollow === 1 ? t('ticketList.confirm.stop') : ''}
+            checked={row.original.isFollow === 1}
+            confirmFunction={modifyStatus}
+            onSuccess={refetch}
+          />
+        );
       },
     },
     {
@@ -221,14 +194,23 @@ export const GenericTicketList: React.FC<Props> = ({
       label: t('common.Operation'),
       fixed: 'right',
       size: 50,
-      cell: () => (
+      cell: ({ row }) => (
         <RrhDropdown
           Trigger={<Ellipsis className="size-4" />}
           dropdownList={[
             { label: t('common.View'), value: 'view' },
-            { label: t('common.Edit'), value: 'edit' },
+            { label: t('common.delete'), value: 'delete' },
           ]}
-          callToAction={() => {}}
+          callToAction={action => {
+            if (action === 'view') {
+              // setEditingItem(row.original);
+              // setOpen(true);
+            } else if (action === 'delete') {
+              setParams({ ids: row.original.id ? String(row.original.id) : '' });
+              setTipsText(t('ticketList.deleteTips'));
+              setDeleteAlert(true);
+            }
+          }}
         />
       ),
     },
@@ -236,6 +218,27 @@ export const GenericTicketList: React.FC<Props> = ({
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility(`my-tickets-${mode}-table`, allColumns);
+
+  const tableRef = useRef<DataTableRef>(null);
+  const [ids, setIds] = useState<string[]>([]);
+  type DialogKey = 'CloseOrder' | null;
+  const [openDialog, setOpenDialog] = useState<DialogKey>(null);
+
+  const onSelectionChange = (its: CrmTicketItem[]) => {
+    const ids = its.filter(i => i.id).map(j => j.id || '');
+    setIds(ids);
+  };
+
+  const onSuccess = () => {
+    setIds([]);
+    tableRef.current?.selectionClear?.();
+    refetch();
+  };
+
+  const [params, setParams] = useState<{ ids: string }>({ ids: '' });
+  const [tipsText, setTipsText] = useState('');
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  const { mutateAsync: removeTicket } = useTicketRemove();
 
   return (
     <TableContentWrapper>
@@ -252,7 +255,6 @@ export const GenericTicketList: React.FC<Props> = ({
           }}
         />
         <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline">{t('common.add')}</Button>
           <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
           </Button>
@@ -284,10 +286,39 @@ export const GenericTicketList: React.FC<Props> = ({
             onBatchReorder={batchUpdateColumns}
             columns={columns}
           />
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('ticketList.closeTicket'), value: 'CloseOrder' },
+              { label: t('common.delete'), value: 'delete' },
+            ]}
+            callToAction={action => {
+              if (ids && ids?.length === 0) {
+                toast.error(t('ticketList.atLeastOneTicket'));
+                return;
+              }
+              if (action === 'delete') {
+                setTipsText(t('ticketList.deleteSelectedTips', { count: ids.length }));
+                setParams({ ids: ids.join(',') });
+                setDeleteAlert(true);
+                return;
+              }
+              setOpenDialog(action as DialogKey);
+            }}
+          />
+          <AddTicketDialog
+            onSuccess={refetch}
+            roleOptions={(roleData?.rows || []).map(i => ({ label: i.roleName, value: i.roleId }))}
+            userOptions={(userData?.rows || []).map(i => ({
+              label: `${i.userLastName || ''} ${i.userName || ''}`,
+              value: i.userId,
+            }))}
+          />
         </div>
       </div>
 
       <DataTable
+        ref={tableRef}
         columns={tableColumns}
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
@@ -295,7 +326,25 @@ export const GenericTicketList: React.FC<Props> = ({
         pageSize={pageSize}
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
-        loading={loading}
+        loading={loading || userDataLoading || roleDataLoading}
+        onSelectionChange={onSelectionChange}
+      />
+
+      <CloseOrderDialog
+        onSuccess={onSuccess}
+        ids={ids}
+        open={openDialog === 'CloseOrder'}
+        setOpen={val => (val ? setOpenDialog('CloseOrder') : setOpenDialog(null))}
+      />
+      <RrhDeleteAlert<{
+        ids: string;
+      }>
+        open={deleteAlert}
+        setOpen={setDeleteAlert}
+        onSuccess={onSuccess}
+        confirmFunction={removeTicket}
+        params={params}
+        tipsText={tipsText}
       />
     </TableContentWrapper>
   );

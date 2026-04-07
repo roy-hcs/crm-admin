@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { ReviewTradingRebateForm } from './ReviewTradingRebateForm';
-import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
+import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import {
@@ -23,8 +23,8 @@ import { transactionRebateStatusMap } from '@/lib/constant';
 import { RrhButton } from '@/components/common/RrhButton';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RrhSorter } from '@/components/common/RrhSorter';
-import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export const ReviewTradingRebatePage = () => {
   const [params, setParams] = useState<RebateCommissionListParams['params']>({
@@ -126,6 +126,21 @@ export const ReviewTradingRebatePage = () => {
     setKeyword('');
     setPageNum(0);
   };
+
+  const { openTab } = useTabActions();
+
+  const goToDetail = useCallback(
+    (row: RebateCommissionItem) => {
+      const type = ![3, 2].includes(Number(row.rebateStatus)) ? 'detail' : 'audit';
+      const url = `/review/trading-rebate/detail?type=${type}&id=${row.id}`;
+      openTab({
+        key: url,
+        title: t('tradingRebateReview.commissionReviewDetail'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
 
   const allColumns: CRMColumnDef<RebateCommissionItem, unknown>[] = [
     {
@@ -343,15 +358,10 @@ export const ReviewTradingRebatePage = () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
       label: t('common.Operation'),
-      cell: () => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[
-            { label: t('table.audit'), value: 'audit' },
-            { label: t('common.delete'), value: 'delete' },
-          ]}
-          callToAction={() => {}}
-        />
+      cell: ({ row }) => (
+        <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+          {String(row?.original?.rebateStatus) !== '2' ? t('common.View') : t('table.audit')}
+        </RrhButton>
       ),
       fixed: 'right',
       size: 50,

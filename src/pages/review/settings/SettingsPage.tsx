@@ -16,11 +16,7 @@ export function SettingsPage() {
   });
   return (
     <div>
-      <PageInfo
-        title={t('review.settings.title')}
-        desc={t('review.settings.desc')}
-        wrapperCls="mb-4"
-      />
+      <PageInfo title={t('settings.title')} desc={t('settings.desc')} wrapperCls="mb-4" />
       <SettingsTable
         data={data?.rows || []}
         pageCount={Math.ceil(+(data?.total || 0) / pageSize)}

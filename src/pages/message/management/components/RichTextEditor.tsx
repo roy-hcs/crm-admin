@@ -1,4 +1,4 @@
-import { useUploadImage } from '@/api/hooks/system/system';
+import { useUploadFile } from '@/api/hooks/system/system';
 import { RrhEditor } from '@/components/editor/RrhEditor';
 import { FormControl, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { ControllerRenderProps, FieldValues } from 'react-hook-form';
@@ -12,7 +12,7 @@ export const RichTextEditor = ({
   placeholder: string;
   field: ControllerRenderProps<FieldValues>;
 }) => {
-  const { mutateAsync: uploadFunc } = useUploadImage();
+  const { mutateAsync: uploadFunc } = useUploadFile();
   async function uploadImage(file: File): Promise<string> {
     try {
       const res = await uploadFunc(file);

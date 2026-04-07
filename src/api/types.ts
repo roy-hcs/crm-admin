@@ -20,3 +20,8 @@ export type BaseEntity = {
   remark: string | null;
   params: Record<string, unknown>;
 };
+
+export type SelectOption = {
+  label: string;
+  value: string;
+};

@@ -1,10 +1,18 @@
-import { RouteObject } from 'react-router-dom';
+import { RouteObject, useSearchParams } from 'react-router-dom';
 import { ProfilePage } from '@/pages/account/profile/ProfilePage';
 import { CRMAccounts } from '@/pages/account/crm-accounts/CRMAccounts';
 import { TradingAccountsPage } from '@/pages/account/trading-accounts/TradingAccountsPage';
 import { WalletAccountsPage } from '@/pages/account/wallet-accounts/WalletAccountsPage';
 import { AccountGroupsPage } from '@/pages/account/account-groups/AccountGroupsPage';
 import { RelationshipsPage } from '@/pages/account/relationships/RelationshipsPage';
+import { WalletAccountsDetailPage } from '@/pages/account/wallet-accounts-detail/WalletAccountsDetailPage';
+import { TradingAccountsDetailPage } from '@/pages/account/trading-accounts-detail/TradingAccountsDetailPage';
+
+const TradingAccountsDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <TradingAccountsDetailPage key={searchParams.get('id')} />;
+};
+
 // Import other account pages as they are developed
 
 /**
@@ -33,8 +41,16 @@ export const accountRoutes: RouteObject[] = [
     element: <TradingAccountsPage />,
   },
   {
+    path: '/account/trading-accounts/detail',
+    element: <TradingAccountsDetailPageWrapper />,
+  },
+  {
     path: '/account/wallet-accounts',
     element: <WalletAccountsPage />,
+  },
+  {
+    path: '/account/wallet-accounts/detail',
+    element: <WalletAccountsDetailPage />,
   },
   {
     path: 'account/account-groups',

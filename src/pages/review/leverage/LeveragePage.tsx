@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { LeverageForm } from './LeverageForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
@@ -16,6 +16,7 @@ import { RrhOrderStatusTag } from '@/components/common/RrhOrderStatusTag';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { RrhButton } from '@/components/common/RrhButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export function LeveragePage() {
   const { t } = useTranslation();
@@ -54,6 +55,21 @@ export function LeveragePage() {
     setKeyword('');
     setPageNum(0);
   };
+
+  const { openTab } = useTabActions();
+
+  const goToDetail = useCallback(
+    (row: LeverageVerifyListItem) => {
+      const type = ![-1, 2].includes(Number(row.status)) ? 'detail' : 'audit';
+      const url = `/review/leverage/detail?type=${type}&id=${row.id}`;
+      openTab({
+        key: url,
+        title: t('leverage.leverageReviewDetail'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
 
   const allColumns: CRMColumnDef<LeverageVerifyListItem, unknown>[] = [
     {
@@ -96,7 +112,7 @@ export function LeveragePage() {
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>{t('review.leverage.currentLever')}</div>
+            <div>{t('leverage.currentLever')}</div>
             <RrhSorter
               orderByColumn={orderByColumn}
               isAsc={isAsc}
@@ -107,7 +123,7 @@ export function LeveragePage() {
           </div>
         );
       },
-      label: t('review.leverage.currentLever'),
+      label: t('leverage.currentLever'),
       accessorKey: 'currentLever',
       cell: ({ row }) => (row.original.currentLever ? `1:${row.original.currentLever}` : '-'),
     },
@@ -116,7 +132,7 @@ export function LeveragePage() {
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>{t('review.leverage.targetLever')}</div>
+            <div>{t('leverage.targetLever')}</div>
             <RrhSorter
               orderByColumn={orderByColumn}
               isAsc={isAsc}
@@ -127,7 +143,7 @@ export function LeveragePage() {
           </div>
         );
       },
-      label: t('review.leverage.targetLever'),
+      label: t('leverage.targetLever'),
       accessorKey: 'targetLever',
       cell: ({ row }) => (row.original.targetLever ? `1:${row.original.targetLever}` : '-'),
     },
@@ -175,7 +191,7 @@ export function LeveragePage() {
     },
     {
       id: 'verifyUserName',
-      header: t('review.information.verifyUserName'),
+      header: t('information.verifyUserName'),
       accessorKey: 'verifyUserName',
       cell: ({ row }) => row.original.verifyUserName || '-',
     },
@@ -205,7 +221,11 @@ export function LeveragePage() {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
       label: t('common.Operation'),
-      cell: () => <RrhButton variant="ghost">{t('table.audit')}</RrhButton>,
+      cell: ({ row }) => (
+        <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+          {String(row?.original?.status) !== '2' ? t('common.View') : t('table.audit')}
+        </RrhButton>
+      ),
       fixed: 'right',
       size: 50,
     },
@@ -216,7 +236,7 @@ export function LeveragePage() {
 
   return (
     <div>
-      <PageInfo title={t('review.leverage.title')} />
+      <PageInfo title={t('leverage.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">

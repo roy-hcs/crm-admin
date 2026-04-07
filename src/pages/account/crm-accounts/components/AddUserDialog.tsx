@@ -1,25 +1,31 @@
 import { FormInput } from '@/components/form/FormInput';
-import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
 import { FormProvider } from '@/contexts/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus, TrendingUp } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { SelectUpperPopup } from './SelectUpperPopup';
 import { FormSelect } from '@/components/form/FormSelect';
 import { colorPreferenceOptions, crmAccountTypeOptions, roleOptions } from '@/lib/const';
 import { FormPhoneInput } from '@/components/form/FormPhoneInput';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import { TFunction } from 'i18next';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { useDictType } from '@/api/hooks/system';
 import { useCheckEmailUnique, useCheckPhoneUnique } from '@/api/hooks/common';
-import { useAddCrmUser } from '@/api/hooks/account';
+import { CrmUserParams, CrmUserItem, useAddCrmUser, useMutationCrmUser } from '@/api/hooks/account';
 import { JSEncrypt as JSE } from 'jsencrypt';
+import { RrhSearchSelect } from '@/components/common/RrhSearchSelect';
 
 const addUserSchema = (t: TFunction<'translation', undefined>) => {
   return {
@@ -86,6 +92,7 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
   const { mutateAsync: checkPhoneUnique, data: checkPhoneRes } = useCheckPhoneUnique();
   const { mutateAsync: addUserMutation } = useAddCrmUser();
 
+  const { mutateAsync: getUserList } = useMutationCrmUser();
   useEffect(() => {
     if (checkPhoneRes === 1) {
       form.setError('mobile', {
@@ -96,6 +103,7 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
       form.clearErrors('mobile');
     }
   }, [checkPhoneRes, form, t]);
+
   useEffect(() => {
     if (checkEmailRes === 1) {
       form.setError('email', {
@@ -164,6 +172,7 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
         status: data.status,
       });
       if (res.code === 0) {
+        form.reset();
         setIsSubmitting(false);
         setOpen(false);
         onSuccess?.();
@@ -174,21 +183,73 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
       setIsSubmitting(false);
     }
   };
+
   const onCancel = () => {
     form.reset();
     setOpen(false);
   };
 
+  const fetchFunction = useCallback((params: CrmUserParams) => getUserList(params), [getUserList]);
+
+  const mapOption = useCallback((item: CrmUserItem) => {
+    return {
+      value: `${item.id}`,
+      label: `${item.lastName ?? ''} ${item.name ?? ''} (${item.showId})`,
+    };
+  }, []);
+
+  const buildInviterSearchParams = useCallback(
+    (baseParams: CrmUserParams, keyword: string): CrmUserParams => ({
+      ...baseParams,
+      pageNum: 1,
+      params: {
+        ...baseParams.params,
+        fiveCons: keyword,
+      },
+    }),
+    [],
+  );
+
+  const getInviterNextParams = useCallback(
+    (current: CrmUserParams): CrmUserParams => ({
+      ...current,
+      pageNum: Number(current.pageNum ?? 1) + 1,
+    }),
+    [],
+  );
+
+  const params = useMemo(
+    () => ({
+      pageSize: 15,
+      pageNum: 1,
+      orderByColumn: '',
+      params: {
+        threeCons: '',
+        fiveCons: '',
+        regEndTime: '',
+        regStartTime: '',
+        fuzzyMobile: '',
+        fuzzyEmail: '',
+        inviter: '',
+        accounts: '',
+      },
+      isAsc: 'asc',
+      status: '',
+      role: '',
+      certiricateNo: '',
+      accountType: '',
+      tags: '',
+    }),
+    [],
+  );
+
   return (
     <RrhDialog
+      modal={false}
       trigger={
-        <Button
-          variant="outline"
-          className="flex cursor-pointer items-center gap-1 border px-4 text-sm text-[#1E1E1E]"
-        >
-          <Plus className="size-3.5" />
-          <span>{t('CRMAccountPage.AddClient')}</span>
-        </Button>
+        <RrhButton type="button" Icon={<Plus className="size-3.5" />}>
+          {t('CRMAccountPage.AddClient')}
+        </RrhButton>
       }
       title={t('CRMAccountPage.AddClient')}
       cancelText={t('common.Cancel')}
@@ -248,7 +309,30 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
             <FormField
               name="inviter"
               render={({ field }) => {
-                return <SelectUpperPopup optional verticalLabel field={field} />;
+                return (
+                  <div>
+                    <FormItem>
+                      <div className="grid gap-2">
+                        <FormLabel className="h-5 leading-5">{`${t('CRMAccountPage.Superior')} (${t('common.optional')})`}</FormLabel>
+                        <div>
+                          <FormControl>
+                            <RrhSearchSelect<CrmUserParams, CrmUserItem>
+                              fetchFunction={fetchFunction}
+                              mapOption={mapOption}
+                              params={params}
+                              buildSearchParams={buildInviterSearchParams}
+                              getNextParams={getInviterNextParams}
+                              onSelect={(option: { value: string; label: string }) => {
+                                field.onChange(option.value);
+                              }}
+                            />
+                          </FormControl>
+                        </div>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  </div>
+                );
               }}
             />
             <div>

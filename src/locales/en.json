@@ -221,7 +221,8 @@
     "previous": "Previous step",
     "addField": "Add {{field}}",
     "selectField": "Select {{field}}",
-    "confirmToProceed": "Are you sure you want to proceed?"
+    "confirmToProceed": "Are you sure you want to proceed?",
+    "readOnly": "read only"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -266,7 +267,8 @@
     "quantity": "Order quantity",
     "quantityThisMonth": "Order volume (this month)",
     "quantityToday": "Order volume (today)",
-    "todo": "To-do items"
+    "todo": "To-do items",
+    "enableInternalTransferOut": "Internal transfer out"
   },
   "loginPage": {
     "EnterYourEmailBelowToSignInYourAccount": "Enter your email below to log in to your account",
@@ -372,7 +374,17 @@
     "traderTime": "Trading time",
     "trderAccount": "Trading account",
     "userName": "Rebate object",
-    "volume": "Trading volume"
+    "volume": "Trading volume",
+    "allowPasswordChange": "Allow password changes",
+    "allowTrackingStopLoss": "Allow trailing stops",
+    "enablTransaction": "Enable transaction",
+    "enableDayReport": "Enable daily report",
+    "enableDynamicPassword": "Enable dynamic password",
+    "enableEATransactions": "Enable Expert Advisor",
+    "enableThisAccount": "Activate this account",
+    "enableWebAPILinks": "Enable Web API link",
+    "nextLoginChangePassword": "Force password change next time you log in",
+    "tradingAccountDetail": "Trading account details"
   },
   "weekly-rebate": {
     "title": "Weekly commission rebate statement"
@@ -690,7 +702,16 @@
     "bonusPoints": "Points value",
     "content": "content",
     "pointValueCalculationFormula": "Point value calculation formula",
-    "pointValueCurrency": "liquidation currency"
+    "pointValueCurrency": "liquidation currency",
+    "transferInAmount": "Transfer amount",
+    "transferOutAmount": "Transfer amount",
+    "commissionAccount": "Rebate account",
+    "traderAccount": "trading account",
+    "accountDetail": "Account details",
+    "accountPermission": "Account permissions",
+    "accountOperations": "Account operations",
+    "sendReport": "Send report",
+    "usedAdvance": "Advance payment used"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -758,7 +779,23 @@
     "OrderAsyncTips": "Existing orders will not be saved repeatedly. \nSynchronized new orders will not calculate rebates.",
     "batchOrderAsync": "Batch account order synchronization",
     "balanceAdjust": "Balance adjustment",
-    "balanceAdjustDescription": "This operation does not require review and can directly change the account balance."
+    "balanceAdjustDescription": "This operation does not require review and can directly change the account balance.",
+    "directBroker": "Account ownership",
+    "type": {
+      "1": "Deposit",
+      "2": "Withdraw funds",
+      "3": "System deposit",
+      "4": "System withdrawal",
+      "5": "System credit deposit",
+      "6": "System credit withdrawal",
+      "7": "Rebate deposit",
+      "8": "Internal transfer deposit",
+      "9": "Internal transfer and withdrawal",
+      "10": "Deposit money from simulated account",
+      "11": "Demo account withdrawal",
+      "12": "cost",
+      "13": "correct"
+    }
   },
   "tradingAccountDataStats": {
     "advanceScale": "Prepayment ratio",
@@ -804,7 +841,8 @@
     "profitLoss": "Closed position profit and loss",
     "sysInputAmountCount": "System deposit",
     "sysOutAmountCount": "System withdrawal",
-    "title": "Trading account funds statistics"
+    "title": "Trading account funds statistics",
+    "onlyViewRebateAccount": "Only view rebate accounts"
   },
   "accountStatisticPage": {
     "accountStatistic": "Trading account transaction history statistics"
@@ -837,7 +875,8 @@
     "title": "Agent audit"
   },
   "depositRebateReview": {
-    "title": "Deposit Rebate Review"
+    "title": "Deposit Rebate Review",
+    "depositRebateReviewDetail": "Deposit rebate review details"
   },
   "depositReview": {
     "title": "Deposit review",
@@ -848,47 +887,64 @@
     "orderCommentPlaceholder": "This content will be synchronized to the trading platform (exceeding characters will be truncated)"
   },
   "feeRebateReview": {
-    "title": "Processing fee rebate review"
+    "title": "Processing fee rebate review",
+    "feeRebateReviewDetail": "Details of handling fee rebate review"
   },
   "internalTransferReview": {
-    "title": "Internal transfer review"
+    "title": "Internal transfer review",
+    "checkTimeTips": "Query time: {{field}}",
+    "checkTips": "Current account prepayment ratio {{field}},",
+    "higherThan": "Higher than {{field}},",
+    "internalTransferInfo": "Internal transfer information",
+    "internalTransferReviewDetail": "Internal transfer review details",
+    "internalTransferReviewInfo": "Internal transfer review information",
+    "lowerThan": "Below {{field}},",
+    "selectWithOrder": "Select associated order"
   },
   "tradingRebateReview": {
-    "title": "Transaction rebate review"
+    "title": "Transaction rebate review",
+    "commissionReviewDetail": "Commission review details",
+    "rebateInfo": "Rebate information",
+    "reviewInfo": "Review information"
   },
   "withdrawalReview": {
     "title": "Withdrawal review",
     "withdrawalReviewDetail": "Withdrawal review details"
   },
+  "settings": {
+    "indexReviewCount": "Home page to be reviewed total count display",
+    "nameText": "name",
+    "title": "Review Settings",
+    "val": "Display of total count of navigation bar to be reviewed",
+    "desc": "If you turn on/off the \"Display of the total number of pending review on the home page\", the home page will display/hide the number of records to be reviewed; if you turn on/off the \"Display of the total number of pending review on the navigation bar\", the number of records to be reviewed will be displayed/hidden on the navigation bar.",
+    "editAccess": "Edit permissions",
+    "sortingConfig": "Sorting configuration"
+  },
+  "accountOpening": {
+    "source": "Promotion invitation code",
+    "title": "Account opening review"
+  },
+  "binding": {
+    "source": "Promotion invitation code",
+    "title": "Binding audit",
+    "bindingInfo": "binding information",
+    "bindingReviewDetail": "Binding review details"
+  },
+  "information": {
+    "infoType": "Information Type",
+    "title": "Information audit",
+    "verifyTime": "Finishing time",
+    "verifyUserName": "Current reviewer"
+  },
+  "leverage": {
+    "currentLever": "Current leverage",
+    "targetLever": "Target leverage",
+    "title": "Leverage Review",
+    "accountInfo": "Account information",
+    "leverageInfo": "Leverage information",
+    "leverageReviewDetail": "Leverage review details"
+  },
   "review": {
-    "accountOpening": {
-      "source": "Promotion invitation code",
-      "title": "Account opening review"
-    },
-    "binding": {
-      "source": "Promotion invitation code",
-      "title": "Binding audit"
-    },
-    "information": {
-      "infoType": "Information Type",
-      "title": "Information audit",
-      "verifyTime": "Finishing time",
-      "verifyUserName": "Current reviewer"
-    },
-    "leverage": {
-      "currentLever": "Current leverage",
-      "targetLever": "Target leverage",
-      "title": "Leverage Review"
-    },
-    "settings": {
-      "indexReviewCount": "Home page to be reviewed total count display",
-      "nameText": "name",
-      "title": "Review Settings",
-      "val": "Display of total count of navigation bar to be reviewed",
-      "desc": "If you turn on/off the \"Display of the total number of pending review on the home page\", the home page will display/hide the number of records to be reviewed; if you turn on/off the \"Display of the total number of pending review on the navigation bar\", the number of records to be reviewed will be displayed/hidden on the navigation bar.",
-      "editAccess": "Edit permissions",
-      "sortingConfig": "Sorting configuration"
-    },
     "advancePaymentRatio": "Current account prepayment ratio",
     "amountCumulative": "Amount (cumulative)",
     "depositRecord": "Deposit record",
@@ -1011,7 +1067,34 @@
     "title": "wallet account",
     "account": "Account",
     "addWalletAccount": "Add account wallet",
-    "deleteTips": "Are you sure you want to delete this account wallet?"
+    "deleteTips": "Are you sure you want to delete this account wallet?",
+    "notImported": "Not imported",
+    "downloadFailedData": "Download failed data",
+    "downloadSuccessData": "Download successful data",
+    "downloadUnImportedData": "Download unimported data",
+    "Excel": "Excel batch adjustment",
+    "batchWallet": "Batch wallet balance adjustment",
+    "dataTransferInterrupted": "Interrupt data transfer",
+    "download": "download",
+    "excelTemplateUpdate": "The Excel template has been updated, please download the latest template.",
+    "importFailed": "Import failed",
+    "importSuccess": "Import successful",
+    "item": "strip",
+    "percentageText": {
+      "1": "1/3-Upload excel",
+      "2": "2/3-Data importing",
+      "3": "3/3-Import completed, please confirm the data"
+    },
+    "pleaseUploadFile": "Please upload files",
+    "tipsText": {
+      "1": "To ensure the accuracy of the data, please fill it in strictly in accordance with the template excel format, and before submitting for import, please double-check the accuracy of the imported data!",
+      "2": "The import process may take some time, so please wait patiently; while waiting, please do not close this pop-up window to avoid interrupting the imported data.",
+      "3": "When using batch balance adjustment, there may be some data that cannot be imported successfully; if there is failed data, you can download it, adjust the data, and import it again.",
+      "4": "Data import is interrupted, you can download relevant data below;"
+    },
+    "walletTemplate": "Wallet balance adjustment template",
+    "templateFormatError": "The template format is incorrect, please check and resubmit.",
+    "walletAccountsDetail": "Wallet account details"
   },
   "accountGroups": {
     "name": "Account group name",
@@ -1208,7 +1291,20 @@
       "1": "Processing",
       "2": "Completed"
     },
-    "title": "Work order list"
+    "title": "Work order list",
+    "addTicket": "Add new work order",
+    "assignTicket": "Assign work order",
+    "atLeastOneTicket": "Select at least one ticket",
+    "attachment": "appendix",
+    "attachmentDescription": "Supported file types: {{fileTypes}}, up to {{maxSize}}MB",
+    "cancelAssign": "deallocate",
+    "carbonCopy": "CC",
+    "clearAssignee": "Are you sure you want to clear the assignee?",
+    "closeOrder": "Are you sure you want to close the work order? \nClose the ticket and the status will change to Completed.",
+    "closeTicket": "Close ticket",
+    "deleteSelectedTips": "Are you sure you want to delete the selected {{count}} pieces of data?",
+    "deleteTips": "Are you sure you want to delete this work order?",
+    "selectedTickets": "{{count}} tickets selected"
   },
   "commissionReview": {
     "commission": "Commission",
@@ -1361,7 +1457,8 @@
     "crmAccountPassword": "{{min}}-{{max}} digits (numbers, uppercase letters, lowercase letters, special character combinations)",
     "integer": "{{field}}Please enter a positive integer",
     "greaterThanZero": "{{field}} must be greater than 0",
-    "levelNameAlreadyUsed": "The level name already exists"
+    "levelNameAlreadyUsed": "The level name already exists",
+    "maxSize": "The maximum size does not exceed {{maxSize}}MB"
   },
   "messageTemplate": {
     "add": "Add message template",

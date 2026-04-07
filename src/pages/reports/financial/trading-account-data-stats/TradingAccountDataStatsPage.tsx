@@ -13,6 +13,9 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { BasicParams } from '@/api/types';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useInitServerId } from '@/hooks/useInitServerId';
+import { Switch } from '@/components/ui/switch';
+import { ExportButton } from '@/components/common/ExportButton';
+import { useDealDataExport } from '@/api/hooks/report/report';
 
 export function TradingAccountDataStatsPage() {
   const { t } = useTranslation();
@@ -410,6 +413,9 @@ export function TradingAccountDataStatsPage() {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('trading-account-data-stats-table', allColumns);
 
+  const [onlyViewRebateAccount, setOnlyViewRebateAccount] = useState('0');
+  const { mutateAsync: exportDealData, isPending: exportLoading } = useDealDataExport();
+
   return (
     <div>
       <PageInfo title={t('tradingAccountDataStats.title')} />
@@ -440,6 +446,19 @@ export function TradingAccountDataStatsPage() {
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </Button>
+            <div className="flex items-center justify-center gap-2">
+              <span>{t('tradingAccountFundsStats.onlyViewRebateAccount')}</span>
+              <Switch
+                checked={onlyViewRebateAccount === '1'}
+                onCheckedChange={() => {
+                  setOnlyViewRebateAccount(onlyViewRebateAccount === '1' ? '0' : '1');
+                  setParams(prev => ({
+                    ...prev,
+                    onlyViewRebateAccount: onlyViewRebateAccount === '1' ? '0' : '1',
+                  }));
+                }}
+              />
+            </div>
             <RrhDrawer
               asChild
               Trigger={
@@ -471,6 +490,16 @@ export function TradingAccountDataStatsPage() {
               onToggle={toggleColumn}
               onBatchReorder={batchUpdateColumns}
               columns={columns}
+            />
+            <ExportButton<DataStatisticsParams>
+              exportFunction={exportDealData}
+              params={{
+                server: serverId,
+                params,
+                ...commonParams,
+              }}
+              exportLoading={exportLoading}
+              title={t('tradingAccountDataStats.title')}
             />
           </div>
         </div>

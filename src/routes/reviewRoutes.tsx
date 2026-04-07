@@ -13,6 +13,12 @@ import { LeveragePage } from '@/pages/review/leverage/LeveragePage';
 import { ReviewWithdrawalDetailPage } from '@/pages/review/withdrawal-detail/ReviewWithdrawalDetailPage';
 import { ReviewDepositDetailPage } from '@/pages/review/deposit-detail/ReviewDepositDetailPage';
 import { InformationPage } from '@/pages/review/in-formation/InformationPage';
+import { LeverageDetailPage } from '@/pages/review/leverage-detail/LeverageDetailPage';
+import { BindingDetailPage } from '@/pages/review/binging-detail/BindingDetailPage';
+import { InternalTransferDetailPage } from '@/pages/review/internal-transfer-detail/InternalTransferDetailPage';
+import { TradingRebateDetailPage } from '@/pages/review/trading-rebate-detail/TradingRebateDetailPage';
+import { FeeRebateDetailPage } from '@/pages/review/fee-rebate-detail/FeeRebateDetailPage';
+import { DepositRebateDetailPage } from '@/pages/review/deposit-rebate-detail/DepositRebateDetailPage';
 
 const ReviewWithdrawalDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();
@@ -22,6 +28,36 @@ const ReviewWithdrawalDetailPageWrapper = () => {
 const ReviewDepositDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();
   return <ReviewDepositDetailPage key={searchParams.get('id')} />;
+};
+
+const LeverageDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <LeverageDetailPage key={searchParams.get('id')} />;
+};
+
+const BindingDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <BindingDetailPage key={searchParams.get('id')} />;
+};
+
+const InternalTransferDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <InternalTransferDetailPage key={searchParams.get('id')} />;
+};
+
+const TradingRebateDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <TradingRebateDetailPage key={searchParams.get('id')} />;
+};
+
+const FeeRebateDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <FeeRebateDetailPage key={searchParams.get('id')} />;
+};
+
+const DepositRebateDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <DepositRebateDetailPage key={searchParams.get('id')} />;
 };
 
 /**
@@ -60,8 +96,16 @@ export const reviewRoutes: RouteObject[] = [
     element: <BindingPage />,
   },
   {
+    path: '/review/binding/detail',
+    element: <BindingDetailPageWrapper />,
+  },
+  {
     path: '/review/leverage',
     element: <LeveragePage />,
+  },
+  {
+    path: '/review/leverage/detail',
+    element: <LeverageDetailPageWrapper />,
   },
   {
     path: '/review/deposit',
@@ -84,16 +128,32 @@ export const reviewRoutes: RouteObject[] = [
     element: <ReviewInternalTransferPage />,
   },
   {
+    path: '/review/internal-transfer/detail',
+    element: <InternalTransferDetailPageWrapper />,
+  },
+  {
     path: '/review/trading-rebate',
     element: <ReviewTradingRebatePage />,
+  },
+  {
+    path: '/review/trading-rebate/detail',
+    element: <TradingRebateDetailPageWrapper />,
   },
   {
     path: '/review/fee-rebate',
     element: <ReviewFeeRebatePage />,
   },
   {
+    path: '/review/fee-rebate/detail',
+    element: <FeeRebateDetailPageWrapper />,
+  },
+  {
     path: '/review/deposit-rebate',
     element: <ReviewDepositRebatePage />,
+  },
+  {
+    path: '/review/deposit-rebate/detail',
+    element: <DepositRebateDetailPageWrapper />,
   },
   {
     path: '/review/agent',

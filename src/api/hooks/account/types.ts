@@ -271,3 +271,431 @@ export type AddCrmUserParams = {
   source: string;
   status: string;
 };
+
+export type WalletBalanceChangeParams = {
+  line: number;
+  username: string;
+  showId: number;
+  email: string;
+  phone: string;
+  currency: string;
+  operateName: string;
+  operationType: number;
+  opTypeName: string;
+  opType: number | null;
+  amount: number;
+  remark: string;
+};
+
+export type WalletPerm = {
+  insideTransfer: number;
+  outMoney: number;
+};
+
+export type accountOperateInfoPerm = {
+  enableInternalTransferOut: number;
+  insideTransfer: number;
+  outMoney: number;
+};
+
+export type FundFlowParams = BasicParams & {
+  walletId?: string;
+  operationType?: string;
+  serialNum?: string;
+  params: {
+    inMethod?: string;
+    outMethod?: string;
+    transMethod?: string;
+    remaidMethod?: string;
+    operationStart?: string;
+    operationEnd?: string;
+  };
+};
+
+export type FundFlowItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: string | null;
+  walletId: string | null;
+  preAmount: string | null;
+  amount: string | null;
+  serialNum: string | null;
+  operationType: number | null;
+  operationMethod: number | null;
+  operationTime: string | null;
+  dealServerId: string | null;
+  dealAccount: string | null;
+  mtOrder: string | null;
+  rebateId: string | null;
+  crmUserId: string | null;
+  currency: string | null;
+  accounts: string | null;
+  postAmount: string | null;
+};
+
+export type FundFlowListRes = BasicRes<FundFlowItem>;
+
+export type AccountDetailInfo = {
+  crmDealAccount: {
+    createBy: string | null;
+    createTime: string | null;
+    updateBy: string | null;
+    updateTime: string | null;
+    remark: string | null;
+    params: Record<string, string>;
+    id: string | null;
+    userId: string | null;
+    username: string | null;
+    name: string | null;
+    account: string | null;
+    serviceType: number | null;
+    serviceProperty: number | null;
+    servicePropertyStr: string | null;
+    servicePropertyValue: string | null;
+    server: string | null;
+    serverName: string | null;
+    accountSupervisorName: string | null;
+    directBrokerName: string | null;
+    accountGroupId: string | null;
+    accountGroupName: string | null;
+    accountSupervisorShowId: string | null;
+    serverGroup: string | null;
+    accountType: string | null;
+    accountTypeName: string | null;
+    lever: string | null;
+    balance: number | null;
+    netWorth: number | null;
+    creditAmount: number | null;
+    registerTime: string | null;
+    registerTimeStr: string | null;
+    dealAuth: number | null;
+    usedAdvance: number | null;
+    usableAdvance: number | null;
+    advanceScale: number | null;
+    status: number | null;
+    initialAmount: number | null;
+    currency: string | null;
+    authority: string | null;
+    directBroker: string | null;
+    permissionJson: string | null;
+    digits: number | null;
+    hasClearAccount: string | null;
+    buildRebateAccount: boolean | null;
+    accountGroupList: string | null;
+    accounts: string | null;
+    accountIds: string | null;
+    crmAuthority: number | null;
+    source: string | null;
+    roleName: string | null;
+    triggeringEvent: string | null;
+  };
+  allAccountType: Array<{
+    value: string;
+    label: string;
+  }>;
+  allGroup: string[];
+  allDealAccountGroup: Array<{
+    id: string;
+    name: string;
+  }>;
+  allLever: string[];
+  dbName: string | null;
+  aspName: string | null;
+};
+
+export type DetailInfoEditParams = {
+  name: string;
+  accountType: string;
+  serverGroup: string;
+  userId: string;
+  directBroker: string;
+  accountGroupId: string;
+  lever: string;
+};
+
+export type AccountInfo = {
+  crmDealAccount: {
+    createBy: string | null;
+    createTime: string | null;
+    updateBy: string | null;
+    updateTime: string | null;
+    remark: string | null;
+    params: Record<string, string>;
+    id: string | null;
+    userId: string | null;
+    username: string | null;
+    name: string | null;
+    account: string | null;
+    serviceType: number | null;
+    serviceProperty: number | null;
+    servicePropertyStr: string | null;
+    servicePropertyValue: string | null;
+    server: string | null;
+    serverName: string | null;
+    accountSupervisorName: string | null;
+    directBrokerName: string | null;
+    accountGroupId: string | null;
+    accountGroupName: string | null;
+    accountSupervisorShowId: string | null;
+    serverGroup: string | null;
+    accountType: string | null;
+    accountTypeName: string | null;
+    lever: string | null;
+    balance: number | null;
+    netWorth: number | null;
+    creditAmount: number | null;
+    registerTime: string | null;
+    registerTimeStr: string | null;
+    dealAuth: number | null;
+    usedAdvance: number | null;
+    usableAdvance: number | null;
+    advanceScale: number | null;
+    status: number | null;
+    initialAmount: number | null;
+    currency: string | null;
+    authority: string | null;
+    directBroker: string | null;
+    permissionJson: string | null;
+    digits: number | null;
+    hasClearAccount: string | null;
+    buildRebateAccount: boolean | null;
+    accountGroupList: string | null;
+    accounts: string | null;
+    accountIds: string | null;
+    crmAuthority: number | null;
+    source: string | null;
+    roleName: string | null;
+    triggeringEvent: string | null;
+  };
+};
+
+export type CrmDealAccountFundFlowParams = BasicParams & {
+  ticket?: string;
+  opeTypeList?: string;
+  comment?: string;
+  params: {
+    operationStart?: string;
+    operationEnd?: string;
+  };
+};
+
+export type CrmDealAccountFundFlowItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: string | null;
+  login: string | null;
+  serverId: string | null;
+  server: string | null;
+  serverType: number | null;
+  ticket: number | null;
+  type: number | null;
+  time: string | null;
+  profit: number | null;
+  comment: string | null;
+  currency: string | null;
+  digits: number | null;
+  flowType: number | null;
+  timeStr: string | null;
+  accountGroupList: string | null;
+  serverGroupList: string | null;
+  opeTypeList: string | null;
+  accounts: string | null;
+  orderNum: string | null;
+  balance: number | null;
+  crmShowId: string | null;
+  name: string | null;
+  crmUserName: string | null;
+  typeName: string | null;
+};
+
+export type CrmDealAccountFundFlowRes = BasicRes<CrmDealAccountFundFlowItem> & {
+  priceSum: number;
+};
+
+export type CrmDealAccountFundHistoryParams = BasicParams & {
+  ticket?: string;
+  type?: string;
+  symbol?: string;
+  positionID?: string;
+  entry?: string;
+  params: {
+    historyDealBJStartTime?: string;
+    historyDealBJEndTime?: string;
+  };
+};
+
+export type CrmDealAccountFundHistoryItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  login: string | null;
+  serverId: string | null;
+  server: string | null;
+  deal: number | null;
+  ticket: number | null;
+  symbol: string | null;
+  digits: number | null;
+  type: number | null;
+  volume: number | null;
+  sl: number | null;
+  tp: number | null;
+  swaps: number | null;
+  profit: number | null;
+  comment: string | null;
+  commission: number | null;
+  matchRuleType: string | null;
+  entry: number | null;
+  serverType: number | null;
+  serviceProperty: string | null;
+  accountGroupList: string | null;
+  positionID: number | null;
+  accounts: string | null;
+  accountIds: string | null;
+  breedGroup: string | null;
+  id: string | null;
+  uuid: string | null;
+  name: string | null;
+  currency: string | null;
+  openTime: string | null;
+  openPrice: number | null;
+  closeTime: string | null;
+  closePrice: number | null;
+  time: string | null;
+  price: number | null;
+  lotSize: number | null;
+  flowType: number | null;
+  traderCount: number | null;
+  dealTime: string | null;
+  openDate: string | null;
+  primId: string | null;
+};
+
+export type CrmDealAccountFundHistoryRes = BasicRes<CrmDealAccountFundHistoryItem> & {
+  totalVolume: number;
+  totalProfit: number;
+};
+
+export type CrmDealAccountPositionOrderParams = BasicParams & {
+  type?: string;
+  params: {
+    positionDealBJStartTime?: string;
+    positionDealBJEndTime?: string;
+    positionFuzzyTicket?: string;
+    positionFuzzySymbol?: string;
+  };
+};
+
+export type CrmDealAccountPositionOrderItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: {
+    currency: string | null;
+    accountName: string | null;
+  };
+  uuid: string | null;
+  login: string | null;
+  server: string | null;
+  deal: number | null;
+  ticket: number | null;
+  symbol: string | null;
+  digits: number | null;
+  type: number | null;
+  entry: number | null;
+  volume: number | null;
+  time: string | null;
+  dealDate: string | null;
+  price: number | null;
+  sl: number | null;
+  tp: number | null;
+  commission: number | null;
+  swaps: number | null;
+  profit: number | null;
+  comment: string | null;
+  positionID: number | null;
+  priceCur: number | null;
+  rateprofit: number | null;
+  ratemargin: number | null;
+  synTime: string | null;
+  serverType: number | null;
+  accounts: string | null;
+  accountIds: string | null;
+  accountGroupList: string | null;
+  currency: string | null;
+  lotSize: number | null;
+};
+
+export type CrmDealAccountPositionOrderRes = BasicRes<CrmDealAccountPositionOrderItem> & {
+  totalVolume: number;
+  totalProfit: number;
+  totalSwaps: number;
+};
+
+export type CrmDealAccountLimitOrderParams = BasicParams & {
+  params: {
+    positionFuzzyTicket?: string;
+    positionFuzzyType?: string;
+    positionFuzzySymbol?: string;
+    positionDealBJStartTime?: string;
+    positionDealBJEndTime?: string;
+  };
+};
+
+export type CrmDealAccountLimitOrderItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: {
+    currency: string | null;
+    accountName: string | null;
+  };
+  uuid: string | null;
+  login: string | null;
+  server: string | null;
+  deal: number | null;
+  ticket: number | null;
+  symbol: string | null;
+  digits: number | null;
+  type: number | null;
+  entry: number | null;
+  volume: number | null;
+  time: string | null;
+  dealDate: string | null;
+  price: number | null;
+  sl: number | null;
+  tp: number | null;
+  commission: number | null;
+  swaps: number | null;
+  profit: number | null;
+  comment: string | null;
+  positionID: number | null;
+  priceCur: number | null;
+  rateprofit: number | null;
+  ratemargin: number | null;
+  synTime: string | null;
+  serverType: number | null;
+  accounts: string | null;
+  accountIds: string | null;
+  accountGroupList: string | null;
+  currency: string | null;
+  lotSize: number | null;
+};
+
+export type CrmDealAccountLimitOrderRes = BasicRes<CrmDealAccountLimitOrderItem> & {
+  totalVolume: number;
+};

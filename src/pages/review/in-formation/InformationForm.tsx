@@ -102,7 +102,7 @@ export const InformationForm = ({
           <FormSelect
             verticalLabel
             name="infoType"
-            label={t('review.information.infoType')}
+            label={t('information.infoType')}
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={infoTypeList.map(item => ({
@@ -133,9 +133,9 @@ export const InformationForm = ({
           <FormInput
             verticalLabel
             name="verifyUserName"
-            label={t('review.information.verifyUserName')}
+            label={t('information.verifyUserName')}
             placeholder={t('common.pleaseInput', {
-              field: t('review.information.verifyUserName'),
+              field: t('information.verifyUserName'),
             })}
           />
 

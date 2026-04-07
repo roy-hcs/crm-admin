@@ -857,3 +857,275 @@ export type DepositReviewDetailRes = {
     factDepositScale: number;
   };
 };
+
+export type LeverageDetail = {
+  aliasName: string | null;
+  verifyStep: string | null;
+  vUserLastName: string | null;
+  verifyUserName: string | null;
+  currentLever: string | null;
+  verifyUser: string | null;
+  remark: string | null;
+  verifyTime: string | null;
+  login: string | null;
+  userName: string | null;
+  vUserName: string | null;
+  userId: string | null;
+  serverId: string | null;
+  subTime: string | null;
+  targetLever: string | null;
+  userLastName: string | null;
+  userShowId: string | null;
+  id: string | null;
+  status: number | null;
+};
+
+export type BindDetail = {
+  aliasName: string | null;
+  verifyStep: number | null;
+  vUserLastName: string | null;
+  verifyUserName: string | null;
+  serverName: string | null;
+  verifyUser: string | null;
+  remark: string | null;
+  verifyTime: string | null;
+  login: string | null;
+  userName: string | null;
+  vUserName: string | null;
+  serverProperty: string | null;
+  userId: string | null;
+  serverId: string | null;
+  subTime: string | null;
+  severProperty: number | null;
+  userLastName: string | null;
+  serverType: string | null;
+  userShowId: string | null;
+  subRemark: string | null;
+  id: string | null;
+  status: number | null;
+};
+
+export type LeverageReview = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string | null;
+  preferenceId: string | null;
+  roleId: string | null;
+  userId: string | null;
+  sort: number | null;
+  userName: string | null;
+  userLastName: string | null;
+  roleName: string | null;
+};
+
+export type LeverageReviewDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    detail: LeverageDetail;
+    reviewer: LeverageReview;
+    verifyLogs: VerifyLogItem[];
+  };
+};
+export type LeverageVerifyParams = {
+  id: string;
+  status: string;
+  remark: string;
+  verifyStep: string;
+};
+
+export type BindingReviewDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    detail: BindDetail;
+    reviewer: LeverageReview;
+    verifyLogs: VerifyLogItem[];
+  };
+};
+
+export type BindingVerifyParams = {
+  id: string;
+  status: string;
+  remark: string;
+  verifyStep: string;
+};
+
+export type InternalTransferDetail = {
+  orderComment: string | null;
+  verifyStep: number;
+  verifyUser: string | null;
+  marginlevelTip: number;
+  remark: string | null;
+  verifyTime: string | null;
+  outAccount: string;
+  type: string | null;
+  vUserName: string | null;
+  subTime: string;
+  inMoney: string;
+  maxAdvanceScale: number;
+  rate: string | null;
+  inAccount: string;
+  isNeedDeposit: string | null;
+  userLastName: string;
+  minAdvanceScale: number;
+  userShowId: string;
+  id: string;
+  marginlevel: number;
+  aliasName: string;
+  currencyPair: string;
+  inServer: string;
+  dealTicket: string | null;
+  vUserLastName: string | null;
+  marginlevelTime: string;
+  verifyUserName: string | null;
+  inUnit: string;
+  outMoney: string;
+  userName: string;
+  userId: string;
+  outAliasName: string;
+  outUnit: string;
+  outStatus: number;
+  outServer: string;
+  inAliasName: string;
+  status: number;
+};
+
+export type InternalTransferReviewDetailRes = {
+  code: number;
+  data: {
+    detail: InternalTransferDetail;
+    reviewer: LeverageReview;
+    verifyLogs: VerifyLogItem[];
+  };
+};
+
+export type InternalTransferVerifyParams = {
+  id: string;
+  status: string;
+  remark: string;
+  rate: string;
+  inMoney: string;
+  isNeedDeposit: string;
+  orderComment?: string;
+  outMoney?: string;
+};
+
+export type InternalTransferDealTicketListParams = BasicParams & {
+  ticket: string;
+};
+
+export type InternalTransferDealTicketItem = {
+  id: string;
+  dealTicket: string;
+  amount: string;
+  time: string;
+  comment: string;
+};
+
+export type InternalTransferDealTicketListRes = BasicRes<InternalTransferDealTicketItem>;
+
+export type rebateCommissionDetail = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string | null;
+  userId: string | null;
+  orderId: string | null;
+  mtOrder: string | null;
+  serverName: string | null;
+  serverId: string | null;
+  serverType: number | null;
+  taderType: string | null;
+  lastName: string | null;
+  name: string | null;
+  showId: string | null;
+  rebateTotalAmt: string | null;
+  rebateFixedAmt: string | null;
+  rebatePointsAmt: string | null;
+  rebateTime: string | null;
+  rebateStatus: number | null;
+  trderAccount: string | null;
+  trderCount: string | null;
+  amtUnit: string | null;
+  verifyId: string | null;
+  traderTime: string | null;
+  traderTimeStr: string | null;
+  verifyTime: string | null;
+  rebateTraderId: string | null;
+  rebateCommissionId: string | null;
+  rebateType: number | null;
+  rebateTraderRuleId: string | null;
+  commissionBase: string | null;
+  accountGroupList: string | null;
+  model: number | null;
+  rebateAccountType: string | null;
+  rebateAccount: string | null;
+  settleStyle: number | null;
+  ticket: string | null;
+  deal: string | null;
+  login: string | null;
+  symbol: string | null;
+  volume: string | null;
+  userName: string | null;
+  rebateUser: string | null;
+  totalAmtText: string | null;
+  currency: string | null;
+  inMoneyAmt: string | null;
+  percentage: string | null;
+  commission: string | null;
+  rebateTraderName: string | null;
+  verifyName: string | null;
+  rebateAccountName: string | null;
+  verifyStep: number | null;
+  verifyUserName: string | null;
+  orderComment: string | null;
+  accountName: string | null;
+};
+
+export type RebateReviewDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    detail: rebateCommissionDetail;
+    reviewer: LeverageReview;
+    verifyLogs: VerifyLogItem[];
+  };
+};
+
+export type RebateVerifyParams = {
+  id: string;
+  rebateStatus: string;
+  remark: string;
+  verifyStep: string;
+};
+
+export type FeeRebateDetail = rebateCommissionDetail;
+
+export type FeeRebateReviewDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    detail: FeeRebateDetail;
+    reviewer: LeverageReview;
+    verifyLogs: VerifyLogItem[];
+  };
+};
+export type DepositRebateDetail = rebateCommissionDetail;
+
+export type DepositRebateReviewDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    detail: DepositRebateDetail;
+    reviewer: LeverageReview;
+    verifyLogs: VerifyLogItem[];
+  };
+};
