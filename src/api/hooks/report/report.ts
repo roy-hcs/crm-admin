@@ -560,3 +560,12 @@ export function useWeekRebateSettleExport() {
     mutationFn: (params: DailyRebateParams) => apiFormPost('/system/rebateSettle/export', params),
   });
 }
+/**
+ *  系统资金操作记录导出
+ */
+export function useSystemFundOperationRecordExport() {
+  return useMutation({
+    mutationFn: (params: SystemFundOperationRecordListParams) =>
+      apiFormPost('/system/statistics/systemFundOperRecordExport', params),
+  });
+}

@@ -126,10 +126,11 @@ function flattenParams(
   obj: FormParams,
   parentKey = '',
   result: URLSearchParams = new URLSearchParams(),
+  isArray?: boolean,
 ) {
   Object.entries(obj).forEach(([key, value]) => {
     // Use dot notation for nested properties, no prefix for top-level
-    const newKey = parentKey ? `${parentKey}.${key}` : key;
+    const newKey = parentKey ? (isArray ? `${parentKey}.${key}` : `${parentKey}[${key}]`) : key;
 
     if (Array.isArray(value)) {
       // Handle arrays
@@ -138,7 +139,7 @@ function flattenParams(
           // Array element is an object, recursively flatten it with dot notation
           // Use format: arrayName[index].property
           const arrayKey = `${newKey}[${index}]`;
-          flattenParams(item as FormParams, arrayKey, result);
+          flattenParams(item as FormParams, arrayKey, result, true);
         } else {
           // Array element is a primitive value - append without index for simple arrays
           // Use format: key=value1&key=value2 (repeated keys)

@@ -18,6 +18,8 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { financeTypeMap } from '@/lib/constant';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { ExportButton } from '@/components/common/ExportButton';
+import { useSystemFundOperationRecordExport } from '@/api/hooks/report/report';
 
 export const SystemFundOperationsPage = () => {
   const [params, setParams] = useState<SystemFundOperationRecordListParams['params']>({
@@ -58,15 +60,15 @@ export const SystemFundOperationsPage = () => {
     data: sumData,
     isPending,
   } = useSystemFundOperationRecordSum();
+  const { mutateAsync: exportOperationRecord, isPending: exportLoading } =
+    useSystemFundOperationRecordExport();
 
   const [sumShow, setSumShow] = useState(false);
   const getSumData = () => {
     setSumShow(true);
     getOperationRecordSum({
       ...otherParams,
-      params: {
-        ...params,
-      },
+      params,
     });
   };
 
@@ -215,6 +217,15 @@ export const SystemFundOperationsPage = () => {
               onToggle={toggleColumn}
               onBatchReorder={batchUpdateColumns}
               columns={columns}
+            />
+            <ExportButton<SystemFundOperationRecordListParams>
+              title={t('systemFundOperationsPage.title')}
+              params={{
+                params,
+                ...otherParams,
+              }}
+              exportFunction={exportOperationRecord}
+              exportLoading={exportLoading}
             />
           </div>
         </div>
