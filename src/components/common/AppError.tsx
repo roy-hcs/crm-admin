@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 export const AppError = () => {
   const { t } = useTranslation();
   return (
-    <div className="bg-opacity-75 fixed inset-0 z-50 flex items-center justify-center bg-red-500">
-      <div className="w-full max-w-md rounded bg-white p-6 shadow-lg">
+    <div className="bg-opacity-75 fixed inset-0 z-50 flex items-center justify-center">
+      <div className="w-full max-w-md rounded border border-red-600 bg-white p-6 shadow-lg">
         <h2 className="mb-4 text-xl font-bold text-red-600">{t('common.AnErrorOccurred')}</h2>
         <p className="mb-4 text-gray-700">{t('common.SomethingWentWrongPleaseTryAgainLater')}</p>
         <button

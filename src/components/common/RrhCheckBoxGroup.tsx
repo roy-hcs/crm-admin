@@ -17,7 +17,7 @@ export const RrhCheckBoxGroup: FC<{
     .map(s => s.trim())
     .filter(Boolean);
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-5">
+    <div className="flex flex-wrap gap-6">
       {checkItems.map(i => {
         const isChecked = currentSelected.includes(i.value);
         return (

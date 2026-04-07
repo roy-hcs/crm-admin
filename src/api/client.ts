@@ -103,19 +103,53 @@ export async function apiPost<T = null, D extends ApiPostData = Record<string, u
   });
 }
 
-export type FormValue = string | number | boolean | undefined | Record<string, unknown> | null;
+// Type for form parameters supporting nested objects and arrays
+export type FormParams = {
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | undefined
+    | null
+    | FormParams
+    | FormParams[]
+    | string[]
+    | number[]
+    | boolean[]
+    | Array<{ [key: string]: unknown }>;
+};
+
+// Alias for backward compatibility
+export type FormValue = FormParams[string];
 
 function flattenParams(
-  obj: Record<string, FormValue>,
+  obj: FormParams,
   parentKey = '',
   result: URLSearchParams = new URLSearchParams(),
 ) {
   Object.entries(obj).forEach(([key, value]) => {
-    const newKey = parentKey ? `${parentKey}[${key}]` : key;
+    // Use dot notation for nested properties, no prefix for top-level
+    const newKey = parentKey ? `${parentKey}.${key}` : key;
 
-    if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
-      flattenParams(value as Record<string, FormValue>, newKey, result);
+    if (Array.isArray(value)) {
+      // Handle arrays
+      value.forEach((item, index) => {
+        if (item !== null && typeof item === 'object' && !Array.isArray(item)) {
+          // Array element is an object, recursively flatten it with dot notation
+          // Use format: arrayName[index].property
+          const arrayKey = `${newKey}[${index}]`;
+          flattenParams(item as FormParams, arrayKey, result);
+        } else {
+          // Array element is a primitive value - append without index for simple arrays
+          // Use format: key=value1&key=value2 (repeated keys)
+          result.append(newKey, `${item ?? ''}`);
+        }
+      });
+    } else if (value !== null && typeof value === 'object') {
+      // Handle nested objects
+      flattenParams(value as FormParams, newKey, result);
     } else {
+      // Handle primitive values
       result.append(newKey, `${value ?? ''}`);
     }
   });
@@ -123,16 +157,12 @@ function flattenParams(
   return result;
 }
 
-function apiFormPostBase<T>(
-  url: string,
-  params: Record<string, FormValue>,
-  options?: RequestInit,
-): Promise<T> {
+function apiFormPostBase<T>(url: string, params?: FormParams, options?: RequestInit): Promise<T> {
   // const urlSearchParams = new URLSearchParams();
   // Object.entries(params).forEach(([key, value]) => {
   //   urlSearchParams.append(key, String(value));
   // });
-  const urlSearchParams = flattenParams(params);
+  const urlSearchParams = flattenParams(params || {});
 
   return fetchWithAuth<T>(url, {
     ...options,
@@ -147,7 +177,7 @@ function apiFormPostBase<T>(
 }
 export function apiFormPost<T>(
   url: string,
-  params: Record<string, FormValue>,
+  params?: FormParams,
   options?: RequestInit,
 ): Promise<ApiResponse<T>> {
   return apiFormPostBase<ApiResponse<T>>(url, params, options);
@@ -155,7 +185,7 @@ export function apiFormPost<T>(
 
 export function apiFormPostCustom<T>(
   url: string,
-  params: Record<string, FormValue>,
+  params?: FormParams,
   options?: RequestInit,
 ): Promise<T> {
   return apiFormPostBase<T>(url, params, options);

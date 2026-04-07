@@ -6,10 +6,16 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { ReactNode } from 'react';
+import { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import * as SelectPrimitive from '@radix-ui/react-select';
 
 export type BaseOption = { label: string; value: string | number };
+
+// 提取 Select 组件额外支持的属性
+type SelectRootProps = ComponentPropsWithoutRef<typeof SelectPrimitive.Root>;
+type SelectExtraProps = Omit<SelectRootProps, 'value' | 'onValueChange' | 'disabled'>;
+
 export const RrhSelect = <T extends BaseOption>({
   options,
   value,
@@ -19,6 +25,8 @@ export const RrhSelect = <T extends BaseOption>({
   showI18nLabel = false,
   className,
   renderItem,
+  disabled = false,
+  ...selectProps
 }: {
   options: T[];
   value?: string;
@@ -28,10 +36,11 @@ export const RrhSelect = <T extends BaseOption>({
   showRowValue?: boolean;
   showI18nLabel?: boolean;
   renderItem?: (option: T) => ReactNode;
-}) => {
+  disabled?: boolean;
+} & SelectExtraProps) => {
   const { t } = useTranslation();
   return (
-    <Select value={value} onValueChange={onValueChange}>
+    <Select value={value} onValueChange={onValueChange} disabled={disabled} {...selectProps}>
       <SelectTrigger className={cn('bg-background', className)}>
         {showRowValue ? (
           <div className="truncate text-sm">{value || placeholder}</div>

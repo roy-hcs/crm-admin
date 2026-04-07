@@ -180,7 +180,7 @@ export const AccountGroupDialog = ({
               name="sort"
               label={t('table.sort')}
               verticalLabel
-              placeholder={t('accountGroups.sortPlaceholder')}
+              placeholder={t('common.sortPlaceholder')}
             />
           </form>
         </Form>

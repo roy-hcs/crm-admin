@@ -1,11 +1,13 @@
 // Rebate module API hooks
-import { apiFormPost, apiFormPostCustom } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGet } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AddRebateBasePointParams,
   AddRebateBaseTypeParams,
+  AddTradingRebateRuleParams,
   EditRebateBasePointParams,
   EditRebateBaseTypeParams,
+  GetMtAndRebateTypeRes,
   MtRebateBaseTypeRes,
   RebateBasePointParams,
   RebateBasePointRes,
@@ -17,6 +19,7 @@ import {
   RebateFeeSettingsListRes,
   RebateLevelParams,
   RebateLevelRes,
+  RebateTraderDealDetail,
   RebateTraderDealListParams,
   RebateTraderDealListRes,
   SelectServerListParams,
@@ -132,10 +135,14 @@ export function useDeleteRebateBaseType() {
 /**
  * 获取返佣层级列表
  */
-export function useRebateLevelList(params: RebateLevelParams) {
+export function useRebateLevelList(
+  params: RebateLevelParams,
+  { enabled }: { enabled?: boolean } = { enabled: true },
+) {
   return useQuery({
     queryKey: ['getRebateLevelList', params],
     queryFn: () => apiFormPostCustom<RebateLevelRes>('/system/crmRebateLevel/list', params),
+    enabled,
   });
 }
 /**
@@ -188,13 +195,93 @@ export function useEditLevelSkippingSetting() {
 /**
  * 获取交易返佣设置
  */
-export function useRebateTraderDealList(params: RebateTraderDealListParams) {
+export function useRebateTraderDealList(
+  params: RebateTraderDealListParams,
+  { enabled }: { enabled?: boolean } = {},
+) {
   return useQuery({
     queryKey: ['getRebateTraderDealList', params],
     queryFn: () =>
       apiFormPostCustom<RebateTraderDealListRes>('/system/crmRebateTraderDeal/list', params),
+    enabled,
   });
 }
+
+/**
+ * 修改交易返佣状态
+ */
+export function useEditRebateTraderDealStatus() {
+  return useMutation({
+    mutationFn: (params: { id: string; hasUsed: string }) =>
+      apiFormPost('/system/crmRebateTraderDeal/changeStatus', params),
+  });
+}
+/**
+ * 交易返佣规则名称唯一性检查
+ */
+export function useCheckRebateTraderDealUnique() {
+  return useMutation({
+    mutationFn: (params: {
+      name: string;
+      id?: string;
+      num: number;
+      rebateType: string;
+      model: string;
+      language: string;
+    }) => apiFormPostCustom<number>('/system/crmRebateTraderDeal/getUniqueName', params),
+  });
+}
+/**
+ * 新增交易返佣规则
+ */
+export function useAddRebateTraderDeal() {
+  return useMutation({
+    mutationFn: (params: AddTradingRebateRuleParams) =>
+      apiFormPost('/system/crmRebateTraderDeal/add', params),
+  });
+}
+/**
+ * 编辑交易返佣规则
+ */
+export function useEditRebateTraderDeal() {
+  return useMutation({
+    mutationFn: (params: AddTradingRebateRuleParams & { id?: string }) =>
+      apiFormPost('/system/crmRebateTraderDeal/edit', params),
+  });
+}
+/**
+ * 获取交易返佣规则详情
+ */
+export function useGetRebateTraderDealDetail(id: string, { enabled }: { enabled?: boolean } = {}) {
+  return useQuery({
+    queryKey: ['getRebateTraderDealDetail', id],
+    queryFn: () => apiGet<RebateTraderDealDetail>(`/system/crmRebateTraderDeal/detail/${id}`),
+    enabled,
+    staleTime: 0,
+  });
+}
+/**
+ * 删除交易返佣规则
+ */
+export function useDeleteRebateTraderDeal() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost('/system/crmRebateTraderDeal/remove', params),
+  });
+}
+/**
+ * 获取服务器对应的组别和品种组信息
+ */
+export function useGetMtAndRebateType() {
+  return useMutation({
+    mutationFn: (params: { serverId: string }) =>
+      apiFormPostCustom<GetMtAndRebateTypeRes>(
+        '/system/crmRebateTraderDeal/getMtAndRebateType',
+        params,
+      ),
+  });
+}
+
 /**
  * 获取手续费返佣设置
  */

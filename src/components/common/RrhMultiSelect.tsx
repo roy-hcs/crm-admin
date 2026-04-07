@@ -12,8 +12,10 @@ import { cn } from '@/lib/utils';
 import { ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { RrhButton } from './RrhButton';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 
 export type BaseOption = { label: string; value: string | number };
+export type ValidationResult = { valid: boolean; message?: string };
 export const RrhMultiSelect = <T extends BaseOption>({
   options,
   value = [],
@@ -29,10 +31,14 @@ export const RrhMultiSelect = <T extends BaseOption>({
   onDropdownReachEnd,
   loadingMore = false,
   hasMore = false,
+  maxSelections,
+  maxSelectionsMessage,
+  onMaxSelectionsReached,
+  onBeforeValueChange,
 }: {
   options: T[];
   value?: string[];
-  onValueChange?: (value: string[]) => void;
+  onValueChange?: (value: string[], option?: string, operator?: 'add' | 'remove') => void;
   placeholder?: string;
   className?: string;
   renderItem?: (option: T) => ReactNode;
@@ -44,6 +50,15 @@ export const RrhMultiSelect = <T extends BaseOption>({
   onDropdownReachEnd?: () => void;
   loadingMore?: boolean;
   hasMore?: boolean;
+  maxSelections?: number;
+  maxSelectionsMessage?: string;
+  onMaxSelectionsReached?: (max: number) => void;
+  onBeforeValueChange?: (
+    newValue: string[],
+    option: string,
+    operator: 'add' | 'remove',
+    currentValue: string[],
+  ) => ValidationResult;
 }) => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
@@ -129,11 +144,41 @@ export const RrhMultiSelect = <T extends BaseOption>({
     if (!onValueChange) return;
 
     const isSelected = value.includes(optionValue);
-    if (isSelected) {
-      onValueChange(value.filter(v => v !== optionValue));
-    } else {
-      onValueChange([...value, optionValue]);
+    const operator = isSelected ? 'remove' : 'add';
+    const newValue = isSelected ? value.filter(v => v !== optionValue) : [...value, optionValue];
+
+    // 1. 先执行 onBeforeValueChange 钩子（业务验证）
+    if (onBeforeValueChange) {
+      const result = onBeforeValueChange(newValue, optionValue, operator, value);
+
+      // 如果验证失败，显示错误消息并阻止操作
+      if (!result.valid) {
+        if (result.message) {
+          toast.error(result.message);
+        }
+        return;
+      }
     }
+
+    // 2. 如果是添加操作，检查是否达到最大选择数量
+    if (!isSelected && maxSelections && value.length >= maxSelections) {
+      // 优先使用自定义回调
+      if (onMaxSelectionsReached) {
+        onMaxSelectionsReached(maxSelections);
+      }
+      // 否则使用提供的消息显示 toast
+      else if (maxSelectionsMessage) {
+        toast.error(maxSelectionsMessage);
+      }
+      // 提供默认提示
+      else {
+        toast.error(`Maximum ${maxSelections} selections allowed`);
+      }
+      return;
+    }
+
+    // 3. 所有验证通过，执行实际的值变更
+    onValueChange(newValue, optionValue, operator);
   };
 
   const handleRemove = (event: React.MouseEvent<HTMLDivElement>, optionValue: string) => {
@@ -151,17 +196,21 @@ export const RrhMultiSelect = <T extends BaseOption>({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={cn('!h-auto min-h-9 w-full justify-between text-start font-normal', className)}
+          className={cn(
+            '!h-auto min-h-9 w-full justify-between text-start font-normal',
+            selectedOptions.length > 0 ? 'hover:bg-transparent' : '',
+            className,
+          )}
         >
           {showRowValue ? (
             <div className="flex flex-wrap gap-1 truncate">
               {selectedOptions.length > 0 ? (
                 selectedOptions.map(option => (
-                  <span
+                  <div
                     key={option.value}
                     className="bg-secondary text-secondary-foreground mr-1 inline-flex items-center rounded-md px-1 py-0 text-xs"
                   >
-                    {option.label}
+                    {renderItem ? renderItem(option) : option.label}
                     <div
                       className="text-muted-foreground hover:text-foreground ml-1 h-auto cursor-pointer border-none p-0 hover:bg-transparent"
                       onClick={e => handleRemove(e, option.value.toString())}
@@ -169,7 +218,7 @@ export const RrhMultiSelect = <T extends BaseOption>({
                       <X className="h-3 w-3" />
                       <span className="sr-only">Remove {option.label}</span>
                     </div>
-                  </span>
+                  </div>
                 ))
               ) : (
                 <span className="text-muted-foreground">{placeholder}</span>

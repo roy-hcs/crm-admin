@@ -66,6 +66,7 @@
     "increase": "增加",
     "subtract": "扣除",
     "selectAll": "全选",
+    "previousStep": "上一步",
     "next": "下一步",
     "previous": "上一步",
     "loading": "加载中...",
@@ -239,7 +240,16 @@
     "selectField": "选择 {{field}}",
     "confirmToProceed": "确定进行操作？",
     "readOnly": "只读",
-    "idCardName": "证件姓名"
+    "idCardName": "证件姓名",
+    "supportMultipleSelection": "可多选",
+    "sortPlaceholder": "请输入数字，越大越靠前",
+    "optionalField": "{{field}}(选填)",
+    "save": "保存",
+    "pleaseCheckFormErrors": "请检查表单错误",
+    "addFieldSuccess": "添加 {{field}} 成功",
+    "modifyFieldSuccess": "修改 {{field}} 成功",
+    "addFieldFailed": "添加 {{field}} 失败",
+    "modifyFieldFailed": "修改 {{field}} 失败"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -687,7 +697,6 @@
     "relatedRebateRuleCount": "关联返佣规则",
     "addAccountGroup": "新增账户组",
     "editAccountGroup": "编辑账户组",
-    "sortPlaceholder": "请输入数字，越大越靠前",
     "nameAlreadyExists": "账户组名称已存在",
     "deleteTips": "确定删除账户组\"{{name}}\"?"
   },
@@ -1230,6 +1239,8 @@
     "bonusPoints": "积分数值",
     "pointValueCalculationFormula": "点值计算公式",
     "pointValueCurrency": "清算货币",
+    "description": "描述",
+    "allAccountGroup": "全部账户组",
     "transferOutAmount": "转出金额",
     "transferInAmount": "转入金额",
     "traderAccount": "交易帐户",
@@ -1415,7 +1426,6 @@
     "title": "点值设置",
     "warn": "点值相同的品种请归在同一个点值组内，组内的品种会以相同的点值返佣。未设置点值的品种默认按0处理。如存在重复的品种点值，将以排序最靠前的点值计算返佣。",
     "pointValuePlaceholder": "请输入点值，限正数",
-    "sortPlaceholder": "请输入数字，越大越靠前",
     "deleteTips": "确定删除该点值?"
   },
   "ProductGroup": {
@@ -1442,7 +1452,26 @@
   },
   "TradingRebateSettings": {
     "title": "交易返佣设置",
-    "warn": "一笔订单允许返佣多次。如命中多条返佣规则，将对命中的规则陆续返佣。一条规则仅返佣一次。"
+    "warn": "一笔订单允许返佣多次。如命中多条返佣规则，将对命中的规则陆续返佣。一条规则仅返佣一次。",
+    "enableRuleTip": "确认要启用该返佣规则吗？",
+    "disableRuleTip": "确认要停用该返佣规则吗？",
+    "serverCanNotExceed5": "最多允许5台服务器",
+    "sirixNotSupportOtherServer": "Sirix服务器暂不支持与其他平台服务器一起使用",
+    "settleType": "结算方式",
+    "amount": "数额",
+    "dot": "点",
+    "settleLevel": "结算层级",
+    "highestRebateLevel": "最高返佣层级",
+    "settleUnit": "结算单位",
+    "canNotModifyAfterAdd": "*新增后不可修改",
+    "commissionSettlementTiming": "返佣结算时机",
+    "manualReview": "手动审核",
+    "realTimeCommission": "实时返佣",
+    "commissionDesc": "*如有选择返佣结算时机，优先使用该方式结算返佣；如未选择返佣结算时机，默认使用对应返佣类型的结算方式结算返佣",
+    "serverSetting": "服务器设置",
+    "allMtGroups": "全部MT组",
+    "allRebateGroupType": "全部品种",
+    "multipleLanguageSetting": "多语言设置"
   },
   "FeeRebateSettings": {
     "title": "手续费返佣设置",

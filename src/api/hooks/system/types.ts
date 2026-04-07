@@ -1,8 +1,5 @@
 import { BasicParams, BasicRes, BaseEntity } from '../../types';
 
-// Note: BaseReportItem, WithDrawReportItem, SymbolReport*, RegCountReportItem, SumReport moved to @/api/hooks/workbench
-
-// Shared across multiple modules (account, marketing, reports, review, workbench)
 export type ServerItem = {
   id: string;
   serviceType: number;

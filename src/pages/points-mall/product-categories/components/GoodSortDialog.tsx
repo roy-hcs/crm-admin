@@ -355,7 +355,7 @@ export const GoodSortDialog = ({
                   verticalLabel
                   name="sort"
                   label={t('table.sort')}
-                  placeholder={t('accountGroups.sortPlaceholder')}
+                  placeholder={t('common.sortPlaceholder')}
                 />
               </div>
               <div className="py-3">
