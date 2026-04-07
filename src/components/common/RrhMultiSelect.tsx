@@ -184,7 +184,7 @@ export const RrhMultiSelect = <T extends BaseOption>({
                   >
                     {renderItem ? renderItem(option) : option.label}
                     <div
-                      className="text-muted-foreground hover:text-foreground ml-1 h-auto cursor-pointer border-none p-0 hover:bg-transparent"
+                      className="text-muted-foreground hover:text-foreground ml-1 h-auto cursor-pointer border-none p-0.5 hover:bg-transparent"
                       onClick={e => handleRemove(e, option.value.toString())}
                     >
                       <X className="h-3 w-3" />
