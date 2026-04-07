@@ -158,7 +158,7 @@ export const TradingAccountDataStatsForm = ({
           <FormMultiSelect
             verticalLabel
             name="serverGroupList"
-            label={t('trading.serverGroup')}
+            label={t('table.groups')}
             placeholder={t('common.pleaseSelect')}
             options={groupList}
             loading={groupLoading}

@@ -63,29 +63,31 @@ export const UserDialog = ({
       confirmText={t('common.Confirm')}
       onConfirm={() => onConfirm(selectedUser?.id || '')}
     >
-      <form className="flex items-center gap-4 text-sm" onSubmit={onSubmit}>
-        <label>{t('CRMAccountPage.keyWordOfSearchSuperior')}:</label>
-        <Input
-          type="text"
-          value={search}
-          className="h-9 border px-2"
-          onChange={e => setSearch(e.target.value)}
+      <div className="grid gap-3">
+        <form className="flex items-center gap-4 text-sm" onSubmit={onSubmit}>
+          <label>{t('CRMAccountPage.keyWordOfSearchSuperior')}:</label>
+          <Input
+            type="text"
+            value={search}
+            className="h-9 border px-2"
+            onChange={e => setSearch(e.target.value)}
+          />
+          <RrhButton type="submit">
+            <Search className="size-4" />
+            <span>{t('common.Search')}</span>
+          </RrhButton>
+        </form>
+        <CRMTableSimple
+          pageCount={Math.ceil(+(crmUsers?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          data={crmUsers?.rows || []}
+          onPageSizeChange={setPageSize}
+          onPageChange={setPageNum}
+          loading={crmUsersLoading}
+          onRowSelect={handleRowSelect}
         />
-        <RrhButton type="submit">
-          <Search className="size-4" />
-          <span>{t('common.Search')}</span>
-        </RrhButton>
-      </form>
-      <CRMTableSimple
-        pageCount={Math.ceil(+(crmUsers?.total || 0) / pageSize)}
-        pageIndex={pageNum}
-        pageSize={pageSize}
-        data={crmUsers?.rows || []}
-        onPageSizeChange={setPageSize}
-        onPageChange={setPageNum}
-        loading={crmUsersLoading}
-        onRowSelect={handleRowSelect}
-      />
+      </div>
     </RrhDialog>
   );
 };

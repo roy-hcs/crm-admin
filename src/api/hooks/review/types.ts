@@ -1129,3 +1129,309 @@ export type DepositRebateReviewDetailRes = {
     verifyLogs: VerifyLogItem[];
   };
 };
+
+export type AccountOpenVerifyParams = {
+  id: string;
+  status: string;
+  remark: string;
+  accountName: string;
+  lever: string;
+  mtGroup: string;
+  credit: string;
+  initialAmount: string;
+  account: string;
+  accountGroupId: string;
+  sendPasswordOnly: string;
+  directBroker: string;
+  verifyStep: string;
+};
+
+export type OpenReviewDetail = {
+  directBrokerName: string | null;
+  accountName: string | null;
+  directBroker: string | null;
+  accountGroupId: string | null;
+  accountGroupName: string | null;
+  verifyStep: number | null;
+  serverName: string | null;
+  verifyUser: string | null;
+  remark: string | null;
+  language: 'zh-CN';
+  verifyTime: string | null;
+  source: string | null;
+  vUserName: string | null;
+  serverProperty: number | null;
+  serverId: string | null;
+  subTime: string | null;
+  mtGroup: string | null;
+  staName: string | null;
+  userLastName: string | null;
+  userShowId: string | null;
+  id: string | null;
+  credit: number | null;
+  sendPasswordOnly: string | null;
+  vUserLastName: string | null;
+  verifyUserName: string | null;
+  lever: string | null;
+  userName: string | null;
+  userId: string | null;
+  allDealAccountGroup: Array<{
+    createBy: string | null;
+    createTime: string | null;
+    updateBy: string | null;
+    updateTime: string | null;
+    remark: string | null;
+    params: Record<string, unknown>;
+    id: string | null;
+    name: string | null;
+    sort: number | null;
+    num: number | null;
+    flag: boolean | null;
+    delFlag: boolean | null;
+    relatedRebateRuleCount: number | null;
+  }>;
+  initialAmount: string | null;
+  serverType: string | null;
+  aid: string | null;
+  mtServerGroup: {
+    createBy: string | null;
+    createTime: string | null;
+    updateBy: string | null;
+    updateTime: string | null;
+    remark: string | null;
+    params: Record<string, unknown>;
+    id: string | null;
+    serverId: string | null;
+    groupName: string | null;
+    accountStart: number | null;
+    accountEnd: number | null;
+    maxAccount: number | null;
+    sort: number | null;
+  };
+  account: string | null;
+  status: string | null;
+};
+
+export type CrmUser = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string | null;
+  lastName: string | null;
+  name: string | null;
+  showId: string | null;
+  sex: string | null;
+  mzone: string | null;
+  mobile: string | null;
+  email: string | null;
+  accountType: number | null;
+  accountTypeStr: string | null;
+  userRole: string | null;
+  inviter: string | null;
+  inviterName: string | null;
+  inviterEmail: string | null;
+  headImg: string | null;
+  status: number | null;
+  role: string | null;
+  rebateLevelName: string | null;
+  certiricateType: string | null;
+  certiricateNo: string | null;
+  source: string | null;
+  sourceText: string | null;
+  country: string | null;
+  countryId: string | null;
+  countryName: string | null;
+  province: string | null;
+  city: string | null;
+  address: string | null;
+  postCode: string | null;
+  birthday: string | null;
+  verifyStatus: number | null;
+  nameOne: string | null;
+  nameTwo: string | null;
+  inviterShowId: string | null;
+  roleId: string | null;
+  rebateLevelId: string | null;
+  rebateAccountId: string | null;
+  crmRebateLevel: string | null;
+  userInfo: string | null;
+  applySource: string | null;
+  account: string | null;
+  permissionJson: string | null;
+  inviterChain: string | null;
+  preferenceLanguage: string | null;
+  colorPreference: string | null;
+  lastLoginTime: string | null;
+  latestFollowupTime: string | null;
+  spreadLinkCodeId: string | null;
+  loginTwoFactorAuth: string | null;
+  antiPhishingCode: string | null;
+  tags: string | null;
+  points: number | null;
+  shortCode: string | null;
+  adminRemark: string | null;
+  applicantId: string | null;
+  registerSource: string | null;
+  registerSourceText: string | null;
+  sourceUpdateTime: string | null;
+  sourceUpdateCount: number | null;
+  vipId: string | null;
+  vipName: string | null;
+  vipLevel: string | null;
+  childId: string | null;
+  language: string | null;
+  pammUserId: string | null;
+  userName: string | null;
+  mtone: string | null;
+  mttwo: string | null;
+};
+
+export type LastLogininfor = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  operId: string | null;
+  title: string | null;
+  businessType: string | null;
+  businessTypes: string | null;
+  method: string | null;
+  operatorType: string | null;
+  operName: string | null;
+  operUrl: string | null;
+  operIp: string | null;
+  operLocation: string | null;
+  operParam: string | null;
+  status: string | null;
+  operTime: string | null;
+  browser: string | null;
+  riskScore: number | null;
+  os: string | null;
+  ipRiskyFlag: string | null;
+  devRiskyFlag: string | null;
+};
+
+export type OpenReviewDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    detail: OpenReviewDetail;
+    reviewer: LeverageReview | null;
+    verifyLogs: VerifyLogItem[];
+    allGroup: string[];
+    allDealAccountGroup: Array<{
+      id: string;
+      name: string;
+    }>;
+    allLever: string[];
+    crmUser: CrmUser;
+    lastLogininfor: LastLogininfor;
+    userLanguage: string | null;
+  };
+};
+
+export type CrmUserDealAccountListParams = BasicParams & {
+  login?: string;
+  userId?: string;
+};
+
+export type CrmUserDealAccountItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: {
+    typeName: string | null;
+    serverName: string | null;
+  };
+  id: string | null;
+  userId: string | null;
+  username: string | null;
+  name: string | null;
+  account: string | null;
+  serviceType: number | null;
+  serviceProperty: number | null;
+  servicePropertyStr: string | null;
+  servicePropertyValue: string | null;
+  server: string | null;
+  serverName: string | null;
+  accountSupervisorName: string | null;
+  directBrokerName: string | null;
+  accountGroupId: string | null;
+  accountGroupName: string | null;
+  accountSupervisorShowId: string | null;
+  serverGroup: string | null;
+  accountType: string | null;
+  accountTypeName: string | null;
+  lever: string | null;
+  balance: number | null;
+  netWorth: number | null;
+  creditAmount: number | null;
+  registerTime: string | null;
+  registerTimeStr: string | null;
+  dealAuth: number | null;
+  usedAdvance: number | null;
+  usableAdvance: number | null;
+  advanceScale: number | null;
+  status: number | null;
+  initialAmount: number | null;
+  currency: string | null;
+  authority: string | null;
+  directBroker: string | null;
+  permissionJson: string | null;
+  digits: number | null;
+  hasClearAccount: string | null;
+  buildRebateAccount: boolean | null;
+  accountGroupList: string | null;
+  accounts: string | null;
+  accountIds: string | null;
+  crmAuthority: number | null;
+  source: string | null;
+  roleName: string | null;
+  triggeringEvent: string | null;
+};
+
+export type CrmUserDealAccountListRes = BasicRes<CrmUserDealAccountItem>;
+
+export type CrmUserManageInfoRes = {
+  code: number;
+  data: {
+    columns: Array<{
+      columnName: string;
+      columnValue: string;
+    }>;
+    verifyStatus: number;
+    crmUser: CrmUser;
+  };
+};
+
+export type CrmUserFinanceInfoRes = CrmUserManageInfoRes; // 需要的数据结构和CrmUserManageInfoRes一样，所以直接复用
+export type CrmUserIdentityBasicInfoRes = {
+  code: number;
+  data: {
+    columns: Array<{
+      columnName: string;
+      columnValue: string;
+      columnType: number; // 5 是图片类型
+    }>;
+    verifyStatus: number;
+    crmUser: CrmUser;
+  };
+};
+
+export type CrmUserProtocolInfoRes = {
+  code: number;
+  data: {
+    allProtocol: Array<{
+      protocolName: string;
+      status: number;
+      createTime: string;
+    }>;
+  };
+};

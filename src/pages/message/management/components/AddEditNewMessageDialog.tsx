@@ -8,14 +8,12 @@ import {
 } from '@/components/ui/form';
 import { FormProvider } from '@/contexts/form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Plus } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { FormSelect } from '@/components/form/FormSelect';
 import { useTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
-import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { SelectRadio } from './SelectRadio';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -30,33 +28,60 @@ import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import FormDateInput from '@/components/form/FormDateInput';
 import { format } from 'date-fns';
 import { infoTypeOptions, receiveTypeOptions } from '@/lib/const';
+import { useUserRoleList } from '@/api/hooks/system';
+import { FormSearchMultiSelect } from '@/components/form/FormSearchMultiSelect';
+import { useCrmUsers, useCrmUserTags } from '@/api/hooks/system/system';
+import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 
 type FormValues = {
   type: string;
   isNow: string;
   expireTime: Date | null;
   sendEmails: string[];
+  roles: string[];
+  userIds: string[];
+  tags: string[];
+  accounts: string;
   receiveType: string;
   template?: string;
   language: string;
   primaryLanguage: string;
   content?: Record<string, string>;
   title?: Record<string, string>;
+  sendTime: Date | null;
 };
 
-const newMessageSchema = (t: TFunction<'translation', undefined>) => {
+const mySchema = (t: TFunction<'translation', undefined>) => {
   return {
     type: z.string().min(1, t('rules.required', { field: t('table.infoType') })),
     isNow: z.string().min(1, t('rules.required', { field: t('messageManagement.sendMethod') })),
+    accounts: z
+      .string()
+      .min(1, t('rules.required', { field: t('messageManagement.receiveTypeOption.3') })),
     expireTime: z
       .date()
       .nullable()
       .refine(date => date !== null, {
         message: t('rules.required', { field: t('messageManagement.expireTime') }),
       }),
+    sendTime: z
+      .date()
+      .nullable()
+      .refine(date => date !== null, {
+        message: t('rules.required', { field: t('table.sendTime') }),
+      }),
     sendEmails: z
       .array(z.string())
       .min(1, t('rules.required', { field: t('table.sendEmailAddress') })),
+    roles: z
+      .array(z.string())
+      .min(1, t('rules.required', { field: t('messageManagement.receiveTypeOption.2') })),
+    userIds: z
+      .array(z.string())
+      .min(1, t('rules.required', { field: t('messageManagement.receiveTypeOption.0') })),
+    tags: z
+      .array(z.string())
+      .min(1, t('rules.required', { field: t('messageManagement.receiveTypeOption.4') })),
     receiveType: z.string().min(1, t('rules.required', { field: t('table.receiver') })),
     language: z
       .string()
@@ -72,6 +97,10 @@ const newMessageSchema = (t: TFunction<'translation', undefined>) => {
 
 export const AddEditNewMessageDialog = ({
   mode,
+  title,
+  trigger,
+  source = 'MessageManagementPage',
+  crmUserId,
   open: openProp,
   onOpenChange,
   id,
@@ -81,6 +110,10 @@ export const AddEditNewMessageDialog = ({
   msgTemplateOptions,
 }: {
   mode: 'add' | 'edit';
+  title: string;
+  trigger?: React.ReactNode;
+  source?: 'MessageManagementPage' | 'Customer';
+  crmUserId?: string;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   id?: string;
@@ -89,6 +122,10 @@ export const AddEditNewMessageDialog = ({
   emailOptions: Array<{ label: string; value: string }>;
   msgTemplateOptions: Array<{ label: string; value: string; content: string }>;
 }) => {
+  const { data: RoleRes } = useUserRoleList({});
+  const { mutateAsync: getCrmUsers } = useCrmUsers();
+  const { mutateAsync: getCrmUsersTags } = useCrmUserTags();
+
   const { t } = useTranslation();
   const [openLocal, setOpenLocal] = useState(false);
   const open = openProp ?? openLocal;
@@ -104,7 +141,7 @@ export const AddEditNewMessageDialog = ({
 
   const schema = useMemo(
     () =>
-      z.object(newMessageSchema(t)).superRefine((data, ctx) => {
+      z.object(mySchema(t)).superRefine((data, ctx) => {
         const langs = data?.language?.split(',') || [];
         if (step === 'two') {
           langs.forEach(lang => {
@@ -141,7 +178,12 @@ export const AddEditNewMessageDialog = ({
       type: '',
       isNow: '1',
       sendEmails: [],
+      roles: [],
+      userIds: [],
+      tags: [],
+      accounts: '',
       expireTime: null,
+      sendTime: null,
       receiveType: '1',
       template: '',
       language: '',
@@ -156,7 +198,65 @@ export const AddEditNewMessageDialog = ({
   const { mutateAsync: getMsg } = useMsgDetail();
 
   const type = form.watch('type');
+  const isNow = form.watch('isNow');
   const language = form.watch('language');
+  const receiveType = form.watch('receiveType');
+
+  const fetchCrmUserOptions = useCallback(
+    async (params: { pageNum: number; pageSize: number; keyword: string }) => {
+      const res = await getCrmUsers({
+        origin: '0',
+        pageNum: params.pageNum,
+        pageSize: params.pageSize,
+        params: {
+          threeCons: params.keyword,
+        },
+      });
+
+      const rows = res.rows || [];
+      const total = Number(res.total || 0);
+
+      return {
+        list: rows
+          .filter(user => user.id || user.showId)
+          .map(user => ({
+            value: user.id || user.showId || '',
+            label: [user.showId, user.name, user.lastName].filter(Boolean).join(' - '),
+          })),
+        total,
+        hasMore: params.pageNum * params.pageSize < total,
+      };
+    },
+    [getCrmUsers],
+  );
+
+  const fetchCrmUserTagsOptions = useCallback(
+    async (params: { pageNum: number; pageSize: number; keyword: string }) => {
+      const res = await getCrmUsersTags({
+        status: '1',
+        pageNum: params.pageNum,
+        pageSize: params.pageSize,
+        params: {
+          threeCons: params.keyword,
+        },
+      });
+
+      const rows = res.rows || [];
+      const total = Number(res.total || 0);
+
+      return {
+        list: rows
+          .filter(tag => tag.id)
+          .map(tag => ({
+            value: tag.id,
+            label: tag.tagName,
+          })),
+        total,
+        hasMore: params.pageNum * params.pageSize < total,
+      };
+    },
+    [getCrmUsersTags],
+  );
 
   const onSubmit = async (data: FormValues) => {
     try {
@@ -171,23 +271,28 @@ export const AddEditNewMessageDialog = ({
       const param = {
         type: data.type,
         isNow: data.isNow,
-        sendTime: '',
+        sendTime:
+          data.isNow === '0' && data.sendTime ? format(data.sendTime, 'yyyy-MM-dd HH:mm:ss') : '',
         expire:
           data.type === '0' && data.expireTime
             ? format(data.expireTime, 'yyyy-MM-dd HH:mm:ss')
             : '',
         sendEmail: data.type === '2' ? data.sendEmails : [],
         receiveType: data.receiveType,
-        accounts: '',
         language: data?.language?.split(',') || [],
         primaryLanguage: data.primaryLanguage,
         accountNames: '',
         msgLangs: msgLangs,
-        userIds: null,
-        roles: null,
-        tags: null,
+        roles: receiveType === '2' ? data.roles : [],
+        userIds: receiveType === '0' ? data.userIds : [],
+        tags: receiveType === '4' ? data.tags : [],
+        accounts: receiveType === '3' ? data.accounts : '',
         sendEmails: data.type === '2' ? data.sendEmails : [],
       };
+      if (source === 'Customer') {
+        param.receiveType = '0';
+        param.userIds = [crmUserId || ''];
+      }
       const res = mode === 'add' ? await addMsg(param) : await editMsg({ ...param, id: id || '' });
       if (res.code === 0) {
         toast.success(t('common.success'));
@@ -244,6 +349,23 @@ export const AddEditNewMessageDialog = ({
           // 其他通知类型不需要校验sendEmails和expireTime字段
           ok = await form.trigger(['type', 'isNow', 'receiveType', 'language', 'primaryLanguage']);
         }
+        if (isNow === '0') {
+          // 定时发送需要校验sendTime字段，其他的发送方式不需要校验这个字段
+          ok = await form.trigger(['sendTime']);
+        }
+        if (receiveType === '2') {
+          ok = await form.trigger(['roles']);
+        }
+        if (receiveType === '0') {
+          ok = await form.trigger(['userIds']);
+        }
+        if (receiveType === '4') {
+          ok = await form.trigger(['tags']);
+        }
+        if (receiveType === '3') {
+          ok = await form.trigger(['accounts']);
+        }
+        console.log(ok, 'ok');
         if (ok) {
           const selectLang = (form.getValues('language')?.split(',') || []).filter(Boolean);
           const title = form.getValues('title') || {};
@@ -257,7 +379,9 @@ export const AddEditNewMessageDialog = ({
           });
           if (mode === 'add') {
             // 新增要把模板中的标题和内容带过来
-            if (!form.getValues('template')) return;
+            if (!form.getValues('template')) {
+              return;
+            }
             const templateId = form.getValues('template');
             const template = msgTemplateOptions.find(i => i.value === templateId);
             if (template) {
@@ -362,14 +486,8 @@ export const AddEditNewMessageDialog = ({
 
   return (
     <RrhDialog
-      trigger={
-        mode === 'add' ? (
-          <RrhButton type="button" Icon={<Plus className="size-3.5" />}>
-            {t('common.add')}
-          </RrhButton>
-        ) : null
-      }
-      title={mode === 'add' ? t('messageManagement.addMsg') : t('messageManagement.resend')}
+      trigger={trigger || null}
+      title={title}
       isConfirmDisabled={isSubmitting}
       open={open}
       cancelText={step === 'one' ? t('common.Cancel') : t('common.previous')}
@@ -432,6 +550,11 @@ export const AddEditNewMessageDialog = ({
                   />
                 ) : null}
 
+                {/* 定时发送 */}
+                {isNow === '0' ? (
+                  <FormDateInput label={t('table.sendTime')} name="sendTime" showTime />
+                ) : null}
+
                 {/* 弹窗通知专属 */}
                 {type === '0' ? (
                   <FormDateInput
@@ -440,24 +563,65 @@ export const AddEditNewMessageDialog = ({
                     showTime
                   />
                 ) : null}
+                {/* 在消息管理 新增修改消息来源 才使用选择接受对象 在customer来源中 默认接受对象就是当前用户 */}
+                {source === 'MessageManagementPage' && (
+                  <FormField
+                    name="receiveType"
+                    render={({ field }) => {
+                      return (
+                        <SelectRadio
+                          title={t('table.receiver')}
+                          verticalLabel
+                          field={field}
+                          orientation="horizontal"
+                          radioItems={receiveTypeOptions.map(i => ({
+                            label: t(i.label),
+                            value: i.value,
+                          }))}
+                        />
+                      );
+                    }}
+                  />
+                )}
+                {receiveType === '2' && (
+                  <FormMultiSelect
+                    verticalLabel
+                    name="roles"
+                    label={t('messageManagement.receiveTypeOption.2')}
+                    placeholder={t('common.pleaseSelect')}
+                    options={(RoleRes?.rows || []).map(i => ({
+                      label: i.roleName,
+                      value: i.roleId,
+                    }))}
+                  />
+                )}
+                {receiveType === '0' && (
+                  <FormSearchMultiSelect
+                    verticalLabel
+                    name="userIds"
+                    label={t('messageManagement.receiveTypeOption.0')}
+                    placeholder={t('common.pleaseSelect')}
+                    fetchOptions={fetchCrmUserOptions}
+                  />
+                )}
+                {receiveType === '3' && (
+                  <FormField
+                    name="accounts"
+                    render={({ field }) => {
+                      return <RrhSelectAccountsPopup verticalLabel field={field} />;
+                    }}
+                  />
+                )}
 
-                <FormField
-                  name="receiveType"
-                  render={({ field }) => {
-                    return (
-                      <SelectRadio
-                        title={t('table.receiver')}
-                        verticalLabel
-                        field={field}
-                        orientation="horizontal"
-                        radioItems={receiveTypeOptions.map(i => ({
-                          label: t(i.label),
-                          value: i.value,
-                        }))}
-                      />
-                    );
-                  }}
-                />
+                {receiveType === '4' && (
+                  <FormSearchMultiSelect
+                    verticalLabel
+                    name="tags"
+                    label={t('messageManagement.receiveTypeOption.4')}
+                    placeholder={t('common.pleaseSelect')}
+                    fetchOptions={fetchCrmUserTagsOptions}
+                  />
+                )}
 
                 <FormSelect
                   name="template"

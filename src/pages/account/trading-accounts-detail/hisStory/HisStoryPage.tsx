@@ -278,7 +278,7 @@ export const HisStoryPage = ({ id }: { id: string }) => {
     },
   ];
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility('wallet-accounts-table', allColumns);
+    useColumnVisibility('his-story-table', allColumns);
 
   const typeOptions = Object.entries(transactionTypeMap).map(([value, label]) => ({
     value,

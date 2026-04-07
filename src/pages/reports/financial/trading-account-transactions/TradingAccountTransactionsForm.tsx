@@ -193,7 +193,7 @@ export const TradingAccountTransactionsForm = ({
           <FormMultiSelect
             verticalLabel
             name="serverGroupList"
-            label={t('trading.serverGroup')}
+            label={t('table.groups')}
             placeholder={t('common.pleaseSelect')}
             options={groupList}
             loading={groupLoading}

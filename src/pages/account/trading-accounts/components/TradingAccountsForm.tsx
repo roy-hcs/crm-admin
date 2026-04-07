@@ -156,7 +156,7 @@ export const TradingAccountsForm = ({
           <FormMultiSelect
             verticalLabel
             name="serverGroupList"
-            label={t('trading.serverGroup')}
+            label={t('table.groups')}
             placeholder={t('common.pleaseSelect')}
             options={groupList}
             loading={groupLoading}
@@ -165,7 +165,7 @@ export const TradingAccountsForm = ({
             name="Time"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('CRMAccountPage.RegisterTime')}</FormLabel>
+                <FormLabel className="basis-3/12">{t('CRMAccountPage.registerTime')}</FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="Time" control={form.control} />
                 </FormControl>

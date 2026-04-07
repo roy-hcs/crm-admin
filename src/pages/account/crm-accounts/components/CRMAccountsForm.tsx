@@ -159,7 +159,7 @@ export const CRMAccountsForm = ({
           <FormSelect
             verticalLabel
             name="role"
-            label={t('CRMAccountPage.Role')}
+            label={t('table.role')}
             placeholder={t('common.pleaseSelect')}
             options={roleOptions.map(i => ({ label: t(i.label), value: i.value }))}
           />
@@ -168,7 +168,7 @@ export const CRMAccountsForm = ({
             name="regStartTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('CRMAccountPage.RegisterTime')}</FormLabel>
+                <FormLabel className="basis-3/12">{t('CRMAccountPage.registerTime')}</FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="regStartTime" control={form.control} />
                 </FormControl>

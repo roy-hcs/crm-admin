@@ -239,7 +239,7 @@ export const FundFlowPage = () => {
     },
   ];
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility('wallet-accounts-table', allColumns);
+    useColumnVisibility('wallet-accounts-detail-fund-flow-table', allColumns);
 
   return (
     <div>

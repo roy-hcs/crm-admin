@@ -4,12 +4,14 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Check, ChevronsUpDown, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ReactNode, useLayoutEffect, useRef, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { RrhButton } from './RrhButton';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 export type BaseOption = { label: string; value: string | number };
@@ -22,7 +24,13 @@ export const RrhMultiSelect = <T extends BaseOption>({
   className,
   renderItem,
   searchSupport = false,
+  searchValue,
+  searchPlaceholder = '',
+  onSearchChange,
   showRowValue = true,
+  onDropdownReachEnd,
+  loadingMore = false,
+  hasMore = false,
   maxSelections,
   maxSelectionsMessage,
   onMaxSelectionsReached,
@@ -35,7 +43,13 @@ export const RrhMultiSelect = <T extends BaseOption>({
   className?: string;
   renderItem?: (option: T) => ReactNode;
   searchSupport?: boolean;
+  searchValue?: string;
+  searchPlaceholder?: string;
+  onSearchChange?: (value: string) => void;
   showRowValue?: boolean;
+  onDropdownReachEnd?: () => void;
+  loadingMore?: boolean;
+  hasMore?: boolean;
   maxSelections?: number;
   maxSelectionsMessage?: string;
   onMaxSelectionsReached?: (max: number) => void;
@@ -47,14 +61,56 @@ export const RrhMultiSelect = <T extends BaseOption>({
   ) => ValidationResult;
 }) => {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
   const selectedOptions = options.filter(option => value.includes(option.value.toString()));
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const debounceTimerRef = useRef<number | null>(null);
+  const loadingMoreRef = useRef(loadingMore);
+  const hasMoreRef = useRef(hasMore);
   const [triggerWidth, setTriggerWidth] = useState<number>();
   useLayoutEffect(() => {
     if (open && triggerRef.current) {
       setTriggerWidth(triggerRef.current.offsetWidth);
     }
   }, [open]);
+
+  useEffect(() => {
+    loadingMoreRef.current = loadingMore;
+    hasMoreRef.current = hasMore;
+  }, [loadingMore, hasMore]);
+
+  const scheduleReachEnd = useCallback(() => {
+    if (!onDropdownReachEnd) return;
+
+    if (debounceTimerRef.current) {
+      window.clearTimeout(debounceTimerRef.current);
+    }
+
+    debounceTimerRef.current = window.setTimeout(() => {
+      if (loadingMoreRef.current || !hasMoreRef.current) return;
+      onDropdownReachEnd();
+    }, 180);
+  }, [onDropdownReachEnd]);
+
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        window.clearTimeout(debounceTimerRef.current);
+        debounceTimerRef.current = null;
+      }
+    };
+  }, []);
+
+  const handleListScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    if (!onDropdownReachEnd || loadingMoreRef.current || !hasMoreRef.current) return;
+
+    const el = event.currentTarget;
+    const reachBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 24;
+    if (reachBottom) {
+      scheduleReachEnd();
+    }
+  };
 
   const handleSelect = (optionValue: string) => {
     if (!onValueChange) return;
@@ -156,29 +212,44 @@ export const RrhMultiSelect = <T extends BaseOption>({
         align="start"
         sideOffset={4}
       >
-        <Command className="overflow-hidden">
-          {searchSupport && <CommandInput placeholder={placeholder} />}
-          <CommandEmpty>No item found.</CommandEmpty>
-          <CommandGroup className="scrollbar-thin max-h-60 overflow-y-auto">
-            {options.map(option => (
-              <CommandItem
-                key={option.value}
-                value={option.value.toString()}
-                onSelect={handleSelect}
-                className={cn('cursor-pointer hover:bg-slate-100', {
-                  'bg-slate-100': value.includes(option.value.toString()),
-                })}
-              >
-                <Check
-                  className={cn(
-                    'mr-2 h-4 w-4',
-                    value.includes(option.value.toString()) ? 'opacity-100' : 'opacity-0',
-                  )}
-                />
-                {renderItem ? renderItem(option) : option.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+        <Command className="overflow-hidden" shouldFilter={onSearchChange ? false : undefined}>
+          {searchSupport && (
+            <CommandInput
+              value={searchValue}
+              onValueChange={onSearchChange}
+              placeholder={searchPlaceholder}
+            />
+          )}
+          <CommandEmpty>{t('common.NoData')}</CommandEmpty>
+          <CommandList
+            ref={listRef}
+            className="scrollbar-thin max-h-60 overflow-y-auto"
+            onScroll={handleListScroll}
+          >
+            <CommandGroup>
+              {options.map(option => (
+                <CommandItem
+                  key={option.value}
+                  value={option.value.toString()}
+                  onSelect={handleSelect}
+                  className={cn('cursor-pointer hover:bg-slate-100', {
+                    'bg-slate-100': value.includes(option.value.toString()),
+                  })}
+                >
+                  <Check
+                    className={cn(
+                      'mr-2 h-4 w-4',
+                      value.includes(option.value.toString()) ? 'opacity-100' : 'opacity-0',
+                    )}
+                  />
+                  {renderItem ? renderItem(option) : option.label}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+            {loadingMore && (
+              <div className="text-muted-foreground px-2 py-1 text-xs">{t('common.loading')}</div>
+            )}
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>

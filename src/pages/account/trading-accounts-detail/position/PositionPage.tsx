@@ -255,7 +255,7 @@ export const PositionPage = ({ id }: { id: string }) => {
     },
   ];
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility('wallet-accounts-table', allColumns);
+    useColumnVisibility('position-table', allColumns);
 
   const typeOptions = Object.entries(transactionTypeMap).map(([value, label]) => ({
     value,

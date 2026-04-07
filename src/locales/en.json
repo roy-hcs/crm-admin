@@ -10,8 +10,6 @@
     "Level": "Level",
     "Mobile": "Phone number",
     "RealAccount": "Real account",
-    "RegisterTime": "Registration time",
-    "Role": "Role",
     "Status": "state",
     "TagsName": "Tag name",
     "Upper": "Superior",
@@ -21,7 +19,6 @@
     "ID": "ID number",
     "NameOrAccountId": "Name/Account ID",
     "registerTime": "Registration time",
-    "role": "Role",
     "status": "state",
     "tagName": "Tag name",
     "AccountRange": "Account scope",
@@ -222,7 +219,8 @@
     "addField": "Add {{field}}",
     "selectField": "Select {{field}}",
     "confirmToProceed": "Are you sure you want to proceed?",
-    "readOnly": "read only"
+    "readOnly": "read only",
+    "idCardName": "ID name"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -391,7 +389,6 @@
   },
   "table": {
     "accountGroup": "Account Group",
-    "accountScope": "Account scope",
     "batchDelete": "Batch Delete",
     "closePrice": "Close position price",
     "closeTime": "Closed time",
@@ -711,7 +708,10 @@
     "accountPermission": "Account permissions",
     "accountOperations": "Account operations",
     "sendReport": "Send report",
-    "usedAdvance": "Advance payment used"
+    "usedAdvance": "Advance payment used",
+    "countryOrRegion": "Country/Region",
+    "initialAmount": "Initial deposit",
+    "productSource": "Customer source"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -922,7 +922,25 @@
   },
   "accountOpening": {
     "source": "Promotion invitation code",
-    "title": "Account opening review"
+    "title": "Account opening review",
+    "KYCInfo": "KYC information",
+    "accountOpeningReviewDetail": "Account opening review details",
+    "accountOverview": "Account overview",
+    "kycVerifyStatus": {
+      "0": "reject",
+      "1": "Approved",
+      "2": "Under review",
+      "-1": "Under review",
+      "-2": "Not submitted"
+    },
+    "lastLogin": "Recently logged in",
+    "openAccountInformation": "Account opening information",
+    "sendInformation": "Send message",
+    "sendPasswordOnly": "Send only read-only password",
+    "financialInformation": "financial information",
+    "identityInformation": "Identity Information-Basic",
+    "personalInformation": "personal information",
+    "protocolConfirmation": "Agreement confirmation"
   },
   "binding": {
     "source": "Promotion invitation code",

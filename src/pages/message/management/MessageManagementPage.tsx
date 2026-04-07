@@ -9,7 +9,7 @@ import {
   useMsgTemplateList,
   useRemoveMsg,
 } from '@/api/hooks/message';
-import { Funnel, Search, RefreshCcw, Ellipsis, ReceiptText } from 'lucide-react';
+import { Funnel, Search, RefreshCcw, Ellipsis, ReceiptText, Plus } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { PageInfo } from '@/components/common/PageInfo';
@@ -276,7 +276,13 @@ export function MessageManagementPage() {
               columns={columns}
             />
             <AddEditNewMessageDialog
+              trigger={
+                <RrhButton type="button" Icon={<Plus className="size-3.5" />}>
+                  {t('common.add')}
+                </RrhButton>
+              }
               mode="add"
+              title={t('messageManagement.addMsg')}
               onSuccess={refetch}
               languageOptions={languageOptions}
               emailOptions={emailOptions}
@@ -305,6 +311,7 @@ export function MessageManagementPage() {
         />
         <AddEditNewMessageDialog
           mode="edit"
+          title={t('messageManagement.resend')}
           open={editOpen}
           onOpenChange={v => {
             if (!v) setId('');

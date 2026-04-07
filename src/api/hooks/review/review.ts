@@ -47,6 +47,14 @@ import {
   RebateVerifyParams,
   FeeRebateReviewDetailRes,
   DepositRebateReviewDetailRes,
+  AccountOpenVerifyParams,
+  OpenReviewDetailRes,
+  CrmUserDealAccountListParams,
+  CrmUserDealAccountListRes,
+  CrmUserManageInfoRes,
+  CrmUserFinanceInfoRes,
+  CrmUserIdentityBasicInfoRes,
+  CrmUserProtocolInfoRes,
 } from './types';
 
 export function useAgentApplyList(params: AgentApplyListParams, options: { enabled: boolean }) {
@@ -431,5 +439,90 @@ export function useDepositDealTicketList(params: {
         code: number;
         total: number;
       }>(`/system/crmDepositVerify/dealTicket/list/${params.ticket}`, params),
+  });
+}
+
+/**
+ * 开户审核详情
+ */
+export function useAccountOpeningDetail(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['accountOpeningDetail', id],
+    queryFn: () => apiGetCustom<OpenReviewDetailRes>(`/system/crmNewLoginVerify/detailInfo/${id}`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 开户审核提交
+ */
+export function useAccountOpeningVerify() {
+  return useMutation({
+    mutationFn: (params: AccountOpenVerifyParams) =>
+      apiFormPost(`/system/crmNewLoginVerify/verify`, params),
+  });
+}
+
+/**
+ * 开户审核详情
+ */
+export function useCrmUserDealAccountList(
+  id: string,
+  params: CrmUserDealAccountListParams,
+  options: { enabled: boolean },
+) {
+  return useQuery({
+    queryKey: ['crmUserDealAccountList', params, id],
+    queryFn: () =>
+      apiFormPostCustom<CrmUserDealAccountListRes>(`/system/crmDealAccount/list/${id}`, params),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 用户kyc个人信息详情
+ */
+export function useCrmUserManageInfo(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['crmUserManageInfo', id],
+    queryFn: () => apiGetCustom<CrmUserManageInfoRes>(`/system/crmUser/manageInfo/2/${id}?from=1`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 用户kyc财务信息详情
+ */
+export function useCrmUserFinanceInfo(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['crmUserFinanceInfo', id],
+    queryFn: () => apiGetCustom<CrmUserFinanceInfoRes>(`/system/crmUser/manageInfo/3/${id}?from=1`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 用户kyc身份信息详情
+ */
+export function useCrmUserIdentityBasicInfo(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['crmUserIdentityBasicInfo', id],
+    queryFn: () =>
+      apiGetCustom<CrmUserIdentityBasicInfoRes>(`/system/crmUser/manageInfo/4/${id}?from=1`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 用户kyc协议确认详情
+ */
+export function useCrmUserProtocolInfo(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['crmUserProtocolInfo', id],
+    queryFn: () =>
+      apiGetCustom<CrmUserProtocolInfoRes>(
+        `/system/crmUserProtocolRelation//oneUserProtocol/${id}?from=1`,
+      ),
+    enabled: options.enabled,
   });
 }

@@ -606,3 +606,126 @@ export type AddAccountParams = {
   accountGroupId: string | null;
   directBroker: string | null;
 };
+
+export type CrmUser = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: object;
+  id: string | null;
+  lastName: string | null;
+  name: string | null;
+  showId: string | null;
+  sex: string | null;
+  mzone: string | null;
+  mobile: string | null;
+  email: string | null;
+  accountType: number | null;
+  accountTypeStr: string | null;
+  userRole: string | null;
+  inviter: string | null;
+  inviterName: string | null;
+  inviterEmail: string | null;
+  headImg: string | null;
+  status: number | null;
+  role: string | null;
+  rebateLevelName: string | null;
+  certiricateType: string | null;
+  certiricateNo: string | null;
+  source: string | null;
+  sourceText: string | null;
+  country: string | null;
+  countryId: string | null;
+  countryName: string | null;
+  province: string | null;
+  city: string | null;
+  address: string | null;
+  postCode: string | null;
+  birthday: string | null;
+  verifyStatus: number | null;
+  nameOne: string | null;
+  nameTwo: string | null;
+  inviterShowId: string | null;
+  roleId: string | null;
+  rebateLevelId: string | null;
+  rebateAccountId: string | null;
+  crmRebateLevel: string | null;
+  userInfo: string | null;
+  applySource: string | null;
+  account: string | null;
+  permissionJson: string | null;
+  inviterChain: string | null;
+  preferenceLanguage: string | null;
+  colorPreference: string | null;
+  lastLoginTime: string | null;
+  latestFollowupTime: string | null;
+  spreadLinkCodeId: string | null;
+  loginTwoFactorAuth: string | null;
+  antiPhishingCode: string | null;
+  tags: string | null;
+  points: number | null;
+  shortCode: string | null;
+  adminRemark: string | null;
+  applicantId: string | null;
+  registerSource: string | null;
+  registerSourceText: string | null;
+  sourceUpdateTime: string | null;
+  sourceUpdateCount: number | null;
+  vipId: string | null;
+  vipName: string | null;
+  vipLevel: string | null;
+  childId: string | null;
+  language: string | null;
+  pammUserId: string | null;
+  userName: string | null;
+  mtone: string | null;
+  mttwo: string | null;
+};
+
+export type CrmUsersParams = {
+  origin: string;
+  pageNum: number;
+  pageSize: number;
+  params: {
+    threeCons?: string;
+  };
+};
+
+export type CrmUsers = BasicRes<CrmUser>;
+
+export type CrmUsersTagsParams = {
+  status: string;
+  pageNum: number;
+  pageSize: number;
+  params: {
+    threeCons?: string;
+  };
+};
+
+export type CrmUserTagItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string | null;
+  tagName: string | null;
+  tagNames: string | null;
+  sort: number | null;
+  status: number | null;
+  showStatus: number | null;
+  clientShowStatus: number | null;
+  delFlag: number | null;
+  language: string | null;
+  crmUserTagAndRules: string | null;
+  crmUserTagOrRules: string | null;
+  plServerId: string | null;
+  plTypeName: string | null;
+  tvServerId: string | null;
+  tvTypeName: string | null;
+};
+
+export type CrmUsersTags = BasicRes<CrmUserTagItem>;

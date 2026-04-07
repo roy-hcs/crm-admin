@@ -21,9 +21,11 @@ interface CascaderOption {
 export const RrhSelectAccountsPopup = ({
   field,
   verticalLabel = false,
+  className,
 }: {
   field: ControllerRenderProps<FieldValues, 'accounts'>;
   verticalLabel?: boolean;
+  className?: string;
 }) => {
   const [selectedUser, setSelectedUser] = useState<CrmUserItem | null>(null);
   const [options, setOptions] = useState<CascaderOption[]>([]);
@@ -75,7 +77,7 @@ export const RrhSelectAccountsPopup = ({
         relations
           .map(item => ({
             value: item.id,
-            label: item.parentName || 'Unnamed',
+            label: item.userName || 'Unnamed',
             isLeaf: !item.hasChildren,
           }))
           .filter(item => {
@@ -92,7 +94,7 @@ export const RrhSelectAccountsPopup = ({
     if (relations && selectedId) {
       const children = relations.map(child => ({
         value: child.id,
-        label: child.parentName || 'Unnamed',
+        label: child.userName || 'Unnamed',
         isLeaf: !child.hasChildren,
       }));
       setOptions(options => updateOptionChildren(options, selectedId, children));
@@ -110,74 +112,83 @@ export const RrhSelectAccountsPopup = ({
   };
 
   return (
-    <FormItem className={cn('flex text-sm', verticalLabel ? 'flex-col items-start gap-2' : '')}>
-      <FormLabel className="text-foreground basis-3/12">
-        {t('CRMAccountPage.AccountRange')}:
-      </FormLabel>
-      <FormControl className="basis-9/12">
-        <RrhDialog
-          title={t('CRMAccountPage.SelectSuperiorRange')}
-          className="flex min-h-1/2 min-w-1/2 flex-col"
-          trigger={
-            <div className="text-foreground h-9 w-full shrink-0 basis-9/12 cursor-pointer rounded-md border p-2">
-              {selectedOptionLabel ? selectedOptionLabel : t('common.pleaseSelect')}
-            </div>
-          }
-          cancelText={t('common.Cancel')}
-          confirmText={t('common.Confirm')}
-          onConfirm={() => {
-            const accountData = {
-              id: selectedOptionId,
-              label: selectedOptionLabel,
-            };
-            field.onChange(JSON.stringify(accountData));
-          }}
-        >
-          <form className="flex items-center gap-4 text-sm" onSubmit={onSubmit}>
-            <Input
-              type="text"
-              disabled
-              value={selectedUser?.userName || ''}
-              className="h-9 border px-2"
-              placeholder="请选择CRM"
-            />
-            <AccountDialog
-              selectedUser={selectedUser}
-              setSelectedUser={setSelectedUser}
-              title={t('CRMAccountPage.SelectSuperiorRange')}
-              trigger={
+    <FormItem>
+      <div
+        className={cn(
+          'text-foreground flex items-center text-sm',
+          verticalLabel ? 'flex-col items-start gap-2' : '',
+          className,
+        )}
+      >
+        <FormLabel className="text-foreground basis-3/12">
+          {t('CRMAccountPage.AccountRange')}:
+        </FormLabel>
+        <FormControl className="basis-9/12">
+          <RrhDialog
+            title={t('CRMAccountPage.SelectSuperiorRange')}
+            trigger={
+              <div className="text-muted-foreground h-9 w-full shrink-0 cursor-pointer rounded-md border p-2">
+                {selectedOptionLabel ? selectedOptionLabel : t('common.pleaseSelect')}
+              </div>
+            }
+            cancelText={t('common.Cancel')}
+            confirmText={t('common.Confirm')}
+            onConfirm={() => {
+              const accountData = {
+                id: selectedOptionId,
+                label: selectedOptionLabel,
+              };
+              field.onChange(JSON.stringify(accountData));
+            }}
+          >
+            <div className="h-80">
+              <form className="flex items-center gap-4 text-sm" onSubmit={onSubmit}>
+                <Input
+                  type="text"
+                  disabled
+                  value={selectedUser?.userName || ''}
+                  className="h-9 border px-2"
+                  placeholder={t('common.pleaseSelect')}
+                />
+                <AccountDialog
+                  selectedUser={selectedUser}
+                  setSelectedUser={setSelectedUser}
+                  title={t('CRMAccountPage.SelectSuperiorRange')}
+                  trigger={
+                    <RrhButton
+                      type="button"
+                      className="flex h-9 cursor-pointer items-center gap-1 border bg-[#1E1E1E] px-6 text-white"
+                    >
+                      {t('common.select')}
+                    </RrhButton>
+                  }
+                  onConfirm={() => {
+                    field.onChange('');
+                  }}
+                />
                 <RrhButton
-                  type="button"
-                  className="flex h-9 cursor-pointer items-center gap-1 border bg-[#1E1E1E] px-6 text-white"
+                  type="reset"
+                  className="flex h-9 cursor-pointer items-center gap-1 border bg-white px-6 text-[#1E1E1E]"
+                  onClick={() => setSelectedUser(null)}
                 >
-                  {t('common.select')}
+                  {t('common.Reset')}
                 </RrhButton>
-              }
-              onConfirm={() => {
-                field.onChange('');
-              }}
-            />
-            <RrhButton
-              type="reset"
-              className="flex h-9 cursor-pointer items-center gap-1 border bg-white px-6 text-[#1E1E1E]"
-              onClick={() => setSelectedUser(null)}
-            >
-              {t('common.Reset')}
-            </RrhButton>
-          </form>
-          <div className="flex-1">
-            <RrhCascader
-              options={options}
-              loadData={loadData}
-              onChange={onChange}
-              notFoundContent={isLoading ? t('common.loading') : t('common.NoData')}
-              displayRender={labels => labels[labels.length - 1]}
-              changeOnSelect
-            />
-          </div>
-        </RrhDialog>
-      </FormControl>
-      <FormMessage />
+              </form>
+              <div className="flex-1">
+                <RrhCascader
+                  options={options}
+                  loadData={loadData}
+                  onChange={onChange}
+                  notFoundContent={isLoading ? t('common.loading') : t('common.NoData')}
+                  displayRender={labels => labels[labels.length - 1]}
+                  changeOnSelect
+                />
+              </div>
+            </div>
+          </RrhDialog>
+        </FormControl>
+        <FormMessage />
+      </div>
     </FormItem>
   );
 };
