@@ -44,6 +44,16 @@ type FormEditValues = {
   sendPasswordOnly: string;
 };
 
+const EDITABLE_KEYS: GeneralInfoField[] = [
+  'accountName',
+  'account',
+  'mtGroup',
+  'directBroker',
+  'accountGroupId',
+  'lever',
+  'sendPasswordOnly',
+];
+
 export const ReviewInfo = ({
   openInfo,
   form,
@@ -72,43 +82,41 @@ export const ReviewInfo = ({
     directBroker: {},
   });
 
-  const accountInformation = useMemo(() => {
-    return [
-      {
-        label: t('table.fullName'),
-        value: accountName,
-      },
-      {
-        label: t('table.userShowId'),
-        value: userShowId,
-      },
-    ];
-  }, [t, accountName, userShowId]);
+  const accountInformation = [
+    {
+      label: t('table.fullName'),
+      value: accountName,
+    },
+    {
+      label: t('table.userShowId'),
+      value: userShowId,
+    },
+  ];
 
-  const openAccountInformation = useMemo(() => {
-    if (!detail) return [];
-    const servicePropertyText = detail.serverProperty === 1 ? t('common.live') : t('common.demo');
-    const serviceTypeText = serverMap[detail.serverType || 0] || '-';
-    return [
-      {
-        label: t('tradingAccountTransactions.serverType'),
-        value: serviceTypeText,
-      },
-      { label: t('common.type'), value: servicePropertyText },
-      {
-        label: t('common.server'),
-        value: detail.serverName || '-',
-      },
-      {
-        label: t('common.accountType'),
-        value: detail.staName || '-',
-      },
-      {
-        label: t('accountOpening.source'),
-        value: detail.source || '-',
-      },
-    ];
-  }, [detail, t]);
+  const openAccountInformation = !detail
+    ? []
+    : [
+        {
+          label: t('tradingAccountTransactions.serverType'),
+          value: serverMap[detail.serverType || 0] || '-',
+        },
+        {
+          label: t('common.type'),
+          value: detail.serverProperty === 1 ? t('common.live') : t('common.demo'),
+        },
+        {
+          label: t('common.server'),
+          value: detail.serverName || '-',
+        },
+        {
+          label: t('common.accountType'),
+          value: detail.staName || '-',
+        },
+        {
+          label: t('accountOpening.source'),
+          value: detail.source || '-',
+        },
+      ];
 
   const serverGroupOptions = useMemo<SelectOption[]>(
     () =>
@@ -226,19 +234,6 @@ export const ReviewInfo = ({
     [serverGroupOptions, accountGroupOptions, leverOptions, sendPasswordOnlyOptions],
   );
 
-  const editableKeys = useMemo<GeneralInfoField[]>(
-    () => [
-      'accountName',
-      'account',
-      'mtGroup',
-      'directBroker',
-      'accountGroupId',
-      'lever',
-      'sendPasswordOnly',
-    ],
-    [],
-  );
-
   const initialData = useMemo<Record<GeneralInfoField, string>>(
     () => ({
       accountName: accountName,
@@ -332,7 +327,7 @@ export const ReviewInfo = ({
     isEditing,
     getConfirmedData,
     resetFields,
-  } = useEditableFields<GeneralInfoField>(initialData, editableKeys);
+  } = useEditableFields<GeneralInfoField>(initialData, EDITABLE_KEYS);
 
   const getDisplayText = useCallback(
     (config: {

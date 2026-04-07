@@ -4,12 +4,14 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Check, ChevronsUpDown, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ReactNode, useLayoutEffect, useRef, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { RrhButton } from './RrhButton';
+import { useTranslation } from 'react-i18next';
 
 export type BaseOption = { label: string; value: string | number };
 export const RrhMultiSelect = <T extends BaseOption>({
@@ -21,7 +23,7 @@ export const RrhMultiSelect = <T extends BaseOption>({
   renderItem,
   searchSupport = false,
   searchValue,
-  searchPlaceholder = 'Search',
+  searchPlaceholder = '',
   onSearchChange,
   showRowValue = true,
   onDropdownReachEnd,
@@ -44,14 +46,84 @@ export const RrhMultiSelect = <T extends BaseOption>({
   hasMore?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
   const selectedOptions = options.filter(option => value.includes(option.value.toString()));
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const debounceTimerRef = useRef<number | null>(null);
+  const loadingMoreRef = useRef(loadingMore);
+  const hasMoreRef = useRef(hasMore);
   const [triggerWidth, setTriggerWidth] = useState<number>();
   useLayoutEffect(() => {
     if (open && triggerRef.current) {
       setTriggerWidth(triggerRef.current.offsetWidth);
     }
   }, [open]);
+
+  useEffect(() => {
+    loadingMoreRef.current = loadingMore;
+    hasMoreRef.current = hasMore;
+  }, [loadingMore, hasMore]);
+
+  const scheduleReachEnd = useCallback(() => {
+    if (!onDropdownReachEnd) return;
+
+    if (debounceTimerRef.current) {
+      window.clearTimeout(debounceTimerRef.current);
+    }
+
+    debounceTimerRef.current = window.setTimeout(() => {
+      if (loadingMoreRef.current || !hasMoreRef.current) return;
+      onDropdownReachEnd();
+    }, 180);
+  }, [onDropdownReachEnd]);
+
+  useEffect(() => {
+    if (!open) return;
+    const root = listRef.current;
+    const target = sentinelRef.current;
+    if (!root || !target) return;
+
+    const observer = new IntersectionObserver(
+      entries => {
+        const isIntersecting = entries[0]?.isIntersecting;
+        if (!isIntersecting) return;
+
+        scheduleReachEnd();
+      },
+      {
+        root,
+        threshold: 0,
+        rootMargin: '0px 0px 24px 0px',
+      },
+    );
+
+    // Popover + portal 场景下延后一帧再 observe，可避免首帧布局未稳定导致漏触发。
+    const rafId = window.requestAnimationFrame(() => {
+      console.log(target, 'observe');
+      observer.observe(target);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      observer.disconnect();
+      if (debounceTimerRef.current) {
+        window.clearTimeout(debounceTimerRef.current);
+        debounceTimerRef.current = null;
+      }
+    };
+  }, [open, scheduleReachEnd]);
+
+  const handleListScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    if (!onDropdownReachEnd || loadingMoreRef.current || !hasMoreRef.current) return;
+
+    const el = event.currentTarget;
+    const reachBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 24;
+    if (reachBottom) {
+      scheduleReachEnd();
+    }
+  };
 
   const handleSelect = (optionValue: string) => {
     if (!onValueChange) return;
@@ -68,15 +140,6 @@ export const RrhMultiSelect = <T extends BaseOption>({
     event.stopPropagation();
     if (!onValueChange) return;
     onValueChange(value.filter(v => v !== optionValue));
-  };
-
-  const handleListScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    if (!onDropdownReachEnd || loadingMore || !hasMore) return;
-    const target = e.currentTarget;
-    const reachBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 8;
-    if (reachBottom) {
-      onDropdownReachEnd();
-    }
   };
 
   return (
@@ -136,33 +199,37 @@ export const RrhMultiSelect = <T extends BaseOption>({
               placeholder={searchPlaceholder}
             />
           )}
-          <CommandEmpty>No item found.</CommandEmpty>
-          <CommandGroup
+          <CommandEmpty>{t('common.NoData')}</CommandEmpty>
+          <CommandList
+            ref={listRef}
             className="scrollbar-thin max-h-60 overflow-y-auto"
             onScroll={handleListScroll}
           >
-            {options.map(option => (
-              <CommandItem
-                key={option.value}
-                value={option.value.toString()}
-                onSelect={handleSelect}
-                className={cn('cursor-pointer hover:bg-slate-100', {
-                  'bg-slate-100': value.includes(option.value.toString()),
-                })}
-              >
-                <Check
-                  className={cn(
-                    'mr-2 h-4 w-4',
-                    value.includes(option.value.toString()) ? 'opacity-100' : 'opacity-0',
-                  )}
-                />
-                {renderItem ? renderItem(option) : option.label}
-              </CommandItem>
-            ))}
+            <CommandGroup>
+              {options.map(option => (
+                <CommandItem
+                  key={option.value}
+                  value={option.value.toString()}
+                  onSelect={handleSelect}
+                  className={cn('cursor-pointer hover:bg-slate-100', {
+                    'bg-slate-100': value.includes(option.value.toString()),
+                  })}
+                >
+                  <Check
+                    className={cn(
+                      'mr-2 h-4 w-4',
+                      value.includes(option.value.toString()) ? 'opacity-100' : 'opacity-0',
+                    )}
+                  />
+                  {renderItem ? renderItem(option) : option.label}
+                </CommandItem>
+              ))}
+            </CommandGroup>
             {loadingMore && (
-              <div className="text-muted-foreground px-2 py-1 text-xs">Loading...</div>
+              <div className="text-muted-foreground px-2 py-1 text-xs">{t('common.loading')}</div>
             )}
-          </CommandGroup>
+            <div ref={sentinelRef} className="h-1 w-full" aria-hidden="true" />
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>

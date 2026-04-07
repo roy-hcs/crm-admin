@@ -1274,7 +1274,11 @@
       "0": "拒绝",
       "1": "审核通过",
       "2": "审核中"
-    }
+    },
+    "personalInformation": "个人信息",
+    "financialInformation": "财务信息",
+    "identityInformation": "身份信息-Basic",
+    "protocolConfirmation": "协议确认"
   },
   "binding": {
     "title": "绑定审核",

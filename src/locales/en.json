@@ -936,7 +936,11 @@
     "lastLogin": "Recently logged in",
     "openAccountInformation": "Account opening information",
     "sendInformation": "Send message",
-    "sendPasswordOnly": "Send only read-only password"
+    "sendPasswordOnly": "Send only read-only password",
+    "financialInformation": "financial information",
+    "identityInformation": "Identity Information-Basic",
+    "personalInformation": "personal information",
+    "protocolConfirmation": "Agreement confirmation"
   },
   "binding": {
     "source": "Promotion invitation code",

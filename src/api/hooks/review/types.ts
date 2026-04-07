@@ -1407,6 +1407,7 @@ export type CrmUserManageInfoRes = {
       columnValue: string;
     }>;
     verifyStatus: number;
+    crmUser: CrmUser;
   };
 };
 
@@ -1420,6 +1421,7 @@ export type CrmUserIdentityBasicInfoRes = {
       columnType: number; // 5 是图片类型
     }>;
     verifyStatus: number;
+    crmUser: CrmUser;
   };
 };
 
@@ -1429,6 +1431,7 @@ export type CrmUserProtocolInfoRes = {
     allProtocol: Array<{
       protocolName: string;
       status: number;
+      createTime: string;
     }>;
   };
 };

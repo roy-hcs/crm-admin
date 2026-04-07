@@ -155,7 +155,7 @@ export const AccountOverviewPage = ({ id }: { id: string }) => {
     },
   ];
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility('wallet-accounts-table', allColumns);
+    useColumnVisibility('accounts-overview-table', allColumns);
 
   return (
     <div>

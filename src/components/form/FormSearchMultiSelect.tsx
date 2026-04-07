@@ -37,7 +37,7 @@ export function FormSearchMultiSelect<T extends FieldValues>({
   placeholder,
   verticalLabel = false,
   className,
-  searchPlaceholder = 'Search',
+  searchPlaceholder = '',
   pageSize = 10,
   fetchOptions,
 }: FormSearchMultiSelectProps<T>) {
@@ -54,7 +54,7 @@ export function FormSearchMultiSelect<T extends FieldValues>({
     const map = new Map<string, BaseOption>();
     base.forEach(item => map.set(item.value.toString(), item));
     incoming.forEach(item => map.set(item.value.toString(), item));
-    return Array.from(map.values());
+    return [...map.values()];
   }, []);
 
   const loadOptions = useCallback(

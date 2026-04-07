@@ -4,6 +4,7 @@ import { useDictType } from '@/api/hooks/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhCard } from '@/components/common/RrhCard';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
+import { cn } from '@/lib/utils';
 import { ResetPassword } from '@/pages/account/crm-accounts/components/ResetPassword';
 import { AddEditNewMessageDialog } from '@/pages/message/management/components/AddEditNewMessageDialog';
 import { CircleCheck } from 'lucide-react';
@@ -134,9 +135,33 @@ export const Customer = ({ openInfo }: { openInfo: OpenReviewDetailRes['data'] }
             <div className="text-foreground h-5 text-sm leading-5 font-medium">
               {t('accountOpening.lastLogin')}
             </div>
-            <div className="bg-background flex items-center justify-center gap-1 rounded-2xl border px-2 py-0.5">
-              <CircleCheck className="size-2.5 text-green-600" />
-              <div className="text-xs leading-4 font-medium text-green-600">
+            <div
+              className={cn(
+                'bg-background flex items-center justify-center gap-1 rounded-2xl border px-2 py-0.5',
+                riskScore >= 90 && 'border-red-500',
+                riskScore >= 70 && riskScore < 90 && 'border-amber-500',
+                riskScore >= 40 && riskScore < 70 && 'border-blue-600',
+                (riskScore === 0 || riskScore < 40) && 'border-green-600',
+              )}
+            >
+              <CircleCheck
+                className={cn(
+                  'size-2.5',
+                  riskScore >= 90 && 'text-red-500',
+                  riskScore >= 70 && riskScore < 90 && 'text-amber-500',
+                  riskScore >= 40 && riskScore < 70 && 'text-blue-600',
+                  (riskScore === 0 || riskScore < 40) && 'text-green-600',
+                )}
+              />
+              <div
+                className={cn(
+                  'text-xs leading-4 font-medium',
+                  riskScore >= 90 && 'text-red-500',
+                  riskScore >= 70 && riskScore < 90 && 'text-amber-500',
+                  riskScore >= 40 && riskScore < 70 && 'text-blue-600',
+                  (riskScore === 0 || riskScore < 40) && 'text-green-600',
+                )}
+              >
                 {riskScore >= 90 && 'High'}
                 {riskScore >= 70 && riskScore < 90 && 'Medium'}
                 {riskScore >= 40 && riskScore < 70 && 'Low'}
@@ -202,7 +227,6 @@ export const Customer = ({ openInfo }: { openInfo: OpenReviewDetailRes['data'] }
           if (!val) setOpen(null);
         }}
       />
-
       <AddEditNewMessageDialog
         source="Customer"
         mode="add"

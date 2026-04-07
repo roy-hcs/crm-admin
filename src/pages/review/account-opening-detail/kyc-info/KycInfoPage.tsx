@@ -11,6 +11,7 @@ import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
 import { cn } from '@/lib/utils';
 import { KycStatus } from '../components/KycVerifyStatus';
 import { kycVerifyStatusMap, kycVerifyStatusTextMap } from '@/lib/constant';
+import { useTranslation } from 'react-i18next';
 
 type kycInfoType = 'personal' | 'finance' | 'identityBasic' | 'agreement';
 
@@ -33,6 +34,7 @@ export type kycInfoItem = {
 type kycInfoSteps = kycInfoItem[];
 
 export const KycInfoPage = ({ id }: { id: string }) => {
+  const { t } = useTranslation();
   const { data: manageData, isLoading: manageLoading } = useCrmUserManageInfo(id, {
     enabled: !!id,
   });
@@ -53,6 +55,13 @@ export const KycInfoPage = ({ id }: { id: string }) => {
   const financeVerifyStatus = financeData?.data?.verifyStatus || 0;
   const identityBasicVerifyStatus = identityBasicData?.data?.verifyStatus || 0;
   const protocolVerifyStatus = protocolData?.data?.allProtocol.some(i => i.status === 0);
+  const manageCreateTime = manageData?.data?.crmUser?.createTime || '';
+  const financeCreateTime = financeData?.data?.crmUser?.createTime || '';
+  const identityBasicCreateTime = identityBasicData?.data?.crmUser?.createTime || '';
+  const protocolCreateTime = protocolData?.data?.allProtocol.length
+    ? protocolData.data.allProtocol[0]?.createTime
+    : '';
+
   const personal = useMemo(() => {
     if (!manageData) return [];
     return manageData.data.columns.map(i => ({
@@ -90,50 +99,55 @@ export const KycInfoPage = ({ id }: { id: string }) => {
       {
         status: kycVerifyStatusMap[manageVerifyStatus] as KycStatus,
         statusText: kycVerifyStatusTextMap[manageVerifyStatus],
-        label: '个人信息',
+        label: t('accountOpening.personalInformation'),
         content: '',
         type: 'personal',
-        time: '2026-04-01 17:23:08',
+        time: manageCreateTime,
         detail: personal,
       },
       {
         status: kycVerifyStatusMap[financeVerifyStatus] as KycStatus,
         statusText: kycVerifyStatusTextMap[financeVerifyStatus],
-        label: '财务信息',
+        label: t('accountOpening.financialInformation'),
         content: '',
         type: 'finance',
-        time: '2026-04-01 17:23:08',
+        time: financeCreateTime,
         detail: finance,
       },
       {
         status: kycVerifyStatusMap[identityBasicVerifyStatus] as KycStatus,
         statusText: kycVerifyStatusTextMap[identityBasicVerifyStatus],
-        label: '身份信息-Basic',
+        label: t('accountOpening.identityInformation'),
         content: '',
         type: 'identityBasic',
-        time: '2026-04-01 17:23:08',
+        time: identityBasicCreateTime,
         detail: identityBasic,
       },
       {
         // protocolVerifyStatus为true表示有协议未确认，状态为审核中；为false表示协议已确认，状态为审核通过
         status: kycVerifyStatusMap[protocolVerifyStatus === true ? 0 : 1] as KycStatus,
         statusText: kycVerifyStatusTextMap[protocolVerifyStatus === true ? 0 : 1],
-        label: '协议确认',
+        label: t('accountOpening.protocolConfirmation'),
         content: '',
         type: 'agreement',
-        time: '2026-04-01 17:23:08',
+        time: protocolCreateTime,
         detail: protocol,
       },
     ];
   }, [
     finance,
+    financeCreateTime,
     financeVerifyStatus,
     identityBasic,
+    identityBasicCreateTime,
     identityBasicVerifyStatus,
+    manageCreateTime,
     manageVerifyStatus,
     personal,
     protocol,
+    protocolCreateTime,
     protocolVerifyStatus,
+    t,
   ]);
 
   if (manageLoading || financeLoading || identityBasicLoading || protocolLoading) {

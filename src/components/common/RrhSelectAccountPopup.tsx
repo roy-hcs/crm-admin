@@ -148,7 +148,7 @@ export const RrhSelectAccountsPopup = ({
                   disabled
                   value={selectedUser?.userName || ''}
                   className="h-9 border px-2"
-                  placeholder="请选择CRM"
+                  placeholder={t('common.pleaseSelect')}
                 />
                 <AccountDialog
                   selectedUser={selectedUser}
