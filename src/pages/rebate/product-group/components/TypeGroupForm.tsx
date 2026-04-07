@@ -76,39 +76,26 @@ export const TypeGroupForm = ({
   const { mutateAsync: editRebateBaseType, isPending: isEditPending } = useEditRebateBaseType();
   const isPending = useMemo(() => isAddPending || isEditPending, [isAddPending, isEditPending]);
   const onSubmit = async (data: { [key: string]: string }) => {
-    if (productGroupItem) {
-      try {
-        const res = await editRebateBaseType({
-          id: productGroupItem.id,
-          typeGroupName: data.typeGroupName,
-          serverId: data.serverId,
-          typeName: data.typeName,
-          serverType: data.serverType,
-        });
-        if (res.code === 0) {
-          onSuccess();
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        onCancel();
+    const addParams = {
+      typeGroupName: data.typeGroupName,
+      serverId: data.serverId,
+      typeName: data.typeName,
+      serverType: data.serverType,
+    };
+    try {
+      const res = productGroupItem
+        ? await editRebateBaseType({
+            id: productGroupItem.id,
+            ...addParams,
+          })
+        : await addRebateBaseType(addParams);
+      if (res.code === 0) {
+        onSuccess();
       }
-    } else {
-      try {
-        const res = await addRebateBaseType({
-          typeGroupName: data.typeGroupName,
-          serverId: data.serverId,
-          typeName: data.typeName,
-          serverType: data.serverType,
-        });
-        if (res.code === 0) {
-          onSuccess();
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        onCancel();
-      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      onCancel();
     }
   };
   // 当 serverList 加载完成后，设置完整的表单数据

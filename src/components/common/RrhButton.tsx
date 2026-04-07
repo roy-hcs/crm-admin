@@ -17,11 +17,13 @@ export const RrhButton = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonP
     return (
       <Button
         ref={ref}
-        className={cn('cursor-pointer px-4 py-2', className)}
+        className={cn('relative cursor-pointer px-4 py-2 select-none', className)}
         {...props}
         disabled={loading || props.disabled}
       >
-        {loading && <LoaderCircle className="animate-spin" />}
+        {loading && (
+          <LoaderCircle className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform animate-spin" />
+        )}
         {Icon && !loading && Icon}
         {children}
       </Button>

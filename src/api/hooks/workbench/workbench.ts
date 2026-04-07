@@ -46,8 +46,6 @@ export function useSymbolReport(params: SymbolReportParams) {
   });
 }
 
-// Note: useServerList moved back to @/api/hooks/system (shared across multiple modules)
-
 /**
  * 工作台 - 平台概览 - 注册统计报表
  */

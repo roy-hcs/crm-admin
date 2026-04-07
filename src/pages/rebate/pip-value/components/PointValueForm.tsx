@@ -138,51 +138,32 @@ export const PointValueForm = ({
   );
   const { data: currencyList } = useCurrencyList();
   const onSubmit = async (data: { [key: string]: string }) => {
-    if (productGroupItem) {
-      try {
-        const res = await editRebateBasePoint({
-          id: productGroupItem.id,
-          pointValueName: data.pointValueName,
-          serverId: data.serverId,
-          serverType: data.serverType,
-          pointValueType: data.pointValueType,
-          rebateType: data.typeName,
-          pointValue: data.pointValue,
-          pointValueLots: data.pointValueLots,
-          pointValueRules: data.pointValueRules,
-          pointValueCurrency: data.pointValueCurrency,
-          serialNumber: data.serialNumber,
-        });
-        if (res.code === 0) {
-          onSuccess();
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        onCancel();
+    const addParams = {
+      pointValueName: data.pointValueName,
+      serverId: data.serverId,
+      serverType: data.serverType,
+      pointValueType: data.pointValueType,
+      rebateType: data.typeName,
+      pointValue: data.pointValue,
+      pointValueLots: data.pointValueLots,
+      pointValueRules: data.pointValueRules,
+      pointValueCurrency: data.pointValueCurrency,
+      serialNumber: data.serialNumber,
+    };
+    try {
+      const res = productGroupItem
+        ? await editRebateBasePoint({
+            id: productGroupItem.id,
+            ...addParams,
+          })
+        : await addRebateBasePoint(addParams);
+      if (res.code === 0) {
+        onSuccess();
       }
-    } else {
-      try {
-        const res = await addRebateBasePoint({
-          pointValueName: data.pointValueName,
-          serverId: data.serverId,
-          serverType: data.serverType,
-          pointValueType: data.pointValueType,
-          rebateType: data.typeName,
-          pointValue: data.pointValue,
-          pointValueLots: data.pointValueLots,
-          pointValueRules: data.pointValueRules,
-          pointValueCurrency: data.pointValueCurrency,
-          serialNumber: data.serialNumber,
-        });
-        if (res.code === 0) {
-          onSuccess();
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        onCancel();
-      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      onCancel();
     }
   };
   // 当 serverList 加载完成后，设置完整的表单数据
@@ -356,7 +337,7 @@ export const PointValueForm = ({
             name="serialNumber"
             label={t('table.sort')}
             verticalLabel
-            placeholder={t('pipValueSettings.sortPlaceholder')}
+            placeholder={t('common.sortPlaceholder')}
           />
           <div className="border-border -mx-6 flex justify-end gap-4 border-t px-6 pt-3 pb-3 md:pt-6 md:pb-0">
             <RrhButton type="button" variant="outline" disabled={isPending} onClick={onCancel}>

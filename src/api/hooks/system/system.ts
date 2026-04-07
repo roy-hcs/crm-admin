@@ -1,10 +1,4 @@
-import {
-  apiFormPost,
-  apiFormPostCustom,
-  apiGetCustom,
-  apiPostFormData,
-  FormValue,
-} from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGetCustom, apiPostFormData } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   CrmRebateTradersItem,
@@ -42,22 +36,19 @@ import {
 /**
  * 获取服务器列表 - shared across multiple modules
  */
-export function useServerList(params: Record<string, FormValue> = {}) {
+export function useServerList() {
   return useQuery({
-    queryKey: ['serverList', params],
-    queryFn: () => apiFormPostCustom<ServerListResponse>('/system/mtService/list', params),
+    queryKey: ['serverList'],
+    queryFn: () => apiFormPostCustom<ServerListResponse>('/system/mtService/list'),
   });
 }
 
-export function useRebateLevelList(params: Record<string, FormValue> = {}) {
+export function useRebateLevelList() {
   return useQuery({
-    queryKey: ['rebateLevelList', params],
-    queryFn: () =>
-      apiFormPostCustom<RebateLevelListResponse>('/system/crmRebateLevel/list', params),
+    queryKey: ['rebateLevelList'],
+    queryFn: () => apiFormPostCustom<RebateLevelListResponse>('/system/crmRebateLevel/list'),
   });
 }
-
-// Note: useCrmUser, useTagUserCountList, useCustomerRelationsPostList, useChangeUserStatus moved to @/api/hooks/account
 
 /**
  * 获取组别列表

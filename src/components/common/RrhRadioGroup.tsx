@@ -14,7 +14,6 @@ export const RrhRadioGroup: FC<{
   labelClassName?: string;
   value: string;
   onValueChange?: (value: string) => void;
-  vertical?: boolean;
   orientation?: 'horizontal' | 'vertical';
 }> = ({
   defaultValue,
@@ -23,11 +22,11 @@ export const RrhRadioGroup: FC<{
   labelClassName,
   value,
   onValueChange,
-  orientation = 'horizontal',
+  orientation = 'vertical',
 }) => {
   return (
     <RadioGroup
-      className={cn(orientation === 'horizontal' ? '' : 'flex')}
+      className={cn(orientation === 'vertical' ? '' : 'flex')}
       defaultValue={defaultValue}
       value={value}
       onValueChange={onValueChange}

@@ -1,6 +1,6 @@
 import { FieldPath, FieldValues } from 'react-hook-form';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { BaseOption, RrhMultiSelect } from '../common/RrhMultiSelect';
+import { BaseOption, RrhMultiSelect, ValidationResult } from '../common/RrhMultiSelect';
 import { useCrmFormContext } from '@/contexts/form';
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
@@ -15,6 +15,16 @@ interface FormMultiSelectProps<T extends FieldValues, O extends BaseOption = Bas
   renderItem?: (option: O) => ReactNode;
   showRowValue?: boolean;
   loading?: boolean;
+  onValueChange?: (value: string[], option?: string, operator?: 'add' | 'remove') => void;
+  maxSelections?: number;
+  maxSelectionsMessage?: string;
+  onMaxSelectionsReached?: (max: number) => void;
+  onBeforeValueChange?: (
+    newValue: string[],
+    option: string,
+    operator: 'add' | 'remove',
+    currentValue: string[],
+  ) => ValidationResult;
 }
 
 export function FormMultiSelect<T extends FieldValues, O extends BaseOption = BaseOption>({
@@ -27,6 +37,11 @@ export function FormMultiSelect<T extends FieldValues, O extends BaseOption = Ba
   renderItem,
   showRowValue = true,
   loading = false,
+  onValueChange,
+  maxSelections,
+  maxSelectionsMessage,
+  onMaxSelectionsReached,
+  onBeforeValueChange,
 }: FormMultiSelectProps<T, O>) {
   const { form } = useCrmFormContext<T>();
   return (
@@ -50,11 +65,18 @@ export function FormMultiSelect<T extends FieldValues, O extends BaseOption = Ba
                 <RrhMultiSelect<O>
                   options={options}
                   value={field.value || []}
-                  onValueChange={field.onChange}
+                  onValueChange={(value, option, operator) => {
+                    field.onChange(value);
+                    onValueChange?.(value, option, operator);
+                  }}
                   className="w-full"
                   placeholder={placeholder}
                   renderItem={renderItem}
                   showRowValue={showRowValue}
+                  maxSelections={maxSelections}
+                  maxSelectionsMessage={maxSelectionsMessage}
+                  onMaxSelectionsReached={onMaxSelectionsReached}
+                  onBeforeValueChange={onBeforeValueChange}
                 />
               )}
             </FormControl>

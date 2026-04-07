@@ -1,4 +1,4 @@
-import { FormValue } from '@/api/client';
+import { FormParams } from '@/api/client';
 
 export interface User {
   id: string;
@@ -13,7 +13,7 @@ export interface User {
   // Other user properties
 }
 
-export interface LoginParams extends Record<string, FormValue> {
+export interface LoginParams extends FormParams {
   username: string;
   password: string;
   rememberMe: boolean;

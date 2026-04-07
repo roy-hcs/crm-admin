@@ -1,22 +1,33 @@
 import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { RebateTraderDealListParams, useRebateTraderDealList } from '@/api/hooks/rebate';
+import {
+  RebateTraderDealListParams,
+  useDeleteRebateTraderDeal,
+  useEditRebateTraderDealStatus,
+  useRebateLevelList,
+  useRebateTraderDealList,
+} from '@/api/hooks/rebate';
 import { TradingRebateSettingsForm } from './TradingRebateSettingsForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-import { useDictType } from '@/api/hooks/system/system';
+import { useDictType, useGetSysConfig, useServerList } from '@/api/hooks/system/system';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/hooks/review/types';
 import { RebateTraderDealItem } from '@/api/hooks/rebate';
-import { Switch } from '@/components/ui/switch';
 import { ToolTip } from '@/components/common/ToolTip';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { REBATE_MODEL_SETTING } from '@/lib/constant';
+import { RrhStatusAlert } from '@/components/common/RrhStatusAlert';
+import { AddTradingRebateSettingButton } from './components/AddTradingRebateSettingButton';
+import { EditTradingRebateSettingDialog } from './components/EditTradingRebateSettingDialog';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
+import { useGetDealAccountGroupList } from '@/api/hooks/account';
 
 function getServerTypeName(serverType: string) {
   switch (serverType) {
@@ -40,32 +51,51 @@ export const TradingRebateSettingsPage = () => {
   const [keyword, setKeyword] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [currentItem, setCurrentItem] = useState<RebateTraderDealItem | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+
+  const { data: serverTypes } = useDictType('sys_mt_service_type');
+  const { data: rebateModelSetting } = useGetSysConfig(REBATE_MODEL_SETTING);
+  const { mutateAsync: changeStatusMutation } = useEditRebateTraderDealStatus();
+  const { data: languageList } = useDictType('sys_language');
+  const { data: dealAccountGroupListRes } = useGetDealAccountGroupList();
+  const { data: serverList } = useServerList();
+  const { data: levelList } = useRebateLevelList(
+    { model: rebateModelSetting as number },
+    { enabled: !!rebateModelSetting },
+  );
+
   const [otherParams, setOtherParams] = useState<
     Omit<RebateTraderDealListParams, keyof BasicParams>
   >({
-    rebateType: '',
-    model: '',
+    rebateType: '1',
+    model: rebateModelSetting?.toString() || '',
     ruleName: '',
     serverType: '',
     serverId: '',
     hasUsed: '',
   });
-
-  const { data: serverTypes } = useDictType('sys_mt_service_type');
-
-  const { data: tradingRebateSettings, isLoading: tradingRebateSettingsLoading } =
-    useRebateTraderDealList({
+  const {
+    data: tradingRebateSettings,
+    isLoading: tradingRebateSettingsLoading,
+    refetch,
+  } = useRebateTraderDealList(
+    {
       pageSize,
       pageNum: pageNum + 1,
       orderByColumn: '',
       isAsc: 'asc',
       ...otherParams,
-    });
+      model: rebateModelSetting?.toString() || '',
+    },
+    { enabled: !!rebateModelSetting },
+  );
 
   const reset = () => {
     setOtherParams({
-      rebateType: '',
-      model: '',
+      rebateType: '1',
+      model: rebateModelSetting?.toString() || '',
       ruleName: '',
       serverType: '',
       serverId: '',
@@ -74,6 +104,10 @@ export const TradingRebateSettingsPage = () => {
     setKeyword('');
     setPageNum(0);
     setPageSize(10);
+  };
+  const onSuccess = () => {
+    reset();
+    refetch();
   };
 
   const allColumns: CRMColumnDef<RebateTraderDealItem, unknown>[] = [
@@ -96,7 +130,25 @@ export const TradingRebateSettingsPage = () => {
       id: 'status',
       header: t('table.status'),
       cell: ({ row }) => {
-        return <Switch checked={row.original.hasUsed === '1'} />;
+        return (
+          <RrhStatusAlert<{
+            id: string;
+            hasUsed: string;
+          }>
+            params={{
+              id: String(row.original.id),
+              hasUsed: row.original.hasUsed === '1' ? '0' : '1',
+            }}
+            tipsText={
+              row.original.hasUsed === '1'
+                ? t('TradingRebateSettings.disableRuleTip')
+                : t('TradingRebateSettings.enableRuleTip')
+            }
+            checked={row.original.hasUsed === '1'}
+            confirmFunction={changeStatusMutation}
+            onSuccess={onSuccess}
+          />
+        );
       },
     },
     {
@@ -217,7 +269,7 @@ export const TradingRebateSettingsPage = () => {
       label: t('common.Operation'),
       fixed: 'right',
       size: 50,
-      cell: () => (
+      cell: ({ row }) => (
         <RrhDropdown
           Trigger={<Ellipsis className="size-4" />}
           dropdownList={[
@@ -225,7 +277,17 @@ export const TradingRebateSettingsPage = () => {
             { label: t('table.commissionSettings'), value: 'commissionSettings' },
             { label: t('common.delete'), value: 'delete' },
           ]}
-          callToAction={() => {}}
+          callToAction={action => {
+            setCurrentItem(row.original);
+            switch (action) {
+              case 'edit':
+                setEditDialogOpen(true);
+                break;
+              case 'delete':
+                setDeleteDialogOpen(true);
+                break;
+            }
+          }}
         />
       ),
     },
@@ -234,6 +296,7 @@ export const TradingRebateSettingsPage = () => {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('trading-rebate-settings-table', allColumns);
 
+  const { mutateAsync: deleteRebateTraderDeal } = useDeleteRebateTraderDeal();
   return (
     <div>
       <PageInfo title={t('TradingRebateSettings.title')} desc={t('TradingRebateSettings.warn')} />
@@ -253,7 +316,6 @@ export const TradingRebateSettingsPage = () => {
             />
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline">{t('common.add')}</Button>
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </Button>
@@ -285,6 +347,14 @@ export const TradingRebateSettingsPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <AddTradingRebateSettingButton
+              onSuccess={onSuccess}
+              model={rebateModelSetting as number}
+              serverList={serverList}
+              levelList={levelList}
+              languageList={languageList}
+              dealAccountGroupListRes={dealAccountGroupListRes}
+            />
           </div>
         </div>
         <DataTable
@@ -298,6 +368,28 @@ export const TradingRebateSettingsPage = () => {
           loading={tradingRebateSettingsLoading}
         />
       </TableContentWrapper>
+      <RrhDeleteAlert<{ ids: string }>
+        open={deleteDialogOpen}
+        setOpen={setDeleteDialogOpen}
+        onSuccess={onSuccess}
+        confirmFunction={deleteRebateTraderDeal}
+        params={{ ids: currentItem?.id || '' }}
+        tipsText={t('ProductGroup.deleteTips')}
+      />
+      <EditTradingRebateSettingDialog
+        open={editDialogOpen}
+        setOpen={setEditDialogOpen}
+        onSuccess={() => {
+          setEditDialogOpen(false);
+          onSuccess();
+        }}
+        rebateTraderDealItem={currentItem}
+        model={rebateModelSetting as number}
+        serverList={serverList}
+        levelList={levelList}
+        languageList={languageList}
+        dealAccountGroupListRes={dealAccountGroupListRes}
+      />
     </div>
   );
 };
