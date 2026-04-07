@@ -13,6 +13,38 @@ import { useTranslation } from 'react-i18next';
 
 type DialogType = 'password' | 'fundPassword' | 'sendMsg' | null;
 
+const getRiskMeta = (riskScore: number) => {
+  if (riskScore >= 90) {
+    return {
+      levelText: 'High',
+      borderClass: 'border-red-500',
+      textClass: 'text-red-500',
+    };
+  }
+
+  if (riskScore >= 70) {
+    return {
+      levelText: 'Medium',
+      borderClass: 'border-amber-500',
+      textClass: 'text-amber-500',
+    };
+  }
+
+  if (riskScore >= 40) {
+    return {
+      levelText: 'Low',
+      borderClass: 'border-blue-600',
+      textClass: 'text-blue-600',
+    };
+  }
+
+  return {
+    levelText: 'Lowest',
+    borderClass: 'border-green-600',
+    textClass: 'text-green-600',
+  };
+};
+
 export const Customer = ({ openInfo }: { openInfo: OpenReviewDetailRes['data'] }) => {
   const crmUser = openInfo?.crmUser;
   const lastLogininfor = openInfo?.lastLogininfor;
@@ -23,6 +55,7 @@ export const Customer = ({ openInfo }: { openInfo: OpenReviewDetailRes['data'] }
   const { data: languageList, isLoading: languageLoading } = useDictType('sys_language');
   const { data: emailList, isLoading: emailListLoading } = useGetEmailConfig();
   const { data: msgTemplateList, isLoading: msgTemplateListLoading } = useMsgTemplateList({});
+  const riskMeta = useMemo(() => getRiskMeta(riskScore), [riskScore]);
 
   const userInfo = useMemo(() => {
     return [
@@ -138,34 +171,12 @@ export const Customer = ({ openInfo }: { openInfo: OpenReviewDetailRes['data'] }
             <div
               className={cn(
                 'bg-background flex items-center justify-center gap-1 rounded-2xl border px-2 py-0.5',
-                riskScore >= 90 && 'border-red-500',
-                riskScore >= 70 && riskScore < 90 && 'border-amber-500',
-                riskScore >= 40 && riskScore < 70 && 'border-blue-600',
-                (riskScore === 0 || riskScore < 40) && 'border-green-600',
+                riskMeta.borderClass,
               )}
             >
-              <CircleCheck
-                className={cn(
-                  'size-2.5',
-                  riskScore >= 90 && 'text-red-500',
-                  riskScore >= 70 && riskScore < 90 && 'text-amber-500',
-                  riskScore >= 40 && riskScore < 70 && 'text-blue-600',
-                  (riskScore === 0 || riskScore < 40) && 'text-green-600',
-                )}
-              />
-              <div
-                className={cn(
-                  'text-xs leading-4 font-medium',
-                  riskScore >= 90 && 'text-red-500',
-                  riskScore >= 70 && riskScore < 90 && 'text-amber-500',
-                  riskScore >= 40 && riskScore < 70 && 'text-blue-600',
-                  (riskScore === 0 || riskScore < 40) && 'text-green-600',
-                )}
-              >
-                {riskScore >= 90 && 'High'}
-                {riskScore >= 70 && riskScore < 90 && 'Medium'}
-                {riskScore >= 40 && riskScore < 70 && 'Low'}
-                {(riskScore === 0 || riskScore < 40) && 'Lowest'}
+              <CircleCheck className={cn('size-2.5', riskMeta.textClass)} />
+              <div className={cn('text-xs leading-4 font-medium', riskMeta.textClass)}>
+                {riskMeta.levelText}
               </div>
             </div>
           </div>

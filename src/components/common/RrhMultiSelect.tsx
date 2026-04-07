@@ -65,7 +65,6 @@ export const RrhMultiSelect = <T extends BaseOption>({
   const selectedOptions = options.filter(option => value.includes(option.value.toString()));
   const triggerRef = useRef<HTMLButtonElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
-  const sentinelRef = useRef<HTMLDivElement>(null);
   const debounceTimerRef = useRef<number | null>(null);
   const loadingMoreRef = useRef(loadingMore);
   const hasMoreRef = useRef(hasMore);
@@ -95,40 +94,13 @@ export const RrhMultiSelect = <T extends BaseOption>({
   }, [onDropdownReachEnd]);
 
   useEffect(() => {
-    if (!open) return;
-    const root = listRef.current;
-    const target = sentinelRef.current;
-    if (!root || !target) return;
-
-    const observer = new IntersectionObserver(
-      entries => {
-        const isIntersecting = entries[0]?.isIntersecting;
-        if (!isIntersecting) return;
-
-        scheduleReachEnd();
-      },
-      {
-        root,
-        threshold: 0,
-        rootMargin: '0px 0px 24px 0px',
-      },
-    );
-
-    // Popover + portal 场景下延后一帧再 observe，可避免首帧布局未稳定导致漏触发。
-    const rafId = window.requestAnimationFrame(() => {
-      console.log(target, 'observe');
-      observer.observe(target);
-    });
-
     return () => {
-      window.cancelAnimationFrame(rafId);
-      observer.disconnect();
       if (debounceTimerRef.current) {
         window.clearTimeout(debounceTimerRef.current);
         debounceTimerRef.current = null;
       }
     };
-  }, [open, scheduleReachEnd]);
+  }, []);
 
   const handleListScroll = (event: React.UIEvent<HTMLDivElement>) => {
     if (!onDropdownReachEnd || loadingMoreRef.current || !hasMoreRef.current) return;
@@ -277,7 +249,6 @@ export const RrhMultiSelect = <T extends BaseOption>({
             {loadingMore && (
               <div className="text-muted-foreground px-2 py-1 text-xs">{t('common.loading')}</div>
             )}
-            <div ref={sentinelRef} className="h-1 w-full" aria-hidden="true" />
           </CommandList>
         </Command>
       </PopoverContent>
