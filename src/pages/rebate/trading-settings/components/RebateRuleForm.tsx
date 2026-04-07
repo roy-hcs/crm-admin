@@ -25,6 +25,7 @@ import { RebateRuleFormStep2 } from './RebateRuleFormStep2';
 import { RebateRuleFormStep3 } from './RebateRuleFormStep3';
 import { RebateRuleFormNavigation } from './RebateRuleFormNavigation';
 import { DictTypeResponse, ServerListResponse } from '@/api/hooks/system';
+import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
 
 // 表单内部使用的类型（与表单字段对应）
 type RebateRuleFormValues = {
@@ -37,7 +38,7 @@ type RebateRuleFormValues = {
   settleValue?: number; // optional
   settleType?: string; // optional
   serialNumber: string;
-  highestRebateLevel?: string; // optional
+  highestRebateLevel?: string | null; // optional
   commissionSettlementTiming?: string; // optional
   remark?: string; // optional
   serverName: string[]; // 仅用于表单选择，不提交
@@ -79,6 +80,7 @@ export const RebateRuleForm = ({
   const { mutateAsync: getMtAndRebateType } = useGetMtAndRebateType();
   const { mutateAsync: addRebateTraderDeal } = useAddRebateTraderDeal();
   const { mutateAsync: editRebateTraderDeal } = useEditRebateTraderDeal();
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   const addTradingRebateRuleSchema = z.object({
     id: z.string().optional(),
@@ -93,7 +95,7 @@ export const RebateRuleForm = ({
     settleValue: z.number().optional(),
     settleType: z.string().optional(),
     serialNumber: z.string().min(1, t('rules.required', { field: t('table.sort') })),
-    highestRebateLevel: z.string().optional(),
+    highestRebateLevel: z.string().optional().nullable(),
     commissionSettlementTiming: z.string().optional(),
     remark: z.string().optional(),
     serverName: z.array(z.string()).min(1, t('rules.required', { field: t('table.server') })),
@@ -141,6 +143,7 @@ export const RebateRuleForm = ({
     },
   });
 
+  // 编辑模式下初始化表单数据
   useEffect(() => {
     if (detailRes?.data && item) {
       const detailData = detailRes.data;
@@ -174,19 +177,17 @@ export const RebateRuleForm = ({
               rebateGroupTypes,
             };
           }) || [],
-        traderLanguages: [
-          {
-            ...detailData.defaultLanguage,
-            ruleName: item.ruleName || '',
-            rebateTraderId: '',
-          },
-          ...(detailData.languageList || []),
-        ],
+        traderLanguages:
+          detailData.languageList.map(item => {
+            return {
+              ...item,
+              isDefault: item.language === detailData.defaultLanguage.language ? 'Y' : '',
+            };
+          }) || [],
       };
       if (detailData.languageList && detailData.languageList.length > 0) {
         setSelectedLanguageOptions(detailData.languageList.map(lang => lang.language).join(','));
       }
-      console.log('Initializing form with data:', data);
       form.reset(data);
 
       // Update selectedServerIds for edit mode
@@ -251,7 +252,7 @@ export const RebateRuleForm = ({
   >(new Map());
 
   const onSubmit = async (data: RebateRuleFormValues) => {
-    console.log('Submitting data:', data);
+    setSubmitLoading(true);
     // 转换表单数据为 API 需要的格式
     const submitData: AddTradingRebateRuleParams & { id?: string } = {
       ...(isEditMode && data.id ? { id: data.id } : {}),
@@ -295,9 +296,6 @@ export const RebateRuleForm = ({
         };
       });
     }
-
-    console.log('Processed submit data:', submitData);
-    // return;
     try {
       const res = isEditMode
         ? await editRebateTraderDeal(submitData)
@@ -319,6 +317,8 @@ export const RebateRuleForm = ({
           ? t('common.modifyFieldFailed', { field: t('trading.rebateTraderName') })
           : t('common.addFieldFailed', { field: t('trading.rebateTraderName') }),
       );
+    } finally {
+      setSubmitLoading(false);
     }
   };
 
@@ -421,10 +421,7 @@ export const RebateRuleForm = ({
     }
   };
 
-  const onServerChange = (value: string[], option?: string, operator?: 'add' | 'remove') => {
-    console.log(value, 'value');
-    console.log(option, 'option');
-    console.log(operator, 'operator');
+  const onServerChange = (value: string[]) => {
     setSelectedServerIds(value);
   };
   const sirixServerIds = useMemo(() => {
@@ -577,7 +574,6 @@ export const RebateRuleForm = ({
         });
       }
     });
-
     return result;
   }, [languageList, selectedLanguageOptions]);
 
@@ -590,12 +586,6 @@ export const RebateRuleForm = ({
       const currentValues = form.getValues('traderLanguages') || [];
       const currentRuleName = form.getValues('ruleName');
 
-      // 如果只有默认语言，清空 traderLanguages 数组（因为默认语言的名称已经在 ruleName 字段中）
-      if (selectedLangList.length === 1 && selectedLangList[0].isDefault === 'Y') {
-        form.setValue('traderLanguages', [], { shouldValidate: false });
-        return;
-      }
-
       // 构建完整的 traderLanguages 数组，保留用户已输入的值
       const newTraderLanguages: RebateRuleFormValues['traderLanguages'] = selectedLangList.map(
         (lang, index) => {
@@ -607,7 +597,6 @@ export const RebateRuleForm = ({
           };
         },
       );
-
       form.setValue('traderLanguages', newTraderLanguages, { shouldValidate: false });
     }
   }, [selectedLangList, form]);
@@ -624,7 +613,7 @@ export const RebateRuleForm = ({
     <FormProvider form={form}>
       <Form {...form}>
         <form
-          className="relative max-h-[75vh] overflow-y-auto"
+          className="max-h-[75vh] overflow-y-auto px-0.75"
           onSubmit={form.handleSubmit(onSubmit, onError)}
         >
           {isEditMode && (
@@ -667,8 +656,13 @@ export const RebateRuleForm = ({
             step={step}
             onPrevious={() => setStep(step - 1)}
             onNext={handleNextStep}
-            nextLoading={getMtTypesLoading}
+            nextLoading={getMtTypesLoading || submitLoading}
           />
+          {(getMtTypesLoading || submitLoading) && (
+            <div className="bg-background/60 absolute inset-0">
+              <RrhCircleLoading />
+            </div>
+          )}
         </form>
       </Form>
     </FormProvider>

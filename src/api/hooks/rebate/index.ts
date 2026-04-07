@@ -257,6 +257,7 @@ export function useGetRebateTraderDealDetail(id: string, { enabled }: { enabled?
     queryKey: ['getRebateTraderDealDetail', id],
     queryFn: () => apiGet<RebateTraderDealDetail>(`/system/crmRebateTraderDeal/detail/${id}`),
     enabled,
+    staleTime: 0,
   });
 }
 /**

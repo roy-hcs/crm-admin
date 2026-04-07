@@ -34,6 +34,7 @@ export const EditTradingRebateSettingDialog = ({
       onOpenChange={setOpen}
       title={t('common.modify', { field: t('trading.rebateTraderName') })}
       footerShow={false}
+      className="pb-22"
     >
       <RebateRuleForm
         onSuccess={onSuccess}

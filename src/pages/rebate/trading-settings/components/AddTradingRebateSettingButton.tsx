@@ -24,6 +24,10 @@ export const AddTradingRebateSettingButton = ({
 }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const afterSuccess = () => {
+    setOpen(false);
+    onSuccess();
+  };
 
   return (
     <RrhDialog
@@ -37,9 +41,10 @@ export const AddTradingRebateSettingButton = ({
         </RrhButton>
       }
       footerShow={false}
+      className="pb-22"
     >
       <RebateRuleForm
-        onSuccess={onSuccess}
+        onSuccess={afterSuccess}
         model={model}
         serverList={serverList}
         levelList={levelList}

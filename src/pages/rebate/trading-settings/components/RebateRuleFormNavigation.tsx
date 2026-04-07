@@ -18,7 +18,7 @@ export const RebateRuleFormNavigation = ({
   const { t } = useTranslation();
 
   return (
-    <div className="border-border flex justify-end gap-4 border-t pt-6">
+    <div className="border-border bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 rounded-b-lg border-t p-6">
       <RrhButton type="button" className={cn(step !== 1 ? 'block' : 'hidden')} onClick={onPrevious}>
         {t('common.previousStep')}
       </RrhButton>

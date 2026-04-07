@@ -379,7 +379,10 @@ export const TradingRebateSettingsPage = () => {
       <EditTradingRebateSettingDialog
         open={editDialogOpen}
         setOpen={setEditDialogOpen}
-        onSuccess={onSuccess}
+        onSuccess={() => {
+          setEditDialogOpen(false);
+          onSuccess();
+        }}
         rebateTraderDealItem={currentItem}
         model={rebateModelSetting as number}
         serverList={serverList}
