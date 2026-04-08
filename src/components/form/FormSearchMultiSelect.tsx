@@ -29,6 +29,7 @@ interface FormSearchMultiSelectProps<T extends FieldValues> {
   searchPlaceholder?: string;
   pageSize?: number;
   fetchOptions: (params: FetchParams) => Promise<FetchResult>;
+  showRowValue?: boolean;
 }
 
 export function FormSearchMultiSelect<T extends FieldValues>({
@@ -39,6 +40,7 @@ export function FormSearchMultiSelect<T extends FieldValues>({
   className,
   searchPlaceholder = '',
   pageSize = 10,
+  showRowValue = false,
   fetchOptions,
 }: FormSearchMultiSelectProps<T>) {
   const [keyword, setKeyword] = useState('');
@@ -128,7 +130,7 @@ export function FormSearchMultiSelect<T extends FieldValues>({
       placeholder={placeholder}
       verticalLabel={verticalLabel}
       className={className}
-      showRowValue={false}
+      showRowValue={showRowValue}
       searchSupport
       searchValue={keyword}
       searchPlaceholder={searchPlaceholder}

@@ -220,7 +220,17 @@
     "selectField": "Select {{field}}",
     "confirmToProceed": "Are you sure you want to proceed?",
     "readOnly": "read only",
-    "idCardName": "ID name"
+    "idCardName": "ID name",
+    "addFieldFailed": "Adding {{field}} failed",
+    "addFieldSuccess": "Added {{field}} successfully",
+    "modifyFieldFailed": "Modification of {{field}} failed",
+    "modifyFieldSuccess": "Modify {{field}} successfully",
+    "optionalField": "{{field}}(optional)",
+    "pleaseCheckFormErrors": "Please check the form for errors",
+    "previousStep": "Previous step",
+    "save": "save",
+    "sortPlaceholder": "Please enter a number, the bigger the number, the higher it is",
+    "supportMultipleSelection": "Multiple selections possible"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -711,7 +721,10 @@
     "usedAdvance": "Advance payment used",
     "countryOrRegion": "Country/Region",
     "initialAmount": "Initial deposit",
-    "productSource": "Customer source"
+    "productSource": "Customer source",
+    "allAccountGroup": "All account groups",
+    "description": "describe",
+    "inviters": "Account superior"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1122,8 +1135,7 @@
     "addAccountGroup": "Add account group",
     "deleteTips": "Are you sure you want to delete account group \"{{name}}\"?",
     "editAccountGroup": "Edit account group",
-    "nameAlreadyExists": "Account group name already exists",
-    "sortPlaceholder": "Please enter a number, the bigger the number, the higher it is"
+    "nameAlreadyExists": "Account group name already exists"
   },
   "products": {
     "confirm": {
@@ -1268,7 +1280,26 @@
   },
   "TradingRebateSettings": {
     "title": "Trading rebate settings",
-    "warn": "Multiple rebates are allowed for one order. \nIf multiple rebate rules are hit, commissions will be repaid to the hit rules one after another. \nA rule will only rebate commission once."
+    "warn": "Multiple rebates are allowed for one order. \nIf multiple rebate rules are hit, commissions will be repaid to the hit rules one after another. \nA rule will only rebate commission once.",
+    "allMtGroups": "All MT groups",
+    "allRebateGroupType": "All varieties",
+    "amount": "Amount",
+    "canNotModifyAfterAdd": "*Cannot be modified after adding",
+    "commissionDesc": "*If the rebate settlement time is selected, this method will be used first to settle the rebate; if the rebate settlement time is not selected, the settlement method corresponding to the rebate type will be used by default to settle the rebate.",
+    "commissionSettlementTiming": "Commission settlement time",
+    "disableRuleTip": "Are you sure you want to deactivate this rebate rule?",
+    "dot": "point",
+    "enableRuleTip": "Are you sure you want to enable this rebate rule?",
+    "highestRebateLevel": "Highest rebate level",
+    "manualReview": "Manual review",
+    "multipleLanguageSetting": "Multi-language settings",
+    "realTimeCommission": "Real-time commission rebate",
+    "serverCanNotExceed5": "Allows up to 5 servers",
+    "serverSetting": "Server settings",
+    "settleLevel": "settlement level",
+    "settleType": "Settlement method",
+    "settleUnit": "settlement unit",
+    "sirixNotSupportOtherServer": "Sirix server does not currently support use with other platform servers"
   },
   "myTicket": {
     "title": "My work order",
@@ -1285,8 +1316,7 @@
     "title": "Point value settings",
     "warn": "Products with the same point value should be placed in the same point value group. The products in the group will receive commissions with the same point value. \nVarieties with no point value set are treated as 0 by default. \nIf there are duplicate product point values, the rebate will be calculated based on the highest sorted point value.",
     "deleteTips": "Are you sure you want to delete this point value?",
-    "pointValuePlaceholder": "Please enter a point value, positive numbers only",
-    "sortPlaceholder": "Please enter a number, the bigger the number, the higher it is"
+    "pointValuePlaceholder": "Please enter a point value, positive numbers only"
   },
   "ticketList": {
     "belongUser": "Belong to user",

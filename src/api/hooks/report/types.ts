@@ -629,6 +629,10 @@ export type SystemFundOperationRecordListParams = BasicParams & {
     operationStart?: string;
     operationEnd?: string;
     operName?: string;
+    opTypes?: string;
+    accountTypes?: string;
+    accounts?: string;
+    inviters?: string;
   };
 };
 export type TradingAccountFundsStatsItem = {
