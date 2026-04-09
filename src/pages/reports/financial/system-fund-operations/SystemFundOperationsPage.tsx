@@ -20,6 +20,7 @@ import { financeTypeMap } from '@/lib/constant';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { ExportButton } from '@/components/common/ExportButton';
 import { useSystemFundOperationRecordExport } from '@/api/hooks/report/report';
+import { useDictType } from '@/api/hooks/system';
 
 export const SystemFundOperationsPage = () => {
   const [params, setParams] = useState<SystemFundOperationRecordListParams['params']>({
@@ -29,6 +30,10 @@ export const SystemFundOperationsPage = () => {
     operationStart: '',
     operationEnd: '',
     operName: '',
+    opTypes: undefined,
+    accountTypes: undefined,
+    accounts: undefined,
+    inviters: undefined,
   });
   const [otherParams, setOtherParams] = useState<
     Omit<SystemFundOperationRecordListParams, 'params'>
@@ -63,6 +68,10 @@ export const SystemFundOperationsPage = () => {
   const { mutateAsync: exportOperationRecord, isPending: exportLoading } =
     useSystemFundOperationRecordExport();
 
+  const { data: financeType } = useDictType('sys_finance_type');
+  const { data: adjustInType } = useDictType('crm_adjust_in_type');
+  const { data: adjustOutType } = useDictType('crm_adjust_out_type');
+
   const [sumShow, setSumShow] = useState(false);
   const getSumData = () => {
     setSumShow(true);
@@ -83,6 +92,10 @@ export const SystemFundOperationsPage = () => {
       operationStart: '',
       operationEnd: '',
       operName: '',
+      opTypes: undefined,
+      accountTypes: undefined,
+      accounts: undefined,
+      inviters: undefined,
     });
     setOtherParams({
       type: '',
@@ -209,6 +222,9 @@ export const SystemFundOperationsPage = () => {
                 setParams={setParams}
                 setOtherParams={setOtherParams}
                 loading={systemFunOperationRecordListLoading}
+                financeType={financeType || []}
+                adjustInType={adjustInType || []}
+                adjustOutType={adjustOutType || []}
               />
             </RrhDrawer>
             <ColumnVisibilityButton

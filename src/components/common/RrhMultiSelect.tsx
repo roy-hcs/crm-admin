@@ -64,10 +64,11 @@ export const RrhMultiSelect = <T extends BaseOption>({
   const { t } = useTranslation();
   const selectedOptions = options.filter(option => value.includes(option.value.toString()));
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
-  const debounceTimerRef = useRef<number | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
   const loadingMoreRef = useRef(loadingMore);
   const hasMoreRef = useRef(hasMore);
+  const onDropdownReachEndRef = useRef(onDropdownReachEnd);
+  onDropdownReachEndRef.current = onDropdownReachEnd;
   const [triggerWidth, setTriggerWidth] = useState<number>();
   useLayoutEffect(() => {
     if (open && triggerRef.current) {
@@ -80,37 +81,23 @@ export const RrhMultiSelect = <T extends BaseOption>({
     hasMoreRef.current = hasMore;
   }, [loadingMore, hasMore]);
 
-  const scheduleReachEnd = useCallback(() => {
-    if (!onDropdownReachEnd) return;
-
-    if (debounceTimerRef.current) {
-      window.clearTimeout(debounceTimerRef.current);
-    }
-
-    debounceTimerRef.current = window.setTimeout(() => {
-      if (loadingMoreRef.current || !hasMoreRef.current) return;
-      onDropdownReachEnd();
-    }, 180);
-  }, [onDropdownReachEnd]);
-
-  useEffect(() => {
-    return () => {
-      if (debounceTimerRef.current) {
-        window.clearTimeout(debounceTimerRef.current);
-        debounceTimerRef.current = null;
-      }
-    };
+  // Command 用了radix的Portal（modal={true}），核心是radix-ui/react-presence，Portal内的元素会等到打开时才挂载，这时 useEffect 已经错过了时机，导致监听不到 sentinel 元素。这个问题不止出现在Command中，其他使用了Portal的组件也会有类似问题。
+  // 使用useCallback能生效是因为portals的元素在打开时才挂载，useCallback的返回函数会在元素挂载时被调用，从而正确地设置IntersectionObserver。
+  // useCallback也是合法的ref回调写法，React会在元素挂载时调用它，并传入元素节点；在元素卸载时调用它，并传入null。这种方式比useEffect更适合处理需要直接访问DOM节点的情况，尤其是在涉及到第三方库或复杂组件结构时。
+  const sentinelRef = useCallback((node: HTMLDivElement | null) => {
+    observerRef.current?.disconnect();
+    observerRef.current = null;
+    if (!node || !onDropdownReachEndRef.current) return;
+    observerRef.current = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting && !loadingMoreRef.current && hasMoreRef.current) {
+          onDropdownReachEndRef.current?.();
+        }
+      },
+      { threshold: 0 },
+    );
+    observerRef.current.observe(node);
   }, []);
-
-  const handleListScroll = (event: React.UIEvent<HTMLDivElement>) => {
-    if (!onDropdownReachEnd || loadingMoreRef.current || !hasMoreRef.current) return;
-
-    const el = event.currentTarget;
-    const reachBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 24;
-    if (reachBottom) {
-      scheduleReachEnd();
-    }
-  };
 
   const handleSelect = (optionValue: string) => {
     if (!onValueChange) return;
@@ -184,7 +171,7 @@ export const RrhMultiSelect = <T extends BaseOption>({
                   >
                     {renderItem ? renderItem(option) : option.label}
                     <div
-                      className="text-muted-foreground hover:text-foreground ml-1 h-auto cursor-pointer border-none p-0 hover:bg-transparent"
+                      className="text-muted-foreground hover:text-foreground ml-1 h-auto cursor-pointer border-none p-0.5 hover:bg-transparent"
                       onClick={e => handleRemove(e, option.value.toString())}
                     >
                       <X className="h-3 w-3" />
@@ -221,11 +208,7 @@ export const RrhMultiSelect = <T extends BaseOption>({
             />
           )}
           <CommandEmpty>{t('common.NoData')}</CommandEmpty>
-          <CommandList
-            ref={listRef}
-            className="scrollbar-thin max-h-60 overflow-y-auto"
-            onScroll={handleListScroll}
-          >
+          <CommandList className="scrollbar-thin max-h-60 overflow-y-auto">
             <CommandGroup>
               {options.map(option => (
                 <CommandItem
@@ -249,6 +232,7 @@ export const RrhMultiSelect = <T extends BaseOption>({
             {loadingMore && (
               <div className="text-muted-foreground px-2 py-1 text-xs">{t('common.loading')}</div>
             )}
+            <div ref={sentinelRef} className="h-px" />
           </CommandList>
         </Command>
       </PopoverContent>

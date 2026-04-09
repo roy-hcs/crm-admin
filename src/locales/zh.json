@@ -1263,7 +1263,8 @@
     "usedAdvance": "已用预付款",
     "initialAmount": "初始存款",
     "countryOrRegion": "国家/地区",
-    "productSource": "客户来源"
+    "productSource": "客户来源",
+    "inviters": "账户上级"
   },
   "settings": {
     "title": "审核设置",

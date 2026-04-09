@@ -131,7 +131,7 @@ function flattenParams(
   Object.entries(obj).forEach(([key, value]) => {
     // Use dot notation for nested properties, no prefix for top-level
     const newKey = parentKey ? (isArray ? `${parentKey}.${key}` : `${parentKey}[${key}]`) : key;
-
+    if (value === undefined) return;
     if (Array.isArray(value)) {
       // Handle arrays
       value.forEach((item, index) => {

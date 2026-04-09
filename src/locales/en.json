@@ -229,7 +229,6 @@
     "pleaseCheckFormErrors": "Please check the form for errors",
     "previousStep": "Previous step",
     "s": "Second",
-    "save": "save",
     "selectTime": "Please select a time",
     "sortPlaceholder": "Please enter a number, the bigger the number, the higher it is",
     "supportMultipleSelection": "Multiple selections possible",
@@ -241,7 +240,8 @@
       "5": "Friday",
       "6": "Saturday",
       "7": "Sunday"
-    }
+    },
+    "save": "save"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -734,7 +734,8 @@
     "initialAmount": "Initial deposit",
     "productSource": "Customer source",
     "allAccountGroup": "All account groups",
-    "description": "describe"
+    "description": "describe",
+    "inviters": "Account superior"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
