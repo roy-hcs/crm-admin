@@ -1,28 +1,27 @@
 import { FieldPath, FieldValues } from 'react-hook-form';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { RrhDateInput } from '../common/RrhDateInput';
 import { useCrmFormContext } from '@/contexts/form';
+import { RrhTimeOfDayInput } from '@/components/common/RrhTimeOfDayInput';
 
-interface FormDateInputProps<T extends FieldValues> {
+interface FormTimeOfDayInputProps<T extends FieldValues> {
   name: FieldPath<T>;
   label?: string;
-  placeholder?: string;
   disabled?: boolean;
   className?: string;
-  showTime?: boolean;
   labeTipsDom?: React.ReactNode;
+  precision?: 'minute' | 'second';
 }
 
-export function FormDateInput<T extends FieldValues>({
+export function FormTimeOfDayInput<T extends FieldValues>({
   name,
   label,
-  placeholder = '',
   disabled = false,
   className,
-  showTime,
   labeTipsDom,
-}: FormDateInputProps<T>) {
+  precision,
+}: FormTimeOfDayInputProps<T>) {
   const { form } = useCrmFormContext<T>();
+
   return (
     <FormField
       control={form.control}
@@ -34,13 +33,12 @@ export function FormDateInput<T extends FieldValues>({
             {labeTipsDom && <div>{labeTipsDom}</div>}
           </div>
           <FormControl>
-            <RrhDateInput
+            <RrhTimeOfDayInput
               name={name}
-              disabled={disabled}
-              placeholder={placeholder}
-              date={field.value}
+              value={field.value?.toString() || ''}
               onChange={field.onChange}
-              showTime={showTime}
+              disabled={disabled}
+              precision={precision}
             />
           </FormControl>
           <FormMessage />
@@ -49,5 +47,3 @@ export function FormDateInput<T extends FieldValues>({
     />
   );
 }
-
-export default FormDateInput;
