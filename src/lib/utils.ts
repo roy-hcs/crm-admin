@@ -187,3 +187,20 @@ export const downloadFileWithBlob = async (
     throw error;
   }
 };
+
+export type TimePrecision = 'minute' | 'second';
+
+export const normalizeTimeByPrecision = (value: string | undefined, precision: TimePrecision) => {
+  if (!value) return '';
+  const parts = value.trim().split(':');
+  const [h = '', m = '', s = ''] = parts;
+  const isNum = (v: string) => /^\d{1,2}$/.test(v);
+  if (!isNum(h) || !isNum(m) || (precision === 'second' && s !== '' && !isNum(s))) {
+    return '';
+  }
+  const hh = String(Number(h)).padStart(2, '0');
+  const mm = String(Number(m)).padStart(2, '0');
+  const ss = s === '' ? '00' : String(Number(s)).padStart(2, '0');
+  if (Number(hh) > 23 || Number(mm) > 59 || Number(ss) > 59) return '';
+  return precision === 'minute' ? `${hh}:${mm}` : `${hh}:${mm}:${ss}`;
+};

@@ -223,3 +223,13 @@ export const receiveTypeOptions = [
     label: 'messageManagement.receiveTypeOption.4',
   },
 ];
+
+export const weekOptions = [
+  { label: 'common.weeks.1', value: '1' },
+  { label: 'common.weeks.2', value: '2' },
+  { label: 'common.weeks.3', value: '3' },
+  { label: 'common.weeks.4', value: '4' },
+  { label: 'common.weeks.5', value: '5' },
+  { label: 'common.weeks.6', value: '6' },
+  { label: 'common.weeks.7', value: '7' },
+];

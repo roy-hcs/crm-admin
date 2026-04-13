@@ -1,24 +1,31 @@
 // Rebate module API hooks
-import { apiFormPost, apiFormPostCustom, apiGet } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AddRebateBasePointParams,
   AddRebateBaseTypeParams,
   AddRebateFeeSettingParams,
   AddTradingRebateRuleParams,
+  EditRebateBaseAddOrUpdateParams,
   EditRebateBasePointParams,
   EditRebateBaseTypeParams,
+  EditRebateDepositAddOrUpdateParams,
+  EditRebateFeeAddOrUpdateParams,
   GetMtAndRebateTypeRes,
   MtRebateBaseTypeRes,
+  RebateBaseAddOrUpdate,
   RebateBasePointParams,
   RebateBasePointRes,
   RebateBaseTypeParams,
   RebateBaseTypeRes,
+  RebateBasicSettingRes,
+  RebateDepositAddOrUpdate,
   RebateDepositSettingsListParams,
   RebateDepositSettingsListRes,
   RebateFeeSettingDetail,
   RebateFeeSettingsHistoryListParams,
   RebateFeeSettingsHistoryListRes,
+  RebateFeeAddOrUpdate,
   RebateFeeSettingsListParams,
   RebateFeeSettingsListRes,
   RebateLevelParams,
@@ -387,5 +394,84 @@ export function useRebateDepositSettingsList(params: RebateDepositSettingsListPa
         '/system/crmRebateTraderInMoney/list',
         params,
       ),
+  });
+}
+
+/**
+ * 获取返佣基础设置
+ */
+export function useRebateBase(tab: '0' | '1' | '2' | '3') {
+  return useQuery({
+    queryKey: ['getRebateBase', tab],
+    queryFn: () => apiGetCustom<RebateBasicSettingRes>(`/system/crmRebateBase/setInfo/${tab}`),
+  });
+}
+/**
+ * 修改返佣基础设置
+ */
+export function useEditRebateBase() {
+  return useMutation({
+    mutationFn: (params: { setting: string; manyRebate: string; num: string }) =>
+      apiFormPost('/system/crmRebateBase/setBaseSetting', params),
+  });
+}
+
+/**
+ * 获取交易返佣设置
+ */
+export function useGetRebateBaseAddOrUpdate(tab: '0' | '1' | '2' | '3') {
+  return useQuery({
+    queryKey: ['getRebateBaseAddOrUpdate', tab],
+    queryFn: () => apiGetCustom<RebateBaseAddOrUpdate>(`/system/crmRebateBase/setInfo/${tab}`),
+  });
+}
+
+/**
+ * 修改交易返佣设置
+ */
+export function useEditRebateBaseAddOrUpdate() {
+  return useMutation({
+    mutationFn: (params: EditRebateBaseAddOrUpdateParams) =>
+      apiFormPost('/system/crmRebateBase/addOrUpdate', params),
+  });
+}
+
+/**
+ * 获取手续费返佣设置
+ */
+export function useGetRebateFeeAddOrUpdate(tab: '0' | '1' | '2' | '3') {
+  return useQuery({
+    queryKey: ['getRebateFeeAddOrUpdate', tab],
+    queryFn: () => apiGetCustom<RebateFeeAddOrUpdate>(`/system/crmRebateBase/setInfo/${tab}`),
+  });
+}
+
+/**
+ * 修改手续费返佣设置
+ */
+export function useEditRebateFeeAddOrUpdate() {
+  return useMutation({
+    mutationFn: (params: EditRebateFeeAddOrUpdateParams) =>
+      apiFormPost('/system/crmRebateBase/addOrUpdate', params),
+  });
+}
+
+/**
+ * 获取入金返佣设置
+ */
+export function useGetRebateDepositAddOrUpdate(tab: '0' | '1' | '2' | '3') {
+  return useQuery({
+    queryKey: ['getRebateDepositAddOrUpdate', tab],
+    queryFn: () => apiGetCustom<RebateDepositAddOrUpdate>(`/system/crmRebateBase/setInfo/${tab}`),
+  });
+}
+
+/**
+ * 修改入金返佣设置
+ */
+export function useEditRebateDepositAddOrUpdate() {
+  return useMutation({
+    mutationFn: (params: EditRebateDepositAddOrUpdateParams) =>
+      apiFormPost('/system/crmRebateBase/addOrUpdate', params),
   });
 }

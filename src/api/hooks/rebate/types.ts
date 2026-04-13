@@ -1,5 +1,6 @@
 // Rebate module types
 import { BasicParams, BasicRes, BaseEntity } from '../../types';
+import { ServerItem } from '../system';
 
 // Rebate Base Point related types
 export type RebateBasePointParams = BasicParams & {
@@ -374,4 +375,59 @@ export type RebateFeeSettingsHistoryListRes = {
   priceSum: number;
   serverType: string | null;
   totalList: string[] | null;
+};
+export type RebateBasicSettingRes = {
+  code: number;
+  data: {
+    manyRebate: string;
+    num: string;
+    setting: string;
+  };
+};
+
+export type RebateBaseAddOrUpdate = {
+  code: number;
+  data: {
+    rebateBase: EditRebateBaseAddOrUpdateParams;
+    mtServiceList: ServerItem[];
+  };
+};
+
+type CommonRebateBaseParams = {
+  id: string;
+  hasOpen: string;
+  getMyselfRebate: string;
+  closeTimeInterval: string;
+  lastOrderRebateTime: string;
+  personRabateCheck: string;
+  settleStyle: string;
+  settleTime: string;
+  settleWeek: string;
+  settleWeekTime: string;
+  rebateType: string;
+};
+
+export type EditRebateBaseAddOrUpdateParams = CommonRebateBaseParams & {
+  timeIntervalSetting: string;
+};
+
+export type RebateFeeAddOrUpdate = {
+  code: number;
+  data: {
+    rebateBase: EditRebateFeeAddOrUpdateParams;
+  };
+};
+
+export type EditRebateFeeAddOrUpdateParams = CommonRebateBaseParams;
+
+export type RebateDepositAddOrUpdate = {
+  code: number;
+  data: {
+    rebateBase: EditRebateDepositAddOrUpdateParams;
+  };
+};
+
+export type EditRebateDepositAddOrUpdateParams = CommonRebateBaseParams & {
+  lowLimit: string;
+  remarkLimit: string;
 };
