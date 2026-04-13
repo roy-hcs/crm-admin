@@ -10,15 +10,16 @@ interface FormTextareaProps<T extends FieldValues> {
   placeholder: string;
   className?: string;
   verticalLabel?: boolean;
+  labeTipsDom?: React.ReactNode;
 }
 
 export function FormTextarea<T extends FieldValues>({
   name,
   label,
-  verticalLabel = false,
   placeholder,
   className,
   onBlur,
+  labeTipsDom,
   ...props
 }: FormTextareaProps<T> & React.ComponentPropsWithoutRef<'textarea'>) {
   const { form } = useCrmFormContext<T>();
@@ -30,16 +31,11 @@ export function FormTextarea<T extends FieldValues>({
         const current = String(field.value ?? '').length;
         const max = props.maxLength;
         return (
-          <FormItem
-            className={cn(
-              'text-foreground text-sm',
-              verticalLabel ? '' : 'flex items-center',
-              className,
-            )}
-          >
-            <FormLabel className={cn(verticalLabel ? '' : 'basis-3/12', 'leading-5')}>
-              {label}
-            </FormLabel>
+          <FormItem className={cn(className)}>
+            <div className="flex gap-2">
+              {label && <FormLabel>{label}</FormLabel>}
+              {labeTipsDom && <div>{labeTipsDom}</div>}
+            </div>
             <FormControl className="shrink-0 basis-9/12">
               <div className="relative">
                 <Textarea

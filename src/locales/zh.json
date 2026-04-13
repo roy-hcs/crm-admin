@@ -249,7 +249,18 @@
     "addFieldSuccess": "添加 {{field}} 成功",
     "modifyFieldSuccess": "修改 {{field}} 成功",
     "addFieldFailed": "添加 {{field}} 失败",
-    "modifyFieldFailed": "修改 {{field}} 失败"
+    "modifyFieldFailed": "修改 {{field}} 失败",
+    "s": "秒",
+    "weeks": {
+      "1": "星期一",
+      "2": "星期二",
+      "3": "星期三",
+      "4": "星期四",
+      "5": "星期五",
+      "6": "星期六",
+      "7": "星期日"
+    },
+    "selectTime": "请选择时间"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -1513,5 +1524,62 @@
   },
   "CopyTradingSettings": {
     "title": "协议设置"
+  },
+  "RebateBasicSettingsPage": {
+    "title": "基础设置",
+    "basicSettings": "基础设置",
+    "tradingRebate": "交易返佣设置",
+    "feeRebate": "手续费返佣设置",
+    "depositRebate": "入金返佣设置",
+    "setting": {
+      "1": "模式一",
+      "2": "模式二"
+    },
+    "manyRebate": {
+      "1": "否 只对命中的第一条规则返佣，其余不返佣，一笔订单只返佣一次",
+      "2": "是 命中一条规则返佣一次，一笔订单可能会返佣多次"
+    },
+    "num": {
+      "1": "允许用户设置返佣账户",
+      "2": "只允许管理员设置返佣账户"
+    },
+    "allowMultipleRebate": "是否允许命中多条返佣规则多次返佣",
+    "rebateAccountSettings": "返佣账户设置",
+    "settingDesc": "模式一和模式二仅可选其中一种模式。\n模式一：人人都是代理模式。非代理亦可以获得返佣。\n模式二：该模式只可向代理返佣。结算层级以上各个层级采用固定返佣；结算层级及以下层级的返佣固定总和，首层返佣获得直推奖励，剩余层级返佣级差。",
+    "hasOpen": "是否开启交易返佣",
+    "getMyselfRebate": "用户交易获得自己的交易返佣",
+    "getMyselfRebateDesc": "仅对模式一生效",
+    "timeIntervalSetting": "开仓平仓时间间隔",
+    "globalSetting": "按全局设置",
+    "groupSetting": "按组别设置",
+    "timeIntervalSettingDesc": "开仓平仓时间间隔必须大于此参数才可获得返佣",
+    "globalSettingPlaceholder": "输入0或为空表示没有限制",
+    "lastOrderRebateTime": "订单开始返佣时间",
+    "lastOrderRebateTimeDesc": "订单的平仓时间晚于该时间才可获得返佣；不设置表示没有限制",
+    "personRabateCheck": "是否开启自动反佣审核",
+    "settleStyle": "请选择结算方式",
+    "settleTimeRadio": {
+      "0": "实时 订单平仓后实时返佣到返佣账户",
+      "1": "日结 每日的该时间审核截至上个交易日的返佣，并结算到返佣账户;此时间为CRM的时区时间",
+      "2": "周结 每周的该时间审核截至上周的返佣，并结算到返佣账户;此时间为CRM的时区时间"
+    },
+    "weekSummary": "周结",
+    "daySummary": "日结",
+    "settingChangeTips": "切换至【模式一】将清除【模式二】现有的返佣层级和佣金设置，请谨慎操作。确定修改返佣模式？修改后将一并应用至所有返佣页面",
+    "confirmOperation": "确定进行操作?",
+    "SetLeastOneRecord": "至少设置一条记录",
+    "enableFeeRebate": "是否开启手续费返佣",
+    "getMyselfFeeRebate": "用户交易获得自己的手续费返佣",
+    "handFeeLastOrderRebateTimeDesc": "订单的开仓平仓时间晚于该时间才可获得返佣；不设置表示没有限制",
+    "personRabateCheckDesc": "选择否将由人工手动审核",
+    "enableDepositRebate": "是否开启入金返佣",
+    "getMyselfDepositRebate": "用户入金获得自己的入金返佣",
+    "lastOrderDepositRebateTimeDesc": "订单的时间晚于该时间才可获得返佣；不设置表示没有限制",
+    "remarkLimit": "订单注释限制",
+    "remarkLimitPlaceholder": "每行一个",
+    "remarkLimitDesc": "入金订单的注释含有该字符则不返佣；不设置表示没有限制",
+    "lowLimit": "入金返佣金额下限",
+    "lowLimitDesc": "入金金额必须大于等于此参数才可获得返佣；不设置表示没有限制",
+    "lowLimitPlaceholder": "请输入金额下限，限不超过2位小数的正数"
   }
 }
