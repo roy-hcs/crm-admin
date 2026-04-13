@@ -316,7 +316,7 @@ export function useRebateDepositSettingsList(params: RebateDepositSettingsListPa
 /**
  * 获取返佣基础设置
  */
-export function useRebateBase(tab: string) {
+export function useRebateBase(tab: '0' | '1' | '2' | '3') {
   return useQuery({
     queryKey: ['getRebateBase', tab],
     queryFn: () => apiGetCustom<RebateBasicSettingRes>(`/system/crmRebateBase/setInfo/${tab}`),
@@ -335,7 +335,7 @@ export function useEditRebateBase() {
 /**
  * 获取交易返佣设置
  */
-export function useGetRebateBaseAddOrUpdate(tab: string) {
+export function useGetRebateBaseAddOrUpdate(tab: '0' | '1' | '2' | '3') {
   return useQuery({
     queryKey: ['getRebateBaseAddOrUpdate', tab],
     queryFn: () => apiGetCustom<RebateBaseAddOrUpdate>(`/system/crmRebateBase/setInfo/${tab}`),
@@ -355,7 +355,7 @@ export function useEditRebateBaseAddOrUpdate() {
 /**
  * 获取手续费返佣设置
  */
-export function useGetRebateFeeAddOrUpdate(tab: string) {
+export function useGetRebateFeeAddOrUpdate(tab: '0' | '1' | '2' | '3') {
   return useQuery({
     queryKey: ['getRebateFeeAddOrUpdate', tab],
     queryFn: () => apiGetCustom<RebateFeeAddOrUpdate>(`/system/crmRebateBase/setInfo/${tab}`),
@@ -375,7 +375,7 @@ export function useEditRebateFeeAddOrUpdate() {
 /**
  * 获取入金返佣设置
  */
-export function useGetRebateDepositAddOrUpdate(tab: string) {
+export function useGetRebateDepositAddOrUpdate(tab: '0' | '1' | '2' | '3') {
   return useQuery({
     queryKey: ['getRebateDepositAddOrUpdate', tab],
     queryFn: () => apiGetCustom<RebateDepositAddOrUpdate>(`/system/crmRebateBase/setInfo/${tab}`),

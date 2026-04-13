@@ -314,25 +314,12 @@ export type RebateBasicSettingRes = {
 export type RebateBaseAddOrUpdate = {
   code: number;
   data: {
-    rebateBase: {
-      id: string;
-      hasOpen: string;
-      getMyselfRebate: string;
-      closeTimeInterval: string;
-      lastOrderRebateTime: string;
-      personRabateCheck: string;
-      settleStyle: string;
-      settleTime: string;
-      settleWeek: string;
-      settleWeekTime: string;
-      rebateType: string;
-      timeIntervalSetting: string;
-    };
+    rebateBase: EditRebateBaseAddOrUpdateParams;
     mtServiceList: ServerItem[];
   };
 };
 
-export type EditRebateBaseAddOrUpdateParams = {
+type CommonRebateBaseParams = {
   id: string;
   hasOpen: string;
   getMyselfRebate: string;
@@ -344,75 +331,29 @@ export type EditRebateBaseAddOrUpdateParams = {
   settleWeek: string;
   settleWeekTime: string;
   rebateType: string;
+};
+
+export type EditRebateBaseAddOrUpdateParams = CommonRebateBaseParams & {
   timeIntervalSetting: string;
 };
 
 export type RebateFeeAddOrUpdate = {
   code: number;
   data: {
-    rebateBase: {
-      id: string;
-      hasOpen: string;
-      getMyselfRebate: string;
-      closeTimeInterval: string;
-      lastOrderRebateTime: string;
-      personRabateCheck: string;
-      settleStyle: string;
-      settleTime: string;
-      settleWeek: string;
-      settleWeekTime: string;
-      rebateType: string;
-    };
+    rebateBase: EditRebateFeeAddOrUpdateParams;
   };
 };
 
-export type EditRebateFeeAddOrUpdateParams = {
-  id: string;
-  hasOpen: string;
-  getMyselfRebate: string;
-  closeTimeInterval: string;
-  lastOrderRebateTime: string;
-  personRabateCheck: string;
-  settleStyle: string;
-  settleTime: string;
-  settleWeek: string;
-  settleWeekTime: string;
-  rebateType: string;
-};
+export type EditRebateFeeAddOrUpdateParams = CommonRebateBaseParams;
 
 export type RebateDepositAddOrUpdate = {
   code: number;
   data: {
-    rebateBase: {
-      id: string;
-      hasOpen: string;
-      getMyselfRebate: string;
-      closeTimeInterval: string;
-      lastOrderRebateTime: string;
-      personRabateCheck: string;
-      settleStyle: string;
-      settleTime: string;
-      settleWeek: string;
-      settleWeekTime: string;
-      rebateType: string;
-      lowLimit: string;
-      remarkLimit: string;
-    };
+    rebateBase: EditRebateDepositAddOrUpdateParams;
   };
 };
 
-export type EditRebateDepositAddOrUpdateParams = {
-  id: string;
-  hasOpen: string;
-  getMyselfRebate: string;
-  closeTimeInterval: string;
-  lastOrderRebateTime: string;
-  personRabateCheck: string;
-  settleStyle: string;
-  settleTime: string;
-  settleWeek: string;
-  settleWeekTime: string;
-  rebateType: string;
+export type EditRebateDepositAddOrUpdateParams = CommonRebateBaseParams & {
   lowLimit: string;
   remarkLimit: string;
 };

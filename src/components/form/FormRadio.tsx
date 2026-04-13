@@ -32,7 +32,7 @@ export function FormRadio<T extends FieldValues, O extends BaseOption = BaseOpti
       name={name}
       control={form.control}
       render={({ field }) => (
-        <FormItem className={cn(className)}>
+        <FormItem className={className}>
           <div className="flex gap-2">
             {label && <FormLabel>{label}</FormLabel>}
             {labeTipsDom && <div>{labeTipsDom}</div>}

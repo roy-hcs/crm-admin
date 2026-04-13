@@ -225,11 +225,11 @@ export const receiveTypeOptions = [
 ];
 
 export const weekOptions = [
-  { label: 'common.week.1', value: '1' },
-  { label: 'common.week.2', value: '2' },
-  { label: 'common.week.3', value: '3' },
-  { label: 'common.week.4', value: '4' },
-  { label: 'common.week.5', value: '5' },
-  { label: 'common.week.6', value: '6' },
-  { label: 'common.week.7', value: '7' },
+  { label: 'common.weeks.1', value: '1' },
+  { label: 'common.weeks.2', value: '2' },
+  { label: 'common.weeks.3', value: '3' },
+  { label: 'common.weeks.4', value: '4' },
+  { label: 'common.weeks.5', value: '5' },
+  { label: 'common.weeks.6', value: '6' },
+  { label: 'common.weeks.7', value: '7' },
 ];
