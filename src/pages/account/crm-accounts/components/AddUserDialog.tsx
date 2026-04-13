@@ -1,17 +1,10 @@
 import { FormInput } from '@/components/form/FormInput';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
 import { FormProvider } from '@/contexts/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus, TrendingUp } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { FormSelect } from '@/components/form/FormSelect';
@@ -23,9 +16,9 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { useDictType } from '@/api/hooks/system';
 import { useCheckEmailUnique, useCheckPhoneUnique } from '@/api/hooks/common';
-import { CrmUserParams, CrmUserItem, useAddCrmUser, useMutationCrmUser } from '@/api/hooks/account';
+import { useAddCrmUser } from '@/api/hooks/account';
 import { JSEncrypt as JSE } from 'jsencrypt';
-import { RrhSearchSelect } from '@/components/common/RrhSearchSelect';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 
 const addUserSchema = (t: TFunction<'translation', undefined>) => {
   return {
@@ -91,8 +84,6 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
   const { mutateAsync: checkEmailUnique, data: checkEmailRes } = useCheckEmailUnique();
   const { mutateAsync: checkPhoneUnique, data: checkPhoneRes } = useCheckPhoneUnique();
   const { mutateAsync: addUserMutation } = useAddCrmUser();
-
-  const { mutateAsync: getUserList } = useMutationCrmUser();
   useEffect(() => {
     if (checkPhoneRes === 1) {
       form.setError('mobile', {
@@ -189,60 +180,6 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
     setOpen(false);
   };
 
-  const fetchFunction = useCallback((params: CrmUserParams) => getUserList(params), [getUserList]);
-
-  const mapOption = useCallback((item: CrmUserItem) => {
-    return {
-      value: `${item.id}`,
-      label: `${item.lastName ?? ''} ${item.name ?? ''} (${item.showId})`,
-    };
-  }, []);
-
-  const buildInviterSearchParams = useCallback(
-    (baseParams: CrmUserParams, keyword: string): CrmUserParams => ({
-      ...baseParams,
-      pageNum: 1,
-      params: {
-        ...baseParams.params,
-        fiveCons: keyword,
-      },
-    }),
-    [],
-  );
-
-  const getInviterNextParams = useCallback(
-    (current: CrmUserParams): CrmUserParams => ({
-      ...current,
-      pageNum: Number(current.pageNum ?? 1) + 1,
-    }),
-    [],
-  );
-
-  const params = useMemo(
-    () => ({
-      pageSize: 15,
-      pageNum: 1,
-      orderByColumn: '',
-      params: {
-        threeCons: '',
-        fiveCons: '',
-        regEndTime: '',
-        regStartTime: '',
-        fuzzyMobile: '',
-        fuzzyEmail: '',
-        inviter: '',
-        accounts: '',
-      },
-      isAsc: 'asc',
-      status: '',
-      role: '',
-      certiricateNo: '',
-      accountType: '',
-      tags: '',
-    }),
-    [],
-  );
-
   return (
     <RrhDialog
       modal={false}
@@ -260,6 +197,7 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
       footerShow={false}
       variant="large"
       formLoading={isSubmitting}
+      className="pb-22"
     >
       <FormProvider form={form}>
         <Form {...form}>
@@ -306,34 +244,9 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
                 await checkEmailUnique({ email: e.target.value });
               }}
             />
-            <FormField
+            <SelectUpperDropdown
+              rawLabel={`${t('CRMAccountPage.Superior')} (${t('common.optional')})`}
               name="inviter"
-              render={({ field }) => {
-                return (
-                  <div>
-                    <FormItem>
-                      <div className="grid gap-2">
-                        <FormLabel className="h-5 leading-5">{`${t('CRMAccountPage.Superior')} (${t('common.optional')})`}</FormLabel>
-                        <div>
-                          <FormControl>
-                            <RrhSearchSelect<CrmUserParams, CrmUserItem>
-                              fetchFunction={fetchFunction}
-                              mapOption={mapOption}
-                              params={params}
-                              buildSearchParams={buildInviterSearchParams}
-                              getNextParams={getInviterNextParams}
-                              onSelect={(option: { value: string; label: string }) => {
-                                field.onChange(option.value);
-                              }}
-                            />
-                          </FormControl>
-                        </div>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  </div>
-                );
-              }}
             />
             <div>
               <FormInput
@@ -390,7 +303,7 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
               }}
             />
 
-            <div className="border-muted col-span-full -mx-6 flex justify-between border-t px-6 py-6 sm:pb-0">
+            <div className="bg-background border-muted absolute inset-x-0 bottom-0 col-span-full flex justify-between rounded-b-lg border-t p-4 sm:p-6">
               <FormField
                 name="status"
                 render={({ field }) => (

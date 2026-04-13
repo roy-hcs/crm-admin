@@ -31,7 +31,7 @@ import { infoTypeOptions, receiveTypeOptions } from '@/lib/const';
 import { useUserRoleList } from '@/api/hooks/system';
 import { FormSearchMultiSelect } from '@/components/form/FormSearchMultiSelect';
 import { useCrmUsers, useCrmUserTags } from '@/api/hooks/system/system';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 
 type FormValues = {
   type: string;
@@ -268,6 +268,10 @@ export const AddEditNewMessageDialog = ({
           language: lang,
         };
       });
+      const selectedAccounts = JSON.parse(data.accounts || '{"id": "", "label": ""}') as {
+        id: string;
+        label: string;
+      };
       const param = {
         type: data.type,
         isNow: data.isNow,
@@ -286,7 +290,7 @@ export const AddEditNewMessageDialog = ({
         roles: receiveType === '2' ? data.roles : [],
         userIds: receiveType === '0' ? data.userIds : [],
         tags: receiveType === '4' ? data.tags : [],
-        accounts: receiveType === '3' ? data.accounts : '',
+        accounts: receiveType === '3' ? selectedAccounts.id : '',
         sendEmails: data.type === '2' ? data.sendEmails : [],
       };
       if (source === 'Customer') {
@@ -604,14 +608,7 @@ export const AddEditNewMessageDialog = ({
                     fetchOptions={fetchCrmUserOptions}
                   />
                 )}
-                {receiveType === '3' && (
-                  <FormField
-                    name="accounts"
-                    render={({ field }) => {
-                      return <RrhSelectAccountsPopup verticalLabel field={field} />;
-                    }}
-                  />
-                )}
+                {receiveType === '3' && <SelectUpperDropdown />}
 
                 {receiveType === '4' && (
                   <FormSearchMultiSelect

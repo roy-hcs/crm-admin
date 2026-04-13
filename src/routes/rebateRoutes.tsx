@@ -1,5 +1,6 @@
 import { RebateBasicSettingsPage } from '@/pages/rebate/basic-settings/RebateBasicSettingsPage';
 import { DepositRebateSettingsPage } from '@/pages/rebate/deposit-settings/DepositRebateSettingsPage';
+import { FeeRebateSettingsHistoryPage } from '@/pages/rebate/fee-settings-history/FeeRebateSettingsHistoryPage';
 import { FeeRebateSettingsPage } from '@/pages/rebate/fee-settings/FeeRebateSettingsPage';
 import { RebateLevelSettingsPage } from '@/pages/rebate/level-settings/RebateLevelSettingsPage';
 import { PipValuePage } from '@/pages/rebate/pip-value/PipValuePage';
@@ -40,6 +41,10 @@ export const rebateRoutes: RouteObject[] = [
   {
     path: '/rebate/fee-settings',
     element: <FeeRebateSettingsPage />,
+  },
+  {
+    path: '/rebate/fee-settings-history',
+    element: <FeeRebateSettingsHistoryPage />,
   },
   {
     path: '/rebate/deposit-settings',

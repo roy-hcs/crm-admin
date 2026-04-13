@@ -250,6 +250,7 @@ export type RebateTraderDealDetail = {
   languageList: LanguageInfo[];
   infoList: InfoListItem[];
 };
+export type RebateFeeSettingDetail = RebateTraderDealDetail;
 
 export type TraderServer = {
   id: string;
@@ -270,6 +271,18 @@ export type RebateFeeSettingsItem = RebateTraderDealItem;
 export type RebateDepositSettingsListParams = RebateTraderDealListParams;
 export type RebateDepositSettingsListRes = RebateTraderDealListRes;
 export type RebateDepositSettingsItem = RebateTraderDealItem;
+export type TraderServerItem = {
+  serverType: string;
+  serverId: string;
+  serverName: string;
+  mtGroups?: string[];
+  rebateGroupTypes?: string[];
+};
+export type TraderLanguageItem = {
+  ruleName?: string;
+  language: string;
+  isDefault: string;
+};
 export type AddTradingRebateRuleParams = {
   rebateType: string;
   model: string;
@@ -277,24 +290,14 @@ export type AddTradingRebateRuleParams = {
   accountGroups?: string[];
   hasUsed: string;
   settleType: string;
-  settleValue: string;
+  settleValue: number;
   settleUnit: string;
   highestRebateLevel: string;
   serialNumber: string;
   commissionSettlementTiming: string;
   remark?: string;
-  traderServers: Array<{
-    serverType: string;
-    serverId: string;
-    serverName: string;
-    mtGroups?: string[];
-    rebateGroupTypes?: string[];
-  }>;
-  traderLanguages: Array<{
-    ruleName?: string;
-    language: string;
-    isDefault: string;
-  }>;
+  traderServers: TraderServerItem[];
+  traderLanguages: TraderLanguageItem[];
 };
 export type GetMtAndRebateTypeRes = {
   code: number;
@@ -302,6 +305,77 @@ export type GetMtAndRebateTypeRes = {
   types: RebateBaseTypeItem[];
 };
 
+export type AddRebateFeeSettingParams = Omit<
+  AddTradingRebateRuleParams,
+  'settleType' | 'settleValue'
+>;
+
+export type RebateFeeSettingsHistoryListParams = BasicParams & {
+  timestamp: number;
+  serverId: string;
+  serverGroupList: string;
+  serverGroup: string;
+  login: string;
+  ticket: string;
+  symbol: string;
+  type: string | number;
+  accountGroupList: string;
+  dealAccountGroupIds: string;
+  accounts: string;
+  entry: string | number;
+  params: {
+    historyFuzzyName?: string;
+    accounts?: string;
+    historyDealBJStartTime?: string;
+    historyDealBJEndTime?: string;
+    historyDealBJStartTimeRingOut?: string;
+    historyDealBJEndTimeRingOut?: string;
+  };
+};
+
+export type RebateFeeSettingsHistoryItem = {
+  server: string;
+  symbol: string;
+  deal: number;
+  ratemargin: number;
+  login: string;
+  type: number;
+  swaps: number;
+  uuid: string;
+  positionID: number;
+  balance: number;
+  price: number;
+  sl: number;
+  commission: number;
+  currency: string;
+  profit: number;
+  ticket: number;
+  server_id: string;
+  BJTime: string;
+  volume: number;
+  entry: number;
+  name: string;
+  digits: number;
+  comment: string;
+  time: string;
+  tp: number;
+  rateprofit: number;
+  server_type: string;
+};
+
+export type RebateFeeSettingsHistoryListRes = {
+  total: string;
+  rows: RebateFeeSettingsHistoryItem[];
+  code: number;
+  msg: string | null;
+  totalVolume: number;
+  totalCommission: number;
+  totalProfit: number;
+  totalSwaps: number;
+  priceSum: number;
+  serverType: string | null;
+  totalList: string[] | null;
+};
 export type RebateBasicSettingRes = {
   code: number;
   data: {

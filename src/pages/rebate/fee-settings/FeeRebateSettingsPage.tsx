@@ -1,22 +1,34 @@
 import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { RebateFeeSettingsListParams, useRebateFeeSettingsList } from '@/api/hooks/rebate';
+import {
+  RebateFeeSettingsListParams,
+  useChangeRebateFeeSettingStatus,
+  useDeleteRebateFeeSetting,
+  useRebateFeeSettingsList,
+  useRebateLevelList,
+} from '@/api/hooks/rebate';
 import { FeeRebateSettingsForm } from './FeeRebateSettingsForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-import { useDictType } from '@/api/hooks/system/system';
+import { useDictType, useGetSysConfig, useServerList } from '@/api/hooks/system/system';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/hooks/review/types';
 import { RebateFeeSettingsItem } from '@/api/hooks/rebate';
-import { Switch } from '@/components/ui/switch';
 import { ToolTip } from '@/components/common/ToolTip';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { AddFeeRebateSettingButton } from './components/AddFeeRebateSettingButton';
+import { REBATE_MODEL_SETTING } from '@/lib/constant';
+import { useGetDealAccountGroupList } from '@/api/hooks/account';
+import { EditFeeRebateSettingDialog } from './components/EditFeeRebateSettingDialog';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
+import { RrhStatusAlert } from '@/components/common/RrhStatusAlert';
+import { useTabActions } from '@/hooks/useTabActions';
 
 function getServerTypeName(serverType: string) {
   switch (serverType) {
@@ -40,6 +52,9 @@ export const FeeRebateSettingsPage = () => {
   const [keyword, setKeyword] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [currentItem, setCurrentItem] = useState<RebateFeeSettingsItem | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [otherParams, setOtherParams] = useState<
     Omit<RebateFeeSettingsListParams, keyof BasicParams>
   >({
@@ -53,20 +68,39 @@ export const FeeRebateSettingsPage = () => {
 
   const { data: serverTypes } = useDictType('sys_mt_service_type');
 
-  const { data: feeRebateSettings, isLoading: feeRebateSettingsLoading } = useRebateFeeSettingsList(
+  const { data: rebateModelSetting } = useGetSysConfig(REBATE_MODEL_SETTING);
+  const { data: serverList } = useServerList();
+  const { data: languageList } = useDictType('sys_language');
+  const { data: levelList } = useRebateLevelList(
+    { model: rebateModelSetting as number },
+    { enabled: !!rebateModelSetting },
+  );
+  const { data: dealAccountGroupListRes } = useGetDealAccountGroupList();
+  const { mutateAsync: changeStatusMutation } = useChangeRebateFeeSettingStatus();
+
+  const {
+    data: feeRebateSettings,
+    isLoading: feeRebateSettingsLoading,
+    refetch,
+  } = useRebateFeeSettingsList(
     {
       pageSize,
       pageNum: pageNum + 1,
       orderByColumn: '',
       isAsc: 'asc',
       ...otherParams,
+      model: rebateModelSetting?.toString() || '',
     },
+    { enabled: !!rebateModelSetting },
   );
+
+  const { mutateAsync: deleteRebateFeeSetting } = useDeleteRebateFeeSetting();
+  const { openTab } = useTabActions();
 
   const reset = () => {
     setOtherParams({
-      rebateType: '',
-      model: '',
+      rebateType: '2',
+      model: rebateModelSetting?.toString() || '',
       ruleName: '',
       serverType: '',
       serverId: '',
@@ -75,6 +109,10 @@ export const FeeRebateSettingsPage = () => {
     setKeyword('');
     setPageNum(0);
     setPageSize(10);
+  };
+  const onSuccess = () => {
+    reset();
+    refetch();
   };
 
   const allColumns: CRMColumnDef<RebateFeeSettingsItem, unknown>[] = [
@@ -97,7 +135,25 @@ export const FeeRebateSettingsPage = () => {
       id: 'status',
       header: t('table.status'),
       cell: ({ row }) => {
-        return <Switch checked={row.original.hasUsed === '1'} />;
+        return (
+          <RrhStatusAlert<{
+            id: string;
+            hasUsed: string;
+          }>
+            params={{
+              id: String(row.original.id),
+              hasUsed: row.original.hasUsed === '1' ? '0' : '1',
+            }}
+            tipsText={
+              row.original.hasUsed === '1'
+                ? t('TradingRebateSettings.disableRuleTip')
+                : t('TradingRebateSettings.enableRuleTip')
+            }
+            checked={row.original.hasUsed === '1'}
+            confirmFunction={changeStatusMutation}
+            onSuccess={onSuccess}
+          />
+        );
       },
     },
     {
@@ -194,7 +250,19 @@ export const FeeRebateSettingsPage = () => {
     {
       id: 'remark',
       header: t('table.remarks'),
-      accessorFn: row => row.remark || '-',
+      cell: ({ row }) => {
+        const exceedLength = row.original.remark && row.original.remark.length > 15;
+        const content = exceedLength
+          ? row.original.remark?.slice(0, 15) + '...'
+          : row.original.remark || '-';
+        return exceedLength ? (
+          <ToolTip content={row.original.remark || '-'}>
+            <div>{content}</div>
+          </ToolTip>
+        ) : (
+          <div>{content}</div>
+        );
+      },
     },
     {
       id: 'operation',
@@ -202,7 +270,7 @@ export const FeeRebateSettingsPage = () => {
       label: t('common.Operation'),
       fixed: 'right',
       size: 50,
-      cell: () => (
+      cell: ({ row }) => (
         <RrhDropdown
           Trigger={<Ellipsis className="size-4" />}
           dropdownList={[
@@ -210,7 +278,18 @@ export const FeeRebateSettingsPage = () => {
             { label: t('table.commissionSettings'), value: 'commissionSettings' },
             { label: t('common.delete'), value: 'delete' },
           ]}
-          callToAction={() => {}}
+          callToAction={action => {
+            console.log('操作', action, '数据', row.original);
+            setCurrentItem(row.original);
+            switch (action) {
+              case 'edit':
+                setEditDialogOpen(true);
+                break;
+              case 'delete':
+                setDeleteDialogOpen(true);
+                break;
+            }
+          }}
         />
       ),
     },
@@ -236,9 +315,6 @@ export const FeeRebateSettingsPage = () => {
             }}
           />
           <div className="flex flex-wrap items-center gap-2">
-            <Button variant="outline">{t('common.add')}</Button>
-            <Button variant="outline">{t('table.rebateTemplate')}</Button>
-            <Button variant="outline">{t('table.historyOrderRebate')}</Button>
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </Button>
@@ -270,6 +346,27 @@ export const FeeRebateSettingsPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <AddFeeRebateSettingButton
+              onSuccess={onSuccess}
+              model={rebateModelSetting as number}
+              serverList={serverList}
+              levelList={levelList}
+              languageList={languageList}
+              dealAccountGroupListRes={dealAccountGroupListRes}
+            />
+            <Button
+              variant="outline"
+              onClick={() => {
+                openTab({
+                  path: '/rebate/fee-settings-history',
+                  title: t('FeeRebateSettings.feeRebateSettingsHistory'),
+                  key: '/rebate/fee-settings-history',
+                  closable: true,
+                });
+              }}
+            >
+              {t('table.historyOrderRebate')}
+            </Button>
           </div>
         </div>
         <DataTable
@@ -283,6 +380,28 @@ export const FeeRebateSettingsPage = () => {
           loading={feeRebateSettingsLoading}
         />
       </TableContentWrapper>
+      <RrhDeleteAlert<{ ids: string }>
+        open={deleteDialogOpen}
+        setOpen={setDeleteDialogOpen}
+        onSuccess={onSuccess}
+        confirmFunction={deleteRebateFeeSetting}
+        params={{ ids: currentItem?.id || '' }}
+        tipsText={t('ProductGroup.deleteTips')}
+      />
+      <EditFeeRebateSettingDialog
+        open={editDialogOpen}
+        setOpen={setEditDialogOpen}
+        onSuccess={() => {
+          setEditDialogOpen(false);
+          onSuccess();
+        }}
+        rebateTraderDealItem={currentItem}
+        model={rebateModelSetting as number}
+        serverList={serverList}
+        levelList={levelList}
+        languageList={languageList}
+        dealAccountGroupListRes={dealAccountGroupListRes}
+      />
     </div>
   );
 };

@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { FormSelect } from '@/components/form/FormSelect';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { useDictType, useGetGroup } from '@/api/hooks/system/system';
@@ -25,6 +24,7 @@ import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 import { formatDate } from '@/lib/utils';
 import { CrmUserDealListParams } from '@/api/hooks/report';
 import { BasicParams } from '@/api/types';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 type FormData = {
   serverId: string;
   ticket: string;
@@ -93,9 +93,13 @@ export const TradingAccountTransactionsForm = ({
 
   const onSubmit = (data: FormData) => {
     reset();
+    const selectedAccounts = JSON.parse(data.accounts || '{"id": "", "label": ""}') as {
+      id: string;
+      label: string;
+    };
     setParams({
       historyFuzzyName: data.historyFuzzyName,
-      accounts: data.accounts,
+      accounts: selectedAccounts.label,
       operationStart: formatDate(data.operationTime.from),
       operationEnd: formatDate(data.operationTime.to),
       fuzzyCrmAccount: data.fuzzyCrmAccount,
@@ -104,7 +108,7 @@ export const TradingAccountTransactionsForm = ({
       opeTypeList: data.opeTypeList,
       serverGroupList: data.serverGroupList.join(','),
       accountGroupList: data.accountGroupList.join(','),
-      accounts: data.accounts,
+      accounts: selectedAccounts.id,
       ticket: data.ticket,
       login: data.login,
       comment: data.comment,
@@ -244,12 +248,7 @@ export const TradingAccountTransactionsForm = ({
               field: t('tradingAccountTransactions.comment'),
             })}
           />
-          <FormField
-            name="accounts"
-            render={({ field }) => {
-              return <RrhSelectAccountsPopup verticalLabel field={field} />;
-            }}
-          />
+          <SelectUpperDropdown />
           <FormField
             name="operationTime"
             render={() => (

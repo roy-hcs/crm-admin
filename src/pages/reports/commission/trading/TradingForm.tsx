@@ -15,7 +15,6 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { CrmRebateTradersItem, ServerItem } from '@/api/hooks/system/types';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 import { formatDate } from '@/lib/utils';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -23,6 +22,7 @@ import { TradingParams } from '@/api/hooks/report';
 import { BasicParams } from '@/api/types';
 import { useGetGroup } from '@/api/hooks/system/system';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 type FormData = {
   tradingTime: { from: string; to: string };
   rebateTime: { from: string; to: string };
@@ -232,12 +232,7 @@ export const TradingForm = ({
               value: it.id,
             }))}
           />
-          <FormField
-            name="accounts"
-            render={({ field }) => {
-              return <RrhSelectAccountsPopup verticalLabel field={field} />;
-            }}
-          />
+          <SelectUpperDropdown />
           <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
             <RrhButton type="reset" variant={'outline'} onClick={onReset}>
               <RefreshCcw className="size-3.5" />
