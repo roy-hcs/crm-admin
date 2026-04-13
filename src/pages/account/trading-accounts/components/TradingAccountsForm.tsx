@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { CrmDealAccountListParams } from '@/api/hooks/account';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
@@ -23,6 +22,7 @@ import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 import { formatDate } from '@/lib/utils';
 import { BasicParams } from '@/api/types';
 import { useGetGroup } from '@/api/hooks/system/system';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 
 type FormData = {
   serverId: string;
@@ -85,17 +85,21 @@ export const TradingAccountsForm = ({
 
   const onSubmit = (data: FormData) => {
     reset();
+    const selectedAccounts = JSON.parse(data.accounts || '{"id": "", "label": ""}') as {
+      id: string;
+      label: string;
+    };
     setParams({
       regStartTime: formatDate(data.Time.from),
       regEndTime: formatDate(data.Time.to),
       fuzzyAccount: data.fuzzyAccount,
       fuzzyName: data.fuzzyName,
-      accounts: data.accounts,
+      accounts: selectedAccounts.label,
       threeCons: data.threeCons,
     });
     setOtherParams({
       serverGroupList: data.serverGroupList,
-      accounts: data.accounts,
+      accounts: selectedAccounts.id,
       accountGroupList: data.accountGroupList,
     });
     setServerId(data.serverId);
@@ -189,12 +193,7 @@ export const TradingAccountsForm = ({
               field: t('tradingAccountTransactions.name'),
             })}
           />
-          <FormField
-            name="accounts"
-            render={({ field }) => {
-              return <RrhSelectAccountsPopup verticalLabel field={field} />;
-            }}
-          />
+          <SelectUpperDropdown />
           <FormMultiSelect
             verticalLabel
             name="accountGroupList"

@@ -14,10 +14,10 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { Dispatch, SetStateAction } from 'react';
 import { formatDate } from '@/lib/utils';
 import { BasicParams } from '@/api/types';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 
 type FormData = {
   name: string;
@@ -120,12 +120,7 @@ export const WalletBalanceForm = ({
             )}
           />
 
-          <FormField
-            name="accounts"
-            render={({ field }) => {
-              return <RrhSelectAccountsPopup verticalLabel field={field} />;
-            }}
-          />
+          <SelectUpperDropdown />
 
           <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>

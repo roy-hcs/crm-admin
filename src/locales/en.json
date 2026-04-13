@@ -1384,7 +1384,13 @@
   },
   "FeeRebateSettings": {
     "title": "Handling fee rebate settings",
-    "warn": "Multiple rebates are allowed for one order. \nIf multiple rebate rules are hit, commissions will be repaid to the hit rules one after another. \nA rule will only rebate commission once."
+    "warn": "Multiple rebates are allowed for one order. \nIf multiple rebate rules are hit, commissions will be repaid to the hit rules one after another. \nA rule will only rebate commission once.",
+    "feeRebateSettingsHistory": "Handling fee historical order rebate",
+    "calculateRebate": "Calculate rebate",
+    "calculateRebateDesc": "Are you sure you want to rebate the queried {{field}} orders?",
+    "calculateRebateTip": "If no rule is matched, no commission will be returned",
+    "theHistoryRule": "Commission rebate based on historical rules",
+    "theLatestRule": "Rebate according to current latest rules"
   },
   "DepositRebateSettings": {
     "warn": "One deposit allows multiple commission rebates. \nIf multiple rebate rules are hit, commissions will be repaid to the hit rules one after another. \nA rule will only rebate commission once.",

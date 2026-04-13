@@ -1476,7 +1476,13 @@
   },
   "FeeRebateSettings": {
     "title": "手续费返佣设置",
-    "warn": "一笔订单允许返佣多次。如命中多条返佣规则，将对命中的规则陆续返佣。一条规则仅返佣一次。"
+    "warn": "一笔订单允许返佣多次。如命中多条返佣规则，将对命中的规则陆续返佣。一条规则仅返佣一次。",
+    "feeRebateSettingsHistory": "手续费历史订单返佣",
+    "calculateRebate": "计算返佣",
+    "theLatestRule": "按当前最新规则返佣",
+    "theHistoryRule": "按历史规则返佣",
+    "calculateRebateDesc": "确定对查询到的{{field}}笔订单进行返佣吗？",
+    "calculateRebateTip": "若没有匹配到规则，则不返佣"
   },
   "DepositRebateSettings": {
     "title": "入金返佣设置",

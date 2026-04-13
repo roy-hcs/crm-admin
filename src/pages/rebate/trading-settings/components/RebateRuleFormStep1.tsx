@@ -27,31 +27,36 @@ interface DealAccountGroup {
   id: string;
   name: string;
 }
-
-interface RebateRuleFormStep1Props {
+interface RebateRuleFormStep1BaseProps {
   isEditMode: boolean;
   defaultLang: string;
   serverList: { rows: ServerListItem[] } | undefined;
   dealAccountGroupListRes: DealAccountGroup[];
-  settleUnitOptions: BaseOption[];
   levelList: { rows: LevelListItem[] } | undefined;
   model: number;
-  currentSettleUnit: string;
-  onBeforeValueChange: (newValue: string[]) => { valid: boolean; message?: string };
   onServerChange: (value: string[], option?: string, operator?: 'add' | 'remove') => void;
 }
+interface RebateRuleFormStep1TypeOneProps extends RebateRuleFormStep1BaseProps {
+  type: 'type1';
+  currentSettleUnit: string;
+  settleUnitOptions: BaseOption[];
+  onBeforeValueChange: (newValue: string[]) => { valid: boolean; message?: string };
+}
+interface RebateRuleFormStep1TypeTwoProps extends RebateRuleFormStep1BaseProps {
+  type: 'type2';
+}
+
+type RebateRuleFormStep1Props = RebateRuleFormStep1TypeOneProps | RebateRuleFormStep1TypeTwoProps;
 
 export const RebateRuleFormStep1 = ({
   isEditMode,
   defaultLang,
   serverList,
   dealAccountGroupListRes,
-  settleUnitOptions,
   levelList,
   model,
-  currentSettleUnit,
-  onBeforeValueChange,
   onServerChange,
+  ...props
 }: RebateRuleFormStep1Props) => {
   const { t } = useTranslation();
 
@@ -95,7 +100,7 @@ export const RebateRuleFormStep1 = ({
         onMaxSelectionsReached={() => {
           toast.error(t('TradingRebateSettings.serverCanNotExceed5'));
         }}
-        onBeforeValueChange={onBeforeValueChange}
+        onBeforeValueChange={props.type === 'type1' ? props.onBeforeValueChange : undefined}
       />
       <FormMultiSelect
         name="accountGroup"
@@ -108,54 +113,58 @@ export const RebateRuleFormStep1 = ({
         }))}
       />
       <FormSwitch label={t('table.status')} name="hasUsed" verticalLabel />
-      <FormField
-        name="settleType"
-        render={({ field }) => (
-          <LabelItem
-            label={t('TradingRebateSettings.settleType')}
-            className="pt-0"
-            ContentDom={
-              <RrhRadioGroup
-                value={field.value ?? '1'}
-                onValueChange={value => {
-                  field.onChange(value);
-                }}
-                labelClassName="font-medium"
-                orientation="horizontal"
-                radioItems={[
-                  {
-                    value: '1',
-                    label: t('TradingRebateSettings.amount'),
-                  },
-                  {
-                    value: '2',
-                    label: t('TradingRebateSettings.dot'),
-                  },
-                ]}
+      {props.type === 'type1' && (
+        <>
+          <FormField
+            name="settleType"
+            render={({ field }) => (
+              <LabelItem
+                label={t('TradingRebateSettings.settleType')}
+                className="pt-0"
+                ContentDom={
+                  <RrhRadioGroup
+                    value={field.value ?? '1'}
+                    onValueChange={value => {
+                      field.onChange(value);
+                    }}
+                    labelClassName="font-medium"
+                    orientation="horizontal"
+                    radioItems={[
+                      {
+                        value: '1',
+                        label: t('TradingRebateSettings.amount'),
+                      },
+                      {
+                        value: '2',
+                        label: t('TradingRebateSettings.dot'),
+                      },
+                    ]}
+                  />
+                }
+              />
+            )}
+          />
+          <FormInput
+            name="settleValue"
+            label={t('TradingRebateSettings.settleUnit')}
+            verticalLabel
+            type="number"
+            placeholder=""
+            disabled={props.currentSettleUnit === '1'}
+            inputCls="border-r-0 rounded-r-none"
+            rightElement={
+              <FormSelect
+                showRowValue={false}
+                name="settleUnit"
+                label=""
+                options={props.settleUnitOptions}
+                selectCls="rounded-l-none"
+                defaultValue={'1'}
               />
             }
           />
-        )}
-      />
-      <FormInput
-        name="settleValue"
-        label={t('TradingRebateSettings.settleUnit')}
-        verticalLabel
-        type="number"
-        placeholder=""
-        disabled={currentSettleUnit === '1'}
-        inputCls="border-r-0 rounded-r-none"
-        rightElement={
-          <FormSelect
-            showRowValue={false}
-            name="settleUnit"
-            label=""
-            options={settleUnitOptions}
-            selectCls="rounded-l-none"
-            defaultValue={'1'}
-          />
-        }
-      />
+        </>
+      )}
       <div>
         <FormSelect
           name="highestRebateLevel"

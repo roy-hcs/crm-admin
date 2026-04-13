@@ -18,12 +18,12 @@ import { ServerItem } from '@/api/hooks/system/types';
 import { BaseOption } from '@/components/common/RrhSelect';
 import { useGetDealAccountGroupList, useGetGroupByServer } from '@/api/hooks/account';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { serverMap } from '@/lib/constant';
 import { formatDate } from '@/lib/utils';
 import { Dispatch, SetStateAction } from 'react';
 import { BasicParams } from '@/api/types';
 import { TradingHistoryParams } from '@/api/hooks/report';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 
 type FormData = {
   serverId: string;
@@ -250,12 +250,7 @@ export const TradingHistoryForm = ({
               })) || []
             }
           />
-          <FormField
-            name="accounts"
-            render={({ field }) => {
-              return <RrhSelectAccountsPopup verticalLabel field={field} />;
-            }}
-          />
+          <SelectUpperDropdown />
           {selectedServer?.serviceType === 1 && (
             <FormInput
               verticalLabel

@@ -1,11 +1,12 @@
 import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList,
-} from '@/components/ui/combobox';
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import { Popover, PopoverAnchor, PopoverContent } from '@/components/ui/popover';
+import {} from '@base-ui/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -19,25 +20,34 @@ export interface RrhSearchSelectProps<TParams, TItem> {
   getNextParams?: (prevParams: TParams, lastItem: TItem) => TParams | null;
   buildSearchParams?: (baseParams: TParams, keyword: string) => TParams;
   onSelect?: (option: { value: string; label: string }) => void;
+  value?: string;
 }
 
 export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TParams, TItem>) {
-  const { fetchFunction, params, mapOption, getNextParams, buildSearchParams, onSelect } = props;
+  const { fetchFunction, params, mapOption, getNextParams, buildSearchParams, onSelect, value } = props;
   const { t } = useTranslation();
   const [itemsData, setItemsData] = useState<TItem[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [currentParams, setCurrentParams] = useState(params);
+  const [open, setOpen] = useState(false);
   const [inputText, setInputText] = useState('');
   const [queryText, setQueryText] = useState('');
   const [debouncedQueryText, setDebouncedQueryText] = useState('');
-  const [hasUserScrolled, setHasUserScrolled] = useState(false);
 
-  const popupClassNameRef = useRef(
-    `rrh-search-select-popup-${Math.random().toString(36).slice(2)}`,
-  );
+  useEffect(() => {
+    if (value === '' || value === undefined) {
+      setInputText('');
+    }
+  }, [value]);
+
   const getNextParamsRef = useRef(getNextParams);
   const buildSearchParamsRef = useRef(buildSearchParams);
+  const loadingRef = useRef(loading);
+  const hasMoreRef = useRef(hasMore);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const loadMoreRef = useRef<() => Promise<void>>(async () => {});
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     getNextParamsRef.current = getNextParams;
@@ -46,6 +56,11 @@ export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TPar
   useEffect(() => {
     buildSearchParamsRef.current = buildSearchParams;
   }, [buildSearchParams]);
+
+  useEffect(() => {
+    loadingRef.current = loading;
+    hasMoreRef.current = hasMore;
+  }, [loading, hasMore]);
 
   const options = useMemo(() => {
     return itemsData.map(mapOption).filter(item => item.value !== '');
@@ -107,9 +122,8 @@ export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TPar
   }, [queryText]);
 
   useEffect(() => {
-    // 用户一旦开始输入，立即把分页语义重置到第一页，并禁止自动加载下一页。
+    // 用户一旦开始输入，立即把分页语义重置到第一页。
     setCurrentParams(patchSearchParams(params, queryText.trim()));
-    setHasUserScrolled(false);
   }, [queryText, params, patchSearchParams]);
 
   useEffect(() => {
@@ -138,7 +152,6 @@ export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TPar
 
     setItemsData([]);
     setHasMore(true);
-    setHasUserScrolled(false);
     setCurrentParams(patchSearchParams(params, debouncedQueryText.trim()));
     void initFirstPage();
 
@@ -148,8 +161,7 @@ export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TPar
   }, [fetchFunction, params, patchSearchParams, debouncedQueryText]);
 
   const loadMore = useCallback(async () => {
-    if (isSearchPending || !hasUserScrolled || loading || !hasMore || itemsData.length === 0)
-      return;
+    if (isSearchPending || loading || !hasMore || itemsData.length === 0) return;
 
     const lastItem = itemsData[itemsData.length - 1];
     const nextParams = deriveNextParams(currentParams, lastItem);
@@ -183,7 +195,6 @@ export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TPar
     setLoading(false);
   }, [
     isSearchPending,
-    hasUserScrolled,
     loading,
     hasMore,
     itemsData,
@@ -192,84 +203,87 @@ export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TPar
     fetchFunction,
   ]);
 
-  useEffect(() => {
-    if (isSearchPending || loading || !hasMore || options.length === 0) return;
+  // Keep the ref current so the stable sentinelRef callback always calls the latest version.
+  loadMoreRef.current = loadMore;
 
-    const popup = document.querySelector(`.${popupClassNameRef.current}`) as HTMLElement | null;
-    if (!popup) return;
-
-    const list = popup.querySelector('[data-slot="combobox-list"]') as HTMLElement | null;
-    if (!list) return;
-
-    const onListScroll = () => {
-      if (list.scrollTop > 0) {
-        setHasUserScrolled(true);
-      }
-    };
-    list.addEventListener('scroll', onListScroll, { passive: true });
-
-    const sentinel = document.createElement('div');
-    sentinel.setAttribute('data-rrh-load-more-sentinel', 'true');
-    sentinel.style.height = '1px';
-    sentinel.style.width = '100%';
-    sentinel.style.pointerEvents = 'none';
-    list.appendChild(sentinel);
-
-    const observer = new window.IntersectionObserver(
+  // useCallback ref pattern: fires when the sentinel mounts inside the Portal,
+  // at which point we can safely create the IntersectionObserver.
+  const sentinelRef = useCallback((node: HTMLDivElement | null) => {
+    observerRef.current?.disconnect();
+    observerRef.current = null;
+    if (!node) return;
+    observerRef.current = new IntersectionObserver(
       entries => {
-        if (entries[0]?.isIntersecting) {
-          void loadMore();
+        if (entries[0].isIntersecting && !loadingRef.current && hasMoreRef.current) {
+          void loadMoreRef.current();
         }
       },
-      {
-        root: list,
-        rootMargin: '0px 0px 120px 0px',
-        threshold: 0,
-      },
+      { threshold: 0 },
     );
-
-    observer.observe(sentinel);
-
-    return () => {
-      observer.disconnect();
-      list.removeEventListener('scroll', onListScroll);
-      sentinel.remove();
-    };
-  }, [isSearchPending, options, hasMore, loading, loadMore]);
+    observerRef.current.observe(node);
+  }, []);
+  // shadCN的Popover组件默认把Content放在body下，这里需要把它放在组件内，才能让滚动行为正常，避免出现无法滚动的情况。
+  const popoverOpenRef = useRef(null);
 
   return (
-    <Combobox
-      items={options.filter(item => item.value !== '')}
-      itemToStringValue={(item: { value: string; label: string }) => item.label}
-      filter={null}
-      autoComplete="none"
-    >
-      <ComboboxInput
-        placeholder={t('common.pleaseSelect')}
-        value={inputText}
-        onChange={event => {
-          const nextValue = (event.target as HTMLInputElement).value;
-          setInputText(nextValue);
-          setQueryText(nextValue);
-        }}
-      />
-      <ComboboxContent className={popupClassNameRef.current}>
-        <ComboboxEmpty>{t('common.NoData')} </ComboboxEmpty>
-        <ComboboxList>
-          {item => (
-            <ComboboxItem
-              key={item.value}
-              value={item}
-              onClick={() => {
-                setInputText(item.label);
-                onSelect?.(item);
-              }}
-            >
-              {item.label}
-            </ComboboxItem>
-          )}
-        </ComboboxList>
-      </ComboboxContent>
-    </Combobox>
+    <div ref={popoverOpenRef}>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverAnchor asChild>
+          <input
+            ref={inputRef}
+            className="border-input bg-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border px-3 py-2 text-sm shadow-sm focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+            placeholder={t('common.pleaseSelect')}
+            value={inputText}
+            onFocus={() => setOpen(true)}
+            onChange={e => {
+              const nextValue = e.target.value;
+              setInputText(nextValue);
+              setQueryText(nextValue);
+              if (!open) setOpen(true);
+            }}
+          />
+        </PopoverAnchor>
+        <PopoverContent
+          className="p-0"
+          align="start"
+          onOpenAutoFocus={e => e.preventDefault()}
+          onInteractOutside={e => {
+            if (inputRef.current?.contains(e.target as Node)) {
+              e.preventDefault();
+            }
+          }}
+          container={popoverOpenRef.current}
+        >
+          <Command shouldFilter={false}>
+            <CommandList>
+              {!loading && options.length === 0 && (
+                <CommandEmpty>{t('common.NoData')}</CommandEmpty>
+              )}
+              <CommandGroup>
+                {options.map(item => (
+                  <CommandItem
+                    key={item.value}
+                    value={item.value}
+                    onSelect={() => {
+                      setInputText(item.label);
+                      onSelect?.(item);
+                      setOpen(false);
+                    }}
+                  >
+                    {item.label}
+                  </CommandItem>
+                ))}
+                {loading && (
+                  <div className="text-muted-foreground px-2 py-1 text-xs">
+                    {t('common.loading')}
+                  </div>
+                )}
+                <div ref={sentinelRef} className="h-px" />
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 }

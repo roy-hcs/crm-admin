@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AddRebateBasePointParams,
   AddRebateBaseTypeParams,
+  AddRebateFeeSettingParams,
   AddTradingRebateRuleParams,
   EditRebateBasePointParams,
   EditRebateBaseTypeParams,
@@ -15,6 +16,9 @@ import {
   RebateBaseTypeRes,
   RebateDepositSettingsListParams,
   RebateDepositSettingsListRes,
+  RebateFeeSettingDetail,
+  RebateFeeSettingsHistoryListParams,
+  RebateFeeSettingsHistoryListRes,
   RebateFeeSettingsListParams,
   RebateFeeSettingsListRes,
   RebateLevelParams,
@@ -285,11 +289,91 @@ export function useGetMtAndRebateType() {
 /**
  * 获取手续费返佣设置
  */
-export function useRebateFeeSettingsList(params: RebateFeeSettingsListParams) {
+export function useRebateFeeSettingsList(
+  params: RebateFeeSettingsListParams,
+  { enabled }: { enabled?: boolean } = {},
+) {
   return useQuery({
     queryKey: ['getRebateFeeSettingsList', params],
     queryFn: () =>
-      apiFormPostCustom<RebateFeeSettingsListRes>('/system/crmRebateTraderCommission/list', params),
+      apiFormPostCustom<RebateFeeSettingsListRes>(
+        `/system/crmRebateTraderCommission/list?model=${params.model}`,
+        params,
+      ),
+    enabled,
+  });
+}
+/**
+ * 获取手续费历史订单返佣
+ */
+export function useRebateFeeSettingsHistoryList(
+  params: RebateFeeSettingsHistoryListParams,
+  { enabled }: { enabled?: boolean } = {},
+) {
+  return useQuery({
+    queryKey: ['getRebateFeeSettingsHistoryList', params],
+    queryFn: () =>
+      apiFormPostCustom<RebateFeeSettingsHistoryListRes>(
+        '/system/crmRebateHistoryDeal/deal-list/2',
+        params,
+      ),
+    enabled,
+  });
+}
+/**
+ * 计算返佣
+ */
+export function useCalculateRebateFee() {
+  return useMutation({
+    mutationFn: (params: { timestamp: number; matchRuleType?: string }) =>
+      apiFormPost('system/crmRebateHistoryDeal/send-deal/2', params),
+  });
+}
+/**
+ * 获取手续费返佣规则详情
+ */
+export function useGetRebateFeeSettingDetail(id: string, { enabled }: { enabled?: boolean } = {}) {
+  return useQuery({
+    queryKey: ['getRebateFeeSettingDetail', id],
+    queryFn: () => apiGet<RebateFeeSettingDetail>(`/system/crmRebateTraderCommission/detail/${id}`),
+    enabled,
+    staleTime: 0,
+  });
+}
+/**
+ * 新增手续费返佣设置
+ */
+export function useAddRebateFeeSetting() {
+  return useMutation({
+    mutationFn: (params: AddRebateFeeSettingParams) =>
+      apiFormPost('/system/crmRebateTraderCommission/add', params),
+  });
+}
+/**
+ * 编辑手续费返佣设置
+ */
+export function useEditRebateFeeSetting() {
+  return useMutation({
+    mutationFn: (params: AddRebateFeeSettingParams & { id?: string }) =>
+      apiFormPost('/system/crmRebateTraderCommission/edit', params),
+  });
+}
+/**
+ * 改变手续费返佣设置的状态
+ */
+export function useChangeRebateFeeSettingStatus() {
+  return useMutation({
+    mutationFn: (params: { id: string; hasUsed: string }) =>
+      apiFormPost('/system/crmRebateTraderCommission/changeStatus', params),
+  });
+}
+/**
+ * 删除手续费返佣设置
+ */
+export function useDeleteRebateFeeSetting() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost('/system/crmRebateTraderCommission/remove', params),
   });
 }
 /**

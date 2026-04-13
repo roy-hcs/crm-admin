@@ -13,14 +13,13 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { FormInput } from '@/components/form/FormInput';
 import { FormProvider } from '@/contexts/form';
 import { FormSelect } from '@/components/form/FormSelect';
-import { SelectUpperPopup } from './SelectUpperPopup';
 import { crmAccountTypeOptions, roleOptions, statusOptions } from '@/lib/const';
 import { RrhButton } from '@/components/common/RrhButton';
 import { useTranslation } from 'react-i18next';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { formatDate } from '@/lib/utils';
 import { Dispatch, SetStateAction } from 'react';
 import { BasicParams } from '@/api/types';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 
 type FormData = {
   accountType: string;
@@ -77,6 +76,10 @@ export const CRMAccountsForm = ({
 
   const onSubmit = (data: FormData) => {
     reset();
+    const selectedAccounts = JSON.parse(data.accounts || '{"id": "", "label": ""}') as {
+      id: string;
+      label: string;
+    };
     setParams({
       threeCons: data.name,
       regStartTime: formatDate(data.regStartTime.from),
@@ -84,13 +87,14 @@ export const CRMAccountsForm = ({
       fuzzyMobile: data.mobile,
       fuzzyEmail: data.email,
       inviter: data.inviter,
-      accounts: data.accounts,
+      accounts: selectedAccounts.label,
     });
     setOtherParams({
       status: data.status,
       role: data.role,
       certiricateNo: data.certiricateNo,
       accountType: data.accountType,
+      accounts: selectedAccounts.id,
     });
     setTags(data.tags);
   };
@@ -177,18 +181,11 @@ export const CRMAccountsForm = ({
             )}
           />
 
-          <FormField
+          <SelectUpperDropdown
+            rawLabel={`${t('CRMAccountPage.Superior')} (${t('common.optional')})`}
             name="inviter"
-            render={({ field }) => {
-              return <SelectUpperPopup verticalLabel field={field} />;
-            }}
           />
-          <FormField
-            name="accounts"
-            render={({ field }) => {
-              return <RrhSelectAccountsPopup verticalLabel field={field} />;
-            }}
-          />
+          <SelectUpperDropdown />
 
           <FormSelect
             name="accountType"

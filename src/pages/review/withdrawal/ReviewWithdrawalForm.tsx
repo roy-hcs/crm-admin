@@ -16,8 +16,8 @@ import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { WithdrawListParams } from '@/api/hooks/review';
 import { Dispatch, SetStateAction } from 'react';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { formatDate } from '@/lib/utils';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 
 type FormData = {
   name: string;
@@ -220,12 +220,7 @@ export const ReviewWithdrawalForm = ({
               { label: t('table.wallet'), value: '2' },
             ]}
           />
-          <FormField
-            name="accounts"
-            render={({ field }) => {
-              return <RrhSelectAccountsPopup verticalLabel field={field} />;
-            }}
-          />
+          <SelectUpperDropdown />
           <FormField
             name="finishTime"
             render={() => (

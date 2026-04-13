@@ -20,10 +20,10 @@ import { BasicParams } from '@/api/types';
 import { DictTypeItem } from '@/api/hooks/system';
 import { crmAccountTypeOptions } from '@/lib/const';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { useCallback, useMemo } from 'react';
 import { useCrmUsers } from '@/api/hooks/system/system';
 import { FormSearchMultiSelect } from '@/components/form/FormSearchMultiSelect';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 
 type FormData = {
   type: number | string;
@@ -120,6 +120,10 @@ export const SystemFundOperationsForm = ({
 
   const onSubmit = (data: FormData) => {
     reset();
+    const selectedAccounts = JSON.parse(data.accounts || '{"id": "", "label": ""}') as {
+      id: string;
+      label: string;
+    };
     setOtherParams({
       type: data.type,
     });
@@ -132,7 +136,7 @@ export const SystemFundOperationsForm = ({
       operName: data.operator,
       opTypes: data.opTypes?.join(','),
       accountTypes: data.accountTypes?.join(','),
-      accounts: data.accounts,
+      accounts: selectedAccounts.id,
       inviters: data.inviters?.join(','),
     });
   };
@@ -219,12 +223,7 @@ export const SystemFundOperationsForm = ({
             label={t('table.operationPerson')}
             placeholder={t('common.pleaseInput', { field: t('table.operationPerson') })}
           />
-          <FormField
-            name="accounts"
-            render={({ field }) => {
-              return <RrhSelectAccountsPopup verticalLabel field={field} />;
-            }}
-          />
+          <SelectUpperDropdown />
 
           <FormInput
             verticalLabel
