@@ -10,6 +10,8 @@ import { BaseOption } from '@/components/common/RrhSelect';
 import { serverMap } from '@/lib/constant';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { useCrmFormContext } from '@/contexts/form';
+import { useMemo } from 'react';
 
 interface ServerListItem {
   id: string;
@@ -36,17 +38,23 @@ interface RebateRuleFormStep1BaseProps {
   model: number;
   onServerChange: (value: string[], option?: string, operator?: 'add' | 'remove') => void;
 }
-interface RebateRuleFormStep1TypeOneProps extends RebateRuleFormStep1BaseProps {
-  type: 'type1';
+interface RebateRuleFormStep1ForTradingProps extends RebateRuleFormStep1BaseProps {
+  type: 'trading';
   currentSettleUnit: string;
   settleUnitOptions: BaseOption[];
   onBeforeValueChange: (newValue: string[]) => { valid: boolean; message?: string };
 }
-interface RebateRuleFormStep1TypeTwoProps extends RebateRuleFormStep1BaseProps {
-  type: 'type2';
+interface RebateRuleFormStep1ForFeeProps extends RebateRuleFormStep1BaseProps {
+  type: 'fee';
+}
+interface RebateRuleFormStep1ForDepositProps extends RebateRuleFormStep1BaseProps {
+  type: 'deposit';
 }
 
-type RebateRuleFormStep1Props = RebateRuleFormStep1TypeOneProps | RebateRuleFormStep1TypeTwoProps;
+type RebateRuleFormStep1Props =
+  | RebateRuleFormStep1ForTradingProps
+  | RebateRuleFormStep1ForFeeProps
+  | RebateRuleFormStep1ForDepositProps;
 
 export const RebateRuleFormStep1 = ({
   isEditMode,
@@ -59,61 +67,94 @@ export const RebateRuleFormStep1 = ({
   ...props
 }: RebateRuleFormStep1Props) => {
   const { t } = useTranslation();
+  const { form } = useCrmFormContext();
+  const suitTypeValue = form.watch('suitType');
+  const serverAndGroupShow = useMemo(() => {
+    if (props.type !== 'deposit') {
+      return true;
+    } else if (suitTypeValue === '0') {
+      return true;
+    } else {
+      return false;
+    }
+  }, [props.type, suitTypeValue]);
 
   return (
     <div className="flex flex-col gap-y-4 pb-4">
+      <div>{t('TradingRebateSettings.baseSetting')}</div>
       <FormInput
         verticalLabel
         name="ruleName"
         label={t('table.ruleName') + `${defaultLang ? ` (${defaultLang})` : ''}`}
         placeholder={t('rules.limitLength', { field: 64 })}
       />
-      <FormMultiSelect<
-        Record<string, string>,
-        BaseOption & {
-          serviceType: number;
-        }
-      >
+      <FormSelect
+        name="suitType"
         verticalLabel
-        label={t('table.server') + `(${t('common.supportMultipleSelection')})`}
+        showRowValue={false}
+        label={t('DepositRebateSettings.depositAccount')}
         placeholder={t('common.pleaseSelect')}
-        name="serverName"
-        options={
-          (serverList?.rows || [])
-            .filter((item: ServerListItem) => item.serviceProperty === 1)
-            .map((item: ServerListItem) => ({
-              label: item.serverName,
+        options={[
+          {
+            label: t('table.tradingAccount'),
+            value: 0,
+          },
+          {
+            label: t('table.wallet'),
+            value: 1,
+          },
+        ]}
+      />
+      {serverAndGroupShow && (
+        <>
+          <FormMultiSelect<
+            Record<string, string>,
+            BaseOption & {
+              serviceType: number;
+            }
+          >
+            verticalLabel
+            label={t('table.server') + `(${t('common.supportMultipleSelection')})`}
+            placeholder={t('common.pleaseSelect')}
+            name="serverName"
+            options={
+              (serverList?.rows || [])
+                .filter((item: ServerListItem) => item.serviceProperty === 1)
+                .map((item: ServerListItem) => ({
+                  label: item.serverName,
+                  value: item.id,
+                  serviceType: item.serviceType,
+                })) || []
+            }
+            renderItem={option => {
+              return (
+                <div>
+                  {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
+                  <span>{option.label}</span>
+                </div>
+              );
+            }}
+            onValueChange={onServerChange}
+            maxSelections={5}
+            onMaxSelectionsReached={() => {
+              toast.error(t('TradingRebateSettings.serverCanNotExceed5'));
+            }}
+            onBeforeValueChange={props.type === 'trading' ? props.onBeforeValueChange : undefined}
+          />
+          <FormMultiSelect
+            name="accountGroup"
+            label={t('common.optionalField', { field: t('table.accountGroup') })}
+            verticalLabel
+            placeholder={`${t('table.allAccountGroup')}`}
+            options={(dealAccountGroupListRes || []).map(item => ({
+              label: item.name,
               value: item.id,
-              serviceType: item.serviceType,
-            })) || []
-        }
-        renderItem={option => {
-          return (
-            <div>
-              {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
-              <span>{option.label}</span>
-            </div>
-          );
-        }}
-        onValueChange={onServerChange}
-        maxSelections={5}
-        onMaxSelectionsReached={() => {
-          toast.error(t('TradingRebateSettings.serverCanNotExceed5'));
-        }}
-        onBeforeValueChange={props.type === 'type1' ? props.onBeforeValueChange : undefined}
-      />
-      <FormMultiSelect
-        name="accountGroup"
-        label={t('common.optionalField', { field: t('table.accountGroup') })}
-        verticalLabel
-        placeholder={`${t('table.allAccountGroup')}`}
-        options={(dealAccountGroupListRes || []).map(item => ({
-          label: item.name,
-          value: item.id,
-        }))}
-      />
+            }))}
+          />
+        </>
+      )}
       <FormSwitch label={t('table.status')} name="hasUsed" verticalLabel />
-      {props.type === 'type1' && (
+      {props.type === 'trading' && (
         <>
           <FormField
             name="settleType"

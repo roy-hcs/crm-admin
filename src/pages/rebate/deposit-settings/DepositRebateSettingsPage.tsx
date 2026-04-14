@@ -1,22 +1,33 @@
 import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { RebateDepositSettingsListParams, useRebateDepositSettingsList } from '@/api/hooks/rebate';
+import {
+  RebateDepositSettingsListParams,
+  useChangeRebateDepositSettingStatus,
+  useDeleteRebateDepositSetting,
+  useRebateDepositSettingsList,
+  useRebateLevelList,
+} from '@/api/hooks/rebate';
 import { DepositRebateSettingsForm } from './DepositRebateSettingsForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
-import { useDictType } from '@/api/hooks/system/system';
+import { useDictType, useGetSysConfig, useServerList } from '@/api/hooks/system/system';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/hooks/review/types';
 import { RebateDepositSettingsItem } from '@/api/hooks/rebate';
-import { Switch } from '@/components/ui/switch';
 import { ToolTip } from '@/components/common/ToolTip';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { AddDepositRebateSettingButton } from './components/AddDepositRebateSettingButton';
+import { REBATE_MODEL_SETTING } from '@/lib/constant';
+import { useGetDealAccountGroupList } from '@/api/hooks/account';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
+import { EditDepositRebateSettingDialog } from './components/EditDepositRebateSettingDialog';
+import { RrhStatusAlert } from '@/components/common/RrhStatusAlert';
 
 function getServerTypeName(serverType: string) {
   switch (serverType) {
@@ -40,11 +51,14 @@ export const DepositRebateSettingsPage = () => {
   const [keyword, setKeyword] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [currentItem, setCurrentItem] = useState<RebateDepositSettingsItem | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [otherParams, setOtherParams] = useState<
     Omit<RebateDepositSettingsListParams, keyof BasicParams>
   >({
     rebateType: '3',
-    model: '1',
+    model: '',
     ruleName: '',
     serverType: '',
     serverId: '',
@@ -52,20 +66,38 @@ export const DepositRebateSettingsPage = () => {
   });
 
   const { data: serverTypes } = useDictType('sys_mt_service_type');
+  const { data: rebateModelSetting } = useGetSysConfig(REBATE_MODEL_SETTING);
 
-  const { data: depositRebateSettings, isLoading: depositRebateSettingsLoading } =
-    useRebateDepositSettingsList({
+  const { data: serverList } = useServerList();
+  const { data: languageList } = useDictType('sys_language');
+  const { data: levelList } = useRebateLevelList(
+    { model: rebateModelSetting as number },
+    { enabled: !!rebateModelSetting },
+  );
+  const { data: dealAccountGroupListRes } = useGetDealAccountGroupList();
+
+  const {
+    data: depositRebateSettings,
+    isLoading: depositRebateSettingsLoading,
+    refetch,
+  } = useRebateDepositSettingsList(
+    {
       pageSize,
       pageNum: pageNum + 1,
       orderByColumn: '',
       isAsc: 'asc',
       ...otherParams,
-    });
+      model: rebateModelSetting?.toString() || '',
+    },
+    { enabled: !!rebateModelSetting },
+  );
+  const { mutateAsync: deleteRebateDepositSetting } = useDeleteRebateDepositSetting();
+  const { mutateAsync: changeStatusMutation } = useChangeRebateDepositSettingStatus();
 
   const reset = () => {
     setOtherParams({
-      rebateType: '',
-      model: '',
+      rebateType: '3',
+      model: rebateModelSetting?.toString() || '',
       ruleName: '',
       serverType: '',
       serverId: '',
@@ -96,8 +128,31 @@ export const DepositRebateSettingsPage = () => {
       id: 'status',
       header: t('table.status'),
       cell: ({ row }) => {
-        return <Switch checked={row.original.hasUsed === '1'} />;
+        return (
+          <RrhStatusAlert<{
+            id: string;
+            hasUsed: string;
+          }>
+            params={{
+              id: String(row.original.id),
+              hasUsed: row.original.hasUsed === '1' ? '0' : '1',
+            }}
+            tipsText={
+              row.original.hasUsed === '1'
+                ? t('TradingRebateSettings.disableRuleTip')
+                : t('TradingRebateSettings.enableRuleTip')
+            }
+            checked={row.original.hasUsed === '1'}
+            confirmFunction={changeStatusMutation}
+            onSuccess={onSuccess}
+          />
+        );
       },
+    },
+    {
+      id: 'suitType',
+      header: t('DepositRebateSettings.depositAccount'),
+      accessorFn: row => (row.suitType === 1 ? t('table.wallet') : t('table.tradingAccount')),
     },
     {
       id: 'typeGroup',
@@ -201,7 +256,7 @@ export const DepositRebateSettingsPage = () => {
       label: t('common.Operation'),
       fixed: 'right',
       size: 50,
-      cell: () => (
+      cell: ({ row }) => (
         <RrhDropdown
           Trigger={<Ellipsis className="size-4" />}
           dropdownList={[
@@ -209,7 +264,17 @@ export const DepositRebateSettingsPage = () => {
             { label: t('table.commissionSettings'), value: 'commissionSettings' },
             { label: t('common.delete'), value: 'delete' },
           ]}
-          callToAction={() => {}}
+          callToAction={action => {
+            setCurrentItem(row.original);
+            switch (action) {
+              case 'edit':
+                setEditDialogOpen(true);
+                break;
+              case 'delete':
+                setDeleteDialogOpen(true);
+                break;
+            }
+          }}
         />
       ),
     },
@@ -217,6 +282,11 @@ export const DepositRebateSettingsPage = () => {
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('deposit-rebate-settings-table', allColumns);
+
+  const onSuccess = () => {
+    reset();
+    refetch();
+  };
 
   return (
     <div>
@@ -235,7 +305,6 @@ export const DepositRebateSettingsPage = () => {
             }}
           />
           <div className="flex flex-wrap items-center gap-2">
-            <Button variant="outline">{t('common.add')}</Button>
             <Button variant="outline">{t('table.rebateTemplate')}</Button>
             <Button variant="outline">{t('table.historyOrderRebate')}</Button>
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
@@ -269,6 +338,14 @@ export const DepositRebateSettingsPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <AddDepositRebateSettingButton
+              onSuccess={onSuccess}
+              model={rebateModelSetting as number}
+              serverList={serverList}
+              levelList={levelList}
+              languageList={languageList}
+              dealAccountGroupListRes={dealAccountGroupListRes}
+            />
           </div>
         </div>
         <DataTable
@@ -282,6 +359,28 @@ export const DepositRebateSettingsPage = () => {
           loading={depositRebateSettingsLoading}
         />
       </TableContentWrapper>
+      <RrhDeleteAlert<{ ids: string }>
+        open={deleteDialogOpen}
+        setOpen={setDeleteDialogOpen}
+        onSuccess={onSuccess}
+        confirmFunction={deleteRebateDepositSetting}
+        params={{ ids: currentItem?.id || '' }}
+        tipsText={t('DepositRebateSettings.deleteMsg')}
+      />
+      <EditDepositRebateSettingDialog
+        open={editDialogOpen}
+        setOpen={setEditDialogOpen}
+        onSuccess={() => {
+          setEditDialogOpen(false);
+          onSuccess();
+        }}
+        rebateTraderDealItem={currentItem}
+        model={rebateModelSetting as number}
+        serverList={serverList}
+        levelList={levelList}
+        languageList={languageList}
+        dealAccountGroupListRes={dealAccountGroupListRes}
+      />
     </div>
   );
 };

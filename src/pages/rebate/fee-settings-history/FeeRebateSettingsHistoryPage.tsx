@@ -243,7 +243,10 @@ export const FeeRebateSettingsHistoryPage = () => {
 
   return (
     <div>
-      <PageInfo title={t('FeeRebateSettings.feeRebateSettingsHistory')} />
+      <PageInfo
+        title={t('FeeRebateSettings.feeRebateSettingsHistory')}
+        desc={t('FeeRebateSettings.feeRebateSettingsHistoryDesc')}
+      />
       <TableContentWrapper>
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <RrhInputWithIcon

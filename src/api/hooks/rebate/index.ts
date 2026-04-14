@@ -35,6 +35,7 @@ import {
   RebateTraderDealListRes,
   SelectServerListParams,
   SelectServerListRes,
+  AddRebateDepositSettingParams,
 } from './types';
 
 export * from './types';
@@ -386,7 +387,10 @@ export function useDeleteRebateFeeSetting() {
 /**
  * 获取入金返佣设置
  */
-export function useRebateDepositSettingsList(params: RebateDepositSettingsListParams) {
+export function useRebateDepositSettingsList(
+  params: RebateDepositSettingsListParams,
+  { enabled }: { enabled?: boolean } = {},
+) {
   return useQuery({
     queryKey: ['getRebateDepositSettingsList', params],
     queryFn: () =>
@@ -394,9 +398,62 @@ export function useRebateDepositSettingsList(params: RebateDepositSettingsListPa
         '/system/crmRebateTraderInMoney/list',
         params,
       ),
+    enabled,
   });
 }
 
+/**
+ * 新增入金返佣设置
+ */
+export function useAddRebateDepositSetting() {
+  return useMutation({
+    mutationFn: (params: AddRebateDepositSettingParams) =>
+      apiFormPost('/system/crmRebateTraderInMoney/add', params),
+  });
+}
+/**
+ * 编辑入金返佣设置
+ */
+export function useEditRebateDepositSetting() {
+  return useMutation({
+    mutationFn: (params: AddRebateDepositSettingParams & { id?: string }) =>
+      apiFormPost('/system/crmRebateTraderInMoney/edit', params),
+  });
+}
+/**
+ * 改变入金返佣设置的状态
+ */
+export function useChangeRebateDepositSettingStatus() {
+  return useMutation({
+    mutationFn: (params: { id: string; hasUsed: string }) =>
+      apiFormPost('/system/crmRebateTraderInMoney/changeStatus', params),
+  });
+}
+
+/**
+ * 删除入金返佣设置
+ */
+export function useDeleteRebateDepositSetting() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost('/system/crmRebateTraderInMoney/remove', params),
+  });
+}
+
+/**
+ * 获取入金返佣设置详情
+ */
+export function useGetRebateDepositSettingDetail(
+  id: string,
+  { enabled }: { enabled?: boolean } = {},
+) {
+  return useQuery({
+    queryKey: ['getRebateDepositSettingDetail', id],
+    queryFn: () => apiGet<RebateFeeSettingDetail>(`/system/crmRebateTraderInMoney/detail/${id}`),
+    enabled,
+    staleTime: 0,
+  });
+}
 /**
  * 获取返佣基础设置
  */

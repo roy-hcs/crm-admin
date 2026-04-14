@@ -296,7 +296,7 @@ export type AddTradingRebateRuleParams = {
   serialNumber: string;
   commissionSettlementTiming: string;
   remark?: string;
-  traderServers: TraderServerItem[];
+  traderServers?: TraderServerItem[];
   traderLanguages: TraderLanguageItem[];
 };
 export type GetMtAndRebateTypeRes = {
@@ -309,6 +309,13 @@ export type AddRebateFeeSettingParams = Omit<
   AddTradingRebateRuleParams,
   'settleType' | 'settleValue'
 >;
+
+export type AddRebateDepositSettingParams = Omit<
+  AddTradingRebateRuleParams,
+  'settleType' | 'settleValue'
+> & {
+  suitType: string;
+};
 
 export type RebateFeeSettingsHistoryListParams = BasicParams & {
   timestamp: number;

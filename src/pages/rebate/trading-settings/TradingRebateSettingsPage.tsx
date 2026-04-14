@@ -374,7 +374,7 @@ export const TradingRebateSettingsPage = () => {
         onSuccess={onSuccess}
         confirmFunction={deleteRebateTraderDeal}
         params={{ ids: currentItem?.id || '' }}
-        tipsText={t('ProductGroup.deleteTips')}
+        tipsText={t('DepositRebateSettings.deleteMsg')}
       />
       <EditTradingRebateSettingDialog
         open={editDialogOpen}

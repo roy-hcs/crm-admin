@@ -1481,6 +1481,7 @@
     "realTimeCommission": "实时返佣",
     "commissionDesc": "*如有选择返佣结算时机，优先使用该方式结算返佣；如未选择返佣结算时机，默认使用对应返佣类型的结算方式结算返佣",
     "serverSetting": "服务器设置",
+    "baseSetting": "基础设置",
     "allMtGroups": "全部MT组",
     "allRebateGroupType": "全部品种",
     "multipleLanguageSetting": "多语言设置"
@@ -1489,6 +1490,7 @@
     "title": "手续费返佣设置",
     "warn": "一笔订单允许返佣多次。如命中多条返佣规则，将对命中的规则陆续返佣。一条规则仅返佣一次。",
     "feeRebateSettingsHistory": "手续费历史订单返佣",
+    "feeRebateSettingsHistoryDesc": "已返佣的订单不再计算返佣。 查询的MT5订单包括in和out订单。 点击【计算返佣】将对查询到的订单计算返佣。计算历史订单的手续费返佣，会一并计算交易返佣。如不需要计算交易返佣，请在返佣设置-基础设置-交易返佣设置中选择关闭。如未能获取到最新的订单数据，则稍后重试，等待订单同步。",
     "calculateRebate": "计算返佣",
     "theLatestRule": "按当前最新规则返佣",
     "theHistoryRule": "按历史规则返佣",
@@ -1497,7 +1499,9 @@
   },
   "DepositRebateSettings": {
     "title": "入金返佣设置",
-    "warn": "一笔入金允许返佣多次。如命中多条返佣规则，将对命中的规则陆续返佣。一条规则仅返佣一次。"
+    "warn": "一笔入金允许返佣多次。如命中多条返佣规则，将对命中的规则陆续返佣。一条规则仅返佣一次。",
+    "depositAccount": "入金账号",
+    "deleteMsg": "确定删除该 返佣设置？"
   },
   "PammProduct": {
     "title": "PAMM产品设置",
