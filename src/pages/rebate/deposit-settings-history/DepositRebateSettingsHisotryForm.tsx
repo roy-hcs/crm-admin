@@ -1,84 +1,88 @@
-import { PositionOrderParams } from '@/api/hooks/report';
-import { useGetDealAccountGroupList, useGetGroupByServer } from '@/api/hooks/account';
-import { ServerItem } from '@/api/hooks/system/types';
-import { RrhButton } from '@/components/common/RrhButton';
-import { BaseOption } from '@/components/common/RrhMultiSelect';
-import FormDateRangeInput from '@/components/form/FormDateRangeInput';
-import { FormInput } from '@/components/form/FormInput';
-import { FormMultiSelect } from '@/components/form/FormMultiSelect';
-import { FormSelect } from '@/components/form/FormSelect';
 import {
+  Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  Form,
 } from '@/components/ui/form';
-import { serverMap } from '@/lib/constant';
-import { RefreshCcw, Search } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
+import FormDateRangeInput from '@/components/form/FormDateRangeInput';
+import { RefreshCcw, Search } from 'lucide-react';
+import { FormInput } from '@/components/form/FormInput';
+import { FormProvider } from '@/contexts/form';
+import { FormSelect } from '@/components/form/FormSelect';
+import { RrhButton } from '@/components/common/RrhButton';
+import { useTranslation } from 'react-i18next';
+import { ServerItem } from '@/api/hooks/system/types';
+import { BaseOption } from '@/components/common/RrhSelect';
+import { useGetDealAccountGroupList, useGetGroupByServer } from '@/api/hooks/account';
+import { FormMultiSelect } from '@/components/form/FormMultiSelect';
+import { serverMap } from '@/lib/constant';
 import { formatDate } from '@/lib/utils';
 import { Dispatch, SetStateAction } from 'react';
+import { BasicParams } from '@/api/types';
+import { RebateFeeSettingsHistoryListParams } from '@/api/hooks/rebate';
 import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 
 type FormData = {
   serverId: string;
   serverGroupList: string[];
-  type: number | string;
-  name: string;
-  login: string;
+  type: string;
   symbol: string;
   ticket: string;
-  accounts: string;
+  name: string;
+  login: string;
   accountGroupList: string[];
+  accounts: string;
+  entry: string;
   openTime: { from: string; to: string };
 };
 
-export interface PositionOrderRef {
-  onReset: () => void;
-}
-
-export const PositionOrderForm = ({
-  serverList,
-  serverListLoading,
+export const DepositRebateSettingsHistoryForm = ({
   setOtherParams,
   setParams,
+  serverList,
+  serverLoading,
   loading,
   reset,
   params,
   otherParams,
+  setTimeStamp,
 }: {
   serverList: ServerItem[];
-  serverListLoading: boolean;
-  setParams: Dispatch<SetStateAction<PositionOrderParams['params']>>;
-  setOtherParams: Dispatch<SetStateAction<Omit<PositionOrderParams, 'params'>>>;
+  serverLoading: boolean;
+  setOtherParams: Dispatch<
+    SetStateAction<Omit<RebateFeeSettingsHistoryListParams, 'params' | keyof BasicParams>>
+  >;
+  setParams: Dispatch<SetStateAction<RebateFeeSettingsHistoryListParams['params']>>;
   loading: boolean;
   reset: () => void;
-  params: PositionOrderParams['params'];
-  otherParams: Omit<PositionOrderParams, 'params'>;
+  params: RebateFeeSettingsHistoryListParams['params'];
+  otherParams: Omit<RebateFeeSettingsHistoryListParams, 'params' | keyof BasicParams>;
+  setTimeStamp: Dispatch<SetStateAction<number>>;
 }) => {
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      serverId: otherParams.server || '',
+      serverId: otherParams.serverId || '',
       serverGroupList: otherParams.serverGroupList ? otherParams.serverGroupList.split(',') : [],
-      type: otherParams.type || '',
-      name: params.positionFuzzyName || '',
-      login: params.positionFuzzyLogin || '',
-      symbol: params.positionFuzzySymbol || '',
-      ticket: params.positionFuzzyTicket || '',
-      accounts: params.accounts || '',
+      type: otherParams.type ? otherParams.type.toString() : '',
+      symbol: otherParams.symbol || '',
+      ticket: otherParams.ticket || '',
+      name: params.historyFuzzyName || '',
+      login: otherParams.login || '',
+      accounts: otherParams.accounts || '',
+      entry: otherParams.entry.toString() || '',
       accountGroupList: otherParams.accountGroupList ? otherParams.accountGroupList.split(',') : [],
       openTime: {
-        from: params.positionDealBJStartTime || '',
-        to: params.positionDealBJEndTime || '',
+        from: params.historyDealBJStartTime || '',
+        to: params.historyDealBJEndTime || '',
       },
     },
   });
-  if (!form.getValues('serverId') && serverList.length && !serverListLoading) {
+
+  if (!form.getValues('serverId') && serverList.length && !serverLoading) {
     form.setValue('serverId', serverList[0].id, { shouldDirty: false, shouldTouch: false });
   }
 
@@ -88,45 +92,50 @@ export const PositionOrderForm = ({
 
   const { data: dealAccountGroupListData } = useGetDealAccountGroupList();
 
+  const selectedServer = serverList.find(item => item.id === form.watch('serverId'));
+
   const onSubmit = (data: FormData) => {
     reset();
+    const selectedServer = serverList.find(item => item.id === data.serverId);
+    if (!selectedServer) return;
     const selectedAccounts = JSON.parse(data.accounts || '{"id": "", "label": ""}') as {
       id: string;
       label: string;
     };
-    setOtherParams({
-      server: data.serverId,
-      serverGroupList: data.serverGroupList.join(','),
-      type: data.type,
-      accountGroupList: data.accountGroupList.join(','),
-      accounts: selectedAccounts.id,
-    });
     setParams({
-      random: new Date().getTime() + '' + Math.floor(Math.random() * 100 + 1),
-      positionFuzzyName: data.name,
-      positionFuzzyLogin: data.login,
-      positionFuzzySymbol: data.symbol,
-      positionFuzzyTicket: data.ticket,
+      historyDealBJStartTimeRingOut: '',
+      historyDealBJEndTimeRingOut: '',
+      historyDealBJStartTime: formatDate(data.openTime.from, 'YYYY-MM-DD HH:mm'),
+      historyDealBJEndTime: formatDate(data.openTime.to, 'YYYY-MM-DD HH:mm'),
       accounts: selectedAccounts.label,
-      positionDealBJStartTime: formatDate(data.openTime.from),
-      positionDealBJEndTime: formatDate(data.openTime.to),
+      historyFuzzyName: data.name,
+    });
+    const timestamp = Date.now();
+    setTimeStamp(timestamp);
+    setOtherParams({
+      // 这里需要调整，和外部共用一个timestamp参数，计算返佣时需要使用这个参数,每次查询或刷新时会更新这个时间戳
+      timestamp,
+      serverId: selectedServer.id,
+      serverGroupList: data.serverGroupList.join(','),
+      serverGroup:
+        data.serverGroupList.length > 0
+          ? data.serverGroupList[data.serverGroupList.length - 1]
+          : '',
+      type: data.type,
+      symbol: data.symbol,
+      ticket: data.ticket,
+      login: data.login,
+      accountGroupList: data.accountGroupList.join(','),
+      dealAccountGroupIds: data.accountGroupList.join(','),
+      accounts: selectedAccounts.id,
+      entry: data.entry || '',
     });
   };
   const onReset = () => {
     reset();
-    form.reset({
-      serverId: '',
-      serverGroupList: [],
-      type: '',
-      name: '',
-      login: '',
-      symbol: '',
-      ticket: '',
-      accounts: '',
-      accountGroupList: [],
-      openTime: { from: '', to: '' },
-    });
+    form.reset();
   };
+
   return (
     <FormProvider form={form}>
       <Form {...form}>
@@ -233,7 +242,9 @@ export const PositionOrderForm = ({
             name="openTime"
             render={() => (
               <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('table.time')}</FormLabel>
+                <FormLabel className="basis-3/12">
+                  {selectedServer?.serviceType === 1 ? t('table.tradingTime') : t('table.openTime')}
+                </FormLabel>
                 <FormControl className="basis-9/12">
                   <FormDateRangeInput name="openTime" control={form.control} />
                 </FormControl>
@@ -241,6 +252,21 @@ export const PositionOrderForm = ({
               </FormItem>
             )}
           />
+          {selectedServer?.serviceType === 1 && (
+            <FormSelect
+              verticalLabel
+              name="entry"
+              label={t('table.entry')}
+              placeholder={t('common.pleaseSelect')}
+              showRowValue={false}
+              options={[
+                { label: 'in', value: 0 },
+                { label: 'out', value: 1 },
+                { label: 'in/out', value: 2 },
+                { label: 'out by', value: 3 },
+              ]}
+            />
+          )}
 
           <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
             <RrhButton type="reset" variant="outline" onClick={onReset}>

@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { FormProvider } from '@/contexts/form';
 import { FormInput } from '@/components/form/FormInput';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { useGetDealAccountGroupList } from '@/api/hooks/account';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
@@ -24,6 +23,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { DataStatisticsParams } from '@/api/hooks/report';
 import { BasicParams } from '@/api/types';
 import { useGetGroup } from '@/api/hooks/system/system';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 type FormData = {
   serverId: string;
   onlyViewRebateAccount: string;
@@ -86,6 +86,10 @@ export const TradingAccountDataStatsForm = ({
 
   const onSubmit = (data: FormData) => {
     reset();
+    const selectedAccounts = JSON.parse(data.accounts || '{"id": "", "label": ""}') as {
+      id: string;
+      label: string;
+    };
     setParams({
       onlyViewRebateAccount: data.onlyViewRebateAccount,
       serverGroupList: data.serverGroupList,
@@ -93,10 +97,10 @@ export const TradingAccountDataStatsForm = ({
       fuzzyName: data.fuzzyName,
       statisticStartTime: formatDate(data.statisticTime.from),
       statisticEndTime: formatDate(data.statisticTime.to),
-      accounts: data.accounts,
+      accounts: selectedAccounts.label,
     });
     setCommonParams({
-      accounts: data.accounts,
+      accounts: selectedAccounts.id,
       accountGroupList: data.accountGroupList,
       username: data.username,
       directBroker: data.directBroker,
@@ -191,12 +195,7 @@ export const TradingAccountDataStatsForm = ({
               </FormItem>
             )}
           />
-          <FormField
-            name="accounts"
-            render={({ field }) => {
-              return <RrhSelectAccountsPopup verticalLabel field={field} />;
-            }}
-          />
+          <SelectUpperDropdown />
           <FormMultiSelect
             verticalLabel
             name="accountGroupList"

@@ -1,4 +1,5 @@
 import { API_BASE_URL } from '@/api/client';
+import { CrmDealAccountFundFlowItem } from '@/api/hooks/account';
 import { ColumnMeta } from '@/api/hooks/common';
 import { TotalItem } from '@/api/hooks/pamm/type';
 import { CRMColumnDef } from '@/components/table';
@@ -204,3 +205,87 @@ export const normalizeTimeByPrecision = (value: string | undefined, precision: T
   if (Number(hh) > 23 || Number(mm) > 59 || Number(ss) > 59) return '';
   return precision === 'minute' ? `${hh}:${mm}` : `${hh}:${mm}:${ss}`;
 };
+
+/**
+ * 这就是原后台使用的方法
+ */
+export function oprType(row: CrmDealAccountFundFlowItem) {
+  const comment = row.comment === null ? '' : row.comment;
+  const lower = comment.toLocaleLowerCase();
+
+  if (comment.startsWith('DD$')) {
+    return 'tradingAccountTransactions.type.10';
+  }
+  if (comment.startsWith('DW$')) {
+    return 'tradingAccountTransactions.type.11';
+  }
+  if (row.type === 4) {
+    return 'tradingAccountTransactions.type.12';
+  }
+
+  const isSys =
+    lower.indexOf('{sys}') > -1 || comment.startsWith('SD$') || comment.startsWith('SW$');
+  const isCom =
+    lower.startsWith('commission') ||
+    comment.startsWith('RT$') ||
+    comment.startsWith('RS$') ||
+    comment.startsWith('RD$');
+  const isInter =
+    lower.indexOf('inter transfer') > -1 ||
+    comment.indexOf('{INT}') > -1 ||
+    comment.startsWith('TD$') ||
+    comment.startsWith('TW$');
+
+  const profit = row.profit || 0;
+
+  if (row.flowType === 1) {
+    //出入金
+    if (isSys) {
+      //系统行为
+      if (profit < 0) {
+        return 'tradingAccountTransactions.type.4';
+      } else {
+        return 'tradingAccountTransactions.type.3';
+      }
+    }
+    if (!isSys && !isInter) {
+      //用户行为
+      if (profit < 0) {
+        return 'tradingAccountTransactions.type.2';
+      } else if (profit >= 0 && !isCom) {
+        return 'tradingAccountTransactions.type.1';
+      }
+    }
+    if (isInter) {
+      if (profit >= 0) {
+        return 'tradingAccountTransactions.type.8';
+      } else if (profit < 0) {
+        return 'tradingAccountTransactions.type.9';
+      }
+    }
+    if (isCom && profit >= 0) {
+      return 'tradingAccountTransactions.type.7';
+    }
+  }
+
+  if (row.flowType === 2) {
+    //信用金出入金
+    if (profit < 0) {
+      return 'tradingAccountTransactions.type.6';
+    }
+    return 'tradingAccountTransactions.type.5';
+  }
+
+  if (row.flowType === 3) {
+    //费用
+    return 'tradingAccountTransactions.type.12';
+  }
+
+  if (row.flowType === 4) {
+    //更正
+    return 'tradingAccountTransactions.type.13';
+  }
+  if (row.flowType === 8) {
+    return 'tradingAccountTransactions.type.14';
+  }
+}

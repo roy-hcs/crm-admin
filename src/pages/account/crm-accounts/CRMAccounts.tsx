@@ -57,6 +57,7 @@ export const CRMAccounts = () => {
       role: '',
       certiricateNo: '',
       accountType: '',
+      accounts: '',
     },
   );
 
@@ -93,6 +94,7 @@ export const CRMAccounts = () => {
       role: '',
       certiricateNo: '',
       accountType: '',
+      accounts: '',
     });
     setTags('');
     setPageNum(0);

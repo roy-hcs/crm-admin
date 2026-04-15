@@ -15,12 +15,12 @@ import { FormSelect } from '@/components/form/FormSelect';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { OrderStatusOptions } from '@/lib/const';
 import { useChannelList } from '@/api/hooks/system/system';
 import { formatDate } from '@/lib/utils';
 import { PaymentOrderListParams } from '@/api/hooks/report';
 import { BasicParams } from '@/api/hooks/review/types';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 
 type FormData = {
   userName: string;
@@ -62,10 +62,14 @@ export const PaymentOrdersForm = ({
 
   const onSubmit = (data: FormData) => {
     reset();
+    const selectedAccounts = JSON.parse(data.accounts || '{"id": "", "label": ""}') as {
+      id: string;
+      label: string;
+    };
     setParams({
       userName: data.userName,
       account: data.account,
-      accounts: data.accounts,
+      accounts: selectedAccounts.label,
       operationStart: formatDate(data.operationTime.from),
       operationEnd: formatDate(data.operationTime.to),
     });
@@ -73,7 +77,7 @@ export const PaymentOrdersForm = ({
       channelId: data.channelId,
       orderStatus: data.orderStatus,
       orderId: data.orderId,
-      accounts: data.accounts,
+      accounts: selectedAccounts.id,
     });
   };
   const onReset = () => {
@@ -134,12 +138,7 @@ export const PaymentOrdersForm = ({
               field: t('paymentOrders.orderId'),
             })}
           />
-          <FormField
-            name="accounts"
-            render={({ field }) => {
-              return <RrhSelectAccountsPopup verticalLabel field={field} />;
-            }}
-          />
+          <SelectUpperDropdown />
           <FormField
             name="operationTime"
             render={() => (

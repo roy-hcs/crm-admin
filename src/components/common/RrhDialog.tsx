@@ -224,6 +224,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
             e.preventDefault(); // Also prevent Escape key
           }
         }}
+        className={className}
       >
         {formLoading && (
           <div className="bg-accent-foreground/8 absolute inset-0 flex items-center justify-center">

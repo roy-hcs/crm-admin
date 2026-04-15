@@ -3,7 +3,6 @@ import { useGetGroupByServer } from '@/api/hooks/account';
 import { ServerItem } from '@/api/hooks/system/types';
 import { RrhButton } from '@/components/common/RrhButton';
 import { BaseOption } from '@/components/common/RrhMultiSelect';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { FormInput } from '@/components/form/FormInput';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
@@ -24,6 +23,7 @@ import { useForm } from 'react-hook-form';
 import { formatDate } from '@/lib/utils';
 import { Dispatch, SetStateAction } from 'react';
 import { BasicParams } from '@/api/types';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 
 type FormData = {
   serverId: string;
@@ -215,12 +215,7 @@ export const LimitOrderForm = ({
             label={t('table.tradingAccount')}
             placeholder={t('common.pleaseInput', { field: t('table.tradingAccount') })}
           />
-          <FormField
-            name="accounts"
-            render={({ field }) => {
-              return <RrhSelectAccountsPopup verticalLabel field={field} />;
-            }}
-          />
+          <SelectUpperDropdown />
 
           <FormField
             name="openTime"

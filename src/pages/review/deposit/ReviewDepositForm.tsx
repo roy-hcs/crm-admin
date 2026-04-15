@@ -16,9 +16,9 @@ import { FormProvider } from '@/contexts/form';
 import { useForm } from 'react-hook-form';
 import { DepositListParams, ThirdPaymentItem } from '@/api/hooks/review';
 import { Dispatch, SetStateAction } from 'react';
-import { RrhSelectAccountsPopup } from '@/components/common/RrhSelectAccountPopup';
 import { CurrencyItem } from '@/api/hooks/system/types';
 import { formatDate } from '@/lib/utils';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 
 type FormData = {
   name: string;
@@ -214,12 +214,7 @@ export const ReviewDepositForm = ({
             ]}
           />
 
-          <FormField
-            name="accounts"
-            render={({ field }) => {
-              return <RrhSelectAccountsPopup verticalLabel field={field} />;
-            }}
-          />
+          <SelectUpperDropdown />
           {depositMethod === '5' && (
             <FormSelect
               verticalLabel
