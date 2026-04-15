@@ -18,11 +18,11 @@ import {
   useRebateSettingsHistoryList,
 } from '@/api/hooks/rebate';
 import dayjs from 'dayjs';
-import { FeeRebateSettingsHistoryForm } from './FeeRebateSettingsHisotryForm';
+import { TradingRebateSettingsHistoryForm } from './TradingRebateSettingsHisotryForm';
 import { CalculateRebateDialog } from './CalculateRebateDialog';
 import { useGetSysConfig } from '@/api/hooks/system/system';
 
-export const FeeRebateSettingsHistoryPage = () => {
+export const TradingRebateSettingsHistoryPage = () => {
   const { t } = useTranslation();
   const tableRef = useRef<DataTableRef>(null);
   const { serverId, server, serverLoading } = useInitServerId();
@@ -77,7 +77,7 @@ export const FeeRebateSettingsHistoryPage = () => {
         ...params,
       },
     },
-    2,
+    1,
     {
       enabled: !!serverId,
     },
@@ -238,7 +238,7 @@ export const FeeRebateSettingsHistoryPage = () => {
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility<RebateFeeSettingsHistoryItem>(
-      'rebate-fee-settings-history-table',
+      'rebate-trading-settings-history-table',
       allColumns,
     );
 
@@ -279,7 +279,7 @@ export const FeeRebateSettingsHistoryPage = () => {
                 </RrhButton>
               }
             >
-              <FeeRebateSettingsHistoryForm
+              <TradingRebateSettingsHistoryForm
                 params={params}
                 otherParams={otherParams}
                 reset={reset}

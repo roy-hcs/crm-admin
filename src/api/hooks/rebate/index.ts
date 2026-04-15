@@ -35,6 +35,8 @@ import {
   RebateTraderDealListRes,
   SelectServerListParams,
   SelectServerListRes,
+  AddRebateDepositSettingParams,
+  RebateDepositSettingsHistoryListRes,
 } from './types';
 
 export * from './types';
@@ -311,17 +313,37 @@ export function useRebateFeeSettingsList(
   });
 }
 /**
- * 获取手续费历史订单返佣
+ * 获取手续费/交易历史订单返佣
  */
-export function useRebateFeeSettingsHistoryList(
+export function useRebateSettingsHistoryList(
+  params: RebateFeeSettingsHistoryListParams,
+  id: number, // 1交易返佣设置 2手续费返佣设置 3入金返佣设置
+  { enabled }: { enabled?: boolean } = {},
+) {
+  return useQuery({
+    queryKey: ['getRebateFeeSettingsHistoryList', params, id],
+    queryFn: () =>
+      apiFormPostCustom<RebateFeeSettingsHistoryListRes>(
+        `/system/crmRebateHistoryDeal/deal-list/${id}`,
+        params,
+      ),
+    enabled,
+  });
+}
+
+/**
+ * 获取入金历史订单返佣
+ */
+export function useRebateDepositSettingsHistoryList(
   params: RebateFeeSettingsHistoryListParams,
   { enabled }: { enabled?: boolean } = {},
 ) {
   return useQuery({
     queryKey: ['getRebateFeeSettingsHistoryList', params],
     queryFn: () =>
-      apiFormPostCustom<RebateFeeSettingsHistoryListRes>(
-        '/system/crmRebateHistoryDeal/deal-list/2',
+      // 入金历史订单返佣的类型与其他两种不一致，需要单独处理
+      apiFormPostCustom<RebateDepositSettingsHistoryListRes>(
+        '/system/crmRebateHistoryDeal/deal-list/3',
         params,
       ),
     enabled,
@@ -332,8 +354,8 @@ export function useRebateFeeSettingsHistoryList(
  */
 export function useCalculateRebateFee() {
   return useMutation({
-    mutationFn: (params: { timestamp: number; matchRuleType?: string }) =>
-      apiFormPost('system/crmRebateHistoryDeal/send-deal/2', params),
+    mutationFn: (params: { timestamp: number; matchRuleType?: string; id: number }) =>
+      apiFormPost(`system/crmRebateHistoryDeal/send-deal/${params.id}`, params),
   });
 }
 /**
@@ -386,7 +408,10 @@ export function useDeleteRebateFeeSetting() {
 /**
  * 获取入金返佣设置
  */
-export function useRebateDepositSettingsList(params: RebateDepositSettingsListParams) {
+export function useRebateDepositSettingsList(
+  params: RebateDepositSettingsListParams,
+  { enabled }: { enabled?: boolean } = {},
+) {
   return useQuery({
     queryKey: ['getRebateDepositSettingsList', params],
     queryFn: () =>
@@ -394,9 +419,62 @@ export function useRebateDepositSettingsList(params: RebateDepositSettingsListPa
         '/system/crmRebateTraderInMoney/list',
         params,
       ),
+    enabled,
   });
 }
 
+/**
+ * 新增入金返佣设置
+ */
+export function useAddRebateDepositSetting() {
+  return useMutation({
+    mutationFn: (params: AddRebateDepositSettingParams) =>
+      apiFormPost('/system/crmRebateTraderInMoney/add', params),
+  });
+}
+/**
+ * 编辑入金返佣设置
+ */
+export function useEditRebateDepositSetting() {
+  return useMutation({
+    mutationFn: (params: AddRebateDepositSettingParams & { id?: string }) =>
+      apiFormPost('/system/crmRebateTraderInMoney/edit', params),
+  });
+}
+/**
+ * 改变入金返佣设置的状态
+ */
+export function useChangeRebateDepositSettingStatus() {
+  return useMutation({
+    mutationFn: (params: { id: string; hasUsed: string }) =>
+      apiFormPost('/system/crmRebateTraderInMoney/changeStatus', params),
+  });
+}
+
+/**
+ * 删除入金返佣设置
+ */
+export function useDeleteRebateDepositSetting() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost('/system/crmRebateTraderInMoney/remove', params),
+  });
+}
+
+/**
+ * 获取入金返佣设置详情
+ */
+export function useGetRebateDepositSettingDetail(
+  id: string,
+  { enabled }: { enabled?: boolean } = {},
+) {
+  return useQuery({
+    queryKey: ['getRebateDepositSettingDetail', id],
+    queryFn: () => apiGet<RebateFeeSettingDetail>(`/system/crmRebateTraderInMoney/detail/${id}`),
+    enabled,
+    staleTime: 0,
+  });
+}
 /**
  * 获取返佣基础设置
  */

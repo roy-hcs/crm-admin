@@ -28,6 +28,8 @@ import { AddTradingRebateSettingButton } from './components/AddTradingRebateSett
 import { EditTradingRebateSettingDialog } from './components/EditTradingRebateSettingDialog';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 import { useGetDealAccountGroupList } from '@/api/hooks/account';
+import { RrhButton } from '@/components/common/RrhButton';
+import { useTabActions } from '@/hooks/useTabActions';
 
 function getServerTypeName(serverType: string) {
   switch (serverType) {
@@ -297,6 +299,7 @@ export const TradingRebateSettingsPage = () => {
     useColumnVisibility('trading-rebate-settings-table', allColumns);
 
   const { mutateAsync: deleteRebateTraderDeal } = useDeleteRebateTraderDeal();
+  const { openTab } = useTabActions();
   return (
     <div>
       <PageInfo title={t('TradingRebateSettings.title')} desc={t('TradingRebateSettings.warn')} />
@@ -355,6 +358,19 @@ export const TradingRebateSettingsPage = () => {
               languageList={languageList}
               dealAccountGroupListRes={dealAccountGroupListRes}
             />
+            <RrhButton
+              variant="outline"
+              onClick={() => {
+                openTab({
+                  path: '/rebate/trading-settings-history',
+                  title: t('TradingRebateSettings.tradingRebateSettingsHistory'),
+                  key: '/rebate/trading-settings-history',
+                  closable: true,
+                });
+              }}
+            >
+              {t('table.historyOrderRebate')}
+            </RrhButton>
           </div>
         </div>
         <DataTable
@@ -374,7 +390,7 @@ export const TradingRebateSettingsPage = () => {
         onSuccess={onSuccess}
         confirmFunction={deleteRebateTraderDeal}
         params={{ ids: currentItem?.id || '' }}
-        tipsText={t('ProductGroup.deleteTips')}
+        tipsText={t('DepositRebateSettings.deleteMsg')}
       />
       <EditTradingRebateSettingDialog
         open={editDialogOpen}

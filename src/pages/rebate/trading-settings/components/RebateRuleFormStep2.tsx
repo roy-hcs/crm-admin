@@ -12,11 +12,13 @@ interface Server {
 interface RebateRuleFormStep2Props {
   selectedServerOptions: Server[];
   mtAndRebateTypeList: { groups: string[]; types: RebateBaseTypeItem[] }[];
+  type: 'trading' | 'fee' | 'deposit';
 }
 
 export const RebateRuleFormStep2 = ({
   selectedServerOptions,
   mtAndRebateTypeList,
+  type,
 }: RebateRuleFormStep2Props) => {
   const { t } = useTranslation();
 
@@ -42,18 +44,20 @@ export const RebateRuleFormStep2 = ({
                 })) || []
               }
             />
-            <FormMultiSelect
-              name={`traderServers.${index}.rebateGroupTypes`}
-              label={t('common.optionalField', { field: t('table.typeGroup') })}
-              verticalLabel
-              placeholder={t('TradingRebateSettings.allRebateGroupType')}
-              options={
-                mtAndRebateTypeList[index]?.types.map(item => ({
-                  label: item.typeGroupName,
-                  value: item.id,
-                })) || []
-              }
-            />
+            {type !== 'deposit' && (
+              <FormMultiSelect
+                name={`traderServers.${index}.rebateGroupTypes`}
+                label={t('common.optionalField', { field: t('table.typeGroup') })}
+                verticalLabel
+                placeholder={t('TradingRebateSettings.allRebateGroupType')}
+                options={
+                  mtAndRebateTypeList[index]?.types.map(item => ({
+                    label: item.typeGroupName,
+                    value: item.id,
+                  })) || []
+                }
+              />
+            )}
           </div>
         ))}
       </div>

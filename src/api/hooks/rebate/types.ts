@@ -296,7 +296,7 @@ export type AddTradingRebateRuleParams = {
   serialNumber: string;
   commissionSettlementTiming: string;
   remark?: string;
-  traderServers: TraderServerItem[];
+  traderServers?: TraderServerItem[];
   traderLanguages: TraderLanguageItem[];
 };
 export type GetMtAndRebateTypeRes = {
@@ -309,6 +309,13 @@ export type AddRebateFeeSettingParams = Omit<
   AddTradingRebateRuleParams,
   'settleType' | 'settleValue'
 >;
+
+export type AddRebateDepositSettingParams = Omit<
+  AddTradingRebateRuleParams,
+  'settleType' | 'settleValue'
+> & {
+  suitType: string;
+};
 
 export type RebateFeeSettingsHistoryListParams = BasicParams & {
   timestamp: number;
@@ -366,6 +373,53 @@ export type RebateFeeSettingsHistoryItem = {
 export type RebateFeeSettingsHistoryListRes = {
   total: string;
   rows: RebateFeeSettingsHistoryItem[];
+  code: number;
+  msg: string | null;
+  totalVolume: number;
+  totalCommission: number;
+  totalProfit: number;
+  totalSwaps: number;
+  priceSum: number;
+  serverType: string | null;
+  totalList: string[] | null;
+};
+export type RebateDepositSettingsHistoryItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: string;
+  login: string;
+  serverId: string;
+  server: string;
+  serverType: number;
+  ticket: number;
+  type: number;
+  time: string;
+  profit: number;
+  comment: string;
+  currency: string;
+  digits: number;
+  flowType: number;
+  serviceProperty: string | null;
+  timeStr: string;
+  accountGroupList: string | null;
+  serverGroupList: string | null;
+  opeTypeList: string | null;
+  accounts: string | null;
+  orderNum: string | null;
+  balance: number;
+  crmShowId: string | null;
+  name: string;
+  crmUserName: string | null;
+  typeName: string | null;
+};
+
+export type RebateDepositSettingsHistoryListRes = {
+  total: string;
+  rows: RebateDepositSettingsHistoryItem[];
   code: number;
   msg: string | null;
   totalVolume: number;

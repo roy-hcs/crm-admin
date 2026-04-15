@@ -1,10 +1,12 @@
 import { RebateBasicSettingsPage } from '@/pages/rebate/basic-settings/RebateBasicSettingsPage';
+import { DepositRebateSettingsHistoryPage } from '@/pages/rebate/deposit-settings-history/DepositRebateSettingsHistoryPage';
 import { DepositRebateSettingsPage } from '@/pages/rebate/deposit-settings/DepositRebateSettingsPage';
 import { FeeRebateSettingsHistoryPage } from '@/pages/rebate/fee-settings-history/FeeRebateSettingsHistoryPage';
 import { FeeRebateSettingsPage } from '@/pages/rebate/fee-settings/FeeRebateSettingsPage';
 import { RebateLevelSettingsPage } from '@/pages/rebate/level-settings/RebateLevelSettingsPage';
 import { PipValuePage } from '@/pages/rebate/pip-value/PipValuePage';
 import { ProductGroupPage } from '@/pages/rebate/product-group/ProductGroupPage';
+import { TradingRebateSettingsHistoryPage } from '@/pages/rebate/trading-settings-history/TradingRebateSettingsHistoryPage';
 import { TradingRebateSettingsPage } from '@/pages/rebate/trading-settings/TradingRebateSettingsPage';
 import { RouteObject } from 'react-router-dom';
 
@@ -45,6 +47,14 @@ export const rebateRoutes: RouteObject[] = [
   {
     path: '/rebate/fee-settings-history',
     element: <FeeRebateSettingsHistoryPage />,
+  },
+  {
+    path: '/rebate/trading-settings-history',
+    element: <TradingRebateSettingsHistoryPage />,
+  },
+  {
+    path: '/rebate/deposit-settings-history',
+    element: <DepositRebateSettingsHistoryPage />,
   },
   {
     path: '/rebate/deposit-settings',

@@ -169,9 +169,9 @@ export function useRebateRuleFormCore({
     }
   }, [ruleName, selectedLangList, form]);
 
+  const suitTypeValue = form.watch('suitType');
   const handleNextStep = async () => {
     let isValid = false;
-
     if (step === 1) {
       isValid = await form.trigger(step1FieldsToValidate as string[]);
 
@@ -210,7 +210,18 @@ export function useRebateRuleFormCore({
     }
 
     if (isValid) {
-      setStep(step + 1);
+      if (step === 1 && suitTypeValue === '1') {
+        setStep(3);
+      } else {
+        setStep(step + 1);
+      }
+    }
+  };
+  const handlePrevStep = () => {
+    if (step === 3 && suitTypeValue === '1') {
+      setStep(1);
+    } else {
+      setStep(step - 1);
     }
   };
 
@@ -227,5 +238,6 @@ export function useRebateRuleFormCore({
     defaultLang,
     selectedLangList,
     handleNextStep,
+    handlePrevStep,
   };
 }

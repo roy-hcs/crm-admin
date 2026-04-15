@@ -27,7 +27,7 @@ export const CalculateRebateDialog = ({
           {t('FeeRebateSettings.calculateRebate')}
         </RrhButton>
       }
-      onConfirm={() => calculateRebateFee({ timestamp, matchRuleType: matchRule, id: 2 })}
+      onConfirm={() => calculateRebateFee({ timestamp, matchRuleType: matchRule, id: 1 })}
     >
       <div className="flex flex-col gap-2">
         <div className="text-base">

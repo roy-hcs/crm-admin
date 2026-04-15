@@ -279,7 +279,6 @@ export const FeeRebateSettingsPage = () => {
             { label: t('common.delete'), value: 'delete' },
           ]}
           callToAction={action => {
-            console.log('操作', action, '数据', row.original);
             setCurrentItem(row.original);
             switch (action) {
               case 'edit':
@@ -386,7 +385,7 @@ export const FeeRebateSettingsPage = () => {
         onSuccess={onSuccess}
         confirmFunction={deleteRebateFeeSetting}
         params={{ ids: currentItem?.id || '' }}
-        tipsText={t('ProductGroup.deleteTips')}
+        tipsText={t('DepositRebateSettings.deleteMsg')}
       />
       <EditFeeRebateSettingDialog
         open={editDialogOpen}

@@ -7,22 +7,23 @@ import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { BasicParams } from '@/api/types';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable, DataTableRef } from '@/components/table';
-import { REBATE_MODEL_SETTING, transactionTypeMap } from '@/lib/constant';
+import { REBATE_MODEL_SETTING } from '@/lib/constant';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useInitServerId } from '@/hooks/useInitServerId';
 import {
-  RebateFeeSettingsHistoryItem,
+  RebateDepositSettingsHistoryItem,
   RebateFeeSettingsHistoryListParams,
-  useRebateSettingsHistoryList,
+  useRebateDepositSettingsHistoryList,
 } from '@/api/hooks/rebate';
 import dayjs from 'dayjs';
-import { FeeRebateSettingsHistoryForm } from './FeeRebateSettingsHisotryForm';
+import { DepositRebateSettingsHistoryForm } from './DepositRebateSettingsHisotryForm';
 import { CalculateRebateDialog } from './CalculateRebateDialog';
 import { useGetSysConfig } from '@/api/hooks/system/system';
+import { oprType } from '@/lib/utils';
 
-export const FeeRebateSettingsHistoryPage = () => {
+export const DepositRebateSettingsHistoryPage = () => {
   const { t } = useTranslation();
   const tableRef = useRef<DataTableRef>(null);
   const { serverId, server, serverLoading } = useInitServerId();
@@ -66,7 +67,7 @@ export const FeeRebateSettingsHistoryPage = () => {
       }));
     }
   }, [server]);
-  const { data, isLoading } = useRebateSettingsHistoryList(
+  const { data, isLoading } = useRebateDepositSettingsHistoryList(
     {
       orderByColumn: '',
       isAsc: 'asc',
@@ -77,7 +78,6 @@ export const FeeRebateSettingsHistoryPage = () => {
         ...params,
       },
     },
-    2,
     {
       enabled: !!serverId,
     },
@@ -112,16 +112,11 @@ export const FeeRebateSettingsHistoryPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<RebateFeeSettingsHistoryItem, unknown>[] = [
+  const allColumns: CRMColumnDef<RebateDepositSettingsHistoryItem, unknown>[] = [
     {
       id: 'No.',
       header: t('CRMAccountPage.Index'),
       cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'userName',
-      header: t('CRMAccountPage.UserName'),
-      accessorFn: row => row.name,
     },
     {
       id: 'login',
@@ -129,116 +124,41 @@ export const FeeRebateSettingsHistoryPage = () => {
       accessorFn: row => row.login,
     },
     {
-      id: 'ticket',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.ticket,
+      id: 'userName',
+      header: t('CRMAccountPage.UserName'),
+      accessorFn: row => row.name,
     },
     {
-      id: 'type',
-      header: t('table.transactionType'), // 0: buy, 1: sell
-      accessorFn: row =>
-        transactionTypeMap[row.type as keyof typeof transactionTypeMap] || row.type,
-    },
-    {
-      id: 'symbol',
-      header: t('table.symbol'),
-      accessorFn: row => row.symbol,
-    },
-    {
-      id: 'tradeCount',
-      header: t('table.volume'),
+      id: 'operationType',
+      header: t('table.operationType'),
       cell: ({ row }) => {
-        const rowData = row.original;
-        if (rowData.server_type === '1') {
-          return (rowData.volume / 1000).toFixed(2);
-        } else if (rowData.server_type === '5') {
-          return rowData.volume.toFixed(2);
-        } else {
-          return (rowData.volume / 100).toFixed(2);
-        }
+        const type = oprType(row.original);
+        return type ? t(type) : '-';
       },
     },
     {
-      id: 'price',
-      header: t('table.price'),
+      id: 'profit',
+      header: t('tradingAccountTransactions.profit'),
       cell: ({ row }) => {
         const rowData = row.original;
-        if (!rowData.price) {
-          return 0;
-        }
-        return rowData.price.toFixed(rowData.digits);
+        return rowData.profit + ' ' + rowData.currency;
       },
     },
     {
       id: 'time',
-      header: t('table.tradingTime'),
-      accessorFn: row => row.time,
+      header: t('table.time'),
+      accessorFn: row => row.timeStr,
     },
     {
-      id: 'entry',
-      header: t('table.closePrice'),
-      cell: ({ row }) => {
-        switch (row.original.entry) {
-          case 0:
-            return 'in';
-          case 1:
-            return 'out';
-          case 2:
-            return 'in/out';
-          case 3:
-            return 'out/by';
-          default:
-            return row.original.entry;
-        }
-      },
-    },
-    {
-      id: 'profitAndLoss',
-      header: t('table.profitAndLoss'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        return rowData.profit !== null ? (
-          <div>
-            {rowData.profit.toFixed(2)} {rowData.currency}
-          </div>
-        ) : (
-          <div>-</div>
-        );
-      },
-    },
-    {
-      id: 'commission',
-      header: t('table.commission'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        return rowData.commission !== null ? (
-          <div>
-            {rowData.commission.toFixed(2)} {rowData.currency}
-          </div>
-        ) : (
-          <div>-</div>
-        );
-      },
-    },
-    {
-      id: 'swaps',
-      header: t('table.swap'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        return rowData.swaps !== null ? (
-          <div>
-            {rowData.swaps.toFixed(2)} {rowData.currency}
-          </div>
-        ) : (
-          <div>-</div>
-        );
-      },
+      id: 'ticket',
+      header: t('table.orderNumber'),
+      accessorFn: row => row.ticket,
     },
   ];
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility<RebateFeeSettingsHistoryItem>(
-      'rebate-fee-settings-history-table',
+    useColumnVisibility<RebateDepositSettingsHistoryItem>(
+      'rebate-deposit-settings-history-table',
       allColumns,
     );
 
@@ -279,7 +199,7 @@ export const FeeRebateSettingsHistoryPage = () => {
                 </RrhButton>
               }
             >
-              <FeeRebateSettingsHistoryForm
+              <DepositRebateSettingsHistoryForm
                 params={params}
                 otherParams={otherParams}
                 reset={reset}

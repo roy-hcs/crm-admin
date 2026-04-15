@@ -9,13 +9,13 @@ import { RebateRuleFormNavigation } from '../../trading-settings/components/Reba
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
 import { useRebateRuleFormCore } from '../../trading-settings/components/useRebateRuleFormCore';
 import {
-  AddRebateFeeSettingParams,
+  AddRebateDepositSettingParams,
   RebateLevelRes,
   RebateTraderDealItem,
-  useAddRebateFeeSetting,
-  useEditRebateFeeSetting,
+  useAddRebateDepositSetting,
+  useEditRebateDepositSetting,
   useGetMtAndRebateType,
-  useGetRebateFeeSettingDetail,
+  useGetRebateDepositSettingDetail,
 } from '@/api/hooks/rebate';
 import { DictTypeResponse, ServerListResponse } from '@/api/hooks/system';
 import { DealAccountGroupListResponse } from '@/api/hooks/account/types';
@@ -29,6 +29,7 @@ import { useTranslation } from 'react-i18next';
 type RebateRuleFormValues = {
   id?: string;
   ruleName: string;
+  suitType: string;
   model: string;
   rebateType: string;
   hasUsed: string;
@@ -53,7 +54,7 @@ type RebateRuleFormValues = {
   }>;
 };
 
-export const FeeRebateSettingForm = ({
+export const DepositRebateSettingsPopupForm = ({
   onSuccess,
   item,
   model,
@@ -73,56 +74,71 @@ export const FeeRebateSettingForm = ({
   const { t } = useTranslation();
   const isEditMode = !!item;
 
-  const { data: detailRes } = useGetRebateFeeSettingDetail(item?.id || '', { enabled: isEditMode });
+  const { data: detailRes } = useGetRebateDepositSettingDetail(item?.id || '', {
+    enabled: isEditMode,
+  });
   const { mutateAsync: getMtAndRebateType } = useGetMtAndRebateType();
-  const { mutateAsync: addRebateFeeSetting } = useAddRebateFeeSetting();
-  const { mutateAsync: editRebateFeeSetting } = useEditRebateFeeSetting();
+  const { mutateAsync: addRebateDepositSetting } = useAddRebateDepositSetting();
+  const { mutateAsync: editRebateDepositSetting } = useEditRebateDepositSetting();
   const [submitLoading, setSubmitLoading] = useState(false);
 
-  const addFeeRebateRuleSchema = z.object({
-    id: z.string().optional(),
-    ruleName: z
-      .string()
-      .min(1, t('rules.required', { field: t('table.ruleName') }))
-      .max(64, t('rules.limitLength', { field: 64 })),
-    model: z.string(),
-    rebateType: z.string(),
-    hasUsed: z.string(),
-    settleUnit: z.string(),
-    serialNumber: z.string().min(1, t('rules.required', { field: t('table.sort') })),
-    highestRebateLevel: z.string().optional().nullable(),
-    commissionSettlementTiming: z.string().optional(),
-    remark: z.string().optional(),
-    serverName: z.array(z.string()).min(1, t('rules.required', { field: t('table.server') })),
-    accountGroup: z.array(z.string()),
-    traderServers: z
-      .array(
-        z.object({
-          serverType: z.string().optional(),
-          serverId: z.string().optional(),
-          serverName: z.string().optional(),
-          mtGroups: z.array(z.string()).optional(),
-          rebateGroupTypes: z.array(z.string()).optional(),
-        }),
-      )
-      .optional(),
-    traderLanguages: z
-      .array(
-        z.object({
-          ruleName: z.string().min(1, t('rules.required', { field: t('table.ruleName') })),
-          language: z.string(),
-          isDefault: z.string(),
-        }),
-      )
-      .optional(),
-  });
+  const addFeeRebateRuleSchema = z
+    .object({
+      id: z.string().optional(),
+      ruleName: z
+        .string()
+        .min(1, t('rules.required', { field: t('table.ruleName') }))
+        .max(64, t('rules.limitLength', { field: 64 })),
+      suitType: z.string(),
+      model: z.string(),
+      rebateType: z.string(),
+      hasUsed: z.string(),
+      settleUnit: z.string(),
+      serialNumber: z.string().min(1, t('rules.required', { field: t('table.sort') })),
+      highestRebateLevel: z.string().optional().nullable(),
+      commissionSettlementTiming: z.string().optional(),
+      remark: z.string().optional(),
+      serverName: z.array(z.string()),
+      accountGroup: z.array(z.string()),
+      traderServers: z
+        .array(
+          z.object({
+            serverType: z.string().optional(),
+            serverId: z.string().optional(),
+            serverName: z.string().optional(),
+            mtGroups: z.array(z.string()).optional(),
+            rebateGroupTypes: z.array(z.string()).optional(),
+          }),
+        )
+        .optional(),
+      traderLanguages: z
+        .array(
+          z.object({
+            ruleName: z.string().min(1, t('rules.required', { field: t('table.ruleName') })),
+            language: z.string(),
+            isDefault: z.string(),
+          }),
+        )
+        .optional(),
+    })
+    .superRefine((data, ctx) => {
+      // wallet mode: server is optional; trading account mode: server is required
+      if (data.suitType !== '1' && (!data.serverName || data.serverName.length === 0)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['serverName'],
+          message: t('rules.required', { field: t('table.server') }),
+        });
+      }
+    });
 
   const form = useForm<RebateRuleFormValues>({
     resolver: zodResolver(addFeeRebateRuleSchema),
     defaultValues: {
       ruleName: '',
       model: String(model || ''),
-      rebateType: '2',
+      rebateType: '3',
+      suitType: '0',
       hasUsed: '1',
       settleUnit: '-1',
       serialNumber: '',
@@ -149,6 +165,7 @@ export const FeeRebateSettingForm = ({
     defaultLang,
     selectedLangList,
     handleNextStep,
+    handlePrevStep,
   } = useRebateRuleFormCore({
     form,
     serverList,
@@ -166,7 +183,7 @@ export const FeeRebateSettingForm = ({
       const data = {
         ...item,
         model: String(item.model || ''),
-        rebateType: String(item.rebateType || '2'),
+        rebateType: String(item.rebateType || '3'),
         hasUsed: String(item.hasUsed || '1'),
         serialNumber: String(item.serialNumber || ''),
         settleType: String(item.settleType || '1'),
@@ -174,6 +191,7 @@ export const FeeRebateSettingForm = ({
         accountGroup: item.accountGroups?.split(',') || [],
         remark: item.remark || '',
         serverName: item.serverId?.split(',') || [],
+        suitType: (item.suitType || 0).toString(),
         traderServers:
           traderServerList?.map(server => {
             let mtGroups: string[] = [];
@@ -209,9 +227,10 @@ export const FeeRebateSettingForm = ({
 
   const onSubmit = async (data: RebateRuleFormValues) => {
     setSubmitLoading(true);
-    const submitData: AddRebateFeeSettingParams & { id?: string } = {
+    const submitData: AddRebateDepositSettingParams & { id?: string } = {
       ...(isEditMode && data.id ? { id: data.id } : {}),
       ruleName: data.ruleName,
+      suitType: data.suitType.toString(),
       model: String(model || ''),
       rebateType: data.rebateType.toString(),
       hasUsed: data.hasUsed,
@@ -221,11 +240,10 @@ export const FeeRebateSettingForm = ({
       commissionSettlementTiming: data.commissionSettlementTiming || '0',
       remark: data.remark,
       accountGroups: data.accountGroup,
-      traderServers: [],
       traderLanguages: [],
     };
 
-    if (data.traderServers && data.traderServers.length > 0) {
+    if (submitData.suitType === '0' && data.traderServers && data.traderServers.length > 0) {
       submitData.traderServers = data.traderServers.map(server => ({
         serverType: server.serverType || '',
         serverId: server.serverId || '',
@@ -248,8 +266,8 @@ export const FeeRebateSettingForm = ({
 
     try {
       const res = isEditMode
-        ? await editRebateFeeSetting(submitData)
-        : await addRebateFeeSetting(submitData);
+        ? await editRebateDepositSetting(submitData)
+        : await addRebateDepositSetting(submitData);
       if (res.code === 0) {
         toast.success(
           isEditMode
@@ -311,11 +329,11 @@ export const FeeRebateSettingForm = ({
           {isEditMode && (
             <FormHiddenInput name="id" value={item?.id || ''} control={form.control} />
           )}
-          <FormHiddenInput name="rebateType" value="2" control={form.control} />
+          <FormHiddenInput name="rebateType" value="3" control={form.control} />
 
           <div className={cn(step === 1 ? 'block' : 'hidden')}>
             <RebateRuleFormStep1
-              type="fee"
+              type="deposit"
               isEditMode={isEditMode}
               defaultLang={defaultLang}
               serverList={serverList}
@@ -328,7 +346,7 @@ export const FeeRebateSettingForm = ({
 
           <div className={cn(step === 2 ? 'block' : 'hidden')}>
             <RebateRuleFormStep2
-              type="fee"
+              type="deposit"
               selectedServerOptions={selectedServerOptions}
               mtAndRebateTypeList={mtAndRebateTypeList}
             />
@@ -345,7 +363,7 @@ export const FeeRebateSettingForm = ({
 
           <RebateRuleFormNavigation
             step={step}
-            onPrevious={() => setStep(step - 1)}
+            onPrevious={handlePrevStep}
             onNext={handleNextStep}
             nextLoading={getMtTypesLoading || submitLoading}
           />

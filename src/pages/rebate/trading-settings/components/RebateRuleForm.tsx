@@ -410,7 +410,7 @@ export const RebateRuleForm = ({
 
           <div className={cn(step === 1 ? 'block' : 'hidden')}>
             <RebateRuleFormStep1
-              type="type1"
+              type="trading"
               isEditMode={isEditMode}
               defaultLang={defaultLang}
               serverList={serverList}
@@ -426,6 +426,7 @@ export const RebateRuleForm = ({
 
           <div className={cn(step === 2 ? 'block' : 'hidden')}>
             <RebateRuleFormStep2
+              type="trading"
               selectedServerOptions={selectedServerOptions}
               mtAndRebateTypeList={mtAndRebateTypeList}
             />
