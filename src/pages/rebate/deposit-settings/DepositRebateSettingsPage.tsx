@@ -28,6 +28,8 @@ import { useGetDealAccountGroupList } from '@/api/hooks/account';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 import { EditDepositRebateSettingDialog } from './components/EditDepositRebateSettingDialog';
 import { RrhStatusAlert } from '@/components/common/RrhStatusAlert';
+import { RrhButton } from '@/components/common/RrhButton';
+import { useTabActions } from '@/hooks/useTabActions';
 
 function getServerTypeName(serverType: string) {
   switch (serverType) {
@@ -93,6 +95,8 @@ export const DepositRebateSettingsPage = () => {
   );
   const { mutateAsync: deleteRebateDepositSetting } = useDeleteRebateDepositSetting();
   const { mutateAsync: changeStatusMutation } = useChangeRebateDepositSettingStatus();
+
+  const { openTab } = useTabActions();
 
   const reset = () => {
     setOtherParams({
@@ -305,8 +309,6 @@ export const DepositRebateSettingsPage = () => {
             }}
           />
           <div className="flex flex-wrap items-center gap-2">
-            <Button variant="outline">{t('table.rebateTemplate')}</Button>
-            <Button variant="outline">{t('table.historyOrderRebate')}</Button>
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </Button>
@@ -346,6 +348,20 @@ export const DepositRebateSettingsPage = () => {
               languageList={languageList}
               dealAccountGroupListRes={dealAccountGroupListRes}
             />
+
+            <RrhButton
+              variant="outline"
+              onClick={() => {
+                openTab({
+                  path: '/rebate/deposit-settings-history',
+                  title: t('DepositRebateSettings.depositRebateSettingsHistory'),
+                  key: '/rebate/deposit-settings-history',
+                  closable: true,
+                });
+              }}
+            >
+              {t('table.historyOrderRebate')}
+            </RrhButton>
           </div>
         </div>
         <DataTable

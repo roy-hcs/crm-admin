@@ -818,7 +818,8 @@
       "10": "Deposit money from simulated account",
       "11": "Demo account withdrawal",
       "12": "cost",
-      "13": "correct"
+      "13": "correct",
+      "14": "Inactivity fee"
     }
   },
   "tradingAccountDataStats": {
@@ -1310,7 +1311,9 @@
     "settleLevel": "settlement level",
     "settleType": "Settlement method",
     "settleUnit": "settlement unit",
-    "sirixNotSupportOtherServer": "Sirix server does not currently support use with other platform servers"
+    "sirixNotSupportOtherServer": "Sirix server does not currently support use with other platform servers",
+    "baseSetting": "Basic settings",
+    "tradingRebateSettingsHistory": "Trading history order rebate"
   },
   "myTicket": {
     "title": "My work order",
@@ -1401,11 +1404,15 @@
     "calculateRebateDesc": "Are you sure you want to rebate the queried {{field}} orders?",
     "calculateRebateTip": "If no rule is matched, no commission will be returned",
     "theHistoryRule": "Commission rebate based on historical rules",
-    "theLatestRule": "Rebate according to current latest rules"
+    "theLatestRule": "Rebate according to current latest rules",
+    "feeRebateSettingsHistoryDesc": "Orders that have received commission rebates will no longer be calculated. \nThe MT5 orders queried include in and out orders. \nClick [Calculate Rebate] to calculate the rebate for the queried order. \nWhen calculating the commission rebate for historical orders, transaction rebates will also be calculated. \nIf you do not need to calculate trading rebates, please select Off in Rebate Settings - Basic Settings - Trading Rebate Settings. \nIf the latest order data cannot be obtained, try again later and wait for order synchronization."
   },
   "DepositRebateSettings": {
     "warn": "One deposit allows multiple commission rebates. \nIf multiple rebate rules are hit, commissions will be repaid to the hit rules one after another. \nA rule will only rebate commission once.",
-    "title": "Deposit rebate settings"
+    "title": "Deposit rebate settings",
+    "deleteMsg": "Are you sure you want to delete this rebate setting?",
+    "depositAccount": "Deposit account",
+    "depositRebateSettingsHistory": "Deposit historical order rebates"
   },
   "PammProduct": {
     "desc": "Product type description:",

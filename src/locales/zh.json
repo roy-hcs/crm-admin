@@ -475,7 +475,8 @@
       "10": "模拟账号入金",
       "11": "模拟账号出金",
       "12": "费用",
-      "13": "更正"
+      "13": "更正",
+      "14": "闲置费"
     },
     "directBroker": "账户归属"
   },
@@ -1484,7 +1485,8 @@
     "baseSetting": "基础设置",
     "allMtGroups": "全部MT组",
     "allRebateGroupType": "全部品种",
-    "multipleLanguageSetting": "多语言设置"
+    "multipleLanguageSetting": "多语言设置",
+    "tradingRebateSettingsHistory": "交易历史订单返佣"
   },
   "FeeRebateSettings": {
     "title": "手续费返佣设置",
@@ -1501,7 +1503,8 @@
     "title": "入金返佣设置",
     "warn": "一笔入金允许返佣多次。如命中多条返佣规则，将对命中的规则陆续返佣。一条规则仅返佣一次。",
     "depositAccount": "入金账号",
-    "deleteMsg": "确定删除该 返佣设置？"
+    "deleteMsg": "确定删除该 返佣设置？",
+    "depositRebateSettingsHistory": "入金历史订单返佣"
   },
   "PammProduct": {
     "title": "PAMM产品设置",
