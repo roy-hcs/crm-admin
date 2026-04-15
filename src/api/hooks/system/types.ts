@@ -730,6 +730,30 @@ export type CrmUserTagItem = {
 
 export type CrmUsersTags = BasicRes<CrmUserTagItem>;
 
+export type Roles = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  roleId: string | null;
+  roleName: string | null;
+  roleKey: string | null;
+  roleSort: string | null;
+  roleDescribe: string | null;
+  userCount: number | null;
+  dataScope: string | null;
+  status: string | null;
+  roleSource: string | null;
+  userScope: string | null;
+  userAccount: string | null;
+  delFlag: string | null;
+  flag: boolean | null;
+  menuIds: string[] | null;
+  deptIds: string[] | null;
+};
+
 export type MyInfoRes = {
   code: number;
   msg: string;
@@ -761,53 +785,9 @@ export type MyInfoRes = {
       userRole: {
         userId: string | null;
         roleId: string | null;
-        role: {
-          createBy: string | null;
-          createTime: string | null;
-          updateBy: string | null;
-          updateTime: string | null;
-          remark: string | null;
-          params: Record<string, unknown>;
-          roleId: string | null;
-          roleName: string | null;
-          roleKey: string | null;
-          roleSort: string | null;
-          roleDescribe: string | null;
-          userCount: number | null;
-          dataScope: string | null;
-          status: string | null;
-          roleSource: string | null;
-          userScope: string | null;
-          userAccount: string | null;
-          delFlag: string | null;
-          flag: boolean | null;
-          menuIds: string[] | null;
-          deptIds: string[] | null;
-        };
+        role: Roles;
       };
-      roles: Array<{
-        createBy: string | null;
-        createTime: string | null;
-        updateBy: string | null;
-        updateTime: string | null;
-        remark: string | null;
-        params: Record<string, unknown>;
-        roleId: string | null;
-        roleName: string | null;
-        roleKey: string | null;
-        roleSort: string | null;
-        roleDescribe: string | null;
-        userCount: number | null;
-        dataScope: string | null;
-        status: string | null;
-        roleSource: string | null;
-        userScope: string | null;
-        userAccount: string | null;
-        delFlag: string | null;
-        flag: boolean | null;
-        menuIds: string[] | null;
-        deptIds: string[] | null;
-      }>;
+      roles: Roles[];
       roleIds: string[] | null;
       postIds: string[] | null;
       googleKey: string | null;

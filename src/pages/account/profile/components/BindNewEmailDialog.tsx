@@ -94,11 +94,9 @@ export const BindNewEmailDialog = ({ onSuccess }: { onSuccess: () => void }) => 
         toast.error(res.resultMsg);
       }
     } catch {
-      // do nothing
+      toast.error(t('common.AnErrorOccurred'));
     } finally {
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 300);
+      setIsSubmitting(false);
     }
   };
   // 获取验证码
@@ -117,14 +115,13 @@ export const BindNewEmailDialog = ({ onSuccess }: { onSuccess: () => void }) => 
         email: address,
       });
 
-      const successByCode = typeof (res as { code?: number }).code === 'number';
-      const isSuccess = successByCode
-        ? (res as { code?: number }).code === 0
-        : (res as { resultCode?: number }).resultCode === 0;
-
-      if (isSuccess) {
+      if (res?.resultCode === 0) {
         setCountdown(60);
+      } else {
+        toast.error(res.resultMsg);
       }
+    } catch {
+      toast.error(t('common.AnErrorOccurred'));
     } finally {
       setIsSendingCode(false);
     }

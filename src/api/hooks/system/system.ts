@@ -563,9 +563,6 @@ export function useUpdateUserAvatar() {
  * 获取谷歌绑定信息
  */
 export function useGetGoogleBindInfo() {
-  // return useMutation({
-  //   mutationFn: () => apiGetCustom<EmailVerificationCodeRes>(``),
-  // });
   return useQuery({
     queryKey: ['GetGoogleBindInfo'],
     queryFn: () =>

@@ -101,11 +101,9 @@ export const BindNewPhoneDialog = ({ onSuccess }: { onSuccess: () => void }) => 
         toast.error(res.resultMsg);
       }
     } catch {
-      // do nothing
+      toast.error(t('common.AnErrorOccurred'));
     } finally {
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 300);
+      setIsSubmitting(false);
     }
   };
   // 获取验证码
@@ -135,6 +133,8 @@ export const BindNewPhoneDialog = ({ onSuccess }: { onSuccess: () => void }) => 
       } else {
         toast.error(res.resultMsg);
       }
+    } catch {
+      toast.error(t('common.AnErrorOccurred'));
     } finally {
       setIsSendingCode(false);
     }
