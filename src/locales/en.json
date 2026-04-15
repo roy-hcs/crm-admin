@@ -241,7 +241,9 @@
       "6": "Saturday",
       "7": "Sunday"
     },
-    "save": "save"
+    "save": "save",
+    "getVerificationCode": "Get verification code",
+    "verificationCode": "Verification code"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1171,7 +1173,28 @@
   "profile": {
     "gooleKey": "Google token",
     "title": "personal data",
-    "uploadAvatar": "Upload avatar"
+    "uploadAvatar": "Upload avatar",
+    "avatarTips": "your profile picture",
+    "avatarUploadTips": "Supports images in jpg, jpeg, and png formats, and does not exceed 2MB.",
+    "basicInfo": "Basic information",
+    "bind": "Google Authenticator binding",
+    "bindNewEmail": "Bind new email",
+    "bindNewPhone": "Bind new mobile number",
+    "bingtips": {
+      "1": "1. You can install the APP by scanning the QR code below, or searching for \"Google Authenticator\" through Appstore, Google Play or other app stores.",
+      "2": "2. Open the \"Google Authenticator\" APP, scan the QR code below or enter the key below to obtain the 6-digit verification code",
+      "3": "3. Fill in your login password and \"Google Authenticator\" verification code to complete the binding."
+    },
+    "googleAuthCode": "Google Authenticator verification code",
+    "googleAuthTips": "Please keep the key below properly to prevent you from losing your phone or changing your phone and being unable to use \"Google Authenticator\" verification again.",
+    "key": "Key",
+    "loginPwd": "Login password",
+    "securitySettings": "Security settings",
+    "selectImageForCrop": "Please select the picture and then crop it",
+    "unBind": "Unbind Google Authenticator",
+    "zoom": "Zoom",
+    "android": "Android download",
+    "ios": "iOS download"
   },
   "PointsHistory": {
     "bonusPoints": "numerical value",
@@ -1530,7 +1553,9 @@
     "integer": "{{field}}Please enter a positive integer",
     "greaterThanZero": "{{field}} must be greater than 0",
     "levelNameAlreadyUsed": "The level name already exists",
-    "maxSize": "The maximum size does not exceed {{maxSize}}MB"
+    "maxSize": "The maximum size does not exceed {{maxSize}}MB",
+    "phoneExists": "Mobile phone number has been registered",
+    "userPwdTips": "8-20 English digits"
   },
   "messageTemplate": {
     "add": "Add message template",

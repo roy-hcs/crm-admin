@@ -17,9 +17,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect, useState } from 'react';
 import { Eye, EyeClosed } from 'lucide-react';
 import { useCrmUserResetPwd, useCrmUserResetFundsPwd } from '@/api/hooks/system/system';
-import { JSEncrypt } from 'jsencrypt';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
-import { cn } from '@/lib/utils';
+import { cn, encryptWithPublicKey } from '@/lib/utils';
 type resetPasswordFormValues = {
   newPassword: string;
   againPassword: string;
@@ -122,11 +121,8 @@ export const ResetPassword = ({
   const onSubmit = async (values: resetPasswordFormValues) => {
     setIsSubmitting(true);
     try {
-      const pubKey = localStorage.getItem('publicKey');
-      const encryptor = new JSEncrypt();
-      encryptor.setPublicKey(`-----BEGIN PUBLIC KEY-----${pubKey}-----END PUBLIC KEY-----`);
-      const encryptedNewPassword = encryptor.encrypt(values.newPassword);
-      const encryptedAgainPassword = encryptor.encrypt(values.againPassword);
+      const encryptedNewPassword = encryptWithPublicKey(values.newPassword);
+      const encryptedAgainPassword = encryptWithPublicKey(values.againPassword);
 
       let res;
       if (type === 'password') {

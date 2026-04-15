@@ -1,4 +1,11 @@
-import { apiFormPost, apiFormPostCustom, apiGetCustom, apiPostFormData } from '@/api/client';
+import {
+  apiFormPost,
+  apiFormPostCustom,
+  apiGet,
+  apiGetCustom,
+  apiPost,
+  apiPostFormData,
+} from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   CrmRebateTradersItem,
@@ -33,6 +40,8 @@ import {
   CrmUsersParams,
   CrmUsersTagsParams,
   CrmUsersTags,
+  MyInfoRes,
+  EmailVerificationCodeRes,
 } from './types';
 
 // Note: useWithDrawReport, useFundFlowReport, useSymbolReport, useRegCountReport, useDepositAllReport, useCustomerTransactionsReport, useSumReport moved to @/api/hooks/workbench
@@ -452,5 +461,114 @@ export function useCrmUserTags() {
   return useMutation({
     mutationFn: (params: CrmUsersTagsParams) =>
       apiFormPostCustom<CrmUsersTags>('/system/crmUserTag/list', params),
+  });
+}
+
+/**
+ * 获取当前登录用户信息
+ */
+export function useGetMyInfo() {
+  return useQuery({
+    queryKey: ['GetMyInfo'],
+    queryFn: () => apiGetCustom<MyInfoRes>('/system/user/profile/getMyInfo'),
+  });
+}
+
+/**
+ * 获取邮箱验证码
+ */
+export function useGetEmailVerificationCode() {
+  return useMutation({
+    mutationFn: (params: { method: string; target: string; email: string }) =>
+      apiGetCustom<EmailVerificationCodeRes>(
+        `/verify/message/email/${params.method}/${params.target}?email=${params.email}`,
+      ),
+  });
+}
+
+/**
+ * 获取手机验证码
+ */
+export function useGetPhoneVerificationCode() {
+  return useMutation({
+    mutationFn: (params: { method: string; target: string; phone: string }) =>
+      apiGetCustom<EmailVerificationCodeRes>(
+        `/verify/message/phone/${params.method}/${params.target}?phoneNum=${params.phone}`,
+      ),
+  });
+}
+
+/**
+ * 提交修改邮箱 或者 手机
+ */
+export function usePostEmailChange() {
+  return useMutation({
+    mutationFn: (params: { method: string; target: string; address: string; code: string }) =>
+      apiFormPostCustom<EmailVerificationCodeRes>(`/verify/message/check`, params),
+  });
+}
+
+/**
+ * 个人中心-重置密码
+ */
+export function useRestPwd() {
+  return useMutation({
+    mutationFn: (params: { newPassword: string; confirmPassword: string }) =>
+      apiFormPost('/system/user/profile/resetPwd', params),
+  });
+}
+
+/**
+ * 个人中心-解绑谷歌验证器
+ */
+export function useUnbind() {
+  return useMutation({
+    mutationFn: (params: { code: string; password: string }) =>
+      apiPost('/googleAuthenticator/unbind', params),
+  });
+}
+
+/**
+ * 个人中心-绑定谷歌验证器
+ */
+export function useBind() {
+  return useMutation({
+    mutationFn: (params: { code: string; password: string; key: string }) =>
+      apiPost('/googleAuthenticator/bind', params),
+  });
+}
+
+/**
+ * 个人中心-更新用户信息
+ */
+export function useUpdateUserProfile() {
+  return useMutation({
+    mutationFn: (params: { userLastName: string; userName: string }) =>
+      apiFormPost('/system/user/profile/update', params),
+  });
+}
+
+/**
+ * 个人中心-更新用户头像
+ */
+export function useUpdateUserAvatar() {
+  return useMutation({
+    mutationFn: (params: { filePath: string }) =>
+      apiFormPost('/system/user/profile/updateAvatar', params),
+  });
+}
+
+// /
+/**
+ * 获取谷歌绑定信息
+ */
+export function useGetGoogleBindInfo() {
+  return useQuery({
+    queryKey: ['GetGoogleBindInfo'],
+    queryFn: () =>
+      apiGet<{
+        code: string;
+        key: string;
+      }>('/googleAuthenticator/bindInfo'),
   });
 }

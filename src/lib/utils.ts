@@ -5,6 +5,7 @@ import { TotalItem } from '@/api/hooks/pamm/type';
 import { CRMColumnDef } from '@/components/table';
 import { clsx, type ClassValue } from 'clsx';
 import dayjs from 'dayjs';
+import JSEncrypt from 'jsencrypt';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -289,3 +290,20 @@ export function oprType(row: CrmDealAccountFundFlowItem) {
     return 'tradingAccountTransactions.type.14';
   }
 }
+
+/**
+ * 统一加密方法
+ */
+export const encryptWithPublicKey = (data: string) => {
+  const pubKey = localStorage.getItem('publicKey');
+  if (!pubKey) {
+    throw new Error('Public key not found in localStorage');
+  }
+  const encryptor = new JSEncrypt();
+  encryptor.setPublicKey(`-----BEGIN PUBLIC KEY-----${pubKey}-----END PUBLIC KEY-----`);
+  const encryptedData = encryptor.encrypt(data);
+  if (!encryptedData) {
+    throw new Error('Encryption failed');
+  }
+  return encryptedData;
+};

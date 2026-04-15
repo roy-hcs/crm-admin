@@ -729,3 +729,80 @@ export type CrmUserTagItem = {
 };
 
 export type CrmUsersTags = BasicRes<CrmUserTagItem>;
+
+export type Roles = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  roleId: string | null;
+  roleName: string | null;
+  roleKey: string | null;
+  roleSort: string | null;
+  roleDescribe: string | null;
+  userCount: number | null;
+  dataScope: string | null;
+  status: string | null;
+  roleSource: string | null;
+  userScope: string | null;
+  userAccount: string | null;
+  delFlag: string | null;
+  flag: boolean | null;
+  menuIds: string[] | null;
+  deptIds: string[] | null;
+};
+
+export type MyInfoRes = {
+  code: number;
+  msg: string;
+  data: {
+    user: {
+      createBy: string | null;
+      createTime: string | null;
+      updateBy: string | null;
+      updateTime: string | null;
+      remark: string | null;
+      params: Record<string, unknown>;
+      userId: string | null;
+      roleId: string | null;
+      loginName: string | null;
+      userName: string | null;
+      userLastName: string | null;
+      email: string | null;
+      mzone: string | null;
+      phonenumber: string | null;
+      sex: string | null;
+      avatar: string | null;
+      password: string | null;
+      salt: string | null;
+      status: string | null;
+      delFlag: string | null;
+      loginIp: string | null;
+      loginDate: string | null;
+      chatId: string | null;
+      userRole: {
+        userId: string | null;
+        roleId: string | null;
+        role: Roles;
+      };
+      roles: Roles[];
+      roleIds: string[] | null;
+      postIds: string[] | null;
+      googleKey: string | null;
+      boundGoogle: string | null;
+      onlineStatus: string | null;
+      userType: number | null;
+      expiryTime: string | null;
+      duration: string | null;
+      admin: boolean | null;
+      wholeName: string | null;
+    };
+  };
+};
+
+export type EmailVerificationCodeRes = {
+  resultCode: number;
+  resultMsg: string;
+};

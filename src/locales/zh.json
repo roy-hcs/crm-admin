@@ -260,7 +260,9 @@
       "6": "星期六",
       "7": "星期日"
     },
-    "selectTime": "请选择时间"
+    "selectTime": "请选择时间",
+    "verificationCode": "验证码",
+    "getVerificationCode": "获取验证码"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -556,7 +558,9 @@
     "integer": "{{field}}请输入正整数",
     "greaterThanZero": "{{field}}必须大于0",
     "levelNameAlreadyUsed": "该层级名称已存在",
-    "maxSize": "最大不超过{{maxSize}}MB"
+    "maxSize": "最大不超过{{maxSize}}MB",
+    "userPwdTips": "8-20位英文+数字",
+    "phoneExists": "手机号已被注册"
   },
   "tradingHistoryPage": {
     "tradingHistoryDetail": "交易历史详情",
@@ -734,7 +738,28 @@
   "profile": {
     "title": "个人资料",
     "uploadAvatar": "上传头像",
-    "gooleKey": "Google 令牌"
+    "gooleKey": "Google 令牌",
+    "selectImageForCrop": "请选择图片后进行裁剪",
+    "zoom": "缩放",
+    "avatarUploadTips": "支持jpg、jpeg、png格式的图片,且不超过2MB.",
+    "avatarTips": "你的个人头像",
+    "basicInfo": "基本信息",
+    "securitySettings": "安全设置",
+    "bindNewEmail": "绑定新邮箱",
+    "bindNewPhone": "绑定新手机号",
+    "unBind": "Google Authenticator 解绑",
+    "bind": "Google Authenticator 绑定",
+    "loginPwd": "登陆密码",
+    "googleAuthCode": "Google Authenticator验证码",
+    "bingtips": {
+      "1": "1、你可以通过扫描下方二维码，或通过Appstore、Google Play或其他应用商店搜索\"Google Authenticator\"安装APP",
+      "2": "2、打开\"Google Authenticator\" APP，扫描下方二维码或输入下方key，以获取6位验证码",
+      "3": "3、填写您的登录密码及\"Google Authenticator\"的验证码以完成绑定"
+    },
+    "googleAuthTips": "  请妥善保存下方key(秘钥)，防止您丢失手机或更换手机无法重新使用\"Google Authenticator\"验证",
+    "key": "Key",
+    "ios": "iOS下载",
+    "android": "Android下载"
   },
   "redemptionRecords": {
     "redemptionStatus": "兑换状态",

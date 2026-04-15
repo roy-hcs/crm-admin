@@ -17,13 +17,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Eye, EyeClosed } from 'lucide-react';
 import { useCrmDealAccountResetPwd, useMtServerGroup } from '@/api/hooks/system/system';
-import { JSEncrypt } from 'jsencrypt';
 import { FormSelect } from '@/components/form/FormSelect';
 import { FormProvider } from '@/contexts/form';
 
 import { passwordTypeOptions } from '@/lib/const';
 import { CrmDealAccountListItem } from '@/api/hooks/account';
 import { RrhButton } from '@/components/common/RrhButton';
+import { encryptWithPublicKey } from '@/lib/utils';
 type resetPasswordFormValues = {
   pwdType: string;
   newPassword: string;
@@ -145,10 +145,7 @@ export const ResetPasswordDialog = ({
   const onSubmit = async (values: resetPasswordFormValues) => {
     setIsSubmitting(true);
     try {
-      const pubKey = localStorage.getItem('publicKey');
-      const encryptor = new JSEncrypt();
-      encryptor.setPublicKey(`-----BEGIN PUBLIC KEY-----${pubKey}-----END PUBLIC KEY-----`);
-      const encryptedNewPassword = encryptor.encrypt(values.newPassword);
+      const encryptedNewPassword = encryptWithPublicKey(values.newPassword);
       const res = await changePwdMutation.mutateAsync({
         accountId: info?.id || '',
         pwdType: values.pwdType,

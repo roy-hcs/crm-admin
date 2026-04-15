@@ -24,3 +24,10 @@ export function useCheckPhoneUnique() {
       apiFormPostCustom<number>('/system/crmUser/checkPhoneUnique', params),
   });
 }
+
+export function useCheckUserPhone() {
+  return useMutation({
+    mutationFn: (params: { phonenumber: string; mzone: string }) =>
+      apiFormPostCustom<number>('/system/user/checkPhoneUnique', params),
+  });
+}
