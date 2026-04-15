@@ -1192,7 +1192,9 @@
     "securitySettings": "Security settings",
     "selectImageForCrop": "Please select the picture and then crop it",
     "unBind": "Unbind Google Authenticator",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "android": "Android download",
+    "ios": "iOS download"
   },
   "PointsHistory": {
     "bonusPoints": "numerical value",

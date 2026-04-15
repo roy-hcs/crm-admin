@@ -19,7 +19,7 @@ import { TFunction } from 'i18next';
 import z from 'zod';
 import { Eye, EyeClosed } from 'lucide-react';
 import { toast } from 'sonner';
-import { JSEncrypt } from 'jsencrypt';
+import { encryptWithPublicKey } from '@/lib/utils';
 
 type FormValues = {
   newPassword: string;
@@ -117,10 +117,7 @@ export const ChangePasswordDialog = ({ onSuccess }: { onSuccess: () => void }) =
   const onSubmit = async (values: FormValues) => {
     setIsSubmitting(true);
     try {
-      const pubKey = localStorage.getItem('publicKey');
-      const encryptor = new JSEncrypt();
-      encryptor.setPublicKey(`-----BEGIN PUBLIC KEY-----${pubKey}-----END PUBLIC KEY-----`);
-      const encryptedNewPassword = encryptor.encrypt(values.newPassword);
+      const encryptedNewPassword = encryptWithPublicKey(values.newPassword);
       const res = await restPwd({
         newPassword: encryptedNewPassword || '',
         confirmPassword: encryptedNewPassword || '',

@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
 import { useGetPhoneVerificationCode, usePostEmailChange } from '@/api/hooks/system/system';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TFunction } from 'i18next';
@@ -211,11 +210,7 @@ export const BindNewPhoneDialog = ({ onSuccess }: { onSuccess: () => void }) => 
                 <FormItem className="py-3">
                   <FormLabel>{t('common.verificationCode')}</FormLabel>
                   <FormControl>
-                    <div
-                      className={cn(
-                        'grid w-full gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center',
-                      )}
-                    >
+                    <div className="grid w-full gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
                       <Input
                         placeholder={t('common.pleaseInput', {
                           field: t('common.verificationCode'),

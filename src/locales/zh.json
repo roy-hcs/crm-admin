@@ -757,7 +757,9 @@
       "3": "3、填写您的登录密码及\"Google Authenticator\"的验证码以完成绑定"
     },
     "googleAuthTips": "  请妥善保存下方key(秘钥)，防止您丢失手机或更换手机无法重新使用\"Google Authenticator\"验证",
-    "key": "Key"
+    "key": "Key",
+    "ios": "iOS下载",
+    "android": "Android下载"
   },
   "redemptionRecords": {
     "redemptionStatus": "兑换状态",

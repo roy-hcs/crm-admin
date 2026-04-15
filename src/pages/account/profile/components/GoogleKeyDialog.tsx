@@ -95,21 +95,9 @@ export const GoogleKeyDialog = ({
   return (
     <RrhDialog
       trigger={
-        <RrhButton variant="outline">
-          {key
-            ? t('profile.bind')
-            : t('profile.unBind', {
-                field: '',
-              })}
-        </RrhButton>
+        <RrhButton variant="outline">{key ? t('profile.bind') : t('profile.unBind')}</RrhButton>
       }
-      title={
-        key
-          ? t('profile.bind')
-          : t('profile.unBind', {
-              field: '',
-            })
-      }
+      title={key ? t('profile.bind') : t('profile.unBind')}
       open={open}
       confirmText={t('common.Confirm')}
       onOpenChange={onClose}
@@ -133,14 +121,14 @@ export const GoogleKeyDialog = ({
                       <img
                         className="size-30 rounded-lg border bg-white p-2.5"
                         src="http://admin-1.hcs55.com:38080/img/android.png"
-                        alt=""
+                        alt={t('profile.android')}
                       />
                     </div>
                     <div>
                       <img
                         className="size-30 rounded-lg border bg-white p-2.5"
                         src="http://admin-1.hcs55.com:38080/img/IOS.png"
-                        alt=""
+                        alt={t('profile.ios')}
                       />
                     </div>
                   </div>
