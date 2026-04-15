@@ -95,7 +95,7 @@ export const GoogleKeyDialog = ({
   return (
     <RrhDialog
       trigger={
-        <RrhButton className="border" variant="ghost">
+        <RrhButton variant="outline">
           {key
             ? t('profile.bind')
             : t('profile.unBind', {

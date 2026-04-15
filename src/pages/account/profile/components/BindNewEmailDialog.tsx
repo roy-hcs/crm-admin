@@ -143,7 +143,7 @@ export const BindNewEmailDialog = ({ onSuccess }: { onSuccess: () => void }) => 
   return (
     <RrhDialog
       trigger={
-        <RrhButton className="border" variant="ghost">
+        <RrhButton variant="outline">
           {t('common.modify', {
             field: '',
           })}
