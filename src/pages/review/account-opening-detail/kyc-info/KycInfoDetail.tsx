@@ -1,14 +1,32 @@
 import { ChevronDown } from 'lucide-react';
-import { kycInfoItem } from './KycInfoPage';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { LabelItem } from '@/components/common/LabelItem';
 import { InfoItem } from '@/components/common/InfoItem';
 import { ImageZoom } from '@/components/common/ImageZoom';
-import { KycVerifyStatus } from '../components/KycVerifyStatus';
+import { KycStatus, KycVerifyStatus } from '../components/KycVerifyStatus';
 
-export const KycInfoDetail = ({ step }: { step: kycInfoItem }) => {
-  const [folded, setFolded] = useState(true);
+export type KycInfoSectionType = 'list' | 'mediaList' | 'cardList';
+
+export type KycInfoDetailItem = {
+  label: string;
+  value: string;
+  type?: number;
+};
+
+export type KycInfoStep = {
+  status: KycStatus;
+  statusText: string;
+  label: string;
+  content: string;
+  type: KycInfoSectionType;
+  time: string;
+  detail: KycInfoDetailItem[];
+  defaultExpanded?: boolean;
+};
+
+export const KycInfoDetail = ({ step }: { step: KycInfoStep }) => {
+  const [folded, setFolded] = useState(!step.defaultExpanded);
 
   return (
     <div
@@ -30,7 +48,7 @@ export const KycInfoDetail = ({ step }: { step: kycInfoItem }) => {
         </div>
       </div>
       <div>
-        {(step.type === 'personal' || step.type === 'finance') && (
+        {step.type === 'list' && (
           <div className="grid grid-cols-2">
             {step.detail.map(({ label, value }, i) => (
               <LabelItem key={value + i} label={label} ContentDom={<InfoItem info={value} />} />
@@ -38,7 +56,7 @@ export const KycInfoDetail = ({ step }: { step: kycInfoItem }) => {
           </div>
         )}
 
-        {step.type === 'identityBasic' && (
+        {step.type === 'mediaList' && (
           <div className="grid grid-cols-2">
             {step.detail.map(({ label, value, type }, i) => (
               <LabelItem
@@ -57,7 +75,7 @@ export const KycInfoDetail = ({ step }: { step: kycInfoItem }) => {
             ))}
           </div>
         )}
-        {step.type === 'agreement' && (
+        {step.type === 'cardList' && (
           <div className="grid gap-3">
             {step.detail.map(({ label }, i) => (
               <div
