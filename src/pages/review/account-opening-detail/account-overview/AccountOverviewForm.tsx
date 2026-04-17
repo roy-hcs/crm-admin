@@ -1,13 +1,14 @@
 import { RrhButton } from '@/components/common/RrhButton';
-import { Form } from '@/components/ui/form';
+
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
+
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
 import { BasicParams } from '@/api/types';
 import { CrmUserDealAccountListParams } from '@/api/hooks/review';
 import { FormInput } from '@/components/form/FormInput';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
   login: string;
@@ -50,10 +51,7 @@ export const AccountOverviewForm = ({
     });
   };
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
+    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
           onKeyDown={e => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -81,8 +79,6 @@ export const AccountOverviewForm = ({
               <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

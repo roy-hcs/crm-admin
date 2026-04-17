@@ -1,5 +1,5 @@
-import { Form, FormField } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormField } from '@/components/ui/form';
+
 import { CircleAlert } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -14,6 +14,7 @@ import { useGetDictType } from '@/api/hooks/system/system';
 import { TFunction } from 'i18next';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   serverId?: string;
@@ -172,9 +173,7 @@ export const BalanceAdjustDialog = ({
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <div className="bg-destructive/5 flex items-center gap-1 rounded-md p-2">
               <CircleAlert className="text-destructive size-4" />
               <span className="text-destructive text-sm leading-5 font-medium">
@@ -227,9 +226,7 @@ export const BalanceAdjustDialog = ({
               placeholder={t('rules.limitLength', { field: 10 })}
               maxLength={10}
             />
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

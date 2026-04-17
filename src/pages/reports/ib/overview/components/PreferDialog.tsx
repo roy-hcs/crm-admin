@@ -1,12 +1,5 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+
 import { CircleAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -16,6 +9,7 @@ import { RrhDialog } from '@/components/common/RrhDialog';
 import { useAgencyPreference, useGetAgencyPreference } from '@/api/hooks/report/report';
 import { RrhCheckBoxGroup } from '@/components/common/RrhCheckBoxGroup';
 import { toast } from 'sonner';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   depositMethods: string;
@@ -101,9 +95,7 @@ export const PreferDialog = ({ onSuccess }: { onSuccess: () => void }) => {
       onConfirm={onConfirm}
       onCancel={onCancel}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <div className="bg-primary/5 flex items-center gap-1 rounded-md p-2">
               <CircleAlert className="text-primary size-4" />
               <span className="text-primary text-sm leading-5 font-medium">
@@ -199,9 +191,7 @@ export const PreferDialog = ({ onSuccess }: { onSuccess: () => void }) => {
                 );
               }}
             />
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

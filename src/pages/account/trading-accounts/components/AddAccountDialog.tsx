@@ -1,12 +1,5 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -31,6 +24,7 @@ import { MtServerItem } from '@/api/hooks/system';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   userId: string;
@@ -286,10 +280,7 @@ export const AddAccountDialog = ({
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
             className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2"
           >
             <FormField
@@ -398,9 +389,7 @@ export const AddAccountDialog = ({
                 return <SelectUser verticalLabel field={field} title={t('table.directAgent')} />;
               }}
             />
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

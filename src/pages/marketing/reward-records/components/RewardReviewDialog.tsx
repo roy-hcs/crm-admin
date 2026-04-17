@@ -1,5 +1,3 @@
-import { Form } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
 import { CircleAlert, Settings } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -7,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { FormSwitch } from '@/components/form/FormSwitch';
+import { RrhForm } from '@/components/form/RrhForm';
 import { toast } from 'sonner';
 import {
   useGetRewardRecordSetVerifyConfig,
@@ -123,33 +122,29 @@ export const RewardReviewDialog = ({ onSuccess }: { onSuccess: () => void }) => 
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
-            <div className="bg-primary/5 flex items-center gap-1 rounded-md p-2">
-              <CircleAlert className="text-primary size-4" />
-              <span className="text-primary text-sm leading-5 font-medium">
-                {t('rewardRecords.tips')}
-              </span>
-            </div>
-            <FormSwitch
-              verticalLabel
-              name="openAccountRewardChecked"
-              label={t('rewardRecords.accountOpeningReward')}
-            />
-            <FormSwitch
-              verticalLabel
-              name="depositRewardChecked"
-              label={t('rewardRecords.depositRewardCredit')}
-            />
-            <FormSwitch
-              verticalLabel
-              name="closePositionRewardChecked"
-              label={t('rewardRecords.orderClosingReward')}
-            />
-          </form>
-        </Form>
-      </FormProvider>
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
+        <div className="bg-primary/5 flex items-center gap-1 rounded-md p-2">
+          <CircleAlert className="text-primary size-4" />
+          <span className="text-primary text-sm leading-5 font-medium">
+            {t('rewardRecords.tips')}
+          </span>
+        </div>
+        <FormSwitch
+          verticalLabel
+          name="openAccountRewardChecked"
+          label={t('rewardRecords.accountOpeningReward')}
+        />
+        <FormSwitch
+          verticalLabel
+          name="depositRewardChecked"
+          label={t('rewardRecords.depositRewardCredit')}
+        />
+        <FormSwitch
+          verticalLabel
+          name="closePositionRewardChecked"
+          label={t('rewardRecords.orderClosingReward')}
+        />
+      </RrhForm>
     </RrhDialog>
   );
 };

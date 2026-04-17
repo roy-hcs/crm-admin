@@ -1,5 +1,5 @@
-import { Form, FormField } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormField } from '@/components/ui/form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
@@ -15,6 +15,7 @@ import { useAddPoints } from '@/api/hooks/pointsMall';
 import { FormTextarea } from '@/components/form/FormTextarea';
 import { FormLeftSelectInput } from '@/components/form/FormLeftSelectInput';
 import { SelectUser } from '@/pages/account/trading-accounts/components/SelectUser';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   bonusPoints: string;
@@ -116,9 +117,7 @@ export const AddDialog = ({
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
             <div className="py-3">
               <FormField
                 name="userId"
@@ -165,9 +164,7 @@ export const AddDialog = ({
                 maxLength={50}
               />
             </div>
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

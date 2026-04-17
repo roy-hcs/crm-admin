@@ -1,14 +1,7 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { useForm } from 'react-hook-form';
-import { FormProvider } from '@/contexts/form';
+
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -21,6 +14,7 @@ import { useServerList } from '@/api/hooks/system/system';
 import { BaseOption } from '@/components/common/RrhSelect';
 import { serverMap } from '@/lib/constant';
 import { formatDate } from '@/lib/utils';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
   time: { from: string; to: string };
@@ -89,10 +83,7 @@ export const LeverageForm = ({
   };
 
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
+    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
           onKeyDown={e => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -187,8 +178,6 @@ export const LeverageForm = ({
               <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

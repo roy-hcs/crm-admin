@@ -1,5 +1,5 @@
-import { Form, FormField } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormField } from '@/components/ui/form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -21,6 +21,7 @@ import { UploadFile } from './UploadFile';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { useUploadFile } from '@/api/hooks/system/system';
 import { useUserStore } from '@/store/userStore';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   belongUserId?: string;
@@ -246,9 +247,7 @@ export const AddTicketDialog = ({
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
             <FormField
               name="belongUserId"
               render={({ field }) => {
@@ -322,9 +321,7 @@ export const AddTicketDialog = ({
             />
 
             <FormSwitch verticalLabel name="isFollow" label={t('ticketList.isFollow')} />
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

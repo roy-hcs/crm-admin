@@ -1,15 +1,16 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
-import { Form } from '@/components/ui/form';
+
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
+
 import { useForm } from 'react-hook-form';
 import { BasicParams } from '@/api/types';
 import { Dispatch, SetStateAction } from 'react';
 import { DictTypeItem } from '@/api/hooks/system';
 import { MamProtocolListParams } from '@/api/hooks/copyTrading/type';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
   protocolName: string;
@@ -51,10 +52,7 @@ export const CopyTradingSettingsForm = ({
     });
   };
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
+    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
           onKeyDown={e => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -92,8 +90,6 @@ export const CopyTradingSettingsForm = ({
               <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

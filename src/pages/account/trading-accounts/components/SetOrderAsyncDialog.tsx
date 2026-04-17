@@ -1,12 +1,5 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +9,7 @@ import { useBatchOrderSync } from '@/api/hooks/account';
 import { toast } from 'sonner';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { formatDate } from '@/lib/utils';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   orderTime: { from: string; to: string };
@@ -84,9 +78,7 @@ export const SetOrderAsyncDialog = ({
       variant="small"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <div className="bg-destructive/5 flex items-center gap-1 rounded-md p-2">
               <span className="text-destructive text-sm leading-5 font-medium">
                 {t('tradingAccountTransactions.OrderAsyncTips')}
@@ -123,9 +115,7 @@ export const SetOrderAsyncDialog = ({
                 </RrhButton>
               </div>
             </div>
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

@@ -4,14 +4,15 @@ import { LabelItem } from '@/components/common/LabelItem';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { FormSelect } from '@/components/form/FormSelect';
-import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
-import { FormProvider } from '@/contexts/form';
+
 import { CircleAlert } from 'lucide-react';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { RrhForm } from '@/components/form/RrhForm';
 
 export const PaymentOrderEditDialog = ({
   open,
@@ -108,9 +109,7 @@ export const PaymentOrderEditDialog = ({
       variant="large"
       footerShow={false}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex h-full min-h-0 flex-col">
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="flex h-full min-h-0 flex-col">
             <div className="min-h-0 flex-1 overflow-y-auto">
               <div className="text-primary bg-primary/5 mb-3 flex items-center gap-1 rounded-lg p-2 text-sm">
                 <CircleAlert className="size-4" />
@@ -171,9 +170,7 @@ export const PaymentOrderEditDialog = ({
                 </RrhButton>
               </div>
             </div>
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

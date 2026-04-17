@@ -1,5 +1,5 @@
-import { Form } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+
+
 import { cn } from '@/lib/utils';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -26,6 +26,7 @@ import { RebateRuleFormNavigation } from './RebateRuleFormNavigation';
 import { DictTypeResponse, ServerListResponse } from '@/api/hooks/system';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
 import { useRebateRuleFormCore } from './useRebateRuleFormCore';
+import { RrhForm } from '@/components/form/RrhForm';
 
 // 表单内部使用的类型（与表单字段对应）
 type RebateRuleFormValues = {
@@ -397,10 +398,7 @@ export const RebateRuleForm = ({
   }, [currentSettleUnit, form, isEditMode]); // 监听结算单位变化，自动设置结算数值
 
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          className="max-h-[75vh] overflow-y-auto px-0.75"
+    <RrhForm form={form} className="max-h-[75vh] overflow-y-auto px-0.75"
           onSubmit={form.handleSubmit(onSubmit, onError)}
         >
           {isEditMode && (
@@ -452,8 +450,6 @@ export const RebateRuleForm = ({
               <RrhCircleLoading />
             </div>
           )}
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

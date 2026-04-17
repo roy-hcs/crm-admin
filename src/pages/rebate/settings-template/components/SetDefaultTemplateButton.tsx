@@ -3,11 +3,12 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { FormSelect } from '@/components/form/FormSelect';
-import { Form } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+
+
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { RrhForm } from '@/components/form/RrhForm';
 
 export const SetDefaultTemplateButton = ({
   type,
@@ -51,10 +52,7 @@ export const SetDefaultTemplateButton = ({
       footerShow={false}
       className="pb-22"
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
             className="text-primary flex flex-col gap-4 py-4 text-xs"
           >
             <FormSelect
@@ -80,9 +78,7 @@ export const SetDefaultTemplateButton = ({
                 <RrhCircleLoading />
               </div>
             )}
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

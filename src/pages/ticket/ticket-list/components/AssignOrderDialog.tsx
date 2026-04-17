@@ -1,5 +1,5 @@
-import { Form } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+
+
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,7 @@ import { FormSelect } from '@/components/form/FormSelect';
 import { SelectOption } from '@/api/types';
 import { useUserStore } from '@/store/userStore';
 import { AllocatedUsersItem } from '@/api/hooks/ticket/types';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   roleId: string;
@@ -133,9 +134,7 @@ export const AssignOrderDialog = ({
       variant="small"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <div className="text-foreground text-sm leading-5 font-medium">
               {t('ticketList.selectedTickets', { count: ids.length })}
             </div>
@@ -168,9 +167,7 @@ export const AssignOrderDialog = ({
                 </RrhButton>
               </div>
             </div>
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

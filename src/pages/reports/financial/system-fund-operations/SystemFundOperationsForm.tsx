@@ -3,17 +3,10 @@ import { RrhButton } from '@/components/common/RrhButton';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  Form,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
+
 import { useForm } from 'react-hook-form';
 import { formatDate } from '@/lib/utils';
 import { BasicParams } from '@/api/types';
@@ -24,6 +17,7 @@ import { useCallback, useMemo } from 'react';
 import { useCrmUsers } from '@/api/hooks/system/system';
 import { FormSearchMultiSelect } from '@/components/form/FormSearchMultiSelect';
 import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
   type: number | string;
@@ -156,10 +150,7 @@ export const SystemFundOperationsForm = ({
     });
   };
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
+    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
         >
@@ -250,8 +241,6 @@ export const SystemFundOperationsForm = ({
               <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

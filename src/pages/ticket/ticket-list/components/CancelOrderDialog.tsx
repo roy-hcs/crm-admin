@@ -1,5 +1,5 @@
-import { Form } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+
+
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +7,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { toast } from 'sonner';
 import { useClearAssignee } from '@/api/hooks/ticket/ticket';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   broker: string;
@@ -69,9 +70,7 @@ export const CancelOrderDialog = ({
       variant="small"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <div className="text-foreground text-sm leading-5 font-medium">
               {t('ticketList.selectedTickets', { count: ids.length })}
             </div>
@@ -86,9 +85,7 @@ export const CancelOrderDialog = ({
                 </RrhButton>
               </div>
             </div>
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

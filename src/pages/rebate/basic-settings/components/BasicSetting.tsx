@@ -1,5 +1,5 @@
-import { FormProvider } from '@/contexts/form';
-import { Form } from '@/components/ui/form';
+
+
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { ToolTip } from '@/components/common/ToolTip';
 import { CircleAlert } from 'lucide-react';
 import { RrhAlert } from '@/components/common/RrhAlert';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   setting: string;
@@ -89,9 +90,7 @@ export function BasicSetting() {
   }
   return (
     <div className="grid gap-6">
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form className="grid gap-y-6">
+      <RrhForm form={form} className="grid gap-y-6">
             <FormRadio
               name="setting"
               orientation="horizontal"
@@ -128,9 +127,7 @@ export function BasicSetting() {
                 { label: t('RebateBasicSettingsPage.num.2'), value: '1' },
               ]}
             />
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
       <div className="flex justify-end">
         <RrhButton type="submit" variant="default" onClick={handleConfirm}>
           {t('common.Confirm')}

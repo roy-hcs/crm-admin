@@ -1,5 +1,5 @@
-import { FormProvider } from '@/contexts/form';
-import { Form } from '@/components/ui/form';
+
+
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -18,6 +18,7 @@ import { FormTimeOfDayInput } from '@/components/form/FormTimeOfDayInput';
 import { FormSelect } from '@/components/form/FormSelect';
 import { RrhAlert } from '@/components/common/RrhAlert';
 import { weekOptions } from '@/lib/const';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = EditRebateFeeAddOrUpdateParams;
 
@@ -133,9 +134,7 @@ export function HandFeeRebate() {
   }
   return (
     <div className="grid gap-6">
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form className="grid gap-y-6">
+      <RrhForm form={form} className="grid gap-y-6">
             <FormRadio
               name="hasOpen"
               orientation="horizontal"
@@ -226,9 +225,7 @@ export function HandFeeRebate() {
                 )}
               </div>
             )}
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
       <div className="flex justify-end">
         <RrhButton variant="default" onClick={handleConfirm}>
           {t('common.Confirm')}

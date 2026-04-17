@@ -1,16 +1,9 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
+import { RrhForm } from '@/components/form/RrhForm';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { useGetPhoneVerificationCode, usePostEmailChange } from '@/api/hooks/system/system';
@@ -191,52 +184,48 @@ export const BindNewPhoneDialog = ({ onSuccess }: { onSuccess: () => void }) => 
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form>
-            <FormPhoneInput
-              name="address"
-              mzoneFieldName="mzone"
-              label={t('CRMAccountPage.Mobile')}
-              placeholder={`${t('CRMAccountPage.Mobile')}`}
-              verticalLabel
-              onBlur={handleBlur}
-            />
-            {/* 缺少入机校验 */}
-            <FormField
-              control={form.control}
-              name="code"
-              render={({ field }) => (
-                <FormItem className="py-3">
-                  <FormLabel>{t('common.verificationCode')}</FormLabel>
-                  <FormControl>
-                    <div className="grid w-full gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-                      <Input
-                        placeholder={t('common.pleaseInput', {
-                          field: t('common.verificationCode'),
-                        })}
-                        value={field.value ?? ''}
-                        className="h-10 text-sm"
-                        onChange={e => field.onChange(e.target.value)}
-                      />
-                      <RrhButton
-                        type="button"
-                        className="border"
-                        variant="ghost"
-                        disabled={isSendingCode || countdown > 0}
-                        onClick={onGetVerificationCode}
-                      >
-                        {countdown > 0 ? `${countdown}s` : t('common.getVerificationCode')}
-                      </RrhButton>
-                    </div>
-                  </FormControl>
-                  <FormMessage className="text-end" />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
-      </FormProvider>
+      <RrhForm form={form}>
+        <FormPhoneInput
+          name="address"
+          mzoneFieldName="mzone"
+          label={t('CRMAccountPage.Mobile')}
+          placeholder={`${t('CRMAccountPage.Mobile')}`}
+          verticalLabel
+          onBlur={handleBlur}
+        />
+        {/* 缺少入机校验 */}
+        <FormField
+          control={form.control}
+          name="code"
+          render={({ field }) => (
+            <FormItem className="py-3">
+              <FormLabel>{t('common.verificationCode')}</FormLabel>
+              <FormControl>
+                <div className="grid w-full gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+                  <Input
+                    placeholder={t('common.pleaseInput', {
+                      field: t('common.verificationCode'),
+                    })}
+                    value={field.value ?? ''}
+                    className="h-10 text-sm"
+                    onChange={e => field.onChange(e.target.value)}
+                  />
+                  <RrhButton
+                    type="button"
+                    className="border"
+                    variant="ghost"
+                    disabled={isSendingCode || countdown > 0}
+                    onClick={onGetVerificationCode}
+                  >
+                    {countdown > 0 ? `${countdown}s` : t('common.getVerificationCode')}
+                  </RrhButton>
+                </div>
+              </FormControl>
+              <FormMessage className="text-end" />
+            </FormItem>
+          )}
+        />
+      </RrhForm>
     </RrhDialog>
   );
 };

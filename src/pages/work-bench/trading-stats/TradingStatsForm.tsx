@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormProvider } from '@/contexts/form';
-import { Form } from '@/components/ui/form';
+
+
 import { ServerItem } from '@/api/hooks/workbench';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
+import { RrhForm } from '@/components/form/RrhForm';
 type ClientTrackingFormValues = {
   serverId: string;
 };
@@ -37,12 +38,8 @@ export const TradingStatsForm = ({
   }, [currentServerId, setServerId]);
 
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form className="flex flex-col gap-4 overflow-auto">
+    <RrhForm form={form} className="flex flex-col gap-4 overflow-auto">
           <RrhServerSelector serverOptions={serverOptions} />
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

@@ -1,12 +1,5 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -32,6 +25,7 @@ import { useUserRoleList } from '@/api/hooks/system';
 import { FormSearchMultiSelect } from '@/components/form/FormSearchMultiSelect';
 import { useCrmUsers, useCrmUserTags } from '@/api/hooks/system/system';
 import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   type: string;
@@ -503,9 +497,7 @@ export const AddEditNewMessageDialog = ({
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
             <div className={cn(step === 'one' ? 'block' : 'hidden')}>
               <div className="grid gap-6">
                 <FormSelect
@@ -747,9 +739,7 @@ export const AddEditNewMessageDialog = ({
                 </div>
               </>
             ) : null}
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

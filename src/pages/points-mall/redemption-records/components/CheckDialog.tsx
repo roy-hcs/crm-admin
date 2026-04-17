@@ -1,12 +1,5 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -19,6 +12,7 @@ import { GoodDetailInfo, useExchangeDetailInfo, useExchangeVerify } from '@/api/
 import { FormTextarea } from '@/components/form/FormTextarea';
 import { pointsHistoryPayType } from '@/lib/const';
 import { toast } from 'sonner';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   verifyStatus?: string;
@@ -153,9 +147,7 @@ export const CheckDialog = ({
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1">
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1">
             {dataList.map((item, index) => {
               if (item.type === 'pointsPayment' || item.type === 'combinedPayment') {
                 if (item.type === 'pointsPayment') {
@@ -261,9 +253,7 @@ export const CheckDialog = ({
                 maxLength={50}
               />
             </div>
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

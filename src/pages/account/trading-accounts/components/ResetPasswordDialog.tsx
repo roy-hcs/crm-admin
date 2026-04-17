@@ -1,11 +1,4 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { Input } from '@/components/ui/input';
 import { useForm, type Control } from 'react-hook-form';
@@ -18,12 +11,13 @@ import { useState } from 'react';
 import { Eye, EyeClosed } from 'lucide-react';
 import { useCrmDealAccountResetPwd, useMtServerGroup } from '@/api/hooks/system/system';
 import { FormSelect } from '@/components/form/FormSelect';
-import { FormProvider } from '@/contexts/form';
+
 
 import { passwordTypeOptions } from '@/lib/const';
 import { CrmDealAccountListItem } from '@/api/hooks/account';
 import { RrhButton } from '@/components/common/RrhButton';
 import { encryptWithPublicKey } from '@/lib/utils';
+import { RrhForm } from '@/components/form/RrhForm';
 type resetPasswordFormValues = {
   pwdType: string;
   newPassword: string;
@@ -182,9 +176,7 @@ export const ResetPasswordDialog = ({
       formLoading={isSubmitting}
     >
       <div>
-        <FormProvider form={form}>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+        <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
               <div className="mb-4 grid gap-2">
                 <div className="text-foreground text-sm leading-5 font-medium">
                   {t('common.accountType')}
@@ -242,9 +234,7 @@ export const ResetPasswordDialog = ({
                   </RrhButton>
                 </div>
               </div>
-            </form>
-          </Form>
-        </FormProvider>
+            </RrhForm>
       </div>
     </RrhDialog>
   );

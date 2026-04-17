@@ -1,12 +1,5 @@
-import { FormProvider } from '@/contexts/form';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -27,6 +20,7 @@ import { RrhAlert } from '@/components/common/RrhAlert';
 import { FormTextarea } from '@/components/form/FormTextarea';
 import { Input } from '@/components/ui/input';
 import { weekOptions } from '@/lib/const';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = EditRebateDepositAddOrUpdateParams;
 
@@ -175,9 +169,7 @@ export function DepositRebate() {
   }
   return (
     <div className="grid gap-6">
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form className="grid gap-y-6">
+      <RrhForm form={form} className="grid gap-y-6">
             <FormRadio
               name="hasOpen"
               orientation="horizontal"
@@ -311,9 +303,7 @@ export function DepositRebate() {
                 )}
               </div>
             )}
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
       <div className="flex justify-end">
         <RrhButton variant="default" onClick={handleConfirm}>
           {t('common.Confirm')}

@@ -1,5 +1,5 @@
-import { Form, FormField } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormField } from '@/components/ui/form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -14,6 +14,7 @@ import { SelectAccount } from './SelectAccount';
 import { useAddWallet } from '@/api/hooks/account';
 import { useGetCurrencies } from '@/api/hooks/system/system';
 import { toast } from 'sonner';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   crmUserId: string;
@@ -129,9 +130,7 @@ export const AddWalletDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
       variant="small"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <FormField
               name="crmUserId"
               render={({ field }) => {
@@ -165,9 +164,7 @@ export const AddWalletDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
                 </RrhButton>
               </div>
             </div>
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

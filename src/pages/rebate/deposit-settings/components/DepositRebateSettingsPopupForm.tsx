@@ -1,6 +1,6 @@
 import { FormHiddenInput } from '@/components/form/FormHiddenInput';
-import { Form } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+
+
 import { RebateRuleFormStep1 } from '../../trading-settings/components/RebateRuleFormStep1';
 import { RebateRuleFormStep2 } from '../../trading-settings/components/RebateRuleFormStep2';
 import { RebateRuleFormStep3 } from '../../trading-settings/components/RebateRuleFormStep3';
@@ -25,6 +25,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type RebateRuleFormValues = {
   id?: string;
@@ -320,10 +321,7 @@ export const DepositRebateSettingsPopupForm = ({
   };
 
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          className="max-h-[75vh] overflow-y-auto px-0.75"
+    <RrhForm form={form} className="max-h-[75vh] overflow-y-auto px-0.75"
           onSubmit={form.handleSubmit(onSubmit, onError)}
         >
           {isEditMode && (
@@ -372,8 +370,6 @@ export const DepositRebateSettingsPopupForm = ({
               <RrhCircleLoading />
             </div>
           )}
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

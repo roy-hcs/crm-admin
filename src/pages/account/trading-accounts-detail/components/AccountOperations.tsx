@@ -1,13 +1,14 @@
 import { useGetAccountOperateInfo, useSetAccountOperateInfo } from '@/api/hooks/account';
 import { useEffect, useState } from 'react';
-import { FormProvider } from '@/contexts/form';
-import { Form } from '@/components/ui/form';
+
+
 import { useForm } from 'react-hook-form';
 import { FormSwitch } from '@/components/form/FormSwitch';
 import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
 import { toast } from 'sonner';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   enableInternalTransferOut: number;
@@ -91,9 +92,7 @@ export function AccountOperations({ id }: { id: string }) {
   }
   return (
     <div className="grid gap-6">
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <FormSwitch verticalLabel name="outMoney" label={t('table.Withdrawal')} />
             <FormSwitch
               verticalLabel
@@ -105,9 +104,7 @@ export function AccountOperations({ id }: { id: string }) {
               name="enableInternalTransferOut"
               label={t('home.enableInternalTransferOut')}
             />
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
       <div className="flex justify-end">
         <RrhButton
           type="submit"

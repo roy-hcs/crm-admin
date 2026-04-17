@@ -1,5 +1,3 @@
-import { Form } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -15,6 +13,7 @@ import {
 } from '@/api/hooks/account';
 import { toast } from 'sonner';
 import { FormInput } from '@/components/form/FormInput';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   name: string;
@@ -165,26 +164,22 @@ export const AccountGroupDialog = ({
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
-            <FormInput
-              name="name"
-              label={t('accountGroups.name')}
-              verticalLabel
-              placeholder={t('rules.limitLength', { field: 32 })}
-              onBlur={e => validateName(String((e.target as HTMLInputElement).value))}
-              maxLength={32}
-            />
-            <FormInput
-              name="sort"
-              label={t('table.sort')}
-              verticalLabel
-              placeholder={t('common.sortPlaceholder')}
-            />
-          </form>
-        </Form>
-      </FormProvider>
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
+        <FormInput
+          name="name"
+          label={t('accountGroups.name')}
+          verticalLabel
+          placeholder={t('rules.limitLength', { field: 32 })}
+          onBlur={e => validateName(String((e.target as HTMLInputElement).value))}
+          maxLength={32}
+        />
+        <FormInput
+          name="sort"
+          label={t('table.sort')}
+          verticalLabel
+          placeholder={t('common.sortPlaceholder')}
+        />
+      </RrhForm>
     </RrhDialog>
   );
 };

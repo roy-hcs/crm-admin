@@ -1,16 +1,9 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { FormInput } from '@/components/form/FormInput';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
+
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction, useMemo } from 'react';
 import { FormSelect } from '@/components/form/FormSelect';
@@ -21,6 +14,7 @@ import { useServerList } from '@/api/hooks/system';
 import { MamFollowListParams } from '@/api/hooks/copyTrading/type';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 import { formatDate } from '@/lib/utils';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
   Time: { from: string; to: string };
@@ -103,10 +97,7 @@ export const OrderManagementForm = ({
     return server?.rows || [];
   }, [server]);
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
+    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
           onKeyDown={e => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -206,8 +197,6 @@ export const OrderManagementForm = ({
               <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

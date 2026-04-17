@@ -1,12 +1,5 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -29,6 +22,7 @@ import { toast } from 'sonner';
 import { RrhCheckBoxGroup } from '@/components/common/RrhCheckBoxGroup';
 import { cn } from '@/lib/utils';
 import { Checkbox } from '@/components/ui/checkbox';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   name: string;
@@ -324,9 +318,7 @@ export const GoodSortDialog = ({
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1">
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1">
             <div className={cn(step === 'one' ? 'block' : 'hidden')}>
               <div className="py-3">
                 <FormInput
@@ -428,9 +420,7 @@ export const GoodSortDialog = ({
                   );
                 })
               : null}
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

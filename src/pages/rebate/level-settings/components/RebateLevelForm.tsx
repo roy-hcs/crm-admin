@@ -1,7 +1,7 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { FormInput } from '@/components/form/FormInput';
-import { Form } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+
+
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod';
@@ -14,6 +14,7 @@ import {
   useGetUniqueName,
 } from '@/api/hooks/rebate';
 import { toast } from 'sonner';
+import { RrhForm } from '@/components/form/RrhForm';
 
 export const RebateLevelForm = ({
   onSuccess,
@@ -89,9 +90,7 @@ export const RebateLevelForm = ({
     }
   };
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
+    <RrhForm form={form} className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
           <FormInput
             name="level"
             label={t('table.level')}
@@ -112,8 +111,6 @@ export const RebateLevelForm = ({
               {t('common.Confirm')}
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };
