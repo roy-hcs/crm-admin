@@ -485,3 +485,45 @@ export type EditRebateDepositAddOrUpdateParams = CommonRebateBaseParams & {
   lowLimit: string;
   remarkLimit: string;
 };
+
+export interface RebateSettingsTemplate {
+  id: string;
+  userId: string | null;
+  serialNumber: string | null;
+  templateName: string;
+  rebateLevel: string;
+  relatedSpreadLink: string;
+  rebateTraderCommissionRule: string;
+  templateDefault: string;
+  rebateType: number;
+  createBy: string | null;
+  createTime: string;
+  updateBy: string | null;
+  updateTime: string;
+  remark: string | null;
+  params: Record<string, string>;
+}
+
+export interface RebateSettingsTemplateListRes {
+  total: string;
+  rows: RebateSettingsTemplate[];
+  code: number;
+  msg: string | null;
+  totalVolume: number;
+  totalCommission: number;
+  totalProfit: number;
+  totalSwaps: number;
+  priceSum: number;
+  serverType: string | null;
+}
+
+export type AddRebateSettingsTemplateParams = {
+  // 添加模板时传递以下数据
+  rebateType?: number;
+  templateName?: string;
+  rebateLevel?: string;
+  rebateTraderCommissionRule?: string;
+  // 调整默认模板时传递以下数据
+  templateDefault?: string; // 设置默认模板时传 'Y'/'N
+  defaultTemplate?: string; //设置默认模板时需要传，值同id，其他时候不传
+};

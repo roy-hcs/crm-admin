@@ -29,6 +29,7 @@ import { EditFeeRebateSettingDialog } from './components/EditFeeRebateSettingDia
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 import { RrhStatusAlert } from '@/components/common/RrhStatusAlert';
 import { useTabActions } from '@/hooks/useTabActions';
+import { RrhButton } from '@/components/common/RrhButton';
 
 function getServerTypeName(serverType: string) {
   switch (serverType) {
@@ -353,7 +354,21 @@ export const FeeRebateSettingsPage = () => {
               languageList={languageList}
               dealAccountGroupListRes={dealAccountGroupListRes}
             />
-            <Button
+            {rebateModelSetting === 1 && (
+              <RrhButton
+                variant="outline"
+                onClick={() => {
+                  openTab({
+                    path: '/rebate/fee-settings-template',
+                    title: t('RebateTemplate.feeRebateSettingsTemplate'),
+                    key: '/rebate/fee-settings-template',
+                  });
+                }}
+              >
+                {t('RebateTemplate.rebateTemplate')}
+              </RrhButton>
+            )}
+            <RrhButton
               variant="outline"
               onClick={() => {
                 openTab({
@@ -365,7 +380,7 @@ export const FeeRebateSettingsPage = () => {
               }}
             >
               {t('table.historyOrderRebate')}
-            </Button>
+            </RrhButton>
           </div>
         </div>
         <DataTable

@@ -1,12 +1,15 @@
 import { RebateBasicSettingsPage } from '@/pages/rebate/basic-settings/RebateBasicSettingsPage';
 import { DepositRebateSettingsHistoryPage } from '@/pages/rebate/deposit-settings-history/DepositRebateSettingsHistoryPage';
+import { DepositRebateSettingsTemplate } from '@/pages/rebate/deposit-settings-template/DepositRebateSettingsTemplate';
 import { DepositRebateSettingsPage } from '@/pages/rebate/deposit-settings/DepositRebateSettingsPage';
 import { FeeRebateSettingsHistoryPage } from '@/pages/rebate/fee-settings-history/FeeRebateSettingsHistoryPage';
+import { FeeRebateSettingsTemplate } from '@/pages/rebate/fee-settings-template/FeeRebateSettingsTemplate';
 import { FeeRebateSettingsPage } from '@/pages/rebate/fee-settings/FeeRebateSettingsPage';
 import { RebateLevelSettingsPage } from '@/pages/rebate/level-settings/RebateLevelSettingsPage';
 import { PipValuePage } from '@/pages/rebate/pip-value/PipValuePage';
 import { ProductGroupPage } from '@/pages/rebate/product-group/ProductGroupPage';
 import { TradingRebateSettingsHistoryPage } from '@/pages/rebate/trading-settings-history/TradingRebateSettingsHistoryPage';
+import { TradingRebateSettingsTemplate } from '@/pages/rebate/trading-settings-template/TradingRebateSettingsTemplate';
 import { TradingRebateSettingsPage } from '@/pages/rebate/trading-settings/TradingRebateSettingsPage';
 import { RouteObject } from 'react-router-dom';
 
@@ -63,5 +66,17 @@ export const rebateRoutes: RouteObject[] = [
   {
     path: '/rebate/basic-settings',
     element: <RebateBasicSettingsPage />,
+  },
+  {
+    path: '/rebate/trading-settings-template',
+    element: <TradingRebateSettingsTemplate />,
+  },
+  {
+    path: '/rebate/fee-settings-template',
+    element: <FeeRebateSettingsTemplate />,
+  },
+  {
+    path: '/rebate/deposit-settings-template',
+    element: <DepositRebateSettingsTemplate />,
   },
 ];

@@ -243,7 +243,9 @@
     },
     "save": "save",
     "getVerificationCode": "Get verification code",
-    "verificationCode": "Verification code"
+    "verificationCode": "Verification code",
+    "cancelDefault": "cancel default",
+    "default": "default"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1555,7 +1557,8 @@
     "levelNameAlreadyUsed": "The level name already exists",
     "maxSize": "The maximum size does not exceed {{maxSize}}MB",
     "phoneExists": "Mobile phone number has been registered",
-    "userPwdTips": "8-20 English digits"
+    "userPwdTips": "8-20 English digits",
+    "nameAlreadyUsed": "The name already exists"
   },
   "messageTemplate": {
     "add": "Add message template",
@@ -1619,5 +1622,19 @@
     "title": "Basic settings",
     "tradingRebate": "Trading rebate settings",
     "weekSummary": "Weekly end"
+  },
+  "RebateTemplate": {
+    "cancelDefault": "cancel default",
+    "cancelDefaultMsg": "Are you sure you want to cancel the default settings?",
+    "defaultTemplate": "Default template",
+    "deleteMsg": "Are you sure you want to delete this rebate template?",
+    "depositRebateSettingsTemplate": "Deposit rebate template",
+    "feeRebateSettingsTemplate": "Handling fee rebate template",
+    "rebateTemplate": "Rebate template",
+    "relatedSpreadLink": "Affiliate promotion link",
+    "setDefaultRebateTemplate": "Set default rebate template",
+    "setDefaultTemplateTip": "Users who have not set a rebate will use the default rebate template to rebate.",
+    "templateName": "Template name",
+    "tradingRebateSettingsTemplate": "Trading rebate template"
   }
 }
