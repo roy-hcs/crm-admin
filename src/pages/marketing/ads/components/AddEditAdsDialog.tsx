@@ -1,12 +1,5 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -27,6 +20,7 @@ import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { UploadFile } from './components/UploadFile';
 import { useUploadFile } from '@/api/hooks/system/system';
 import { cloneDeep } from 'es-toolkit';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   name: string;
@@ -328,9 +322,7 @@ export const AddEditAdsDialog = ({
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
             <div className={cn(step === 'one' ? 'block' : 'hidden')}>
               <div className="grid gap-6">
                 <FormInput
@@ -499,9 +491,7 @@ export const AddEditAdsDialog = ({
                 </div>
               </div>
             ) : null}
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

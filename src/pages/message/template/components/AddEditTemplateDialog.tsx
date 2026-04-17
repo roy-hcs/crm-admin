@@ -1,5 +1,5 @@
-import { Form, FormField } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormField } from '@/components/ui/form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -13,6 +13,7 @@ import { FormInput } from '@/components/form/FormInput';
 import { MsgTemplateItem, useAddMsgTemplate, useEditMsgTemplate } from '@/api/hooks/message';
 import { toast } from 'sonner';
 import { RichTextEditor } from '../../management/components/RichTextEditor';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   content: string;
@@ -130,9 +131,7 @@ export const AddEditTemplateDialog = ({
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
             <div className="py-6">
               <FormInput
                 verticalLabel
@@ -158,9 +157,7 @@ export const AddEditTemplateDialog = ({
                 }}
               />
             </div>
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

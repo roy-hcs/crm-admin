@@ -16,13 +16,12 @@ import { useForm } from 'react-hook-form';
 import { LabelItem } from '@/components/common/LabelItem';
 import { InfoItem } from '@/components/common/InfoItem';
 import { FormInput } from '@/components/form/FormInput';
-import { FormProvider } from '@/contexts/form';
-import { Form } from '@/components/ui/form';
 import { BindNewEmailDialog } from './components/BindNewEmailDialog';
 import { ChangePasswordDialog } from './components/ChangePasswordDialog';
 import { BindNewPhoneDialog } from './components/BindNewPhoneDialog';
 import { GoogleKeyDialog } from './components/GoogleKeyDialog';
 import { toast } from 'sonner';
+import { RrhForm } from '@/components/form/RrhForm';
 
 const FileType = ['image/jpeg', 'image/png', 'image/gif'];
 
@@ -167,46 +166,42 @@ export const ProfilePage = () => {
               )}
             </div>
           </div>
-          <FormProvider form={form}>
-            <Form {...form}>
-              <form>
-                <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
-                  <div>
-                    {edit ? (
-                      <FormInput
-                        name="userLastName"
-                        label={t('CRMAccountPage.lastName')}
-                        verticalLabel
-                        placeholder={t('rules.limitLength', { field: 32 })}
-                        maxLength={32}
-                      />
-                    ) : (
-                      <LabelItem
-                        label={t('CRMAccountPage.lastName')}
-                        ContentDom={<InfoItem info={userInfo?.userLastName || ''} />}
-                      />
-                    )}
-                  </div>
-                  <div>
-                    {edit ? (
-                      <FormInput
-                        name="userName"
-                        label={t('CRMAccountPage.firstName')}
-                        verticalLabel
-                        placeholder={t('rules.limitLength', { field: 32 })}
-                        maxLength={32}
-                      />
-                    ) : (
-                      <LabelItem
-                        label={t('CRMAccountPage.firstName')}
-                        ContentDom={<InfoItem info={userInfo?.userName || ''} />}
-                      />
-                    )}
-                  </div>
-                </div>
-              </form>
-            </Form>
-          </FormProvider>
+          <RrhForm form={form}>
+            <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
+              <div>
+                {edit ? (
+                  <FormInput
+                    name="userLastName"
+                    label={t('CRMAccountPage.lastName')}
+                    verticalLabel
+                    placeholder={t('rules.limitLength', { field: 32 })}
+                    maxLength={32}
+                  />
+                ) : (
+                  <LabelItem
+                    label={t('CRMAccountPage.lastName')}
+                    ContentDom={<InfoItem info={userInfo?.userLastName || ''} />}
+                  />
+                )}
+              </div>
+              <div>
+                {edit ? (
+                  <FormInput
+                    name="userName"
+                    label={t('CRMAccountPage.firstName')}
+                    verticalLabel
+                    placeholder={t('rules.limitLength', { field: 32 })}
+                    maxLength={32}
+                  />
+                ) : (
+                  <LabelItem
+                    label={t('CRMAccountPage.firstName')}
+                    ContentDom={<InfoItem info={userInfo?.userName || ''} />}
+                  />
+                )}
+              </div>
+            </div>
+          </RrhForm>
         </div>
       </RrhCard>
       <RrhCard>

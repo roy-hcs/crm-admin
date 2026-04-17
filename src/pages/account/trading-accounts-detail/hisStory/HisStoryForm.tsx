@@ -1,23 +1,17 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { FormInput } from '@/components/form/FormInput';
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  Form,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
+
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
 import { formatDate } from '@/lib/utils';
 import { BasicParams } from '@/api/types';
 import { CrmDealAccountFundHistoryParams } from '@/api/hooks/account';
 import { FormSelect } from '@/components/form/FormSelect';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
   ticket: string;
@@ -89,10 +83,7 @@ export const HisStoryForm = ({
   };
 
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
+    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
           onKeyDown={e => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -154,8 +145,6 @@ export const HisStoryForm = ({
               <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

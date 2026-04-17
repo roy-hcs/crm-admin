@@ -1,17 +1,10 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
+
 import { useForm } from 'react-hook-form';
 import { BasicParams } from '@/api/hooks/review/types';
 import { Dispatch, SetStateAction } from 'react';
@@ -20,6 +13,7 @@ import { PammReportSettlementListParams } from '@/api/hooks/pamm/type';
 import { formatDate } from '@/lib/utils';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { RrhServerSelector } from '@/components/common/RrhServerSelector';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
   serverId: string;
@@ -84,10 +78,7 @@ export const AccrualReportForm = ({
     });
   };
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
+    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
           onKeyDown={e => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -164,8 +155,6 @@ export const AccrualReportForm = ({
               <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

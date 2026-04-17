@@ -1,5 +1,5 @@
-import { Form, FormField } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormField } from '@/components/ui/form';
+
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,7 @@ import { RrhDialog } from '@/components/common/RrhDialog';
 import { SelectUser } from './SelectUser';
 import { useSetAccountBelong } from '@/api/hooks/account';
 import { toast } from 'sonner';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   newUserId: string;
@@ -73,9 +74,7 @@ export const SetAccountBelongDialog = ({
       variant="small"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <div className="text-foreground text-sm leading-5 font-medium">
               {t('tradingAccountTransactions.selectedAccounts', { count: ids.length })}
             </div>
@@ -98,9 +97,7 @@ export const SetAccountBelongDialog = ({
                 </RrhButton>
               </div>
             </div>
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

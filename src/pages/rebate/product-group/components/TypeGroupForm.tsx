@@ -8,8 +8,8 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { BaseOption } from '@/components/common/RrhSelect';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
-import { Form, FormField } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormField } from '@/components/ui/form';
+
 import { serverMap } from '@/lib/constant';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +18,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DictTypeItem } from '@/api/hooks/system/types';
 import { useEffect, useMemo, useRef } from 'react';
+import { RrhForm } from '@/components/form/RrhForm';
 
 export const TypeGroupForm = ({
   serverTypes,
@@ -143,9 +144,7 @@ export const TypeGroupForm = ({
   }, [serverList]);
 
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
+    <RrhForm form={form} className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
           <FormInput
             name="typeGroupName"
             label={t('table.typeGroup')}
@@ -207,8 +206,6 @@ export const TypeGroupForm = ({
               {t('common.Confirm')}
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

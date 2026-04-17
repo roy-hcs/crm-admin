@@ -1,7 +1,7 @@
 import { useGetAuthorityInfoPerm, useSetAuthorityInfoPerm } from '@/api/hooks/account';
 import { useEffect, useState } from 'react';
-import { FormProvider } from '@/contexts/form';
-import { Form } from '@/components/ui/form';
+
+
 import { useForm } from 'react-hook-form';
 import { FormSwitch } from '@/components/form/FormSwitch';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +9,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   enableThisAccount: number;
@@ -261,9 +262,7 @@ export function AccountPermission({ id }: { id: string }) {
   }
   return (
     <div className="grid gap-6">
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
             {serviceType === 1 && (
               <div className="grid gap-y-6">
                 <div className="grid gap-2">
@@ -415,9 +414,7 @@ export function AccountPermission({ id }: { id: string }) {
                 <FormSwitch verticalLabel name="sendReportLx" label={t('table.sendReport')} />
               </div>
             )}
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
       <div className="flex justify-end">
         <RrhButton
           type="submit"

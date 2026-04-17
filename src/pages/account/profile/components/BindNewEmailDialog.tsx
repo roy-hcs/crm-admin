@@ -2,15 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { FormInput } from '@/components/form/FormInput';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
@@ -19,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { TFunction } from 'i18next';
 import z from 'zod';
 import { toast } from 'sonner';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   method?: string;
@@ -158,52 +151,48 @@ export const BindNewEmailDialog = ({ onSuccess }: { onSuccess: () => void }) => 
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form>
-            <FormInput
-              className="py-3"
-              name="address"
-              label={t('table.email')}
-              verticalLabel
-              placeholder={t('rules.limitLength', { field: 32 })}
-              maxLength={32}
-            />
-            {/* 缺少入机校验 */}
-            <FormField
-              control={form.control}
-              name="code"
-              render={({ field }) => (
-                <FormItem className="py-3">
-                  <FormLabel>{t('common.verificationCode')}</FormLabel>
-                  <FormControl>
-                    <div className="grid w-full gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-                      <Input
-                        placeholder={t('common.pleaseInput', {
-                          field: t('common.verificationCode'),
-                        })}
-                        value={field.value ?? ''}
-                        className="h-10 text-sm"
-                        onChange={e => field.onChange(e.target.value)}
-                      />
-                      <RrhButton
-                        type="button"
-                        className="border"
-                        variant="ghost"
-                        disabled={isSendingCode || countdown > 0}
-                        onClick={onGetVerificationCode}
-                      >
-                        {countdown > 0 ? `${countdown}s` : t('common.getVerificationCode')}
-                      </RrhButton>
-                    </div>
-                  </FormControl>
-                  <FormMessage className="text-end" />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
-      </FormProvider>
+      <RrhForm form={form}>
+        <FormInput
+          className="py-3"
+          name="address"
+          label={t('table.email')}
+          verticalLabel
+          placeholder={t('rules.limitLength', { field: 32 })}
+          maxLength={32}
+        />
+        {/* 缺少入机校验 */}
+        <FormField
+          control={form.control}
+          name="code"
+          render={({ field }) => (
+            <FormItem className="py-3">
+              <FormLabel>{t('common.verificationCode')}</FormLabel>
+              <FormControl>
+                <div className="grid w-full gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+                  <Input
+                    placeholder={t('common.pleaseInput', {
+                      field: t('common.verificationCode'),
+                    })}
+                    value={field.value ?? ''}
+                    className="h-10 text-sm"
+                    onChange={e => field.onChange(e.target.value)}
+                  />
+                  <RrhButton
+                    type="button"
+                    className="border"
+                    variant="ghost"
+                    disabled={isSendingCode || countdown > 0}
+                    onClick={onGetVerificationCode}
+                  >
+                    {countdown > 0 ? `${countdown}s` : t('common.getVerificationCode')}
+                  </RrhButton>
+                </div>
+              </FormControl>
+              <FormMessage className="text-end" />
+            </FormItem>
+          )}
+        />
+      </RrhForm>
     </RrhDialog>
   );
 };

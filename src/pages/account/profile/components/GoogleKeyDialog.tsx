@@ -2,8 +2,8 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
-import { Form } from '@/components/ui/form';
+
+
 import { useForm } from 'react-hook-form';
 import { useBind, useUnbind } from '@/api/hooks/system/system';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import { FormInput } from '@/components/form/FormInput';
 import { RrhQrCode } from '@/components/common/RrhQrCode';
 import md5 from 'blueimp-md5';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   code: string;
@@ -107,9 +108,7 @@ export const GoogleKeyDialog = ({
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form>
+      <RrhForm form={form}>
             {key && (
               <div className="grid gap-6">
                 <div>
@@ -176,9 +175,7 @@ export const GoogleKeyDialog = ({
               verticalLabel
               placeholder={t('common.pleaseInput', { field: t('profile.googleAuthCode') })}
             />
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

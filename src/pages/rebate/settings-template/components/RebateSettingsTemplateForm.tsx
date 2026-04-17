@@ -10,11 +10,12 @@ import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
 import { FormHiddenInput } from '@/components/form/FormHiddenInput';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
-import { Form } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+
+
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type RebateTemplateFormValues = {
   rebateType: number;
@@ -94,9 +95,7 @@ export const RebateSettingsTemplateForm = ({
   };
 
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 py-4">
+    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 py-4">
           <FormHiddenInput name="rebateType" value={type} control={form.control} />
           <FormInput
             name="templateName"
@@ -127,8 +126,6 @@ export const RebateSettingsTemplateForm = ({
               <RrhCircleLoading />
             </div>
           )}
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

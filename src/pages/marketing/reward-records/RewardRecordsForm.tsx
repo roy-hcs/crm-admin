@@ -1,22 +1,16 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { FormInput } from '@/components/form/FormInput';
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  Form,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
+
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
 import { FormSelect } from '@/components/form/FormSelect';
 import { RewardRecordsListParams } from '@/api/hooks/marketing';
 import { formatDate } from '@/lib/utils';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
   rewardId: string;
@@ -86,10 +80,7 @@ export const RewardRecordsForm = ({
   };
 
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
+    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
         >
@@ -135,8 +126,6 @@ export const RewardRecordsForm = ({
               <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

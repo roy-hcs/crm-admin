@@ -1,17 +1,9 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { CrmUserParams, TagUserItem } from '@/api/hooks/account';
 import { RefreshCcw, Search } from 'lucide-react';
 import { FormInput } from '@/components/form/FormInput';
-import { FormProvider } from '@/contexts/form';
 import { FormSelect } from '@/components/form/FormSelect';
 import { crmAccountTypeOptions, roleOptions, statusOptions } from '@/lib/const';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -20,6 +12,7 @@ import { formatDate } from '@/lib/utils';
 import { Dispatch, SetStateAction } from 'react';
 import { BasicParams } from '@/api/types';
 import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
   accountType: string;
@@ -122,102 +115,99 @@ export const CRMAccountsForm = ({
   }));
 
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        verticalLabel
+        name="name"
+        label={t('CRMAccountPage.NameOrAccountId')}
+        placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.NameOrAccountId') })}
+      />
+      <FormInput
+        verticalLabel
+        name="email"
+        label={t('loginPage.email')}
+        placeholder={t('common.pleaseInput', { field: t('loginPage.email') })}
+      />
+      <FormInput
+        verticalLabel
+        name="certiricateNo"
+        label={t('CRMAccountPage.ID')}
+        placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.ID') })}
+      />
+      <FormInput
+        verticalLabel
+        name="mobile"
+        label={t('CRMAccountPage.Mobile')}
+        placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.Mobile') })}
+      />
+      <FormSelect
+        verticalLabel
+        name="status"
+        label={t('CRMAccountPage.Status')}
+        placeholder={t('common.pleaseSelect')}
+        options={statusOptions.map(i => ({ label: t(i.label), value: i.value }))}
+      />
+      <FormSelect
+        verticalLabel
+        name="role"
+        label={t('table.role')}
+        placeholder={t('common.pleaseSelect')}
+        options={roleOptions.map(i => ({ label: t(i.label), value: i.value }))}
+      />
+
+      <FormField
+        name="regStartTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('CRMAccountPage.registerTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="regStartTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <SelectUpperDropdown
+        rawLabel={`${t('CRMAccountPage.Superior')} (${t('common.optional')})`}
+        name="inviter"
+      />
+      <SelectUpperDropdown />
+
+      <FormSelect
+        name="accountType"
+        label={t('CRMAccountPage.CRMAccountType')}
+        placeholder={t('common.pleaseSelect')}
+        verticalLabel
+        options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
+      />
+      <FormSelect
+        name="tags"
+        verticalLabel
+        label={t('CRMAccountPage.TagsName')}
+        placeholder={t('common.pleaseSelect')}
+        options={tagsOptions}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton
+          variant="outline"
+          onClick={onReset}
+          type="reset"
+          className="flex items-center gap-2"
         >
-          <FormInput
-            verticalLabel
-            name="name"
-            label={t('CRMAccountPage.NameOrAccountId')}
-            placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.NameOrAccountId') })}
-          />
-          <FormInput
-            verticalLabel
-            name="email"
-            label={t('loginPage.email')}
-            placeholder={t('common.pleaseInput', { field: t('loginPage.email') })}
-          />
-          <FormInput
-            verticalLabel
-            name="certiricateNo"
-            label={t('CRMAccountPage.ID')}
-            placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.ID') })}
-          />
-          <FormInput
-            verticalLabel
-            name="mobile"
-            label={t('CRMAccountPage.Mobile')}
-            placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.Mobile') })}
-          />
-          <FormSelect
-            verticalLabel
-            name="status"
-            label={t('CRMAccountPage.Status')}
-            placeholder={t('common.pleaseSelect')}
-            options={statusOptions.map(i => ({ label: t(i.label), value: i.value }))}
-          />
-          <FormSelect
-            verticalLabel
-            name="role"
-            label={t('table.role')}
-            placeholder={t('common.pleaseSelect')}
-            options={roleOptions.map(i => ({ label: t(i.label), value: i.value }))}
-          />
-
-          <FormField
-            name="regStartTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('CRMAccountPage.registerTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="regStartTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <SelectUpperDropdown
-            rawLabel={`${t('CRMAccountPage.Superior')} (${t('common.optional')})`}
-            name="inviter"
-          />
-          <SelectUpperDropdown />
-
-          <FormSelect
-            name="accountType"
-            label={t('CRMAccountPage.CRMAccountType')}
-            placeholder={t('common.pleaseSelect')}
-            verticalLabel
-            options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
-          />
-          <FormSelect
-            name="tags"
-            verticalLabel
-            label={t('CRMAccountPage.TagsName')}
-            placeholder={t('common.pleaseSelect')}
-            options={tagsOptions}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton
-              variant="outline"
-              onClick={onReset}
-              type="reset"
-              className="flex items-center gap-2"
-            >
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" className="flex items-center gap-2">
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </form>
-      </Form>
-    </FormProvider>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" className="flex items-center gap-2">
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

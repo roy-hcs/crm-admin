@@ -1,15 +1,8 @@
 import { Dispatch, SetStateAction } from 'react';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { useForm } from 'react-hook-form';
-import { FormProvider } from '@/contexts/form';
+
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -19,6 +12,7 @@ import { RebateTypeOptions, RebateStatusOptions } from '@/lib/const';
 import { formatDate } from '@/lib/utils';
 import { DailyRebateParams } from '@/api/hooks/report';
 import { BasicParams } from '@/api/types';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
   // 结算日期
@@ -89,10 +83,7 @@ export const WeeklyRebateForm = ({
   };
 
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
+    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
         >
@@ -146,8 +137,6 @@ export const WeeklyRebateForm = ({
               <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

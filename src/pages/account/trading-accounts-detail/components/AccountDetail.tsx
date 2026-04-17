@@ -1,7 +1,7 @@
 import { DetailInfoEditParams, useGetDetailInfo, useSetDetailInfoEdit } from '@/api/hooks/account';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FormProvider } from '@/contexts/form';
-import { Form, FormField } from '@/components/ui/form';
+
+import { FormField } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 import { useGlobalLoading } from '@/contexts/loading';
 import { EditableField } from '@/components/common/EditableField';
 import { SelectOption } from '@/api/types';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = DetailInfoEditParams;
 
@@ -364,9 +365,7 @@ export function AccountDetail({ id }: { id: string }) {
 
   return (
     <div>
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
               {fieldConfigs.map(config => (
                 <FormField
@@ -445,9 +444,7 @@ export function AccountDetail({ id }: { id: string }) {
                 {t('common.Confirm')}
               </RrhButton>
             </div>
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </div>
   );
 }

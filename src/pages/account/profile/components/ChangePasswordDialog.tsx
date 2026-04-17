@@ -2,15 +2,8 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Control, useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { useRestPwd } from '@/api/hooks/system/system';
@@ -20,6 +13,7 @@ import z from 'zod';
 import { Eye, EyeClosed } from 'lucide-react';
 import { toast } from 'sonner';
 import { encryptWithPublicKey } from '@/lib/utils';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   newPassword: string;
@@ -174,9 +168,7 @@ export const ChangePasswordDialog = ({ onSuccess }: { onSuccess: () => void }) =
       type="submit"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form>
+      <RrhForm form={form}>
             <PasswordField
               control={form.control}
               name="newPassword"
@@ -192,9 +184,7 @@ export const ChangePasswordDialog = ({ onSuccess }: { onSuccess: () => void }) =
               show={showAgainPWD}
               setShow={setShowAgainPWD}
             />
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

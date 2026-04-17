@@ -1,16 +1,9 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { RefreshCcw, Search } from 'lucide-react';
 import { FormInput } from '@/components/form/FormInput';
-import { FormProvider } from '@/contexts/form';
+
 import { FormSelect } from '@/components/form/FormSelect';
 import { RrhButton } from '@/components/common/RrhButton';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +15,7 @@ import { serverMap } from '@/lib/constant';
 import { Dispatch, SetStateAction } from 'react';
 import { RebateCommissionListParams, RebateCommissionRuleItem } from '@/api/hooks/review';
 import { formatDate } from '@/lib/utils';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
   serverId: string;
@@ -136,10 +130,7 @@ export const ReviewTradingRebateForm = ({
   };
 
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
+    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
         >
@@ -296,8 +287,6 @@ export const ReviewTradingRebateForm = ({
               <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

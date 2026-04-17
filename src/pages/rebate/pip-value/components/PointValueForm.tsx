@@ -10,14 +10,15 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { BaseOption } from '@/components/common/RrhSelect';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
-import { Form, FormField } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+import { FormField } from '@/components/ui/form';
+
 import { serverMap } from '@/lib/constant';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useMemo, useRef } from 'react';
 import { SelectMtTypeGroup } from '../../../../components/common/SelectMtTypeGroup';
+import { RrhForm } from '@/components/form/RrhForm';
 
 export const PointValueForm = ({
   serverTypes,
@@ -218,9 +219,7 @@ export const PointValueForm = ({
   }, [serverList]);
 
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
+    <RrhForm form={form} className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
           <FormInput
             name="pointValueName"
             label={t('table.pointValueName')}
@@ -347,8 +346,6 @@ export const PointValueForm = ({
               {t('common.Confirm')}
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

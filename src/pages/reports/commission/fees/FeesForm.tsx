@@ -1,15 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { useForm } from 'react-hook-form';
-import { FormProvider } from '@/contexts/form';
+
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -23,6 +16,7 @@ import { BasicParams } from '@/api/types';
 import { useGetGroup } from '@/api/hooks/system/system';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
+import { RrhForm } from '@/components/form/RrhForm';
 type FormData = {
   tradingTime: { from: string; to: string };
   rebateTime: { from: string; to: string };
@@ -156,10 +150,7 @@ export const FeesForm = ({
   }, [form, getGroupData, serverId]);
 
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
+    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
         >
@@ -243,8 +234,6 @@ export const FeesForm = ({
               <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

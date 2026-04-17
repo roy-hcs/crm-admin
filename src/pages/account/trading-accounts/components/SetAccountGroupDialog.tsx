@@ -1,5 +1,5 @@
-import { Form } from '@/components/ui/form';
-import { FormProvider } from '@/contexts/form';
+
+
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,7 @@ import { RrhDialog } from '@/components/common/RrhDialog';
 import { useSetAccountGroup } from '@/api/hooks/account';
 import { toast } from 'sonner';
 import { FormSelect } from '@/components/form/FormSelect';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValues = {
   accountGroup: string;
@@ -75,9 +76,7 @@ export const SetAccountGroupDialog = ({
       variant="small"
       formLoading={isSubmitting}
     >
-      <FormProvider form={form}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
             <div className="text-foreground text-sm leading-5 font-medium">
               {t('tradingAccountTransactions.selectedAccounts', { count: ids.length })}
             </div>
@@ -101,9 +100,7 @@ export const SetAccountGroupDialog = ({
                 </RrhButton>
               </div>
             </div>
-          </form>
-        </Form>
-      </FormProvider>
+          </RrhForm>
     </RrhDialog>
   );
 };

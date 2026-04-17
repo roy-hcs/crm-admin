@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Form } from '@/components/ui/form';
+
 import { useForm } from 'react-hook-form';
-import { FormProvider } from '@/contexts/form';
+
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
 import { FormMonthPicker } from '@/components/form/FormMonthPicker';
@@ -10,6 +10,7 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useRebateLevelList } from '@/api/hooks/system/system';
 import { ClientTrackingParams } from '@/api/hooks/report';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
   userName: string;
@@ -61,10 +62,7 @@ export const ClientTrackingForm = ({
   };
 
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
+    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
           className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
         >
@@ -107,8 +105,6 @@ export const ClientTrackingForm = ({
               <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };

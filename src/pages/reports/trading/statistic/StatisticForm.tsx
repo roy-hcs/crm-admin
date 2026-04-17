@@ -7,22 +7,16 @@ import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { FormInput } from '@/components/form/FormInput';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { FormSelect } from '@/components/form/FormSelect';
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  Form,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { serverMap } from '@/lib/constant';
 import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { FormProvider } from '@/contexts/form';
+
 import { useForm } from 'react-hook-form';
 import { formatDate } from '@/lib/utils';
 import { Dispatch, SetStateAction } from 'react';
 import { BasicParams } from '@/api/types';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
   serverId: string;
@@ -101,10 +95,7 @@ export const StatisticForm = ({
     });
   };
   return (
-    <FormProvider form={form}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
+    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
           onReset={onReset}
           onKeyDown={e => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -210,8 +201,6 @@ export const StatisticForm = ({
               <span>{t('common.Search')}</span>
             </RrhButton>
           </div>
-        </form>
-      </Form>
-    </FormProvider>
+        </RrhForm>
   );
 };
