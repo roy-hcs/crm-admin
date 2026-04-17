@@ -1,6 +1,6 @@
 import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useLeverageReviewDetail, useLeverageVerify } from '@/api/hooks/review/review';
 import { useTranslation } from 'react-i18next';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
@@ -8,10 +8,14 @@ import { LeverageVerifyParams } from '@/api/hooks/review/types';
 import { RrhStepProps } from '@/components/common/RrhStep';
 import { ReviewStepsCard } from '../withdrawal-detail/components/ReviewStepsCard';
 import { LeverageInfoCard } from './components/LeverageInfoCard';
-import { CheckInfoCard } from './components/CheckInfoCard';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 import { PageInfo } from '@/components/common/PageInfo';
+import { CheckInfoCard } from '@/components/common/CheckInfoCard';
+import { useGlobalLoading } from '@/contexts/loading';
+import { useTabBackNavigation } from '@/hooks/useTabBackNavigation';
+
+type FormValue = LeverageVerifyParams;
 
 export const LeverageDetailPage = () => {
   const [searchParams] = useSearchParams();
@@ -20,14 +24,15 @@ export const LeverageDetailPage = () => {
     enabled: !!leverageId,
   });
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const { withLoading } = useGlobalLoading();
+  const back = useTabBackNavigation('/review/leverage');
 
   const leverageInfo = leverageRes?.data?.detail;
   const reviewer = leverageRes?.data?.reviewer;
   const isAudit = searchParams.get('type') === 'audit';
 
   const { mutateAsync: verifyLeverage } = useLeverageVerify();
-  const form = useForm<LeverageVerifyParams>({
+  const form = useForm<FormValue>({
     defaultValues: {
       id: '',
       status: '1',
@@ -82,28 +87,28 @@ export const LeverageDetailPage = () => {
     }),
   ] as RrhStepProps['steps'];
 
-  const onSubmit = async (val: LeverageVerifyParams) => {
-    try {
-      const params = {
-        id: leverageInfo.id || '',
-        status: val.status,
-        remark: val.remark,
-        verifyStep: leverageInfo.verifyStep || '',
-      };
-      const res = await verifyLeverage(params);
-      if (res.code === 0) {
-        toast.success(res.msg);
-        // 成功后返回上一页面
-        setTimeout(() => {
-          navigate('/review/leverage');
-        }, 500);
-      } else {
-        toast.error(res.msg);
+  const onSubmit = async (data: FormValue) => {
+    await withLoading(async () => {
+      try {
+        const params = {
+          id: leverageInfo.id || '',
+          status: data.status,
+          remark: data.remark,
+          verifyStep: leverageInfo.verifyStep || '',
+        };
+        const res = await verifyLeverage(params);
+        if (res.code === 0) {
+          toast.success(t('common.success'));
+          back();
+        } else {
+          toast.error(res.msg);
+        }
+      } catch {
+        toast.error(t('common.AnErrorOccurred'));
       }
-    } catch {
-      console.error('Leverage review verification failed');
-    }
+    });
   };
+
   return (
     <div>
       <PageInfo wrapperCls="py-3" title={t('leverage.leverageReviewDetail')} />
@@ -116,7 +121,7 @@ export const LeverageDetailPage = () => {
             <div className="relative md:w-76">
               <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
                 <ReviewStepsCard reviewSteps={reviewSteps} />
-                {isAudit && reviewer && <CheckInfoCard reviewer={reviewer} />}
+                {isAudit && <CheckInfoCard back={back} roleName={reviewer?.userName || ''} />}
               </div>
             </div>
           </div>

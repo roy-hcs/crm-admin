@@ -20,6 +20,7 @@ import { TradingRebateDetailPage } from '@/pages/review/trading-rebate-detail/Tr
 import { FeeRebateDetailPage } from '@/pages/review/fee-rebate-detail/FeeRebateDetailPage';
 import { DepositRebateDetailPage } from '@/pages/review/deposit-rebate-detail/DepositRebateDetailPage';
 import { AccountOpeningDetailPage } from '@/pages/review/account-opening-detail/AccountOpeningDetail';
+import { AgentDetailPage } from '@/pages/review/agent-detail/AgentDetail';
 
 const ReviewWithdrawalDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();
@@ -64,6 +65,11 @@ const DepositRebateDetailPageWrapper = () => {
 const AccountOpeningDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();
   return <AccountOpeningDetailPage key={searchParams.get('id')} />;
+};
+
+const ReviewAgentDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <AgentDetailPage key={searchParams.get('id')} />;
 };
 
 /**
@@ -168,5 +174,9 @@ export const reviewRoutes: RouteObject[] = [
   {
     path: '/review/agent',
     element: <ReviewAgentPage />,
+  },
+  {
+    path: '/review/agent/detail',
+    element: <ReviewAgentDetailPageWrapper />,
   },
 ];

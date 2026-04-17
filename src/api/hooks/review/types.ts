@@ -1335,6 +1335,78 @@ export type OpenReviewDetailRes = {
   };
 };
 
+export type AgentReviewDetail = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string | null;
+  lastName: string | null;
+  name: string | null;
+  mzone: string | null;
+  mobile: string | null;
+  email: string | null;
+  pwd: string | null;
+  salt: string | null;
+  certiricateType: string | null;
+  certiricateNo: string | null;
+  certiricateFront: string | null;
+  certiricateBack: string | null;
+  havingAgent: string | null;
+  verifyStatus: number | null;
+  applySource: number | null;
+  inviter: string | null;
+  spreadLinkCodeId: string | null;
+  userId: string | null;
+  showId: string | null;
+  verifyTime: string | null;
+  verifyUser: string | null;
+  inviterName: string | null;
+  verifyStep: number | null;
+  verifyUserName: string | null;
+  language: string | null;
+  identityInfo: string | null;
+  defaultRole: string | null;
+  columns: Array<{
+    columnName: string;
+    columnValue: string;
+    columnType: number; // 5 是图片类型
+  }>;
+  userName: string | null;
+  vuserName: string | null;
+};
+
+export type AgentReviewDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    detail: AgentReviewDetail;
+    verifyLogs: VerifyLogItem[];
+    reviewer: LeverageReview | null;
+    crmIinfoVerifyList: Array<{
+      createBy: string | null;
+      createTime: string | null;
+      updateBy: string | null;
+      updateTime: string | null;
+      remark: string | null;
+      params: Record<string, unknown>;
+      id: string | null;
+      userId: string | null;
+      certiricateType: string | null;
+      subTime: string | null;
+      verifyTime: string | null;
+      verifyUser: string | null;
+      status: number | null;
+      verifyStep: number | null;
+      verifyUserName: string | null;
+      sumsubId: string | null;
+      sumsubLevelName: string | null;
+    }>;
+  };
+};
+
 export type CrmUserDealAccountListParams = BasicParams & {
   login?: string;
   userId?: string;
@@ -1434,4 +1506,11 @@ export type CrmUserProtocolInfoRes = {
       createTime: string;
     }>;
   };
+};
+
+export type AagentVerifyParams = {
+  id: string;
+  verifyStatus: string;
+  remark: string;
+  verifyStep: string;
 };

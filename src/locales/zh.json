@@ -604,7 +604,10 @@
     "timeFilter": "时间筛选"
   },
   "reviewAgent": {
-    "title": "代理审核"
+    "title": "代理审核",
+    "reviewAgentDetail": "代理审核详情",
+    "havingAgent": "是否从事过代理业务",
+    "agentInfo": "代理信息"
   },
   "depositRebateReview": {
     "title": "入金返佣审核",

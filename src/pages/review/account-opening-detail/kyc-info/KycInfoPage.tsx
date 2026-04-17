@@ -4,34 +4,15 @@ import {
   useCrmUserManageInfo,
   useCrmUserProtocolInfo,
 } from '@/api/hooks/review/review';
-import { RrhCard } from '@/components/common/RrhCard';
-import { KycInfoDetail } from './KycInfoDetail';
+import { KycInfoDetailItem, KycInfoStep } from './KycInfoDetail';
+import { KycInfoTimeline } from './KycInfoTimeline';
 import { useMemo } from 'react';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
-import { cn } from '@/lib/utils';
 import { KycStatus } from '../components/KycVerifyStatus';
 import { kycVerifyStatusMap, kycVerifyStatusTextMap } from '@/lib/constant';
 import { useTranslation } from 'react-i18next';
 
-type kycInfoType = 'personal' | 'finance' | 'identityBasic' | 'agreement';
-
-type kycInfoDetail = {
-  label: string;
-  value: string;
-  type?: number;
-};
-
-export type kycInfoItem = {
-  status: KycStatus;
-  statusText: string;
-  label: string;
-  content: string;
-  type: kycInfoType;
-  time: string;
-  detail: kycInfoDetail[];
-};
-
-type kycInfoSteps = kycInfoItem[];
+type kycInfoSteps = KycInfoStep[];
 
 export const KycInfoPage = ({ id }: { id: string }) => {
   const { t } = useTranslation();
@@ -62,7 +43,7 @@ export const KycInfoPage = ({ id }: { id: string }) => {
     ? protocolData.data.allProtocol[0]?.createTime
     : '';
 
-  const personal = useMemo(() => {
+  const personal = useMemo<KycInfoDetailItem[]>(() => {
     if (!manageData) return [];
     return manageData.data.columns.map(i => ({
       label: i.columnName,
@@ -70,7 +51,7 @@ export const KycInfoPage = ({ id }: { id: string }) => {
     }));
   }, [manageData]);
 
-  const finance = useMemo(() => {
+  const finance = useMemo<KycInfoDetailItem[]>(() => {
     if (!financeData) return [];
     return financeData.data.columns.map(i => ({
       label: i.columnName,
@@ -78,7 +59,7 @@ export const KycInfoPage = ({ id }: { id: string }) => {
     }));
   }, [financeData]);
 
-  const identityBasic = useMemo(() => {
+  const identityBasic = useMemo<KycInfoDetailItem[]>(() => {
     if (!identityBasicData) return [];
     return identityBasicData.data.columns.map(i => ({
       label: i.columnName,
@@ -86,7 +67,7 @@ export const KycInfoPage = ({ id }: { id: string }) => {
       type: i.columnType,
     }));
   }, [identityBasicData]);
-  const protocol = useMemo(() => {
+  const protocol = useMemo<KycInfoDetailItem[]>(() => {
     if (!protocolData) return [];
     return protocolData.data.allProtocol.map(i => ({
       label: i.protocolName,
@@ -101,16 +82,17 @@ export const KycInfoPage = ({ id }: { id: string }) => {
         statusText: kycVerifyStatusTextMap[manageVerifyStatus],
         label: t('accountOpening.personalInformation'),
         content: '',
-        type: 'personal',
+        type: 'list',
         time: manageCreateTime,
         detail: personal,
+        defaultExpanded: true,
       },
       {
         status: kycVerifyStatusMap[financeVerifyStatus] as KycStatus,
         statusText: kycVerifyStatusTextMap[financeVerifyStatus],
         label: t('accountOpening.financialInformation'),
         content: '',
-        type: 'finance',
+        type: 'list',
         time: financeCreateTime,
         detail: finance,
       },
@@ -119,7 +101,7 @@ export const KycInfoPage = ({ id }: { id: string }) => {
         statusText: kycVerifyStatusTextMap[identityBasicVerifyStatus],
         label: t('accountOpening.identityInformation'),
         content: '',
-        type: 'identityBasic',
+        type: 'mediaList',
         time: identityBasicCreateTime,
         detail: identityBasic,
       },
@@ -129,7 +111,7 @@ export const KycInfoPage = ({ id }: { id: string }) => {
         statusText: kycVerifyStatusTextMap[protocolVerifyStatus === true ? 0 : 1],
         label: t('accountOpening.protocolConfirmation'),
         content: '',
-        type: 'agreement',
+        type: 'cardList',
         time: protocolCreateTime,
         detail: protocol,
       },
@@ -158,49 +140,5 @@ export const KycInfoPage = ({ id }: { id: string }) => {
     );
   }
 
-  return (
-    <div className="flex flex-col items-start">
-      {steps.map((step, idx) => {
-        return (
-          <div key={idx} className="flex w-full">
-            <div className="relative flex w-6 flex-col items-center overflow-hidden">
-              {idx !== steps.length - 1 && (
-                <div
-                  className={cn(
-                    'absolute top-6 bottom-0 left-1/2 z-0 h-full w-[1px] -translate-x-1/2',
-                    step.status === 'pending' ? 'bg-amber-500' : '',
-                    step.status === 'success' ? 'bg-green-600' : '',
-                    step.status === 'fail' ? 'bg-red-500' : '',
-                  )}
-                />
-              )}
-              <div className="relative size-6 rounded-full">
-                <div
-                  className={cn(
-                    'absolute inset-0 rounded-full opacity-35',
-                    step.status === 'pending' ? 'bg-amber-500' : '',
-                    step.status === 'success' ? 'bg-green-600' : '',
-                    step.status === 'fail' ? 'bg-red-500' : '',
-                  )}
-                />
-                <div
-                  className={cn(
-                    'absolute top-1/2 left-1/2 z-10 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full',
-                    step.status === 'pending' ? 'bg-amber-500' : '',
-                    step.status === 'success' ? 'bg-green-600' : '',
-                    step.status === 'fail' ? 'bg-red-500' : '',
-                  )}
-                />
-              </div>
-            </div>
-            <div className="flex-1 pb-6 pl-6">
-              <RrhCard>
-                <KycInfoDetail step={step} />
-              </RrhCard>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
+  return <KycInfoTimeline steps={steps} />;
 };

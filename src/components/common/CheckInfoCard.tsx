@@ -5,8 +5,9 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhTextarea } from '@/components/common/RrhTextarea';
 import { RrhCard } from '@/components/common/RrhCard';
 import { LabelItem } from '@/components/common/LabelItem';
+import { InfoItem } from '@/components/common/InfoItem';
 
-export const CheckInfoCard = ({ back }: { back: () => void }) => {
+export const CheckInfoCard = ({ back, roleName }: { back: () => void; roleName?: string }) => {
   const { t } = useTranslation();
 
   const cancel = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -16,6 +17,18 @@ export const CheckInfoCard = ({ back }: { back: () => void }) => {
 
   return (
     <RrhCard title={t('review.review')}>
+      {roleName && (
+        <FormField
+          name="reviewer"
+          disabled
+          render={() => (
+            <LabelItem
+              label={t('information.verifyUserName')}
+              ContentDom={<InfoItem info={roleName} />}
+            />
+          )}
+        />
+      )}
       <FormField
         name="status"
         render={({ field }) => (
