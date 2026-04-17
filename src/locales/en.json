@@ -899,7 +899,10 @@
     "title": "Wallet balance overview"
   },
   "reviewAgent": {
-    "title": "Agent audit"
+    "title": "Agent audit",
+    "agentInfo": "Agent information",
+    "havingAgent": "Have you ever engaged in agency business?",
+    "reviewAgentDetail": "Agent review details"
   },
   "depositRebateReview": {
     "title": "Deposit Rebate Review",

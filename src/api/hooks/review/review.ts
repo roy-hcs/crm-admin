@@ -55,6 +55,8 @@ import {
   CrmUserFinanceInfoRes,
   CrmUserIdentityBasicInfoRes,
   CrmUserProtocolInfoRes,
+  AagentVerifyParams,
+  AgentReviewDetailRes,
 } from './types';
 
 export function useAgentApplyList(params: AgentApplyListParams, options: { enabled: boolean }) {
@@ -524,5 +526,24 @@ export function useCrmUserProtocolInfo(id: string, options: { enabled: boolean }
         `/system/crmUserProtocolRelation//oneUserProtocol/${id}?from=1`,
       ),
     enabled: options.enabled,
+  });
+}
+
+/**
+ * 代理审核详情
+ */
+export function useAgentReviewDetail(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['agentReviewDetail', id],
+    queryFn: () => apiGetCustom<AgentReviewDetailRes>(`/system/agentApply/detail/${id}`),
+    enabled: options.enabled,
+  });
+}
+/**
+ * 代理审核提交
+ */
+export function useAgentReviewVerify() {
+  return useMutation({
+    mutationFn: (params: AagentVerifyParams) => apiFormPost(`/system/agentApply/verify`, params),
   });
 }

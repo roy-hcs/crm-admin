@@ -1,6 +1,6 @@
 import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useAccountOpeningDetail, useAccountOpeningVerify } from '@/api/hooks/review/review';
 import { useTranslation } from 'react-i18next';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
@@ -12,19 +12,17 @@ import { Customer } from './components/Customer';
 import { AccountOverviewPage } from './account-overview/AccountOverviewPage';
 import { ReviewStepsCard } from '../withdrawal-detail/components/ReviewStepsCard';
 import { RrhStepProps } from '@/components/common/RrhStep';
-import { CheckInfoCard } from './components/CheckInfoCard';
-import { useTabStore } from '@/store/tabStore';
 import { KycInfoPage } from './kyc-info/KycInfoPage';
 import { toast } from 'sonner';
 import { useGlobalLoading } from '@/contexts/loading';
+import { CheckInfoCard } from '@/components/common/CheckInfoCard';
+import { useTabBackNavigation } from '@/hooks/useTabBackNavigation';
 
 export type FormValue = AccountOpenVerifyParams;
 
 export const AccountOpeningDetailPage = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { tabs, activeTab, setActiveTab, removeTab } = useTabStore();
+  const back = useTabBackNavigation('/review/account-opening');
   const [searchParams] = useSearchParams();
   const openId = searchParams.get('id');
   const type = searchParams.get('type');
@@ -83,7 +81,6 @@ export const AccountOpeningDetailPage = () => {
   }
 
   const onSubmit = async (data: FormValue) => {
-    console.log('Form data', data);
     await withLoading(async () => {
       try {
         const params = {
@@ -96,33 +93,10 @@ export const AccountOpeningDetailPage = () => {
         } else {
           toast.error(res.msg);
         }
-      } catch (error) {
-        console.error('Submit error', error);
+      } catch {
+        toast.error(t('common.AnErrorOccurred'));
       }
     });
-  };
-
-  const back = () => {
-    const currentKey = `${location.pathname}${location.search}`;
-    const currentIndex = tabs.findIndex(tab => tab.key === currentKey || tab.key === activeTab);
-
-    if (currentIndex > 0) {
-      const prevTab = tabs[currentIndex - 1];
-      setActiveTab(prevTab.key);
-      navigate(prevTab.path);
-      removeTab(currentKey);
-      return;
-    }
-
-    if (currentIndex === 0 && tabs[1]) {
-      const nextTab = tabs[1];
-      setActiveTab(nextTab.key);
-      navigate(nextTab.path);
-      removeTab(currentKey);
-      return;
-    }
-
-    navigate('/review/account-opening');
   };
 
   return (

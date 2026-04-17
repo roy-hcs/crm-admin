@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { ReviewAgentForm } from './ReviewAgentForm';
-import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
+import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { AgentApplyListParams, useAgentApplyList } from '@/api/hooks/review';
@@ -16,8 +16,8 @@ import { applySourceMap, reviewStatusMap } from '@/lib/constant';
 import { RrhButton } from '@/components/common/RrhButton';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RrhSorter } from '@/components/common/RrhSorter';
-import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export const ReviewAgentPage = () => {
   const [params, setParams] = useState<AgentApplyListParams['params']>({
@@ -68,6 +68,22 @@ export const ReviewAgentPage = () => {
     setKeyword('');
     setPageNum(0);
   };
+
+  const { openTab } = useTabActions();
+
+  const goToDetail = useCallback(
+    (row: AgentApplyItem) => {
+      // status: 2:待审核 -1:审核中
+      const type = [-1, 2].includes(Number(row.verifyStatus)) ? 'audit' : 'detail';
+      const url = `/review/agent/detail?type=${type}&id=${row.id}`;
+      openTab({
+        key: url,
+        title: t('reviewAgent.reviewAgentDetail'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
 
   const allColumns: CRMColumnDef<AgentApplyItem, unknown>[] = [
     {
@@ -220,19 +236,11 @@ export const ReviewAgentPage = () => {
       },
       label: t('common.Operation'),
       cell: ({ row }) => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[
-            {
-              label: [0, 1].includes(row.original.verifyStatus)
-                ? t('common.View')
-                : t('table.audit'),
-              value: 'audit',
-            },
-            { label: t('common.delete'), value: 'delete' },
-          ]}
-          callToAction={() => {}}
-        />
+        <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+          {[-1, 2].includes(Number(row?.original?.verifyStatus))
+            ? t('table.audit')
+            : t('common.View')}
+        </RrhButton>
       ),
       fixed: 'right',
       size: 50,

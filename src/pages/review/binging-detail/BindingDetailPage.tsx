@@ -1,6 +1,6 @@
 import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useBindingReviewDetail, useBindingVerify } from '@/api/hooks/review/review';
 import { useTranslation } from 'react-i18next';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
@@ -10,8 +10,12 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 import { BindingInfoCard } from './components/BindingInfoCard';
 import { BindingVerifyParams } from '@/api/hooks/review/types';
-import { CheckInfoCard } from './components/checkInfoCard';
 import { PageInfo } from '@/components/common/PageInfo';
+import { CheckInfoCard } from '@/components/common/CheckInfoCard';
+import { useGlobalLoading } from '@/contexts/loading';
+import { useTabBackNavigation } from '@/hooks/useTabBackNavigation';
+
+type FormValue = BindingVerifyParams;
 
 export const BindingDetailPage = () => {
   const [searchParams] = useSearchParams();
@@ -20,13 +24,13 @@ export const BindingDetailPage = () => {
     enabled: !!bindingId,
   });
   const { t } = useTranslation();
-  const navigate = useNavigate();
-
+  const { withLoading } = useGlobalLoading();
+  const back = useTabBackNavigation('/review/binding');
   const bindingInfo = bindingRes?.data?.detail;
   const isAudit = searchParams.get('type') === 'audit';
 
   const { mutateAsync: verifyBinding } = useBindingVerify();
-  const form = useForm<BindingVerifyParams>({
+  const form = useForm<FormValue>({
     defaultValues: {
       id: '',
       status: '1',
@@ -81,28 +85,28 @@ export const BindingDetailPage = () => {
     }),
   ] as RrhStepProps['steps'];
 
-  const onSubmit = async (val: BindingVerifyParams) => {
-    try {
-      const params = {
-        id: bindingInfo.id || '',
-        status: val.status,
-        remark: val.remark,
-        verifyStep: `${bindingInfo?.verifyStep}`,
-      };
-      const res = await verifyBinding(params);
-      if (res.code === 0) {
-        toast.success(res.msg);
-        // 成功后返回上一页面
-        setTimeout(() => {
-          navigate('/review/binding');
-        }, 500);
-      } else {
-        toast.error(res.msg);
+  const onSubmit = async (data: FormValue) => {
+    await withLoading(async () => {
+      try {
+        const params = {
+          id: bindingInfo.id || '',
+          status: data.status,
+          remark: data.remark,
+          verifyStep: `${bindingInfo?.verifyStep}`,
+        };
+        const res = await verifyBinding(params);
+        if (res.code === 0) {
+          toast.success(t('common.success'));
+          back();
+        } else {
+          toast.error(res.msg);
+        }
+      } catch {
+        toast.error(t('common.AnErrorOccurred'));
       }
-    } catch {
-      console.error('Binding review verification failed');
-    }
+    });
   };
+
   return (
     <div>
       <PageInfo wrapperCls="py-3" title={t('binding.bindingReviewDetail')} />
@@ -115,7 +119,7 @@ export const BindingDetailPage = () => {
             <div className="relative md:w-76">
               <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
                 <ReviewStepsCard reviewSteps={reviewSteps} />
-                {isAudit && <CheckInfoCard />}
+                {isAudit && <CheckInfoCard back={back} />}
               </div>
             </div>
           </div>
