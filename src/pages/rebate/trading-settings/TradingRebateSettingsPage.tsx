@@ -358,6 +358,20 @@ export const TradingRebateSettingsPage = () => {
               languageList={languageList}
               dealAccountGroupListRes={dealAccountGroupListRes}
             />
+            {rebateModelSetting === 1 && (
+              <RrhButton
+                variant="outline"
+                onClick={() => {
+                  openTab({
+                    path: '/rebate/trading-settings-template',
+                    title: t('RebateTemplate.tradingRebateSettingsTemplate'),
+                    key: '/rebate/trading-settings-template',
+                  });
+                }}
+              >
+                {t('RebateTemplate.rebateTemplate')}
+              </RrhButton>
+            )}
             <RrhButton
               variant="outline"
               onClick={() => {
@@ -365,7 +379,6 @@ export const TradingRebateSettingsPage = () => {
                   path: '/rebate/trading-settings-history',
                   title: t('TradingRebateSettings.tradingRebateSettingsHistory'),
                   key: '/rebate/trading-settings-history',
-                  closable: true,
                 });
               }}
             >

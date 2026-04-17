@@ -37,7 +37,11 @@ import {
   SelectServerListRes,
   AddRebateDepositSettingParams,
   RebateDepositSettingsHistoryListRes,
+  RebateSettingsTemplateListRes,
+  AddRebateSettingsTemplateParams,
 } from './types';
+import { BasicParams } from '../review';
+import { RebateLevelItem } from '../system';
 
 export * from './types';
 
@@ -551,5 +555,48 @@ export function useEditRebateDepositAddOrUpdate() {
   return useMutation({
     mutationFn: (params: EditRebateDepositAddOrUpdateParams) =>
       apiFormPost('/system/crmRebateBase/addOrUpdate', params),
+  });
+}
+
+export function useGetRebateSettingsTemplate(type: number, params: BasicParams) {
+  return useQuery({
+    queryKey: ['getRebateSettingsTemplate', type, params],
+    queryFn: () =>
+      apiFormPostCustom<RebateSettingsTemplateListRes>(
+        `/system/crmRebateTemplate/list/type/${type}`,
+        params,
+      ),
+  });
+}
+
+export function useGetRebateLevelList(model: number) {
+  return useQuery({
+    queryKey: ['getRebateLevelList', model],
+    queryFn: () =>
+      apiFormPostCustom<RebateLevelItem[]>('/system/crmRebateLevel/getLevelList', { model }),
+  });
+}
+export function useGetUniqueTemplateName() {
+  return useMutation({
+    mutationFn: (params: { name: string; rebateType: number; id?: string }) =>
+      apiFormPostCustom<number>('/system/crmRebateTemplate/getUniqueName', params),
+  });
+}
+export function useAddRebateSettingsTemplate(type: number) {
+  return useMutation({
+    mutationFn: (params: AddRebateSettingsTemplateParams) =>
+      apiFormPost(`/system/crmRebateTemplate/add/${type}`, params),
+  });
+}
+export function useEditRebateSettingsTemplate(type: number) {
+  return useMutation({
+    mutationFn: (params: AddRebateSettingsTemplateParams & { id?: string }) =>
+      apiFormPost(`/system/crmRebateTemplate/edit/${type}`, params),
+  });
+}
+export function useDeleteRebateSettingsTemplate(type: number) {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost(`/system/crmRebateTemplate/remove/${type}`, params),
   });
 }

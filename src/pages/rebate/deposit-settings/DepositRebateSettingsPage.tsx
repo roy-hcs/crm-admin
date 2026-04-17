@@ -348,7 +348,20 @@ export const DepositRebateSettingsPage = () => {
               languageList={languageList}
               dealAccountGroupListRes={dealAccountGroupListRes}
             />
-
+            {rebateModelSetting === 1 && (
+              <RrhButton
+                variant="outline"
+                onClick={() => {
+                  openTab({
+                    path: '/rebate/deposit-settings-template',
+                    title: t('RebateTemplate.depositRebateSettingsTemplate'),
+                    key: '/rebate/deposit-settings-template',
+                  });
+                }}
+              >
+                {t('RebateTemplate.rebateTemplate')}
+              </RrhButton>
+            )}
             <RrhButton
               variant="outline"
               onClick={() => {
