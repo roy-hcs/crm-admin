@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { useTicketList, useTicketRemove } from '@/api/hooks/ticket/ticket';
@@ -22,6 +22,7 @@ import { AssignOrderDialog } from '../components/AssignOrderDialog';
 import { useRoleList } from '@/api/hooks/system';
 import { toast } from 'sonner';
 import { RrhFollowAlert } from '@/components/common/RrhFollowAlert';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export const TicketUnassigned = () => {
   const { t } = useTranslation();
@@ -87,6 +88,20 @@ export const TicketUnassigned = () => {
   const [tipsText, setTipsText] = useState('');
   const [deleteAlert, setDeleteAlert] = useState(false);
   const { mutateAsync: removeTicket } = useTicketRemove();
+
+  const { openTab } = useTabActions();
+
+  const goToDetail = useCallback(
+    (row: CrmTicketItem) => {
+      const url = `/ticket/detail?id=${row.id}`;
+      openTab({
+        key: url,
+        title: t('ticketList.ticketDetail'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
 
   const allColumns: CRMColumnDef<CrmTicketItem, unknown>[] = [
     {
@@ -219,8 +234,7 @@ export const TicketUnassigned = () => {
           ]}
           callToAction={action => {
             if (action === 'view') {
-              // setEditingItem(row.original);
-              // setOpen(true);
+              goToDetail(row.original);
             } else if (action === 'delete') {
               setParams({ ids: row.original.id ? String(row.original.id) : '' });
               setTipsText(t('ticketList.deleteTips'));

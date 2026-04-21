@@ -233,3 +233,17 @@ export const weekOptions = [
   { label: 'common.weeks.6', value: '6' },
   { label: 'common.weeks.7', value: '7' },
 ];
+
+// 工单详情状态
+export const statusMap = [
+  { label: 'ticketList.statusOptions.0', value: 0 },
+  { label: 'ticketList.statusOptions.1', value: 1 },
+  { label: 'ticketList.statusOptions.2', value: 2 },
+];
+
+// 工单详情优先级
+export const priorityMap = [
+  { label: 'ticketList.priorityOptions.0', value: 0 },
+  { label: 'ticketList.priorityOptions.1', value: 1 },
+  { label: 'ticketList.priorityOptions.2', value: 2 },
+];

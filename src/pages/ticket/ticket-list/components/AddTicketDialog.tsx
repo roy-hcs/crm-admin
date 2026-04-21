@@ -17,7 +17,7 @@ import { SelectOption } from '@/api/types';
 import { AllocatedUsersItem } from '@/api/hooks/ticket/types';
 import { FormSwitch } from '@/components/form/FormSwitch';
 import { FormTextarea } from '@/components/form/FormTextarea';
-import { UploadFile } from './UploadFile';
+import { ExistingUploadFile, UploadFile, UploadItem } from './UploadFile';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { useUploadFile } from '@/api/hooks/system/system';
 import { useUserStore } from '@/store/userStore';
@@ -53,8 +53,8 @@ const schemaConfig = (t: TFunction<'translation', undefined>) => {
  * @param uploadFn 上传函数
  * @param errorMsg 错误提示信息
  */
-async function uploadFilesInArr(
-  arr: File[] | undefined,
+export async function uploadFilesInArr(
+  arr: UploadItem[] | undefined,
   uploadFn: (file: File) => Promise<{ code: number; url: string; msg?: string }>,
   errorMsg: string = 'Upload failed',
 ): Promise<Array<{ fileUrls: string; fileNames: string }>> {
@@ -77,7 +77,16 @@ async function uploadFilesInArr(
         return { fileUrls: '', fileNames: '' };
       }
     }
-    // 如果原本就是字符串（链接）或其他，保持原样
+    // 非 File 的已有附件直接保留，不走上传。
+    const existed = file as ExistingUploadFile;
+    if (existed?.fileUrl || existed?.fileName) {
+      return {
+        fileUrls: existed.fileUrl || '',
+        fileNames: existed.fileName || '',
+      };
+    }
+
+    // 其他非文件项忽略
     return { fileUrls: '', fileNames: '' };
   });
 
@@ -248,37 +257,39 @@ export const AddTicketDialog = ({
       formLoading={isSubmitting}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
-            <FormField
-              name="belongUserId"
-              render={({ field }) => {
-                return <SelectUser verticalLabel field={field} title={t('table.threeCons')} />;
-              }}
-            />
+        <FormField
+          name="belongUserId"
+          render={({ field }) => {
+            return <SelectUser verticalLabel field={field} title={t('table.threeCons')} />;
+          }}
+        />
 
-            <FormTextarea
-              name="content"
-              label={t('ticketList.content')}
-              verticalLabel
-              placeholder={t('rules.limitLength', { field: 600 })}
-              maxLength={600}
-            />
+        <FormTextarea
+          name="content"
+          label={t('ticketList.content')}
+          verticalLabel
+          placeholder={t('rules.limitLength', { field: 600 })}
+          maxLength={600}
+        />
 
-            <FormField
-              name="fileList"
-              render={({ field }) => {
-                return (
-                  <UploadFile
-                    label={t('ticketList.attachment')}
-                    field={field}
-                    description={t('ticketList.attachmentDescription', {
-                      fileTypes: 'txt, doc, docx, ppt, pptx, xlsx, pdf, jpg, jpeg, png, gif',
-                      maxSize: 10,
-                    })}
-                  />
-                );
-              }}
-            />
+        <FormField
+          name="fileList"
+          render={({ field }) => {
+            return (
+              <UploadFile
+                label={t('ticketList.attachment')}
+                field={field}
+                description={t('ticketList.attachmentDescription', {
+                  fileTypes: 'txt, doc, docx, ppt, pptx, xlsx, pdf, jpg, jpeg, png, gif',
+                  maxSize: 10,
+                })}
+              />
+            );
+          }}
+        />
 
+        <div className="flex items-end gap-6">
+          <div className="flex-1">
             <FormSelect
               name="roleId"
               label={t('ticketList.receiverId')}
@@ -287,7 +298,9 @@ export const AddTicketDialog = ({
               showRowValue={false}
               options={roleOptions}
             />
+          </div>
 
+          <div className="flex-1">
             <FormSelect
               name="receiverId"
               label={''}
@@ -297,31 +310,33 @@ export const AddTicketDialog = ({
               options={allocatedList}
               loading={loading}
             />
+          </div>
+        </div>
 
-            <FormMultiSelect
-              name="carbonCopy"
-              label={t('ticketList.carbonCopy')}
-              verticalLabel
-              placeholder={t('common.pleaseSelect')}
-              showRowValue={false}
-              options={userOptions}
-            />
+        <FormMultiSelect
+          name="carbonCopy"
+          label={t('ticketList.carbonCopy')}
+          verticalLabel
+          placeholder={t('common.pleaseSelect')}
+          showRowValue={false}
+          options={userOptions}
+        />
 
-            <FormSelect
-              name="priority"
-              label={t('ticketList.priority')}
-              verticalLabel
-              placeholder={t('common.pleaseSelect')}
-              showRowValue={false}
-              options={[
-                { label: t('ticketList.priorityOptions.0'), value: 0 },
-                { label: t('ticketList.priorityOptions.1'), value: 1 },
-                { label: t('ticketList.priorityOptions.2'), value: 2 },
-              ]}
-            />
+        <FormSelect
+          name="priority"
+          label={t('ticketList.priority')}
+          verticalLabel
+          placeholder={t('common.pleaseSelect')}
+          showRowValue={false}
+          options={[
+            { label: t('ticketList.priorityOptions.0'), value: 0 },
+            { label: t('ticketList.priorityOptions.1'), value: 1 },
+            { label: t('ticketList.priorityOptions.2'), value: 2 },
+          ]}
+        />
 
-            <FormSwitch verticalLabel name="isFollow" label={t('ticketList.isFollow')} />
-          </RrhForm>
+        <FormSwitch verticalLabel name="isFollow" label={t('ticketList.isFollow')} />
+      </RrhForm>
     </RrhDialog>
   );
 };

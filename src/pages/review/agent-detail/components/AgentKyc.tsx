@@ -7,7 +7,7 @@ import {
 import { KycInfoTimeline } from '../../account-opening-detail/kyc-info/KycInfoTimeline';
 import { AgentReviewDetailRes } from '@/api/hooks/review/types';
 import { kycVerifyStatusMap, kycVerifyStatusTextMap } from '@/lib/constant';
-import { KycStatus } from '../../account-opening-detail/components/KycVerifyStatus';
+import { KycStatus } from '@/components/common/RrhKycStatus';
 
 type kycInfoSteps = KycInfoStep[];
 

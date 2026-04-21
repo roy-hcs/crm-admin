@@ -245,7 +245,8 @@
     "getVerificationCode": "Get verification code",
     "verificationCode": "Verification code",
     "cancelDefault": "cancel default",
-    "default": "default"
+    "default": "default",
+    "submit": "submit"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1394,7 +1395,11 @@
     "closeTicket": "Close ticket",
     "deleteSelectedTips": "Are you sure you want to delete the selected {{count}} pieces of data?",
     "deleteTips": "Are you sure you want to delete this work order?",
-    "selectedTickets": "{{count}} tickets selected"
+    "selectedTickets": "{{count}} tickets selected",
+    "confirmDeleteReply": "OK to delete reply",
+    "lastModifiedTime": "last modified time",
+    "ticketDetail": "Work order details",
+    "ticketReply": "Ticket reply"
   },
   "commissionReview": {
     "commission": "Commission",

@@ -8,9 +8,9 @@ import { KycInfoDetailItem, KycInfoStep } from './KycInfoDetail';
 import { KycInfoTimeline } from './KycInfoTimeline';
 import { useMemo } from 'react';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
-import { KycStatus } from '../components/KycVerifyStatus';
 import { kycVerifyStatusMap, kycVerifyStatusTextMap } from '@/lib/constant';
 import { useTranslation } from 'react-i18next';
+import { KycStatus } from '@/components/common/RrhKycStatus';
 
 type kycInfoSteps = KycInfoStep[];
 
