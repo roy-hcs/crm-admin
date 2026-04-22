@@ -232,3 +232,51 @@ export type NetBonusRewardReportsTotal = {
   bonusAmount: number;
   actualAmount: number;
 }[];
+export type NetBonusRewardStatisticsListParams = BasicParams & {
+  userName?: string;
+  accountType?: string;
+  bonusMonth?: string;
+  params: {
+    beginTime?: string;
+    endTime?: string;
+    agentUserId?: string;
+    drirectFlag?: 'a' | 'd';
+  };
+};
+
+export interface NetBonusRewardStatisticsRes {
+  total: string;
+  rows: NetBonusRewardRow[];
+  code: number;
+  msg: string | null;
+  totalVolume: number;
+  totalCommission: number;
+  totalProfit: number;
+  totalSwaps: number;
+  priceSum: number;
+  serverType: string | null;
+}
+
+export interface NetBonusRewardRow {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: string;
+  userId: string;
+  bonusMonth: number;
+  personalAvgNet: number;
+  tierAvgNet: number;
+  avgNetReward: number | null;
+  rewardParam: number;
+  fixedParam: number;
+  expectedBonus: number | null;
+  actualBonus: number | null;
+  statisticsTime: string;
+  statisticsTimeRange: number;
+  userName: string;
+  accountType: string;
+  showId: string;
+}
