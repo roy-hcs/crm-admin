@@ -743,7 +743,13 @@
     "inviters": "Account superior",
     "actualDisbursedAmount": "Actual amount",
     "disbursedTime": "Release time",
-    "rewardTime": "bonus time"
+    "rewardTime": "bonus time",
+    "fixedParams": "Fixed parameters",
+    "rewardParams": "Reward parameters",
+    "tieredAccrualReward": "Tiered accrual awards",
+    "tieredAverageNetDeposit": "Tiered Average Net Deposit",
+    "timeRangeOfStatistics": "Data statistics time range",
+    "underTheUmbrella": "Under the umbrella"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",

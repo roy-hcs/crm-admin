@@ -1,5 +1,6 @@
 import { AdsPage } from '@/pages/marketing/ads/AdsPage';
 import { NetBonusRewardReportsPage } from '@/pages/marketing/net-bonus/reward-reports/NetBonusRewardReportsPage';
+import { NetBonusStatisticsPage } from '@/pages/marketing/net-bonus/statistics/NetBonusStatisticsPage';
 import { RewardConfigPage } from '@/pages/marketing/reward-configs/RewardConfigsPage';
 import { RewardRecordsPage } from '@/pages/marketing/reward-records/RewardRecordsPage';
 import { RouteObject } from 'react-router-dom';
@@ -41,8 +42,8 @@ export const marketingRoutes: RouteObject[] = [
     path: '/marketing/net-bonus/reward-reports',
     element: <NetBonusRewardReportsPage />,
   },
-  // {
-  //   path: '/marketing/net-bonus/statistics',
-  //   element: <RewardConfigPage />,
-  // },
+  {
+    path: '/marketing/net-bonus/statistics',
+    element: <NetBonusStatisticsPage />,
+  },
 ];

@@ -13,6 +13,8 @@ import {
   NetBonusRewardReportsListParams,
   NetBonusRewardReportsRes,
   NetBonusRewardReportsTotal,
+  NetBonusRewardStatisticsListParams,
+  NetBonusRewardStatisticsRes,
 } from './types';
 
 export * from './types';
@@ -213,5 +215,29 @@ export function useGetNetBonusRewardReportsTotal() {
         '/system/marketing/netDepositBonus/recordListSum',
         params,
       ),
+  });
+}
+
+/**
+ * 获取净入金统计报表
+ */
+export function useGetNetBonusRewardStatistics(params: NetBonusRewardStatisticsListParams) {
+  return useQuery({
+    queryKey: ['netBonusRewardStatistics', params],
+    queryFn: () =>
+      apiFormPostCustom<NetBonusRewardStatisticsRes>(
+        '/system/statistics/netDataStatisticList',
+        params,
+      ),
+  });
+}
+
+/**
+ * 导出净入金统计报表
+ */
+export function useExportNetBonusRewardStatistics() {
+  return useMutation({
+    mutationFn: (params: NetBonusRewardStatisticsListParams) =>
+      apiFormPost('/system/statistics/netDataStatisticExport', params),
   });
 }
