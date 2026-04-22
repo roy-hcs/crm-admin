@@ -264,7 +264,8 @@
     "verificationCode": "验证码",
     "getVerificationCode": "获取验证码",
     "cancelDefault": "取消默认",
-    "default": "默认"
+    "default": "默认",
+    "submit": "提交"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -868,7 +869,11 @@
     "attachmentDescription": "支持的文件类型: {{fileTypes}}，最大不超过{{maxSize}}MB",
     "selectedTickets": "已选择 {{count}} 条工单",
     "clearAssignee": "确定清除受理人？",
-    "closeOrder": "确定关闭工单？关闭工单，状态将更改为已完成。"
+    "closeOrder": "确定关闭工单？关闭工单，状态将更改为已完成。",
+    "ticketDetail": "工单详情",
+    "lastModifiedTime": "最后修改时间",
+    "ticketReply": "工单回复",
+    "confirmDeleteReply": "确定删除回复"
   },
   "myTicket": {
     "title": "我的工单",

@@ -6,7 +6,7 @@ import { Textarea } from '../ui/textarea';
 
 interface FormTextareaProps<T extends FieldValues> {
   name: FieldPath<T>;
-  label: string;
+  label?: string;
   placeholder: string;
   className?: string;
   verticalLabel?: boolean;
@@ -32,10 +32,13 @@ export function FormTextarea<T extends FieldValues>({
         const max = props.maxLength;
         return (
           <FormItem className={cn(className)}>
-            <div className="flex gap-2">
-              {label && <FormLabel>{label}</FormLabel>}
-              {labeTipsDom && <div>{labeTipsDom}</div>}
-            </div>
+            {label && (
+              <div className="flex gap-2">
+                {label && <FormLabel>{label}</FormLabel>}
+                {labeTipsDom && <div>{labeTipsDom}</div>}
+              </div>
+            )}
+
             <FormControl className="shrink-0 basis-9/12">
               <div className="relative">
                 <Textarea

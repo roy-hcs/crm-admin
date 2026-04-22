@@ -1,10 +1,13 @@
-import { apiFormPost, apiFormPostCustom } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGetCustom } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AllocatedUsers,
+  CrmTicketDetailRes,
   CrmTicketParams,
   CrmTicketRes,
+  ReplayOrderParams,
   TicketAddParams,
+  TicketEditParams,
   TicketTabsParams,
 } from './types';
 
@@ -52,6 +55,15 @@ export function useTicketAdd() {
 }
 
 /**
+ * 编辑工单
+ */
+export function useTicketEdit() {
+  return useMutation({
+    mutationFn: (params: TicketEditParams) => apiFormPost('/system/ticket/edit', params),
+  });
+}
+
+/**
  * 获取下级用户
  */
 export function useGetAllocatedUsers() {
@@ -86,5 +98,34 @@ export function useClearAssignee() {
 export function useCloseOrder() {
   return useMutation({
     mutationFn: (params: { ids: string }) => apiFormPost('/system/ticket/close', params),
+  });
+}
+
+/**
+ * 删除工单回复
+ */
+export function useDeleteReply() {
+  return useMutation({
+    mutationFn: (params: { id: string }) => apiFormPost('/system/ticket/removeReply', params),
+  });
+}
+
+/**
+ * 工单详情
+ */
+export function useTicketDetail(id: string, options?: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['TicketDetail', id],
+    queryFn: () => apiGetCustom<CrmTicketDetailRes>(`/system/ticket/detailInfo/${id}`),
+    enabled: options?.enabled,
+  });
+}
+
+/**
+ * 回复工单
+ */
+export function useReplyOrder() {
+  return useMutation({
+    mutationFn: (params: ReplayOrderParams) => apiFormPost('/system/ticket/reply', params),
   });
 }
