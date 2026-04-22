@@ -1296,7 +1296,10 @@
     "initialAmount": "初始存款",
     "countryOrRegion": "国家/地区",
     "productSource": "客户来源",
-    "inviters": "账户上级"
+    "inviters": "账户上级",
+    "actualDisbursedAmount": "实发金额",
+    "disbursedTime": "发放时间",
+    "rewardTime": "奖励时间"
   },
   "settings": {
     "title": "审核设置",
@@ -1639,5 +1642,8 @@
     "lowLimit": "入金返佣金额下限",
     "lowLimitDesc": "入金金额必须大于等于此参数才可获得返佣；不设置表示没有限制",
     "lowLimitPlaceholder": "请输入金额下限，限不超过2位小数的正数"
+  },
+  "netBonus": {
+    "netBonusRewardReport": "净入金奖励报表"
   }
 }

@@ -739,7 +739,10 @@
     "productSource": "Customer source",
     "allAccountGroup": "All account groups",
     "description": "describe",
-    "inviters": "Account superior"
+    "inviters": "Account superior",
+    "actualDisbursedAmount": "Actual amount",
+    "disbursedTime": "Release time",
+    "rewardTime": "bonus time"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1639,5 +1642,8 @@
     "setDefaultTemplateTip": "Users who have not set a rebate will use the default rebate template to rebate.",
     "templateName": "Template name",
     "tradingRebateSettingsTemplate": "Trading rebate template"
+  },
+  "netBonus": {
+    "netBonusRewardReport": "Net Deposit Bonus Report"
   }
 }
