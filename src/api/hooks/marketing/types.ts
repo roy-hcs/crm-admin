@@ -167,3 +167,68 @@ export type AdsDetail = {
     languageList: string | null;
   };
 };
+export type NetBonusRewardReportsListParams = BasicParams & {
+  status?: number;
+  orderNo?: string;
+  bonusUser?: string;
+  params: {
+    beginTime?: string;
+    endTime?: string;
+    beginBonusTime?: string;
+    endBonusTime?: string;
+  };
+};
+
+export interface NetBonusRewardReportsRes {
+  total: string;
+  rows: NetBonusRewardItem[];
+  code: number;
+  msg: string | null;
+  totalVolume: number;
+  totalCommission: number;
+  totalProfit: number;
+  totalSwaps: number;
+  priceSum: number;
+  serverType: string;
+}
+
+export interface NetBonusRewardItem {
+  createTime: string;
+  updateTime: string;
+  createBy: string;
+  updateBy: string;
+  remark: string;
+  params: Record<string, string>;
+  id: string;
+  orderNo: string;
+  bonusMonth: number;
+  bonusMonthStr: string;
+  avgNetReward: number;
+  personalAvgNet: number | null;
+  tierNet: number | null;
+  rewardParam: number;
+  bonusType: number;
+  bonusAmount: number;
+  actualAmount: number;
+  bonusBase: string;
+  bonusUser: string;
+  account: string;
+  accountName: string;
+  serverId: string | null;
+  status: number;
+  distributionTime: string;
+  bonusBaseName: string;
+  bonusBaseShowId: string;
+  bonusUserName: string;
+  bonusUserShowId: string;
+  verifyStep: string;
+  verifyUserName: string | null;
+  deleteFlag: string;
+  bonusBaseAccountType: string;
+  bonusUserAccountType: string;
+}
+
+export type NetBonusRewardReportsTotal = {
+  bonusAmount: number;
+  actualAmount: number;
+}[];
