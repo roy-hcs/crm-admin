@@ -740,7 +740,16 @@
     "productSource": "Customer source",
     "allAccountGroup": "All account groups",
     "description": "describe",
-    "inviters": "Account superior"
+    "inviters": "Account superior",
+    "actualDisbursedAmount": "Actual amount",
+    "disbursedTime": "Release time",
+    "rewardTime": "bonus time",
+    "fixedParams": "Fixed parameters",
+    "rewardParams": "Reward parameters",
+    "tieredAccrualReward": "Tiered accrual awards",
+    "tieredAverageNetDeposit": "Tiered Average Net Deposit",
+    "timeRangeOfStatistics": "Data statistics time range",
+    "underTheUmbrella": "Under the umbrella"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1729,5 +1738,8 @@
     },
     "unifiedSetting": "Unified settings",
     "unifiedSettingDesc": "When the signal source turns on the performance fee rebate and does not set the performance fee rebate parameters separately, the system will execute the rebate according to the default parameter settings below."
+  },
+  "netBonus": {
+    "netBonusRewardReport": "Net Deposit Bonus Report"
   }
 }

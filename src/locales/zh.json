@@ -1301,7 +1301,16 @@
     "initialAmount": "初始存款",
     "countryOrRegion": "国家/地区",
     "productSource": "客户来源",
-    "inviters": "账户上级"
+    "inviters": "账户上级",
+    "actualDisbursedAmount": "实发金额",
+    "disbursedTime": "发放时间",
+    "rewardTime": "奖励时间",
+    "underTheUmbrella": "伞下",
+    "timeRangeOfStatistics": "数据统计时间范围",
+    "tieredAverageNetDeposit": "分级平均净入金",
+    "rewardParams": "奖励参数",
+    "fixedParams": "固定参数",
+    "tieredAccrualReward": "分级应计奖励"
   },
   "settings": {
     "title": "审核设置",
@@ -1729,5 +1738,8 @@
     "performanceFeeRebatBonus": "表现费返佣奖金",
     "performanceFeeRebatBonusTip": "当伞下客户结算表现费返佣时，忠诚客户将在原本返佣奖励的基础上额外获得奖励。例如净表现费=100USD，你可获得2%的基础返佣奖励。但由于你是Level3的忠诚客户，可以获得额外3%的奖励，那么你将获得100*(2%+3%)=5USD奖励，其中3USD为忠诚奖励。",
     "enterExtraReward": "请输入额外奖励"
+  },
+  "netBonus": {
+    "netBonusRewardReport": "净入金奖励报表"
   }
 }

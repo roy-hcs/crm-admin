@@ -514,6 +514,27 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
           title: '广告管理',
           path: '/marketing/ads',
         },
+        {
+          title: '净入金奖励',
+          children: [
+            {
+              title: '净入金奖励配置',
+              path: '/marketing/net-bonus/reward-config',
+            },
+            {
+              title: '净入金奖励记录',
+              path: '/marketing/net-bonus/reward-records',
+            },
+            {
+              title: '净入金奖励报表',
+              path: '/marketing/net-bonus/reward-reports',
+            },
+            {
+              title: '净入金统计报表',
+              path: '/marketing/net-bonus/statistics',
+            },
+          ],
+        },
       ],
     },
     {
