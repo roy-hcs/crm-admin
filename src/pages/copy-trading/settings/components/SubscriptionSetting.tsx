@@ -6,13 +6,12 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
 import { RrhForm } from '@/components/form/RrhForm';
 import { useEditSubscriptionSetting, useGetBaseSettings } from '@/api/hooks/copyTrading';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { RrhCheckBoxGroup } from '@/components/common/RrhCheckBoxGroup';
 import { useGlobalLoading } from '@/contexts/loading';
 import { toast } from 'sonner';
 import { FormRadio } from '@/components/form/FormRadio';
 import { ToolTip } from '@/components/common/ToolTip';
 import { CircleAlert } from 'lucide-react';
+import { FormCheckBoxGroup } from '@/components/form/FormCheckBoxGroup';
 
 type FormValues = {
   directionFollowingSwitch: string;
@@ -113,33 +112,17 @@ export function SubscriptionSetting() {
           { label: t('copyTradingSettings.subscribeToOrderOptions.2'), value: '2' },
         ]}
       />
-      <FormField
+      <FormCheckBoxGroup
         name="trackingMethod"
-        render={({ field }) => {
-          return (
-            <FormItem>
-              <FormLabel className="leading-5">{t('copyTradingSettings.trackingMethod')}</FormLabel>
-              <FormControl>
-                <RrhCheckBoxGroup
-                  onValueChange={v => {
-                    field.onChange(v);
-                  }}
-                  value={field.value}
-                  labelClassName="font-medium"
-                  checkItems={[
-                    { value: '1', label: t('copyTradingSettings.trackingMethodOptions.1') },
-                    { value: '2', label: t('copyTradingSettings.trackingMethodOptions.2') },
-                    {
-                      value: '3',
-                      label: t('copyTradingSettings.trackingMethodOptions.3'),
-                    },
-                  ]}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          );
-        }}
+        label={t('copyTradingSettings.trackingMethod')}
+        options={[
+          { value: '1', label: t('copyTradingSettings.trackingMethodOptions.1') },
+          { value: '2', label: t('copyTradingSettings.trackingMethodOptions.2') },
+          {
+            value: '3',
+            label: t('copyTradingSettings.trackingMethodOptions.3'),
+          },
+        ]}
       />
       <FormSwitch
         verticalLabel

@@ -103,6 +103,7 @@ export function LoyaltyReward() {
     );
   }
   return (
+    // 待设计稿 再抽离成组件
     <RrhForm form={form} className="grid gap-y-6" onSubmit={form.handleSubmit(onSubmit)}>
       <PageInfo
         title={t('copyTradingSettings.loyaltyLevel')}
@@ -112,7 +113,6 @@ export function LoyaltyReward() {
       <div>{name}</div>
       <div>1</div>
       <div>{userCount}</div>
-
       <FormField
         name="performanceFeeReduce"
         render={({ field }) => (

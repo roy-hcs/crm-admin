@@ -7,11 +7,11 @@ import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
 import { RrhForm } from '@/components/form/RrhForm';
 import { useEditFeeConfig, useGetBaseSettings } from '@/api/hooks/copyTrading';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { RrhCheckBoxGroup } from '@/components/common/RrhCheckBoxGroup';
 import { useGlobalLoading } from '@/contexts/loading';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { normalizePercentageInput } from '@/lib/utils';
+import { FormCheckBoxGroup } from '@/components/form/FormCheckBoxGroup';
 
 type FormValues = {
   chargingMethod: string;
@@ -161,148 +161,74 @@ export function FeeConfig() {
         }
       />
       {signalSourceFeeSwitchValue === '1' && (
-        <FormField
+        <FormCheckBoxGroup
           name="chargingMethod"
-          render={({ field }) => {
-            return (
-              <FormItem>
-                <div className="flex items-center gap-2">
-                  <FormLabel className="leading-5">
-                    {t('copyTradingSettings.chargingMethod')}
-                  </FormLabel>
-                  <div>
-                    <div className="text-muted-foreground text-xs leading-4">
-                      {t('copyTradingSettings.chargingMethodDesc')}
-                    </div>
-                  </div>
-                </div>
-                <FormControl>
-                  <RrhCheckBoxGroup
-                    onValueChange={v => {
-                      field.onChange(v);
-                    }}
-                    value={field.value}
-                    labelClassName="font-medium"
-                    checkItems={[
-                      { value: '1', label: t('copyTradingSettings.chargingMethodOptions.1') },
-                      { value: '2', label: t('copyTradingSettings.chargingMethodOptions.2') },
-                      {
-                        value: '3',
-                        label: t('copyTradingSettings.chargingMethodOptions.3'),
-                        disabled: true,
-                      },
-                    ]}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
+          label={t('copyTradingSettings.chargingMethod')}
+          labeTipsDom={
+            <div className="text-muted-foreground text-xs leading-4">
+              {t('copyTradingSettings.chargingMethodDesc')}
+            </div>
+          }
+          options={[
+            { value: '1', label: t('copyTradingSettings.chargingMethodOptions.1') },
+            { value: '2', label: t('copyTradingSettings.chargingMethodOptions.2') },
+            {
+              value: '3',
+              label: t('copyTradingSettings.chargingMethodOptions.3'),
+              disabled: true,
+            },
+          ]}
         />
       )}
 
       {signalSourceFeeSwitchValue === '1' && (
-        <FormField
+        <FormCheckBoxGroup
           name="payMethod"
-          render={({ field }) => {
-            return (
-              <FormItem>
-                <div className="flex items-center gap-2">
-                  <FormLabel className="leading-5">{t('copyTradingSettings.payMethod')}</FormLabel>
-                  <div>
-                    <div className="text-muted-foreground text-xs leading-4">
-                      {t('copyTradingSettings.payMethodDesc')}
-                    </div>
-                  </div>
-                </div>
-                <FormControl>
-                  <RrhCheckBoxGroup
-                    onValueChange={v => {
-                      field.onChange(v);
-                    }}
-                    value={field.value}
-                    labelClassName="font-medium"
-                    checkItems={[
-                      { value: '1', label: t('copyTradingSettings.Wallet') },
-                      {
-                        value: '2',
-                        label: t('table.tradingAccount'),
-                        disabled: true,
-                      },
-                    ]}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
+          label={t('copyTradingSettings.payMethod')}
+          labeTipsDom={
+            <div className="text-muted-foreground text-xs leading-4">
+              {t('copyTradingSettings.payMethodDesc')}
+            </div>
+          }
+          options={[
+            { value: '1', label: t('copyTradingSettings.Wallet') },
+            {
+              value: '2',
+              label: t('table.tradingAccount'),
+              disabled: true,
+            },
+          ]}
         />
       )}
 
       {signalSourceFeeSwitchValue === '1' && (
-        <FormField
+        <FormCheckBoxGroup
           name="collectionWallet"
-          render={({ field }) => {
-            return (
-              <FormItem>
-                <div className="flex items-center gap-2">
-                  <FormLabel className="leading-5">{t('copyTradingSettings.collection')}</FormLabel>
-                  <div>
-                    <div className="text-muted-foreground text-xs leading-4">
-                      {t('copyTradingSettings.collectionDesc')}
-                    </div>
-                  </div>
-                </div>
-                <FormControl>
-                  <RrhCheckBoxGroup
-                    onValueChange={v => {
-                      field.onChange(v);
-                    }}
-                    value={field.value}
-                    labelClassName="font-medium"
-                    checkItems={[{ value: '1', label: t('copyTradingSettings.Wallet') }]}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
+          label={t('copyTradingSettings.collection')}
+          labeTipsDom={
+            <div className="text-muted-foreground text-xs leading-4">
+              {t('copyTradingSettings.collectionDesc')}
+            </div>
+          }
+          options={[{ value: '1', label: t('copyTradingSettings.Wallet') }]}
         />
       )}
 
       {signalSourceFeeSwitchValue === '1' && (
-        <FormField
+        <FormCheckBoxGroup
           name="collectionAccount"
-          render={({ field }) => {
-            return (
-              <FormItem>
-                <div className="flex items-center gap-2">
-                  <FormLabel className="leading-5">{t('copyTradingSettings.collection')}</FormLabel>
-                  <div>
-                    <div className="text-muted-foreground text-xs leading-4">
-                      {t('copyTradingSettings.collectionDesc')}
-                    </div>
-                  </div>
-                </div>
-                <FormControl>
-                  <RrhCheckBoxGroup
-                    onValueChange={v => {
-                      field.onChange(v);
-                    }}
-                    value={field.value}
-                    labelClassName="font-medium"
-                    checkItems={[
-                      {
-                        value: '1',
-                        label: t('table.tradingAccount'),
-                      },
-                    ]}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
+          label={t('copyTradingSettings.collection')}
+          labeTipsDom={
+            <div className="text-muted-foreground text-xs leading-4">
+              {t('copyTradingSettings.collectionDesc')}
+            </div>
+          }
+          options={[
+            {
+              value: '1',
+              label: t('table.tradingAccount'),
+            },
+          ]}
         />
       )}
 

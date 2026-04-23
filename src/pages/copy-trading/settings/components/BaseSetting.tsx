@@ -6,10 +6,9 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
 import { RrhForm } from '@/components/form/RrhForm';
 import { useEditBaseSettings, useGetBaseSettings } from '@/api/hooks/copyTrading';
-import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { RrhCheckBoxGroup } from '@/components/common/RrhCheckBoxGroup';
 import { useGlobalLoading } from '@/contexts/loading';
 import { toast } from 'sonner';
+import { FormCheckBoxGroup } from '@/components/form/FormCheckBoxGroup';
 
 type FormValues = {
   addSignalPermSwitch: string;
@@ -139,28 +138,12 @@ export function BaseSetting() {
         label={t('copyTradingSettings.dealAccountPasswordSwitch')}
       />
 
-      <FormField
+      <FormCheckBoxGroup
         name="dealAccountPasswordMethod"
-        render={({ field }) => {
-          return (
-            <FormItem>
-              <FormControl>
-                <RrhCheckBoxGroup
-                  onValueChange={v => {
-                    field.onChange(v);
-                  }}
-                  value={field.value}
-                  labelClassName="font-medium"
-                  checkItems={[
-                    { value: '1', label: t('common.tradingPassword') },
-                    { value: '2', label: t('common.readOnlyPassword') },
-                  ]}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          );
-        }}
+        options={[
+          { value: '1', label: t('common.tradingPassword') },
+          { value: '2', label: t('common.readOnlyPassword') },
+        ]}
       />
       <div className="text-right">
         <RrhButton type="submit" variant="default" disabled={!form.formState.isDirty}>

@@ -9,7 +9,6 @@ export const RrhCheckBoxGroup: FC<{
     disabled?: boolean;
   }[];
   checkItemClassName?: string;
-  labelClassName?: string;
   value: string;
   onValueChange?: (value: string) => void;
 }> = ({ checkItems, checkItemClassName, onValueChange, value }) => {

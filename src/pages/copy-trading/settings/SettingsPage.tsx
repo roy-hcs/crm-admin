@@ -11,11 +11,26 @@ import { BaseSetting } from './components/BaseSetting';
 export function SettingsPage() {
   const { t } = useTranslation();
   const tabs = [
-    'copyTradingSettings.title',
-    'copyTradingSettings.feeConfig',
-    'copyTradingSettings.subscriptionSettings',
-    'copyTradingSettings.performanceFeeRebate',
-    'copyTradingSettings.loyaltyReward',
+    {
+      value: 'copyTradingSettings.title',
+      component: <BaseSetting />,
+    },
+    {
+      value: 'copyTradingSettings.feeConfig',
+      component: <FeeConfig />,
+    },
+    {
+      value: 'copyTradingSettings.subscriptionSettings',
+      component: <SubscriptionSetting />,
+    },
+    {
+      value: 'copyTradingSettings.performanceFeeRebate',
+      component: <PerformanceFeeRebate />,
+    },
+    {
+      value: 'copyTradingSettings.loyaltyReward',
+      component: <LoyaltyReward />,
+    },
   ];
 
   return (
@@ -25,36 +40,16 @@ export function SettingsPage() {
         <Tabs defaultValue="copyTradingSettings.title" className="flex-1 gap-3 overflow-auto">
           <TabsList>
             {tabs.map(tab => (
-              <TabsTrigger key={tab} value={tab}>
-                {t(tab)}
+              <TabsTrigger key={tab.value} value={tab.value}>
+                {t(tab.value)}
               </TabsTrigger>
             ))}
           </TabsList>
-          <TabsContent value="copyTradingSettings.title">
-            <RrhCard>
-              <BaseSetting />
-            </RrhCard>
-          </TabsContent>
-          <TabsContent value="copyTradingSettings.feeConfig">
-            <RrhCard>
-              <FeeConfig />
-            </RrhCard>
-          </TabsContent>
-          <TabsContent value="copyTradingSettings.subscriptionSettings">
-            <RrhCard>
-              <SubscriptionSetting />
-            </RrhCard>
-          </TabsContent>
-          <TabsContent value="copyTradingSettings.performanceFeeRebate">
-            <RrhCard>
-              <PerformanceFeeRebate />
-            </RrhCard>
-          </TabsContent>
-          <TabsContent value="copyTradingSettings.loyaltyReward">
-            <RrhCard>
-              <LoyaltyReward />
-            </RrhCard>
-          </TabsContent>
+          {tabs.map(tab => (
+            <TabsContent key={tab.value} value={tab.value}>
+              <RrhCard>{tab.component}</RrhCard>
+            </TabsContent>
+          ))}
         </Tabs>
       </div>
     </div>

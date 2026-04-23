@@ -319,108 +319,106 @@ export const GoodSortDialog = ({
       formLoading={isSubmitting}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1">
-            <div className={cn(step === 'one' ? 'block' : 'hidden')}>
-              <div className="py-3">
-                <FormInput
-                  verticalLabel
-                  name="name"
-                  label={t('productCategories.classificationNameSimplified', {
-                    language: t('productCategories.zhName'),
-                  })}
-                  placeholder={t('productCategories.enterClassificationName')}
-                  maxLength={30}
-                  onBlur={e => validateName('name', String(e.target.value), 'zh-CN')}
-                />
-              </div>
-              <div className="py-3">
-                <FormSelect
-                  name="parentId"
-                  label={t('productCategories.parentId')}
-                  verticalLabel
-                  placeholder={t('common.pleaseSelect')}
-                  showRowValue={false}
-                  options={parentOptions}
-                />
-              </div>
-              <div className="py-3">
-                <FormInput
-                  verticalLabel
-                  name="sort"
-                  label={t('table.sort')}
-                  placeholder={t('common.sortPlaceholder')}
-                />
-              </div>
-              <div className="py-3">
-                <FormField
-                  name="language"
-                  render={({ field }) => {
-                    return (
-                      <FormItem>
-                        <FormLabel>
-                          <div className="flex w-full justify-between">
-                            <div>{t('productCategories.displayLanguage')}</div>
-                            <div className="flex items-center gap-2">
-                              <Checkbox
-                                className={cn('data-[state=checked]:border-slate-700')}
-                                checked={
-                                  language?.length ===
-                                  languageList.map(i => i.value).join(',')?.length
-                                }
-                                onCheckedChange={() => {
-                                  if (
-                                    language?.length ===
-                                    languageList.map(i => i.value).join(',')?.length
-                                  ) {
-                                    field.onChange('');
-                                  } else {
-                                    field.onChange(languageList.map(i => i.value).join(','));
-                                  }
-                                }}
-                                aria-label="Select row"
-                              />
-                              <span>{t('common.selectAll')}</span>
-                            </div>
-                          </div>
-                        </FormLabel>
-                        <FormControl>
-                          <RrhCheckBoxGroup
-                            onValueChange={v => {
-                              field.onChange(v);
+        <div className={cn(step === 'one' ? 'block' : 'hidden')}>
+          <div className="py-3">
+            <FormInput
+              verticalLabel
+              name="name"
+              label={t('productCategories.classificationNameSimplified', {
+                language: t('productCategories.zhName'),
+              })}
+              placeholder={t('productCategories.enterClassificationName')}
+              maxLength={30}
+              onBlur={e => validateName('name', String(e.target.value), 'zh-CN')}
+            />
+          </div>
+          <div className="py-3">
+            <FormSelect
+              name="parentId"
+              label={t('productCategories.parentId')}
+              verticalLabel
+              placeholder={t('common.pleaseSelect')}
+              showRowValue={false}
+              options={parentOptions}
+            />
+          </div>
+          <div className="py-3">
+            <FormInput
+              verticalLabel
+              name="sort"
+              label={t('table.sort')}
+              placeholder={t('common.sortPlaceholder')}
+            />
+          </div>
+          <div className="py-3">
+            <FormField
+              name="language"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>
+                      <div className="flex w-full justify-between">
+                        <div>{t('productCategories.displayLanguage')}</div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            className={cn('data-[state=checked]:border-slate-700')}
+                            checked={
+                              language?.length === languageList.map(i => i.value).join(',')?.length
+                            }
+                            onCheckedChange={() => {
+                              if (
+                                language?.length ===
+                                languageList.map(i => i.value).join(',')?.length
+                              ) {
+                                field.onChange('');
+                              } else {
+                                field.onChange(languageList.map(i => i.value).join(','));
+                              }
                             }}
-                            value={field.value}
-                            labelClassName="font-medium"
-                            checkItems={languageList}
+                            aria-label="Select row"
                           />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    );
-                  }}
-                />
-              </div>
-            </div>
-            {step === 'two' && language?.length
-              ? (language?.split(',') || []).map(lang => {
-                  const label = languageList.find(o => o.value === lang)?.label;
-                  return (
-                    <div className="py-3" key={lang}>
-                      <FormInput
-                        verticalLabel
-                        name={`classificationName.${lang}`}
-                        label={t('productCategories.classificationNameSimplified', {
-                          language: label,
-                        })}
-                        placeholder={t('productCategories.enterClassificationName')}
-                        maxLength={30}
-                        onBlur={e =>
-                          validateName(`classificationName.${lang}`, String(e.target.value), lang)
-                        }
+                          <span>{t('common.selectAll')}</span>
+                        </div>
+                      </div>
+                    </FormLabel>
+                    <FormControl>
+                      <RrhCheckBoxGroup
+                        onValueChange={v => {
+                          field.onChange(v);
+                        }}
+                        value={field.value}
+                        checkItems={languageList}
                       />
-                    </div>
-                  );
-                })
-              : null}
-          </RrhForm>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+          </div>
+        </div>
+        {step === 'two' && language?.length
+          ? (language?.split(',') || []).map(lang => {
+              const label = languageList.find(o => o.value === lang)?.label;
+              return (
+                <div className="py-3" key={lang}>
+                  <FormInput
+                    verticalLabel
+                    name={`classificationName.${lang}`}
+                    label={t('productCategories.classificationNameSimplified', {
+                      language: label,
+                    })}
+                    placeholder={t('productCategories.enterClassificationName')}
+                    maxLength={30}
+                    onBlur={e =>
+                      validateName(`classificationName.${lang}`, String(e.target.value), lang)
+                    }
+                  />
+                </div>
+              );
+            })
+          : null}
+      </RrhForm>
     </RrhDialog>
   );
 };
