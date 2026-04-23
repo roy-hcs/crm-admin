@@ -32,6 +32,7 @@ interface FormMultiSelectProps<T extends FieldValues, O extends BaseOption = Bas
     operator: 'add' | 'remove',
     currentValue: string[],
   ) => ValidationResult;
+  labeTipsDom?: React.ReactNode;
 }
 
 export function FormMultiSelect<T extends FieldValues, O extends BaseOption = BaseOption>({
@@ -56,6 +57,7 @@ export function FormMultiSelect<T extends FieldValues, O extends BaseOption = Ba
   maxSelectionsMessage,
   onMaxSelectionsReached,
   onBeforeValueChange,
+  labeTipsDom,
 }: FormMultiSelectProps<T, O>) {
   const { form } = useCrmFormContext<T>();
   return (
@@ -63,45 +65,40 @@ export function FormMultiSelect<T extends FieldValues, O extends BaseOption = Ba
       name={name}
       control={form.control}
       render={({ field }) => (
-        <FormItem>
-          <div
-            className={cn(
-              'text-foreground flex items-center text-sm',
-              verticalLabel ? 'flex-col items-start gap-2' : '',
-              className,
-            )}
-          >
-            <FormLabel className="shrink-0 basis-3/12">{label}</FormLabel>
-            <FormControl className={cn('grow-0', verticalLabel ? 'w-full' : 'basis-9/12')}>
-              {loading && !searchSupport ? (
-                <div className="bg-muted h-10 w-full animate-pulse rounded-md" />
-              ) : (
-                <RrhMultiSelect<O>
-                  options={options}
-                  value={field.value || []}
-                  onValueChange={(value, option, operator) => {
-                    field.onChange(value);
-                    onValueChange?.(value, option, operator);
-                  }}
-                  className="w-full"
-                  placeholder={placeholder}
-                  renderItem={renderItem}
-                  showRowValue={showRowValue}
-                  searchSupport={searchSupport}
-                  searchValue={searchValue}
-                  searchPlaceholder={searchPlaceholder}
-                  onSearchChange={onSearchChange}
-                  loadingMore={loadingMore || (searchSupport && loading)}
-                  hasMore={hasMore}
-                  onDropdownReachEnd={onDropdownReachEnd}
-                  maxSelections={maxSelections}
-                  maxSelectionsMessage={maxSelectionsMessage}
-                  onMaxSelectionsReached={onMaxSelectionsReached}
-                  onBeforeValueChange={onBeforeValueChange}
-                />
-              )}
-            </FormControl>
+        <FormItem className={cn(verticalLabel ? '' : 'flex', className)}>
+          <div className={cn('flex gap-2', verticalLabel ? 'w-full' : 'basis-3/12')}>
+            {label && <FormLabel>{label}</FormLabel>}
+            {labeTipsDom && <div>{labeTipsDom}</div>}
           </div>
+          <FormControl className={cn('grow-0', verticalLabel ? 'w-full' : 'basis-9/12')}>
+            {loading && !searchSupport ? (
+              <div className="bg-muted h-10 w-full animate-pulse rounded-md" />
+            ) : (
+              <RrhMultiSelect<O>
+                options={options}
+                value={field.value || []}
+                onValueChange={(value, option, operator) => {
+                  field.onChange(value);
+                  onValueChange?.(value, option, operator);
+                }}
+                className="w-full"
+                placeholder={placeholder}
+                renderItem={renderItem}
+                showRowValue={showRowValue}
+                searchSupport={searchSupport}
+                searchValue={searchValue}
+                searchPlaceholder={searchPlaceholder}
+                onSearchChange={onSearchChange}
+                loadingMore={loadingMore || (searchSupport && loading)}
+                hasMore={hasMore}
+                onDropdownReachEnd={onDropdownReachEnd}
+                maxSelections={maxSelections}
+                maxSelectionsMessage={maxSelectionsMessage}
+                onMaxSelectionsReached={onMaxSelectionsReached}
+                onBeforeValueChange={onBeforeValueChange}
+              />
+            )}
+          </FormControl>
           <FormMessage />
         </FormItem>
       )}

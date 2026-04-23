@@ -3,7 +3,7 @@ import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { MamProtocolItem, MamProtocolListParams } from '@/api/hooks/copyTrading/type';
 import { useMamProtocolList } from '@/api/hooks/copyTrading';
-import { CopyTradingSettingsForm } from './CopyTradingSettingsForm';
+import { AgreementSettingsForm } from './AgreementSettingsForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +17,7 @@ import { Switch } from '@/components/ui/switch';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { RrhSorter } from '@/components/common/RrhSorter';
 
-export const CopyTradingSettingsPage = () => {
+export const AgreementSettingsPage = () => {
   const [otherParams, setOtherParams] = useState<Omit<MamProtocolListParams, keyof BasicParams>>({
     name: '',
     applicableScenarios: '',
@@ -188,7 +188,7 @@ export const CopyTradingSettingsPage = () => {
             }}
             footerShow={false}
           >
-            <CopyTradingSettingsForm
+            <AgreementSettingsForm
               scenarioTypes={scenarioTypes || []}
               setOtherParams={setOtherParams}
               reset={reset}

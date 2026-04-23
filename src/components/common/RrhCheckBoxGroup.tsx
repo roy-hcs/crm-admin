@@ -6,6 +6,7 @@ export const RrhCheckBoxGroup: FC<{
   checkItems: {
     value: string;
     label: string;
+    disabled?: boolean;
   }[];
   checkItemClassName?: string;
   labelClassName?: string;
@@ -35,6 +36,7 @@ export const RrhCheckBoxGroup: FC<{
                 }
                 onValueChange?.(next.join(','));
               }}
+              disabled={i.disabled}
               aria-label="Select row"
             />
             <div>{i.label}</div>

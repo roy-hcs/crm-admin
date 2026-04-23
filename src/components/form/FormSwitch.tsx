@@ -1,5 +1,12 @@
 import { FieldPath, FieldValues } from 'react-hook-form';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../ui/form';
 import { useCrmFormContext } from '@/contexts/form';
 import { cn } from '@/lib/utils';
 import { Switch } from '@/components/ui/switch';
@@ -9,6 +16,8 @@ interface FormSwitchProps<T extends FieldValues> {
   label: string;
   className?: string;
   verticalLabel?: boolean;
+  labeTipsDom?: React.ReactNode;
+  description?: string;
 }
 
 export function FormSwitch<T extends FieldValues>({
@@ -16,6 +25,8 @@ export function FormSwitch<T extends FieldValues>({
   label,
   verticalLabel = false,
   className,
+  labeTipsDom,
+  description,
 }: FormSwitchProps<T> & React.ComponentPropsWithoutRef<typeof Switch>) {
   const { form } = useCrmFormContext<T>();
   return (
@@ -32,9 +43,14 @@ export function FormSwitch<T extends FieldValues>({
               className,
             )}
           >
-            <FormLabel className={cn(verticalLabel ? '' : 'basis-3/12', 'leading-5')}>
-              {label}
-            </FormLabel>
+            <div className="flex items-center gap-2">
+              {label && (
+                <FormLabel className={cn(verticalLabel ? '' : 'basis-3/12', 'leading-5')}>
+                  {label}
+                </FormLabel>
+              )}
+              {labeTipsDom && <div>{labeTipsDom}</div>}
+            </div>
             <FormControl className="shrink-0 basis-9/12">
               <Switch
                 className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
@@ -45,6 +61,7 @@ export function FormSwitch<T extends FieldValues>({
                 }}
               />
             </FormControl>
+            {description && <FormDescription>{description}</FormDescription>}
             <FormMessage className="text-end" />
           </FormItem>
         );
