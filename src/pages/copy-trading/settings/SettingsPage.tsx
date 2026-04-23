@@ -2,11 +2,11 @@ import { PageInfo } from '@/components/common/PageInfo';
 import { RrhCard } from '@/components/common/RrhCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from 'react-i18next';
-import { BaseSetting } from './components/baseSetting';
 import { FeeConfig } from './components/FeeConfig';
 import { SubscriptionSetting } from './components/SubscriptionSetting';
 import { PerformanceFeeRebate } from './components/PerformanceFeeRebate';
 import { LoyaltyReward } from './components/LoyaltyReward';
+import { BaseSetting } from './components/BaseSetting';
 
 export function SettingsPage() {
   const { t } = useTranslation();
