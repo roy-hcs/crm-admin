@@ -283,3 +283,82 @@ export type PerformanceFeeItem = {
 };
 
 export type PerformanceFeeListRes = BasicRes<PerformanceFeeItem>;
+
+export type Setting = {
+  id: string;
+  key: string;
+  name: string;
+  value: string;
+};
+
+export type BaseSettingsRes = {
+  mamConfigs: Setting[];
+  userVipList: Array<{
+    createBy: string | null;
+    createTime: string | null;
+    updateBy: string | null;
+    updateTime: string | null;
+    remark: string | null;
+    id: string | null;
+    name: string | null;
+    sort: number | null;
+    description: string | null;
+    userCount: number | null;
+    status: number | null;
+    performanceFeeReduce: number | null;
+    performanceFeeRebatBonus: number | null;
+    delFlag: string | null;
+    language: string | null;
+    languageList: string | null;
+    crmUserVipAndRuleList: string | null;
+    crmUserVipOrRuleList: string | null;
+  }>;
+};
+
+export type BaseSettingsParams = {
+  addSignalPermSwitch: string;
+  dealAccountPasswordMethod: string;
+  dealAccountPasswordSwitch: string;
+  signalAddModelSwitch: string;
+  signalAuditSwitch: string;
+  signalAuthorShow: string;
+  tab: number;
+};
+
+export type FeeConfigParams = {
+  chargingMethod: string;
+  collectionAccount: string;
+  collectionWallet: string;
+  managementFeeSwitch: string;
+  payMethod: string;
+  platformManagementFeeRatio: string;
+  refundSwitch: string;
+  signalSourceFeeSwitch: string;
+  tab: number;
+};
+
+export type SubscriptionSettingParams = {
+  directionFollowingSwitch: string;
+  multipleNumberSwitch: string;
+  selectiveFollowingSwitch: string;
+  subscribeToOrder: string;
+  trackingMethod: string;
+  tab: number;
+};
+
+export type PerformanceFeeParams = {
+  allowedSignalSelfRebateSet: string;
+  performanceFeeRebateAutoApprove: string;
+  performanceFeeRebateSwitch: string;
+  rabateUpperType: string;
+  rebateLevel: string;
+  rebateLevel1: number;
+  rebateLevel2: number;
+  rebateTarget: string;
+  tab: number;
+};
+
+export type LoyaltyRewardParams = {
+  vipData: string;
+  tab: number;
+};

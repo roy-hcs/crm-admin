@@ -1,6 +1,8 @@
-import { apiFormPostCustom } from '@/api/client';
+import { apiFormPostCustom, apiGet, apiPost } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
+  BaseSettingsParams,
+  BaseSettingsRes,
   MamFollowListParams,
   MamFollowListRes,
   MamProtocolListParams,
@@ -13,6 +15,10 @@ import {
   MamSymbolListRes,
   PerformanceFeeListParams,
   PerformanceFeeListRes,
+  FeeConfigParams,
+  SubscriptionSettingParams,
+  PerformanceFeeParams,
+  LoyaltyRewardParams,
 } from './type';
 
 export function useChangeMamSignalSource() {
@@ -84,5 +90,60 @@ export function useMamFollowList(params: MamFollowListParams) {
   return useQuery({
     queryKey: ['mamFollowList', params],
     queryFn: () => apiFormPostCustom<MamFollowListRes>('/system/mamFollow/list', params),
+  });
+}
+
+/**
+ * 获取copytranding 所有配置信息
+ */
+export function useGetBaseSettings() {
+  return useQuery({
+    queryKey: ['BaseSettings'],
+    queryFn: () => apiGet<BaseSettingsRes>(`/system/mamConfig/info?tab=1`),
+  });
+}
+
+/**
+ * 编辑copytranding 基础配置信息
+ */
+export function useEditBaseSettings() {
+  return useMutation({
+    mutationFn: (params: BaseSettingsParams) => apiPost('/system/mamConfig/edit', params),
+  });
+}
+
+/**
+ * 编辑copytranding 费用配置信息
+ */
+export function useEditFeeConfig() {
+  return useMutation({
+    mutationFn: (params: FeeConfigParams) => apiPost('/system/mamConfig/edit', params),
+  });
+}
+
+/**
+ * 编辑copytranding 订阅跟单设置
+ */
+export function useEditSubscriptionSetting() {
+  return useMutation({
+    mutationFn: (params: SubscriptionSettingParams) => apiPost('/system/mamConfig/edit', params),
+  });
+}
+
+/**
+ * 编辑copytranding 表现费返佣
+ */
+export function useEditPerformanceFeeRebate() {
+  return useMutation({
+    mutationFn: (params: PerformanceFeeParams) => apiPost('/system/mamConfig/edit', params),
+  });
+}
+
+/**
+ * 编辑copytranding 忠诚奖励
+ */
+export function useEditLoyaltyReward() {
+  return useMutation({
+    mutationFn: (params: LoyaltyRewardParams) => apiPost('/system/mamConfig/edit', params),
   });
 }

@@ -498,248 +498,243 @@ export const AddEditNewMessageDialog = ({
       formLoading={isSubmitting}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
-            <div className={cn(step === 'one' ? 'block' : 'hidden')}>
-              <div className="grid gap-6">
-                <FormSelect
-                  name="type"
-                  label={t('table.infoType')}
-                  verticalLabel
-                  placeholder={t('common.pleaseSelect')}
-                  showRowValue={false}
-                  options={infoTypeOptions.map(i => ({
-                    label: t(i.label),
-                    value: i.value,
-                  }))}
-                />
+        <div className={cn(step === 'one' ? 'block' : 'hidden')}>
+          <div className="grid gap-6">
+            <FormSelect
+              name="type"
+              label={t('table.infoType')}
+              verticalLabel
+              placeholder={t('common.pleaseSelect')}
+              showRowValue={false}
+              options={infoTypeOptions.map(i => ({
+                label: t(i.label),
+                value: i.value,
+              }))}
+            />
 
-                <FormField
-                  name="isNow"
-                  render={({ field }) => {
-                    return (
-                      <SelectRadio
-                        title={t('messageManagement.sendMethod')}
-                        verticalLabel
-                        field={field}
-                        radioItems={[
-                          {
-                            value: '1',
-                            label: t('messageManagement.immediate'),
-                          },
-                          {
-                            value: '0',
-                            label: t('messageManagement.scheduled'),
-                          },
-                        ]}
-                      />
-                    );
-                  }}
-                />
-                {/* 邮件通知专属 */}
-                {type === '2' ? (
-                  <FormMultiSelect
-                    name="sendEmails"
-                    label={t('table.sendEmailAddress')}
+            <FormField
+              name="isNow"
+              render={({ field }) => {
+                return (
+                  <SelectRadio
+                    title={t('messageManagement.sendMethod')}
                     verticalLabel
-                    placeholder={t('common.pleaseSelect')}
-                    showRowValue={false}
-                    options={emailOptions}
+                    field={field}
+                    radioItems={[
+                      {
+                        value: '1',
+                        label: t('messageManagement.immediate'),
+                      },
+                      {
+                        value: '0',
+                        label: t('messageManagement.scheduled'),
+                      },
+                    ]}
                   />
-                ) : null}
+                );
+              }}
+            />
+            {/* 邮件通知专属 */}
+            {type === '2' ? (
+              <FormMultiSelect
+                name="sendEmails"
+                label={t('table.sendEmailAddress')}
+                verticalLabel
+                placeholder={t('common.pleaseSelect')}
+                showRowValue={false}
+                options={emailOptions}
+              />
+            ) : null}
 
-                {/* 定时发送 */}
-                {isNow === '0' ? (
-                  <FormDateInput label={t('table.sendTime')} name="sendTime" showTime />
-                ) : null}
+            {/* 定时发送 */}
+            {isNow === '0' ? (
+              <FormDateInput label={t('table.sendTime')} name="sendTime" showTime />
+            ) : null}
 
-                {/* 弹窗通知专属 */}
-                {type === '0' ? (
-                  <FormDateInput
-                    label={t('messageManagement.expireTime')}
-                    name="expireTime"
-                    showTime
-                  />
-                ) : null}
-                {/* 在消息管理 新增修改消息来源 才使用选择接受对象 在customer来源中 默认接受对象就是当前用户 */}
-                {source === 'MessageManagementPage' && (
-                  <FormField
-                    name="receiveType"
-                    render={({ field }) => {
-                      return (
-                        <SelectRadio
-                          title={t('table.receiver')}
-                          verticalLabel
-                          field={field}
-                          orientation="horizontal"
-                          radioItems={receiveTypeOptions.map(i => ({
-                            label: t(i.label),
-                            value: i.value,
-                          }))}
-                        />
-                      );
-                    }}
-                  />
-                )}
-                {receiveType === '2' && (
-                  <FormMultiSelect
-                    verticalLabel
-                    name="roles"
-                    label={t('messageManagement.receiveTypeOption.2')}
-                    placeholder={t('common.pleaseSelect')}
-                    options={(RoleRes?.rows || []).map(i => ({
-                      label: i.roleName,
-                      value: i.roleId,
-                    }))}
-                  />
-                )}
-                {receiveType === '0' && (
-                  <FormSearchMultiSelect
-                    verticalLabel
-                    name="userIds"
-                    label={t('messageManagement.receiveTypeOption.0')}
-                    placeholder={t('common.pleaseSelect')}
-                    fetchOptions={fetchCrmUserOptions}
-                  />
-                )}
-                {receiveType === '3' && <SelectUpperDropdown />}
+            {/* 弹窗通知专属 */}
+            {type === '0' ? (
+              <FormDateInput label={t('messageManagement.expireTime')} name="expireTime" showTime />
+            ) : null}
+            {/* 在消息管理 新增修改消息来源 才使用选择接受对象 在customer来源中 默认接受对象就是当前用户 */}
+            {source === 'MessageManagementPage' && (
+              <FormField
+                name="receiveType"
+                render={({ field }) => {
+                  return (
+                    <SelectRadio
+                      title={t('table.receiver')}
+                      verticalLabel
+                      field={field}
+                      orientation="horizontal"
+                      radioItems={receiveTypeOptions.map(i => ({
+                        label: t(i.label),
+                        value: i.value,
+                      }))}
+                    />
+                  );
+                }}
+              />
+            )}
+            {receiveType === '2' && (
+              <FormMultiSelect
+                verticalLabel
+                name="roles"
+                label={t('messageManagement.receiveTypeOption.2')}
+                placeholder={t('common.pleaseSelect')}
+                options={(RoleRes?.rows || []).map(i => ({
+                  label: i.roleName,
+                  value: i.roleId,
+                }))}
+              />
+            )}
+            {receiveType === '0' && (
+              <FormSearchMultiSelect
+                verticalLabel
+                name="userIds"
+                label={t('messageManagement.receiveTypeOption.0')}
+                placeholder={t('common.pleaseSelect')}
+                fetchOptions={fetchCrmUserOptions}
+              />
+            )}
+            {receiveType === '3' && <SelectUpperDropdown />}
 
-                {receiveType === '4' && (
-                  <FormSearchMultiSelect
-                    verticalLabel
-                    name="tags"
-                    label={t('messageManagement.receiveTypeOption.4')}
-                    placeholder={t('common.pleaseSelect')}
-                    fetchOptions={fetchCrmUserTagsOptions}
-                  />
-                )}
+            {receiveType === '4' && (
+              <FormSearchMultiSelect
+                verticalLabel
+                name="tags"
+                label={t('messageManagement.receiveTypeOption.4')}
+                placeholder={t('common.pleaseSelect')}
+                fetchOptions={fetchCrmUserTagsOptions}
+              />
+            )}
 
-                <FormSelect
-                  name="template"
-                  label={t('messageManagement.messageTemplate')}
-                  verticalLabel
-                  placeholder={t('common.pleaseSelect')}
-                  showRowValue={false}
-                  options={msgTemplateOptions}
-                />
+            <FormSelect
+              name="template"
+              label={t('messageManagement.messageTemplate')}
+              verticalLabel
+              placeholder={t('common.pleaseSelect')}
+              showRowValue={false}
+              options={msgTemplateOptions}
+            />
 
-                <FormField
-                  name="language"
-                  render={({ field }) => {
-                    return (
-                      <FormItem>
-                        <FormLabel>
-                          <div className="flex w-full justify-between">
-                            <div>{t('messageManagement.sendLanguage')}</div>
-                            <div className="flex items-center gap-2">
-                              <Checkbox
-                                className={cn('data-[state=checked]:border-slate-700')}
-                                checked={
-                                  language?.length ===
-                                  languageOptions.map(i => i.value).join(',')?.length
-                                }
-                                onCheckedChange={() => {
-                                  if (
-                                    language?.length ===
-                                    languageOptions.map(i => i.value).join(',')?.length
-                                  ) {
-                                    field.onChange('');
-                                    setPrimaryLanguageOptions([]);
-                                  } else {
-                                    field.onChange(languageOptions.map(i => i.value).join(','));
-                                    setPrimaryLanguageOptions(languageOptions);
-                                  }
-                                  form.setValue('primaryLanguage', '');
-                                }}
-                                aria-label="Select row"
-                              />
-                              <span>{t('common.selectAll')}</span>
-                            </div>
-                          </div>
-                        </FormLabel>
-                        <FormControl>
-                          <RrhCheckBoxGroup
-                            onValueChange={v => {
-                              field.onChange(v);
-                              // 把选中的语言设置进primaryLanguage的选项里
-                              setPrimaryLanguageOptions(
-                                languageOptions.filter(i => v.includes(i.value)),
-                              );
+            <FormField
+              name="language"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>
+                      <div className="flex w-full justify-between">
+                        <div>{t('messageManagement.sendLanguage')}</div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            className={cn('data-[state=checked]:border-slate-700')}
+                            checked={
+                              language?.length ===
+                              languageOptions.map(i => i.value).join(',')?.length
+                            }
+                            onCheckedChange={() => {
+                              if (
+                                language?.length ===
+                                languageOptions.map(i => i.value).join(',')?.length
+                              ) {
+                                field.onChange('');
+                                setPrimaryLanguageOptions([]);
+                              } else {
+                                field.onChange(languageOptions.map(i => i.value).join(','));
+                                setPrimaryLanguageOptions(languageOptions);
+                              }
                               form.setValue('primaryLanguage', '');
                             }}
-                            value={field.value}
-                            labelClassName="font-medium"
-                            checkItems={languageOptions}
+                            aria-label="Select row"
                           />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    );
-                  }}
-                />
-
-                <FormSelect
-                  name="primaryLanguage"
-                  label={t('messageManagement.mainLanguage')}
-                  verticalLabel
-                  placeholder={t('common.pleaseSelect')}
-                  showRowValue={false}
-                  options={primaryLanguageOptions}
-                />
-              </div>
-            </div>
-
-            {step === 'two' && language?.length ? (
-              <>
-                <RrhSwitchGroup
-                  value={activeLang}
-                  onValueChange={value => {
-                    setActiveLang(value);
-                  }}
-                  labelClassName="font-medium"
-                  switchItems={language?.split(',').map(lang => {
-                    const label = languageOptions.find(o => o.value === lang)?.label || '';
-                    return {
-                      value: lang,
-                      label,
-                    };
-                  })}
-                />
-                <div>
-                  {(language.split(',') || []).map(lang => {
-                    const label = languageOptions.find(o => o.value === lang)?.label || '';
-                    return (
-                      <div key={lang} className={cn(activeLang === lang ? 'block' : 'hidden')}>
-                        <div className="py-6">
-                          <FormInput
-                            verticalLabel
-                            name={`title.${lang}`}
-                            label={t('messageManagement.inputTitle', { field: label })}
-                            placeholder={t('common.pleaseInput', { field: t('table.title') })}
-                            maxLength={64}
-                          />
-                        </div>
-                        <div className="py-6">
-                          <FormField
-                            name={`content.${lang}`}
-                            render={({ field }) => {
-                              return (
-                                <RichTextEditor
-                                  field={field}
-                                  title={t('messageManagement.inputContent', { field: label })}
-                                  placeholder={t('common.pleaseInput', {
-                                    field: t('table.content'),
-                                  })}
-                                />
-                              );
-                            }}
-                          />
+                          <span>{t('common.selectAll')}</span>
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
-              </>
-            ) : null}
-          </RrhForm>
+                    </FormLabel>
+                    <FormControl>
+                      <RrhCheckBoxGroup
+                        onValueChange={v => {
+                          field.onChange(v);
+                          // 把选中的语言设置进primaryLanguage的选项里
+                          setPrimaryLanguageOptions(
+                            languageOptions.filter(i => v.includes(i.value)),
+                          );
+                          form.setValue('primaryLanguage', '');
+                        }}
+                        value={field.value}
+                        checkItems={languageOptions}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+
+            <FormSelect
+              name="primaryLanguage"
+              label={t('messageManagement.mainLanguage')}
+              verticalLabel
+              placeholder={t('common.pleaseSelect')}
+              showRowValue={false}
+              options={primaryLanguageOptions}
+            />
+          </div>
+        </div>
+
+        {step === 'two' && language?.length ? (
+          <>
+            <RrhSwitchGroup
+              value={activeLang}
+              onValueChange={value => {
+                setActiveLang(value);
+              }}
+              labelClassName="font-medium"
+              switchItems={language?.split(',').map(lang => {
+                const label = languageOptions.find(o => o.value === lang)?.label || '';
+                return {
+                  value: lang,
+                  label,
+                };
+              })}
+            />
+            <div>
+              {(language.split(',') || []).map(lang => {
+                const label = languageOptions.find(o => o.value === lang)?.label || '';
+                return (
+                  <div key={lang} className={cn(activeLang === lang ? 'block' : 'hidden')}>
+                    <div className="py-6">
+                      <FormInput
+                        verticalLabel
+                        name={`title.${lang}`}
+                        label={t('messageManagement.inputTitle', { field: label })}
+                        placeholder={t('common.pleaseInput', { field: t('table.title') })}
+                        maxLength={64}
+                      />
+                    </div>
+                    <div className="py-6">
+                      <FormField
+                        name={`content.${lang}`}
+                        render={({ field }) => {
+                          return (
+                            <RichTextEditor
+                              field={field}
+                              title={t('messageManagement.inputContent', { field: label })}
+                              placeholder={t('common.pleaseInput', {
+                                field: t('table.content'),
+                              })}
+                            />
+                          );
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : null}
+      </RrhForm>
     </RrhDialog>
   );
 };
