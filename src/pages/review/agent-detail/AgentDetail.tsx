@@ -13,6 +13,11 @@ import { useGlobalLoading } from '@/contexts/loading';
 import { AgentKyc } from './components/AgentKyc';
 import { CheckInfoCard } from '@/components/common/CheckInfoCard';
 import { useTabBackNavigation } from '@/hooks/useTabBackNavigation';
+import { RrhButton } from '@/components/common/RrhButton';
+import { RrhDialog } from '@/components/common/RrhDialog';
+import { useState } from 'react';
+import { KycInfoPage } from '../account-opening-detail/kyc-info/KycInfoPage';
+import { Customer } from '../account-opening-detail/components/Customer';
 
 export type FormValue = {
   id: string;
@@ -23,6 +28,7 @@ export type FormValue = {
 
 export const AgentDetailPage = () => {
   const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
   const back = useTabBackNavigation('/review/account-opening');
   const [searchParams] = useSearchParams();
   const agentId = searchParams.get('id') || '';
@@ -59,14 +65,6 @@ export const AgentDetailPage = () => {
     }) || []),
   ] as RrhStepProps['steps'];
 
-  if (isLoading) {
-    return (
-      <div className="h-100">
-        <RrhCircleLoading />;
-      </div>
-    );
-  }
-
   const onSubmit = async (data: FormValue) => {
     await withLoading(async () => {
       try {
@@ -89,9 +87,27 @@ export const AgentDetailPage = () => {
     });
   };
 
+  const handleViewUser = () => {
+    // 查看用户详情
+    setOpen(true);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="h-100">
+        <RrhCircleLoading />;
+      </div>
+    );
+  }
+
   return (
     <div>
-      <PageInfo wrapperCls="py-3" title={t('reviewAgent.reviewAgentDetail')} />
+      <div className="flex items-center gap-2">
+        <PageInfo wrapperCls="py-3" title={t('reviewAgent.reviewAgentDetail')} />
+        {agentInfo?.detail?.applySource === 1 && agentInfo?.detail?.userId && (
+          <RrhButton onClick={handleViewUser}>{t('reviewAgent.viewCrmUserDetail')}</RrhButton>
+        )}
+      </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
@@ -111,6 +127,18 @@ export const AgentDetailPage = () => {
           </div>
         </form>
       </Form>
+      <RrhDialog
+        title={t('reviewAgent.viewCrmUserDetail')}
+        open={open}
+        onOpenChange={setOpen}
+        onCancel={() => setOpen(false)}
+        onConfirm={() => setOpen(false)}
+        variant="large"
+        type="view"
+      >
+        <KycInfoPage id={agentInfo?.detail?.userId || ''} />
+        <Customer id={agentInfo?.detail?.userId || ''} />
+      </RrhDialog>
     </div>
   );
 };

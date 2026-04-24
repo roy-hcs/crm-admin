@@ -42,6 +42,7 @@ import {
   CrmUsersTags,
   MyInfoRes,
   EmailVerificationCodeRes,
+  CrmUserInfo,
 } from './types';
 
 // Note: useWithDrawReport, useFundFlowReport, useSymbolReport, useRegCountReport, useDepositAllReport, useCustomerTransactionsReport, useSumReport moved to @/api/hooks/workbench
@@ -558,7 +559,6 @@ export function useUpdateUserAvatar() {
   });
 }
 
-// /
 /**
  * 获取谷歌绑定信息
  */
@@ -570,5 +570,16 @@ export function useGetGoogleBindInfo() {
         code: string;
         key: string;
       }>('/googleAuthenticator/bindInfo'),
+  });
+}
+//
+
+/**
+ * 获取用户信息
+ */
+export function useGeCrmUserInfo(userId: string) {
+  return useQuery({
+    queryKey: ['GetUserInfo', userId],
+    queryFn: () => apiGetCustom<CrmUserInfo>(`/system/crmUser/getUserInfo?id=${userId}`),
   });
 }
