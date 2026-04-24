@@ -1,4 +1,5 @@
 import { BasicParams, BasicRes, BaseEntity } from '../../types';
+import { LastLogininfor } from '../review/types';
 
 export type ServerItem = {
   id: string;
@@ -805,4 +806,13 @@ export type MyInfoRes = {
 export type EmailVerificationCodeRes = {
   resultCode: number;
   resultMsg: string;
+};
+
+export type CrmUserInfo = {
+  code: number;
+  data: {
+    crmUser: CrmUser;
+    lastLogininfor: LastLogininfor;
+    userLanguage: string | null;
+  };
 };

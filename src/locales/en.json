@@ -914,7 +914,8 @@
     "title": "Agent audit",
     "agentInfo": "Agent information",
     "havingAgent": "Have you ever engaged in agency business?",
-    "reviewAgentDetail": "Agent review details"
+    "reviewAgentDetail": "Agent review details",
+    "viewCrmUserDetail": "View user information"
   },
   "depositRebateReview": {
     "title": "Deposit Rebate Review",

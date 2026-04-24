@@ -1,6 +1,6 @@
 import { useGetEmailConfig, useMsgTemplateList } from '@/api/hooks/message';
-import { OpenReviewDetailRes } from '@/api/hooks/review';
 import { useDictType } from '@/api/hooks/system';
+import { useGeCrmUserInfo } from '@/api/hooks/system/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhCard } from '@/components/common/RrhCard';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
@@ -45,11 +45,12 @@ const getRiskMeta = (riskScore: number) => {
   };
 };
 
-export const Customer = ({ openInfo }: { openInfo: OpenReviewDetailRes['data'] }) => {
-  const crmUser = openInfo?.crmUser;
-  const lastLogininfor = openInfo?.lastLogininfor;
-  const userLanguage = openInfo?.userLanguage;
-  const riskScore = openInfo?.lastLogininfor?.riskScore || 0;
+export const Customer = ({ id }: { id: string }) => {
+  const { data: userDataRes, isLoading } = useGeCrmUserInfo(id);
+  const crmUser = userDataRes?.data?.crmUser;
+  const lastLogininfor = userDataRes?.data?.lastLogininfor;
+  const userLanguage = userDataRes?.data?.userLanguage;
+  const riskScore = lastLogininfor?.riskScore || 0;
   const { t } = useTranslation();
   const [open, setOpen] = useState<DialogType>(null);
   const { data: languageList, isLoading: languageLoading } = useDictType('sys_language');
@@ -134,7 +135,7 @@ export const Customer = ({ openInfo }: { openInfo: OpenReviewDetailRes['data'] }
     [msgTemplateList?.rows],
   );
 
-  if (languageLoading || emailListLoading || msgTemplateListLoading) {
+  if (isLoading || languageLoading || emailListLoading || msgTemplateListLoading) {
     return (
       <div className="h-100">
         <RrhCircleLoading />;
@@ -160,9 +161,11 @@ export const Customer = ({ openInfo }: { openInfo: OpenReviewDetailRes['data'] }
             <div className="text-muted-foreground h-3 text-xs leading-3">ID:{crmUser?.showId}</div>
           </div>
         </div>
-        <div className="bg-primary-foreground cursor-pointer rounded-md p-3">
-          <div className="text-foreground text-xs">{crmUser?.adminRemark}</div>
-        </div>
+        {crmUser?.adminRemark && (
+          <div className="bg-primary-foreground cursor-pointer rounded-md p-3">
+            <div className="text-foreground text-xs">{crmUser?.adminRemark}</div>
+          </div>
+        )}
         <div>
           <div className="flex items-center gap-2">
             <div className="text-foreground h-5 text-sm leading-5 font-medium">
@@ -181,9 +184,9 @@ export const Customer = ({ openInfo }: { openInfo: OpenReviewDetailRes['data'] }
             </div>
           </div>
           <div className="text-muted-foreground mt-2 mb-1 text-sm leading-5">
-            {crmUser.lastLoginTime}
+            {crmUser?.lastLoginTime ?? ''}
           </div>
-          <div className="text-muted-foreground text-sm leading-5">{`${lastLogininfor.operIp} ${lastLogininfor.operLocation}`}</div>
+          <div className="text-muted-foreground text-sm leading-5">{`${lastLogininfor?.operIp ?? ''} ${lastLogininfor?.operLocation ?? ''}`}</div>
         </div>
         <div className="grid grid-cols-3 gap-2">
           <RrhButton

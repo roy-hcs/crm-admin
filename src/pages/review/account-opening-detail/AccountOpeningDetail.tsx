@@ -129,7 +129,7 @@ export const AccountOpeningDetailPage = () => {
 
             <div className="relative md:mt-12 md:w-93.5">
               <div>
-                <Customer openInfo={openInfo} />
+                <Customer id={userId} />
               </div>
               <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
                 <div className="mt-6">
