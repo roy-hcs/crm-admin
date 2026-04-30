@@ -23,7 +23,7 @@ export function OverviewPage() {
   const [isAsc, setIsAsc] = useState<'asc' | 'desc'>('asc');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [params, setParams] = useState({
     userName: '',
     email: '',
@@ -60,7 +60,7 @@ export function OverviewPage() {
       endTime: '',
       level: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
     setIsAsc('asc');
@@ -183,13 +183,12 @@ export function OverviewPage() {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('CRMAccountPage.NameOrAccountId')}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
-              onLeftIconClick={() => {
-                setParams(prev => ({ ...prev, userName: keyword }));
+              onLeftIconClick={value => {
+                setParams(prev => ({ ...prev, userName: value }));
                 setPageNum(0);
               }}
             />

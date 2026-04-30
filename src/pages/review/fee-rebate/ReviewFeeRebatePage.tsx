@@ -52,7 +52,7 @@ export const ReviewFeeRebatePage = () => {
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
   const [enabled, setEnabled] = useState(false);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
   const [orderByColumn, setOrderByColumn] = useState('rebateStatusDef');
 
@@ -124,7 +124,7 @@ export const ReviewFeeRebatePage = () => {
       verifyUserName: '',
       conditionName: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
 
@@ -403,10 +403,9 @@ export const ReviewFeeRebatePage = () => {
         <div className="mb-3 flex flex-wrap justify-between gap-2">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('common.pleaseInput', { field: t('table.tradingOrderNumber') })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
               onLeftIconClick={e => {
                 setOtherParams(prev => ({ ...prev, mtOrder: e }));

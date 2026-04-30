@@ -25,7 +25,7 @@ export function AccountOpeningPage() {
   const [orderByColumn, setOrderByColumn] = useState<string>('status desc,subTime desc');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [params, setParams] = useState<CrmNewLoginVerifyListParams['params']>({
     server: '',
     serverType: '',
@@ -55,7 +55,7 @@ export function AccountOpeningPage() {
       source: '',
       verifyUserName: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
 
@@ -248,15 +248,14 @@ export function AccountOpeningPage() {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('common.pleaseInput', {
                 field: t('paymentOrders.userName'),
               })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
-              onLeftIconClick={() => {
-                setCommonParams(prev => ({ ...prev, userId: keyword }));
+              onLeftIconClick={value => {
+                setCommonParams(prev => ({ ...prev, userId: value }));
                 setPageNum(0);
               }}
             />

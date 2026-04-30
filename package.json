@@ -15,6 +15,9 @@
     "format:fix": "prettier --write . && eslint . --ext ts,tsx --fix"
   },
   "lint-staged": {
+    "*.{ts,tsx,js,jsx,css,json,md}": [
+      "prettier --write"
+    ],
     "*.{ts,tsx}": [
       "eslint --fix",
       "tsc-files --noEmit"

@@ -16,13 +16,19 @@ export const ImageZoom = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <img src={src} alt={alt} className={cn('cursor-zoom-in rounded-md', thumbnailClassName)} />
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          className={cn('cursor-zoom-in rounded-md', thumbnailClassName)}
+        />
       </DialogTrigger>
       <DialogContent className="border-0 bg-transparent p-0 shadow-none sm:max-w-[90vw]">
         <div className="flex max-h-[90vh] items-center justify-center">
           <img
             src={src}
             alt={alt}
+            loading="lazy"
             className={cn('max-h-[90vh] max-w-[90vw] object-contain', fullImageClassName)}
           />
         </div>

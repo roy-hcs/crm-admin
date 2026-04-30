@@ -7,6 +7,7 @@ import { AccountGroupsPage } from '@/pages/account/account-groups/AccountGroupsP
 import { RelationshipsPage } from '@/pages/account/relationships/RelationshipsPage';
 import { WalletAccountsDetailPage } from '@/pages/account/wallet-accounts-detail/WalletAccountsDetailPage';
 import { TradingAccountsDetailPage } from '@/pages/account/trading-accounts-detail/TradingAccountsDetailPage';
+import { CrmAccountsDetail } from '@/pages/account/crm-accounts-detail/CrmAccountsDetail';
 
 const TradingAccountsDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();
@@ -60,23 +61,8 @@ export const accountRoutes: RouteObject[] = [
     path: '/account/relationships',
     element: <RelationshipsPage />,
   },
-  // Routes to be developed - commented out until pages are created
-  /*
   {
-    path: '/account/trading-accounts',
-    element: <TradingAccountsPage />,
+    path: '/account/crm-accounts/detail',
+    element: <CrmAccountsDetail />,
   },
-  {
-    path: '/account/relationships',
-    element: <RelationshipsPage />,
-  },
-  {
-    path: '/account/account-groups',
-    element: <AccountGroupsPage />,
-  },
-  {
-    path: '/account/wallet-accounts',
-    element: <WalletAccountsPage />,
-  },
-  */
 ];

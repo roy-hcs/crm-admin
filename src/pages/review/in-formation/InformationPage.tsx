@@ -24,7 +24,7 @@ export function InformationPage() {
   const [orderByColumn, setOrderByColumn] = useState<string>('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [params, setParams] = useState<CrmInfoVerifyListParams['params']>({
     beginTime: '',
     endTime: '',
@@ -52,7 +52,7 @@ export function InformationPage() {
       status: '',
       verifyUserName: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
 
@@ -192,15 +192,14 @@ export function InformationPage() {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('common.pleaseInput', {
                 field: t('information.verifyUserName'),
               })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
-              onLeftIconClick={() => {
-                setCommonParams(prev => ({ ...prev, verifyUserName: keyword }));
+              onLeftIconClick={value => {
+                setCommonParams(prev => ({ ...prev, verifyUserName: value }));
                 setPageNum(0);
               }}
             />

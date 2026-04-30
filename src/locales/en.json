@@ -41,7 +41,31 @@
     "DeleteAccountWalletBalanceZero": "The wallet balance can only be deleted when it reaches 0",
     "DeleteAccountWithTrading": "Delete CRM account and its trading account",
     "DeleteAccountWalletAndRealAccountBalance": "Total {{real}} real, {{demo}} simulation",
-    "DeleteAccountWalletAndRealAccountBalanceZero": "The wallet balance and real account balance can only be deleted when they are 0."
+    "DeleteAccountWalletAndRealAccountBalanceZero": "The wallet balance and real account balance can only be deleted when they are 0.",
+    "accountActivity": "Account activity",
+    "accountOpening": "Account opening",
+    "commissionTotal": "Total commission",
+    "currentMonth": "this month",
+    "currentMonthCommission": "Commission this month",
+    "customerFollowUp": "Customer follow-up",
+    "customerFundOverview": "Client Funds Overview",
+    "fair": "flat",
+    "kycVerifyStatus": {
+      "0": "Not submitted",
+      "1": "Pending trial",
+      "2": "reject",
+      "3": "pass",
+      "4": "Under review"
+    },
+    "lossDeal": "Loss order",
+    "newCRMAccount": "Newly registered CRM account",
+    "newDemoAccount": "Add a new simulated account",
+    "newRealAccount": "Add real account",
+    "profitDeal": "profit order",
+    "rebateSetting": "Rebate settings",
+    "totalAccountNumber": "general account",
+    "totalCustomerNumber": "total customers",
+    "commission": "commission"
   },
   "common": {
     "AnErrorOccurred": "An error occurred",
@@ -245,7 +269,9 @@
     "getVerificationCode": "Get verification code",
     "verificationCode": "Verification code",
     "cancelDefault": "cancel default",
-    "default": "default"
+    "default": "default",
+    "netProfit": "net profit",
+    "yesterday": "yesterday"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -498,7 +524,6 @@
     "rebateUser": "Rebate object",
     "serverOrWallet": "Server/Wallet",
     "targetRule": "Hit Rules",
-    "tradeAccount": "Trading account",
     "tradingOrderNumber": "Transaction order number",
     "amountOfReceipt": "Amount of receipt",
     "bankTransfer": "Bank remittance",
@@ -739,7 +764,10 @@
     "productSource": "Customer source",
     "allAccountGroup": "All account groups",
     "description": "describe",
-    "inviters": "Account superior"
+    "inviters": "Account superior",
+    "demoAccountNumber": "Number of demo accounts",
+    "realAccountNumber": "Number of real accounts",
+    "totalRebate": "Total rebate"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",

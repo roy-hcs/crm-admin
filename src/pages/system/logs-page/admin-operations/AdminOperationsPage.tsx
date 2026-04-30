@@ -36,7 +36,7 @@ export const AdminOperationsPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
   const { data: operTypeList } = useDictType('sys_oper_type');
   const { data: walletBalanceList, isLoading: walletBalanceListLoading } = useAdminOperLogList({
@@ -62,7 +62,7 @@ export const AdminOperationsPage = () => {
       status: '',
       businessTypes: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
   const allColumns: CRMColumnDef<AdminOperLogItem, unknown>[] = [
@@ -174,10 +174,9 @@ export const AdminOperationsPage = () => {
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon
+            key={resetKey}
             placeholder={t('common.pleaseInput', { field: t('common.operName') })}
             className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
             leftIcon={<Search className="size-4 cursor-pointer" />}
             onLeftIconClick={e => {
               setOtherParams(prev => ({ ...prev, operName: e }));

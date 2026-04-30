@@ -26,17 +26,45 @@ export function TradingAccountsDetailPage() {
     );
   }
   const tabs = [
-    'table.accountDetail',
-    'table.accountOperations',
-    'table.accountPermission',
-    'review.fundFlow',
-    'tradingHistoryPage.tradingHistory',
-    'positionOrderPage.positionOrder',
-    'limitOrderPage.limitOrder',
+    {
+      value: 'table.accountDetail',
+      content: <AccountDetail id={id} />,
+      cardCls: 'grid gap-6',
+    },
+    {
+      value: 'table.accountOperations',
+      content: <AccountOperations id={id} />,
+      cardCls: '',
+    },
+    {
+      value: 'table.accountPermission',
+      content: <AccountPermission id={id} />,
+      cardCls: '',
+    },
+    {
+      value: 'review.fundFlow',
+      content: <FundFlowPage id={id} />,
+      cardCls: '',
+    },
+    {
+      value: 'tradingHistoryPage.tradingHistory',
+      content: <HisStoryPage id={id} />,
+      cardCls: '',
+    },
+    {
+      value: 'positionOrderPage.positionOrder',
+      content: <PositionPage id={id} />,
+      cardCls: '',
+    },
+    {
+      value: 'limitOrderPage.limitOrder',
+      content: <LimitPage id={id} />,
+      cardCls: '',
+    },
   ].filter(i => {
     if (serviceType === '4') {
       // Fortex 没有账号权限
-      if (i === 'table.accountPermission') return false;
+      if (i.value === 'table.accountPermission') return false;
     }
     return true;
   });
@@ -48,51 +76,21 @@ export function TradingAccountsDetailPage() {
         <Tabs defaultValue="table.accountDetail" className="flex-1 gap-3 overflow-auto">
           <TabsList>
             {tabs.map(tab => (
-              <TabsTrigger key={tab} value={tab}>
-                {t(tab)}
+              <TabsTrigger key={tab.value} value={tab.value}>
+                {t(tab.value)}
               </TabsTrigger>
             ))}
           </TabsList>
-          <TabsContent value="table.accountDetail">
-            <RrhCard className="grid gap-6">
-              <TipTitle />
-              <AccountDetail id={id} />
-            </RrhCard>
-          </TabsContent>
-          <TabsContent value="table.accountOperations">
-            <RrhCard>
-              <AccountOperations id={id} />
-            </RrhCard>
-          </TabsContent>
-          <TabsContent value="table.accountPermission">
-            <RrhCard>
-              <AccountPermission id={id} />
-            </RrhCard>
-          </TabsContent>
-          <TabsContent value="review.fundFlow">
-            <RrhCard>
-              <TipTitle />
-              <FundFlowPage id={id} />
-            </RrhCard>
-          </TabsContent>
-          <TabsContent value="tradingHistoryPage.tradingHistory">
-            <RrhCard>
-              <TipTitle />
-              <HisStoryPage id={id} />
-            </RrhCard>
-          </TabsContent>
-          <TabsContent value="positionOrderPage.positionOrder">
-            <RrhCard>
-              <TipTitle />
-              <PositionPage id={id} />
-            </RrhCard>
-          </TabsContent>
-          <TabsContent value="limitOrderPage.limitOrder">
-            <RrhCard>
-              <TipTitle />
-              <LimitPage id={id} />
-            </RrhCard>
-          </TabsContent>
+          {tabs.map(tab => {
+            return (
+              <TabsContent value={tab.value} key={tab.value}>
+                <RrhCard className={tab.cardCls}>
+                  <TipTitle />
+                  {tab.content}
+                </RrhCard>
+              </TabsContent>
+            );
+          })}
         </Tabs>
       </div>
     </div>

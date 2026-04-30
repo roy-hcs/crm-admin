@@ -30,7 +30,7 @@ export const FeeRebateSettingsHistoryPage = () => {
 
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [timestamp, setTimestamp] = useState(Date.now());
 
   const [params, setParams] = useState<RebateFeeSettingsHistoryListParams['params']>({
@@ -108,7 +108,7 @@ export const FeeRebateSettingsHistoryPage = () => {
       accounts: '',
       entry: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
 
@@ -251,10 +251,9 @@ export const FeeRebateSettingsHistoryPage = () => {
       <TableContentWrapper>
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <RrhInputWithIcon
+            key={resetKey}
             placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
             className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
             leftIcon={<Search className="size-4 cursor-pointer" />}
             onLeftIconClick={e => {
               setOtherParams(prev => ({ ...prev, ticket: e }));

@@ -1,49 +1,15 @@
-import { useGetEmailConfig, useMsgTemplateList } from '@/api/hooks/message';
 import { OpenReviewDetailRes } from '@/api/hooks/review';
 import { useDictType } from '@/api/hooks/system';
+import { RiskBadge } from '@/components/common/RiskBadge';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhCard } from '@/components/common/RrhCard';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
-import { cn } from '@/lib/utils';
 import { ResetPassword } from '@/pages/account/crm-accounts/components/ResetPassword';
 import { AddEditNewMessageDialog } from '@/pages/message/management/components/AddEditNewMessageDialog';
-import { CircleCheck } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type DialogType = 'password' | 'fundPassword' | 'sendMsg' | null;
-
-const getRiskMeta = (riskScore: number) => {
-  if (riskScore >= 90) {
-    return {
-      levelText: 'High',
-      borderClass: 'border-red-500',
-      textClass: 'text-red-500',
-    };
-  }
-
-  if (riskScore >= 70) {
-    return {
-      levelText: 'Medium',
-      borderClass: 'border-amber-500',
-      textClass: 'text-amber-500',
-    };
-  }
-
-  if (riskScore >= 40) {
-    return {
-      levelText: 'Low',
-      borderClass: 'border-blue-600',
-      textClass: 'text-blue-600',
-    };
-  }
-
-  return {
-    levelText: 'Lowest',
-    borderClass: 'border-green-600',
-    textClass: 'text-green-600',
-  };
-};
 
 export const Customer = ({ openInfo }: { openInfo: OpenReviewDetailRes['data'] }) => {
   const crmUser = openInfo?.crmUser;
@@ -53,9 +19,6 @@ export const Customer = ({ openInfo }: { openInfo: OpenReviewDetailRes['data'] }
   const { t } = useTranslation();
   const [open, setOpen] = useState<DialogType>(null);
   const { data: languageList, isLoading: languageLoading } = useDictType('sys_language');
-  const { data: emailList, isLoading: emailListLoading } = useGetEmailConfig();
-  const { data: msgTemplateList, isLoading: msgTemplateListLoading } = useMsgTemplateList({});
-  const riskMeta = useMemo(() => getRiskMeta(riskScore), [riskScore]);
 
   const userInfo = useMemo(() => {
     return [
@@ -115,26 +78,7 @@ export const Customer = ({ openInfo }: { openInfo: OpenReviewDetailRes['data'] }
     [languageList],
   );
 
-  const emailOptions = useMemo(
-    () =>
-      emailList?.data?.map(i => ({
-        label: i.email,
-        value: i.id,
-      })) || [],
-    [emailList],
-  );
-
-  const msgTemplateOptions = useMemo(
-    () =>
-      msgTemplateList?.rows?.map(i => ({
-        label: i.title || '',
-        value: i.id || '',
-        content: i.content || '',
-      })) || [],
-    [msgTemplateList?.rows],
-  );
-
-  if (languageLoading || emailListLoading || msgTemplateListLoading) {
+  if (languageLoading) {
     return (
       <div className="h-100">
         <RrhCircleLoading />;
@@ -164,22 +108,7 @@ export const Customer = ({ openInfo }: { openInfo: OpenReviewDetailRes['data'] }
           <div className="text-foreground text-xs">{crmUser?.adminRemark}</div>
         </div>
         <div>
-          <div className="flex items-center gap-2">
-            <div className="text-foreground h-5 text-sm leading-5 font-medium">
-              {t('accountOpening.lastLogin')}
-            </div>
-            <div
-              className={cn(
-                'bg-background flex items-center justify-center gap-1 rounded-2xl border px-2 py-0.5',
-                riskMeta.borderClass,
-              )}
-            >
-              <CircleCheck className={cn('size-2.5', riskMeta.textClass)} />
-              <div className={cn('text-xs leading-4 font-medium', riskMeta.textClass)}>
-                {riskMeta.levelText}
-              </div>
-            </div>
-          </div>
+          <RiskBadge riskScore={riskScore} />
           <div className="text-muted-foreground mt-2 mb-1 text-sm leading-5">
             {crmUser.lastLoginTime}
           </div>
@@ -251,8 +180,6 @@ export const Customer = ({ openInfo }: { openInfo: OpenReviewDetailRes['data'] }
           if (!v) setOpen(v ? 'sendMsg' : null);
         }}
         languageOptions={languageOptions}
-        emailOptions={emailOptions}
-        msgTemplateOptions={msgTemplateOptions}
       />
     </RrhCard>
   );

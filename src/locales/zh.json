@@ -41,7 +41,31 @@
     "DeleteAccountOnlyCRM": "仅删除 CRM 账户",
     "DeleteAccountWithTrading": "删除CRM账户及其交易账号",
     "DeleteAccountWalletBalance": "钱包余额",
-    "DeleteAccountWalletAndRealAccountBalance": "共{{real}}真实, {{demo}}模拟"
+    "DeleteAccountWalletAndRealAccountBalance": "共{{real}}真实, {{demo}}模拟",
+    "kycVerifyStatus": {
+      "0": "未提交",
+      "1": "待审",
+      "2": "拒绝",
+      "3": "通过",
+      "4": "审核中"
+    },
+    "customerFollowUp": "客户跟进",
+    "rebateSetting": "返佣设置",
+    "accountActivity": "账户活动",
+    "totalCustomerNumber": "总客户",
+    "totalAccountNumber": "总账户",
+    "currentMonth": "本月",
+    "fair": "持平",
+    "commission": "佣金",
+    "commissionTotal": "佣金总计",
+    "currentMonthCommission": "本月佣金",
+    "accountOpening": "账户开通",
+    "newCRMAccount": "新注册CRM账号",
+    "newRealAccount": "新增真实账号",
+    "newDemoAccount": "新增模拟账号",
+    "customerFundOverview": "客户资金概览",
+    "profitDeal": "盈利订单",
+    "lossDeal": "亏损订单"
   },
   "loginPage": {
     "email": "邮箱",
@@ -173,6 +197,7 @@
     "netFlow": "净流入/流出",
     "profit": "盈利",
     "loss": "亏损",
+    "netProfit": "净盈利",
     "total": "总计",
     "TradingVolume": "交易量(Lot)",
     "reason": "原因",
@@ -264,7 +289,8 @@
     "verificationCode": "验证码",
     "getVerificationCode": "获取验证码",
     "cancelDefault": "取消默认",
-    "default": "默认"
+    "default": "默认",
+    "yesterday": "昨天"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -1070,7 +1096,6 @@
     "audit": "审核",
     "batchAudit": "批量审核",
     "tradingOrderNumber": "交易订单号",
-    "tradeAccount": "交易账号",
     "rebateUser": "返佣对象",
     "serverOrWallet": "服务器/钱包",
     "rebateBase": "返佣基数",
@@ -1296,7 +1321,10 @@
     "initialAmount": "初始存款",
     "countryOrRegion": "国家/地区",
     "productSource": "客户来源",
-    "inviters": "账户上级"
+    "inviters": "账户上级",
+    "totalRebate": "返佣合计",
+    "realAccountNumber": "真实账户数",
+    "demoAccountNumber": "模拟账户数"
   },
   "settings": {
     "title": "审核设置",

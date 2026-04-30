@@ -20,7 +20,7 @@ export function DailyRebatePage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [params, setParams] = useState<DailyRebateParams['params']>({
     beginTime: '',
     endTime: '',
@@ -50,7 +50,7 @@ export function DailyRebatePage() {
       endTime: '',
       account: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
   };
@@ -161,13 +161,12 @@ export function DailyRebatePage() {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('common.pleaseInput', { field: t('daily-rebate.account') })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
-              onLeftIconClick={() => {
-                setParams(prev => ({ ...prev, account: keyword }));
+              onLeftIconClick={value => {
+                setParams(prev => ({ ...prev, account: value }));
                 setPageNum(0);
               }}
             />

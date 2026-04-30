@@ -79,6 +79,10 @@ export type CrmUserItem = BaseEntity & {
   userName: string;
   mtone: string;
   mttwo: string;
+  adminRemark: string | null;
+  countryName: string | null;
+  registerSource: string | null;
+  registerSourceText: string | null;
 };
 
 export type CrmUserResponse = BasicRes<CrmUserItem>;
@@ -166,26 +170,18 @@ export type CrmDealAccountListRes = BasicRes<CrmDealAccountListItem>;
 export type CrmDealAccountGroupListParams = BasicParams;
 
 export type CrmDealAccountItem = BaseEntity & {
-  id: string | null;
-  name: string | null;
+  id: string;
+  name: string;
   sort: number | null;
   num: number | null;
   flag: boolean;
   delFlag: boolean;
-  relatedRebateRuleCount: string | null;
+  relatedRebateRuleCount: string;
 };
 
 export type CrmDealAccountGroupListRes = BasicRes<CrmDealAccountItem>;
 
-export type DealAccountGroup = BaseEntity & {
-  id: string;
-  name: string;
-  sort: number;
-  num: number | null;
-  flag: boolean;
-  delFlag: boolean;
-  relatedRebateRuleCount: number | null;
-};
+export type DealAccountGroup = CrmDealAccountItem;
 
 export type DealAccountGroupListResponse = DealAccountGroup[];
 

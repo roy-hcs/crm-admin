@@ -56,7 +56,7 @@ const DetailInfo = ({ itemInfo }: { itemInfo: CrmDealAccountLimitOrderItem }) =>
       value: `${itemInfo.params?.accountName || '-'}`,
     },
     {
-      label: t('table.tradeAccount'),
+      label: t('table.tradingAccount'),
       value: itemInfo.login || '-',
     },
     {
@@ -132,7 +132,7 @@ export const LimitPage = ({ id }: { id: string }) => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
   const { data: data, isLoading: loading } = useCrmDealAccountLimitOrder(id, {
     pageSize,
@@ -151,7 +151,7 @@ export const LimitPage = ({ id }: { id: string }) => {
       positionDealBJStartTime: '',
       positionDealBJEndTime: '',
     }));
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
 
@@ -247,10 +247,9 @@ export const LimitPage = ({ id }: { id: string }) => {
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon
+            key={resetKey}
             placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
             className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
             leftIcon={<Search className="size-4 cursor-pointer" />}
             onLeftIconClick={e => {
               setParams(prev => ({ ...prev, positionFuzzyTicket: e }));

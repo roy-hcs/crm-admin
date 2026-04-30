@@ -31,7 +31,7 @@ export const ProductsPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
   const [orderByColumn, setOrderByColumn] = useState('');
   const [deleteAlert, setDeleteAlert] = useState(false);
@@ -55,7 +55,7 @@ export const ProductsPage = () => {
       ...pre,
       goodsName: '',
     }));
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
     setIsAsc('asc');
@@ -274,13 +274,12 @@ export const ProductsPage = () => {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('common.pleaseInput', { field: t('products.goodsName') })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
-              onLeftIconClick={() => {
-                setParams(prev => ({ ...prev, goodsName: keyword }));
+              onLeftIconClick={value => {
+                setParams(prev => ({ ...prev, goodsName: value }));
                 setPageNum(0);
               }}
             />

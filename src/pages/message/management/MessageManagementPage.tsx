@@ -1,14 +1,7 @@
 import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import {
-  MsgListItem,
-  GetMsgListParams,
-  useGetMsgList,
-  useGetEmailConfig,
-  useMsgTemplateList,
-  useRemoveMsg,
-} from '@/api/hooks/message';
+import { MsgListItem, GetMsgListParams, useGetMsgList, useRemoveMsg } from '@/api/hooks/message';
 import { Funnel, Search, RefreshCcw, Ellipsis, ReceiptText, Plus } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
@@ -34,7 +27,7 @@ export function MessageManagementPage() {
   const navigate = useNavigate();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [params, setParams] = useState<GetMsgListParams['params']>({
     fuzzyName: '',
     fuzzyTitle: '',
@@ -48,8 +41,6 @@ export function MessageManagementPage() {
   const [detailOpen, setDetailOpen] = useState(false);
   const [id, setId] = useState('');
   const { data: languageList, isLoading: languageLoading } = useDictType('sys_language');
-  const { data: emailList, isLoading: emailListLoading } = useGetEmailConfig();
-  const { data: msgTemplateList, isLoading: msgTemplateListLoading } = useMsgTemplateList({});
   const {
     data: msgList,
     isLoading: msgListLoading,
@@ -75,7 +66,7 @@ export function MessageManagementPage() {
     setOtherParams({
       type: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
   };
@@ -204,25 +195,6 @@ export function MessageManagementPage() {
     [languageList],
   );
 
-  const emailOptions = useMemo(
-    () =>
-      emailList?.data?.map(i => ({
-        label: i.email,
-        value: i.id,
-      })) || [],
-    [emailList],
-  );
-
-  const msgTemplateOptions = useMemo(
-    () =>
-      msgTemplateList?.rows?.map(i => ({
-        label: i.title || '',
-        value: i.id || '',
-        content: i.content || '',
-      })) || [],
-    [msgTemplateList?.rows],
-  );
-
   return (
     <div>
       <PageInfo title={t('messageManagement.title')} />
@@ -230,13 +202,12 @@ export function MessageManagementPage() {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('common.pleaseInput', { field: t('table.title') })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
-              onLeftIconClick={() => {
-                setParams(prev => ({ ...prev, fuzzyTitle: keyword }));
+              onLeftIconClick={value => {
+                setParams(prev => ({ ...prev, fuzzyTitle: value }));
                 setPageNum(0);
               }}
             />
@@ -285,8 +256,6 @@ export function MessageManagementPage() {
               title={t('messageManagement.addMsg')}
               onSuccess={refetch}
               languageOptions={languageOptions}
-              emailOptions={emailOptions}
-              msgTemplateOptions={msgTemplateOptions}
             />
             <RrhButton
               type="button"
@@ -307,7 +276,7 @@ export function MessageManagementPage() {
           pageSize={pageSize}
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
-          loading={msgListLoading || languageLoading || emailListLoading || msgTemplateListLoading}
+          loading={msgListLoading || languageLoading}
         />
         <AddEditNewMessageDialog
           mode="edit"
@@ -320,8 +289,6 @@ export function MessageManagementPage() {
           id={id}
           onSuccess={refetch}
           languageOptions={languageOptions}
-          emailOptions={emailOptions}
-          msgTemplateOptions={msgTemplateOptions}
         />
         <RrhDeleteAlert<{
           ids: string;

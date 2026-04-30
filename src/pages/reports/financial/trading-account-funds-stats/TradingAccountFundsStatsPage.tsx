@@ -24,7 +24,7 @@ export function TradingAccountFundsStatsPage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [params, setParams] = useState<TradingAccountFundsStatsParams['params']>({
     serverGroupList: '',
     fuzzyAccount: '',
@@ -70,7 +70,7 @@ export function TradingAccountFundsStatsPage() {
       accounts: '',
       accountGroupList: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
   };
@@ -269,13 +269,10 @@ export function TradingAccountFundsStatsPage() {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('table.nameOrEmail')}
               className="h-9"
               leftIcon={<Search className="size-4" />}
-              value={keyword}
-              onChange={e => {
-                setKeyword(e.target.value);
-              }}
               onLeftIconClick={e => {
                 setPageNum(0);
                 setParams(prev => ({

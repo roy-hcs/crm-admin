@@ -74,6 +74,15 @@ export const timeRangeOptions = [
   { label: 'common.within6Months', value: '5' },
   { label: 'common.within1Year', value: '6' },
 ];
+// 选择时间范围
+export const timeRangeOptionsSecondary = [
+  { label: 'common.within7Days', value: 7 },
+  { label: 'common.within15Days', value: 15 },
+  { label: 'common.within30Days', value: 30 },
+  { label: 'common.within3Months', value: 90 },
+  { label: 'common.within6Months', value: 180 },
+  { label: 'common.within1Year', value: 365 },
+];
 
 export const DEFAULT_TIME_RANGE = '1';
 export type TimeRangeType = '1' | '2' | '3' | '4' | '5' | '6';

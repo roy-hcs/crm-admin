@@ -131,7 +131,7 @@ export const FundFlowPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
   const { data: typeRes, isLoading: typeResloading } = useDictType('crm_wallet_opr_type');
   const { data: data, isLoading: loading } = useFundFlowList({
@@ -158,7 +158,7 @@ export const FundFlowPage = () => {
       operationType: '',
       serialNum: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
 
@@ -246,10 +246,9 @@ export const FundFlowPage = () => {
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon
+            key={resetKey}
             placeholder={t('common.pleaseInput', { field: t('walletTransactions.serialNum') })}
             className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
             leftIcon={<Search className="size-4 cursor-pointer" />}
             onLeftIconClick={e => {
               setOtherParams(prev => ({ ...prev, serialNum: e }));

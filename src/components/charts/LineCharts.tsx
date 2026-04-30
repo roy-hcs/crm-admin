@@ -41,7 +41,7 @@ interface LineChartProps {
     labels?: string[];
     datasets: {
       label?: string;
-      data: number[];
+      data: number[] | string[];
       borderColor?: string;
       borderWidth?: number;
       tension?: number;
@@ -51,6 +51,21 @@ interface LineChartProps {
       pointBackgroundColor?: string;
     }[];
   };
+  chartOptions?: ChartOptions<'line'>;
+}
+
+function deepMerge<T extends object>(target: T, source: Partial<T>): T {
+  const result = { ...target } as Record<string, unknown>;
+  for (const key in source) {
+    const sv = source[key];
+    const tv = result[key];
+    if (sv && typeof sv === 'object' && !Array.isArray(sv) && tv && typeof tv === 'object') {
+      result[key] = deepMerge(tv as object, sv as Partial<typeof tv>);
+    } else if (sv !== undefined) {
+      result[key] = sv;
+    }
+  }
+  return result as T;
 }
 
 const gradientFillPlugin: Plugin<'line'> = {
@@ -147,6 +162,14 @@ const pointValuePlugin: Plugin<'line'> = {
     const ctx = chart.ctx as CanvasRenderingContext2D | null;
     if (!ctx) return;
 
+    const opts = chart.options as ChartOptions<'line'> | undefined;
+    const pluginOpts = (opts?.plugins as Record<string, unknown> | undefined)?.pointValuePlugin as
+      | { legendColor?: string; enabled?: boolean }
+      | undefined;
+
+    // Only draw point values when explicitly enabled
+    if (!pluginOpts?.enabled) return;
+
     chart.data.datasets.forEach(
       (dataset: ChartDataset<'line', (number | Point | null)[]>, datasetIndex: number) => {
         const meta = chart.getDatasetMeta(datasetIndex) as { data?: ChartPoint[] } | null;
@@ -159,10 +182,6 @@ const pointValuePlugin: Plugin<'line'> = {
           const x = point.x;
           const y = point.y - (radius as number) - 4; // 4px above the top of the point
 
-          // Prefer a legendColor set on chart options.plugins.pointValuePlugin.legendColor
-          const opts = chart.options as ChartOptions<'line'> | undefined;
-          const pluginOpts = (opts?.plugins as Record<string, unknown> | undefined)
-            ?.pointValuePlugin as { legendColor?: string } | undefined;
           const fill = pluginOpts?.legendColor ?? '#000';
           ctx.save();
           ctx.fillStyle = String(fill);
@@ -178,7 +197,7 @@ const pointValuePlugin: Plugin<'line'> = {
   },
 };
 
-export const LineChart: FC<LineChartProps> = ({ lineChartProps }) => {
+export const LineChart: FC<LineChartProps> = ({ lineChartProps, chartOptions }) => {
   const [legendColor, setLegendColor] = useState(() => getCssVar('--card-foreground', '#0a0a0a'));
   const [borderColor, setBorderColor] = useState(() => getCssVar('--border', '#E1E3EA'));
 
@@ -223,10 +242,12 @@ export const LineChart: FC<LineChartProps> = ({ lineChartProps }) => {
     return () => window.removeEventListener('themechange', handler as EventListener);
   }, []);
 
+  const mergedOptions = chartOptions ? deepMerge(lineOptions, chartOptions) : lineOptions;
+
   return (
     <div className="h-full w-full">
       <Line
-        options={lineOptions}
+        options={mergedOptions}
         data={lineChartProps}
         plugins={[gradientFillPlugin, pointValuePlugin]}
       />

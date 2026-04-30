@@ -45,7 +45,7 @@ export const StatisticPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
   const { data: serverList, isLoading: serverListLoading } = useServerList();
   useEffect(() => {
@@ -100,7 +100,7 @@ export const StatisticPage = () => {
       statisticStartTime: '',
       statisticEndTime: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
     setSumShow(false);
   };
@@ -196,10 +196,9 @@ export const StatisticPage = () => {
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon
+            key={resetKey}
             placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
             className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
             leftIcon={<Search className="size-4 cursor-pointer" />}
             onLeftIconClick={e => {
               setParams(prev => ({ ...prev, fuzzyName: e }));

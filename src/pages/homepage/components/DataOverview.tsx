@@ -1,5 +1,5 @@
 import { useFundFlowReport, useSumReport } from '@/api/hooks/workbench';
-import { cn, percentageFormat } from '@/lib/utils';
+import { cn, formatMoneyNumber, percentageFormat } from '@/lib/utils';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BarChart } from '@/components/charts/BarCharts';
@@ -88,8 +88,8 @@ export const DataOverview = () => {
     return [
       { title: 'home.CRMUserCount', value: sum?.crmUser || 0 },
       { title: 'home.TradingAccountCount', value: sum?.dealAccount || 0 },
-      { title: 'home.PendingDeposit', value: sum?.deposit || 0 },
-      { title: 'home.PendingWithdrawal', value: sum?.withdraw || 0 },
+      { title: 'home.PendingDeposit', value: formatMoneyNumber(sum?.deposit || 0) },
+      { title: 'home.PendingWithdrawal', value: formatMoneyNumber(sum?.withdraw || 0) },
     ];
   }, [sumReportData]);
 
@@ -124,7 +124,7 @@ export const DataOverview = () => {
               </div>
             </div>
             <div className="text-card-foreground text-3xl leading-9 font-semibold">
-              ${todayData[0]}
+              ${formatMoneyNumber(todayData[0])}
             </div>
             <div className="text-muted-foreground text-xs leading-4 font-normal">USD</div>
           </div>
@@ -158,7 +158,7 @@ export const DataOverview = () => {
               </div>
             </div>
             <div className="text-card-foreground text-3xl leading-9 font-semibold">
-              ${todayData[1]}
+              ${formatMoneyNumber(todayData[1])}
             </div>
             <div className="text-muted-foreground text-xs leading-4 font-normal">USD</div>
           </div>
