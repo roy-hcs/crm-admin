@@ -246,7 +246,9 @@
     "verificationCode": "Verification code",
     "cancelDefault": "cancel default",
     "default": "default",
-    "submit": "submit"
+    "submit": "submit",
+    "piece": "indivual",
+    "points": "point"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1742,5 +1744,93 @@
   },
   "netBonus": {
     "netBonusRewardReport": "Net Deposit Bonus Report"
+  },
+  "pointsMallSettings": {
+    "agentCustomerDeposit": "Deposit funds under the agent’s name",
+    "agentCustomerDepositDesc": "If the deposit under the agent's name is successful, you will be rewarded with points (the account type for the reward must be an IB agent)",
+    "agentCustomerTransaction": "Transactions for clients under the agent’s name",
+    "agentCustomerTransactionDesc": "The direct agent of the trading account will be rewarded for the closing order of the client's transaction corresponding to the trading server and type under the agent's name (only the first level will be rewarded)",
+    "cappedPointsPerTime": "Cap points/time",
+    "cappedTimeUnitOptions": {
+      "1": "No limit",
+      "2": "every calendar month"
+    },
+    "cappedTimeUnitThreeOptions": {
+      "1": "No limit",
+      "2": "every calendar month",
+      "3": "every three calendar months"
+    },
+    "cappedTimeUnitTwoOptions": {
+      "1": "No limit",
+      "4": "30 days"
+    },
+    "commissionReward": "Commission rewards",
+    "commissionRewardDesc": "Agents who receive commissions through transaction rebates, commission rebates, and deposit rebates will receive points as rewards.",
+    "commissionRewardOptions": {
+      "29": "Trading rebate",
+      "30": "Handling fee rebate",
+      "31": "Deposit rebate"
+    },
+    "commissionType": "Commission type",
+    "deduction": "Inactive points deduction (optional)",
+    "deductionDays": "Number of consecutive days of inactivity",
+    "deductionDesc": "If a customer does not generate points for N consecutive days, points will be automatically deducted; points deduction = points balance * deduction ratio",
+    "deductionRatio": "Deduction ratio",
+    "depositSuccess": "Deposit successful",
+    "depositSuccessDesc": "Customers who submit a deposit application and have it approved will receive bonus points.",
+    "enableStatus": "Enabled status",
+    "exChangeReminder": "Redemption reminder",
+    "exChangeReminderTips": {
+      "1": "Product redemption email reminder",
+      "2": "After setting up the notification administrator, notifications of new product redemptions will be sent via email. \nIf the administrator has not set a reminder, it will not be notified."
+    },
+    "exempt": "deduction exemption",
+    "exemptDesc": "The following types of users can receive points deduction exemptions:",
+    "exemptRoleIds": "Immune role (multiple choices)",
+    "exemptTagIds": "Exemption Label (Multiple Choice)",
+    "explanation": "Description({{field}})",
+    "explanationPlaceholder": "Please fill in the description copy to let users understand the rules of the points mall",
+    "inProgress": "Subscribing",
+    "inviteDeposit": "Recommending a friend to deposit successfully",
+    "inviteDepositDesc": "Every time you invite a user to submit a deposit application and it is approved, you will receive reward points. Each user will only be rewarded once.",
+    "inviteOpenAccount": "Invite to open a trading account",
+    "inviteOpenAccountDesc": "Each time you invite a user to successfully create a real trading account, you will receive bonus points.",
+    "inviteRegister": "Invite to register CRM",
+    "inviteRegisterDesc": "Each time you invite a user to successfully register for CRM, you will receive bonus points.",
+    "multipleRewards": "Rewards for multiple successful referral account openings",
+    "multipleRewardsDesc": "Will the same recommended friend be rewarded multiple times if he successfully creates a real trading account?",
+    "notSubscribe": "Not subscribed",
+    "pointConfig": "Points configuration",
+    "pointStore": "Points Mall Description",
+    "pointsDigits": "Integral decimal settings",
+    "pointsDigitsDesc": "On: Points support decimals (minimum 0.01) Off: Points only support integers (minimum 1)",
+    "pointsMall": "Points Mall",
+    "pointsMalltips": {
+      "1": "The points mall will not be enabled after closing.",
+      "2": "① The user interface does not display the points mall",
+      "3": "② Users will no longer automatically receive points rewards",
+      "4": "Only users who meet the conditions will enable the points mall function"
+    },
+    "productExchangeEnable": "Product exchange enabled",
+    "productExchangeEnableDesc": "On: Allow customers to redeem products. Close: Prohibit customers from redeeming products.",
+    "rewardCalculation": "Reward calculation",
+    "selected": "How to get points",
+    "selectedDesc": "Which of the following businesses do you expect users to earn points through?",
+    "selectedOptions": {
+      "1": "Deposit successful",
+      "2": "trade",
+      "3": "Invite registration",
+      "4": "Invite to create a trading account",
+      "5": "Recommended first time deposit",
+      "6": "Deposit funds under the agent’s name",
+      "7": "Transactions for clients under the agent’s name",
+      "8": "Commission rewards"
+    },
+    "subscriptionPeriod": "Subscription start and end",
+    "suitableUser": "Applicable users",
+    "title": "Points mall settings",
+    "transaction": "trade",
+    "transactionDesc": "Customers who have placed closing orders corresponding to the trading server and variety can receive reward points.",
+    "userRole": "User role (optional)"
   }
 }

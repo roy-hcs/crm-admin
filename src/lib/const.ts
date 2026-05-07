@@ -247,3 +247,78 @@ export const priorityMap = [
   { label: 'ticketList.priorityOptions.1', value: 1 },
   { label: 'ticketList.priorityOptions.2', value: 2 },
 ];
+// 积分商城设置 积分获取方式
+export const selectedMap = [
+  {
+    label: 'pointsMallSettings.selectedOptions.1',
+    value: '1',
+  },
+  {
+    label: 'pointsMallSettings.selectedOptions.2',
+    value: '2',
+  },
+  {
+    label: 'pointsMallSettings.selectedOptions.3',
+    value: '3',
+  },
+  {
+    label: 'pointsMallSettings.selectedOptions.4',
+    value: '4',
+  },
+  {
+    label: 'pointsMallSettings.selectedOptions.5',
+    value: '5',
+  },
+  {
+    label: 'pointsMallSettings.selectedOptions.6',
+    value: '6',
+  },
+  {
+    label: 'pointsMallSettings.selectedOptions.7',
+    value: '7',
+  },
+  {
+    label: 'pointsMallSettings.selectedOptions.8',
+    value: '8',
+  },
+];
+
+// 积分商城设置 入金成功 配置模块 封顶积分/时间
+export const cappedTimeUnitOptions = [
+  {
+    label: 'pointsMallSettings.cappedTimeUnitOptions.1',
+    value: '1',
+  },
+  {
+    label: 'pointsMallSettings.cappedTimeUnitOptions.2',
+    value: '2',
+  },
+];
+
+// 积分商城设置 交易 配置模块 封顶积分/时间
+export const cappedTimeUnitTwoOptions = [
+  {
+    label: 'pointsMallSettings.cappedTimeUnitTwoOptions.1',
+    value: '1',
+  },
+  {
+    label: 'pointsMallSettings.cappedTimeUnitTwoOptions.4',
+    value: '4',
+  },
+];
+
+// 积分商城设置 邀请注册CRM 邀请开通交易账号 配置模块 封顶积分/时间
+export const cappedTimeUnitThreeOptions = [
+  {
+    label: 'pointsMallSettings.cappedTimeUnitThreeOptions.1',
+    value: '1',
+  },
+  {
+    label: 'pointsMallSettings.cappedTimeUnitThreeOptions.2',
+    value: '2',
+  },
+  {
+    label: 'pointsMallSettings.cappedTimeUnitThreeOptions.3',
+    value: '3',
+  },
+];

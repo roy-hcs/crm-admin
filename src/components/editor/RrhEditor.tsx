@@ -1,122 +1,443 @@
-// RrhEditor.tsx
+import { RrhButton } from '@/components/common/RrhButton';
+import { cn } from '@/lib/utils';
+import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
+import { LinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
+import {
+  ListItemNode,
+  ListNode,
+  INSERT_ORDERED_LIST_COMMAND,
+  INSERT_UNORDERED_LIST_COMMAND,
+} from '@lexical/list';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { ListPlugin } from '@lexical/react/LexicalListPlugin';
-import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
+import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
+import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-
-import { HeadingNode, QuoteNode } from '@lexical/rich-text';
-import { ListNode, ListItemNode } from '@lexical/list';
-import { LinkNode } from '@lexical/link';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { $patchStyleText, $setBlocksType } from '@lexical/selection';
+import { HeadingNode, QuoteNode, $createHeadingNode, $createQuoteNode } from '@lexical/rich-text';
 import {
   $createParagraphNode,
+  $createTextNode,
   $getRoot,
-  $isDecoratorNode,
-  $isElementNode,
-  ParagraphNode,
-  type EditorState,
+  $getSelection,
+  $isRangeSelection,
+  FORMAT_TEXT_COMMAND,
   type LexicalEditor,
+  REDO_COMMAND,
+  UNDO_COMMAND,
 } from 'lexical';
-import { $generateNodesFromDOM, $generateHtmlFromNodes } from '@lexical/html';
-
-import { ImageNode } from './ImageNode';
-import { ImagesPlugin } from './ImagesPlugin';
-import { ToolbarPlugin } from './ToolbarPlugin';
-import { useTranslation } from 'react-i18next';
+import {
+  Bold,
+  ImagePlus,
+  Italic,
+  Link,
+  List as ListIcon,
+  ListOrdered,
+  Redo2,
+  Strikethrough,
+  Underline,
+  Undo2,
+} from 'lucide-react';
+import { type MutableRefObject, useEffect, useMemo, useRef } from 'react';
+import { ImageNode, $createImageNode } from './ImageNode';
 
 type RrhEditorProps = {
-  placeholder?: string;
   value?: string;
-  onChange?: (value: string) => void;
-  onUploadImage: (file: File) => Promise<string>; // 上传返回图片 URL
+  onChange?: (html: string) => void;
+  placeholder?: string;
+  className?: string;
+  disabled?: boolean;
+  onUploadImage?: (file: File) => Promise<string>;
 };
 
-const theme = {
-  // 按需填样式 className，先留空也可以
-};
+function setEditorHtml(editor: LexicalEditor, html: string) {
+  editor.update(() => {
+    const root = $getRoot();
+    root.clear();
 
-export function RrhEditor({ placeholder, value, onChange, onUploadImage }: RrhEditorProps) {
-  const { t } = useTranslation();
-  const initialConfig = {
-    namespace: 'MyEditor',
-    theme,
-    onError: (error: Error) => {
-      console.error(error);
-    },
-    // 注册富文本节点 + 图片节点
-    nodes: [ParagraphNode, HeadingNode, QuoteNode, ListNode, ListItemNode, LinkNode, ImageNode],
-    // 如果外部传入初始值（HTML 字符串），转成 Lexical 节点
-    editorState:
-      value && value.trim().length > 0
-        ? (editor: LexicalEditor) => {
-            editor.update(() => {
-              const parser = new DOMParser();
-              const dom = parser.parseFromString(value, 'text/html');
-              const root = $getRoot();
-              const body = dom.body || dom;
-              const nodes = $generateNodesFromDOM(editor, body);
+    if (!html) {
+      root.append($createParagraphNode());
+      return;
+    }
 
-              root.clear();
+    const parser = new DOMParser();
+    const dom = parser.parseFromString(html, 'text/html');
+    const nodes = $generateNodesFromDOM(editor, dom);
 
-              let paragraph: ParagraphNode | null = null;
+    if (nodes.length === 0) {
+      root.append($createParagraphNode());
+      return;
+    }
 
-              nodes.forEach(node => {
-                if ($isElementNode(node) || $isDecoratorNode(node)) {
-                  if (paragraph && (paragraph as ParagraphNode).getChildrenSize() > 0) {
-                    root.append(paragraph);
-                    paragraph = null;
-                  }
-                  root.append(node);
-                } else {
-                  if (!paragraph) {
-                    paragraph = $createParagraphNode();
-                  }
-                  paragraph.append(node);
-                }
-              });
+    root.append(...nodes);
+  });
+}
 
-              if (paragraph && (paragraph as ParagraphNode).getChildrenSize() > 0) {
-                root.append(paragraph);
-              }
-            });
-          }
-        : undefined,
-  } as const;
+function ToolbarPlugin({
+  disabled,
+  onUploadImage,
+}: {
+  disabled: boolean;
+  onUploadImage?: (file: File) => Promise<string>;
+}) {
+  const [editor] = useLexicalComposerContext();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const colorInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleChange = (editorState: EditorState, editor: LexicalEditor) => {
-    if (!onChange) return;
-    editorState.read(() => {
-      const html = $generateHtmlFromNodes(editor, null);
-      onChange(html);
+  const applyBlock = (block: 'paragraph' | 'h1' | 'h2' | 'quote') => {
+    editor.update(() => {
+      const selection = $getSelection();
+      if (!$isRangeSelection(selection)) return;
+
+      if (block === 'paragraph') {
+        $setBlocksType(selection, () => $createParagraphNode());
+        return;
+      }
+
+      if (block === 'quote') {
+        $setBlocksType(selection, () => $createQuoteNode());
+        return;
+      }
+
+      $setBlocksType(selection, () => $createHeadingNode(block));
     });
   };
 
-  const placeholderText = placeholder ?? t('common.pleaseInput', { field: '...' });
+  const onClickLink = () => {
+    if (disabled) return;
+    const url = window.prompt('请输入链接 URL');
+    if (url === null) return;
+    editor.dispatchCommand(TOGGLE_LINK_COMMAND, url.trim() || null);
+  };
+
+  const onChooseImage = () => {
+    if (!onUploadImage || disabled) return;
+    fileInputRef.current?.click();
+  };
+
+  const onImageChange: React.ChangeEventHandler<HTMLInputElement> = async e => {
+    const file = e.target.files?.[0];
+    if (!file || !onUploadImage) return;
+
+    try {
+      const url = await onUploadImage(file);
+      editor.update(() => {
+        const selection = $getSelection();
+        const node = $createImageNode({ src: url });
+        if ($isRangeSelection(selection)) {
+          selection.insertNodes([node, $createTextNode('')]);
+        } else {
+          $getRoot().append(node);
+        }
+      });
+    } finally {
+      e.target.value = '';
+    }
+  };
+
+  const btnCls = 'h-8 w-8 p-0';
+
+  const clearEditor = () => {
+    if (disabled) return;
+    editor.update(() => {
+      const root = $getRoot();
+      root.clear();
+      root.append($createParagraphNode());
+    });
+  };
+
+  const applyTextColor = (color: string) => {
+    if (disabled) return;
+
+    editor.update(() => {
+      const selection = $getSelection();
+      if (!$isRangeSelection(selection)) return;
+      $patchStyleText(selection, { color });
+    });
+  };
 
   return (
-    <LexicalComposer initialConfig={initialConfig}>
-      <div className="space-y-2 rounded border p-2">
-        <ToolbarPlugin />
-        <div className="relative">
-          <RichTextPlugin
-            contentEditable={<ContentEditable className="min-h-30 outline-none" />}
-            placeholder={
-              <div className="pointer-events-none absolute top-2 left-3 text-gray-400">
-                {placeholderText}
-              </div>
-            }
-            ErrorBoundary={LexicalErrorBoundary}
+    <div className="bg-muted/30 mb-2 flex flex-wrap items-center gap-1 rounded-md border p-2">
+      <RrhButton
+        type="button"
+        variant="outline"
+        size="sm"
+        className={btnCls}
+        disabled={disabled}
+        onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}
+      >
+        <Undo2 className="size-4" />
+      </RrhButton>
+      <RrhButton
+        type="button"
+        variant="outline"
+        size="sm"
+        className={btnCls}
+        disabled={disabled}
+        onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}
+      >
+        <Redo2 className="size-4" />
+      </RrhButton>
+
+      <div className="bg-border mx-1 h-5 w-px" />
+
+      <RrhButton
+        type="button"
+        variant="outline"
+        size="sm"
+        className={btnCls}
+        disabled={disabled}
+        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}
+      >
+        <Bold className="size-4" />
+      </RrhButton>
+      <RrhButton
+        type="button"
+        variant="outline"
+        size="sm"
+        className={btnCls}
+        disabled={disabled}
+        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}
+      >
+        <Italic className="size-4" />
+      </RrhButton>
+      <RrhButton
+        type="button"
+        variant="outline"
+        size="sm"
+        className={btnCls}
+        disabled={disabled}
+        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')}
+      >
+        <Underline className="size-4" />
+      </RrhButton>
+      <RrhButton
+        type="button"
+        variant="outline"
+        size="sm"
+        className={btnCls}
+        disabled={disabled}
+        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough')}
+      >
+        <Strikethrough className="size-4" />
+      </RrhButton>
+
+      <div className="bg-border mx-1 h-5 w-px" />
+
+      <RrhButton
+        type="button"
+        variant="outline"
+        size="sm"
+        disabled={disabled}
+        onClick={() => applyBlock('paragraph')}
+      >
+        P
+      </RrhButton>
+      <RrhButton
+        type="button"
+        variant="outline"
+        size="sm"
+        disabled={disabled}
+        onClick={() => applyBlock('h1')}
+      >
+        H1
+      </RrhButton>
+      <RrhButton
+        type="button"
+        variant="outline"
+        size="sm"
+        disabled={disabled}
+        onClick={() => applyBlock('h2')}
+      >
+        H2
+      </RrhButton>
+      <RrhButton
+        type="button"
+        variant="outline"
+        size="sm"
+        disabled={disabled}
+        onClick={() => applyBlock('quote')}
+      >
+        引用
+      </RrhButton>
+
+      <div className="bg-border mx-1 h-5 w-px" />
+
+      <RrhButton
+        type="button"
+        variant="outline"
+        size="sm"
+        className={btnCls}
+        disabled={disabled}
+        onClick={() => editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined)}
+      >
+        <ListIcon className="size-4" />
+      </RrhButton>
+      <RrhButton
+        type="button"
+        variant="outline"
+        size="sm"
+        className={btnCls}
+        disabled={disabled}
+        onClick={() => editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined)}
+      >
+        <ListOrdered className="size-4" />
+      </RrhButton>
+      <RrhButton
+        type="button"
+        variant="outline"
+        size="sm"
+        className={btnCls}
+        disabled={disabled}
+        onClick={onClickLink}
+      >
+        <Link className="size-4" />
+      </RrhButton>
+
+      <div className="flex items-center gap-1 rounded-md border px-2 py-1">
+        <input
+          ref={colorInputRef}
+          type="color"
+          aria-label="选择文字颜色"
+          disabled={disabled}
+          className="h-6 w-6 cursor-pointer border-0 bg-transparent p-0 disabled:cursor-not-allowed"
+          onChange={e => applyTextColor(e.target.value)}
+        />
+        <RrhButton
+          type="button"
+          variant="ghost"
+          size="sm"
+          disabled={disabled}
+          onClick={() => applyTextColor('inherit')}
+        >
+          清色
+        </RrhButton>
+      </div>
+
+      {onUploadImage && (
+        <>
+          <RrhButton
+            type="button"
+            variant="outline"
+            size="sm"
+            className={btnCls}
+            disabled={disabled}
+            onClick={onChooseImage}
+          >
+            <ImagePlus className="size-4" />
+          </RrhButton>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={onImageChange}
           />
-        </div>
+        </>
+      )}
+
+      <div className="bg-border mx-1 h-5 w-px" />
+
+      <RrhButton
+        type="button"
+        variant="outline"
+        size="sm"
+        disabled={disabled}
+        onClick={clearEditor}
+      >
+        清空
+      </RrhButton>
+    </div>
+  );
+}
+
+function ValueSyncPlugin({ value, htmlRef }: { value: string; htmlRef: MutableRefObject<string> }) {
+  const [editor] = useLexicalComposerContext();
+  const initializedRef = useRef(false);
+
+  useEffect(() => {
+    if (!initializedRef.current) {
+      setEditorHtml(editor, value);
+      htmlRef.current = value;
+      initializedRef.current = true;
+      return;
+    }
+
+    // Ignore parent updates that are exactly editor's latest html to avoid cursor reset.
+    if (value === htmlRef.current) return;
+
+    htmlRef.current = value;
+    setEditorHtml(editor, value);
+  }, [editor, htmlRef, value]);
+
+  return null;
+}
+
+export function RrhEditor({
+  value = '',
+  onChange,
+  placeholder = '请输入内容',
+  className,
+  disabled = false,
+  onUploadImage,
+}: RrhEditorProps) {
+  const htmlRef = useRef(value);
+
+  const initialConfig = useMemo(
+    () => ({
+      namespace: 'RrhEditor',
+      onError: (error: Error) => {
+        throw error;
+      },
+      editable: !disabled,
+      nodes: [HeadingNode, QuoteNode, ListNode, ListItemNode, LinkNode, ImageNode],
+    }),
+    [disabled],
+  );
+
+  return (
+    <div
+      className={cn(
+        'bg-background rounded-md border p-2',
+        disabled && 'cursor-not-allowed opacity-70',
+        className,
+      )}
+    >
+      <LexicalComposer initialConfig={initialConfig}>
+        <ToolbarPlugin disabled={disabled} onUploadImage={onUploadImage} />
+        <RichTextPlugin
+          contentEditable={
+            <ContentEditable className="min-h-44 w-full resize-y rounded-md border px-3 py-2 text-sm outline-none" />
+          }
+          placeholder={
+            <div className="text-muted-foreground pointer-events-none px-3 py-2 text-sm">
+              {placeholder}
+            </div>
+          }
+          ErrorBoundary={LexicalErrorBoundary}
+        />
         <HistoryPlugin />
         <ListPlugin />
         <LinkPlugin />
-        <OnChangePlugin onChange={handleChange} />
-        <ImagesPlugin onUploadImage={onUploadImage} />
-      </div>
-    </LexicalComposer>
+
+        <ValueSyncPlugin value={value} htmlRef={htmlRef} />
+
+        <OnChangePlugin
+          onChange={(editorState, editor) => {
+            editorState.read(() => {
+              const html = $generateHtmlFromNodes(editor, null);
+              if (html !== htmlRef.current) {
+                htmlRef.current = html;
+                onChange?.(html);
+              }
+            });
+          }}
+        />
+      </LexicalComposer>
+    </div>
   );
 }

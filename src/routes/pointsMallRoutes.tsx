@@ -1,5 +1,6 @@
 import { PointsBalancePage } from '@/pages/points-mall/points-balance/PointsBalancePage';
 import { PointsHistoryPage } from '@/pages/points-mall/points-history/PointsHistoryPage';
+import { PointsMallSettingsPage } from '@/pages/points-mall/points-settings/PointsMallSettingsPage';
 import { ProductCategoriesPage } from '@/pages/points-mall/product-categories/ProductCategoriesPage';
 import { ProductsPage } from '@/pages/points-mall/products/ProductsPage';
 import { RedemptionRecordsPage } from '@/pages/points-mall/redemption-records/RedemptionRecordsPage';
@@ -37,12 +38,13 @@ export const pointsMallRoutes: RouteObject[] = [
     path: '/points-mall/product-categories',
     element: <ProductCategoriesPage />,
   },
-  // TODO: Add routes as pages are developed
-  /*
   {
     path: '/points-mall/settings',
     element: <PointsMallSettingsPage />,
   },
+  // TODO: Add routes as pages are developed
+  /*
+  
   {
     path: '/points-mall/products',
     element: <ProductsPage />,

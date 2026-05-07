@@ -11,13 +11,14 @@ export const RrhCheckBoxGroup: FC<{
   checkItemClassName?: string;
   value: string;
   onValueChange?: (value: string) => void;
-}> = ({ checkItems, checkItemClassName, onValueChange, value }) => {
+  className?: string;
+}> = ({ checkItems, checkItemClassName, onValueChange, value, className }) => {
   const currentSelected = value
     .split(',')
     .map(s => s.trim())
     .filter(Boolean);
   return (
-    <div className="flex flex-wrap gap-6">
+    <div className={cn('flex flex-wrap gap-6', className)}>
       {checkItems.map(i => {
         const isChecked = currentSelected.includes(i.value);
         return (
@@ -38,7 +39,7 @@ export const RrhCheckBoxGroup: FC<{
               disabled={i.disabled}
               aria-label="Select row"
             />
-            <div>{i.label}</div>
+            <div className="text-foreground text-sm leading-3.5 font-medium">{i.label}</div>
           </div>
         );
       })}

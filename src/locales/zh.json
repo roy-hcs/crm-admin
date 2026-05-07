@@ -63,6 +63,8 @@
     "RememberMe": "记住我"
   },
   "common": {
+    "points": "分",
+    "piece": "个",
     "increase": "增加",
     "subtract": "扣除",
     "selectAll": "全选",
@@ -1742,5 +1744,93 @@
   },
   "netBonus": {
     "netBonusRewardReport": "净入金奖励报表"
+  },
+  "pointsMallSettings": {
+    "title": "积分商城设置",
+    "pointConfig": "积分配置",
+    "pointStore": "积分商城说明",
+    "productExchangeEnable": "商品兑换启用",
+    "productExchangeEnableDesc": "开启：允许客户兑换商品 关闭：禁止客户兑换商品",
+    "pointsDigits": "积分小数设置",
+    "pointsDigitsDesc": "开启：积分支持小数（最小0.01） 关闭：积分仅支持整数（最小1）",
+    "selected": "积分获取方式",
+    "selectedDesc": "你期望用户可以通过以下哪些业务获得积分",
+    "depositSuccess": "入金成功",
+    "depositSuccessDesc": "客户提交入金申请且审批通过，即可获得奖励积分",
+    "selectedOptions": {
+      "1": "入金成功",
+      "2": "交易",
+      "3": "邀请注册",
+      "4": "邀请创建交易账号",
+      "5": "推荐首次入金",
+      "6": "代理名下客户入金",
+      "7": "代理名下客户交易",
+      "8": "佣金奖励"
+    },
+    "rewardCalculation": "奖励计算",
+    "cappedPointsPerTime": "封顶积分/时间",
+    "cappedTimeUnitOptions": {
+      "1": "不限",
+      "2": "每自然月"
+    },
+    "cappedTimeUnitTwoOptions": {
+      "1": "不限",
+      "4": "30天"
+    },
+    "cappedTimeUnitThreeOptions": {
+      "1": "不限",
+      "2": "每自然月",
+      "3": "每三个自然月"
+    },
+    "transaction": "交易",
+    "transactionDesc": "客户已对应交易服务器及品种的平仓订单，即可获得奖励积分",
+    "inviteRegister": "邀请注册CRM",
+    "inviteRegisterDesc": "每邀请一个用户注册CRM成功，即可获得奖励积分",
+    "inviteOpenAccount": "邀请开通交易账号",
+    "inviteOpenAccountDesc": "每邀请一个用户创建真实交易账号成功，即可获得奖励积分",
+    "multipleRewards": "推荐开户成功多次奖励",
+    "multipleRewardsDesc": "同一推荐好友创建真实交易账户成功是否多次奖励",
+    "inviteDeposit": "推荐好友入金成功",
+    "inviteDepositDesc": "每邀请一个用户提交入金申请且审批通过，即可获得奖励积分，每个用户仅奖励一次",
+    "agentCustomerDeposit": "代理名下客户入金",
+    "agentCustomerDepositDesc": "代理名下入金成功，即可获得积分奖励(奖励对象账户类型需为IB代理)",
+    "agentCustomerTransaction": "代理名下客户交易",
+    "agentCustomerTransactionDesc": "代理名下客户交易对应交易服务器及品种的平仓订单，将奖励交易账号的直属代理(仅奖励一级)",
+    "commissionReward": "佣金奖励",
+    "commissionRewardDesc": "代理通过交易返佣、手续费返佣、入金返佣获得返佣入账后将获得积分奖励",
+    "commissionType": "佣金类型",
+    "commissionRewardOptions": {
+      "29": "交易返佣",
+      "30": "手续费返佣",
+      "31": "入金返佣"
+    },
+    "deduction": "非活跃积分扣减(选填)",
+    "deductionDesc": "客户连续N天未产生积分，积分自动扣减；扣减积分=积分余额*扣减比例",
+    "deductionDays": "连续未活跃天数",
+    "deductionRatio": "扣减比例",
+    "exempt": "扣减豁免",
+    "exemptDesc": "以下类型的用户可以获得积分扣减豁免",
+    "exemptRoleIds": "豁免角色(多选)",
+    "exemptTagIds": "豁免标签(多选)",
+    "pointsMall": "积分商城",
+    "enableStatus": "启用状态",
+    "pointsMalltips": {
+      "1": "关闭后积分商城不启用",
+      "2": "① 用户端界面不展示积分商城",
+      "3": "② 用户将不再自动获得积分奖励",
+      "4": " 符合条件的用户才会启用积分商城功能"
+    },
+    "subscriptionPeriod": "订阅起止",
+    "notSubscribe": "未订阅",
+    "inProgress": "订阅中",
+    "suitableUser": "适用用户",
+    "userRole": "用户角色(选填)",
+    "exChangeReminder": "兑换提醒",
+    "exChangeReminderTips": {
+      "1": "商品兑换邮件提醒",
+      "2": "设置通知的管理员后，有新的商品兑换将通过邮件发送通知。若未设置提醒的管理员则不通知"
+    },
+    "explanation": " 说明({{field}})",
+    "explanationPlaceholder": "请填写说明文案，让用户了解积分商城的规则"
   }
 }

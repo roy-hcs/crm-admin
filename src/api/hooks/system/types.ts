@@ -10,6 +10,7 @@ export type ServerItem = {
   serviceHost: string;
   managerAccount: string;
   managerSecret: string;
+  aliasName: string;
 };
 
 export type ServerListResponse = BasicRes<ServerItem>;

@@ -13,7 +13,7 @@ export const RrhInputWithUnit: FC<
     <div className={cn('relative w-full', wrapperClassName)}>
       <Input
         disabled={disabled}
-        className="disabled:text-muted-foreground h-10 pr-15 text-sm"
+        className="disabled:text-muted-foreground bg-background h-10 pr-15 text-sm"
         {...props}
       />
       <span

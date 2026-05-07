@@ -4,6 +4,7 @@ import {
   AddGoodsClassificationParams,
   CrmDealGoodsListParams,
   CrmDealGoodsListRes,
+  EditPointsConfig,
   GoodDetailInfo,
   GoodsClassificationDetail,
   GoodsClassificationParams,
@@ -12,8 +13,10 @@ import {
   PointsBalanceRes,
   PointsChangeListParams,
   PointsChangeListRes,
+  PointsConfigRes,
   PointsHistoryListParams,
   PointsHistoryListRes,
+  PointsIntroRes,
 } from './types';
 
 export * from './types';
@@ -200,5 +203,54 @@ export function useRemoveGoodsClassification() {
         msg: string;
         data: null;
       }>('/system/points/goodsClassification/remove', params),
+  });
+}
+
+/**
+ * 积分配置 获取
+ */
+export function usePointsConfig() {
+  return useQuery({
+    queryKey: ['pointsConfig'],
+    queryFn: () => apiGetCustom<PointsConfigRes>(`/system/marketing/points/getSettings`),
+  });
+}
+
+/**
+ * 提交商城说明
+ */
+export function useSubmitPointsIntro() {
+  return useMutation({
+    mutationFn: (params: { id: string; language: string; pointsIntro: string }) =>
+      apiPost('/system/marketing/points/intro', params),
+  });
+}
+
+/**
+ * 获取商城说明
+ */
+export function usePointsIntro() {
+  return useQuery({
+    queryKey: ['pointsIntro'],
+    queryFn: () => apiGetCustom<PointsIntroRes>(`/system/marketing/points/introInfo`),
+  });
+}
+
+/**
+ * 积分配置 保存
+ */
+export function useEditPointsConfig() {
+  return useMutation({
+    mutationFn: (params: EditPointsConfig) => apiPost('/system/marketing/points/settings', params),
+  });
+}
+
+/**
+ * 积分商城启用状态
+ */
+export function useChangePointStoreStatus() {
+  return useMutation({
+    mutationFn: (params: { status: number }) =>
+      apiPost(`/system/marketing/points/switch?status=${params.status}`, {}),
   });
 }

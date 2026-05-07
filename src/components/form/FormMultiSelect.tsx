@@ -66,7 +66,7 @@ export function FormMultiSelect<T extends FieldValues, O extends BaseOption = Ba
       control={form.control}
       render={({ field }) => (
         <FormItem className={cn(verticalLabel ? '' : 'flex', className)}>
-          <div className={cn('flex gap-2', verticalLabel ? 'w-full' : 'basis-3/12')}>
+          <div className={cn('flex items-center gap-2', verticalLabel ? 'w-full' : 'basis-3/12')}>
             {label && <FormLabel>{label}</FormLabel>}
             {labeTipsDom && <div>{labeTipsDom}</div>}
           </div>

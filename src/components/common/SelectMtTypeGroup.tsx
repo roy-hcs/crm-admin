@@ -5,25 +5,37 @@ import { FormControl, FormItem, FormLabel, FormMessage } from '@/components/ui/f
 import { Input } from '@/components/ui/input';
 import { useOperateTypeGroupSymbols } from '@/hooks/useOpearteTypeGroupSymbols';
 import { cn } from '@/lib/utils';
-import { ControllerRenderProps, FieldValues } from 'react-hook-form';
+import { ControllerRenderProps, FieldPath, FieldValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { PathGroup } from './PathGroup';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
 import { useState } from 'react';
 
-export const SelectMtTypeGroup = ({
+type SelectMtTypeGroupProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TFieldName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = {
+  field: ControllerRenderProps<TFieldValues, TFieldName>;
+  verticalLabel?: boolean;
+  optional?: boolean;
+  serverId?: string;
+  defaultValue?: string;
+  disabled?: boolean;
+  emptyDisplayText?: string;
+};
+
+export const SelectMtTypeGroup = <
+  TFieldValues extends FieldValues = FieldValues,
+  TFieldName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
   field,
   verticalLabel = false,
   optional = false,
   serverId = '',
   defaultValue,
-}: {
-  field: ControllerRenderProps<FieldValues, 'typeName'>;
-  verticalLabel?: boolean;
-  optional?: boolean;
-  serverId?: string;
-  defaultValue?: string;
-}) => {
+  disabled = false,
+  emptyDisplayText,
+}: SelectMtTypeGroupProps<TFieldValues, TFieldName>) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { data: mtServerList, isLoading } = useMtRebateBaseTypeList(serverId || '', {
@@ -69,6 +81,8 @@ export const SelectMtTypeGroup = ({
     field.onChange(getSelectedSymbolsString());
     setOpen(false);
   };
+  const selectedText = getSelectedSymbolsString() || defaultValue;
+  const inputValue = selectedText === '' ? emptyDisplayText || '' : selectedText;
   return (
     <FormItem>
       <div className={cn('text-foreground text-sm', verticalLabel ? '' : 'flex items-center')}>
@@ -81,30 +95,30 @@ export const SelectMtTypeGroup = ({
             title={t('common.selectField', { field: t('table.typeGroup') })}
             open={open}
             onOpenChange={isOpen => {
-              if (!serverId) return;
+              if (!serverId || disabled) return;
               setOpen(isOpen);
             }}
             trigger={
               <div
                 className={cn(
-                  'flex h-9 basis-9/12 items-center rounded-md border',
+                  'bg-background flex h-10 basis-9/12 items-center rounded-md border',
                   verticalLabel ? 'w-full' : '',
-                  !serverId && 'cursor-not-allowed opacity-50',
+                  (!serverId || disabled) && 'cursor-not-allowed opacity-50',
                 )}
               >
                 <Input
                   className="flex-1 border-0 ring-0 outline-0"
                   type="text"
-                  value={getSelectedSymbolsString() || defaultValue}
+                  value={inputValue}
                   readOnly
-                  disabled={!serverId}
+                  disabled={!serverId || disabled}
                   placeholder={t('common.pleaseSelect')}
                 />
                 <RrhButton
                   variant="ghost"
                   className="rounded-l-none"
                   type="button"
-                  disabled={!serverId}
+                  disabled={!serverId || disabled}
                 >
                   {t('common.select')}
                 </RrhButton>
