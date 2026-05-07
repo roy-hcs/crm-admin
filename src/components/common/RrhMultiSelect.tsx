@@ -156,13 +156,13 @@ export const RrhMultiSelect = <T extends BaseOption>({
           role="combobox"
           aria-expanded={open}
           className={cn(
-            '!h-auto min-h-9 w-full justify-between text-start font-normal',
+            '!h-auto min-h-9 w-full justify-between text-start font-normal whitespace-normal',
             selectedOptions.length > 0 ? 'hover:bg-transparent' : '',
             className,
           )}
         >
           {showRowValue ? (
-            <div className="flex flex-wrap gap-1 truncate">
+            <div className="flex min-w-0 flex-wrap gap-1">
               {selectedOptions.length > 0 ? (
                 selectedOptions.map(option => (
                   <div
@@ -184,7 +184,7 @@ export const RrhMultiSelect = <T extends BaseOption>({
               )}
             </div>
           ) : (
-            <span className="truncate text-sm">
+            <span className="min-w-0 text-sm break-words whitespace-normal">
               {selectedOptions.length > 0
                 ? selectedOptions.map(o => o.label).join(', ')
                 : placeholder}
