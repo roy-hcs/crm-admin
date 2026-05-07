@@ -80,7 +80,7 @@ export const AgentOverallTagsInfo = ({
     ],
   ];
   return (
-    <div className="bg-background flex gap-4 rounded-2xl p-4">
+    <div className="bg-background flex flex-wrap gap-4 rounded-2xl p-4">
       {tagInfo.map((group, index) => (
         <TagContainer key={index}>
           {group.map((item, idx) => (

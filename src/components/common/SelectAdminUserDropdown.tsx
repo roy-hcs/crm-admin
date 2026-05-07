@@ -1,49 +1,49 @@
-import { useTranslation } from 'react-i18next';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { RrhSearchSelect } from './RrhSearchSelect';
-import { CrmUserParams, CrmUserItem, useMutationCrmUser } from '@/api/hooks/account';
 import { useCallback, useMemo } from 'react';
+import { useMutationUserList } from '@/api/hooks/system/system';
+import { UserItem, UserListParams } from '@/api/hooks/system';
 
-export const SelectUpperDropdown = ({
-  name = 'accounts',
-  rawLabel,
+export const SelectAdminUserDropdown = ({
+  name,
+  label,
   customMapOptions,
 }: {
-  name?: 'inviter' | 'accounts' | string;
-  rawLabel?: string;
-  customMapOptions?: (item: CrmUserItem) => { value: string; label: string };
+  name: string;
+  label: string;
+  customMapOptions?: (item: UserItem) => { value: string; label: string };
 }) => {
-  const { t } = useTranslation();
-  const label = rawLabel ?? t('CRMAccountPage.AccountRange');
-  const { mutateAsync: getUserList } = useMutationCrmUser();
-  const fetchFunction = useCallback((params: CrmUserParams) => getUserList(params), [getUserList]);
+  const { mutateAsync: getAdminUserList } = useMutationUserList();
+  const fetchFunction = useCallback(
+    (params: UserListParams) => getAdminUserList(params),
+    [getAdminUserList],
+  );
 
   const mapOption = useCallback(
-    (item: CrmUserItem) => {
+    (item: UserItem) => {
       return customMapOptions
         ? customMapOptions(item)
         : {
-            value: item.id,
-            label: `${item.lastName ?? ''} ${item.name ?? ''}${name === 'inviter' ? ` (${item.showId})` : `-${t('common.subordinate')}`}`,
+            value: item.userId,
+            label: `${item.userLastName || ''} ${item.userName || ''} (${item.email})`,
           };
     },
-    [name, t, customMapOptions],
+    [customMapOptions],
   );
 
   const buildInviterSearchParams = useCallback(
-    (baseParams: CrmUserParams, keyword: string): CrmUserParams => ({
+    (baseParams: UserListParams): UserListParams => ({
       ...baseParams,
       pageNum: 1,
       params: {
         ...baseParams.params,
-        fiveCons: keyword,
       },
     }),
     [],
   );
 
   const getInviterNextParams = useCallback(
-    (current: CrmUserParams): CrmUserParams => ({
+    (current: UserListParams): UserListParams => ({
       ...current,
       pageNum: Number(current.pageNum ?? 1) + 1,
     }),
@@ -56,21 +56,16 @@ export const SelectUpperDropdown = ({
       pageNum: 1,
       orderByColumn: '',
       params: {
-        threeCons: '',
-        fiveCons: '',
-        regEndTime: '',
-        regStartTime: '',
-        fuzzyMobile: '',
-        fuzzyEmail: '',
-        inviter: '',
-        accounts: '',
+        beginTime: '',
+        endTime: '',
       },
       isAsc: 'asc',
+      userName: '',
+      roleId: '',
       status: '',
-      role: '',
-      certiricateNo: '',
-      accountType: '',
-      tags: '',
+      phonenumber: '',
+      email: '',
+      onlineStatus: '',
     }),
     [],
   );
@@ -84,7 +79,7 @@ export const SelectUpperDropdown = ({
               <FormLabel className="h-5 leading-5">{label}</FormLabel>
               <div>
                 <FormControl>
-                  <RrhSearchSelect<CrmUserParams, CrmUserItem>
+                  <RrhSearchSelect<UserListParams, UserItem>
                     fetchFunction={fetchFunction}
                     mapOption={mapOption}
                     params={params}

@@ -87,3 +87,48 @@ export interface UserRebateAccountTabRes {
   mockAccountNum: number;
   totalRebate: number;
 }
+export interface CustomerFollowupInfoItem {
+  id: string;
+  userId: string;
+  username: string | null;
+  title: string;
+  content: string;
+  followTime: string;
+  createType: number;
+  clientType: number;
+  remind: number;
+  remindUsers: string;
+  remindAdmins: string;
+  reminderNames: string | null;
+  remindWay: string;
+  remindTime: string | null;
+  createTime: string;
+  createBy: string;
+  creator: string;
+  beginTime: string | null;
+  endTime: string | null;
+}
+export type CustomerFollowupRes = {
+  total: string;
+  rows: CustomerFollowupInfoItem[];
+  code: number;
+  msg: string | null;
+  totalVolume: number;
+  totalCommission: number;
+  totalProfit: number;
+  totalSwaps: number;
+  priceSum: number;
+  serverType: string | null;
+  totalList: string[] | null;
+};
+export type CreateCustomerFollowupParams = {
+  userId: string;
+  title: string;
+  content: string;
+  followTime: string;
+  remind: string;
+  remindAdmins: string;
+  remindUsers: string;
+  remindWay: string;
+  remindTime: string;
+};

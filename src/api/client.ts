@@ -103,6 +103,10 @@ export async function apiPost<T = null, D extends ApiPostData = Record<string, u
   });
 }
 
+export async function apiDelete<T = null>(url: string, options?: RequestInit) {
+  return fetchWithAuth<ApiResponse<T>>(url, { ...options, method: 'DELETE' });
+}
+
 // Type for form parameters supporting nested objects and arrays
 export type FormParams = {
   [key: string]:

@@ -65,7 +65,13 @@
     "newDemoAccount": "新增模拟账号",
     "customerFundOverview": "客户资金概览",
     "profitDeal": "盈利订单",
-    "lossDeal": "亏损订单"
+    "lossDeal": "亏损订单",
+    "followup": "跟进",
+    "remind": "提醒",
+    "reminder": "提醒人",
+    "remindWay": "跟进方式",
+    "remindTime": "提醒时间",
+    "followTimeTip": "若未填写跟进时间则默认为添加时间"
   },
   "loginPage": {
     "email": "邮箱",
@@ -290,7 +296,10 @@
     "getVerificationCode": "获取验证码",
     "cancelDefault": "取消默认",
     "default": "默认",
-    "yesterday": "昨天"
+    "yesterday": "昨天",
+    "mail": "邮件",
+    "siteMessage": "站内信",
+    "deleteFieldConfirm": "确定删除 {{field}}？"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -589,7 +598,8 @@
     "maxSize": "最大不超过{{maxSize}}MB",
     "userPwdTips": "8-20位英文+数字",
     "phoneExists": "手机号已被注册",
-    "nameAlreadyUsed": "该名称已存在"
+    "nameAlreadyUsed": "该名称已存在",
+    "timeShouldBeFuture": "{{field}}需大于当前时间"
   },
   "tradingHistoryPage": {
     "tradingHistoryDetail": "交易历史详情",
@@ -1324,7 +1334,8 @@
     "inviters": "账户上级",
     "totalRebate": "返佣合计",
     "realAccountNumber": "真实账户数",
-    "demoAccountNumber": "模拟账户数"
+    "demoAccountNumber": "模拟账户数",
+    "followTime": "跟进时间"
   },
   "settings": {
     "title": "审核设置",

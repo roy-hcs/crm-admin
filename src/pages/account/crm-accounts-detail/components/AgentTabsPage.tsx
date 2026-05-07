@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AccountOverviewPage } from '@/pages/review/account-opening-detail/account-overview/AccountOverviewPage';
 import { useTranslation } from 'react-i18next';
 import { AgentDashboardPage } from './AgentDashboardPage';
+import { CustomerFollowup } from './CustomerFollowup';
 
 export const AgentTabsPage = ({ userId }: { userId: string }) => {
   const { t } = useTranslation();
@@ -12,7 +13,7 @@ export const AgentTabsPage = ({ userId }: { userId: string }) => {
     },
     {
       value: t('CRMAccountPage.customerFollowUp'),
-      content: <div>CustomerFollowUp</div>,
+      content: <CustomerFollowup userId={userId} />,
     },
     {
       value: t('accountOpening.KYCInfo'),

@@ -215,6 +215,12 @@ export function useUserList(params?: UserListParams) {
     queryFn: () => apiFormPostCustom<UserListRes>(`/system/user/list`, params || {}),
   });
 }
+export function useMutationUserList() {
+  return useMutation({
+    mutationFn: (params: UserListParams) =>
+      apiFormPostCustom<UserListRes>(`/system/user/list`, params),
+  });
+}
 
 /**
  * 获取角色列表

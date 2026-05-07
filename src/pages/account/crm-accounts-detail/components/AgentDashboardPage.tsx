@@ -14,16 +14,24 @@ import { RrhSelect } from '@/components/common/RrhSelect';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { timeRangeOptionsSecondary } from '@/lib/const';
 import { serverMap } from '@/lib/constant';
-import { formatMoneyNumber } from '@/lib/utils';
+import { cn, formatMoneyNumber } from '@/lib/utils';
 import { TabsContent } from '@radix-ui/react-tabs';
 import { ReactElement, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const InfoItem = ({ label, value }: { label: string; value: string | number | ReactElement }) => {
+const InfoItem = ({
+  label,
+  value,
+  className,
+}: {
+  label: string;
+  value: string | number | ReactElement;
+  className?: string;
+}) => {
   return (
-    <div>
-      <div className="mb-2">{label}</div>
-      <div className="flex items-baseline gap-3 text-2xl font-semibold">{value}</div>
+    <div className={cn('border-border border-r pr-10 last:border-0', className)}>
+      <div className="mb-2 text-sm">{label}</div>
+      <div className="flex items-baseline gap-3 text-base font-semibold">{value}</div>
     </div>
   );
 };
@@ -116,10 +124,12 @@ const AgentCommissionInfo = ({
           <InfoItem
             label={t('CRMAccountPage.commissionTotal')}
             value={formatMoneyNumber(agentCommissionData?.totalCommission || 0)}
+            className="border-0"
           />
           <InfoItem
             label={t('CRMAccountPage.currentMonthCommission')}
             value={formatMoneyNumber(agentCommissionData?.monthCommission || 0)}
+            className="border-0"
           />
         </div>
       </div>
@@ -192,7 +202,7 @@ const AgentNewAccountInfo = ({ userId }: { userId: string }) => {
           }}
         />
       </div>
-      <div className="flex gap-6">
+      <div className="flex gap-10">
         <InfoItem
           label={`${t('CRMAccountPage.newCRMAccount')}(${t('common.yesterday')})`}
           value={lastDayInfo?.newCrmUser || 0}
@@ -317,7 +327,7 @@ const AgentFundInfo = ({ userId, serverList }: { userId: string; serverList: Ser
           </div>
         </div>
       </div>
-      <div className="flex gap-6">
+      <div className="flex gap-10">
         <InfoItem
           label={`${t('table.Deposit')}(${t('common.yesterday')})`}
           value={formatMoneyNumber(lastDayInfo?.deposit || 0)}
@@ -370,7 +380,7 @@ const AgentTradeInfo = ({ userId, serverList }: { userId: string; serverList: Se
       {
         value: t('home.PositionProfitLoss'),
         content: (
-          <div className="flex gap-6">
+          <div className="flex gap-10">
             <InfoItem
               label={`${t('common.profit')}(${t('common.yesterday')})`}
               value={formatMoneyNumber(lastDayInfo?.closeProfit || 0) + '(USD)'}
@@ -392,7 +402,7 @@ const AgentTradeInfo = ({ userId, serverList }: { userId: string; serverList: Se
       {
         value: t('table.volume'),
         content: (
-          <div className="flex gap-6">
+          <div className="flex gap-10">
             <InfoItem
               label={`${t('table.volume')}(${t('CRMAccountPage.currentMonth')})`}
               value={(agentTradeMonthSum.volume || 0).toFixed(2)}
@@ -407,7 +417,7 @@ const AgentTradeInfo = ({ userId, serverList }: { userId: string; serverList: Se
       {
         value: t('home.TradingOrder'),
         content: (
-          <div className="flex gap-6">
+          <div className="flex gap-10">
             <InfoItem
               label={`${t('home.quantity')}(${t('CRMAccountPage.currentMonth')})`}
               value={agentTradeMonthSum.quantity || 0}
