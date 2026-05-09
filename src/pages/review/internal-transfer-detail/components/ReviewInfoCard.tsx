@@ -44,7 +44,7 @@ export const ReviewInfoCard = ({
   }, [detailData.detail, t]);
 
   return (
-    <RrhCard title={t('review.review')}>
+    <RrhCard title={t('table.audit')}>
       {marginlevelTipText && (
         <div className="text-muted-foreground text-sm">{marginlevelTipText}</div>
       )}

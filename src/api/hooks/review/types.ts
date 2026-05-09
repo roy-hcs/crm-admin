@@ -1,3 +1,4 @@
+import { KycStatus } from '@/components/common/RrhKycStatus';
 import { BasicParams, BasicRes, BaseEntity } from '../../types';
 import { CrmUserItem, DealAccountGroup } from '../account';
 import { OperationsLogsItem } from '../monitor/type';
@@ -1397,6 +1398,78 @@ export type CrmUserProtocolInfoRes = {
 export type AagentVerifyParams = {
   id: string;
   verifyStatus: string;
+  remark: string;
+  verifyStep: string;
+};
+
+export type column = {
+  columnName: string;
+  columnValue: string;
+  columnType: number; // 5 是图片类型
+};
+export type KycReviewInfoItem = {
+  infoName?: string;
+  infoType: number | string;
+  detail?: {
+    status: KycStatus;
+    remark?: string | null;
+    subTime?: string;
+    verifyTime?: string;
+    userLastName?: string;
+    userName?: string;
+    verifyStep?: number;
+  };
+  columns: column[];
+  verifyLogs: VerifyLogItem[];
+};
+
+export type CrmInfoVerifyDetailOneRes = {
+  code: number;
+  data: {
+    infoName: string;
+    columns: column[];
+    detail: {
+      status: KycStatus;
+      remark?: string;
+      infoType: number | string;
+      verifyTime: string;
+    };
+  };
+};
+
+export type CrmInfoVerifyDetailTwoRes = {
+  code: number;
+  data: {
+    info: {
+      sumsubName: string;
+      status: KycStatus;
+      userLastName: string;
+      userName: string;
+      remark: string;
+      subTime: string;
+      verifyTime: string;
+      infoType: number | string;
+    };
+  };
+};
+
+export type CrmInfoVerifyDetailThreeRes = {
+  code: number;
+  msg: string;
+  data: {
+    infoDetails: KycReviewInfoItem[];
+    istatus: number;
+    pstatus: number;
+    fstatus: number;
+    bstatus: number;
+  };
+};
+
+export type CrmInfoVerifyParams = {
+  id: string;
+  infoType: string;
+  isReVerify: string;
+  status: string;
   remark: string;
   verifyStep: string;
 };

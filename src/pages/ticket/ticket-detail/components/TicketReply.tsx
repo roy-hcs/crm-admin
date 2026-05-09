@@ -117,7 +117,6 @@ export function TicketReply({
         >
           <FormTextarea
             name="content"
-            verticalLabel
             placeholder={t('rules.limitLength', { field: 600 })}
             maxLength={600}
           />

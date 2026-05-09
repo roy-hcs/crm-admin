@@ -267,7 +267,6 @@ export const AddTicketDialog = ({
         <FormTextarea
           name="content"
           label={t('ticketList.content')}
-          verticalLabel
           placeholder={t('rules.limitLength', { field: 600 })}
           maxLength={600}
         />

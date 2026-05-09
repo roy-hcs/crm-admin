@@ -32,7 +32,7 @@ export const ReviewInfoCard = ({
     return info;
   }, [withdrawalInfo, t]);
   return (
-    <RrhCard title={t('review.review')}>
+    <RrhCard title={t('table.audit')}>
       {withdrawalInfo.marginlevelTip === 1 && (
         <div className="text-muted-foreground text-sm">
           {t('review.advancePaymentRatio')}

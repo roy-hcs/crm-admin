@@ -285,7 +285,8 @@
     "modifySuccess": "Modification successful",
     "submit": "submit",
     "piece": "indivual",
-    "points": "point"
+    "points": "point",
+    "back": "return"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1011,13 +1012,6 @@
     "KYCInfo": "KYC information",
     "accountOpeningReviewDetail": "Account opening review details",
     "accountOverview": "Account overview",
-    "kycVerifyStatus": {
-      "0": "reject",
-      "1": "Approved",
-      "2": "Under review",
-      "-1": "Under review",
-      "-2": "Not submitted"
-    },
     "lastLogin": "Recently logged in",
     "openAccountInformation": "Account opening information",
     "sendInformation": "Send message",
@@ -1026,7 +1020,14 @@
     "identityInformation": "Identity Information-Basic",
     "personalInformation": "personal information",
     "protocolConfirmation": "Agreement confirmation",
-    "identityInformationSumsub": "Identity Information-Sumsub"
+    "identityInformationSumsub": "Identity Information-Sumsub",
+    "kycVerifyStatus": {
+      "0": "reject",
+      "1": "pass",
+      "2": "Under review",
+      "-1": "Pending review",
+      "-2": "Not submitted"
+    }
   },
   "binding": {
     "source": "Promotion invitation code",
@@ -1038,7 +1039,13 @@
     "infoType": "Information Type",
     "title": "Information audit",
     "verifyTime": "Finishing time",
-    "verifyUserName": "Current reviewer"
+    "verifyUserName": "Current reviewer",
+    "kycOverview": "KYC Overview",
+    "kycReview": "KYC review",
+    "personalInformationReview": "Personal information review",
+    "rejectionReason": "Reason for rejection",
+    "verificationLevel": "Verification level",
+    "verificationStatus": "Verification status"
   },
   "leverage": {
     "currentLever": "Current leverage",
@@ -1055,7 +1062,6 @@
     "fundFlow": "Capital flow",
     "latestLogin": "Recently logged in",
     "orderCount": "Number of orders",
-    "review": "review",
     "reviewPass": "Approved",
     "reviewRecord": "Audit records",
     "reviewReject": "Review rejection",

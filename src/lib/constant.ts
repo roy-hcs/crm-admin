@@ -141,20 +141,3 @@ export const OperationMethodMap: Record<number, string> = {
   15: 'table.pointsProductExchange',
   16: 'table.thirdPayment',
 };
-// -2 未提交，-1 2 审核中 0 拒绝，1 审核通过
-export const kycVerifyStatusMap: Record<number, KycStatus> = {
-  // ui状态只要 等待 成功 失败
-  '-2': 'fail',
-  '-1': 'pending',
-  0: 'fail',
-  1: 'success',
-  2: 'pending',
-};
-// -2 未提交，-1 2 审核中 0 拒绝，1 审核通过
-export const kycVerifyStatusTextMap: Record<number, string> = {
-  '-2': 'accountOpening.kycVerifyStatus.-2',
-  '-1': 'accountOpening.kycVerifyStatus.-1',
-  0: 'accountOpening.kycVerifyStatus.0',
-  1: 'accountOpening.kycVerifyStatus.1',
-  2: 'accountOpening.kycVerifyStatus.2',
-};
