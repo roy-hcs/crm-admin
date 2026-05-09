@@ -1,6 +1,13 @@
 import { apiFormPost, apiFormPostCustom, apiGetCustom } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
+  createEmptyCrmInfoVerifyDetailData,
+  CrmInfoVerifyDetailQueryData,
+  mapDetailOneResponse,
+  mapDetailThreeResponse,
+  mapDetailTwoResponse,
+} from './informationDetailMappers';
+import {
   AgentApplyListParams,
   AgentApplyListRes,
   BasicParams,
@@ -57,6 +64,10 @@ import {
   CrmUserProtocolInfoRes,
   AagentVerifyParams,
   AgentReviewDetailRes,
+  CrmInfoVerifyDetailThreeRes,
+  CrmInfoVerifyParams,
+  CrmInfoVerifyDetailOneRes,
+  CrmInfoVerifyDetailTwoRes,
 } from './types';
 
 export function useAgentApplyList(params: AgentApplyListParams, options: { enabled: boolean }) {
@@ -185,6 +196,137 @@ export function useCrmInfoVerifyList(params: CrmInfoVerifyListParams) {
   return useQuery({
     queryKey: ['crmInfoVerifyList', params],
     queryFn: () => apiFormPostCustom<CrmInfoVerifyListRes>('/system/crmInfoVerify/list', params),
+  });
+}
+/**
+ * 获取审核-信息审核详情1
+ */
+export function useCrmInfoVerifyDetailOne() {
+  return useMutation({
+    mutationFn: ({ id, infoType }: { id: string; infoType: string }) =>
+      apiGetCustom<CrmInfoVerifyDetailOneRes>(
+        `/system/crmInfoVerify/viewDetailInfo/${id}/${infoType}`,
+      ),
+  });
+}
+/**
+ * 获取审核-信息审核详情2
+ */
+export function useCrmInfoVerifyDetailTwo() {
+  return useMutation({
+    mutationFn: ({ id }: { id: string }) =>
+      apiGetCustom<CrmInfoVerifyDetailTwoRes>(
+        `/system/crmInfoVerify/viewSumsubDetailInfo?id=${id}`,
+      ),
+  });
+}
+/**
+ * 获取审核-信息审核详情3
+ */
+export function useCrmInfoVerifyDetailThree() {
+  return useMutation({
+    mutationFn: ({ id, userId }: { id: string; userId: string }) =>
+      apiGetCustom<CrmInfoVerifyDetailThreeRes>(
+        `/system/crmInfoVerify/viewDetailInfo/${id}?userId=${userId}`,
+      ),
+  });
+}
+
+export function useCrmInfoVerifyDetailQuery(
+  params: {
+    id: string;
+    userId?: string;
+    infoType?: string;
+    status?: string | null;
+    sumsubId?: string | null;
+  },
+  options?: { enabled?: boolean },
+) {
+  const buildDetailError = (message?: string) => {
+    return new Error(message || 'Failed to load crm info verify detail');
+  };
+
+  return useQuery({
+    queryKey: [
+      'crmInfoVerifyDetail',
+      params.id,
+      params.userId || '',
+      params.infoType || '',
+      params.status || '',
+      params.sumsubId || '',
+    ],
+    enabled: options?.enabled ?? true,
+    staleTime: 30_000,
+    refetchOnWindowFocus: false,
+    retry: 1,
+    queryFn: async (): Promise<CrmInfoVerifyDetailQueryData> => {
+      const detailId = params.id || '';
+      const detailUserId = params.userId || '';
+      const statusNumber = Number(params.status);
+      const hasSumsubId =
+        Boolean(params.sumsubId) && params.sumsubId !== 'null' && params.sumsubId !== 'undefined';
+      const isViewStatus = statusNumber === 0 || statusNumber === 1;
+      const isAuditStatus = statusNumber === 2 || statusNumber === -1;
+
+      if (!detailId) {
+        return createEmptyCrmInfoVerifyDetailData();
+      }
+
+      // 查看（非 Sumsub）
+      if (isViewStatus && !hasSumsubId) {
+        if (!params.infoType) {
+          return createEmptyCrmInfoVerifyDetailData();
+        }
+
+        const oneRes = await apiGetCustom<CrmInfoVerifyDetailOneRes>(
+          `/system/crmInfoVerify/viewDetailInfo/${detailId}/${params.infoType}`,
+        );
+
+        if (oneRes?.code === 0 && oneRes.data) {
+          return mapDetailOneResponse(oneRes);
+        }
+        throw buildDetailError((oneRes as { msg?: string })?.msg);
+      }
+
+      // Sumsub 查看
+      if (isViewStatus && hasSumsubId) {
+        const twoRes = await apiGetCustom<CrmInfoVerifyDetailTwoRes>(
+          `/system/crmInfoVerify/viewSumsubDetailInfo?id=${detailId}`,
+        );
+
+        if (twoRes?.code === 0 && twoRes.data?.info) {
+          return mapDetailTwoResponse(twoRes);
+        }
+        throw buildDetailError((twoRes as { msg?: string })?.msg);
+      }
+
+      // 待审核/审核中
+      if (isAuditStatus) {
+        if (!detailUserId) {
+          return createEmptyCrmInfoVerifyDetailData();
+        }
+
+        const threeRes = await apiGetCustom<CrmInfoVerifyDetailThreeRes>(
+          `/system/crmInfoVerify/viewDetailInfo/${detailId}?userId=${detailUserId}`,
+        );
+
+        if (threeRes?.code === 0 && threeRes.data) {
+          return mapDetailThreeResponse(threeRes);
+        }
+        throw buildDetailError(threeRes?.msg);
+      }
+
+      return createEmptyCrmInfoVerifyDetailData();
+    },
+  });
+}
+/**
+ * 提交审核-信息审核详情
+ */
+export function useCrmInfoVerify() {
+  return useMutation({
+    mutationFn: (params: CrmInfoVerifyParams) =>
+      apiFormPost(`/system/crmInfoVerify/verify`, params),
   });
 }
 

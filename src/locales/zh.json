@@ -267,7 +267,8 @@
     "getVerificationCode": "获取验证码",
     "cancelDefault": "取消默认",
     "default": "默认",
-    "submit": "提交"
+    "submit": "提交",
+    "back": "返回"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -1328,7 +1329,13 @@
     "title": "信息审核",
     "infoType": "信息类型",
     "verifyUserName": "当前审核人",
-    "verifyTime": "完结时间"
+    "verifyTime": "完结时间",
+    "kycReview": "KYC审核",
+    "kycOverview": "KYC 总览",
+    "personalInformationReview": "个人信息审核",
+    "rejectionReason": "拒绝理由",
+    "verificationLevel": "验证层级",
+    "verificationStatus": "验证状态"
   },
   "accountOpening": {
     "title": "开户审核",
@@ -1341,11 +1348,11 @@
     "lastLogin": "最近登陆",
     "sendInformation": "发送信息",
     "kycVerifyStatus": {
-      "-2": "未提交",
-      "-1": "审核中",
+      "2": "审核中",
+      "-1": "待审核",
+      "1": "通过",
       "0": "拒绝",
-      "1": "审核通过",
-      "2": "审核中"
+      "-2": "未提交"
     },
     "personalInformation": "个人信息",
     "financialInformation": "财务信息",
@@ -1374,7 +1381,6 @@
     "reviewStatus": "审核状态",
     "withdrawalReviewDetail": "出金审核详情",
     "reviewRecord": "审核记录",
-    "review": "审核",
     "syncToTransactionPlatform": "同步至交易平台",
     "reviewRemarksPlaceholder": "拒绝时需填写，500个字符以内",
     "latestLogin": "最近登录",

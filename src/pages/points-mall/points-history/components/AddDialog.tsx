@@ -118,53 +118,48 @@ export const AddDialog = ({
       formLoading={isSubmitting}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="py-3">
-              <FormField
-                name="userId"
-                render={({ field }) => {
-                  return (
-                    <SelectUser
-                      verticalLabel
-                      field={field}
-                      title={t('rewardRecords.rewardTarget')}
-                    />
-                  );
-                }}
-              />
-            </div>
-            <div className="py-3">
-              <FormSelect
-                name="businessType"
-                label={t('table.triggerBusiness')}
-                verticalLabel
-                placeholder={t('common.pleaseSelect')}
-                showRowValue={false}
-                options={operationTypeList.map(i => ({ label: i.dictLabel, value: i.dictValue }))}
-              />
-            </div>
-            <div className="py-3">
-              <FormLeftSelectInput
-                verticalLabel
-                name="bonusPoints"
-                label={t('table.bonusPoints')}
-                placeholder={t('PointsHistory.bonusPointsPlaceholder')}
-                typeValue={'bonusType'}
-                options={[
-                  { label: t('common.increase'), value: '1' },
-                  { label: t('common.subtract'), value: '2' },
-                ]}
-              />
-            </div>
-            <div className="py-3">
-              <FormTextarea
-                name="remark"
-                label={t('table.remarks')}
-                verticalLabel
-                placeholder={t('rules.limitLength', { field: 50 })}
-                maxLength={50}
-              />
-            </div>
-          </RrhForm>
+        <div className="py-3">
+          <FormField
+            name="userId"
+            render={({ field }) => {
+              return (
+                <SelectUser verticalLabel field={field} title={t('rewardRecords.rewardTarget')} />
+              );
+            }}
+          />
+        </div>
+        <div className="py-3">
+          <FormSelect
+            name="businessType"
+            label={t('table.triggerBusiness')}
+            verticalLabel
+            placeholder={t('common.pleaseSelect')}
+            showRowValue={false}
+            options={operationTypeList.map(i => ({ label: i.dictLabel, value: i.dictValue }))}
+          />
+        </div>
+        <div className="py-3">
+          <FormLeftSelectInput
+            verticalLabel
+            name="bonusPoints"
+            label={t('table.bonusPoints')}
+            placeholder={t('PointsHistory.bonusPointsPlaceholder')}
+            typeValue={'bonusType'}
+            options={[
+              { label: t('common.increase'), value: '1' },
+              { label: t('common.subtract'), value: '2' },
+            ]}
+          />
+        </div>
+        <div className="py-3">
+          <FormTextarea
+            name="remark"
+            label={t('table.remarks')}
+            placeholder={t('rules.limitLength', { field: 50 })}
+            maxLength={50}
+          />
+        </div>
+      </RrhForm>
     </RrhDialog>
   );
 };

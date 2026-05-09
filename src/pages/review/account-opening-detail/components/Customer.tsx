@@ -53,9 +53,19 @@ export const Customer = ({ id }: { id: string }) => {
   const riskScore = lastLogininfor?.riskScore || 0;
   const { t } = useTranslation();
   const [open, setOpen] = useState<DialogType>(null);
-  const { data: languageList, isLoading: languageLoading } = useDictType('sys_language');
-  const { data: emailList, isLoading: emailListLoading } = useGetEmailConfig();
-  const { data: msgTemplateList, isLoading: msgTemplateListLoading } = useMsgTemplateList({});
+  const shouldLoadMessageData = open === 'sendMsg';
+  const { data: languageList } = useDictType('sys_language', {
+    enabled: shouldLoadMessageData,
+  });
+  const { data: emailList } = useGetEmailConfig({
+    enabled: shouldLoadMessageData,
+  });
+  const { data: msgTemplateList } = useMsgTemplateList(
+    {},
+    {
+      enabled: shouldLoadMessageData,
+    },
+  );
   const riskMeta = useMemo(() => getRiskMeta(riskScore), [riskScore]);
 
   const userInfo = useMemo(() => {
@@ -135,7 +145,7 @@ export const Customer = ({ id }: { id: string }) => {
     [msgTemplateList?.rows],
   );
 
-  if (isLoading || languageLoading || emailListLoading || msgTemplateListLoading) {
+  if (isLoading) {
     return (
       <div className="h-100">
         <RrhCircleLoading />;
@@ -192,24 +202,21 @@ export const Customer = ({ id }: { id: string }) => {
           <RrhButton
             onClick={() => setOpen('sendMsg')}
             variant="outline"
-            type="button"
-            className="w-full cursor-pointer capitalize"
+            className="w-full cursor-pointer text-xs capitalize"
           >
             {t('accountOpening.sendInformation')}
           </RrhButton>
           <RrhButton
             onClick={() => setOpen('password')}
             variant="outline"
-            type="button"
-            className="w-full cursor-pointer capitalize"
+            className="w-full cursor-pointer text-xs capitalize"
           >
             {t('common.resetPassword')}
           </RrhButton>
           <RrhButton
             onClick={() => setOpen('fundPassword')}
             variant="outline"
-            type="button"
-            className="w-full cursor-pointer capitalize"
+            className="w-full cursor-pointer text-xs capitalize"
           >
             {t('common.resetFundPassword')}
           </RrhButton>
@@ -247,7 +254,7 @@ export const Customer = ({ id }: { id: string }) => {
         crmUserId={crmUser?.id || ''}
         title={t('accountOpening.sendInformation')}
         onSuccess={() => {
-          console.log('success');
+          setOpen(null);
         }}
         open={open === 'sendMsg'}
         onOpenChange={v => {

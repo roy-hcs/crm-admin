@@ -5,7 +5,6 @@ import { LabelItem } from '@/components/common/LabelItem';
 import { InfoItem } from '@/components/common/InfoItem';
 import { ImageZoom } from '@/components/common/ImageZoom';
 import { KycStatus, RrhKycStatus } from '@/components/common/RrhKycStatus';
-import { useTranslation } from 'react-i18next';
 
 export type KycInfoSectionType = 'list' | 'mediaList' | 'cardList';
 
@@ -17,7 +16,6 @@ export type KycInfoDetailItem = {
 
 export type KycInfoStep = {
   status: KycStatus;
-  statusText: string;
   label: string;
   content: string;
   type: KycInfoSectionType;
@@ -27,7 +25,6 @@ export type KycInfoStep = {
 };
 
 export const KycInfoDetail = ({ step }: { step: KycInfoStep }) => {
-  const { t } = useTranslation();
   const [folded, setFolded] = useState(!step.defaultExpanded);
 
   return (
@@ -41,7 +38,7 @@ export const KycInfoDetail = ({ step }: { step: KycInfoStep }) => {
         <div className="grid flex-1 gap-3.5">
           <div className="flex items-center gap-3">
             <div className="text-foreground text-base leading-4 font-semibold">{step.label}</div>
-            <RrhKycStatus status={step.status} text={step.statusText ? t(step.statusText) : '-'} />
+            <RrhKycStatus status={step.status} />
           </div>
           <div className="text-muted-foreground text-sm leading-5">{step.time}</div>
         </div>

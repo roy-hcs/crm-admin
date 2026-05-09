@@ -6,8 +6,7 @@ import {
 } from '../../account-opening-detail/kyc-info/KycInfoDetail';
 import { KycInfoTimeline } from '../../account-opening-detail/kyc-info/KycInfoTimeline';
 import { AgentReviewDetailRes } from '@/api/hooks/review/types';
-import { kycVerifyStatusMap, kycVerifyStatusTextMap } from '@/lib/constant';
-import { KycStatus } from '@/components/common/RrhKycStatus';
+import { KycStatus, kycStatusTextMap } from '@/components/common/RrhKycStatus';
 
 type kycInfoSteps = KycInfoStep[];
 
@@ -60,7 +59,7 @@ export const AgentKyc = ({ detail }: { detail: AgentReviewDetailRes['data'] }) =
     } else {
       return detail?.crmIinfoVerifyList.map(i => ({
         label: t('table.reviewStatus'),
-        value: `${i.sumsubLevelName} ${t(kycVerifyStatusTextMap[crmIinfoVerifyStatus])}`,
+        value: `${i.sumsubLevelName} ${t(kycStatusTextMap[crmIinfoVerifyStatus as KycStatus])}`,
       }));
     }
   }, [crmIinfoVerifyStatus, detail?.crmIinfoVerifyList, detail.detail.columns, t]);
@@ -68,8 +67,7 @@ export const AgentKyc = ({ detail }: { detail: AgentReviewDetailRes['data'] }) =
   const steps: kycInfoSteps = useMemo(() => {
     return [
       {
-        status: kycVerifyStatusMap[verifyStatus] as KycStatus,
-        statusText: kycVerifyStatusTextMap[verifyStatus],
+        status: verifyStatus as KycStatus,
         label: t('reviewAgent.agentInfo'),
         content: '',
         type: 'list',
@@ -78,8 +76,7 @@ export const AgentKyc = ({ detail }: { detail: AgentReviewDetailRes['data'] }) =
         defaultExpanded: true,
       },
       {
-        status: kycVerifyStatusMap[crmIinfoVerifyStatus] as KycStatus,
-        statusText: kycVerifyStatusTextMap[crmIinfoVerifyStatus],
+        status: crmIinfoVerifyStatus as KycStatus,
         label: t('accountOpening.identityInformation'),
         content: '',
         type: 'mediaList',

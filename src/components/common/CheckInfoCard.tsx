@@ -16,7 +16,7 @@ export const CheckInfoCard = ({ back, roleName }: { back: () => void; roleName?:
   };
 
   return (
-    <RrhCard title={t('review.review')}>
+    <RrhCard title={t('table.audit')}>
       {roleName && (
         <FormField
           name="reviewer"

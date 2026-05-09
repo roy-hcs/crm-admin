@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { InformationForm } from './InformationForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
@@ -17,6 +17,7 @@ import { RrhOrderStatusTag } from '@/components/common/RrhOrderStatusTag';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { RrhButton } from '@/components/common/RrhButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export function InformationPage() {
   const { t } = useTranslation();
@@ -55,6 +56,22 @@ export function InformationPage() {
     setKeyword('');
     setPageNum(0);
   };
+
+  const { openTab } = useTabActions();
+  const goToDetail = useCallback(
+    (row: CrmInfoVerifyItem) => {
+      const status = row.status;
+      const sumsubId = row.sumsubId || '';
+      const infoType = row.infoType;
+      const url = `/review/information/detail?status=${status}&id=${row.id}&userId=${row.userId}&sumsubId=${sumsubId}&infoType=${infoType}`;
+      openTab({
+        key: url,
+        title: '信息审核',
+        path: url,
+      });
+    },
+    [openTab],
+  );
 
   const allColumns: CRMColumnDef<CrmInfoVerifyItem, unknown>[] = [
     {
@@ -176,7 +193,11 @@ export function InformationPage() {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => <RrhButton variant="ghost">{t('table.audit')}</RrhButton>,
+      cell: ({ row }) => (
+        <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+          {[-1, 2].includes(Number(row?.original?.status)) ? t('table.audit') : t('common.View')}
+        </RrhButton>
+      ),
       fixed: 'right',
       size: 50,
     },

@@ -9,7 +9,6 @@ interface FormTextareaProps<T extends FieldValues> {
   label?: string;
   placeholder: string;
   className?: string;
-  verticalLabel?: boolean;
   labeTipsDom?: React.ReactNode;
 }
 

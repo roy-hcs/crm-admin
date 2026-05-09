@@ -154,19 +154,12 @@ export function TicketInfo({
       '1': 'medium',
       '2': 'high',
     };
-    const statusTextMap: Record<string, KycStatus> = {
-      '0': 'pending',
-      '1': 'pending',
-      '2': 'success',
-    };
     const priorityLevel = priorityLevelMap[priority];
     const priorityText = t(priorityMap.find(i => String(i.value) === priority)?.label || '') || '-';
-    const reviewStatus = statusTextMap[String(order.status || 0)] as KycStatus;
-    const reviewStatusText =
-      t(statusMap.find(i => String(i.value) === String(order.status))?.label || '') || '-';
+    const reviewStatus = order.status as KycStatus;
     const carbonCopy = ccNames || '-';
 
-    const statusDom = <RrhKycStatus status={reviewStatus} text={reviewStatusText} />;
+    const statusDom = <RrhKycStatus status={reviewStatus} />;
     const priorityDom = <RrhLever level={priorityLevel} text={priorityText} />;
 
     const orderFiles = order?.orderFiles?.map(i => i.fileName).join(', ') || '';
@@ -340,7 +333,6 @@ export function TicketInfo({
               <FormTextarea
                 name="content"
                 label={t('ticketList.content')}
-                verticalLabel
                 placeholder={t('rules.limitLength', { field: 600 })}
                 maxLength={600}
               />
