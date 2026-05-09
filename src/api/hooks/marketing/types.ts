@@ -1,5 +1,6 @@
 // Marketing module types
 import { BasicParams, BasicRes, BaseEntity } from '../../types';
+import { VerifyLogItem } from '../review';
 
 // Bonus Setting (Reward Configs) related types
 export type BonusSettingListParams = BasicParams & {
@@ -85,7 +86,7 @@ export type AdsListRes = BasicRes<AdsListItem>;
 // Reward Records related types
 export type RewardRecordsListParams = BasicParams & {
   rewardId?: string;
-
+  status?: string;
   params: {
     rewardTitle?: string;
     crmAccount?: string;
@@ -280,3 +281,66 @@ export interface NetBonusRewardRow {
   accountType: string;
   showId: string;
 }
+
+export type RewardRecordReviewDetailRes = {
+  code: number;
+  msg: string | null;
+  data: {
+    detail: {
+      unlockLimit: null;
+      unlockVolume: null;
+      unlockDeposit: null;
+      rewardType: number | null;
+      verifyStep: number | null;
+      rewardTypeStr: string | null;
+      verifyUser: null;
+      remark: string | null;
+      lockStatusStr: string | null;
+      verifyTime: string | null;
+      login: string | null;
+      referredUserId: string | null;
+      vUserName: string | null;
+      serverId: string | null;
+      subTime: string | null;
+      unlockNet: null;
+      recordId: string | null;
+      rewardId: string | null;
+      rewardAmountUnit: string | null;
+      lockStatus: string | null;
+      referredUserName: string | null;
+      userLastName: string | null;
+      userShowId: string | null;
+      subRemark: string | null;
+      dealBreed: string | null;
+      id: string | null;
+      rewardAmount: number | null;
+      bonusType: number | null;
+      aliasName: string | null;
+      vUserLastName: string | null;
+      verifyUserName: string | null;
+      dealNum: number | null;
+      userName: string | null;
+      userId: string | null;
+      countTime: string | null;
+      unlockConditions: string | null;
+      dealNumUnit: string | null;
+      hitActivity: string | null;
+      dealBreeds: string | null;
+      rewardStandard: string | null;
+      dealNumStr: string | null;
+      businessType: number | null;
+      bonusTypeStr: string | null;
+      rewardAmountStr: string | null;
+      status: number | null;
+    };
+    verifyLogs: VerifyLogItem[];
+  };
+};
+
+export type RewardRecordVerifyParams = {
+  id: string;
+  recordId: string;
+  status: string;
+  remark: string;
+  verifyStep: string;
+};

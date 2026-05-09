@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import { LabelItem } from '@/components/common/LabelItem';
 import { RelatedOrders } from './RelatedOrders';
+import { InfoItem } from '@/components/common/InfoItem';
 
 export const InfoCard: FC<{
   detailData: InternalTransferReviewDetailRes['data'];
@@ -54,12 +55,7 @@ export const InfoCard: FC<{
           </h2>
 
           {Info.map(item => (
-            <div key={item.label} className="flex flex-col gap-2 py-3">
-              <label className="text-sm font-medium">{t(item.label)}</label>
-              <div className="text-muted-foreground flex items-center gap-3">
-                <span>{item.value}</span>
-              </div>
-            </div>
+            <LabelItem label={t(item.label)} ContentDom={<InfoItem info={item.value || '-'} />} />
           ))}
         </div>
 
@@ -69,12 +65,7 @@ export const InfoCard: FC<{
           </h2>
 
           {InfoTwo.map(item => (
-            <div key={item.label} className="flex flex-col gap-2 py-3">
-              <label className="text-sm font-medium">{t(item.label)}</label>
-              <div className="text-muted-foreground flex items-center gap-3">
-                <span>{item.value}</span>
-              </div>
-            </div>
+            <LabelItem label={t(item.label)} ContentDom={<InfoItem info={item.value || '-'} />} />
           ))}
 
           <FormField

@@ -285,12 +285,7 @@ export const DepositInfoCard: FC<{
             )}
           />
           {depositChannelsInfo.map(item => (
-            <div key={item.label} className="flex flex-col gap-2 py-3">
-              <label className="text-sm font-medium">{t(item.label)}</label>
-              <div className="text-muted-foreground flex items-center gap-3">
-                <span>{item.value}</span>
-              </div>
-            </div>
+            <LabelItem label={t(item.label)} ContentDom={<InfoItem info={item.value || '-'} />} />
           ))}
         </div>
       </div>
