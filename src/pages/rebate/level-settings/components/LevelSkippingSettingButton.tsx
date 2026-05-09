@@ -42,7 +42,7 @@ export const LevelSkippingSettingButton = ({
         toast.error(res.msg || t('common.AnErrorOccurred'));
       }
     } catch (error) {
-      console.log('error', error);
+      console.error('error', error);
     } finally {
       setOpen(false);
     }

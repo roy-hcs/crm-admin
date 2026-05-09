@@ -299,7 +299,9 @@
     "yesterday": "昨天",
     "mail": "邮件",
     "siteMessage": "站内信",
-    "deleteFieldConfirm": "确定删除 {{field}}？"
+    "deleteFieldConfirm": "确定删除 {{field}}？",
+    "modifySuccess": "修改成功",
+    "modifyFailed": "修改失败"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -1335,7 +1337,9 @@
     "totalRebate": "返佣合计",
     "realAccountNumber": "真实账户数",
     "demoAccountNumber": "模拟账户数",
-    "followTime": "跟进时间"
+    "followTime": "跟进时间",
+    "signature": "签名",
+    "protocolContent": "协议内容"
   },
   "settings": {
     "title": "审核设置",
@@ -1372,6 +1376,7 @@
     "personalInformation": "个人信息",
     "financialInformation": "财务信息",
     "identityInformation": "身份信息-Basic",
+    "identityInformationSumsub": "身份信息-Sumsub",
     "protocolConfirmation": "协议确认"
   },
   "binding": {

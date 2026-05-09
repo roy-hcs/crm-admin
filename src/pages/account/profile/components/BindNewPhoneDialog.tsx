@@ -148,7 +148,7 @@ export const BindNewPhoneDialog = ({ onSuccess }: { onSuccess: () => void }) => 
         form.clearErrors('address');
       }
     } catch (error) {
-      console.log('error', error);
+      console.error('error', error);
     }
   };
 

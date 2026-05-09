@@ -44,7 +44,6 @@ export const EditAgentFollowupItemDialog = ({
     resolver: zodResolver(schema),
   });
   const onSubmit = (values: FormValues) => {
-    console.log('submit', values);
     editFollowup(
       {
         id: followupItem.id,

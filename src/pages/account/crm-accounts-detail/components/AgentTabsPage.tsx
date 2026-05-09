@@ -3,6 +3,8 @@ import { AccountOverviewPage } from '@/pages/review/account-opening-detail/accou
 import { useTranslation } from 'react-i18next';
 import { AgentDashboardPage } from './AgentDashboardPage';
 import { CustomerFollowup } from './CustomerFollowup';
+import { CrmUserKycInfoPage } from './CrmUserKycInfoPage';
+import { CrmAccountOperationsPage } from './CrmAccountOperationsPage';
 
 export const AgentTabsPage = ({ userId }: { userId: string }) => {
   const { t } = useTranslation();
@@ -17,7 +19,7 @@ export const AgentTabsPage = ({ userId }: { userId: string }) => {
     },
     {
       value: t('accountOpening.KYCInfo'),
-      content: <div>KYCInfo</div>,
+      content: <CrmUserKycInfoPage userId={userId} />,
     },
     {
       value: t('table.tradingAccount'),
@@ -25,7 +27,7 @@ export const AgentTabsPage = ({ userId }: { userId: string }) => {
     },
     {
       value: t('table.accountOperations'),
-      content: <div>AccountOperations</div>,
+      content: <CrmAccountOperationsPage userId={userId} />,
     },
     {
       value: t('walletAccountsPage.title'),
@@ -49,23 +51,21 @@ export const AgentTabsPage = ({ userId }: { userId: string }) => {
     },
   ];
   return (
-    <div>
-      <Tabs defaultValue={tabs[0].value}>
-        <TabsList>
-          {tabs.map(tab => (
-            <TabsTrigger key={tab.value} value={tab.value}>
-              {tab.value}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        {tabs.map(tab => {
-          return (
-            <TabsContent key={tab.value} value={tab.value}>
-              {tab.content}
-            </TabsContent>
-          );
-        })}
-      </Tabs>
-    </div>
+    <Tabs defaultValue={tabs[0].value} orientation="vertical">
+      <TabsList>
+        {tabs.map(tab => (
+          <TabsTrigger key={tab.value} value={tab.value}>
+            {tab.value}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      {tabs.map(tab => {
+        return (
+          <TabsContent key={tab.value} value={tab.value}>
+            {tab.content}
+          </TabsContent>
+        );
+      })}
+    </Tabs>
   );
 };

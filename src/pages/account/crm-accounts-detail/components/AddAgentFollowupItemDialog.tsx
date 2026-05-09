@@ -99,7 +99,6 @@ export const AddAgentFollowupItemDialog = ({
   });
   const enableRemind = form.watch('remind');
   const onSubmit = (values: FormValues) => {
-    console.log('submit', values);
     const adminUserInfo = JSON.parse(values.remindAdmins || '{"id": "", "label": ""}');
     const userInfo = JSON.parse(values.remindUsers || '{"id": "", "label": ""}');
     addFollowup(

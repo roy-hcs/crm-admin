@@ -7,7 +7,6 @@ import {
 } from '@/api/hooks/agent/agent';
 import { AgentAccountStatsRes, AgentCommissionRes } from '@/api/hooks/agent/types';
 import { ServerItem, useServerList } from '@/api/hooks/system';
-import { useGetUserAccountOperation, useGetUserRebateAccountTab } from '@/api/hooks/system/system';
 import { LineChart } from '@/components/charts/LineCharts';
 import { RrhCard } from '@/components/common/RrhCard';
 import { RrhSelect } from '@/components/common/RrhSelect';
@@ -549,7 +548,6 @@ const AgentTradeInfo = ({ userId, serverList }: { userId: string; serverList: Se
         <Tabs
           defaultValue={currentTab}
           onValueChange={value => {
-            console.log('value changed', value);
             setCurrentTab(value);
           }}
         >
@@ -585,12 +583,9 @@ const AgentTradeInfo = ({ userId, serverList }: { userId: string; serverList: Se
 export const AgentDashboardPage = ({ userId }: { userId: string }) => {
   const { data: agentAccountStats } = useGetAgentAccountStats(userId);
   const { data: agentCommissionStats } = useGetAgentCommissionStats(userId);
-  const { data: dataOne } = useGetUserRebateAccountTab(userId);
-  const { data: dataTwo } = useGetUserAccountOperation(userId);
 
   const { data: serverListRes } = useServerList();
   const serverList = serverListRes?.rows || [];
-  console.log(dataOne, dataTwo);
   return (
     <div className="flex flex-col gap-4">
       {agentAccountStats?.data && <AgentAccountInfo agentAccountData={agentAccountStats.data} />}

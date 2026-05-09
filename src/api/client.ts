@@ -35,8 +35,6 @@ export async function fetchWithAuth<T>(
     // redirect: 'manual',
   });
 
-  // console.log('response', response);
-
   // only handle the redirect which happen in the same domain, if there are some cross-domain redirect later, need to handle it differently
   if (response.redirected) {
     const redirectUrl = new URL(response.url).pathname;

@@ -8,6 +8,8 @@ import {
   AgentTradeRes,
   CreateCustomerFollowupParams,
   CustomerFollowupRes,
+  KycInfoProtocolRes,
+  KycInfoRes,
 } from './types';
 
 /**
@@ -114,5 +116,48 @@ export function useDeleteAgentCustomerFollowup() {
   return useMutation({
     mutationFn: (params: { id: string }) =>
       apiDelete(`/system/customerFollowUp/remove?id=${params.id}`),
+  });
+}
+/**
+ * 更新账户操作权限
+ */
+export function useEditAccountOperate() {
+  return useMutation({
+    mutationFn: (params: { id: string; permissionJson: string; crmAuthority: string }) =>
+      apiPost('/system/crmUser/editAccountOperate', params),
+  });
+}
+/**
+ * 获取kyc信息 2个人信息 3财务信息 4身份信息
+ */
+export function useGetKycColumnInfo(userId: string, type: '2' | '3' | '4') {
+  return useQuery({
+    queryKey: ['getKycColumnInfo', userId, type],
+    queryFn: () => apiGet<KycInfoRes>(`/system/crmUser/manageInfo/${type}/${userId}?from=1`),
+    enabled: !!userId,
+    staleTime: 0,
+    refetchOnMount: 'always',
+  });
+}
+/**
+ * 获取kyc信息-协议确认
+ */
+export function useGetKycInfoProtocolInfo(userId: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['getKycProtocolInfo', userId],
+    queryFn: () =>
+      apiGet<KycInfoProtocolRes>(
+        `/system/crmUserProtocolRelation/oneUserProtocol/${userId}?from=1`,
+      ),
+    enabled: !!userId && options.enabled,
+  });
+}
+/**
+ * 编辑kyc信息 2个人信息 3财务信息 4身份信息
+ */
+export function useEditKycColumnInfo(type: '2' | '3' | '4', userId: string) {
+  return useMutation({
+    mutationFn: (params: { id: string; columnValue: string }[]) =>
+      apiPost(`/system/crmUser/manage/${type}/${userId}`, params),
   });
 }

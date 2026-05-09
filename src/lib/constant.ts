@@ -6,6 +6,8 @@ export const serverMap: Record<string, string> = {
   '5': 'XOH',
 };
 
+export type KycStatus = 'pending' | 'success' | 'fail';
+
 export const transactionTypeMap: Record<number, string> = {
   0: 'Buy',
   1: 'Sell',
@@ -140,7 +142,7 @@ export const OperationMethodMap: Record<number, string> = {
   16: 'table.thirdPayment',
 };
 // -2 未提交，-1 2 审核中 0 拒绝，1 审核通过
-export const kycVerifyStatusMap: Record<number, string> = {
+export const kycVerifyStatusMap: Record<number, KycStatus> = {
   // ui状态只要 等待 成功 失败
   '-2': 'fail',
   '-1': 'pending',

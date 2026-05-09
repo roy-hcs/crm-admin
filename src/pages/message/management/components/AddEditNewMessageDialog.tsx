@@ -35,7 +35,7 @@ export const AddEditNewMessageDialog = ({
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   id?: string;
-  onSuccess: () => void;
+  onSuccess?: () => void;
   languageOptions: Array<{ label: string; value: string }>;
 }) => {
   const { t } = useTranslation();
@@ -188,7 +188,7 @@ export const AddEditNewMessageDialog = ({
       if (res.code === 0) {
         toast.success(t('common.success'));
         onClose(false);
-        onSuccess();
+        onSuccess?.();
       } else {
         toast.error(res.msg);
       }
@@ -214,7 +214,6 @@ export const AddEditNewMessageDialog = ({
   const onConfirm = async () => {
     switch (step) {
       case 'one': {
-        console.log(form.getValues(), 'form.getValues()');
         let ok;
         if (type === '2') {
           // 邮件通知需要校验sendEmails字段，其他的通知类型不需要校验这个字段
@@ -256,7 +255,6 @@ export const AddEditNewMessageDialog = ({
         if (receiveType === '3') {
           ok = await form.trigger(['accounts']);
         }
-        console.log(ok, 'ok');
         if (ok) {
           const selectLang = (form.getValues('language')?.split(',') || []).filter(Boolean);
           const title = form.getValues('title') || {};

@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { LabelItem } from '@/components/common/LabelItem';
 import { InfoItem } from '@/components/common/InfoItem';
 import { ImageZoom } from '@/components/common/ImageZoom';
-import { KycStatus, KycVerifyStatus } from '../components/KycVerifyStatus';
+import { KycVerifyStatus } from '../components/KycVerifyStatus';
+import { KycStatus } from '@/lib/constant';
 
 export type KycInfoSectionType = 'list' | 'mediaList' | 'cardList';
 

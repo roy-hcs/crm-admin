@@ -22,7 +22,7 @@ export const CrmAccountsDetail = () => {
         />
         <AgentTabsPage userId={userId || ''} />
       </div>
-      <div className="flex w-94 flex-col gap-6">
+      <div className="flex w-full flex-col gap-6 md:w-94">
         {crmUser && (
           <AgentUserCard
             crmUser={crmUser}

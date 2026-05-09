@@ -65,7 +65,13 @@
     "rebateSetting": "Rebate settings",
     "totalAccountNumber": "general account",
     "totalCustomerNumber": "total customers",
-    "commission": "commission"
+    "commission": "commission",
+    "followTimeTip": "If the follow-up time is not filled in, the default is to add the time",
+    "followup": "follow up",
+    "remind": "remind",
+    "remindTime": "reminder time",
+    "remindWay": "Follow up method",
+    "reminder": "remind people"
   },
   "common": {
     "AnErrorOccurred": "An error occurred",
@@ -271,7 +277,12 @@
     "cancelDefault": "cancel default",
     "default": "default",
     "netProfit": "net profit",
-    "yesterday": "yesterday"
+    "yesterday": "yesterday",
+    "deleteFieldConfirm": "Are you sure you want to delete {{field}}?",
+    "mail": "mail",
+    "siteMessage": "Site message",
+    "modifyFailed": "Modification failed",
+    "modifySuccess": "Modification successful"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -767,7 +778,8 @@
     "inviters": "Account superior",
     "demoAccountNumber": "Number of demo accounts",
     "realAccountNumber": "Number of real accounts",
-    "totalRebate": "Total rebate"
+    "totalRebate": "Total rebate",
+    "followTime": "follow up time"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1000,7 +1012,8 @@
     "financialInformation": "financial information",
     "identityInformation": "Identity Information-Basic",
     "personalInformation": "personal information",
-    "protocolConfirmation": "Agreement confirmation"
+    "protocolConfirmation": "Agreement confirmation",
+    "identityInformationSumsub": "Identity Information-Sumsub"
   },
   "binding": {
     "source": "Promotion invitation code",
@@ -1589,7 +1602,8 @@
     "maxSize": "The maximum size does not exceed {{maxSize}}MB",
     "phoneExists": "Mobile phone number has been registered",
     "userPwdTips": "8-20 English digits",
-    "nameAlreadyUsed": "The name already exists"
+    "nameAlreadyUsed": "The name already exists",
+    "timeShouldBeFuture": "{{field}} needs to be greater than the current time"
   },
   "messageTemplate": {
     "add": "Add message template",

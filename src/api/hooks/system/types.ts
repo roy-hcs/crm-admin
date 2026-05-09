@@ -807,11 +807,13 @@ export interface TagProgress {
 export interface UserKycTabRes {
   languages: InfoTypeItem[];
   bstatus: number;
+  breason: string;
   personalStatus: string;
   roles: Role[];
   realAccountNum: number;
   lastLogininfor: OperationsLogsItem | null;
   istatus: number;
+  ireason: string;
   protocolStatus: string;
   userInviter: string;
   tagProgress: TagProgress;
@@ -822,6 +824,7 @@ export interface UserKycTabRes {
   crmUser: CrmUser;
   mode: string;
   fstatus: number;
+  freason: string;
   userInviterName: string;
   identityStatus: string;
   financialStatus: string;

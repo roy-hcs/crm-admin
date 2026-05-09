@@ -1,7 +1,7 @@
+import { KycStatus } from '@/lib/constant';
 import { cn } from '@/lib/utils';
 import { CircleCheck, CircleX, Loader } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-export type KycStatus = 'pending' | 'success' | 'fail';
 export const KycVerifyStatus = ({
   status,
   statusText,

@@ -435,9 +435,6 @@ export const AgentUserCard = ({
         mode="add"
         crmUserId={crmUser?.id || ''}
         title={t('accountOpening.sendInformation')}
-        onSuccess={() => {
-          console.log('success');
-        }}
         open={open === 'sendMsg'}
         onOpenChange={v => {
           if (!v) setOpen(v ? 'sendMsg' : null);

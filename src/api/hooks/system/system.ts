@@ -618,7 +618,7 @@ export function useGetUserKycTab(userId: string) {
 export function useGetUserAccountOperation(userId: string) {
   return useQuery({
     queryKey: ['GetUserAccountOperation', userId],
-    queryFn: () => apiFormPostCustom<UserAccountOperationRes>(`/system/crmUser/manage/6/${userId}`),
+    queryFn: () => apiFormPost<UserAccountOperationRes>(`/system/crmUser/manage/6/${userId}`),
     enabled: !!userId,
   });
 }

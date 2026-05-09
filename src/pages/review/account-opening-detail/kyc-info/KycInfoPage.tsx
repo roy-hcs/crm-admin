@@ -8,7 +8,6 @@ import { KycInfoDetailItem, KycInfoStep } from './KycInfoDetail';
 import { KycInfoTimeline } from './KycInfoTimeline';
 import { useMemo } from 'react';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
-import { KycStatus } from '../components/KycVerifyStatus';
 import { kycVerifyStatusMap, kycVerifyStatusTextMap } from '@/lib/constant';
 import { useTranslation } from 'react-i18next';
 
@@ -78,7 +77,7 @@ export const KycInfoPage = ({ id }: { id: string }) => {
   const steps: kycInfoSteps = useMemo(() => {
     return [
       {
-        status: kycVerifyStatusMap[manageVerifyStatus] as KycStatus,
+        status: kycVerifyStatusMap[manageVerifyStatus],
         statusText: kycVerifyStatusTextMap[manageVerifyStatus],
         label: t('accountOpening.personalInformation'),
         content: '',
@@ -88,7 +87,7 @@ export const KycInfoPage = ({ id }: { id: string }) => {
         defaultExpanded: true,
       },
       {
-        status: kycVerifyStatusMap[financeVerifyStatus] as KycStatus,
+        status: kycVerifyStatusMap[financeVerifyStatus],
         statusText: kycVerifyStatusTextMap[financeVerifyStatus],
         label: t('accountOpening.financialInformation'),
         content: '',
@@ -97,7 +96,7 @@ export const KycInfoPage = ({ id }: { id: string }) => {
         detail: finance,
       },
       {
-        status: kycVerifyStatusMap[identityBasicVerifyStatus] as KycStatus,
+        status: kycVerifyStatusMap[identityBasicVerifyStatus],
         statusText: kycVerifyStatusTextMap[identityBasicVerifyStatus],
         label: t('accountOpening.identityInformation'),
         content: '',
@@ -107,7 +106,7 @@ export const KycInfoPage = ({ id }: { id: string }) => {
       },
       {
         // protocolVerifyStatus为true表示有协议未确认，状态为审核中；为false表示协议已确认，状态为审核通过
-        status: kycVerifyStatusMap[protocolVerifyStatus === true ? 0 : 1] as KycStatus,
+        status: kycVerifyStatusMap[protocolVerifyStatus === true ? 0 : 1],
         statusText: kycVerifyStatusTextMap[protocolVerifyStatus === true ? 0 : 1],
         label: t('accountOpening.protocolConfirmation'),
         content: '',

@@ -53,50 +53,51 @@ export const VarietyManagementForm = ({
   };
 
   const symbolCategoryData = useMemo(() => {
-    console.log('symbolCategoryDataRes', symbolCategoryDataRes);
     return symbolCategoryDataRes || [];
   }, [symbolCategoryDataRes]);
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      onKeyDown={e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          if (e.target instanceof HTMLTextAreaElement) return;
 
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormSelect
-            verticalLabel
-            name="symbolCategory"
-            label={t('varietyManagement.symbolCategory')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={symbolCategoryData.map(i => ({ label: i.dictLabel, value: i.dictValue }))}
-          />
+          e.preventDefault();
+          form.handleSubmit(onSubmit)();
+        }
+      }}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormSelect
+        verticalLabel
+        name="symbolCategory"
+        label={t('varietyManagement.symbolCategory')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={symbolCategoryData.map(i => ({ label: i.dictLabel, value: i.dictValue }))}
+      />
 
-          <FormInput
-            verticalLabel
-            name="symbol"
-            label={t('varietyManagement.symbol')}
-            placeholder={t('common.pleaseInput', {
-              field: t('varietyManagement.symbol'),
-            })}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" loading={loading}>
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <FormInput
+        verticalLabel
+        name="symbol"
+        label={t('varietyManagement.symbol')}
+        placeholder={t('common.pleaseInput', {
+          field: t('varietyManagement.symbol'),
+        })}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" loading={loading}>
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

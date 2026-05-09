@@ -110,8 +110,6 @@ export const LoginForm = ({
   }, []);
 
   const onSubmit = async (values: LoginFormValues) => {
-    // console.log('LoginForm onSubmit values:', values);
-    // return;
     try {
       const submittedValues = { ...values };
       if (loginType === 1) {

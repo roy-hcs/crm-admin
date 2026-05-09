@@ -132,3 +132,121 @@ export type CreateCustomerFollowupParams = {
   remindWay: string;
   remindTime: string;
 };
+export interface ColumnItem {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: number;
+  columnBelong: number;
+  columnSource: number;
+  columnType: number;
+  columnLength: string | null;
+  status: boolean;
+  require: boolean;
+  occupyNum: number;
+  sort: number;
+  columnName: string;
+  language: string | null;
+  columnValue: string | null;
+  linkIds: string;
+  columnNames: string | null;
+  options: ColumnOption[];
+}
+
+export interface ColumnOption {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: string;
+  columnId: number;
+  optionName: string;
+  optionLink: string | null;
+  sort: number;
+  selected: string | null;
+  optionItems: string | null;
+}
+export interface KYCInfoItem {
+  id: string | null;
+  userId: string | null;
+  userName: string | null;
+  userLastName: string | null;
+  userShowId: string | null;
+  infoType: string | null;
+  status: number;
+  subTime: string | null;
+  verifyUser: string | null;
+  vUserName: string | null;
+  vUserLastName: string | null;
+  verifyTime: string | null;
+  remark: string | null;
+  verifyStep: string | null;
+  verifyUserName: string | null;
+  sumsubId: string | null;
+  sumsubName: string;
+  params: string | null;
+}
+export type KycInfoRes = {
+  bVerifyId: string;
+  countryId: string;
+  fVerifyId: string;
+  iVerifyId: string;
+  mockAccountNum: number;
+  mode: string; // Sumsub | Basic
+  realAccountNum: number;
+  totalRebate: number;
+  userId: string;
+  userInviter: string;
+  userInviterName: string;
+  userLanguage: string;
+  verifyStatus: number;
+  tagProgress: TagProgress;
+  roles: RoleItem[];
+  lastLogininfor: OperationsLogsItem | null;
+  languages: InfoTypeItem[];
+  crmUser: CrmUser;
+  countryList: Country[];
+  columns: ColumnItem[];
+  KYCInfo: KYCInfoItem[];
+};
+export interface KycInfoProtocolRes {
+  iVerifyId: string | null;
+  fVerifyId: string | null;
+  from: number;
+  bVerifyId: string | null;
+  allProtocol: ProtocolItem[];
+}
+
+export interface ProtocolItem {
+  createBy: string | null;
+  createTime: string;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: {
+    read: boolean;
+    time: string;
+  };
+  id: string;
+  protocolName: string;
+  status: number;
+  sort: string | null;
+  content: string;
+  type: number;
+  filesCount: number | null;
+  contentType: number;
+  fileUrl: string;
+  supportLanguage: number;
+  languages: string | null;
+  languagesStr: string | null;
+  countryId: string | null;
+  countryNameStr: string | null;
+  signatureUrl: string | null;
+  // 从源代码来看，这个url似乎是个json，内容应该是{url: string; name: string}[]，需要转换后才能使用
+  enclosureUrl: string | null;
+}

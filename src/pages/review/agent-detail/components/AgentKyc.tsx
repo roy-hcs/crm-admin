@@ -7,12 +7,10 @@ import {
 import { KycInfoTimeline } from '../../account-opening-detail/kyc-info/KycInfoTimeline';
 import { AgentReviewDetailRes } from '@/api/hooks/review/types';
 import { kycVerifyStatusMap, kycVerifyStatusTextMap } from '@/lib/constant';
-import { KycStatus } from '../../account-opening-detail/components/KycVerifyStatus';
 
 type kycInfoSteps = KycInfoStep[];
 
 export const AgentKyc = ({ detail }: { detail: AgentReviewDetailRes['data'] }) => {
-  console.log('detail', detail);
   const { t } = useTranslation();
   const createTime = detail?.detail?.createTime || '';
   const userName = detail?.detail?.userName || '';
@@ -68,7 +66,7 @@ export const AgentKyc = ({ detail }: { detail: AgentReviewDetailRes['data'] }) =
   const steps: kycInfoSteps = useMemo(() => {
     return [
       {
-        status: kycVerifyStatusMap[verifyStatus] as KycStatus,
+        status: kycVerifyStatusMap[verifyStatus],
         statusText: kycVerifyStatusTextMap[verifyStatus],
         label: t('reviewAgent.agentInfo'),
         content: '',
@@ -78,7 +76,7 @@ export const AgentKyc = ({ detail }: { detail: AgentReviewDetailRes['data'] }) =
         defaultExpanded: true,
       },
       {
-        status: kycVerifyStatusMap[crmIinfoVerifyStatus] as KycStatus,
+        status: kycVerifyStatusMap[crmIinfoVerifyStatus],
         statusText: kycVerifyStatusTextMap[crmIinfoVerifyStatus],
         label: t('accountOpening.identityInformation'),
         content: '',
