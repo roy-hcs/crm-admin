@@ -33,7 +33,6 @@ export const RebateRuleFormStep3 = ({
               setSelectedLanguageOptions(v);
             }}
             value={selectedLanguageOptions}
-            labelClassName="font-medium"
             checkItems={(languageList || [])
               .filter(item => item.isDefault === 'N')
               .map(item => ({

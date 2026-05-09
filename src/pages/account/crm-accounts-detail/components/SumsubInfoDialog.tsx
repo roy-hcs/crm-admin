@@ -1,7 +1,5 @@
 import { useGetKycColumnInfo } from '@/api/hooks/agent/agent';
 import { RrhDialog } from '@/components/common/RrhDialog';
-import { kycVerifyStatusMap, kycVerifyStatusTextMap } from '@/lib/constant';
-import { KycVerifyStatus } from '@/pages/review/account-opening-detail/components/KycVerifyStatus';
 import { useTranslation } from 'react-i18next';
 
 export const SumsubInfoDialog = ({
@@ -27,10 +25,10 @@ export const SumsubInfoDialog = ({
         {kycInfo.map(info => (
           <div key={info.sumsubName} className="bg-accent flex gap-4 rounded-lg p-4">
             <div className="text-lg font-semibold">{info.sumsubName}</div>
-            <KycVerifyStatus
+            {/* <KycVerifyStatus
               status={kycVerifyStatusMap[info.status]}
               statusText={kycVerifyStatusTextMap[info.status]}
-            />
+            /> */}
           </div>
         ))}
       </div>

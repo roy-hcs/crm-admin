@@ -33,7 +33,7 @@ export function RrhStatusAlert<T>({
   return (
     <>
       <Switch
-        className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
+        className="h-5 w-9 cursor-pointer bg-white data-[state=checked]:border-green-500 data-[state=checked]:bg-green-500"
         checked={checked}
         onClick={() => setIsOpen(true)}
       />

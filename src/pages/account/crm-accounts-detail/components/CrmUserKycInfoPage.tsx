@@ -1,8 +1,6 @@
 import { useGetUserKycTab } from '@/api/hooks/system/system';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhCard } from '@/components/common/RrhCard';
-import { kycVerifyStatusMap, kycVerifyStatusTextMap } from '@/lib/constant';
-import { KycVerifyStatus } from '@/pages/review/account-opening-detail/components/KycVerifyStatus';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EditKycInfoDialog } from './EditKycInfoDialog';
@@ -41,10 +39,10 @@ export const CrmUserKycInfoPage = ({ userId }: { userId: string }) => {
           <div className="flex items-center justify-between">
             <div className="flex gap-2">
               <div>{t('accountOpening.personalInformation')}</div>
-              <KycVerifyStatus
+              {/* <KycVerifyStatus
                 status={kycVerifyStatusMap[kycInfo.bstatus]}
                 statusText={kycVerifyStatusTextMap[kycInfo.bstatus]}
-              />
+              /> */}
             </div>
             <div className="flex gap-2">
               <RrhButton
@@ -72,10 +70,10 @@ export const CrmUserKycInfoPage = ({ userId }: { userId: string }) => {
           <div className="flex items-center justify-between">
             <div className="flex gap-2">
               <div>{t('accountOpening.financialInformation')}</div>
-              <KycVerifyStatus
+              {/* <KycVerifyStatus
                 status={kycVerifyStatusMap[kycInfo.fstatus]}
                 statusText={kycVerifyStatusTextMap[kycInfo.fstatus]}
-              />
+              /> */}
             </div>
             <div className="flex gap-2">
               <RrhButton
@@ -107,10 +105,10 @@ export const CrmUserKycInfoPage = ({ userId }: { userId: string }) => {
                   ? t('accountOpening.identityInformationSumsub')
                   : t('accountOpening.identityInformation')}
               </div>
-              <KycVerifyStatus
+              {/* <KycVerifyStatus
                 status={kycVerifyStatusMap[kycInfo.istatus]}
                 statusText={kycVerifyStatusTextMap[kycInfo.istatus]}
-              />
+              /> */}
             </div>
             <div className="flex gap-2">
               {kycInfo.mode !== 'Sumsub' && (

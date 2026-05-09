@@ -1,10 +1,11 @@
 import { PerformanceFeeRecordPage } from '@/pages/copy-trading/performance-fee-record/PerformanceFeeRecordPage';
 import { OrderManagementPage } from '@/pages/copy-trading/order-management/OrderManagementPage';
-import { CopyTradingSettingsPage } from '@/pages/copy-trading/settings/CopyTradingSettingsPage';
+import { AgreementSettingsPage } from '@/pages/copy-trading/agreement-settings/AgreementSettingsPage';
 import { SignalReviewPage } from '@/pages/copy-trading/signal-review/SignalReviewPage';
 import { SignalsPage } from '@/pages/copy-trading/signals/SignalsPage';
 import { VarietyManagementPage } from '@/pages/copy-trading/variety-management/VarietyManagementPage';
 import { RouteObject } from 'react-router-dom';
+import { SettingsPage } from '@/pages/copy-trading/settings/SettingsPage';
 
 /**
  * Copy Trading routes - corresponds to "CopyTrading" menu item
@@ -37,11 +38,15 @@ export const copyTradingRoutes: RouteObject[] = [
   },
   {
     path: '/copy-trading/agreement-settings',
-    element: <CopyTradingSettingsPage />,
+    element: <AgreementSettingsPage />,
   },
   {
     path: '/copy-trading/order-management',
     element: <OrderManagementPage />,
+  },
+  {
+    path: '/copy-trading/settings',
+    element: <SettingsPage />,
   },
   // TODO: Add routes as pages are developed
   /*

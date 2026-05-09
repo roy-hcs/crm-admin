@@ -167,3 +167,116 @@ export type AdsDetail = {
     languageList: string | null;
   };
 };
+export type NetBonusRewardReportsListParams = BasicParams & {
+  status?: number;
+  orderNo?: string;
+  bonusUser?: string;
+  params: {
+    beginTime?: string;
+    endTime?: string;
+    beginBonusTime?: string;
+    endBonusTime?: string;
+  };
+};
+
+export interface NetBonusRewardReportsRes {
+  total: string;
+  rows: NetBonusRewardItem[];
+  code: number;
+  msg: string | null;
+  totalVolume: number;
+  totalCommission: number;
+  totalProfit: number;
+  totalSwaps: number;
+  priceSum: number;
+  serverType: string;
+}
+
+export interface NetBonusRewardItem {
+  createTime: string;
+  updateTime: string;
+  createBy: string;
+  updateBy: string;
+  remark: string;
+  params: Record<string, string>;
+  id: string;
+  orderNo: string;
+  bonusMonth: number;
+  bonusMonthStr: string;
+  avgNetReward: number;
+  personalAvgNet: number | null;
+  tierNet: number | null;
+  rewardParam: number;
+  bonusType: number;
+  bonusAmount: number;
+  actualAmount: number;
+  bonusBase: string;
+  bonusUser: string;
+  account: string;
+  accountName: string;
+  serverId: string | null;
+  status: number;
+  distributionTime: string;
+  bonusBaseName: string;
+  bonusBaseShowId: string;
+  bonusUserName: string;
+  bonusUserShowId: string;
+  verifyStep: string;
+  verifyUserName: string | null;
+  deleteFlag: string;
+  bonusBaseAccountType: string;
+  bonusUserAccountType: string;
+}
+
+export type NetBonusRewardReportsTotal = {
+  bonusAmount: number;
+  actualAmount: number;
+}[];
+export type NetBonusRewardStatisticsListParams = BasicParams & {
+  userName?: string;
+  accountType?: string;
+  bonusMonth?: string;
+  params: {
+    beginTime?: string;
+    endTime?: string;
+    agentUserId?: string;
+    drirectFlag?: 'a' | 'd';
+  };
+};
+
+export interface NetBonusRewardStatisticsRes {
+  total: string;
+  rows: NetBonusRewardRow[];
+  code: number;
+  msg: string | null;
+  totalVolume: number;
+  totalCommission: number;
+  totalProfit: number;
+  totalSwaps: number;
+  priceSum: number;
+  serverType: string | null;
+}
+
+export interface NetBonusRewardRow {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: string;
+  userId: string;
+  bonusMonth: number;
+  personalAvgNet: number;
+  tierAvgNet: number;
+  avgNetReward: number | null;
+  rewardParam: number;
+  fixedParam: number;
+  expectedBonus: number | null;
+  actualBonus: number | null;
+  statisticsTime: string;
+  statisticsTimeRange: number;
+  userName: string;
+  accountType: string;
+  showId: string;
+}

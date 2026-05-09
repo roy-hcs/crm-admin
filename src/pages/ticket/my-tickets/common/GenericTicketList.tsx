@@ -21,6 +21,7 @@ import { useRoleList, useUserList } from '@/api/hooks/system';
 import { toast } from 'sonner';
 import { CloseOrderDialog } from '../../ticket-list/components/CloseOrderDialog';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
+import { useTabActions } from '@/hooks/useTabActions';
 
 type Props = {
   mode: TicketTabsParams;
@@ -80,6 +81,20 @@ export const GenericTicketList: React.FC<Props> = ({
         return true;
     }
   }, [mode]);
+
+  const { openTab } = useTabActions();
+
+  const goToDetail = useCallback(
+    (row: CrmTicketItem) => {
+      const url = `/ticket/detail?id=${row.id}`;
+      openTab({
+        key: url,
+        title: t('ticketList.ticketDetail'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
 
   const allColumns: CRMColumnDef<CrmTicketItem, unknown>[] = [
     {
@@ -203,8 +218,7 @@ export const GenericTicketList: React.FC<Props> = ({
           ]}
           callToAction={action => {
             if (action === 'view') {
-              // setEditingItem(row.original);
-              // setOpen(true);
+              goToDetail(row.original);
             } else if (action === 'delete') {
               setParams({ ids: row.original.id ? String(row.original.id) : '' });
               setTipsText(t('ticketList.deleteTips'));

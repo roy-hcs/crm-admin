@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useEditCrmUserInfo } from '@/api/hooks/system/system';
 import { InfoItem } from '@/components/common/InfoItem';
 import { LabelItem } from '@/components/common/LabelItem';
@@ -17,6 +17,7 @@ import { EditRemarkDialog } from './EditRemarkDialog';
 import { Country, CrmUser, InfoTypeItem, Role } from '@/api/hooks/system';
 import { RiskBadge } from '@/components/common/RiskBadge';
 import { OperationsLogsItem } from '@/api/hooks/monitor/type';
+import { useGetEmailConfig, useMsgTemplateList } from '@/api/hooks/message';
 
 type DialogType = 'password' | 'fundPassword' | 'sendMsg' | null;
 
@@ -54,6 +55,8 @@ export const AgentUserCard = ({
   // const { data: profileRes, refetch } = useGetUserProfile(userId);
   const { openTab } = useTabActions();
   const { mutate: editCrmUserInfo } = useEditCrmUserInfo();
+  const { data: emailList } = useGetEmailConfig();
+  const { data: msgTemplateList } = useMsgTemplateList({});
 
   // const userProfileData = profileRes?.data;
   const [open, setOpen] = useState<DialogType>(null);
@@ -129,6 +132,24 @@ export const AgentUserCard = ({
     }
     setFormValues(prev => ({ ...prev, [key]: newVal }));
   };
+  const emailOptions = useMemo(
+    () =>
+      emailList?.data?.map(i => ({
+        label: i.email,
+        value: i.id,
+      })) || [],
+    [emailList],
+  );
+
+  const msgTemplateOptions = useMemo(
+    () =>
+      msgTemplateList?.rows?.map(i => ({
+        label: i.title || '',
+        value: i.id || '',
+        content: i.content || '',
+      })) || [],
+    [msgTemplateList?.rows],
+  );
 
   const roleOptions = roles.map(r => ({
     label: r.roleName || '',
@@ -440,6 +461,8 @@ export const AgentUserCard = ({
           if (!v) setOpen(v ? 'sendMsg' : null);
         }}
         languageOptions={languageOptions}
+        emailOptions={emailOptions}
+        msgTemplateOptions={msgTemplateOptions}
       />
       <EditRemarkDialog
         open={editOpen}

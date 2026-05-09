@@ -1,4 +1,5 @@
 import { BasicParams, BasicRes, BaseEntity } from '../../types';
+import { ServerItem } from '../system/types';
 
 export type CrmDealGoodsListParams = BasicParams & {
   isAsc?: 'asc' | 'desc';
@@ -222,4 +223,126 @@ export type GoodsClassificationDetail = {
   language: string | null;
   searchName: string | null;
   classificationLanguageId: string | null;
+};
+
+export type PointsConfigBusinessTypeKey = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8';
+
+export type PointsConfigSettingItem = BaseEntity & {
+  id: string;
+  businessType: number;
+  subType: number | null;
+  bonusPoints: number;
+  bonusBasis: number | null;
+  cappedPoints: number;
+  cappedTimeUnit: number;
+  dealServer: string | null;
+  dealBreed: string | null;
+  delFlag: boolean;
+  multipleRewards: number | null;
+};
+
+export type PointsConfigRes = {
+  code: number;
+  data: {
+    productExchangeEnable: string;
+    pointsDigits: string;
+    selected: string;
+    status: string;
+    settingsData: Partial<Record<PointsConfigBusinessTypeKey, PointsConfigSettingItem[]>>;
+    deductionDays: string;
+    deductionRatio: string;
+    allRoles: Array<{
+      roleId: string;
+      roleName: string;
+    }>;
+    allTags: Array<{
+      id: string;
+      tagName: string;
+    }>;
+    allSysUser: Array<{
+      userId: string;
+      wholeName: string;
+    }>;
+    roleIds: string[];
+    exemptRoleIds: string[];
+    exemptTagIds: string[];
+    mindUserIds: string[];
+    subscription: {
+      endTime?: string;
+      remainingDays?: number;
+      startTime?: string;
+      status?: number;
+      totalDay?: number;
+    };
+    mtServiceList: Array<ServerItem>;
+  };
+};
+
+export type PointsSubscription = PointsConfigRes['data']['subscription'];
+
+export type PointsIntroRes = {
+  code: number;
+  data: {
+    infoList: Array<{
+      id: string | null;
+      language: string | null;
+      languageName: string | null;
+      pointsIntro: string | null;
+    }>;
+  };
+};
+
+type EditPointsConfigCommonItem = {
+  id: string;
+  bonusPoints: string;
+  cappedPoints: string;
+  cappedTimeUnit: string;
+};
+
+type EditPointsConfigTransactionItem = EditPointsConfigCommonItem & {
+  businessType: '2' | '7';
+  dealServer: string;
+  dealBreed: string;
+  bonusBasis: string;
+};
+
+type EditPointsConfigCommissionItem = EditPointsConfigCommonItem & {
+  businessType: '8';
+  subType: string;
+  bonusBasis?: string;
+};
+
+export type EditPointsConfigItem =
+  | (EditPointsConfigCommonItem & {
+      businessType: '1' | '6';
+      bonusBasis: string;
+    })
+  | EditPointsConfigTransactionItem
+  | (EditPointsConfigCommonItem & {
+      businessType: '3' | '5';
+    })
+  | (EditPointsConfigCommonItem & {
+      businessType: '4';
+      multipleRewards: string | number;
+    })
+  | EditPointsConfigCommissionItem;
+
+export type EditPointsConfig = {
+  selectedValues: string[];
+  configList: EditPointsConfigItem[];
+  pointsDigits: string;
+  productExchangeEnable: string;
+  roleIds: string[];
+  mindUserIds: string[];
+  deductionDays: string;
+  deductionRatio: string;
+  exemptRoles: string[];
+  exemptTags: string[];
+  intervalMode: string;
+  globalIntervalValue: string;
+  groupIntervalConfigs: Array<{
+    serverId: string;
+    group: string;
+    timeInterval: string;
+  }>;
 };

@@ -318,3 +318,30 @@ export const formatMoneyNumber = (value: number | string, significantDigits = 2)
     Number(value),
   );
 };
+
+/**
+ * 规范化百分比输入，允许用户输入过程中出现的中间状态（如 "0."），最终结果限制在0-100之间，且最多两位小数。
+ */
+export function normalizePercentageInput(value: string) {
+  const raw = value.replace(/[^\d.]/g, '');
+  if (!raw) return '';
+
+  const firstDotIndex = raw.indexOf('.');
+  const normalized =
+    firstDotIndex === -1
+      ? raw
+      : `${raw.slice(0, firstDotIndex + 1)}${raw.slice(firstDotIndex + 1).replace(/\./g, '')}`;
+
+  // Allow typing intermediate states such as "0." before final decimals are entered.
+  if (!/^\d+(\.\d{0,2})?$/.test(normalized)) {
+    return normalized.includes('.') ? normalized.slice(0, normalized.indexOf('.') + 3) : normalized;
+  }
+
+  if (normalized === '.') return '';
+
+  const numericValue = Number(normalized);
+  if (Number.isNaN(numericValue)) return '';
+  if (numericValue > 100) return '100';
+
+  return normalized;
+}

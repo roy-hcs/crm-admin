@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { useTicketList, useTicketRemove } from '@/api/hooks/ticket/ticket';
@@ -24,6 +24,7 @@ import { CloseOrderDialog } from '../components/CloseOrderDialog';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 import { AddTicketDialog } from '../components/AddTicketDialog';
 import { RrhFollowAlert } from '@/components/common/RrhFollowAlert';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export const TicketAll = () => {
   const { t } = useTranslation();
@@ -73,6 +74,20 @@ export const TicketAll = () => {
     setPageNum(0);
     setPageSize(10);
   };
+
+  const { openTab } = useTabActions();
+
+  const goToDetail = useCallback(
+    (row: CrmTicketItem) => {
+      const url = `/ticket/detail?id=${row.id}`;
+      openTab({
+        key: url,
+        title: t('ticketList.ticketDetail'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
 
   const allColumns: CRMColumnDef<CrmTicketItem, unknown>[] = [
     {
@@ -215,8 +230,7 @@ export const TicketAll = () => {
           ]}
           callToAction={action => {
             if (action === 'view') {
-              // setEditingItem(row.original);
-              // setOpen(true);
+              goToDetail(row.original);
             } else if (action === 'delete') {
               setParams({ ids: row.original.id ? String(row.original.id) : '' });
               setTipsText(t('ticketList.deleteTips'));

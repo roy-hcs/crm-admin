@@ -46,6 +46,7 @@ import {
   EditCrmUserInfoParams,
   UserTagProgressRes,
   UserKycTabRes,
+  CrmUserInfo,
 } from './types';
 import { UserAccountOperationRes, UserRebateAccountTabRes } from '../agent/types';
 
@@ -650,5 +651,16 @@ export function useEditUserRemark() {
 export function useEditCrmUserInfo() {
   return useMutation({
     mutationFn: (params: EditCrmUserInfoParams) => apiFormPost('/system/crmUser/edit', params),
+  });
+}
+//
+
+/**
+ * 获取用户信息
+ */
+export function useGeCrmUserInfo(userId: string) {
+  return useQuery({
+    queryKey: ['GetUserInfo', userId],
+    queryFn: () => apiGetCustom<CrmUserInfo>(`/system/crmUser/getUserInfo?id=${userId}`),
   });
 }

@@ -8,10 +8,14 @@ export const SelectUpperDropdown = ({
   name = 'accounts',
   rawLabel,
   customMapOptions,
+  labelShow = true,
+  className = '',
 }: {
   name?: 'inviter' | 'accounts' | string;
   rawLabel?: string;
   customMapOptions?: (item: CrmUserItem) => { value: string; label: string };
+  labelShow?: boolean;
+  className?: string;
 }) => {
   const { t } = useTranslation();
   const label = rawLabel ?? t('CRMAccountPage.AccountRange');
@@ -79,32 +83,30 @@ export const SelectUpperDropdown = ({
       name={name}
       render={({ field }) => {
         return (
-          <FormItem>
+          <FormItem className={className}>
             <div className="grid gap-2">
-              <FormLabel className="h-5 leading-5">{label}</FormLabel>
-              <div>
-                <FormControl>
-                  <RrhSearchSelect<CrmUserParams, CrmUserItem>
-                    fetchFunction={fetchFunction}
-                    mapOption={mapOption}
-                    params={params}
-                    buildSearchParams={buildInviterSearchParams}
-                    getNextParams={getInviterNextParams}
-                    value={field.value}
-                    onSelect={(option: { value: string; label: string }) => {
-                      if (name === 'inviter') {
-                        field.onChange(option.value);
-                      } else {
-                        const data = {
-                          id: option.value,
-                          label: option.label,
-                        };
-                        field.onChange(JSON.stringify(data));
-                      }
-                    }}
-                  />
-                </FormControl>
-              </div>
+              {labelShow && <FormLabel className="h-5 leading-5">{label}</FormLabel>}
+              <FormControl>
+                <RrhSearchSelect<CrmUserParams, CrmUserItem>
+                  fetchFunction={fetchFunction}
+                  mapOption={mapOption}
+                  params={params}
+                  buildSearchParams={buildInviterSearchParams}
+                  getNextParams={getInviterNextParams}
+                  value={field.value}
+                  onSelect={(option: { value: string; label: string }) => {
+                    if (name === 'inviter') {
+                      field.onChange(option.value);
+                    } else {
+                      const data = {
+                        id: option.value,
+                        label: option.label,
+                      };
+                      field.onChange(JSON.stringify(data));
+                    }
+                  }}
+                />
+              </FormControl>
             </div>
             <FormMessage />
           </FormItem>

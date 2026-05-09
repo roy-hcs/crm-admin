@@ -282,7 +282,10 @@
     "mail": "mail",
     "siteMessage": "Site message",
     "modifyFailed": "Modification failed",
-    "modifySuccess": "Modification successful"
+    "modifySuccess": "Modification successful",
+    "submit": "submit",
+    "piece": "indivual",
+    "points": "point"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -779,7 +782,16 @@
     "demoAccountNumber": "Number of demo accounts",
     "realAccountNumber": "Number of real accounts",
     "totalRebate": "Total rebate",
-    "followTime": "follow up time"
+    "followTime": "follow up time",
+    "actualDisbursedAmount": "Actual amount",
+    "disbursedTime": "Release time",
+    "rewardTime": "bonus time",
+    "fixedParams": "Fixed parameters",
+    "rewardParams": "Reward parameters",
+    "tieredAccrualReward": "Tiered accrual awards",
+    "tieredAverageNetDeposit": "Tiered Average Net Deposit",
+    "timeRangeOfStatistics": "Data statistics time range",
+    "underTheUmbrella": "Under the umbrella"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -944,7 +956,8 @@
     "title": "Agent audit",
     "agentInfo": "Agent information",
     "havingAgent": "Have you ever engaged in agency business?",
-    "reviewAgentDetail": "Agent review details"
+    "reviewAgentDetail": "Agent review details",
+    "viewCrmUserDetail": "View user information"
   },
   "depositRebateReview": {
     "title": "Deposit Rebate Review",
@@ -1435,7 +1448,11 @@
     "closeTicket": "Close ticket",
     "deleteSelectedTips": "Are you sure you want to delete the selected {{count}} pieces of data?",
     "deleteTips": "Are you sure you want to delete this work order?",
-    "selectedTickets": "{{count}} tickets selected"
+    "selectedTickets": "{{count}} tickets selected",
+    "confirmDeleteReply": "OK to delete reply",
+    "lastModifiedTime": "last modified time",
+    "ticketDetail": "Work order details",
+    "ticketReply": "Ticket reply"
   },
   "commissionReview": {
     "commission": "Commission",
@@ -1681,5 +1698,181 @@
     "setDefaultTemplateTip": "Users who have not set a rebate will use the default rebate template to rebate.",
     "templateName": "Template name",
     "tradingRebateSettingsTemplate": "Trading rebate template"
+  },
+  "copyTradingSettings": {
+    "Wallet": "Wallet(USD)",
+    "addSignalPermSwitch": "User permission to create signal source",
+    "addSignalPermSwitchDesc": "Allow users to create sources?",
+    "allowedSignalSelfRebateSet": "Signal source setting performance fee rebate",
+    "allowedSignalSelfRebateSetDesc": "Allow signal source authors to set their own superior/agent performance fee rebates",
+    "chargingMethod": "Charging method",
+    "chargingMethodDesc": "The optional charging methods for signal source creators currently only support subscription fees and performance fees. We will provide \"transaction volume fees\" in the future.",
+    "chargingMethodOptions": {
+      "1": "Subscription fee",
+      "2": "performance fee",
+      "3": "Volume charges"
+    },
+    "collection": "Subscription fee collection account",
+    "collectionDesc": "Optional collection account when settling the signal source (select at least one)",
+    "dealAccountPasswordSwitch": "Trading account password modification permission",
+    "directionFollowingSwitch": "Directional follow-up",
+    "enterExtraReward": "Please enter additional rewards",
+    "feeConfig": "Cost allocation",
+    "loyaltyLevel": "loyalty level",
+    "loyaltyLevelDesc": "Provide additional copy trading rewards to loyal customers/IB agents.",
+    "loyaltyReward": "loyalty rewards",
+    "managementFeeSwitch": "management fee",
+    "managementFeeSwitchDesc": "A certain percentage of platform management fees will be charged for each completed subscription order.",
+    "multipleNumberSwitch": "Multiples/lots to follow",
+    "payMethod": "Subscription fee payment",
+    "payMethodDesc": "Account types that can be used to pay subscription fees (If you want to use a trading account as the account for subscription fees, please contact the after-sales support consultant to open it.)",
+    "performanceFeeRebatBonus": "Performance fee rebate bonus",
+    "performanceFeeRebatBonusTip": "When customers under the umbrella settle performance fee rebates, loyal customers will receive additional rewards on top of the original rebate rewards. \nFor example, net performance fee = 100USD, you can get 2% basic commission reward. \nBut since you are a loyal customer of Level3 and can get an additional 3% reward, then you will get 100*(2% 3%) = 5USD reward, of which 3USD is the loyalty reward.",
+    "performanceFeeRebate": "Performance fee rebate",
+    "performanceFeeRebateAutoApprove": "Performance fee rebate without review",
+    "performanceFeeRebateAutoApproveDesc": "After the performance fee rebate order is created, it does not require manual review and can be passed directly without review.",
+    "performanceFeeRebateDesc": "The net performance fee collected (the part minus the management fee) will be used first for agent/superior rebate commission.\n\nPerformance fee = platform management fee, agent profit sharing, management fee | Performance fee due to the signal source = performance fee - platform management fee - agent commission",
+    "performanceFeeRebateSwitch": "Basic settings",
+    "performanceFeeReduce": "Earn more profits from copy trading",
+    "performanceFeeReduceTip": "When you get profits from following orders, you will get more profits from following orders. \nFor example, you should receive 1,000USD of copying income in this period and pay a performance fee of 200USD. If you are a loyal customer Level 3, you can get an additional 2% of the copying income. The original income is 800USD and the current income is 816USD. The additional 2% of 16USD is additional profit.",
+    "platformManagementFeeRatio": "Platform management fee ratio",
+    "platformManagementFeeRatioPlaceholder": "0-100, supports up to two decimal places",
+    "rabateUpperType": "Rebate to superior/agent",
+    "rabateUpperTypeDesc": "Direct agent: the direct agent of the trading account | Superior: the superior of the CRM account to which the trading account belongs",
+    "rabateUpperTypeOptions": {
+      "1": "Direct agent",
+      "2": "Superior"
+    },
+    "rebateLevel": "Level of rebate",
+    "rebateLevelDesc": "When giving back commissions, give commissions to several levels of agents (no more than 8)",
+    "rebateParamsSetting": "Rebate parameter settings",
+    "rebateParamsSettingDesc": "Set rebate parameter ratios for superiors/agents at each level based on the rebate level\n \nThe order of commission rebate is Level 1-3, from nearest to far.\n \nRebate amount = performance fee * commission ratio",
+    "rebateTarget": "Rebate objects (multiple choices)",
+    "rebateTargetDesc": "Performance fee rebates will be implemented only for the target audience.",
+    "rebateTargetOptions": {
+      "1": "user",
+      "2": "acting",
+      "3": "business",
+      "4": "Sale"
+    },
+    "refundSwitch": "End subscription refund",
+    "refundSwitchDesc": "Will a refund be given if the user terminates the subscription early?",
+    "refundSwitchDescDetail": "There will be no refund if the subscription fee is less than 1.00USD. The accuracy of the refund amount is 2 digits.",
+    "selectiveFollowingSwitch": "Selective follow-up",
+    "signalAddModelSwitch": "Demo account for signal source creation",
+    "signalAddModelSwitchDesc": "Are demo accounts allowed for source creation?",
+    "signalAuditSwitch": "Signal source review",
+    "signalAuditSwitchDesc": "Do signal sources created by users need to be reviewed by the administrator?",
+    "signalAuthorShow": "Signal source author display",
+    "signalAuthorShowDesc": "The signal source author is displayed on the details page",
+    "signalSourceFeeSwitch": "Signal source cost",
+    "signalSourceFeeSwitchDesc": "Whether signal source authors are allowed to charge fees for opening up signal sources",
+    "subscribeToOrder": "Subscription trading account restrictions",
+    "subscribeToOrderOptions": {
+      "1": "Use existing trading account",
+      "2": "Create new trading account"
+    },
+    "subscribeToOrderTip": "Use an existing trading account: Use an existing trading account to subscribe.\n \nCreate a new trading account: When following orders, you need to create a trading account in the same group as the signal source.",
+    "subscriptionSettings": "Subscription and follow-up settings",
+    "title": "Basic settings",
+    "trackingMethod": "Follow-up method",
+    "trackingMethodOptions": {
+      "1": "multiple",
+      "2": "Fixed lot size",
+      "3": "Net worth ratio"
+    },
+    "unifiedSetting": "Unified settings",
+    "unifiedSettingDesc": "When the signal source turns on the performance fee rebate and does not set the performance fee rebate parameters separately, the system will execute the rebate according to the default parameter settings below."
+  },
+  "netBonus": {
+    "netBonusRewardReport": "Net Deposit Bonus Report"
+  },
+  "pointsMallSettings": {
+    "agentCustomerDeposit": "Deposit funds under the agent’s name",
+    "agentCustomerDepositDesc": "If the deposit under the agent's name is successful, you will be rewarded with points (the account type for the reward must be an IB agent)",
+    "agentCustomerTransaction": "Transactions for clients under the agent’s name",
+    "agentCustomerTransactionDesc": "The direct agent of the trading account will be rewarded for the closing order of the client's transaction corresponding to the trading server and type under the agent's name (only the first level will be rewarded)",
+    "cappedPointsPerTime": "Cap points/time",
+    "cappedTimeUnitOptions": {
+      "1": "No limit",
+      "2": "every calendar month"
+    },
+    "cappedTimeUnitThreeOptions": {
+      "1": "No limit",
+      "2": "every calendar month",
+      "3": "every three calendar months"
+    },
+    "cappedTimeUnitTwoOptions": {
+      "1": "No limit",
+      "4": "30 days"
+    },
+    "commissionReward": "Commission rewards",
+    "commissionRewardDesc": "Agents who receive commissions through transaction rebates, commission rebates, and deposit rebates will receive points as rewards.",
+    "commissionRewardOptions": {
+      "29": "Trading rebate",
+      "30": "Handling fee rebate",
+      "31": "Deposit rebate"
+    },
+    "commissionType": "Commission type",
+    "deduction": "Inactive points deduction (optional)",
+    "deductionDays": "Number of consecutive days of inactivity",
+    "deductionDesc": "If a customer does not generate points for N consecutive days, points will be automatically deducted; points deduction = points balance * deduction ratio",
+    "deductionRatio": "Deduction ratio",
+    "depositSuccess": "Deposit successful",
+    "depositSuccessDesc": "Customers who submit a deposit application and have it approved will receive bonus points.",
+    "enableStatus": "Enabled status",
+    "exChangeReminder": "Redemption reminder",
+    "exChangeReminderTips": {
+      "1": "Product redemption email reminder",
+      "2": "After setting up the notification administrator, notifications of new product redemptions will be sent via email. \nIf the administrator has not set a reminder, it will not be notified."
+    },
+    "exempt": "deduction exemption",
+    "exemptDesc": "The following types of users can receive points deduction exemptions:",
+    "exemptRoleIds": "Immune role (multiple choices)",
+    "exemptTagIds": "Exemption Label (Multiple Choice)",
+    "explanation": "Description({{field}})",
+    "explanationPlaceholder": "Please fill in the description copy to let users understand the rules of the points mall",
+    "inProgress": "Subscribing",
+    "inviteDeposit": "Recommending a friend to deposit successfully",
+    "inviteDepositDesc": "Every time you invite a user to submit a deposit application and it is approved, you will receive reward points. Each user will only be rewarded once.",
+    "inviteOpenAccount": "Invite to open a trading account",
+    "inviteOpenAccountDesc": "Each time you invite a user to successfully create a real trading account, you will receive bonus points.",
+    "inviteRegister": "Invite to register CRM",
+    "inviteRegisterDesc": "Each time you invite a user to successfully register for CRM, you will receive bonus points.",
+    "multipleRewards": "Rewards for multiple successful referral account openings",
+    "multipleRewardsDesc": "Will the same recommended friend be rewarded multiple times if he successfully creates a real trading account?",
+    "notSubscribe": "Not subscribed",
+    "pointConfig": "Points configuration",
+    "pointStore": "Points Mall Description",
+    "pointsDigits": "Integral decimal settings",
+    "pointsDigitsDesc": "On: Points support decimals (minimum 0.01) Off: Points only support integers (minimum 1)",
+    "pointsMall": "Points Mall",
+    "pointsMalltips": {
+      "1": "The points mall will not be enabled after closing.",
+      "2": "① The user interface does not display the points mall",
+      "3": "② Users will no longer automatically receive points rewards",
+      "4": "Only users who meet the conditions will enable the points mall function"
+    },
+    "productExchangeEnable": "Product exchange enabled",
+    "productExchangeEnableDesc": "On: Allow customers to redeem products. Close: Prohibit customers from redeeming products.",
+    "rewardCalculation": "Reward calculation",
+    "selected": "How to get points",
+    "selectedDesc": "Which of the following businesses do you expect users to earn points through?",
+    "selectedOptions": {
+      "1": "Deposit successful",
+      "2": "trade",
+      "3": "Invite registration",
+      "4": "Invite to create a trading account",
+      "5": "Recommended first time deposit",
+      "6": "Deposit funds under the agent’s name",
+      "7": "Transactions for clients under the agent’s name",
+      "8": "Commission rewards"
+    },
+    "subscriptionPeriod": "Subscription start and end",
+    "suitableUser": "Applicable users",
+    "title": "Points mall settings",
+    "transaction": "trade",
+    "transactionDesc": "Customers who have placed closing orders corresponding to the trading server and variety can receive reward points.",
+    "userRole": "User role (optional)"
   }
 }

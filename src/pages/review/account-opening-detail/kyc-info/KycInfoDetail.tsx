@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { LabelItem } from '@/components/common/LabelItem';
 import { InfoItem } from '@/components/common/InfoItem';
 import { ImageZoom } from '@/components/common/ImageZoom';
-import { KycVerifyStatus } from '../components/KycVerifyStatus';
-import { KycStatus } from '@/lib/constant';
+import { KycStatus, RrhKycStatus } from '@/components/common/RrhKycStatus';
+import { useTranslation } from 'react-i18next';
 
 export type KycInfoSectionType = 'list' | 'mediaList' | 'cardList';
 
@@ -27,6 +27,7 @@ export type KycInfoStep = {
 };
 
 export const KycInfoDetail = ({ step }: { step: KycInfoStep }) => {
+  const { t } = useTranslation();
   const [folded, setFolded] = useState(!step.defaultExpanded);
 
   return (
@@ -40,7 +41,7 @@ export const KycInfoDetail = ({ step }: { step: KycInfoStep }) => {
         <div className="grid flex-1 gap-3.5">
           <div className="flex items-center gap-3">
             <div className="text-foreground text-base leading-4 font-semibold">{step.label}</div>
-            <KycVerifyStatus status={step.status} statusText={step.statusText} />
+            <RrhKycStatus status={step.status} text={step.statusText ? t(step.statusText) : '-'} />
           </div>
           <div className="text-muted-foreground text-sm leading-5">{step.time}</div>
         </div>

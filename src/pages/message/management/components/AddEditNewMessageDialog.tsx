@@ -1,20 +1,94 @@
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { FormSelect } from '@/components/form/FormSelect';
 import { useTranslation } from 'react-i18next';
+import { TFunction } from 'i18next';
 import { RrhDialog } from '@/components/common/RrhDialog';
+import { SelectRadio } from './SelectRadio';
+import { Checkbox } from '@/components/ui/checkbox';
+import { RrhCheckBoxGroup } from '@/components/common/RrhCheckBoxGroup';
 import { cn } from '@/lib/utils';
-import { useGetEmailConfig, useMsgAdd, useMsgEdit, useMsgTemplateList } from '@/api/hooks/message';
+import { RichTextEditor } from './RichTextEditor';
+import { FormInput } from '@/components/form/FormInput';
+import { RrhSwitchGroup } from '@/components/common/RrhSwitchGroup';
+import { useMsgAdd, useMsgDetail, useMsgEdit } from '@/api/hooks/message';
 import { toast } from 'sonner';
+import { FormMultiSelect } from '@/components/form/FormMultiSelect';
+import FormDateInput from '@/components/form/FormDateInput';
 import { format } from 'date-fns';
+import { infoTypeOptions, receiveTypeOptions } from '@/lib/const';
+import { useUserRoleList } from '@/api/hooks/system';
+import { FormSearchMultiSelect } from '@/components/form/FormSearchMultiSelect';
+import { useCrmUsers, useCrmUserTags } from '@/api/hooks/system/system';
+import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 import { RrhForm } from '@/components/form/RrhForm';
-import { FormValues, buildSchema } from './schema';
-import { useEditMsgFormInit } from './useEditMsgFormInit';
-import { StepOneFields } from './StepOneFields';
-import { StepTwoFields } from './StepTwoFields';
 
-// ─── AddEditNewMessageDialog ──────────────────────────────────────────────────
+type FormValues = {
+  type: string;
+  isNow: string;
+  expireTime: Date | null;
+  sendEmails: string[];
+  roles: string[];
+  userIds: string[];
+  tags: string[];
+  accounts: string;
+  receiveType: string;
+  template?: string;
+  language: string;
+  primaryLanguage: string;
+  content?: Record<string, string>;
+  title?: Record<string, string>;
+  sendTime: Date | null;
+};
+
+const mySchema = (t: TFunction<'translation', undefined>) => {
+  return {
+    type: z.string().min(1, t('rules.required', { field: t('table.infoType') })),
+    isNow: z.string().min(1, t('rules.required', { field: t('messageManagement.sendMethod') })),
+    accounts: z
+      .string()
+      .min(1, t('rules.required', { field: t('messageManagement.receiveTypeOption.3') })),
+    expireTime: z
+      .date()
+      .nullable()
+      .refine(date => date !== null, {
+        message: t('rules.required', { field: t('messageManagement.expireTime') }),
+      }),
+    sendTime: z
+      .date()
+      .nullable()
+      .refine(date => date !== null, {
+        message: t('rules.required', { field: t('table.sendTime') }),
+      }),
+    sendEmails: z
+      .array(z.string())
+      .min(1, t('rules.required', { field: t('table.sendEmailAddress') })),
+    roles: z
+      .array(z.string())
+      .min(1, t('rules.required', { field: t('messageManagement.receiveTypeOption.2') })),
+    userIds: z
+      .array(z.string())
+      .min(1, t('rules.required', { field: t('messageManagement.receiveTypeOption.0') })),
+    tags: z
+      .array(z.string())
+      .min(1, t('rules.required', { field: t('messageManagement.receiveTypeOption.4') })),
+    receiveType: z.string().min(1, t('rules.required', { field: t('table.receiver') })),
+    language: z
+      .string()
+      .min(1, t('rules.required', { field: t('messageManagement.sendLanguage') })),
+    primaryLanguage: z
+      .string()
+      .min(1, t('rules.required', { field: t('messageManagement.mainLanguage') })),
+    template: z.string().optional(),
+    content: z.record(z.string()).optional(),
+    title: z.record(z.string()).optional(),
+  };
+};
+
 export const AddEditNewMessageDialog = ({
   mode,
   title,
@@ -26,6 +100,8 @@ export const AddEditNewMessageDialog = ({
   id,
   onSuccess,
   languageOptions,
+  emailOptions,
+  msgTemplateOptions,
 }: {
   mode: 'add' | 'edit';
   title: string;
@@ -37,7 +113,13 @@ export const AddEditNewMessageDialog = ({
   id?: string;
   onSuccess?: () => void;
   languageOptions: Array<{ label: string; value: string }>;
+  emailOptions: Array<{ label: string; value: string }>;
+  msgTemplateOptions: Array<{ label: string; value: string; content: string }>;
 }) => {
+  const { data: RoleRes } = useUserRoleList({});
+  const { mutateAsync: getCrmUsers } = useCrmUsers();
+  const { mutateAsync: getCrmUsersTags } = useCrmUserTags();
+
   const { t } = useTranslation();
   const [openLocal, setOpenLocal] = useState(false);
   const open = openProp ?? openLocal;
@@ -51,29 +133,9 @@ export const AddEditNewMessageDialog = ({
   // 接口返回的主语言，等 options 就绪后再写入表单，避免首次打开时不显示
   const [initialPrimaryLanguage, setInitialPrimaryLanguage] = useState('');
 
-  // Fetch emailOptions and msgTemplateOptions inside the dialog to avoid
-  // unnecessary requests when the dialog is never opened.
-  const { data: emailList } = useGetEmailConfig();
-  const { data: msgTemplateList } = useMsgTemplateList({});
-
-  const emailOptions = useMemo(
-    () => emailList?.data?.map(i => ({ label: i.email, value: i.id })) || [],
-    [emailList],
-  );
-
-  const msgTemplateOptions = useMemo(
-    () =>
-      msgTemplateList?.rows?.map(i => ({
-        label: i.title || '',
-        value: i.id || '',
-        content: i.content || '',
-      })) || [],
-    [msgTemplateList?.rows],
-  );
-
   const schema = useMemo(
     () =>
-      z.object(buildSchema(t)).superRefine((data, ctx) => {
+      z.object(mySchema(t)).superRefine((data, ctx) => {
         const langs = data?.language?.split(',') || [];
         if (step === 'two') {
           langs.forEach(lang => {
@@ -83,14 +145,18 @@ export const AddEditNewMessageDialog = ({
             if ((content || '').trim() === '' || content === '<p></p>') {
               ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: t('rules.required', { field: t('table.content') }),
+                message: t('rules.required', {
+                  field: t('table.content'),
+                }),
                 path: ['content', lang],
               });
             }
             if ((title || '').trim() === '') {
               ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: t('rules.required', { field: t('table.title') }),
+                message: t('rules.required', {
+                  field: t('table.title'),
+                }),
                 path: ['title', lang],
               });
             }
@@ -123,38 +189,79 @@ export const AddEditNewMessageDialog = ({
 
   const { mutateAsync: addMsg } = useMsgAdd();
   const { mutateAsync: editMsg } = useMsgEdit();
+  const { mutateAsync: getMsg } = useMsgDetail();
 
   const type = form.watch('type');
   const isNow = form.watch('isNow');
   const language = form.watch('language');
   const receiveType = form.watch('receiveType');
 
-  useEditMsgFormInit({
-    mode,
-    id,
-    open,
-    languageOptions,
-    form,
-    setPrimaryLanguageOptions,
-    setInitialPrimaryLanguage,
-    setIsSubmitting,
-  });
+  const fetchCrmUserOptions = useCallback(
+    async (params: { pageNum: number; pageSize: number; keyword: string }) => {
+      const res = await getCrmUsers({
+        origin: '0',
+        pageNum: params.pageNum,
+        pageSize: params.pageSize,
+        params: {
+          threeCons: params.keyword,
+        },
+      });
 
-  // 只所以单独写入primaryLanguage 是因为它的选项依赖于language字段，必须等options准备好之后才能设置值，否则会出现选了语言但主语言选项里没有的情况
-  useEffect(() => {
-    if (!initialPrimaryLanguage) return;
-    if (!primaryLanguageOptions.length) return;
-    form.setValue('primaryLanguage', initialPrimaryLanguage);
-  }, [form, initialPrimaryLanguage, primaryLanguageOptions]);
+      const rows = res.rows || [];
+      const total = Number(res.total || 0);
+
+      return {
+        list: rows
+          .filter(user => user.id || user.showId)
+          .map(user => ({
+            value: user.id || user.showId || '',
+            label: [user.showId, user.name, user.lastName].filter(Boolean).join(' - '),
+          })),
+        total,
+        hasMore: params.pageNum * params.pageSize < total,
+      };
+    },
+    [getCrmUsers],
+  );
+
+  const fetchCrmUserTagsOptions = useCallback(
+    async (params: { pageNum: number; pageSize: number; keyword: string }) => {
+      const res = await getCrmUsersTags({
+        status: '1',
+        pageNum: params.pageNum,
+        pageSize: params.pageSize,
+        params: {
+          threeCons: params.keyword,
+        },
+      });
+
+      const rows = res.rows || [];
+      const total = Number(res.total || 0);
+
+      return {
+        list: rows
+          .filter(tag => tag.id)
+          .map(tag => ({
+            value: tag.id,
+            label: tag.tagName,
+          })),
+        total,
+        hasMore: params.pageNum * params.pageSize < total,
+      };
+    },
+    [getCrmUsersTags],
+  );
 
   const onSubmit = async (data: FormValues) => {
     try {
       setIsSubmitting(true);
-      const msgLangs = (data.language?.split(',') || []).map(lang => ({
-        content: data.content?.[lang] || '',
-        title: data.title?.[lang] || '',
-        language: lang,
-      }));
+      const msgLangs = (data.language?.split(',') || []).map(lang => {
+        return {
+          content: data.content?.[lang] || '',
+          title: data.title?.[lang] || '',
+          language: lang,
+        };
+      });
       const selectedAccounts = JSON.parse(data.accounts || '{"id": "", "label": ""}') as {
         id: string;
         label: string;
@@ -214,6 +321,7 @@ export const AddEditNewMessageDialog = ({
   const onConfirm = async () => {
     switch (step) {
       case 'one': {
+        console.log(form.getValues(), 'form.getValues()');
         let ok;
         if (type === '2') {
           // 邮件通知需要校验sendEmails字段，其他的通知类型不需要校验这个字段
@@ -255,6 +363,7 @@ export const AddEditNewMessageDialog = ({
         if (receiveType === '3') {
           ok = await form.trigger(['accounts']);
         }
+        console.log(ok, 'ok');
         if (ok) {
           const selectLang = (form.getValues('language')?.split(',') || []).filter(Boolean);
           const title = form.getValues('title') || {};
@@ -309,6 +418,70 @@ export const AddEditNewMessageDialog = ({
     setStep('one');
   };
 
+  useEffect(() => {
+    // 编辑模式 初始数据
+    if (mode !== 'edit' || !id) return;
+    if (!languageOptions.length) return;
+    async function getDetail() {
+      try {
+        form.reset({
+          type: '',
+          isNow: '1',
+          sendEmails: [],
+          expireTime: null,
+          receiveType: '1',
+          template: '',
+          language: '',
+          primaryLanguage: '',
+          content: {},
+          title: {},
+        });
+        setIsSubmitting(true);
+        const res = await getMsg(String(id) || '');
+        if (res?.code !== 0) return;
+        const languages = res.data.languages || [];
+        const primaryLanguage = res.data.msg.primaryLanguage || '';
+        // 先算好 options
+        const options = languages.map(lang => ({
+          label: languageOptions.find(i => i.value === lang)?.label || '',
+          value: lang,
+        }));
+        setPrimaryLanguageOptions(options);
+        // 获取内容和标题
+        const content = {} as Record<string, string>;
+        const title = {} as Record<string, string>;
+        res.data.msgLangs.forEach(i => {
+          content[i.language ?? 'key'] = i.content ?? '';
+          title[i.language ?? 'key'] = i.title ?? '';
+        });
+        setIsSubmitting(false);
+        setInitialPrimaryLanguage(primaryLanguage);
+        form.reset({
+          type: String(res.data.msg.type),
+          isNow: String(res.data.msg.isNow),
+          expireTime: res.data.msg.expire ? new Date(res.data.msg.expire) : null,
+          receiveType: String(res.data.msg.receiveType),
+          sendEmails: res.data.msg.sendEmail ? res.data.msg.sendEmail.split(',') : [],
+          language: languages.join(','),
+          primaryLanguage: '',
+          template: '',
+          content: content,
+          title: title,
+        });
+      } catch {
+        setIsSubmitting(false);
+      }
+    }
+    getDetail();
+  }, [mode, form, id, getMsg, languageOptions, open]);
+
+  // 只所以单独写入primaryLanguage 是因为它的选项依赖于language字段，必须等options准备好之后才能设置值，否则会出现选了语言但主语言选项里没有的情况
+  useEffect(() => {
+    if (!initialPrimaryLanguage) return;
+    if (!primaryLanguageOptions.length) return;
+    form.setValue('primaryLanguage', initialPrimaryLanguage);
+  }, [form, initialPrimaryLanguage, primaryLanguageOptions]);
+
   return (
     <RrhDialog
       trigger={trigger || null}
@@ -326,24 +499,240 @@ export const AddEditNewMessageDialog = ({
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
         <div className={cn(step === 'one' ? 'block' : 'hidden')}>
-          <StepOneFields
-            source={source}
-            languageOptions={languageOptions}
-            emailOptions={emailOptions}
-            msgTemplateOptions={msgTemplateOptions}
-            primaryLanguageOptions={primaryLanguageOptions}
-            setPrimaryLanguageOptions={setPrimaryLanguageOptions}
-            form={form}
-          />
+          <div className="grid gap-6">
+            <FormSelect
+              name="type"
+              label={t('table.infoType')}
+              verticalLabel
+              placeholder={t('common.pleaseSelect')}
+              showRowValue={false}
+              options={infoTypeOptions.map(i => ({
+                label: t(i.label),
+                value: i.value,
+              }))}
+            />
+
+            <FormField
+              name="isNow"
+              render={({ field }) => {
+                return (
+                  <SelectRadio
+                    title={t('messageManagement.sendMethod')}
+                    verticalLabel
+                    field={field}
+                    radioItems={[
+                      {
+                        value: '1',
+                        label: t('messageManagement.immediate'),
+                      },
+                      {
+                        value: '0',
+                        label: t('messageManagement.scheduled'),
+                      },
+                    ]}
+                  />
+                );
+              }}
+            />
+            {/* 邮件通知专属 */}
+            {type === '2' ? (
+              <FormMultiSelect
+                name="sendEmails"
+                label={t('table.sendEmailAddress')}
+                verticalLabel
+                placeholder={t('common.pleaseSelect')}
+                showRowValue={false}
+                options={emailOptions}
+              />
+            ) : null}
+
+            {/* 定时发送 */}
+            {isNow === '0' ? (
+              <FormDateInput label={t('table.sendTime')} name="sendTime" showTime />
+            ) : null}
+
+            {/* 弹窗通知专属 */}
+            {type === '0' ? (
+              <FormDateInput label={t('messageManagement.expireTime')} name="expireTime" showTime />
+            ) : null}
+            {/* 在消息管理 新增修改消息来源 才使用选择接受对象 在customer来源中 默认接受对象就是当前用户 */}
+            {source === 'MessageManagementPage' && (
+              <FormField
+                name="receiveType"
+                render={({ field }) => {
+                  return (
+                    <SelectRadio
+                      title={t('table.receiver')}
+                      verticalLabel
+                      field={field}
+                      orientation="horizontal"
+                      radioItems={receiveTypeOptions.map(i => ({
+                        label: t(i.label),
+                        value: i.value,
+                      }))}
+                    />
+                  );
+                }}
+              />
+            )}
+            {receiveType === '2' && (
+              <FormMultiSelect
+                verticalLabel
+                name="roles"
+                label={t('messageManagement.receiveTypeOption.2')}
+                placeholder={t('common.pleaseSelect')}
+                options={(RoleRes?.rows || []).map(i => ({
+                  label: i.roleName,
+                  value: i.roleId,
+                }))}
+              />
+            )}
+            {receiveType === '0' && (
+              <FormSearchMultiSelect
+                verticalLabel
+                name="userIds"
+                label={t('messageManagement.receiveTypeOption.0')}
+                placeholder={t('common.pleaseSelect')}
+                fetchOptions={fetchCrmUserOptions}
+              />
+            )}
+            {receiveType === '3' && <SelectUpperDropdown />}
+
+            {receiveType === '4' && (
+              <FormSearchMultiSelect
+                verticalLabel
+                name="tags"
+                label={t('messageManagement.receiveTypeOption.4')}
+                placeholder={t('common.pleaseSelect')}
+                fetchOptions={fetchCrmUserTagsOptions}
+              />
+            )}
+
+            <FormSelect
+              name="template"
+              label={t('messageManagement.messageTemplate')}
+              verticalLabel
+              placeholder={t('common.pleaseSelect')}
+              showRowValue={false}
+              options={msgTemplateOptions}
+            />
+
+            <FormField
+              name="language"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>
+                      <div className="flex w-full justify-between">
+                        <div>{t('messageManagement.sendLanguage')}</div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            className={cn('data-[state=checked]:border-slate-700')}
+                            checked={
+                              language?.length ===
+                              languageOptions.map(i => i.value).join(',')?.length
+                            }
+                            onCheckedChange={() => {
+                              if (
+                                language?.length ===
+                                languageOptions.map(i => i.value).join(',')?.length
+                              ) {
+                                field.onChange('');
+                                setPrimaryLanguageOptions([]);
+                              } else {
+                                field.onChange(languageOptions.map(i => i.value).join(','));
+                                setPrimaryLanguageOptions(languageOptions);
+                              }
+                              form.setValue('primaryLanguage', '');
+                            }}
+                            aria-label="Select row"
+                          />
+                          <span>{t('common.selectAll')}</span>
+                        </div>
+                      </div>
+                    </FormLabel>
+                    <FormControl>
+                      <RrhCheckBoxGroup
+                        onValueChange={v => {
+                          field.onChange(v);
+                          // 把选中的语言设置进primaryLanguage的选项里
+                          setPrimaryLanguageOptions(
+                            languageOptions.filter(i => v.includes(i.value)),
+                          );
+                          form.setValue('primaryLanguage', '');
+                        }}
+                        value={field.value}
+                        checkItems={languageOptions}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+
+            <FormSelect
+              name="primaryLanguage"
+              label={t('messageManagement.mainLanguage')}
+              verticalLabel
+              placeholder={t('common.pleaseSelect')}
+              showRowValue={false}
+              options={primaryLanguageOptions}
+            />
+          </div>
         </div>
 
         {step === 'two' && language?.length ? (
-          <StepTwoFields
-            language={language}
-            activeLang={activeLang}
-            setActiveLang={setActiveLang}
-            languageOptions={languageOptions}
-          />
+          <>
+            <RrhSwitchGroup
+              value={activeLang}
+              onValueChange={value => {
+                setActiveLang(value);
+              }}
+              labelClassName="font-medium"
+              switchItems={language?.split(',').map(lang => {
+                const label = languageOptions.find(o => o.value === lang)?.label || '';
+                return {
+                  value: lang,
+                  label,
+                };
+              })}
+            />
+            <div>
+              {(language.split(',') || []).map(lang => {
+                const label = languageOptions.find(o => o.value === lang)?.label || '';
+                return (
+                  <div key={lang} className={cn(activeLang === lang ? 'block' : 'hidden')}>
+                    <div className="py-6">
+                      <FormInput
+                        verticalLabel
+                        name={`title.${lang}`}
+                        label={t('messageManagement.inputTitle', { field: label })}
+                        placeholder={t('common.pleaseInput', { field: t('table.title') })}
+                        maxLength={64}
+                      />
+                    </div>
+                    <div className="py-6">
+                      <FormField
+                        name={`content.${lang}`}
+                        render={({ field }) => {
+                          return (
+                            <RichTextEditor
+                              field={field}
+                              title={t('messageManagement.inputContent', { field: label })}
+                              placeholder={t('common.pleaseInput', {
+                                field: t('table.content'),
+                              })}
+                            />
+                          );
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
         ) : null}
       </RrhForm>
     </RrhDialog>

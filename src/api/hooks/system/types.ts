@@ -11,6 +11,7 @@ export type ServerItem = {
   serviceHost: string;
   managerAccount: string;
   managerSecret: string;
+  aliasName: string;
 };
 
 export type ServerListResponse = BasicRes<ServerItem>;
@@ -832,3 +833,11 @@ export interface UserKycTabRes {
   mockAccountNum: number;
   totalRebate: number;
 }
+export type CrmUserInfo = {
+  code: number;
+  data: {
+    crmUser: CrmUser;
+    lastLogininfor: OperationsLogsItem;
+    userLanguage: string | null;
+  };
+};
