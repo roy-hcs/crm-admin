@@ -1127,7 +1127,12 @@
     "depositRewardCredit": "Deposit Bonus Credit",
     "orderClosingReward": "Order closing-reward",
     "rewardAutoReviewConfig": "Reward automatic review configuration",
-    "tips": "Use the following to control whether the rewards issued are automatically approved."
+    "tips": "Use the following to control whether the rewards issued are automatically approved.",
+    "hitActivity": "hit activity",
+    "rewardAccount": "Rewards account",
+    "rewardInfo": "reward information",
+    "rewardRecordsDetail": "Reward record details",
+    "rewardSubject": "Award subject"
   },
   "tradingAccounts": {
     "title": "trading account"

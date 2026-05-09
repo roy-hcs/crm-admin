@@ -79,7 +79,6 @@ export const KycInfoPage = ({ id }: { id: string }) => {
     return [
       {
         status: manageVerifyStatus as KycStatus,
-        // statusText: kycVerifyStatusTextMap[manageVerifyStatus],
         label: t('accountOpening.personalInformation'),
         content: '',
         type: 'list',
@@ -89,7 +88,6 @@ export const KycInfoPage = ({ id }: { id: string }) => {
       },
       {
         status: financeVerifyStatus as KycStatus,
-        // statusText: kycVerifyStatusTextMap[financeVerifyStatus],
         label: t('accountOpening.financialInformation'),
         content: '',
         type: 'list',
@@ -98,7 +96,6 @@ export const KycInfoPage = ({ id }: { id: string }) => {
       },
       {
         status: identityBasicVerifyStatus as KycStatus,
-        // statusText: kycVerifyStatusTextMap[identityBasicVerifyStatus],
         label: t('accountOpening.identityInformation'),
         content: '',
         type: 'mediaList',
@@ -108,7 +105,6 @@ export const KycInfoPage = ({ id }: { id: string }) => {
       {
         // protocolVerifyStatus为true表示有协议未确认，状态为审核中；为false表示协议已确认，状态为审核通过
         status: protocolVerifyStatus === true ? 0 : (1 as KycStatus),
-        // statusText: kycVerifyStatusTextMap[protocolVerifyStatus === true ? 0 : 1],
         label: t('accountOpening.protocolConfirmation'),
         content: '',
         type: 'cardList',

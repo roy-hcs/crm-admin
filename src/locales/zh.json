@@ -1453,7 +1453,12 @@
     "accountOpeningReward": "开户-奖励",
     "depositRewardCredit": "入金奖励信用金",
     "orderClosingReward": "订单平仓-奖励",
-    "tips": "通过下方来控制发放的奖励是否自动审批通过"
+    "tips": "通过下方来控制发放的奖励是否自动审批通过",
+    "rewardRecordsDetail": "奖励记录详情",
+    "rewardInfo": "奖励信息",
+    "rewardAccount": "奖励账户",
+    "rewardSubject": "奖励标的",
+    "hitActivity": "命中活动"
   },
   "messageManagement": {
     "title": "消息管理",

@@ -198,39 +198,6 @@ export function useCrmInfoVerifyList(params: CrmInfoVerifyListParams) {
     queryFn: () => apiFormPostCustom<CrmInfoVerifyListRes>('/system/crmInfoVerify/list', params),
   });
 }
-/**
- * 获取审核-信息审核详情1
- */
-export function useCrmInfoVerifyDetailOne() {
-  return useMutation({
-    mutationFn: ({ id, infoType }: { id: string; infoType: string }) =>
-      apiGetCustom<CrmInfoVerifyDetailOneRes>(
-        `/system/crmInfoVerify/viewDetailInfo/${id}/${infoType}`,
-      ),
-  });
-}
-/**
- * 获取审核-信息审核详情2
- */
-export function useCrmInfoVerifyDetailTwo() {
-  return useMutation({
-    mutationFn: ({ id }: { id: string }) =>
-      apiGetCustom<CrmInfoVerifyDetailTwoRes>(
-        `/system/crmInfoVerify/viewSumsubDetailInfo?id=${id}`,
-      ),
-  });
-}
-/**
- * 获取审核-信息审核详情3
- */
-export function useCrmInfoVerifyDetailThree() {
-  return useMutation({
-    mutationFn: ({ id, userId }: { id: string; userId: string }) =>
-      apiGetCustom<CrmInfoVerifyDetailThreeRes>(
-        `/system/crmInfoVerify/viewDetailInfo/${id}?userId=${userId}`,
-      ),
-  });
-}
 
 export function useCrmInfoVerifyDetailQuery(
   params: {

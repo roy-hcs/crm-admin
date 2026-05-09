@@ -2,8 +2,14 @@ import { AdsPage } from '@/pages/marketing/ads/AdsPage';
 import { NetBonusRewardReportsPage } from '@/pages/marketing/net-bonus/reward-reports/NetBonusRewardReportsPage';
 import { NetBonusStatisticsPage } from '@/pages/marketing/net-bonus/statistics/NetBonusStatisticsPage';
 import { RewardConfigPage } from '@/pages/marketing/reward-configs/RewardConfigsPage';
+import { RewardRecordsDetailPage } from '@/pages/marketing/reward-records-detail/RewardRecordsDetailPage';
 import { RewardRecordsPage } from '@/pages/marketing/reward-records/RewardRecordsPage';
-import { RouteObject } from 'react-router-dom';
+import { RouteObject, useSearchParams } from 'react-router-dom';
+
+const RewardRecordsDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <RewardRecordsDetailPage key={searchParams.get('id')} />;
+};
 
 /**
  * Marketing Management routes - corresponds to "营销管理" menu item
@@ -25,6 +31,10 @@ export const marketingRoutes: RouteObject[] = [
   {
     path: '/marketing/reward-records',
     element: <RewardRecordsPage />,
+  },
+  {
+    path: '/marketing/reward-records/detail',
+    element: <RewardRecordsDetailPageWrapper />,
   },
   {
     path: '/marketing/ads',

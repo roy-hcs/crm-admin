@@ -15,6 +15,8 @@ import {
   NetBonusRewardReportsTotal,
   NetBonusRewardStatisticsListParams,
   NetBonusRewardStatisticsRes,
+  RewardRecordReviewDetailRes,
+  RewardRecordVerifyParams,
 } from './types';
 
 export * from './types';
@@ -148,6 +150,30 @@ export function useRewardRecordsList(params: RewardRecordsListParams) {
     queryKey: ['rewardRecordsList', params],
     queryFn: () =>
       apiFormPostCustom<RewardRecordsListRes>(`/system/marketing/rewardRecord/list`, params),
+  });
+}
+
+/**
+ * 获取奖励记录审核详情
+ */
+export function useRewardRecordReviewDetail(recordId: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['rewardRecordReviewDetail', recordId],
+    queryFn: () =>
+      apiGetCustom<RewardRecordReviewDetailRes>(
+        `/system/crmRewardVerify/viewDetailInfo/${recordId}`,
+      ),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 奖励记录审核提交
+ */
+export function useRewardRecordVerify() {
+  return useMutation({
+    mutationFn: (params: RewardRecordVerifyParams) =>
+      apiFormPost(`/system/crmRewardVerify/verify`, params),
   });
 }
 

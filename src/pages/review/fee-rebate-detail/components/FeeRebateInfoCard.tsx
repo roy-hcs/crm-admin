@@ -1,4 +1,6 @@
 import { RebateReviewDetailRes } from '@/api/hooks/review';
+import { InfoItem } from '@/components/common/InfoItem';
+import { LabelItem } from '@/components/common/LabelItem';
 import { RrhCard } from '@/components/common/RrhCard';
 import { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -75,12 +77,7 @@ export const FeeRebateInfoCard: FC<{
             {t('tradingRebateReview.rebateInfo')}
           </h2>
           {accountInfo.map(item => (
-            <div key={item.label} className="flex flex-col gap-2 py-3">
-              <label className="text-sm font-medium">{t(item.label)}</label>
-              <div className="text-muted-foreground flex items-center gap-3">
-                <span>{item.value}</span>
-              </div>
-            </div>
+            <LabelItem label={t(item.label)} ContentDom={<InfoItem info={item.value || '-'} />} />
           ))}
         </div>
       </div>
