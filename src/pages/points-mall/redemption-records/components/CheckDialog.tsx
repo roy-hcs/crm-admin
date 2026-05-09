@@ -148,112 +148,103 @@ export const CheckDialog = ({
       formLoading={isSubmitting}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1">
-            {dataList.map((item, index) => {
-              if (item.type === 'pointsPayment' || item.type === 'combinedPayment') {
-                if (item.type === 'pointsPayment') {
-                  // 积分支付
-                  return (
-                    <div className="grid gap-2 py-3" key={`${item.label}-${index}`}>
-                      <div className="text-foreground text-sm leading-5 font-medium">
-                        {item.label}
+        {dataList.map((item, index) => {
+          if (item.type === 'pointsPayment' || item.type === 'combinedPayment') {
+            if (item.type === 'pointsPayment') {
+              // 积分支付
+              return (
+                <div className="grid gap-2 py-3" key={`${item.label}-${index}`}>
+                  <div className="text-foreground text-sm leading-5 font-medium">{item.label}</div>
+                  <div className="text-muted-foreground text-sm leading-5">
+                    {detailsData?.exchangeType === '1'
+                      ? `+${detailsData?.exchangePoints} / ${detailsData?.exchangeTime}`
+                      : `-${detailsData?.exchangePoints} / ${detailsData?.exchangeTime}`}
+                  </div>
+                </div>
+              );
+            } else {
+              // 组合支付
+              return (
+                <div className="grid gap-2 py-3" key={`${item.label}-${index}`}>
+                  <div className="text-foreground text-sm leading-5 font-medium">{item.label}</div>
+                  <div className="bg-primary-foreground grid grid-cols-3 rounded-sm px-6 py-4">
+                    <div className="grid gap-2">
+                      <div className="text-muted-foreground text-xs leading-3">
+                        {t('redemptionRecords.pointsDeduction')}
                       </div>
-                      <div className="text-muted-foreground text-sm leading-5">
+                      <div className="text-accent-foreground text-sm leading-5">
                         {detailsData?.exchangeType === '1'
-                          ? `+${detailsData?.exchangePoints} / ${detailsData?.exchangeTime}`
-                          : `-${detailsData?.exchangePoints} / ${detailsData?.exchangeTime}`}
+                          ? `+${detailsData?.exchangePoints}`
+                          : `-${detailsData?.exchangePoints}`}
                       </div>
                     </div>
-                  );
-                } else {
-                  // 组合支付
-                  return (
-                    <div className="grid gap-2 py-3" key={`${item.label}-${index}`}>
-                      <div className="text-foreground text-sm leading-5 font-medium">
-                        {item.label}
+                    <div className="grid gap-2">
+                      <div className="text-muted-foreground text-xs leading-3">
+                        {t('redemptionRecords.paymentAmount')}
                       </div>
-                      <div className="bg-primary-foreground grid grid-cols-3 rounded-sm px-6 py-4">
-                        <div className="grid gap-2">
-                          <div className="text-muted-foreground text-xs leading-3">
-                            {t('redemptionRecords.pointsDeduction')}
-                          </div>
-                          <div className="text-accent-foreground text-sm leading-5">
-                            {detailsData?.exchangeType === '1'
-                              ? `+${detailsData?.exchangePoints}`
-                              : `-${detailsData?.exchangePoints}`}
-                          </div>
-                        </div>
-                        <div className="grid gap-2">
-                          <div className="text-muted-foreground text-xs leading-3">
-                            {t('redemptionRecords.paymentAmount')}
-                          </div>
-                          <div className="text-accent-foreground text-sm leading-5">
-                            {detailsData?.paymentAmount
-                              ? `${detailsData?.paymentAmount} ${detailsData?.currency || 'USD'}`
-                              : '-'}
-                          </div>
-                        </div>
+                      <div className="text-accent-foreground text-sm leading-5">
+                        {detailsData?.paymentAmount
+                          ? `${detailsData?.paymentAmount} ${detailsData?.currency || 'USD'}`
+                          : '-'}
                       </div>
-                    </div>
-                  );
-                }
-              } else {
-                // 其他
-                return (
-                  <div className="grid gap-2 py-3" key={`${item.label}-${index}`}>
-                    <div className="text-foreground text-sm leading-5 font-medium">
-                      {item.label}
-                    </div>
-                    <div className="text-muted-foreground text-sm leading-5">
-                      {item.value || '-'}
                     </div>
                   </div>
-                );
-              }
-            })}
-            <div className="py-3">
-              <FormField
-                name="verifyStatus"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel className="leading-5">
-                        {t('redemptionRecords.confirmStatus')}
-                      </FormLabel>
-                      <FormControl>
-                        <RrhSwitchGroup
-                          value={field.value ?? '0'}
-                          onValueChange={value => {
-                            field.onChange(value);
-                          }}
-                          labelClassName="font-medium"
-                          switchItems={[
-                            {
-                              value: '1',
-                              label: t('table.pass'),
-                            },
-                            {
-                              value: '0',
-                              label: t('table.refuse'),
-                            },
-                          ]}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
-            <div className="py-3">
-              <FormTextarea
-                name="remark"
-                label={t('table.remarks')}
-                verticalLabel
-                placeholder={t('rules.limitLength', { field: 50 })}
-                maxLength={50}
-              />
-            </div>
-          </RrhForm>
+                </div>
+              );
+            }
+          } else {
+            // 其他
+            return (
+              <div className="grid gap-2 py-3" key={`${item.label}-${index}`}>
+                <div className="text-foreground text-sm leading-5 font-medium">{item.label}</div>
+                <div className="text-muted-foreground text-sm leading-5">{item.value || '-'}</div>
+              </div>
+            );
+          }
+        })}
+        <div className="py-3">
+          <FormField
+            name="verifyStatus"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel className="leading-5">
+                    {t('redemptionRecords.confirmStatus')}
+                  </FormLabel>
+                  <FormControl>
+                    <RrhSwitchGroup
+                      value={field.value ?? '0'}
+                      onValueChange={value => {
+                        field.onChange(value);
+                      }}
+                      labelClassName="font-medium"
+                      switchItems={[
+                        {
+                          value: '1',
+                          label: t('table.pass'),
+                        },
+                        {
+                          value: '0',
+                          label: t('table.refuse'),
+                        },
+                      ]}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+        </div>
+        <div className="py-3">
+          <FormTextarea
+            name="remark"
+            label={t('table.remarks')}
+            placeholder={t('rules.limitLength', { field: 50 })}
+            maxLength={50}
+          />
+        </div>
+      </RrhForm>
     </RrhDialog>
   );
 };

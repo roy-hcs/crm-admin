@@ -258,7 +258,6 @@ export const RebateRuleFormStep1 = ({
       <FormTextarea
         name="remark"
         label={t('common.optionalField', { field: t('table.remarks') })}
-        verticalLabel
         placeholder={t('common.pleaseInput', { field: t('table.description') })}
         maxLength={300}
       />

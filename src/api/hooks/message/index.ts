@@ -25,20 +25,22 @@ export function useGetMsgList(params: GetMsgListParams) {
 /**
  * 获取发件邮箱
  */
-export function useGetEmailConfig() {
+export function useGetEmailConfig(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['EmailConfig'],
     queryFn: () => apiGet<Array<{ id: string; email: string }>>('/system/msg/getEmailConfig'),
+    enabled: options?.enabled ?? true,
   });
 }
 
 /**
  * 获取模板列表
  */
-export function useMsgTemplateList(params: MsgTemplateListParams) {
+export function useMsgTemplateList(params: MsgTemplateListParams, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['MsgTemplateList', params],
     queryFn: () => apiFormPostCustom<MsgTemplateListRes>('/system/msgTemplate/list', params),
+    enabled: options?.enabled ?? true,
   });
 }
 

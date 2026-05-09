@@ -23,7 +23,7 @@ export const ReviewInfoCard = ({
   const [statusValue, setStatusValue] = useState<string>('1');
 
   return (
-    <RrhCard title={t('review.review')}>
+    <RrhCard title={t('table.audit')}>
       <FormField
         name="reviewer"
         disabled

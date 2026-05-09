@@ -8,7 +8,7 @@ import { KycInfoDetailItem, KycInfoStep } from './KycInfoDetail';
 import { KycInfoTimeline } from './KycInfoTimeline';
 import { useMemo } from 'react';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
-import { kycVerifyStatusMap, kycVerifyStatusTextMap } from '@/lib/constant';
+// import { kycVerifyStatusMap, kycVerifyStatusTextMap } from '@/lib/constant';
 import { useTranslation } from 'react-i18next';
 import { KycStatus } from '@/components/common/RrhKycStatus';
 
@@ -78,8 +78,8 @@ export const KycInfoPage = ({ id }: { id: string }) => {
   const steps: kycInfoSteps = useMemo(() => {
     return [
       {
-        status: kycVerifyStatusMap[manageVerifyStatus] as KycStatus,
-        statusText: kycVerifyStatusTextMap[manageVerifyStatus],
+        status: manageVerifyStatus as KycStatus,
+        // statusText: kycVerifyStatusTextMap[manageVerifyStatus],
         label: t('accountOpening.personalInformation'),
         content: '',
         type: 'list',
@@ -88,8 +88,8 @@ export const KycInfoPage = ({ id }: { id: string }) => {
         defaultExpanded: true,
       },
       {
-        status: kycVerifyStatusMap[financeVerifyStatus] as KycStatus,
-        statusText: kycVerifyStatusTextMap[financeVerifyStatus],
+        status: financeVerifyStatus as KycStatus,
+        // statusText: kycVerifyStatusTextMap[financeVerifyStatus],
         label: t('accountOpening.financialInformation'),
         content: '',
         type: 'list',
@@ -97,8 +97,8 @@ export const KycInfoPage = ({ id }: { id: string }) => {
         detail: finance,
       },
       {
-        status: kycVerifyStatusMap[identityBasicVerifyStatus] as KycStatus,
-        statusText: kycVerifyStatusTextMap[identityBasicVerifyStatus],
+        status: identityBasicVerifyStatus as KycStatus,
+        // statusText: kycVerifyStatusTextMap[identityBasicVerifyStatus],
         label: t('accountOpening.identityInformation'),
         content: '',
         type: 'mediaList',
@@ -107,8 +107,8 @@ export const KycInfoPage = ({ id }: { id: string }) => {
       },
       {
         // protocolVerifyStatus为true表示有协议未确认，状态为审核中；为false表示协议已确认，状态为审核通过
-        status: kycVerifyStatusMap[protocolVerifyStatus === true ? 0 : 1] as KycStatus,
-        statusText: kycVerifyStatusTextMap[protocolVerifyStatus === true ? 0 : 1],
+        status: protocolVerifyStatus === true ? 0 : (1 as KycStatus),
+        // statusText: kycVerifyStatusTextMap[protocolVerifyStatus === true ? 0 : 1],
         label: t('accountOpening.protocolConfirmation'),
         content: '',
         type: 'cardList',
