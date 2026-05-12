@@ -5,7 +5,7 @@ import { RrhCard } from '@/components/common/RrhCard';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { PenLine } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
@@ -18,6 +18,12 @@ export const CrmAccountOperationsPage = ({ userId }: { userId: string }) => {
   const [enableInternalTransferOut, setEnableInternalTransferOut] = useState(false);
   const [editable, setEditable] = useState(false);
   const { t } = useTranslation();
+  useEffect(() => {
+    if (accountOperations) {
+      setOutMoney(!!accountOperations.outMoney);
+      setInsideTransfer(!!accountOperations.insideTransfer);
+    }
+  }, [accountOperations]);
   const editOperate = () => {
     editAccountOperate(
       {

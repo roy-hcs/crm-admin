@@ -1,4 +1,11 @@
-import { apiDelete, apiGet, apiGetCustom, apiPost } from '@/api/client';
+import {
+  apiDelete,
+  apiFormPost,
+  apiFormPostCustom,
+  apiGet,
+  apiGetCustom,
+  apiPost,
+} from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AgentAccountStatsRes,
@@ -10,7 +17,10 @@ import {
   CustomerFollowupRes,
   KycInfoProtocolRes,
   KycInfoRes,
+  UserWalletDetail,
+  UserWalletListRes,
 } from './types';
+import { BasicParams } from '../review';
 
 /**
  * 获取代理账户统计数据
@@ -159,5 +169,46 @@ export function useEditKycColumnInfo(type: '2' | '3' | '4', userId: string) {
   return useMutation({
     mutationFn: (params: { id: string; columnValue: string }[]) =>
       apiPost(`/system/crmUser/manage/${type}/${userId}`, params),
+  });
+}
+/**
+ * 获取用户钱包列表信息
+ */
+export function useGetUserWalletList(userId: string, params: BasicParams) {
+  return useQuery({
+    queryKey: ['getUserWalletList', userId, params],
+    queryFn: () =>
+      apiFormPostCustom<UserWalletListRes>(
+        `/system/crmUserWallet/listByUser?userId=${userId}`,
+        params,
+      ),
+    enabled: !!userId,
+  });
+}
+/**
+ * 删除用户钱包
+ */
+export function useDeleteUserWallet() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) => apiFormPost('system/crmUserWallet/remove', params),
+  });
+}
+/**
+ * 编辑钱包的账号权限
+ */
+export function useEditUserWalletAccountPerm() {
+  return useMutation({
+    mutationFn: (params: { id: string; permissionJson: string }) =>
+      apiFormPost('/system/crmUserWallet/edit', params),
+  });
+}
+/**
+ * 获取用户钱包详情
+ */
+export function useGetUserWalletDetail(id: string) {
+  return useQuery({
+    queryKey: ['getUserWalletDetail', id],
+    queryFn: () => apiGet<UserWalletDetail>(`/system/crmUserWallet/detailInfo/${id}`),
+    enabled: !!id,
   });
 }

@@ -6,8 +6,6 @@ export const serverMap: Record<string, string> = {
   '5': 'XOH',
 };
 
-export type KycStatus = 'pending' | 'success' | 'fail';
-
 export const transactionTypeMap: Record<number, string> = {
   0: 'Buy',
   1: 'Sell',

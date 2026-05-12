@@ -1,3 +1,4 @@
+import { KycStatus } from '@/components/common/RrhKycStatus';
 import { BasicParams, BasicRes, BaseEntity } from '../../types';
 import { CrmUserItem } from '../account';
 import { OperationsLogsItem } from '../monitor/type';
@@ -807,13 +808,13 @@ export interface TagProgress {
 }
 export interface UserKycTabRes {
   languages: InfoTypeItem[];
-  bstatus: number;
+  bstatus: KycStatus;
   breason: string;
   personalStatus: string;
   roles: Role[];
   realAccountNum: number;
   lastLogininfor: OperationsLogsItem | null;
-  istatus: number;
+  istatus: KycStatus;
   ireason: string;
   protocolStatus: string;
   userInviter: string;
@@ -824,7 +825,7 @@ export interface UserKycTabRes {
   userLanguage: string;
   crmUser: CrmUser;
   mode: string;
-  fstatus: number;
+  fstatus: KycStatus;
   freason: string;
   userInviterName: string;
   identityStatus: string;

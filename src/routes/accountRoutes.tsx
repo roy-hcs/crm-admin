@@ -8,6 +8,7 @@ import { RelationshipsPage } from '@/pages/account/relationships/RelationshipsPa
 import { WalletAccountsDetailPage } from '@/pages/account/wallet-accounts-detail/WalletAccountsDetailPage';
 import { TradingAccountsDetailPage } from '@/pages/account/trading-accounts-detail/TradingAccountsDetailPage';
 import { CrmAccountsDetail } from '@/pages/account/crm-accounts-detail/CrmAccountsDetail';
+import { CrmUserWalletDetailPage } from '@/pages/account/crm-accounts-detail/components/CrmUserWalletDetailPage';
 
 const TradingAccountsDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();
@@ -64,5 +65,9 @@ export const accountRoutes: RouteObject[] = [
   {
     path: '/account/crm-accounts/detail',
     element: <CrmAccountsDetail />,
+  },
+  {
+    path: '/account/crm-accounts/wallets/detail',
+    element: <CrmUserWalletDetailPage />,
   },
 ];

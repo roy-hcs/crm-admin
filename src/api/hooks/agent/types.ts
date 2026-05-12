@@ -1,6 +1,9 @@
+import { KycStatus } from '@/components/common/RrhKycStatus';
 import { DealAccountGroup } from '../account';
 import { OperationsLogsItem } from '../monitor/type';
-import { Country, CrmUser, InfoTypeItem, RoleItem, TagProgress } from '../system';
+import { Country, CrmUser, InfoTypeItem, RoleItem, TagProgress, WalletItem } from '../system';
+import { BasicParams } from '../review';
+import { languageItem } from '../pointsMall';
 
 export type AgentAccountStatsRes = {
   crmUser: number;
@@ -178,7 +181,7 @@ export interface KYCInfoItem {
   userLastName: string | null;
   userShowId: string | null;
   infoType: string | null;
-  status: number;
+  status: KycStatus;
   subTime: string | null;
   verifyUser: string | null;
   vUserName: string | null;
@@ -250,3 +253,69 @@ export interface ProtocolItem {
   // 从源代码来看，这个url似乎是个json，内容应该是{url: string; name: string}[]，需要转换后才能使用
   enclosureUrl: string | null;
 }
+export interface UserWalletListRes {
+  total: string;
+  rows: Array<WalletItem>;
+  code: number;
+  msg: string;
+  totalVolume: number;
+  totalCommission: number;
+  totalProfit: number;
+  totalSwaps: number;
+  priceSum: number;
+  serverType: string;
+  totalList: number;
+}
+export type DepositChannelItem = BasicParams & {
+  params: Record<string, string>;
+  id: string;
+  channelName: string;
+  defaultChannelName?: string | null;
+  status: number;
+  channelIcon?: string | null;
+  channelCurrency: string;
+  sort?: number | null;
+  minDeposit?: number | null;
+  maxDeposit?: number | null;
+  commissionMod: number;
+  commissionRate?: number | null;
+  minCommission?: number | null;
+  maxCommission?: number | null;
+  fixCommission?: number | null;
+  amountDigits?: number | null;
+  roleIds?: string | null;
+  applicableRoles?: string | null;
+  delFlag: number;
+  fieldList?: unknown | null;
+  languageList?: languageItem[] | null;
+  applicableUserSettings?: unknown | null;
+};
+export type WithdrawChannelItem = BasicParams & {
+  params: Record<string, string>;
+  id: string;
+  channelName: string;
+  status: number;
+  channelIcon?: string | null;
+  channelCurrency: string;
+  sort: number;
+  delFlag?: boolean | null;
+  fieldList?: unknown | null;
+  languageList?: unknown | null;
+  language: string;
+  outMoneyAccountCheck: number;
+  outMoneyWithdrawCheck?: number | null;
+  outMoneyWithdrawCheckMethod?: string | null;
+  frozen?: number | null;
+};
+export type UserWalletDetail = {
+  walletId: string;
+  sysDepositChannelList: DepositChannelItem[];
+  sysWithdrawChannelList: WithdrawChannelItem[];
+  tab: number;
+  insideTransfer: number;
+  crmUserWallet: WalletItem;
+  allOut: string;
+  sysWithdrawChannelListAll: WithdrawChannelItem[];
+  outMoney: number;
+  allIn: string;
+};

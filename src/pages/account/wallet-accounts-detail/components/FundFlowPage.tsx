@@ -113,7 +113,7 @@ const DetailInfo = ({ itemInfo }: { itemInfo: FundFlowItem }) => {
   );
 };
 
-export const FundFlowPage = () => {
+export const FundFlowPage = ({ walletId = '' }: { walletId?: string }) => {
   const [params, setParams] = useState<FundFlowParams['params']>({
     inMethod: '',
     outMethod: '',
@@ -125,7 +125,7 @@ export const FundFlowPage = () => {
   const [otherParams, setOtherParams] = useState<
     Omit<FundFlowParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
   >({
-    walletId: '',
+    walletId,
     operationType: '',
     serialNum: '',
   });
@@ -154,7 +154,7 @@ export const FundFlowPage = () => {
       operationEnd: '',
     }));
     setOtherParams({
-      walletId: '',
+      walletId,
       operationType: '',
       serialNum: '',
     });
@@ -274,6 +274,7 @@ export const FundFlowPage = () => {
               }
             >
               <FundFlowForm
+                walletId={walletId}
                 setParams={setParams}
                 setOtherParams={setOtherParams}
                 loading={loading || typeResloading}

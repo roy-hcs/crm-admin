@@ -427,10 +427,11 @@ export function useAddAccount() {
 /**
  * 钱包账户-获取钱包
  */
-export function useGetCurrencies() {
-  return useMutation({
-    mutationFn: (params: { userId: string }) =>
-      apiFormPostCustom<string[]>('/system/crmUserWallet/getCurrencies', params),
+export function useGetCurrencies(userId: string) {
+  return useQuery({
+    queryKey: ['currencies', userId],
+    queryFn: () => apiFormPostCustom<string[]>('/system/crmUserWallet/getCurrencies', { userId }),
+    enabled: !!userId,
   });
 }
 

@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { useGetKycInfoProtocolInfo } from '@/api/hooks/agent/agent';
 import { ProtocolItem } from '@/api/hooks/agent/types';
 import { ProtocolInfoDialog } from './ProtocolInfoDialog';
+import { RrhKycStatus } from '@/components/common/RrhKycStatus';
 
 export const CrmUserKycInfoPage = ({ userId }: { userId: string }) => {
   const { t } = useTranslation();
@@ -39,10 +40,7 @@ export const CrmUserKycInfoPage = ({ userId }: { userId: string }) => {
           <div className="flex items-center justify-between">
             <div className="flex gap-2">
               <div>{t('accountOpening.personalInformation')}</div>
-              {/* <KycVerifyStatus
-                status={kycVerifyStatusMap[kycInfo.bstatus]}
-                statusText={kycVerifyStatusTextMap[kycInfo.bstatus]}
-              /> */}
+              <RrhKycStatus status={kycInfo.bstatus} />
             </div>
             <div className="flex gap-2">
               <RrhButton
@@ -70,10 +68,7 @@ export const CrmUserKycInfoPage = ({ userId }: { userId: string }) => {
           <div className="flex items-center justify-between">
             <div className="flex gap-2">
               <div>{t('accountOpening.financialInformation')}</div>
-              {/* <KycVerifyStatus
-                status={kycVerifyStatusMap[kycInfo.fstatus]}
-                statusText={kycVerifyStatusTextMap[kycInfo.fstatus]}
-              /> */}
+              <RrhKycStatus status={kycInfo.fstatus} />
             </div>
             <div className="flex gap-2">
               <RrhButton
@@ -105,10 +100,7 @@ export const CrmUserKycInfoPage = ({ userId }: { userId: string }) => {
                   ? t('accountOpening.identityInformationSumsub')
                   : t('accountOpening.identityInformation')}
               </div>
-              {/* <KycVerifyStatus
-                status={kycVerifyStatusMap[kycInfo.istatus]}
-                statusText={kycVerifyStatusTextMap[kycInfo.istatus]}
-              /> */}
+              <RrhKycStatus status={kycInfo.istatus} />
             </div>
             <div className="flex gap-2">
               {kycInfo.mode !== 'Sumsub' && (

@@ -5,6 +5,7 @@ import { AgentDashboardPage } from './AgentDashboardPage';
 import { CustomerFollowup } from './CustomerFollowup';
 import { CrmUserKycInfoPage } from './CrmUserKycInfoPage';
 import { CrmAccountOperationsPage } from './CrmAccountOperationsPage';
+import { CrmUserWalletListPage } from './CrmUserWalletListPage';
 
 export const AgentTabsPage = ({ userId }: { userId: string }) => {
   const { t } = useTranslation();
@@ -31,7 +32,7 @@ export const AgentTabsPage = ({ userId }: { userId: string }) => {
     },
     {
       value: t('walletAccountsPage.title'),
-      content: <div>WalletAccounts</div>,
+      content: <CrmUserWalletListPage userId={userId} />,
     },
     {
       value: t('table.paymentAccount'),

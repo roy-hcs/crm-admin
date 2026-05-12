@@ -1,8 +1,5 @@
 {
   "permissions": {
-    "allow": ["Bash(npx tsc *)"],
-    "additionalDirectories": [
-      "C:\\Users\\11522\\AppData\\Roaming\\io.github.clash-verge-rev.clash-verge-rev\\profiles"
-    ]
+    "allow": ["Bash(npx tsc *)"]
   }
 }

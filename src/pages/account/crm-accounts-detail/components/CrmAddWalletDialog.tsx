@@ -1,59 +1,44 @@
-import { FormField } from '@/components/ui/form';
-
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Plus } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { FormSelect } from '@/components/form/FormSelect';
-import { useTranslation } from 'react-i18next';
-import { TFunction } from 'i18next';
-import { RrhButton } from '@/components/common/RrhButton';
-import { RrhDialog } from '@/components/common/RrhDialog';
-import { SelectAccount } from './SelectAccount';
 import { useAddWallet } from '@/api/hooks/account';
 import { useGetCurrencies } from '@/api/hooks/system/system';
-import { toast } from 'sonner';
+import { RrhButton } from '@/components/common/RrhButton';
+import { RrhDialog } from '@/components/common/RrhDialog';
+import { FormSelect } from '@/components/form/FormSelect';
 import { RrhForm } from '@/components/form/RrhForm';
-
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 type FormValues = {
   crmUserId: string;
   currency: string;
 };
-
-const walletSchema = (t: TFunction<'translation', undefined>) => {
-  return {
-    crmUserId: z.string().min(1, t('rules.required', { field: t('walletAccountsPage.account') })),
-    currency: z.string().min(1, t('rules.required', { field: t('table.wallet') })),
-  };
-};
-
-export const AddWalletDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
+export const CrmAddWalletDialog = ({
+  userId,
+  open,
+  setOpen,
+  onSuccess,
+}: {
+  userId: string;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  onSuccess: () => void;
+}) => {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
+  const { mutateAsync: addWallet, isPending: isSubmitting } = useAddWallet();
 
-  const schema = useMemo(() => z.object(walletSchema(t)), [t]);
-
+  const { data: rawCurrencies, isLoading: loading } = useGetCurrencies(userId);
   const form = useForm<FormValues>({
-    resolver: zodResolver(schema),
     defaultValues: {
-      crmUserId: '',
+      crmUserId: userId,
       currency: '',
     },
   });
-  const { mutateAsync: addWallet, isPending } = useAddWallet();
-
-  const crmUserId = form.watch('crmUserId');
-
-  const { data: rawCurrencies, isLoading: loading } = useGetCurrencies(crmUserId);
   const walletList = (rawCurrencies ?? [])
     .filter(Boolean)
     .map(item => ({ label: item, value: item }));
-
   const onSubmit = async (data: FormValues) => {
     try {
       const res = await addWallet({
-        crmUserId: data.crmUserId,
+        crmUserId: userId,
         balance: '0',
         currency: data.currency || '',
       });
@@ -74,37 +59,17 @@ export const AddWalletDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
     form.reset();
     setOpen(false);
   };
-
-  // 当选择的账户变更时，重置货币选择
-  useEffect(() => {
-    form.setValue('currency', '');
-  }, [crmUserId, form]);
-
+  console.log('wallet list', walletList);
   return (
     <RrhDialog
-      trigger={
-        <RrhButton type="button" Icon={<Plus className="size-3.5" />}>
-          {t('walletAccountsPage.addWalletAccount')}
-        </RrhButton>
-      }
       title={t('walletAccountsPage.addWalletAccount')}
-      isConfirmDisabled={isPending}
       open={open}
       onOpenChange={setOpen}
       footerShow={false}
       variant="small"
-      formLoading={isPending}
+      formLoading={isSubmitting}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
-        <FormField
-          name="crmUserId"
-          render={({ field }) => {
-            return (
-              <SelectAccount verticalLabel field={field} title={t('walletAccountsPage.account')} />
-            );
-          }}
-        />
-
         <FormSelect
           name="currency"
           label={t('table.wallet')}
