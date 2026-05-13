@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 import { AgentUserCard } from './components/AgentUserCard';
 import { AgentOverallTagsInfo } from './components/AgentOverallTagsInfo';
 import { useGetUserKycTab } from '@/api/hooks/system/system';
-import { AgentTabsPage } from './components/AgentTabsPage';
+import { AgentTabsPage } from './pages/AgentTabsPage';
 
 export const CrmAccountsDetail = () => {
   const [searchParams] = useSearchParams();

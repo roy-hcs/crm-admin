@@ -8,7 +8,7 @@ import { RelationshipsPage } from '@/pages/account/relationships/RelationshipsPa
 import { WalletAccountsDetailPage } from '@/pages/account/wallet-accounts-detail/WalletAccountsDetailPage';
 import { TradingAccountsDetailPage } from '@/pages/account/trading-accounts-detail/TradingAccountsDetailPage';
 import { CrmAccountsDetail } from '@/pages/account/crm-accounts-detail/CrmAccountsDetail';
-import { CrmUserWalletDetailPage } from '@/pages/account/crm-accounts-detail/components/CrmUserWalletDetailPage';
+import { CrmUserWalletDetailPage } from '@/pages/account/crm-accounts-detail/pages/CrmUserWalletDetailPage';
 
 const TradingAccountsDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();

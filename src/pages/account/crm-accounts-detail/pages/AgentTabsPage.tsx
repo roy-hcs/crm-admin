@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AccountOverviewPage } from '@/pages/review/account-opening-detail/account-overview/AccountOverviewPage';
 import { useTranslation } from 'react-i18next';
 import { AgentDashboardPage } from './AgentDashboardPage';
-import { CustomerFollowup } from './CustomerFollowup';
+import { CustomerFollowup } from '../components/CustomerFollowup';
 import { CrmUserKycInfoPage } from './CrmUserKycInfoPage';
 import { CrmAccountOperationsPage } from './CrmAccountOperationsPage';
 import { CrmUserWalletListPage } from './CrmUserWalletListPage';

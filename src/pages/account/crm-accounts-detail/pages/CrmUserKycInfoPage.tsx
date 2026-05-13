@@ -3,12 +3,12 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhCard } from '@/components/common/RrhCard';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EditKycInfoDialog } from './EditKycInfoDialog';
-import { SumsubInfoDialog } from './SumsubInfoDialog';
+import { EditKycInfoDialog } from '../components/EditKycInfoDialog';
+import { SumsubInfoDialog } from '../components/SumsubInfoDialog';
 import { cn } from '@/lib/utils';
 import { useGetKycInfoProtocolInfo } from '@/api/hooks/agent/agent';
 import { ProtocolItem } from '@/api/hooks/agent/types';
-import { ProtocolInfoDialog } from './ProtocolInfoDialog';
+import { ProtocolInfoDialog } from '../components/ProtocolInfoDialog';
 import { RrhKycStatus } from '@/components/common/RrhKycStatus';
 
 export const CrmUserKycInfoPage = ({ userId }: { userId: string }) => {

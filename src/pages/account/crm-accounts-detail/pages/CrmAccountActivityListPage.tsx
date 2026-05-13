@@ -10,7 +10,7 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SetRiskButton } from './SetRiskButton';
+import { SetRiskButton } from '../components/SetRiskButton';
 
 export const CrmAccountActivityListPage = ({ userId }: { userId: string }) => {
   const { t } = useTranslation();

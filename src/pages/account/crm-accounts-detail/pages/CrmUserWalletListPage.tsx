@@ -12,7 +12,7 @@ import { formatMoneyNumber } from '@/lib/utils';
 import { Ellipsis, Plus, RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CrmAddWalletDialog } from './CrmAddWalletDialog';
+import { CrmAddWalletDialog } from '../components/CrmAddWalletDialog';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 
 export const CrmUserWalletListPage = ({ userId }: { userId: string }) => {
