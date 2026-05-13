@@ -1357,7 +1357,19 @@
     "tieredAverageNetDeposit": "分级平均净入金",
     "rewardParams": "奖励参数",
     "fixedParams": "固定参数",
-    "tieredAccrualReward": "分级应计奖励"
+    "tieredAccrualReward": "分级应计奖励",
+    "device": "设备",
+    "ipAddress": "IP地址",
+    "position": "位置",
+    "riskScore": "风控评分",
+    "trust": "信任",
+    "untrust": "风险",
+    "normal": "普通",
+    "riskHigh": "高风险",
+    "riskMedium": "中风险",
+    "riskLow": "低风险",
+    "riskNone": "无风险",
+    "setRiskDialogTitle": "设置IP和设备是否可信"
   },
   "settings": {
     "title": "审核设置",

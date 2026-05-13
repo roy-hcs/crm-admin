@@ -792,7 +792,21 @@
     "tieredAccrualReward": "Tiered accrual awards",
     "tieredAverageNetDeposit": "Tiered Average Net Deposit",
     "timeRangeOfStatistics": "Data statistics time range",
-    "underTheUmbrella": "Under the umbrella"
+    "underTheUmbrella": "Under the umbrella",
+    "device": "equipment",
+    "ipAddress": "IP address",
+    "normal": "ordinary",
+    "position": "Location",
+    "protocolContent": "Agreement content",
+    "riskHigh": "high risk",
+    "riskLow": "low risk",
+    "riskMedium": "medium risk",
+    "riskNone": "no risk",
+    "riskScore": "Risk control score",
+    "setRiskDialogTitle": "Set whether the IP and device are trusted",
+    "signature": "sign",
+    "trust": "trust",
+    "untrust": "risk"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",

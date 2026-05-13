@@ -8,6 +8,7 @@ import {
 } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
+  AccountOperationListParams,
   AgentAccountStatsRes,
   AgentCommissionRes,
   AgentFundsRes,
@@ -17,6 +18,7 @@ import {
   CustomerFollowupRes,
   KycInfoProtocolRes,
   KycInfoRes,
+  UserAccountActivityListRes,
   UserWalletDetail,
   UserWalletListRes,
 } from './types';
@@ -210,5 +212,33 @@ export function useGetUserWalletDetail(id: string) {
     queryKey: ['getUserWalletDetail', id],
     queryFn: () => apiGet<UserWalletDetail>(`/system/crmUserWallet/detailInfo/${id}`),
     enabled: !!id,
+  });
+}
+/**
+ * 获取用户账户活动记录
+ */
+export function useGetUserAccountActivityList(userId: string, params: AccountOperationListParams) {
+  return useQuery({
+    queryKey: ['getUserAccountActivityList', userId, params],
+    queryFn: () =>
+      apiFormPostCustom<UserAccountActivityListRes>(
+        `/system/crmUser/userActivityList?userId=${userId}`,
+        params,
+      ),
+    enabled: !!userId,
+  });
+}
+/**
+ * 设置风险评级信息
+ */
+export function useSetRiskRatingInfo() {
+  return useMutation({
+    mutationFn: (params: {
+      ipAddr: string;
+      ipTrust: string;
+      device: string;
+      deviceTrust: string;
+      userId: string;
+    }) => apiFormPost('/system/crmUser/setRisky', params),
   });
 }

@@ -6,6 +6,7 @@ import { CustomerFollowup } from './CustomerFollowup';
 import { CrmUserKycInfoPage } from './CrmUserKycInfoPage';
 import { CrmAccountOperationsPage } from './CrmAccountOperationsPage';
 import { CrmUserWalletListPage } from './CrmUserWalletListPage';
+import { CrmAccountActivityListPage } from './CrmAccountActivityListPage';
 
 export const AgentTabsPage = ({ userId }: { userId: string }) => {
   const { t } = useTranslation();
@@ -48,7 +49,7 @@ export const AgentTabsPage = ({ userId }: { userId: string }) => {
     },
     {
       value: t('CRMAccountPage.accountActivity'),
-      content: <div>AccountActivity</div>,
+      content: <CrmAccountActivityListPage userId={userId} />,
     },
   ];
   return (

@@ -319,3 +319,44 @@ export type UserWalletDetail = {
   outMoney: number;
   allIn: string;
 };
+
+export type AccountOperationListParams = BasicParams & {
+  ipAddr: string;
+  ipTrust: string;
+  device: string;
+  deviceTrust: string;
+};
+export type AccountActivityItem = BasicParams & {
+  params: Record<string, string>;
+  operId: string;
+  title: string;
+  businessType: string;
+  businessTypes: string;
+  method: string;
+  operatorType: string;
+  operName: string;
+  operUrl: string;
+  operIp: string;
+  operLocation: string;
+  operParam: string;
+  status: string;
+  operTime: string;
+  browser: string;
+  riskScore: number;
+  os: string;
+  ipRiskyFlag: number;
+  devRiskyFlag: number;
+};
+export type UserAccountActivityListRes = {
+  total: string;
+  rows: AccountActivityItem[];
+  code: number;
+  msg: string;
+  totalVolume: number;
+  totalCommission: number;
+  totalProfit: number;
+  totalSwaps: number;
+  priceSum: number;
+  serverType: string;
+  totalList: string;
+};
