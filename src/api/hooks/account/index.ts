@@ -294,11 +294,7 @@ export function useEditAccountGroup() {
 export function useRemoveAccountGroup() {
   return useMutation({
     mutationFn: (params: { ids: string }) =>
-      apiFormPostCustom<{
-        code: number;
-        msg: string;
-        data: null;
-      }>('/system/crmDealAccountGroup/remove', params),
+      apiFormPost('/system/crmDealAccountGroup/remove', params),
   });
 }
 

@@ -47,7 +47,7 @@ export const ReviewInfoCard = ({
         name="status"
         render={({ field }) => (
           <LabelItem
-            label={t('review.reviewStatus')}
+            label={t('table.reviewStatus')}
             ContentDom={
               <RrhRadioGroup
                 value={field.value}

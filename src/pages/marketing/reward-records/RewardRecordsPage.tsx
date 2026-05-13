@@ -74,7 +74,7 @@ export const RewardRecordsPage = () => {
 
   const goToDetail = useCallback(
     (row: RewardRecordsListItem) => {
-      const type = ![2].includes(Number(row.status)) ? 'detail' : 'audit';
+      const type = Number(row.status) !== 2 ? 'detail' : 'audit';
       const url = `/marketing/reward-records/detail?type=${type}&id=${row.recordId}`;
       openTab({
         key: url,

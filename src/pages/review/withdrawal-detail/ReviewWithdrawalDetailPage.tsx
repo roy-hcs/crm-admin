@@ -1,4 +1,3 @@
-import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
 import { WithdrawalInfoCard } from './components/WithdrawalInfoCard';
@@ -14,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DepositRecordPage } from './components/DepositRecordPage';
 import { WithdrawalRecordPage } from './components/WithdrawalRecordPage';
 import { PageInfo } from '@/components/common/PageInfo';
+import { RrhForm } from '@/components/form/RrhForm';
 
 export type WithdrawalFormData = {
   withdrawAmount: string;
@@ -175,47 +175,45 @@ export const ReviewWithdrawalDetailPage = () => {
   return (
     <div>
       <PageInfo wrapperCls="py-3" title={t('review.withdrawalReviewDetail')} />
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
-            <Tabs defaultValue="withdrawalInfo" className="flex-1 gap-3 overflow-auto">
-              <TabsList>
-                {reviewTabs.map(tab => (
-                  <TabsTrigger key={tab} value={tab}>
-                    {t(`review.${tab}`)}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-              <TabsContent value="withdrawalInfo">
-                <WithdrawalInfoCard withdrawData={withdrawalData} isAudit={isAudit} form={form} />
-              </TabsContent>
-              <TabsContent className="grow-0" value="depositRecord">
-                <DepositRecordPage userId={withdrawalInfo.userId} />
-              </TabsContent>
-              <TabsContent value="withdrawalRecord">
-                <WithdrawalRecordPage userId={withdrawalInfo.userId} />
-              </TabsContent>
-            </Tabs>
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
+          <Tabs defaultValue="withdrawalInfo" className="flex-1 gap-3 overflow-auto">
+            <TabsList>
+              {reviewTabs.map(tab => (
+                <TabsTrigger key={tab} value={tab}>
+                  {t(`review.${tab}`)}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <TabsContent value="withdrawalInfo">
+              <WithdrawalInfoCard withdrawData={withdrawalData} isAudit={isAudit} form={form} />
+            </TabsContent>
+            <TabsContent className="grow-0" value="depositRecord">
+              <DepositRecordPage userId={withdrawalInfo.userId} />
+            </TabsContent>
+            <TabsContent value="withdrawalRecord">
+              <WithdrawalRecordPage userId={withdrawalInfo.userId} />
+            </TabsContent>
+          </Tabs>
 
-            <div className="relative md:mt-12 md:w-76">
-              <PersonalInfoCard
-                withdrawalInfo={withdrawalInfo}
-                roleName={withdrawalData.roleName}
-                lastLoginTime={withdrawalData.tLastLogin}
-              />
-              <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
-                <ReviewStepsCard reviewSteps={reviewSteps} />
-                {isAudit && (
-                  <ReviewInfoCard
-                    withdrawalInfo={withdrawalInfo}
-                    reviewer={withdrawalData.reviewer}
-                  />
-                )}
-              </div>
+          <div className="relative md:mt-12 md:w-76">
+            <PersonalInfoCard
+              withdrawalInfo={withdrawalInfo}
+              roleName={withdrawalData.roleName}
+              lastLoginTime={withdrawalData.tLastLogin}
+            />
+            <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
+              <ReviewStepsCard reviewSteps={reviewSteps} />
+              {isAudit && (
+                <ReviewInfoCard
+                  withdrawalInfo={withdrawalInfo}
+                  reviewer={withdrawalData.reviewer}
+                />
+              )}
             </div>
           </div>
-        </form>
-      </Form>
+        </div>
+      </RrhForm>
     </div>
   );
 };

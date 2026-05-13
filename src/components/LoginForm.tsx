@@ -4,14 +4,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { FormHiddenInput } from './form/FormHiddenInput';
@@ -32,6 +25,7 @@ import { useUserStore } from '@/store/userStore';
 import { useQueryClient } from '@tanstack/react-query';
 import { apiGetCustom } from '@/api/client';
 import { UserInfoRes } from '@/api/hooks/system/types';
+import { RrhForm } from '@/components/form/RrhForm';
 
 const emailSchema = (t: TFunction<'translation', undefined>) => {
   return z.object({
@@ -153,122 +147,120 @@ export const LoginForm = ({
 
   return (
     <div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem className="mb-4">
-                <FormLabel className="capitalize">
-                  {loginType === 1 ? t('loginPage.mobile') : t('loginPage.email')}
-                </FormLabel>
-                <FormControl>
-                  {loginType === 1 ? (
-                    <div className="relative">
-                      <Input
-                        placeholder={t('loginPage.EnterYourCellphone')}
-                        {...field}
-                        className="flex-1"
-                      />
-                      <CountryCode
-                        value={countryCode}
-                        onValueChange={setCountryCode}
-                        disabled={loginMutation.isPending}
-                        className="absolute top-1/2 right-0 w-[85px] -translate-y-1/2 border-none shadow-none"
-                      />
-                    </div>
-                  ) : (
-                    <Input
-                      placeholder={t('loginPage.EnterYourUserName')}
-                      {...field}
-                      autoComplete="username"
-                    />
-                  )}
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem className="mb-4">
-                <div className="flex justify-between">
-                  <FormLabel className="capitalize">{t('loginPage.password')}</FormLabel>
-                  <button type="button" className="cursor-pointer text-sm">
-                    {t('loginPage.forgetPWD')}
-                  </button>
-                </div>
-                <FormControl>
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem className="mb-4">
+              <FormLabel className="capitalize">
+                {loginType === 1 ? t('loginPage.mobile') : t('loginPage.email')}
+              </FormLabel>
+              <FormControl>
+                {loginType === 1 ? (
                   <div className="relative">
                     <Input
-                      type={showPWD ? 'text' : 'password'}
-                      placeholder={t('loginPage.EnterYourPassword')}
+                      placeholder={t('loginPage.EnterYourCellphone')}
                       {...field}
-                      autoComplete="current-password"
+                      className="flex-1"
                     />
-                    <button
-                      type="button"
-                      className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
-                      onClick={() => setShowPWD(!showPWD)}
-                    >
-                      {showPWD ? <Eye className="size-4" /> : <EyeClosed className="size-4" />}
-                    </button>
+                    <CountryCode
+                      value={countryCode}
+                      onValueChange={setCountryCode}
+                      disabled={loginMutation.isPending}
+                      className="absolute top-1/2 right-0 w-[85px] -translate-y-1/2 border-none shadow-none"
+                    />
                   </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="rememberMe"
-            render={({ field }) => (
-              <FormItem className="mb-4 flex flex-row items-start space-y-0 space-x-3">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={checked => field.onChange(checked === true)}
+                ) : (
+                  <Input
+                    placeholder={t('loginPage.EnterYourUserName')}
+                    {...field}
+                    autoComplete="username"
                   />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel>{t('loginPage.RememberMe')}</FormLabel>
-                </div>
-              </FormItem>
-            )}
-          />
-          <FormHiddenInput name="type" value={loginType} control={form.control} />
-
-          <RrhButton
-            type="submit"
-            className="mb-3 w-full cursor-pointer"
-            disabled={loginMutation.isPending}
-          >
-            {loginMutation.isPending ? t('loginPage.logging') : t('loginPage.login')}
-          </RrhButton>
-          <RrhButton
-            variant="outline"
-            type="button"
-            className="w-full cursor-pointer capitalize"
-            disabled={loginMutation.isPending}
-            onClick={() => setLoginType(loginType === 1 ? 2 : 1)}
-          >
-            {t('loginPage.LoginWith', {
-              method: loginType === 1 ? t('loginPage.email') : t('loginPage.mobile'),
-            })}
-          </RrhButton>
-
-          {loginMutation.isError && (
-            <div className="mt-2 text-red-500">
-              {t('loginPage.loginFailed')} {String(loginMutation.error)}
-            </div>
+                )}
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
-        </form>
-      </Form>
+        />
+
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem className="mb-4">
+              <div className="flex justify-between">
+                <FormLabel className="capitalize">{t('loginPage.password')}</FormLabel>
+                <button type="button" className="cursor-pointer text-sm">
+                  {t('loginPage.forgetPWD')}
+                </button>
+              </div>
+              <FormControl>
+                <div className="relative">
+                  <Input
+                    type={showPWD ? 'text' : 'password'}
+                    placeholder={t('loginPage.EnterYourPassword')}
+                    {...field}
+                    autoComplete="current-password"
+                  />
+                  <button
+                    type="button"
+                    className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
+                    onClick={() => setShowPWD(!showPWD)}
+                  >
+                    {showPWD ? <Eye className="size-4" /> : <EyeClosed className="size-4" />}
+                  </button>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="rememberMe"
+          render={({ field }) => (
+            <FormItem className="mb-4 flex flex-row items-start space-y-0 space-x-3">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={checked => field.onChange(checked === true)}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>{t('loginPage.RememberMe')}</FormLabel>
+              </div>
+            </FormItem>
+          )}
+        />
+        <FormHiddenInput name="type" value={loginType} control={form.control} />
+
+        <RrhButton
+          type="submit"
+          className="mb-3 w-full cursor-pointer"
+          disabled={loginMutation.isPending}
+        >
+          {loginMutation.isPending ? t('loginPage.logging') : t('loginPage.login')}
+        </RrhButton>
+        <RrhButton
+          variant="outline"
+          type="button"
+          className="w-full cursor-pointer capitalize"
+          disabled={loginMutation.isPending}
+          onClick={() => setLoginType(loginType === 1 ? 2 : 1)}
+        >
+          {t('loginPage.LoginWith', {
+            method: loginType === 1 ? t('loginPage.email') : t('loginPage.mobile'),
+          })}
+        </RrhButton>
+
+        {loginMutation.isError && (
+          <div className="mt-2 text-red-500">
+            {t('loginPage.loginFailed')} {String(loginMutation.error)}
+          </div>
+        )}
+      </RrhForm>
     </div>
   );
 };

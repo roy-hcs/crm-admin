@@ -1,4 +1,3 @@
-import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
 import { useAgentReviewDetail, useAgentReviewVerify } from '@/api/hooks/review/review';
@@ -18,6 +17,7 @@ import { RrhDialog } from '@/components/common/RrhDialog';
 import { useState } from 'react';
 import { KycInfoPage } from '../account-opening-detail/kyc-info/KycInfoPage';
 import { Customer } from '../account-opening-detail/components/Customer';
+import { RrhForm } from '@/components/form/RrhForm';
 
 export type FormValue = {
   id: string;
@@ -108,25 +108,23 @@ export const AgentDetailPage = () => {
           <RrhButton onClick={handleViewUser}>{t('reviewAgent.viewCrmUserDetail')}</RrhButton>
         )}
       </div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
-            <div className="flex-1 gap-3 overflow-auto">
-              <AgentKyc detail={agentInfo} />
-            </div>
-            <div className="relative md:w-93.5">
-              <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
-                <div>
-                  <ReviewStepsCard reviewSteps={reviewSteps} />
-                </div>
-                {type === 'audit' && (
-                  <CheckInfoCard back={back} roleName={agentInfo?.reviewer?.roleName || ''} />
-                )}
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
+          <div className="flex-1 gap-3 overflow-auto">
+            <AgentKyc detail={agentInfo} />
+          </div>
+          <div className="relative md:w-93.5">
+            <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
+              <div>
+                <ReviewStepsCard reviewSteps={reviewSteps} />
               </div>
+              {type === 'audit' && (
+                <CheckInfoCard back={back} roleName={agentInfo?.reviewer?.roleName || ''} />
+              )}
             </div>
           </div>
-        </form>
-      </Form>
+        </div>
+      </RrhForm>
       <RrhDialog
         title={t('reviewAgent.viewCrmUserDetail')}
         open={open}

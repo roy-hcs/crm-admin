@@ -10,7 +10,7 @@ export const SelectUpperDropdown = ({
   labelShow = true,
   className = '',
 }: {
-  name?: 'inviter' | 'accounts';
+  name?: 'inviter' | 'accounts' | 'agentUserId';
   rawLabel?: string;
   labelShow?: boolean;
   className?: string;
@@ -78,6 +78,22 @@ export const SelectUpperDropdown = ({
     <FormField
       name={name}
       render={({ field }) => {
+        const parsedAccountsValue =
+          name === 'accounts' && typeof field.value === 'string' && field.value
+            ? (() => {
+                try {
+                  return JSON.parse(field.value) as { id?: string; label?: string };
+                } catch {
+                  return null;
+                }
+              })()
+            : null;
+
+        const selectValue =
+          name === 'accounts' ? (parsedAccountsValue?.id ?? '') : (field.value ?? '');
+        const displayLabel =
+          name === 'accounts' ? (parsedAccountsValue?.label ?? undefined) : undefined;
+
         return (
           <FormItem className={className}>
             <div className="grid gap-2">
@@ -89,16 +105,21 @@ export const SelectUpperDropdown = ({
                   params={params}
                   buildSearchParams={buildInviterSearchParams}
                   getNextParams={getInviterNextParams}
-                  value={field.value}
+                  value={selectValue}
+                  displayLabel={displayLabel}
                   onSelect={(option: { value: string; label: string }) => {
-                    if (name === 'inviter') {
-                      field.onChange(option.value);
-                    } else {
-                      const data = {
-                        id: option.value,
-                        label: option.label,
-                      };
-                      field.onChange(JSON.stringify(data));
+                    switch (name) {
+                      case 'inviter':
+                        field.onChange(option.value);
+                        break;
+                      case 'accounts':
+                        field.onChange(JSON.stringify({ id: option.value, label: option.label }));
+                        break;
+                      case 'agentUserId':
+                        field.onChange(option.value);
+                        break;
+                      default:
+                        field.onChange(option.value);
                     }
                   }}
                 />

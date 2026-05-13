@@ -1,4 +1,3 @@
-import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +16,7 @@ import {
 } from '@/api/hooks/marketing';
 import { RewardRecordsInfoCard } from './components/RewardRecordsInfoCard';
 import { ReviewStepsCard } from '@/pages/review/withdrawal-detail/components/ReviewStepsCard';
+import { RrhForm } from '@/components/form/RrhForm';
 
 type FormValue = RewardRecordVerifyParams;
 
@@ -49,15 +49,17 @@ export const RewardRecordsDetailPage = () => {
         id: recordInfo?.id || '',
         status: `${recordInfo?.status}`,
         remark: recordInfo.remark || '',
-        verifyStep: `${recordInfo?.verifyStep}`,
+        verifyStep: `${recordInfo?.verifyStep ?? ''}`,
       });
     }
   }, [form, recordInfo]);
 
   if (isLoading) {
-    <div className="h-100">
-      <RrhCircleLoading />;
-    </div>;
+    return (
+      <div className="h-100">
+        <RrhCircleLoading />
+      </div>
+    );
   }
 
   if (!recordId || !recordInfo) {
@@ -88,7 +90,6 @@ export const RewardRecordsDetailPage = () => {
       };
     }),
   ] as RrhStepProps['steps'];
-  console.log(reviewSteps, 'reviewSteps');
 
   const onSubmit = async (data: FormValue) => {
     await withLoading(async () => {
@@ -98,7 +99,7 @@ export const RewardRecordsDetailPage = () => {
           recordId: recordInfo?.recordId || '',
           status: data.status,
           remark: data.remark,
-          verifyStep: `${recordInfo?.verifyStep}`,
+          verifyStep: `${recordInfo?.verifyStep ?? ''}`,
         };
         const res = await verifyRewardRecord(params);
         if (res.code === 0) {
@@ -116,21 +117,19 @@ export const RewardRecordsDetailPage = () => {
   return (
     <div>
       <PageInfo wrapperCls="py-3" title={t('rewardRecords.rewardRecordsDetail')} />
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
-            <div className="flex-1 gap-3 overflow-auto">
-              <RewardRecordsInfoCard data={recordData} />
-            </div>
-            <div className="relative md:w-76">
-              <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
-                <ReviewStepsCard reviewSteps={reviewSteps} />
-                {isAudit && <CheckInfoCard back={back} />}
-              </div>
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
+          <div className="flex-1 gap-3 overflow-auto">
+            <RewardRecordsInfoCard data={recordData} />
+          </div>
+          <div className="relative md:w-76">
+            <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
+              <ReviewStepsCard reviewSteps={reviewSteps} />
+              {isAudit && <CheckInfoCard back={back} />}
             </div>
           </div>
-        </form>
-      </Form>
+        </div>
+      </RrhForm>
     </div>
   );
 };
