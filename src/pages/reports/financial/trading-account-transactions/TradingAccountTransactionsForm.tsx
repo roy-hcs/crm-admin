@@ -164,112 +164,114 @@ export const TradingAccountTransactionsForm = ({
   }, [form, getGroupData, serverId]);
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <RrhServerSelector serverOptions={serverOptions} />
-          <FormSelect
-            verticalLabel
-            name="opeTypeList"
-            label={t('table.operationType')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={
-              operationTypeRes
-                ?.filter(item => item)
-                .map(item => ({
-                  label: item.dictLabel,
-                  value: item.dictValue,
-                })) || []
-            }
-          />
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <RrhServerSelector serverOptions={serverOptions} />
+      <FormSelect
+        verticalLabel
+        name="opeTypeList"
+        label={t('table.operationType')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={
+          operationTypeRes
+            ?.filter(item => item)
+            .map(item => ({
+              label: item.dictLabel,
+              value: item.dictValue,
+            })) || []
+        }
+      />
 
-          <FormMultiSelect
-            verticalLabel
-            name="serverGroupList"
-            label={t('table.groups')}
-            placeholder={t('common.pleaseSelect')}
-            options={groupList}
-            loading={groupLoading}
-          />
+      <FormMultiSelect
+        verticalLabel
+        name="serverGroupList"
+        label={t('table.groups')}
+        placeholder={t('common.pleaseSelect')}
+        options={groupList}
+        loading={groupLoading}
+      />
 
-          <FormInput
-            verticalLabel
-            name="ticket"
-            label={t('tradingAccountTransactions.ticket')}
-            placeholder={t('common.pleaseInput', {
-              field: t('tradingAccountTransactions.ticket'),
-            })}
-          />
-          <FormInput
-            verticalLabel
-            name="historyFuzzyName"
-            label={t('tradingAccountTransactions.name')}
-            placeholder={t('common.pleaseInput', {
-              field: t('tradingAccountTransactions.name'),
-            })}
-          />
-          <FormInput
-            verticalLabel
-            name="login"
-            label={t('tradingAccountTransactions.login')}
-            placeholder={t('common.pleaseInput', {
-              field: t('tradingAccountTransactions.login'),
-            })}
-          />
+      <FormInput
+        verticalLabel
+        name="ticket"
+        label={t('table.orderNumber')}
+        placeholder={t('common.pleaseInput', {
+          field: t('table.orderNumber'),
+        })}
+      />
+      <FormInput
+        verticalLabel
+        name="historyFuzzyName"
+        label={t('tradingAccountTransactions.name')}
+        placeholder={t('common.pleaseInput', {
+          field: t('tradingAccountTransactions.name'),
+        })}
+      />
+      <FormInput
+        verticalLabel
+        name="login"
+        label={t('tradingAccountTransactions.login')}
+        placeholder={t('common.pleaseInput', {
+          field: t('tradingAccountTransactions.login'),
+        })}
+      />
 
-          <FormMultiSelect
-            verticalLabel
-            name="accountGroupList"
-            label={t('table.accountGroup')}
-            placeholder={t('common.pleaseSelect')}
-            options={
-              dealAccountGroupListData?.map(item => ({
-                label: item.name,
-                value: item.id,
-              })) || []
-            }
-          />
-          <FormInput
-            verticalLabel
-            name="comment"
-            label={t('tradingAccountTransactions.comment')}
-            placeholder={t('common.pleaseInput', {
-              field: t('tradingAccountTransactions.comment'),
-            })}
-          />
-          <SelectUpperDropdown />
-          <FormField
-            name="operationTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('common.operationTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="operationTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormInput
-            verticalLabel
-            name="fuzzyCrmAccount"
-            label={t('tradingAccountTransactions.crmLastName')}
-            placeholder={t('common.pleaseInput', {
-              field: t('tradingAccountTransactions.crmLastName'),
-            })}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit">
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <FormMultiSelect
+        verticalLabel
+        name="accountGroupList"
+        label={t('table.accountGroup')}
+        placeholder={t('common.pleaseSelect')}
+        options={
+          dealAccountGroupListData?.map(item => ({
+            label: item.name,
+            value: item.id,
+          })) || []
+        }
+      />
+      <FormInput
+        verticalLabel
+        name="comment"
+        label={t('tradingAccountTransactions.comment')}
+        placeholder={t('common.pleaseInput', {
+          field: t('tradingAccountTransactions.comment'),
+        })}
+      />
+      <SelectUpperDropdown />
+      <FormField
+        name="operationTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('common.operationTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="operationTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormInput
+        verticalLabel
+        name="fuzzyCrmAccount"
+        label={t('tradingAccountTransactions.crmLastName')}
+        placeholder={t('common.pleaseInput', {
+          field: t('tradingAccountTransactions.crmLastName'),
+        })}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant={'outline'} onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit">
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

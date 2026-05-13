@@ -214,7 +214,7 @@ export function KycReviewCard({
                 name="status"
                 render={({ field }) => (
                   <LabelItem
-                    label={t('review.reviewStatus')}
+                    label={t('table.reviewStatus')}
                     ContentDom={
                       <RrhRadioGroup
                         value={field.value || '1'}

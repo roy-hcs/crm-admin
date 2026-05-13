@@ -49,15 +49,17 @@ export const RewardRecordsDetailPage = () => {
         id: recordInfo?.id || '',
         status: `${recordInfo?.status}`,
         remark: recordInfo.remark || '',
-        verifyStep: `${recordInfo?.verifyStep}`,
+        verifyStep: `${recordInfo?.verifyStep ?? ''}`,
       });
     }
   }, [form, recordInfo]);
 
   if (isLoading) {
-    <div className="h-100">
-      <RrhCircleLoading />;
-    </div>;
+    return (
+      <div className="h-100">
+        <RrhCircleLoading />
+      </div>
+    );
   }
 
   if (!recordId || !recordInfo) {
@@ -88,7 +90,6 @@ export const RewardRecordsDetailPage = () => {
       };
     }),
   ] as RrhStepProps['steps'];
-  console.log(reviewSteps, 'reviewSteps');
 
   const onSubmit = async (data: FormValue) => {
     await withLoading(async () => {
@@ -98,7 +99,7 @@ export const RewardRecordsDetailPage = () => {
           recordId: recordInfo?.recordId || '',
           status: data.status,
           remark: data.remark,
-          verifyStep: `${recordInfo?.verifyStep}`,
+          verifyStep: `${recordInfo?.verifyStep ?? ''}`,
         };
         const res = await verifyRewardRecord(params);
         if (res.code === 0) {

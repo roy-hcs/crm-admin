@@ -344,3 +344,78 @@ export type RewardRecordVerifyParams = {
   remark: string;
   verifyStep: string;
 };
+
+export type NetBonusRewardRecordsListParams = BasicParams & {
+  bonusUser?: string;
+  bonusMonth?: string;
+  status?: string;
+  orderNo?: string;
+  params: {
+    agentUserId?: string;
+    drirectFlag?: string;
+    beginTime?: string;
+    endTime?: string;
+    beginReviewTime?: string;
+    endReviewTime?: string;
+    beginBonusTime?: string;
+    endBonusTime?: string;
+  };
+};
+export type RewardRecordsItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: string;
+  orderNo: string;
+  bonusMonth: number;
+  bonusMonthStr: string;
+  avgNetReward: number | null;
+  personalAvgNet: number;
+  tierNet: number;
+  rewardParam: number;
+  bonusType: number;
+  bonusAmount: number;
+  actualAmount: number;
+  bonusBase: string;
+  bonusUser: string;
+  account: string;
+  accountName: string;
+  serverId: string | null;
+  status: number;
+  distributionTime: string | null;
+  bonusBaseName: string | null;
+  bonusBaseShowId: string | null;
+  bonusUserName: string | null;
+  bonusUserShowId: string | null;
+  verifyStep: number | null;
+  verifyUserName: string | null;
+  deleteFlag: number | null;
+  bonusBaseAccountType: string | null;
+  bonusUserAccountType: string | null;
+};
+
+export type NetBonusRewardRecordsRes = BasicRes<RewardRecordsItem>;
+
+export type NetBonusRewardRecordsTotalRes = NetBonusRewardReportsTotal; // 和奖励报表总计接口返回一致
+
+export type NetBonusRewardRecordReviewDetailRes = {
+  code: number;
+  msg: string | null;
+  data: {
+    detail: RewardRecordsItem;
+    verifyLogs: VerifyLogItem[];
+  };
+};
+
+export type NetBonusRewardRecordVerifyParams = {
+  id: string;
+  status: string;
+  actualAmount: number | string;
+  remark: string;
+  verifyStep: string;
+  serverId: string;
+  account: string;
+};

@@ -17,6 +17,11 @@ import {
   NetBonusRewardStatisticsRes,
   RewardRecordReviewDetailRes,
   RewardRecordVerifyParams,
+  NetBonusRewardRecordsListParams,
+  NetBonusRewardRecordsRes,
+  NetBonusRewardRecordsTotalRes,
+  NetBonusRewardRecordReviewDetailRes,
+  NetBonusRewardRecordVerifyParams,
 } from './types';
 
 export * from './types';
@@ -265,5 +270,88 @@ export function useExportNetBonusRewardStatistics() {
   return useMutation({
     mutationFn: (params: NetBonusRewardStatisticsListParams) =>
       apiFormPost('/system/statistics/netDataStatisticExport', params),
+  });
+}
+
+/**
+ * 获取净入金奖励记录
+ */
+export function useGetNetBonusRewardRecords(params: NetBonusRewardRecordsListParams) {
+  return useQuery({
+    queryKey: ['netBonusRewardRecords', params],
+    queryFn: () =>
+      apiFormPostCustom<NetBonusRewardRecordsRes>(
+        '/system/marketing/netDepositBonus/recordList',
+        params,
+      ),
+  });
+}
+
+/**
+ * 导出净入金奖励记录
+ */
+export function useExportNetBonusRewardRecords() {
+  return useMutation({
+    mutationFn: (params: NetBonusRewardRecordsListParams) =>
+      apiFormPost('/system/statistics/netStatisticExport', params),
+  });
+}
+
+/**
+ * 获取净入金奖励记录总计数据
+ */
+export function useGetNetBonusRewardRecordsTotal() {
+  return useMutation({
+    mutationFn: (params: NetBonusRewardRecordsListParams) =>
+      apiFormPost<NetBonusRewardRecordsTotalRes>(
+        '/system/marketing/netDepositBonus/recordListSum',
+        params,
+      ),
+  });
+}
+/**
+ * 净入金奖励记录批量审核
+ */
+export function useBatchVerifyNetBonusRewardRecords() {
+  return useMutation({
+    mutationFn: (params: { id: string; status: string; remark?: string }) =>
+      apiFormPost<NetBonusRewardRecordsTotalRes>(
+        '/system/marketing/netDepositBonus/verify',
+        params,
+      ),
+  });
+}
+
+/**
+ * 删除净入金奖励记录
+ */
+export function useRemoveRecord() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost('/system/marketing/netDepositBonus/recordRemove', params),
+  });
+}
+
+/**
+ * 获取净入金奖励记录审核详情
+ */
+export function useNetBonusRewardRecordReviewDetail(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['netBonusRewardRecordReviewDetail', id],
+    queryFn: () =>
+      apiGetCustom<NetBonusRewardRecordReviewDetailRes>(
+        `/system/marketing/netDepositBonus/viewDetailInfo/${id}`,
+      ),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 净入金奖励记录审核详情审核提交
+ */
+export function useNetBonusRewardRecordVerify() {
+  return useMutation({
+    mutationFn: (params: NetBonusRewardRecordVerifyParams) =>
+      apiFormPost(`/system/marketing/netDepositBonus/verify`, params),
   });
 }

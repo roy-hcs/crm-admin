@@ -73,16 +73,24 @@ export const RewardRecordsInfoCard: FC<{
           <h2 className="text-normal py-1.5 text-base font-bold md:py-3 md:text-lg">
             {t('table.accountInformation')}
           </h2>
-          {accountInfo.map(item => (
-            <LabelItem label={t(item.label)} ContentDom={<InfoItem info={item.value || '-'} />} />
+          {accountInfo.map((item, index) => (
+            <LabelItem
+              key={`${item.label}-${index}`}
+              label={t(item.label)}
+              ContentDom={<InfoItem info={item.value || '-'} />}
+            />
           ))}
         </div>
         <div>
           <h2 className="text-normal py-1.5 text-base font-bold md:py-3 md:text-lg">
             {t('rewardRecords.rewardInfo')}
           </h2>
-          {otherInfo.map(item => (
-            <LabelItem label={t(item.label)} ContentDom={<InfoItem info={item.value || '-'} />} />
+          {otherInfo.map((item, index) => (
+            <LabelItem
+              key={`${item.label}-${index}`}
+              label={t(item.label)}
+              ContentDom={<InfoItem info={item.value || '-'} />}
+            />
           ))}
         </div>
       </div>
