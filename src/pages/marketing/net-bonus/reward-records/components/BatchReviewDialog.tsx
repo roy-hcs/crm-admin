@@ -1,6 +1,5 @@
 import { FormField } from '@/components/ui/form';
 
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -29,7 +28,6 @@ export const BatchReviewDialog = ({
   ids: string[];
 }) => {
   const { t } = useTranslation();
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -37,11 +35,10 @@ export const BatchReviewDialog = ({
       remark: '',
     },
   });
-  const { mutateAsync: batchVerifyAsync } = useBatchVerifyNetBonusRewardRecords();
+  const { mutateAsync: batchVerifyAsync, isPending } = useBatchVerifyNetBonusRewardRecords();
 
   const onSubmit = async (data: FormValues) => {
     try {
-      setIsSubmitting(true);
       const params = ids.map(id => ({
         id,
         status: data.status,
@@ -61,8 +58,6 @@ export const BatchReviewDialog = ({
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -81,7 +76,7 @@ export const BatchReviewDialog = ({
       onOpenChange={setOpen}
       footerShow={false}
       variant="small"
-      formLoading={isSubmitting}
+      formLoading={isPending}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
         <div className="text-foreground text-sm leading-5 font-medium">
@@ -142,7 +137,7 @@ export const BatchReviewDialog = ({
             <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
               {t('common.Cancel')}
             </RrhButton>
-            <RrhButton type="submit" className="px-4 py-2" disabled={isSubmitting}>
+            <RrhButton type="submit" className="px-4 py-2" disabled={isPending}>
               {t('common.Confirm')}
             </RrhButton>
           </div>

@@ -22,18 +22,16 @@ export const BatchDeleteDialog = ({
   ids: string[];
 }) => {
   const { t } = useTranslation();
-  // const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<FormValues>({
     defaultValues: {
       ids: '',
     },
   });
-  const { mutateAsync: removeRecord, isPaused } = useRemoveRecord();
+  const { mutateAsync: removeRecord, isPending } = useRemoveRecord();
 
   const onSubmit = async () => {
     try {
-      // setIsSubmitting(true);
       const params = {
         ids: ids.join(','),
       };
@@ -66,7 +64,7 @@ export const BatchDeleteDialog = ({
       onOpenChange={setOpen}
       footerShow={false}
       variant="small"
-      formLoading={isPaused}
+      formLoading={isPending}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
         <div className="text-foreground text-sm leading-5 font-medium">
@@ -81,7 +79,7 @@ export const BatchDeleteDialog = ({
             <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
               {t('common.Cancel')}
             </RrhButton>
-            <RrhButton type="submit" className="px-4 py-2" disabled={isPaused}>
+            <RrhButton type="submit" className="px-4 py-2" disabled={isPending}>
               {t('common.Confirm')}
             </RrhButton>
           </div>
