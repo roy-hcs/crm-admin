@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -23,18 +22,18 @@ export const BatchDeleteDialog = ({
   ids: string[];
 }) => {
   const { t } = useTranslation();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<FormValues>({
     defaultValues: {
       ids: '',
     },
   });
-  const { mutateAsync: removeRecord } = useRemoveRecord();
+  const { mutateAsync: removeRecord, isPaused } = useRemoveRecord();
 
   const onSubmit = async () => {
     try {
-      setIsSubmitting(true);
+      // setIsSubmitting(true);
       const params = {
         ids: ids.join(','),
       };
@@ -50,8 +49,6 @@ export const BatchDeleteDialog = ({
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -65,12 +62,11 @@ export const BatchDeleteDialog = ({
   return (
     <RrhDialog
       title={t('table.batchDelete')}
-      isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
       footerShow={false}
       variant="small"
-      formLoading={isSubmitting}
+      formLoading={isPaused}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
         <div className="text-foreground text-sm leading-5 font-medium">
@@ -85,7 +81,7 @@ export const BatchDeleteDialog = ({
             <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
               {t('common.Cancel')}
             </RrhButton>
-            <RrhButton type="submit" className="px-4 py-2" disabled={isSubmitting}>
+            <RrhButton type="submit" className="px-4 py-2" disabled={isPaused}>
               {t('common.Confirm')}
             </RrhButton>
           </div>

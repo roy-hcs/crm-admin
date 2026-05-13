@@ -116,7 +116,7 @@ export const NetBonusRewardRecordsPage = () => {
 
   const goToDetail = useCallback(
     (row: RewardRecordsItem) => {
-      const type = [2].includes(Number(row.status)) ? 'audit' : 'detail';
+      const type = Number(row.status) === 2 ? 'audit' : 'detail';
       const url = `/marketing/net-bonus/reward-records/detail?type=${type}&id=${row.id}`;
       openTab({
         key: url,
@@ -338,9 +338,7 @@ export const NetBonusRewardRecordsPage = () => {
           Trigger={<Ellipsis className="size-4" />}
           dropdownList={[
             {
-              label: [2].includes(Number(row?.original?.status))
-                ? t('table.audit')
-                : t('common.View'),
+              label: Number(row?.original?.status) === 2 ? t('table.audit') : t('common.View'),
               value: 'review',
             },
             { label: t('common.delete'), value: 'delete' },
@@ -364,7 +362,7 @@ export const NetBonusRewardRecordsPage = () => {
   const { mutateAsync: removeRecord } = useRemoveRecord();
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility('marketing-reward-records-table', allColumns);
+    useColumnVisibility('marketing-net-bonus-reward-records-table', allColumns);
   const { mutateAsync: exportNetBonusRewardRecords, isPending: exportLoading } =
     useExportNetBonusRewardRecords();
   const [id, setId] = useState('');
@@ -442,9 +440,7 @@ export const NetBonusRewardRecordsPage = () => {
                 switch (action) {
                   case 'batchAudit':
                     // 只能批量审核未审核的记录
-                    if (
-                      data?.rows.filter(i => ids.includes(i.id) && ![2].includes(i.status)).length
-                    ) {
+                    if (data?.rows.filter(i => ids.includes(i.id) && i.status !== 2).length) {
                       toast.error(t('netBonusRewardRecords.containsReviewedRecords'));
                       return;
                     }

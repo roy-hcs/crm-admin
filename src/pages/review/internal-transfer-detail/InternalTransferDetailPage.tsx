@@ -1,4 +1,3 @@
-import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
@@ -15,6 +14,7 @@ import { toast } from 'sonner';
 import { InfoCard } from './components/InfoCard';
 import { ReviewInfoCard } from './components/ReviewInfoCard';
 import { useEffect } from 'react';
+import { RrhForm } from '@/components/form/RrhForm';
 
 export const InternalTransferDetailPage = () => {
   const [searchParams] = useSearchParams();
@@ -128,23 +128,21 @@ export const InternalTransferDetailPage = () => {
         wrapperCls="py-3"
         title={t('internalTransferReview.internalTransferReviewDetail')}
       />
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
-            <div className="flex-1 gap-3 overflow-auto">
-              <InfoCard detailData={depositData} isAudit={isAudit} />
-            </div>
-            <div className="relative md:w-76">
-              <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
-                <ReviewStepsCard reviewSteps={reviewSteps} />
-                {isAudit && reviewer && (
-                  <ReviewInfoCard detailData={depositData} reviewer={reviewer} />
-                )}
-              </div>
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
+          <div className="flex-1 gap-3 overflow-auto">
+            <InfoCard detailData={depositData} isAudit={isAudit} />
+          </div>
+          <div className="relative md:w-76">
+            <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
+              <ReviewStepsCard reviewSteps={reviewSteps} />
+              {isAudit && reviewer && (
+                <ReviewInfoCard detailData={depositData} reviewer={reviewer} />
+              )}
             </div>
           </div>
-        </form>
-      </Form>
+        </div>
+      </RrhForm>
     </div>
   );
 };

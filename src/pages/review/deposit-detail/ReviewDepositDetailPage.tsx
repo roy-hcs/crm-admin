@@ -1,4 +1,3 @@
-import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
 import { useDepositReviewDetail, useDepositVerify } from '@/api/hooks/review/review';
@@ -12,6 +11,7 @@ import { RrhStepProps } from '@/components/common/RrhStep';
 import { ReviewInfoCard } from './components/ReviewInfoCard';
 import { ReviewStepsCard } from '../withdrawal-detail/components/ReviewStepsCard';
 import { PageInfo } from '@/components/common/PageInfo';
+import { RrhForm } from '@/components/form/RrhForm';
 
 export const ReviewDepositDetailPage = () => {
   const [searchParams] = useSearchParams();
@@ -115,28 +115,26 @@ export const ReviewDepositDetailPage = () => {
   return (
     <div>
       <PageInfo wrapperCls="py-3" title={t('depositReview.depositReviewDetail')} />
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
-            <div className="flex-1 gap-3 overflow-auto">
-              <DepositInfoCard depositData={depositData} isAudit={isAudit} form={form} />
-            </div>
-            <div className="relative md:w-76">
-              <PersonalInfoCard
-                depositInfo={depositInfo}
-                roleName={depositData.roleName}
-                lastLoginTime={depositData.tLastLogin}
-              />
-              <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
-                <ReviewStepsCard reviewSteps={reviewSteps} />
-                {isAudit && reviewer && (
-                  <ReviewInfoCard depositInfo={depositInfo} reviewer={reviewer} />
-                )}
-              </div>
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
+          <div className="flex-1 gap-3 overflow-auto">
+            <DepositInfoCard depositData={depositData} isAudit={isAudit} form={form} />
+          </div>
+          <div className="relative md:w-76">
+            <PersonalInfoCard
+              depositInfo={depositInfo}
+              roleName={depositData.roleName}
+              lastLoginTime={depositData.tLastLogin}
+            />
+            <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
+              <ReviewStepsCard reviewSteps={reviewSteps} />
+              {isAudit && reviewer && (
+                <ReviewInfoCard depositInfo={depositInfo} reviewer={reviewer} />
+              )}
             </div>
           </div>
-        </form>
-      </Form>
+        </div>
+      </RrhForm>
     </div>
   );
 };

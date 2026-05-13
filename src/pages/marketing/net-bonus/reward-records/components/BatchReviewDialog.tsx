@@ -77,7 +77,6 @@ export const BatchReviewDialog = ({
   return (
     <RrhDialog
       title={t('table.batchAudit')}
-      isConfirmDisabled={isSubmitting}
       open={open}
       onOpenChange={setOpen}
       footerShow={false}

@@ -1,4 +1,4 @@
-import { Form, FormField } from '@/components/ui/form';
+import { FormField } from '@/components/ui/form';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,7 @@ import { CircleAlert } from 'lucide-react';
 import { RrhRadioGroup } from '@/components/common/RrhRadioGroup';
 import { useCrmUserConfirmRemoveInfo, useCrmUserRemove } from '@/api/hooks/system/system';
 import { RrhButton } from '@/components/common/RrhButton';
+import { RrhForm } from '@/components/form/RrhForm';
 type resetPasswordFormValues = {
   deleteType: string;
 };
@@ -92,66 +93,64 @@ export const DeleteAccountDialog = ({
               : t('CRMAccountPage.DeleteAccountWalletAndRealAccountBalanceZero')}
           </span>
         </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              name="deleteType"
-              render={({ field }) => (
-                <RrhRadioGroup
-                  value={field.value ?? '1'}
-                  onValueChange={value => {
-                    field.onChange(value);
-                    setDeleteType(value);
-                  }}
-                  labelClassName="font-medium"
-                  radioItems={[
-                    {
-                      value: '1',
-                      label: t('CRMAccountPage.DeleteAccountOnlyCRM'),
-                    },
-                    {
-                      value: '2',
-                      label: t('CRMAccountPage.DeleteAccountWithTrading'),
-                    },
-                  ]}
-                />
-              )}
-            />
-            {!isLoading && (
-              <div className="text-foreground mt-6 text-sm leading-5">
-                {t('CRMAccountPage.DeleteAccountWalletBalance')}:
-                {data?.walletList?.map(it => (
-                  <span>{`${it.balance} ${it.currency},`}</span>
-                ))}
-              </div>
+        <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            name="deleteType"
+            render={({ field }) => (
+              <RrhRadioGroup
+                value={field.value ?? '1'}
+                onValueChange={value => {
+                  field.onChange(value);
+                  setDeleteType(value);
+                }}
+                labelClassName="font-medium"
+                radioItems={[
+                  {
+                    value: '1',
+                    label: t('CRMAccountPage.DeleteAccountOnlyCRM'),
+                  },
+                  {
+                    value: '2',
+                    label: t('CRMAccountPage.DeleteAccountWithTrading'),
+                  },
+                ]}
+              />
             )}
-            {!isLoading && deleteType === '2' && (
-              <div className="text-foreground mt-6 text-sm leading-5">
-                <div>
-                  {t('CRMAccountPage.DeleteAccountWalletAndRealAccountBalance', {
-                    real: count.real,
-                    demo: count.demo,
-                  })}
-                </div>
-                {data?.accountList?.map(it => (
-                  <span>
-                    {`${it?.account}-${it.balance} ${it.currency}-${it.serviceProperty === 1 ? t('common.live') : t('common.demo')},`}
-                  </span>
-                ))}
-              </div>
-            )}
-            <div className="col-span-full -mx-6 flex justify-end px-6 py-6 sm:pb-0">
-              <div className="flex justify-end gap-4">
-                <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
-                  {t('common.Cancel')}
-                </RrhButton>
-                <RrhButton type="submit" className="px-4 py-2">
-                  {t('common.Confirm')}
-                </RrhButton>
-              </div>
+          />
+          {!isLoading && (
+            <div className="text-foreground mt-6 text-sm leading-5">
+              {t('CRMAccountPage.DeleteAccountWalletBalance')}:
+              {data?.walletList?.map(it => (
+                <span>{`${it.balance} ${it.currency},`}</span>
+              ))}
             </div>
-          </form>
-        </Form>
+          )}
+          {!isLoading && deleteType === '2' && (
+            <div className="text-foreground mt-6 text-sm leading-5">
+              <div>
+                {t('CRMAccountPage.DeleteAccountWalletAndRealAccountBalance', {
+                  real: count.real,
+                  demo: count.demo,
+                })}
+              </div>
+              {data?.accountList?.map(it => (
+                <span>
+                  {`${it?.account}-${it.balance} ${it.currency}-${it.serviceProperty === 1 ? t('common.live') : t('common.demo')},`}
+                </span>
+              ))}
+            </div>
+          )}
+          <div className="col-span-full -mx-6 flex justify-end px-6 py-6 sm:pb-0">
+            <div className="flex justify-end gap-4">
+              <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
+                {t('common.Cancel')}
+              </RrhButton>
+              <RrhButton type="submit" className="px-4 py-2">
+                {t('common.Confirm')}
+              </RrhButton>
+            </div>
+          </div>
+        </RrhForm>
       </div>
     </RrhDialog>
   );
