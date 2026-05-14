@@ -1,8 +1,8 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
-import { Ellipsis, Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useState } from 'react';
+import { Funnel, RefreshCcw, Search } from 'lucide-react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDictType } from '@/api/hooks/system/system';
 import {
@@ -16,9 +16,9 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { RewardRecordsForm } from './RewardRecordsForm';
 import { depositRebateStatusMap } from '@/lib/constant';
-import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { RewardReviewDialog } from './components/RewardReviewDialog';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export const RewardRecordsPage = () => {
   const [params, setParams] = useState<RewardRecordsListParams['params']>({
@@ -32,6 +32,7 @@ export const RewardRecordsPage = () => {
     Omit<RewardRecordsListParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
   >({
     rewardId: '',
+    status: '',
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -64,10 +65,25 @@ export const RewardRecordsPage = () => {
     }));
     setOtherParams({
       rewardId: '',
+      status: '',
     });
     setResetKey(k => k + 1);
     setPageNum(0);
   };
+  const { openTab } = useTabActions();
+
+  const goToDetail = useCallback(
+    (row: RewardRecordsListItem) => {
+      const type = Number(row.status) !== 2 ? 'detail' : 'audit';
+      const url = `/marketing/reward-records/detail?type=${type}&id=${row.recordId}`;
+      openTab({
+        key: url,
+        title: t('rewardRecords.rewardRecordsDetail'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
 
   const allColumns: CRMColumnDef<RewardRecordsListItem, unknown>[] = [
     {
@@ -218,30 +234,11 @@ export const RewardRecordsPage = () => {
       },
       fixed: 'right',
       size: 50,
-      cell: () => {
-        return (
-          <div>
-            <RrhDropdown
-              Trigger={
-                <RrhButton variant="ghost">
-                  <Ellipsis />
-                </RrhButton>
-              }
-              dropdownList={[
-                { label: t('common.View'), value: 'view' },
-                { label: t('common.Edit'), value: 'edit' },
-              ]}
-              callToAction={action => {
-                if (action === 'edit') {
-                  // Handle edit action
-                } else if (action === 'view') {
-                  // Handle view action
-                }
-              }}
-            />
-          </div>
-        );
-      },
+      cell: ({ row }) => (
+        <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+          {String(row?.original?.status) !== '2' ? t('common.View') : t('table.audit')}
+        </RrhButton>
+      ),
     },
   ];
 

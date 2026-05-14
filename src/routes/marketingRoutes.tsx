@@ -1,9 +1,21 @@
 import { AdsPage } from '@/pages/marketing/ads/AdsPage';
+import { NetBonusRewardRecordsDetailPage } from '@/pages/marketing/net-bonus/reward-records-detail/NetBonusRewardRecordsDetailPage';
+import { NetBonusRewardRecordsPage } from '@/pages/marketing/net-bonus/reward-records/NetBonusRewardRecordsPage';
 import { NetBonusRewardReportsPage } from '@/pages/marketing/net-bonus/reward-reports/NetBonusRewardReportsPage';
 import { NetBonusStatisticsPage } from '@/pages/marketing/net-bonus/statistics/NetBonusStatisticsPage';
 import { RewardConfigPage } from '@/pages/marketing/reward-configs/RewardConfigsPage';
+import { RewardRecordsDetailPage } from '@/pages/marketing/reward-records-detail/RewardRecordsDetailPage';
 import { RewardRecordsPage } from '@/pages/marketing/reward-records/RewardRecordsPage';
-import { RouteObject } from 'react-router-dom';
+import { RouteObject, useSearchParams } from 'react-router-dom';
+
+const RewardRecordsDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <RewardRecordsDetailPage key={searchParams.get('id')} />;
+};
+const NetBonusRewardRecordsDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <NetBonusRewardRecordsDetailPage key={searchParams.get('id')} />;
+};
 
 /**
  * Marketing Management routes - corresponds to "营销管理" menu item
@@ -27,6 +39,10 @@ export const marketingRoutes: RouteObject[] = [
     element: <RewardRecordsPage />,
   },
   {
+    path: '/marketing/reward-records/detail',
+    element: <RewardRecordsDetailPageWrapper />,
+  },
+  {
     path: '/marketing/ads',
     element: <AdsPage />,
   },
@@ -34,10 +50,14 @@ export const marketingRoutes: RouteObject[] = [
   //   path: '/marketing/net-bonus/reward-config',
   //   element: <RewardConfigPage />,
   // },
-  // {
-  //   path: '/marketing/net-bonus/reward-records',
-  //   element: <RewardRecordsPage />,
-  // },
+  {
+    path: '/marketing/net-bonus/reward-records',
+    element: <NetBonusRewardRecordsPage />,
+  },
+  {
+    path: '/marketing/net-bonus/reward-records/detail',
+    element: <NetBonusRewardRecordsDetailPageWrapper />,
+  },
   {
     path: '/marketing/net-bonus/reward-reports',
     element: <NetBonusRewardReportsPage />,

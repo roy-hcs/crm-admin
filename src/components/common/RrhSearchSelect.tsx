@@ -21,10 +21,20 @@ export interface RrhSearchSelectProps<TParams, TItem> {
   buildSearchParams?: (baseParams: TParams, keyword: string) => TParams;
   onSelect?: (option: { value: string; label: string }) => void;
   value?: string;
+  displayLabel?: string;
 }
 
 export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TParams, TItem>) {
-  const { fetchFunction, params, mapOption, getNextParams, buildSearchParams, onSelect, value } = props;
+  const {
+    fetchFunction,
+    params,
+    mapOption,
+    getNextParams,
+    buildSearchParams,
+    onSelect,
+    value,
+    displayLabel,
+  } = props;
   const { t } = useTranslation();
   const [itemsData, setItemsData] = useState<TItem[]>([]);
   const [hasMore, setHasMore] = useState(true);
@@ -65,6 +75,22 @@ export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TPar
   const options = useMemo(() => {
     return itemsData.map(mapOption).filter(item => item.value !== '');
   }, [itemsData, mapOption]);
+
+  useEffect(() => {
+    if (value === '' || value === undefined) {
+      return;
+    }
+
+    if (displayLabel) {
+      setInputText(displayLabel);
+      return;
+    }
+
+    const selectedOption = options.find(option => option.value === value);
+    if (selectedOption) {
+      setInputText(selectedOption.label);
+    }
+  }, [value, displayLabel, options]);
 
   const isSearchPending = queryText.trim() !== debouncedQueryText.trim();
 

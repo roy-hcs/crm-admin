@@ -22,7 +22,7 @@ export const RrhStep = ({
     <div>
       {steps.map((step, index) => (
         <div
-          key={step.label}
+          key={`${step.label}-${index}`}
           className={cn('relative border-l pb-7 pl-4 text-sm', {
             'border-emerald-600': step.status === 'complete' && !isOnlyOneStep,
             'border-border': step.status === 'pending' || isOnlyOneStep,

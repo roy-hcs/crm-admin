@@ -173,7 +173,7 @@ export function TradingAccountTransactionsPage() {
     {
       id: 'ticket',
       accessorKey: 'ticket',
-      header: t('tradingAccountTransactions.ticket'),
+      header: t('table.orderNumber'),
       accessorFn: row => row.ticket,
     },
     {

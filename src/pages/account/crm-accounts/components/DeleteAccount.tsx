@@ -1,4 +1,4 @@
-import { Form, FormField } from '@/components/ui/form';
+import { FormField } from '@/components/ui/form';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,7 @@ import { useCrmUserConfirmRemoveInfo, useCrmUserRemove } from '@/api/hooks/syste
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { useQueryClient } from '@tanstack/react-query';
+import { RrhForm } from '@/components/form/RrhForm';
 type resetPasswordFormValues = {
   deleteType: string;
 };
@@ -105,33 +106,31 @@ export const DeleteAccount = ({
               : t('CRMAccountPage.DeleteAccountWalletAndRealAccountBalanceZero')}
           </span>
         </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              name="deleteType"
-              render={({ field }) => (
-                <RrhRadioGroup
-                  value={field.value ?? '1'}
-                  onValueChange={value => {
-                    field.onChange(value);
-                    setDeleteType(value);
-                  }}
-                  labelClassName="font-medium"
-                  radioItems={[
-                    {
-                      value: '1',
-                      label: t('CRMAccountPage.DeleteAccountOnlyCRM'),
-                    },
-                    {
-                      value: '2',
-                      label: t('CRMAccountPage.DeleteAccountWithTrading'),
-                    },
-                  ]}
-                />
-              )}
-            />
-          </form>
-        </Form>
+        <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            name="deleteType"
+            render={({ field }) => (
+              <RrhRadioGroup
+                value={field.value ?? '1'}
+                onValueChange={value => {
+                  field.onChange(value);
+                  setDeleteType(value);
+                }}
+                labelClassName="font-medium"
+                radioItems={[
+                  {
+                    value: '1',
+                    label: t('CRMAccountPage.DeleteAccountOnlyCRM'),
+                  },
+                  {
+                    value: '2',
+                    label: t('CRMAccountPage.DeleteAccountWithTrading'),
+                  },
+                ]}
+              />
+            )}
+          />
+        </RrhForm>
         {!isLoading && (
           <div className="text-foreground mt-6 text-sm leading-5">
             {t('CRMAccountPage.DeleteAccountWalletBalance')}:

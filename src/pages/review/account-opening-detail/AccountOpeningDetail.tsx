@@ -1,4 +1,3 @@
-import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
 import { useAccountOpeningDetail, useAccountOpeningVerify } from '@/api/hooks/review/review';
@@ -17,6 +16,7 @@ import { toast } from 'sonner';
 import { useGlobalLoading } from '@/contexts/loading';
 import { CheckInfoCard } from '@/components/common/CheckInfoCard';
 import { useTabBackNavigation } from '@/hooks/useTabBackNavigation';
+import { RrhForm } from '@/components/form/RrhForm';
 
 export type FormValue = AccountOpenVerifyParams;
 
@@ -102,45 +102,43 @@ export const AccountOpeningDetailPage = () => {
   return (
     <div>
       <PageInfo wrapperCls="py-3" title={t('accountOpening.accountOpeningReviewDetail')} />
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
-            <Tabs
-              defaultValue="tradingRebateReview.reviewInfo"
-              className="flex-1 gap-3 overflow-auto"
-            >
-              <TabsList>
-                {reviewTabs.map(tab => (
-                  <TabsTrigger key={tab} value={tab}>
-                    {t(tab)}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-              <TabsContent value="tradingRebateReview.reviewInfo">
-                <ReviewInfo openInfo={openInfo} form={form} />
-              </TabsContent>
-              <TabsContent value="accountOpening.accountOverview">
-                <AccountOverviewPage id={userId} />
-              </TabsContent>
-              <TabsContent value="accountOpening.KYCInfo">
-                <KycInfoPage id={userId} />
-              </TabsContent>
-            </Tabs>
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
+          <Tabs
+            defaultValue="tradingRebateReview.reviewInfo"
+            className="flex-1 gap-3 overflow-auto"
+          >
+            <TabsList>
+              {reviewTabs.map(tab => (
+                <TabsTrigger key={tab} value={tab}>
+                  {t(tab)}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <TabsContent value="tradingRebateReview.reviewInfo">
+              <ReviewInfo openInfo={openInfo} form={form} />
+            </TabsContent>
+            <TabsContent value="accountOpening.accountOverview">
+              <AccountOverviewPage id={userId} />
+            </TabsContent>
+            <TabsContent value="accountOpening.KYCInfo">
+              <KycInfoPage id={userId} />
+            </TabsContent>
+          </Tabs>
 
-            <div className="relative md:mt-12 md:w-93.5">
-              <div>
-                <Customer id={userId} />
+          <div className="relative md:mt-12 md:w-93.5">
+            <div>
+              <Customer id={userId} />
+            </div>
+            <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
+              <div className="mt-6">
+                <ReviewStepsCard reviewSteps={reviewSteps} />
               </div>
-              <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
-                <div className="mt-6">
-                  <ReviewStepsCard reviewSteps={reviewSteps} />
-                </div>
-                {type === 'audit' && <CheckInfoCard back={back} />}
-              </div>
+              {type === 'audit' && <CheckInfoCard back={back} />}
             </div>
           </div>
-        </form>
-      </Form>
+        </div>
+      </RrhForm>
     </div>
   );
 };

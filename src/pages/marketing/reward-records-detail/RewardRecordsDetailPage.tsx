@@ -1,40 +1,42 @@
 import { useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
-import { useLeverageReviewDetail, useLeverageVerify } from '@/api/hooks/review/review';
 import { useTranslation } from 'react-i18next';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
-import { LeverageVerifyParams } from '@/api/hooks/review/types';
 import { RrhStepProps } from '@/components/common/RrhStep';
-import { ReviewStepsCard } from '../withdrawal-detail/components/ReviewStepsCard';
-import { LeverageInfoCard } from './components/LeverageInfoCard';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CheckInfoCard } from '@/components/common/CheckInfoCard';
 import { useGlobalLoading } from '@/contexts/loading';
 import { useTabBackNavigation } from '@/hooks/useTabBackNavigation';
+import {
+  RewardRecordVerifyParams,
+  useRewardRecordReviewDetail,
+  useRewardRecordVerify,
+} from '@/api/hooks/marketing';
+import { RewardRecordsInfoCard } from './components/RewardRecordsInfoCard';
+import { ReviewStepsCard } from '@/pages/review/withdrawal-detail/components/ReviewStepsCard';
 import { RrhForm } from '@/components/form/RrhForm';
 
-type FormValue = LeverageVerifyParams;
+type FormValue = RewardRecordVerifyParams;
 
-export const LeverageDetailPage = () => {
+export const RewardRecordsDetailPage = () => {
   const [searchParams] = useSearchParams();
-  const leverageId = searchParams.get('id');
-  const { data: leverageRes, isLoading } = useLeverageReviewDetail(leverageId || '', {
-    enabled: !!leverageId,
+  const recordId = searchParams.get('id');
+  const { data: recordRes, isLoading } = useRewardRecordReviewDetail(recordId || '', {
+    enabled: !!recordId,
   });
   const { t } = useTranslation();
   const { withLoading } = useGlobalLoading();
-  const back = useTabBackNavigation('/review/leverage');
-
-  const leverageInfo = leverageRes?.data?.detail;
-  const reviewer = leverageRes?.data?.reviewer;
+  const back = useTabBackNavigation('/marketing/reward-records');
+  const recordInfo = recordRes?.data?.detail;
   const isAudit = searchParams.get('type') === 'audit';
 
-  const { mutateAsync: verifyLeverage } = useLeverageVerify();
+  const { mutateAsync: verifyRewardRecord } = useRewardRecordVerify();
   const form = useForm<FormValue>({
     defaultValues: {
       id: '',
+      recordId: '',
       status: '1',
       remark: '',
       verifyStep: '',
@@ -42,38 +44,40 @@ export const LeverageDetailPage = () => {
   });
 
   useEffect(() => {
-    if (leverageInfo?.status === 1 || leverageInfo?.status === 0) {
+    if (recordInfo?.status === 1 || recordInfo?.status === 0) {
       form.reset({
-        id: leverageInfo?.id || '',
-        status: `${leverageInfo?.status}`,
-        remark: leverageInfo.remark || '',
-        verifyStep: leverageInfo.verifyStep || '',
+        id: recordInfo?.id || '',
+        status: `${recordInfo?.status}`,
+        remark: recordInfo.remark || '',
+        verifyStep: `${recordInfo?.verifyStep ?? ''}`,
       });
     }
-  }, [form, leverageInfo]);
+  }, [form, recordInfo]);
 
   if (isLoading) {
-    <div className="h-100">
-      <RrhCircleLoading />;
-    </div>;
+    return (
+      <div className="h-100">
+        <RrhCircleLoading />
+      </div>
+    );
   }
 
-  if (!leverageId || !leverageInfo) {
+  if (!recordId || !recordInfo) {
     return <div></div>;
   }
-  const leverageData = leverageRes.data;
+  const recordData = recordRes.data;
 
   const reviewSteps = [
     {
-      label: leverageData.detail.subTime,
+      label: recordData.detail.subTime,
       content:
-        leverageData.detail.userLastName +
+        recordData.detail.userLastName +
         ' ' +
-        leverageData.detail.userName +
+        recordData.detail.userName +
         t('review.submitForReview'),
       status: 'complete',
     },
-    ...leverageData.verifyLogs.map(log => {
+    ...recordData.verifyLogs.map(log => {
       const isPass = log.verifyStatus === 1;
       return {
         label: log.verifyTime,
@@ -91,12 +95,13 @@ export const LeverageDetailPage = () => {
     await withLoading(async () => {
       try {
         const params = {
-          id: leverageInfo.id || '',
+          id: recordInfo?.id || '',
+          recordId: recordInfo?.recordId || '',
           status: data.status,
           remark: data.remark,
-          verifyStep: leverageInfo.verifyStep || '',
+          verifyStep: `${recordInfo?.verifyStep ?? ''}`,
         };
-        const res = await verifyLeverage(params);
+        const res = await verifyRewardRecord(params);
         if (res.code === 0) {
           toast.success(t('common.success'));
           back();
@@ -111,16 +116,16 @@ export const LeverageDetailPage = () => {
 
   return (
     <div>
-      <PageInfo wrapperCls="py-3" title={t('leverage.leverageReviewDetail')} />
+      <PageInfo wrapperCls="py-3" title={t('rewardRecords.rewardRecordsDetail')} />
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
         <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
           <div className="flex-1 gap-3 overflow-auto">
-            <LeverageInfoCard data={leverageData} />
+            <RewardRecordsInfoCard data={recordData} />
           </div>
           <div className="relative md:w-76">
             <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
               <ReviewStepsCard reviewSteps={reviewSteps} />
-              {isAudit && <CheckInfoCard back={back} roleName={reviewer?.userName || ''} />}
+              {isAudit && <CheckInfoCard back={back} />}
             </div>
           </div>
         </div>

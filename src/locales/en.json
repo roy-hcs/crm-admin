@@ -843,7 +843,6 @@
     "channelName": "Payment Channel",
     "createTime": "Order time",
     "depositAmount": "Deposit amount",
-    "orderId": "Order number",
     "orderStatus": "Order Status",
     "orderTime": "Order time",
     "payAmount": "Payment amount",
@@ -863,7 +862,6 @@
     "name": "Name",
     "order_num": "CRM Order Number",
     "profit": "Change amount",
-    "ticket": "Order number",
     "time": "time",
     "title": "Transaction account capital flow",
     "accountPlaceholder": "Account range {{accountStart}}-{{accountEnd}}",
@@ -1084,7 +1082,6 @@
     "reviewRecord": "Audit records",
     "reviewReject": "Review rejection",
     "reviewRemarksPlaceholder": "Required when rejecting, within 500 characters",
-    "reviewStatus": "Review status",
     "submitForReview": "Submit for review",
     "syncToTransactionPlatform": "Sync to trading platform",
     "withdrawalAmountCumulative": "Withdrawal amount (accumulated)",
@@ -1186,7 +1183,12 @@
     "depositRewardCredit": "Deposit Bonus Credit",
     "orderClosingReward": "Order closing-reward",
     "rewardAutoReviewConfig": "Reward automatic review configuration",
-    "tips": "Use the following to control whether the rewards issued are automatically approved."
+    "tips": "Use the following to control whether the rewards issued are automatically approved.",
+    "hitActivity": "hit activity",
+    "rewardAccount": "Rewards account",
+    "rewardInfo": "reward information",
+    "rewardRecordsDetail": "Reward record details",
+    "rewardSubject": "Award subject"
   },
   "tradingAccounts": {
     "title": "trading account"
@@ -1898,5 +1900,20 @@
     "transaction": "trade",
     "transactionDesc": "Customers who have placed closing orders corresponding to the trading server and variety can receive reward points.",
     "userRole": "User role (optional)"
+  },
+  "netBonusRewardRecords": {
+    "containsReviewedRecords": "Contains audited records, please select again",
+    "deleteConfirm": "Are you sure you want to delete this net deposit bonus record?",
+    "detail": "Award review details",
+    "rewardAmount": "Reward amount",
+    "rewardStatus": "Reward status",
+    "rewardStatusOptions": {
+      "1": "has been issued",
+      "2": "Not issued"
+    },
+    "rewardTime": "bonus time",
+    "selectedRecords": "{{count}} records selected",
+    "title": "Net deposit bonus record",
+    "titleDesc": "The actual issuance amount is the reward amount actually issued to the user, which is usually consistent with the reward amount. \nIf the actual payment amount needs to be adjusted due to special circumstances, please fill in the remarks for the reason for the adjustment."
   }
 }

@@ -3,11 +3,12 @@ import { RrhDialog } from '@/components/common/RrhDialog';
 import { List } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Form, FormField } from '@/components/ui/form';
+import { FormField } from '@/components/ui/form';
 import { RrhRadioGroup } from '@/components/common/RrhRadioGroup';
 import { useForm } from 'react-hook-form';
 import { useEditLevelSkippingSetting } from '@/api/hooks/rebate';
 import { toast } from 'sonner';
+import { RrhForm } from '@/components/form/RrhForm';
 export const LevelSkippingSettingButton = ({
   originalSetting,
   onSuccess,
@@ -60,64 +61,62 @@ export const LevelSkippingSettingButton = ({
       }
       footerShow={false}
     >
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            name="setting"
-            render={({ field }) => (
-              <RrhRadioGroup
-                value={field.value ?? '0'}
-                onValueChange={value => {
-                  field.onChange(value);
-                }}
-                labelClassName="font-medium"
-                radioItems={[
-                  {
-                    value: '0',
-                    label: t('RebateLevelSettings.settingOne'),
-                    desc: t('RebateLevelSettings.settingOneDesc'),
-                  },
-                  {
-                    value: '1',
-                    label: t('RebateLevelSettings.settingTwo'),
-                    desc: t('RebateLevelSettings.settingTwoDesc'),
-                  },
-                  {
-                    value: '2',
-                    label: t('RebateLevelSettings.settingThree'),
-                    desc: t('RebateLevelSettings.settingThreeDesc'),
-                  },
-                ]}
-              />
-            )}
-          />
-          <div className="border-border -mx-6 mt-4 flex justify-end gap-4 border-t px-6 pt-3 pb-3 md:pt-6 md:pb-0">
-            <RrhButton type="button" variant="outline" onClick={() => setOpen(false)}>
-              {t('common.Cancel')}
-            </RrhButton>
-            <RrhDialog
-              title={t('common.SystemPrompt')}
-              trigger={
-                <RrhButton loading={isPending} disabled={isPending} type="button">
-                  {t('common.Confirm')}
-                </RrhButton>
-              }
-              onConfirm={form.handleSubmit(onSubmit)}
-            >
-              {(originalSetting || 0) > parseInt(form.watch('setting')) ? (
-                <div>
-                  <div>{t('common.confirmToProceed')}</div>
-                  <div className="mt-1 text-sm text-orange-400">
-                    {t('RebateLevelSettings.confirmWarning')}
-                  </div>
-                </div>
-              ) : (
+      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          name="setting"
+          render={({ field }) => (
+            <RrhRadioGroup
+              value={field.value ?? '0'}
+              onValueChange={value => {
+                field.onChange(value);
+              }}
+              labelClassName="font-medium"
+              radioItems={[
+                {
+                  value: '0',
+                  label: t('RebateLevelSettings.settingOne'),
+                  desc: t('RebateLevelSettings.settingOneDesc'),
+                },
+                {
+                  value: '1',
+                  label: t('RebateLevelSettings.settingTwo'),
+                  desc: t('RebateLevelSettings.settingTwoDesc'),
+                },
+                {
+                  value: '2',
+                  label: t('RebateLevelSettings.settingThree'),
+                  desc: t('RebateLevelSettings.settingThreeDesc'),
+                },
+              ]}
+            />
+          )}
+        />
+        <div className="border-border -mx-6 mt-4 flex justify-end gap-4 border-t px-6 pt-3 pb-3 md:pt-6 md:pb-0">
+          <RrhButton type="button" variant="outline" onClick={() => setOpen(false)}>
+            {t('common.Cancel')}
+          </RrhButton>
+          <RrhDialog
+            title={t('common.SystemPrompt')}
+            trigger={
+              <RrhButton loading={isPending} disabled={isPending} type="button">
+                {t('common.Confirm')}
+              </RrhButton>
+            }
+            onConfirm={form.handleSubmit(onSubmit)}
+          >
+            {(originalSetting || 0) > parseInt(form.watch('setting')) ? (
+              <div>
                 <div>{t('common.confirmToProceed')}</div>
-              )}
-            </RrhDialog>
-          </div>
-        </form>
-      </Form>
+                <div className="mt-1 text-sm text-orange-400">
+                  {t('RebateLevelSettings.confirmWarning')}
+                </div>
+              </div>
+            ) : (
+              <div>{t('common.confirmToProceed')}</div>
+            )}
+          </RrhDialog>
+        </div>
+      </RrhForm>
     </RrhDialog>
   );
 };

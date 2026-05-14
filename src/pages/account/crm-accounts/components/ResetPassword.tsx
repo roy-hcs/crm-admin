@@ -1,11 +1,4 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { Input } from '@/components/ui/input';
 import { useForm, type Control } from 'react-hook-form';
@@ -19,6 +12,7 @@ import { Eye, EyeClosed } from 'lucide-react';
 import { useCrmUserResetPwd, useCrmUserResetFundsPwd } from '@/api/hooks/system/system';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
 import { cn, encryptWithPublicKey } from '@/lib/utils';
+import { RrhForm } from '@/components/form/RrhForm';
 type resetPasswordFormValues = {
   newPassword: string;
   againPassword: string;
@@ -178,25 +172,23 @@ export const ResetPassword = ({
       className="w-full sm:w-112"
     >
       <div className="w-full sm:w-100">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <PasswordField
-              control={form.control}
-              name="newPassword"
-              label={t('common.newPassword')}
-              show={showNewPWD}
-              setShow={setShowNewPWD}
-            />
+        <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
+          <PasswordField
+            control={form.control}
+            name="newPassword"
+            label={t('common.newPassword')}
+            show={showNewPWD}
+            setShow={setShowNewPWD}
+          />
 
-            <PasswordField
-              control={form.control}
-              name="againPassword"
-              label={t('common.confirmPassword')}
-              show={showAgainPWD}
-              setShow={setShowAgainPWD}
-            />
-          </form>
-        </Form>
+          <PasswordField
+            control={form.control}
+            name="againPassword"
+            label={t('common.confirmPassword')}
+            show={showAgainPWD}
+            setShow={setShowAgainPWD}
+          />
+        </RrhForm>
       </div>
       <DialogFooter className="border-muted -mx-6 gap-2 border-t px-6 pt-6 sm:justify-end">
         <DialogClose>

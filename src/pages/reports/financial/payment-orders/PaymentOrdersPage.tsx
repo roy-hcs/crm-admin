@@ -140,7 +140,7 @@ export function PaymentOrdersPage() {
     },
     {
       id: 'orderId',
-      header: t('paymentOrders.orderId'),
+      header: t('table.orderNumber'),
       accessorFn: row => row.orderId || '--',
     },
     {
