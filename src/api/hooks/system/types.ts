@@ -609,6 +609,7 @@ export type AddAccountParams = {
   lever: string | null;
   accountGroupId: string | null;
   directBroker: string | null;
+  buildRebateAccount?: boolean;
 };
 
 export type CrmUser = CrmUserItem;

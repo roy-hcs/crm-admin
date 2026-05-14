@@ -71,7 +71,9 @@
     "remind": "remind",
     "remindTime": "reminder time",
     "remindWay": "Follow up method",
-    "reminder": "remind people"
+    "reminder": "remind people",
+    "addNewAccountAndBindRebate": "Add a new trading account and bind it",
+    "rebateToExistAccount": "Return commission to existing account"
   },
   "common": {
     "AnErrorOccurred": "An error occurred",
@@ -286,7 +288,8 @@
     "submit": "submit",
     "piece": "indivual",
     "points": "point",
-    "back": "return"
+    "back": "return",
+    "failed": "fail"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -806,7 +809,8 @@
     "setRiskDialogTitle": "Set whether the IP and device are trusted",
     "signature": "sign",
     "trust": "trust",
-    "untrust": "risk"
+    "untrust": "risk",
+    "accountBelongToUpper": "The superior to whom the account belongs is"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",

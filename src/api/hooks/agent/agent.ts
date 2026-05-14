@@ -18,6 +18,7 @@ import {
   CustomerFollowupRes,
   KycInfoProtocolRes,
   KycInfoRes,
+  MtServerGroupRes,
   UserAccountActivityListRes,
   UserWalletDetail,
   UserWalletListRes,
@@ -240,5 +241,43 @@ export function useSetRiskRatingInfo() {
       deviceTrust: string;
       userId: string;
     }) => apiFormPost('/system/crmUser/setRisky', params),
+  });
+}
+/**
+ * 设置返佣账号
+ */
+export function useSetRebateAccount() {
+  return useMutation({
+    mutationFn: (params: { userId: string; accounts: { type: number; value: string }[] }) =>
+      apiPost('/system/crmUser/setRebateAccount', params),
+  });
+}
+/**
+ * 获取组别对应的货币单位
+ */
+export function useGetGroupCurrency(params: { serverId: string; groupName: string }) {
+  return useQuery({
+    queryKey: ['getGroupCurrency', params],
+    queryFn: () =>
+      apiFormPostCustom<{
+        currency: string;
+        resultCode: number;
+        resultMsg: string;
+      }>('/system/crmDealAccount/currencyByGroup', params),
+    enabled: !!params.serverId && !!params.groupName,
+  });
+}
+/**
+ * 获取MtServer信息
+ */
+export function useMtServerGroupInfo(params: { serverId: string; groupName: string }) {
+  return useQuery({
+    queryKey: ['getMtServerGroup', params],
+    queryFn: () =>
+      apiFormPost<MtServerGroupRes>(
+        '/system/mtServerGroup/getMtServerGroupByServerIdAndGroupName',
+        params,
+      ),
+    enabled: !!params.serverId && !!params.groupName,
   });
 }

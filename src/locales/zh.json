@@ -71,7 +71,9 @@
     "reminder": "提醒人",
     "remindWay": "跟进方式",
     "remindTime": "提醒时间",
-    "followTimeTip": "若未填写跟进时间则默认为添加时间"
+    "followTimeTip": "若未填写跟进时间则默认为添加时间",
+    "rebateToExistAccount": "返佣至已有账户",
+    "addNewAccountAndBindRebate": "新增交易账户并绑定"
   },
   "loginPage": {
     "email": "邮箱",
@@ -305,7 +307,8 @@
     "modifySuccess": "修改成功",
     "modifyFailed": "修改失败",
     "submit": "提交",
-    "back": "返回"
+    "back": "返回",
+    "failed": "失败"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -1369,7 +1372,8 @@
     "riskMedium": "中风险",
     "riskLow": "低风险",
     "riskNone": "无风险",
-    "setRiskDialogTitle": "设置IP和设备是否可信"
+    "setRiskDialogTitle": "设置IP和设备是否可信",
+    "accountBelongToUpper": "账号归属的上级为"
   },
   "settings": {
     "title": "审核设置",

@@ -7,6 +7,7 @@ import { CrmUserKycInfoPage } from './CrmUserKycInfoPage';
 import { CrmAccountOperationsPage } from './CrmAccountOperationsPage';
 import { CrmUserWalletListPage } from './CrmUserWalletListPage';
 import { CrmAccountActivityListPage } from './CrmAccountActivityListPage';
+import { CrmRebateAccountPage } from './CrmRebateAccountPage';
 
 export const AgentTabsPage = ({ userId }: { userId: string }) => {
   const { t } = useTranslation();
@@ -45,7 +46,7 @@ export const AgentTabsPage = ({ userId }: { userId: string }) => {
     },
     {
       value: t('trading.rebateAccountName'),
-      content: <div>RebateAccountName</div>,
+      content: <CrmRebateAccountPage userId={userId} />,
     },
     {
       value: t('CRMAccountPage.accountActivity'),

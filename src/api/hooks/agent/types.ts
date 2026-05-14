@@ -360,3 +360,13 @@ export type UserAccountActivityListRes = {
   serverType: string;
   totalList: string;
 };
+export type MtServerGroupRes = BasicParams & {
+  params: Record<string, string>;
+  id: string;
+  serverId: string;
+  groupName: string;
+  accountStart: string;
+  accountEnd: string;
+  maxAccount: string;
+  sort: string;
+};

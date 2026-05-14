@@ -631,9 +631,7 @@ export function useGetUserRebateAccountTab(userId: string) {
   return useQuery({
     queryKey: ['GetUserRebateAccountTab', userId],
     queryFn: () =>
-      apiGetCustom<UserRebateAccountTabRes>(
-        `/system/crmUserRebateTemplate/getRebateAccount/${userId}`,
-      ),
+      apiGet<UserRebateAccountTabRes>(`/system/crmUserRebateTemplate/getRebateAccount/${userId}`),
     enabled: !!userId,
   });
 }
