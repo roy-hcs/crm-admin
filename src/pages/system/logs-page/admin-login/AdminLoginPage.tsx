@@ -29,7 +29,7 @@ export const AdminLoginPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
   const { data: walletBalanceList, isLoading: walletBalanceListLoading } = useAdminLoginList({
     pageSize,
@@ -54,7 +54,7 @@ export const AdminLoginPage = () => {
       status: '',
       loginLocation: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
   const allColumns: CRMColumnDef<AdminLoginItem, unknown>[] = [
@@ -142,10 +142,9 @@ export const AdminLoginPage = () => {
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon
+            key={resetKey}
             placeholder={t('common.pleaseInput', { field: t('adminLogin.name') })}
             className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
             leftIcon={<Search className="size-4 cursor-pointer" />}
             onLeftIconClick={e => {
               setParams(prev => ({ ...prev, userName: e }));

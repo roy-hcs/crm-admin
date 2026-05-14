@@ -93,7 +93,7 @@ export const CRMUserOperationsLogsPage = () => {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const { data: operationTypes } = useDictType('crm_oper_type');
 
   const { data, isLoading } = useUserOperationLogs({
@@ -117,7 +117,7 @@ export const CRMUserOperationsLogsPage = () => {
       status: '',
       businessTypes: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
   const allColumns: CRMColumnDef<OperationsLogsItem, unknown>[] = [
@@ -234,11 +234,10 @@ export const CRMUserOperationsLogsPage = () => {
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-between gap-2">
           <RrhInputWithIcon
+            key={resetKey}
             placeholder={t('common.pleaseInput', { field: t('table.systemModule') })}
             className="h-9"
             leftIcon={<Search className="size-4 cursor-pointer" />}
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
             onLeftIconClick={e => {
               setOtherParams(prev => ({ ...prev, title: e }));
               setPageNum(0);

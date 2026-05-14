@@ -43,7 +43,7 @@ export const RedemptionRecordsPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
   const [orderByColumn, setOrderByColumn] = useState('');
 
@@ -78,7 +78,7 @@ export const RedemptionRecordsPage = () => {
     setOtherParams({
       payType: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
     setIsAsc('asc');
@@ -277,13 +277,12 @@ export const RedemptionRecordsPage = () => {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('common.pleaseInput', { field: t('table.nameOrId') })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
-              onLeftIconClick={() => {
-                setParams(prev => ({ ...prev, fuzzyName: keyword }));
+              onLeftIconClick={value => {
+                setParams(prev => ({ ...prev, fuzzyName: value }));
                 setPageNum(0);
               }}
             />

@@ -4,7 +4,8 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { CornerDownLeft } from 'lucide-react';
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   onLeftIconClick?: (value: string) => void;
@@ -31,42 +32,49 @@ const RrhInputWithIcon = React.forwardRef<HTMLInputElement, InputProps>(
     const hasLeft = !!leftIcon;
     const hasRight = !!rightIcon;
     const inputRef = React.useRef<HTMLInputElement>(null);
-    // Combine refs
-    const combinedRef = (node: HTMLInputElement) => {
-      inputRef.current = node;
-      if (typeof ref === 'function') {
-        ref(node);
-      } else if (ref) {
-        ref.current = node;
-      }
-    };
+    const [hasValue, setHasValue] = React.useState(() => !!props.defaultValue);
 
-    // Handle icon clicks with current input value
-    const handleLeftIconClick = () => {
+    // Stable merged ref — wrapped in useCallback to avoid detach/reattach on every render
+    const combinedRef = React.useCallback(
+      (node: HTMLInputElement) => {
+        inputRef.current = node;
+        if (typeof ref === 'function') {
+          ref(node);
+        } else if (ref) {
+          ref.current = node;
+        }
+      },
+      [ref],
+    );
+
+    const handleChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+      setHasValue(e.target.value.length > 0);
+    }, []);
+
+    const handleLeftIconClick = React.useCallback(() => {
       if (onLeftIconClick && inputRef.current) {
         onLeftIconClick(inputRef.current.value);
       }
-    };
+    }, [onLeftIconClick]);
 
-    const handleRightIconClick = () => {
+    const handleRightIconClick = React.useCallback(() => {
       if (onRightIconClick && inputRef.current) {
         onRightIconClick(inputRef.current.value);
       }
-    };
+    }, [onRightIconClick]);
 
-    // Handle Enter key press
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (onKeyDown) {
-        onKeyDown(e);
-      }
+    const handleKeyDown = React.useCallback(
+      (e: React.KeyboardEvent<HTMLInputElement>) => {
+        onKeyDown?.(e);
 
-      // Trigger right icon click when Enter is pressed
-      if (e.key === 'Enter' && (onRightIconClick || onLeftIconClick) && inputRef.current) {
-        e.preventDefault();
-        onRightIconClick?.(inputRef.current.value);
-        onLeftIconClick?.(inputRef.current.value);
-      }
-    };
+        if (e.key === 'Enter' && (onRightIconClick || onLeftIconClick) && inputRef.current) {
+          e.preventDefault();
+          onRightIconClick?.(inputRef.current.value);
+          onLeftIconClick?.(inputRef.current.value);
+        }
+      },
+      [onKeyDown, onRightIconClick, onLeftIconClick],
+    );
 
     const inputElement = (
       <Input
@@ -74,6 +82,7 @@ const RrhInputWithIcon = React.forwardRef<HTMLInputElement, InputProps>(
         type={type}
         className={cn('bg-white', hasLeft && 'pl-8', hasRight && 'pr-8', className)}
         onKeyDown={handleKeyDown}
+        onChange={handleChange}
         {...props}
       />
     );
@@ -105,7 +114,7 @@ const RrhInputWithIcon = React.forwardRef<HTMLInputElement, InputProps>(
             {rightIcon}
           </span>
         )}
-        {!inputRef.current?.value && (
+        {!hasValue && (
           <span className="text-muted-foreground bg-muted absolute right-2 hidden items-center gap-1 rounded-sm px-2 py-1 text-xs md:flex">
             <span>Enter</span>
             <CornerDownLeft className="size-3" />

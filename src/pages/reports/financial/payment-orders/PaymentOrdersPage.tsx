@@ -22,7 +22,7 @@ export function PaymentOrdersPage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [detailId, setDetailId] = useState<string>('');
@@ -80,7 +80,7 @@ export function PaymentOrdersPage() {
       orderId: '',
       accounts: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
   };
@@ -183,12 +183,11 @@ export function PaymentOrdersPage() {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('common.pleaseInput', {
                 field: t('paymentOrders.userName'),
               })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
               onLeftIconClick={e => {
                 // 触发查询逻辑, 这里简单调用一次刷新

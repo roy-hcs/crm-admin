@@ -58,14 +58,13 @@ export const WithdrawalRecordPage = ({ userId }: { userId: string }) => {
   );
   const { data: outMoneyMethodList } = useOutMoneyMethodList();
 
-  const { mutate: getWithdrawSum, data: sumData } = useWithdrawListSum();
+  const { mutate: getWithdrawSum } = useWithdrawListSum();
   useEffect(() => {
     getWithdrawSum({
       params,
       ...otherParams,
     });
   }, [getWithdrawSum, otherParams, params]);
-  console.log('sumData----', sumData);
 
   const reset = () => {
     setParams({

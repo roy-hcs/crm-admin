@@ -65,7 +65,12 @@ export const UploadFile = ({ field, label, description }: UploadFileProps) => {
           />
           {preview ? (
             <div className="group relative size-12">
-              <img src={preview} alt="Preview" className="size-12 rounded-sm object-cover" />
+              <img
+                src={preview}
+                alt="Preview"
+                loading="lazy"
+                className="size-12 rounded-sm object-cover"
+              />
               {/* 黑色遮罩和图标 */}
               <div className="absolute inset-0 flex items-center justify-center gap-2 rounded-sm bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
                 <button
@@ -90,6 +95,7 @@ export const UploadFile = ({ field, label, description }: UploadFileProps) => {
                         src={preview}
                         alt="Preview Full"
                         className="max-h-[90vh] max-w-[90vw] object-contain"
+                        loading="lazy"
                       />
                     </div>
                   </DialogContent>

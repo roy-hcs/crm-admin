@@ -5,9 +5,9 @@ import {
   MsgListItem,
   GetMsgListParams,
   useGetMsgList,
+  useRemoveMsg,
   useGetEmailConfig,
   useMsgTemplateList,
-  useRemoveMsg,
 } from '@/api/hooks/message';
 import { Funnel, Search, RefreshCcw, Ellipsis, ReceiptText, Plus } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
@@ -34,7 +34,7 @@ export function MessageManagementPage() {
   const navigate = useNavigate();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [params, setParams] = useState<GetMsgListParams['params']>({
     fuzzyName: '',
     fuzzyTitle: '',
@@ -44,6 +44,7 @@ export function MessageManagementPage() {
   const [otherParams, setOtherParams] = useState<Omit<GetMsgListParams, 'params'>>({
     type: '',
   });
+
   const [editOpen, setEditOpen] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
   const [id, setId] = useState('');
@@ -75,7 +76,7 @@ export function MessageManagementPage() {
     setOtherParams({
       type: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
   };
@@ -230,13 +231,12 @@ export function MessageManagementPage() {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('common.pleaseInput', { field: t('table.title') })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
-              onLeftIconClick={() => {
-                setParams(prev => ({ ...prev, fuzzyTitle: keyword }));
+              onLeftIconClick={value => {
+                setParams(prev => ({ ...prev, fuzzyTitle: value }));
                 setPageNum(0);
               }}
             />

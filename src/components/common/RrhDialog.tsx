@@ -152,7 +152,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
               )}
             </DialogHeader>
           )}
-          <div className="flex flex-col overflow-y-auto px-6">{children}</div>
+          <div className="flex flex-1 flex-col overflow-y-auto px-6">{children}</div>
           {footerShow && (
             <DialogFooter
               className={cn(

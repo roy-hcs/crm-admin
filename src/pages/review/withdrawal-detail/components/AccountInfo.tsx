@@ -32,7 +32,12 @@ export const AccountInfo = ({
           <label className="text-sm font-medium">{item.fieldName}</label>
           <div className="text-muted-foreground flex items-center gap-3">
             {item.type === 2 ? (
-              <img className="w-37.5" src={item.fieldValue} alt={item.fieldName || ''} />
+              <img
+                className="w-37.5"
+                src={item.fieldValue}
+                alt={item.fieldName || ''}
+                loading="lazy"
+              />
             ) : (
               <span>{item.fieldValue}</span>
             )}

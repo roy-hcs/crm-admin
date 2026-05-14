@@ -1,5 +1,6 @@
 // Rebate module types
 import { BasicParams, BasicRes, BaseEntity } from '../../types';
+import { DealAccountGroup } from '../account';
 import { ServerItem } from '../system';
 
 // Rebate Base Point related types
@@ -196,21 +197,7 @@ interface DefaultLanguage {
 }
 
 // Account group information
-interface AccountGroup {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, string>;
-  id: string;
-  name: string;
-  sort: number;
-  num: number | null;
-  flag: boolean;
-  delFlag: boolean;
-  relatedRebateRuleCount: number | null;
-}
+type AccountGroup = DealAccountGroup;
 
 // Server information
 export interface TraderServerInfo {

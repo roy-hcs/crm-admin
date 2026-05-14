@@ -35,8 +35,6 @@ export async function fetchWithAuth<T>(
     // redirect: 'manual',
   });
 
-  // console.log('response', response);
-
   // only handle the redirect which happen in the same domain, if there are some cross-domain redirect later, need to handle it differently
   if (response.redirected) {
     const redirectUrl = new URL(response.url).pathname;
@@ -101,6 +99,10 @@ export async function apiPost<T = null, D extends ApiPostData = Record<string, u
     method: 'POST',
     body: JSON.stringify(data),
   });
+}
+
+export async function apiDelete<T = null>(url: string, options?: RequestInit) {
+  return fetchWithAuth<ApiResponse<T>>(url, { ...options, method: 'DELETE' });
 }
 
 // Type for form parameters supporting nested objects and arrays

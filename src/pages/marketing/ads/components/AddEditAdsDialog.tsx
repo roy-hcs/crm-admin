@@ -258,7 +258,6 @@ export const AddEditAdsDialog = ({
           });
           form.setValue('pc', pc);
           form.setValue('mobile', mobile);
-          console.log(form.getValues(), 'form values');
         }
         break;
       }
@@ -323,175 +322,175 @@ export const AddEditAdsDialog = ({
       formLoading={isSubmitting}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
-            <div className={cn(step === 'one' ? 'block' : 'hidden')}>
-              <div className="grid gap-6">
-                <FormInput
-                  verticalLabel
-                  name="name"
-                  label={t('ads.adsName')}
-                  placeholder={t('common.pleaseInput', { field: t('ads.adsName') })}
-                  maxLength={64}
-                />
+        <div className={cn(step === 'one' ? 'block' : 'hidden')}>
+          <div className="grid gap-6">
+            <FormInput
+              verticalLabel
+              name="name"
+              label={t('ads.adsName')}
+              placeholder={t('common.pleaseInput', { field: t('ads.adsName') })}
+              maxLength={64}
+            />
 
-                <FormSelect
-                  name="position"
-                  label={t('ads.position')}
-                  verticalLabel
-                  placeholder={t('common.pleaseSelect')}
-                  showRowValue={false}
-                  options={[{ label: t('ads.positionType.1'), value: '1' }]}
-                />
+            <FormSelect
+              name="position"
+              label={t('ads.position')}
+              verticalLabel
+              placeholder={t('common.pleaseSelect')}
+              showRowValue={false}
+              options={[{ label: t('ads.positionType.1'), value: '1' }]}
+            />
 
-                <FormInput
-                  verticalLabel
-                  name="sort"
-                  label={t('table.sort')}
-                  placeholder={t('common.pleaseInput', { field: t('table.sort') })}
-                  maxLength={64}
-                />
+            <FormInput
+              verticalLabel
+              name="sort"
+              label={t('table.sort')}
+              placeholder={t('common.pleaseInput', { field: t('table.sort') })}
+              maxLength={64}
+            />
 
-                <FormSwitch verticalLabel name="status" label={t('table.status')} />
-                <FormField
-                  name="webPicture"
-                  render={({ field }) => {
-                    return (
-                      <UploadFile
-                        label={t('ads.webPicture')}
-                        field={field}
-                        description={t('ads.webPictureDescription')}
-                      />
-                    );
-                  }}
-                />
-
-                <FormField
-                  name="appPicture"
-                  render={({ field }) => {
-                    return (
-                      <UploadFile
-                        field={field}
-                        label={t('ads.appPicture')}
-                        description={t('ads.appPictureDescription')}
-                      />
-                    );
-                  }}
-                />
-                <FormField
-                  name="jumpType"
-                  render={({ field }) => {
-                    return (
-                      <FormItem>
-                        <FormLabel>{t('ads.jumpPath')}</FormLabel>
-                        <FormControl>
-                          <div className="grid gap-2">
-                            <RrhSwitchGroup
-                              value={field.value}
-                              onValueChange={value => {
-                                field.onChange(value);
-                                if (value === '1') {
-                                  form.setValue('customLink', '');
-                                  form.setValue('crmRoleIds', []);
-                                } else {
-                                  form.setValue('customLink', '');
-                                }
-                              }}
-                              labelClassName="font-medium"
-                              switchItems={[
-                                { label: t('ads.customLink'), value: '1' },
-                                { label: t('ads.announcementDetail'), value: '2' },
-                              ]}
-                            />
-                            {jumpType === '1' && (
-                              <FormInput
-                                verticalLabel
-                                name="customLink"
-                                label={''}
-                                placeholder={t('ads.entering')}
-                              />
-                            )}
-                            {jumpType === '2' && (
-                              <FormSelect
-                                name="msgId"
-                                label={''}
-                                verticalLabel
-                                placeholder={t('common.pleaseSelect')}
-                                showRowValue={false}
-                                options={templateOptions}
-                              />
-                            )}
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    );
-                  }}
-                />
-
-                {jumpType === '1' && (
-                  <FormMultiSelect
-                    name="crmRoleIds"
-                    label={t('ads.visibleRole')}
-                    verticalLabel
-                    placeholder={t('common.pleaseSelect')}
-                    showRowValue={false}
-                    options={roleOptions}
+            <FormSwitch verticalLabel name="status" label={t('table.status')} />
+            <FormField
+              name="webPicture"
+              render={({ field }) => {
+                return (
+                  <UploadFile
+                    label={t('ads.webPicture')}
+                    field={field}
+                    description={t('ads.webPictureDescription')}
                   />
-                )}
-              </div>
-            </div>
-            {step === 'two' ? (
-              <div className="grid gap-6">
-                <RrhSwitchGroup
-                  value={activeLang}
-                  onValueChange={value => {
-                    setActiveLang(value);
-                  }}
-                  labelClassName="font-medium"
-                  switchItems={languageOptions.map(lang => ({
-                    value: lang.value,
-                    label: lang.label,
-                  }))}
-                />
-                <div>
-                  {languageOptions.map(lang => {
-                    return (
-                      <div
-                        key={lang.value}
-                        className={cn(activeLang === lang.value ? 'block' : 'hidden')}
-                      >
-                        <div className="grid gap-6">
-                          <FormField
-                            name={`pc.${lang.value}`}
-                            render={({ field }) => {
-                              return (
-                                <UploadFile
-                                  label={t('ads.webPicture')}
-                                  field={field}
-                                  description={t('ads.webPictureDescription')}
-                                />
-                              );
-                            }}
+                );
+              }}
+            />
+
+            <FormField
+              name="appPicture"
+              render={({ field }) => {
+                return (
+                  <UploadFile
+                    field={field}
+                    label={t('ads.appPicture')}
+                    description={t('ads.appPictureDescription')}
+                  />
+                );
+              }}
+            />
+            <FormField
+              name="jumpType"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>{t('ads.jumpPath')}</FormLabel>
+                    <FormControl>
+                      <div className="grid gap-2">
+                        <RrhSwitchGroup
+                          value={field.value}
+                          onValueChange={value => {
+                            field.onChange(value);
+                            if (value === '1') {
+                              form.setValue('customLink', '');
+                              form.setValue('crmRoleIds', []);
+                            } else {
+                              form.setValue('customLink', '');
+                            }
+                          }}
+                          labelClassName="font-medium"
+                          switchItems={[
+                            { label: t('ads.customLink'), value: '1' },
+                            { label: t('ads.announcementDetail'), value: '2' },
+                          ]}
+                        />
+                        {jumpType === '1' && (
+                          <FormInput
+                            verticalLabel
+                            name="customLink"
+                            label={''}
+                            placeholder={t('ads.entering')}
                           />
-                          <FormField
-                            name={`mobile.${lang.value}`}
-                            render={({ field }) => {
-                              return (
-                                <UploadFile
-                                  field={field}
-                                  label={t('ads.appPicture')}
-                                  description={t('ads.appPictureDescription')}
-                                />
-                              );
-                            }}
+                        )}
+                        {jumpType === '2' && (
+                          <FormSelect
+                            name="msgId"
+                            label={''}
+                            verticalLabel
+                            placeholder={t('common.pleaseSelect')}
+                            showRowValue={false}
+                            options={templateOptions}
                           />
-                        </div>
+                        )}
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
-            ) : null}
-          </RrhForm>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+
+            {jumpType === '1' && (
+              <FormMultiSelect
+                name="crmRoleIds"
+                label={t('ads.visibleRole')}
+                verticalLabel
+                placeholder={t('common.pleaseSelect')}
+                showRowValue={false}
+                options={roleOptions}
+              />
+            )}
+          </div>
+        </div>
+        {step === 'two' ? (
+          <div className="grid gap-6">
+            <RrhSwitchGroup
+              value={activeLang}
+              onValueChange={value => {
+                setActiveLang(value);
+              }}
+              labelClassName="font-medium"
+              switchItems={languageOptions.map(lang => ({
+                value: lang.value,
+                label: lang.label,
+              }))}
+            />
+            <div>
+              {languageOptions.map(lang => {
+                return (
+                  <div
+                    key={lang.value}
+                    className={cn(activeLang === lang.value ? 'block' : 'hidden')}
+                  >
+                    <div className="grid gap-6">
+                      <FormField
+                        name={`pc.${lang.value}`}
+                        render={({ field }) => {
+                          return (
+                            <UploadFile
+                              label={t('ads.webPicture')}
+                              field={field}
+                              description={t('ads.webPictureDescription')}
+                            />
+                          );
+                        }}
+                      />
+                      <FormField
+                        name={`mobile.${lang.value}`}
+                        render={({ field }) => {
+                          return (
+                            <UploadFile
+                              field={field}
+                              label={t('ads.appPicture')}
+                              description={t('ads.appPictureDescription')}
+                            />
+                          );
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
+      </RrhForm>
     </RrhDialog>
   );
 };

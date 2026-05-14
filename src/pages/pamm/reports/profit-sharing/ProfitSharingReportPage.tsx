@@ -56,7 +56,7 @@ export const ProfitSharingReportPage = () => {
   const [pageSize, setPageSize] = useState(10);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
   const [orderByColumn, setOrderByColumn] = useState<string>('');
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
   const { data: server, isLoading: serverLoading } = useServerList();
 
@@ -83,7 +83,7 @@ export const ProfitSharingReportPage = () => {
       endTime: '',
       agentName: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
 
@@ -233,13 +233,12 @@ export const ProfitSharingReportPage = () => {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
-              onLeftIconClick={() => {
-                setOtherParams(prev => ({ ...prev, projectName: keyword }));
+              onLeftIconClick={value => {
+                setOtherParams(prev => ({ ...prev, projectName: value }));
                 setPageNum(0);
               }}
             />
