@@ -19,6 +19,8 @@ import {
   KycInfoProtocolRes,
   KycInfoRes,
   MtServerGroupRes,
+  ReceiveAccountInfoParams,
+  ReceiveAccountInfoRes,
   UserAccountActivityListRes,
   UserWalletDetail,
   UserWalletListRes,
@@ -279,5 +281,24 @@ export function useMtServerGroupInfo(params: { serverId: string; groupName: stri
         params,
       ),
     enabled: !!params.serverId && !!params.groupName,
+  });
+}
+/**
+ * 获取收款账户信息
+ */
+export function useGetReceiveAccountInfo(
+  userId: string,
+  type: string,
+  params: ReceiveAccountInfoParams,
+  options: { enabled: boolean },
+) {
+  return useQuery({
+    queryKey: ['getReceiveAccountInfo', userId, type, params],
+    queryFn: () =>
+      apiFormPostCustom<ReceiveAccountInfoRes>(
+        `/system/crmUserBankInfo/list/${userId}/${type}`,
+        params,
+      ),
+    enabled: !!userId && !!type && options.enabled,
   });
 }

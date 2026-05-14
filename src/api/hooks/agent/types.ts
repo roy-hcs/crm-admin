@@ -2,7 +2,7 @@ import { KycStatus } from '@/components/common/RrhKycStatus';
 import { DealAccountGroup } from '../account';
 import { OperationsLogsItem } from '../monitor/type';
 import { Country, CrmUser, InfoTypeItem, RoleItem, TagProgress, WalletItem } from '../system';
-import { BasicParams } from '../review';
+import { BaseEntity, BasicParams } from '../review';
 import { languageItem } from '../pointsMall';
 
 export type AgentAccountStatsRes = {
@@ -369,4 +369,51 @@ export type MtServerGroupRes = BasicParams & {
   accountEnd: string;
   maxAccount: string;
   sort: string;
+};
+export type ReceiveAccountInfoParams = BasicParams & {
+  lastName: string;
+  name: string;
+  roleId: string;
+  country: string;
+  accountType: string;
+  email: string;
+  mzone: string;
+  mobile: string;
+  preferenceLanguage: string;
+  colorPreference: string;
+  googleCode: string;
+};
+export type ReceiveAccountInfoItem = BaseEntity & {
+  id: string;
+  userId: string;
+  accountName: string;
+  bank: string;
+  bankAddress: string;
+  cardNo: string;
+  swift: string;
+  currency: string;
+  subBranchName: string;
+  accountAddress: string;
+  type: number;
+  ifscCode: string;
+  bsbCode: string;
+  accountEmail: string;
+  accountMobile: string;
+  abnCode: string;
+  customChannelJson: string;
+  channelId: string;
+};
+
+export type ReceiveAccountInfoRes = {
+  total: string;
+  rows: ReceiveAccountInfoItem[];
+  code: number;
+  msg: string;
+  totalVolume: number;
+  totalCommission: number;
+  totalProfit: number;
+  totalSwaps: number;
+  priceSum: number;
+  serverType: string;
+  totalList: string;
 };

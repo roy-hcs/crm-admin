@@ -810,7 +810,9 @@
     "signature": "sign",
     "trust": "trust",
     "untrust": "risk",
-    "accountBelongToUpper": "The superior to whom the account belongs is"
+    "accountBelongToUpper": "The superior to whom the account belongs is",
+    "bankAccount": "bank account",
+    "wireTransferAccount": "wire transfer account"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",

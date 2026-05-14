@@ -8,6 +8,7 @@ import { CrmAccountOperationsPage } from './CrmAccountOperationsPage';
 import { CrmUserWalletListPage } from './CrmUserWalletListPage';
 import { CrmAccountActivityListPage } from './CrmAccountActivityListPage';
 import { CrmRebateAccountPage } from './CrmRebateAccountPage';
+import { CrmReceiveAccountListPage } from './CrmReceiveAccountListPage';
 
 export const AgentTabsPage = ({ userId }: { userId: string }) => {
   const { t } = useTranslation();
@@ -38,7 +39,7 @@ export const AgentTabsPage = ({ userId }: { userId: string }) => {
     },
     {
       value: t('table.paymentAccount'),
-      content: <div>PaymentAccount</div>,
+      content: <CrmReceiveAccountListPage userId={userId} />,
     },
     {
       value: t('CRMAccountPage.rebateSetting'),
