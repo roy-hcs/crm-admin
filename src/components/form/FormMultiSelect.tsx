@@ -7,7 +7,7 @@ import { ReactNode } from 'react';
 
 interface FormMultiSelectProps<T extends FieldValues, O extends BaseOption = BaseOption> {
   name: FieldPath<T>;
-  label: string;
+  label?: string;
   options: O[];
   placeholder?: string;
   verticalLabel?: boolean;
@@ -33,6 +33,7 @@ interface FormMultiSelectProps<T extends FieldValues, O extends BaseOption = Bas
     currentValue: string[],
   ) => ValidationResult;
   labeTipsDom?: React.ReactNode;
+  disabled?: boolean;
 }
 
 export function FormMultiSelect<T extends FieldValues, O extends BaseOption = BaseOption>({
@@ -58,6 +59,7 @@ export function FormMultiSelect<T extends FieldValues, O extends BaseOption = Ba
   onMaxSelectionsReached,
   onBeforeValueChange,
   labeTipsDom,
+  disabled = false,
 }: FormMultiSelectProps<T, O>) {
   const { form } = useCrmFormContext<T>();
   return (
@@ -65,11 +67,22 @@ export function FormMultiSelect<T extends FieldValues, O extends BaseOption = Ba
       name={name}
       control={form.control}
       render={({ field }) => (
-        <FormItem className={cn(verticalLabel ? '' : 'flex', className)}>
-          <div className={cn('flex items-center gap-2', verticalLabel ? 'w-full' : 'basis-3/12')}>
-            {label && <FormLabel>{label}</FormLabel>}
-            {labeTipsDom && <div>{labeTipsDom}</div>}
-          </div>
+        <FormItem
+          className={cn(
+            'text-foreground text-sm',
+            verticalLabel ? '' : 'flex items-center',
+            className,
+          )}
+        >
+          {label && (
+            <div className="flex items-center gap-2">
+              <FormLabel className={cn(verticalLabel ? '' : 'basis-3/12', 'leading-5')}>
+                {label}
+              </FormLabel>
+              {labeTipsDom && <div>{labeTipsDom}</div>}
+            </div>
+          )}
+
           <FormControl className={cn('grow-0', verticalLabel ? 'w-full' : 'basis-9/12')}>
             {loading && !searchSupport ? (
               <div className="bg-muted h-10 w-full animate-pulse rounded-md" />
@@ -96,6 +109,7 @@ export function FormMultiSelect<T extends FieldValues, O extends BaseOption = Ba
                 maxSelectionsMessage={maxSelectionsMessage}
                 onMaxSelectionsReached={onMaxSelectionsReached}
                 onBeforeValueChange={onBeforeValueChange}
+                disabled={disabled}
               />
             )}
           </FormControl>

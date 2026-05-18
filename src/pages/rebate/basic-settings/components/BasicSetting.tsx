@@ -1,5 +1,3 @@
-
-
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -91,43 +89,43 @@ export function BasicSetting() {
   return (
     <div className="grid gap-6">
       <RrhForm form={form} className="grid gap-y-6">
-            <FormRadio
-              name="setting"
-              orientation="horizontal"
-              label={t('home.nav.InternalTransfer')}
-              labeTipsDom={
-                <ToolTip
-                  content={
-                    <span className="whitespace-pre-line">
-                      {t('RebateBasicSettingsPage.settingDesc')}
-                    </span>
-                  }
-                >
-                  <CircleAlert className="text-muted-foreground size-4" />
-                </ToolTip>
+        <FormRadio
+          name="setting"
+          orientation="horizontal"
+          label={t('home.nav.InternalTransfer')}
+          labeTipsDom={
+            <ToolTip
+              content={
+                <span className="whitespace-pre-line">
+                  {t('RebateBasicSettingsPage.settingDesc')}
+                </span>
               }
-              options={[
-                { label: t('RebateBasicSettingsPage.setting.1'), value: '1' },
-                { label: t('RebateBasicSettingsPage.setting.2'), value: '2' },
-              ]}
-            />
-            <FormRadio
-              name="manyRebate"
-              label={t('RebateBasicSettingsPage.allowMultipleRebate')}
-              options={[
-                { label: t('RebateBasicSettingsPage.manyRebate.1'), value: '1' },
-                { label: t('RebateBasicSettingsPage.manyRebate.2'), value: '2' },
-              ]}
-            />
-            <FormRadio
-              name="num"
-              label={t('RebateBasicSettingsPage.rebateAccountSettings')}
-              options={[
-                { label: t('RebateBasicSettingsPage.num.1'), value: '0' },
-                { label: t('RebateBasicSettingsPage.num.2'), value: '1' },
-              ]}
-            />
-          </RrhForm>
+            >
+              <CircleAlert className="text-muted-foreground size-4" />
+            </ToolTip>
+          }
+          options={[
+            { label: t('RebateBasicSettingsPage.setting.1'), value: '1' },
+            { label: t('RebateBasicSettingsPage.setting.2'), value: '2' },
+          ]}
+        />
+        <FormRadio
+          name="manyRebate"
+          label={t('RebateBasicSettingsPage.allowMultipleRebate')}
+          options={[
+            { label: t('RebateBasicSettingsPage.manyRebate.1'), value: '1' },
+            { label: t('RebateBasicSettingsPage.manyRebate.2'), value: '2' },
+          ]}
+        />
+        <FormRadio
+          name="num"
+          label={t('RebateBasicSettingsPage.rebateAccountSettings')}
+          options={[
+            { label: t('RebateBasicSettingsPage.num.1'), value: '0' },
+            { label: t('RebateBasicSettingsPage.num.2'), value: '1' },
+          ]}
+        />
+      </RrhForm>
       <div className="flex justify-end">
         <RrhButton type="submit" variant="default" onClick={handleConfirm}>
           {t('common.Confirm')}

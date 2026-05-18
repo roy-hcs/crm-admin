@@ -14,6 +14,7 @@ import { normalizePercentageInput } from '@/lib/utils';
 import { FormRadio } from '@/components/form/FormRadio';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { PageInfo } from '@/components/common/PageInfo';
+import { FormStepper } from '@/components/form/FormStepper';
 
 type FormValues = {
   allowedSignalSelfRebateSet: string;
@@ -243,50 +244,17 @@ export function PerformanceFeeRebate() {
         desc={t('copyTradingSettings.unifiedSettingDesc')}
       />
 
-      <FormField
+      <FormStepper<FormValues>
         name="rebateLevel"
-        render={({ field }) => (
-          <FormItem>
-            <div className="flex items-center gap-2">
-              <FormLabel className="leading-5">{t('copyTradingSettings.rebateLevel')}</FormLabel>
-              <div className="text-muted-foreground text-xs leading-4">
-                {t('copyTradingSettings.rebateLevelDesc')}
-              </div>
-            </div>
-            <FormControl>
-              <div className="flex w-fit items-center gap-2">
-                <RrhButton
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={() => handleRebateLevelChange(rebateLevel - 1)}
-                  disabled={rebateLevel <= minRebateLevel}
-                >
-                  -
-                </RrhButton>
-                <Input
-                  className="w-20 text-center"
-                  inputMode="numeric"
-                  value={field.value}
-                  onChange={e => {
-                    const numeric = Number(e.target.value.replace(/\D/g, '') || minRebateLevel);
-                    handleRebateLevelChange(numeric);
-                  }}
-                />
-                <RrhButton
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={() => handleRebateLevelChange(rebateLevel + 1)}
-                  disabled={rebateLevel >= maxRebateLevel}
-                >
-                  +
-                </RrhButton>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+        label={t('copyTradingSettings.rebateLevel')}
+        min={minRebateLevel}
+        max={maxRebateLevel}
+        labeTipsDom={
+          <div className="text-muted-foreground text-xs leading-4">
+            {t('copyTradingSettings.rebateLevelDesc')}
+          </div>
+        }
+        onValueChange={handleRebateLevelChange}
       />
 
       {Array.from({ length: rebateLevel }, (_, index) => {

@@ -22,6 +22,7 @@ export interface RrhSearchSelectProps<TParams, TItem> {
   onSelect?: (option: { value: string; label: string }) => void;
   value?: string;
   displayLabel?: string;
+  lazy?: boolean;
 }
 
 export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TParams, TItem>) {
@@ -34,6 +35,7 @@ export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TPar
     onSelect,
     value,
     displayLabel,
+    lazy = false,
   } = props;
   const { t } = useTranslation();
   const [itemsData, setItemsData] = useState<TItem[]>([]);
@@ -153,6 +155,10 @@ export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TPar
   }, [queryText, params, patchSearchParams]);
 
   useEffect(() => {
+    if (lazy && !open) {
+      return;
+    }
+
     let ignore = false;
 
     async function initFirstPage() {
@@ -184,7 +190,7 @@ export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TPar
     return () => {
       ignore = true;
     };
-  }, [fetchFunction, params, patchSearchParams, debouncedQueryText]);
+  }, [fetchFunction, params, patchSearchParams, debouncedQueryText, lazy, open]);
 
   const loadMore = useCallback(async () => {
     if (isSearchPending || loading || !hasMore || itemsData.length === 0) return;

@@ -35,6 +35,7 @@ export const RrhMultiSelect = <T extends BaseOption>({
   maxSelectionsMessage,
   onMaxSelectionsReached,
   onBeforeValueChange,
+  disabled = false,
 }: {
   options: T[];
   value?: string[];
@@ -59,6 +60,7 @@ export const RrhMultiSelect = <T extends BaseOption>({
     operator: 'add' | 'remove',
     currentValue: string[],
   ) => ValidationResult;
+  disabled?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
@@ -100,7 +102,7 @@ export const RrhMultiSelect = <T extends BaseOption>({
   }, []);
 
   const handleSelect = (optionValue: string) => {
-    if (!onValueChange) return;
+    if (!onValueChange || disabled) return;
 
     const isSelected = value.includes(optionValue);
     const operator = isSelected ? 'remove' : 'add';
@@ -142,7 +144,7 @@ export const RrhMultiSelect = <T extends BaseOption>({
 
   const handleRemove = (event: React.MouseEvent<HTMLDivElement>, optionValue: string) => {
     event.stopPropagation();
-    if (!onValueChange) return;
+    if (!onValueChange || disabled) return;
     onValueChange(value.filter(v => v !== optionValue));
   };
 
@@ -155,6 +157,7 @@ export const RrhMultiSelect = <T extends BaseOption>({
           variant="outline"
           role="combobox"
           aria-expanded={open}
+          disabled={disabled}
           className={cn(
             '!h-auto min-h-9 w-full justify-between text-start font-normal whitespace-normal',
             selectedOptions.length > 0 ? 'hover:bg-transparent' : '',
@@ -217,6 +220,7 @@ export const RrhMultiSelect = <T extends BaseOption>({
                   onSelect={handleSelect}
                   className={cn('cursor-pointer hover:bg-slate-100', {
                     'bg-slate-100': value.includes(option.value.toString()),
+                    'pointer-events-none opacity-60': disabled,
                   })}
                 >
                   <Check
