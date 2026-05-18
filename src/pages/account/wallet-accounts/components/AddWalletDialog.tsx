@@ -31,7 +31,6 @@ const walletSchema = (t: TFunction<'translation', undefined>) => {
 export const AddWalletDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const schema = useMemo(() => z.object(walletSchema(t)), [t]);
 
@@ -42,22 +41,22 @@ export const AddWalletDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
       currency: '',
     },
   });
-  const [loading, setLoading] = useState(false);
-  const [walletList, setWalletList] = useState<{ label: string; value: string }[]>([]);
-  const { mutateAsync: addWallet } = useAddWallet();
-  const { mutateAsync: getWallet } = useGetCurrencies();
+  const { mutateAsync: addWallet, isPending } = useAddWallet();
 
   const crmUserId = form.watch('crmUserId');
 
+  const { data: rawCurrencies, isLoading: loading } = useGetCurrencies(crmUserId);
+  const walletList = (rawCurrencies ?? [])
+    .filter(Boolean)
+    .map(item => ({ label: item, value: item }));
+
   const onSubmit = async (data: FormValues) => {
     try {
-      setIsSubmitting(true);
-      const param = {
+      const res = await addWallet({
         crmUserId: data.crmUserId,
         balance: '0',
         currency: data.currency || '',
-      };
-      const res = await addWallet(param);
+      });
       if (res.code === 0) {
         form.reset();
         toast.success(t('common.success'));
@@ -68,8 +67,6 @@ export const AddWalletDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -78,42 +75,10 @@ export const AddWalletDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
     setOpen(false);
   };
 
+  // 当选择的账户变更时，重置货币选择
   useEffect(() => {
-    if (!crmUserId) return;
-    let mounted = true;
-    const fetch = async (crmUserId?: string) => {
-      if (!crmUserId) {
-        if (mounted) setWalletList([]);
-        return;
-      }
-      if (mounted) setLoading(true);
-      try {
-        const walletList = await getWallet({ userId: crmUserId });
-        if (!mounted) return;
-        if (walletList?.length > 0) {
-          const walletOptions = walletList
-            .filter(i => i)
-            .map((item: string) => ({
-              label: item,
-              value: item,
-            }));
-          setWalletList(walletOptions);
-        } else {
-          setWalletList([]);
-        }
-      } catch (error) {
-        console.error(error);
-        if (mounted) setWalletList([]);
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    };
-    fetch(crmUserId);
     form.setValue('currency', '');
-    return () => {
-      mounted = false;
-    };
-  }, [form, getWallet, crmUserId]);
+  }, [crmUserId, form]);
 
   return (
     <RrhDialog
@@ -123,48 +88,44 @@ export const AddWalletDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
         </RrhButton>
       }
       title={t('walletAccountsPage.addWalletAccount')}
-      isConfirmDisabled={isSubmitting}
+      isConfirmDisabled={isPending}
       open={open}
       onOpenChange={setOpen}
       footerShow={false}
       variant="small"
-      formLoading={isSubmitting}
+      formLoading={isPending}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
-            <FormField
-              name="crmUserId"
-              render={({ field }) => {
-                return (
-                  <SelectAccount
-                    verticalLabel
-                    field={field}
-                    title={t('walletAccountsPage.account')}
-                  />
-                );
-              }}
-            />
+        <FormField
+          name="crmUserId"
+          render={({ field }) => {
+            return (
+              <SelectAccount verticalLabel field={field} title={t('walletAccountsPage.account')} />
+            );
+          }}
+        />
 
-            <FormSelect
-              name="currency"
-              label={t('table.wallet')}
-              verticalLabel
-              placeholder={t('common.pleaseSelect')}
-              showRowValue={false}
-              options={walletList}
-              loading={loading}
-            />
+        <FormSelect
+          name="currency"
+          label={t('table.wallet')}
+          verticalLabel
+          placeholder={t('common.pleaseSelect')}
+          showRowValue={false}
+          options={walletList}
+          loading={loading}
+        />
 
-            <div className="col-span-full -mx-6 flex justify-end px-6 py-6 sm:pb-0">
-              <div className="flex justify-end gap-4">
-                <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
-                  {t('common.Cancel')}
-                </RrhButton>
-                <RrhButton type="submit" className="px-4 py-2">
-                  {t('common.Confirm')}
-                </RrhButton>
-              </div>
-            </div>
-          </RrhForm>
+        <div className="col-span-full -mx-6 flex justify-end px-6 py-6 sm:pb-0">
+          <div className="flex justify-end gap-4">
+            <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
+              {t('common.Cancel')}
+            </RrhButton>
+            <RrhButton type="submit" className="px-4 py-2">
+              {t('common.Confirm')}
+            </RrhButton>
+          </div>
+        </div>
+      </RrhForm>
     </RrhDialog>
   );
 };

@@ -1,5 +1,7 @@
+import { KycStatus } from '@/components/common/RrhKycStatus';
 import { BasicParams, BasicRes, BaseEntity } from '../../types';
-import { LastLogininfor } from '../review/types';
+import { CrmUserItem } from '../account';
+import { OperationsLogsItem } from '../monitor/type';
 
 export type ServerItem = {
   id: string;
@@ -607,84 +609,10 @@ export type AddAccountParams = {
   lever: string | null;
   accountGroupId: string | null;
   directBroker: string | null;
+  buildRebateAccount?: boolean;
 };
 
-export type CrmUser = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: object;
-  id: string | null;
-  lastName: string | null;
-  name: string | null;
-  showId: string | null;
-  sex: string | null;
-  mzone: string | null;
-  mobile: string | null;
-  email: string | null;
-  accountType: number | null;
-  accountTypeStr: string | null;
-  userRole: string | null;
-  inviter: string | null;
-  inviterName: string | null;
-  inviterEmail: string | null;
-  headImg: string | null;
-  status: number | null;
-  role: string | null;
-  rebateLevelName: string | null;
-  certiricateType: string | null;
-  certiricateNo: string | null;
-  source: string | null;
-  sourceText: string | null;
-  country: string | null;
-  countryId: string | null;
-  countryName: string | null;
-  province: string | null;
-  city: string | null;
-  address: string | null;
-  postCode: string | null;
-  birthday: string | null;
-  verifyStatus: number | null;
-  nameOne: string | null;
-  nameTwo: string | null;
-  inviterShowId: string | null;
-  roleId: string | null;
-  rebateLevelId: string | null;
-  rebateAccountId: string | null;
-  crmRebateLevel: string | null;
-  userInfo: string | null;
-  applySource: string | null;
-  account: string | null;
-  permissionJson: string | null;
-  inviterChain: string | null;
-  preferenceLanguage: string | null;
-  colorPreference: string | null;
-  lastLoginTime: string | null;
-  latestFollowupTime: string | null;
-  spreadLinkCodeId: string | null;
-  loginTwoFactorAuth: string | null;
-  antiPhishingCode: string | null;
-  tags: string | null;
-  points: number | null;
-  shortCode: string | null;
-  adminRemark: string | null;
-  applicantId: string | null;
-  registerSource: string | null;
-  registerSourceText: string | null;
-  sourceUpdateTime: string | null;
-  sourceUpdateCount: number | null;
-  vipId: string | null;
-  vipName: string | null;
-  vipLevel: string | null;
-  childId: string | null;
-  language: string | null;
-  pammUserId: string | null;
-  userName: string | null;
-  mtone: string | null;
-  mttwo: string | null;
-};
+export type CrmUser = CrmUserItem;
 
 export type CrmUsersParams = {
   origin: string;
@@ -809,11 +737,109 @@ export type EmailVerificationCodeRes = {
   resultMsg: string;
 };
 
+export interface CrmUserProfileData {
+  crmUser: CrmUser;
+  userInviterName: string;
+  languages: InfoTypeItem[];
+  roles: Role[];
+  realAccountNum: number;
+  lastLogininfor: string;
+  userInviter: string;
+  mockAccountNum: number;
+  userId: string;
+  countryList: Country[];
+  countryId: string;
+  userLanguage: string;
+}
+
+// Interface for country information
+export interface Country {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string;
+  updateTime: string;
+  remark: string | null;
+  params: Record<string, string>;
+  id: number;
+  status: boolean;
+  sort: number;
+  countryName: string;
+  continent: string;
+  continentName: string;
+  language: string | null;
+  countryCode: string | null;
+}
+export type EditCrmUserInfoParams = {
+  id: string;
+  status: number;
+  lastName: string;
+  name: string;
+  roleId: string;
+  country: string;
+  email: string;
+  mzone: string;
+  mobile: string;
+  preferenceLanguage: string;
+  colorPreference: number;
+  inviter: string;
+  accountType: string;
+};
+export interface UserTagProgressRes {
+  tagProgress: {
+    userId: string;
+    liveAccount: string | null;
+    demoAccount: string | null;
+    kycStatus: number;
+    firstDeposit: string | null;
+    totalDeposit: string | null;
+    totalWithdraw: string | null;
+    net: number;
+  };
+  totalRebate: number;
+}
+export interface TagProgress {
+  userId: string;
+  liveAccount: string | null;
+  demoAccount: string | null;
+  kycStatus: number;
+  firstDeposit: string | null;
+  totalDeposit: string | null;
+  totalWithdraw: string | null;
+  net: number;
+}
+export interface UserKycTabRes {
+  languages: InfoTypeItem[];
+  bstatus: KycStatus;
+  breason: string;
+  personalStatus: string;
+  roles: Role[];
+  realAccountNum: number;
+  lastLogininfor: OperationsLogsItem | null;
+  istatus: KycStatus;
+  ireason: string;
+  protocolStatus: string;
+  userInviter: string;
+  tagProgress: TagProgress;
+  userId: string;
+  countryList: Country[];
+  countryId: string;
+  userLanguage: string;
+  crmUser: CrmUser;
+  mode: string;
+  fstatus: KycStatus;
+  freason: string;
+  userInviterName: string;
+  identityStatus: string;
+  financialStatus: string;
+  from: number;
+  mockAccountNum: number;
+  totalRebate: number;
+}
 export type CrmUserInfo = {
   code: number;
   data: {
     crmUser: CrmUser;
-    lastLogininfor: LastLogininfor;
+    lastLogininfor: OperationsLogsItem;
     userLanguage: string | null;
   };
 };

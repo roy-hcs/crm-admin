@@ -145,7 +145,7 @@ export const HisStoryPage = ({ id }: { id: string }) => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
   const { data: data, isLoading: loading } = useCrmDealAccountFundHistory(id, {
     pageSize,
@@ -169,7 +169,7 @@ export const HisStoryPage = ({ id }: { id: string }) => {
       positionID: '',
       entry: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
 
@@ -295,10 +295,9 @@ export const HisStoryPage = ({ id }: { id: string }) => {
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon
+            key={resetKey}
             placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
             className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
             leftIcon={<Search className="size-4 cursor-pointer" />}
             onLeftIconClick={e => {
               setOtherParams(prev => ({ ...prev, ticket: e }));

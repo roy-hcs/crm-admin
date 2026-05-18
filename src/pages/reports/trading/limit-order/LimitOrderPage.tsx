@@ -97,7 +97,6 @@ export const LimitOrderPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
   const { t } = useTranslation();
   const { data: serverList, isLoading: serverListLoading } = useServerList();
   useEffect(() => {
@@ -245,8 +244,6 @@ export const LimitOrderPage = () => {
           <RrhInputWithIcon
             placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
             className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
             leftIcon={<Search className="size-4 cursor-pointer" />}
             onLeftIconClick={e => {
               setParams(prev => ({ ...prev, positionFuzzyTicket: e }));

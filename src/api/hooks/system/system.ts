@@ -42,8 +42,13 @@ import {
   CrmUsersTags,
   MyInfoRes,
   EmailVerificationCodeRes,
+  CrmUserProfileData,
+  EditCrmUserInfoParams,
+  UserTagProgressRes,
+  UserKycTabRes,
   CrmUserInfo,
 } from './types';
+import { UserAccountOperationRes, UserRebateAccountTabRes } from '../agent/types';
 
 // Note: useWithDrawReport, useFundFlowReport, useSymbolReport, useRegCountReport, useDepositAllReport, useCustomerTransactionsReport, useSumReport moved to @/api/hooks/workbench
 
@@ -209,6 +214,12 @@ export function useUserList(params?: UserListParams) {
   return useQuery({
     queryKey: ['userList', params],
     queryFn: () => apiFormPostCustom<UserListRes>(`/system/user/list`, params || {}),
+  });
+}
+export function useMutationUserList() {
+  return useMutation({
+    mutationFn: (params: UserListParams) =>
+      apiFormPostCustom<UserListRes>(`/system/user/list`, params),
   });
 }
 
@@ -416,10 +427,11 @@ export function useAddAccount() {
 /**
  * 钱包账户-获取钱包
  */
-export function useGetCurrencies() {
-  return useMutation({
-    mutationFn: (params: { userId: string }) =>
-      apiFormPostCustom<string[]>('/system/crmUserWallet/getCurrencies', params),
+export function useGetCurrencies(userId: string) {
+  return useQuery({
+    queryKey: ['currencies', userId],
+    queryFn: () => apiFormPostCustom<string[]>('/system/crmUserWallet/getCurrencies', { userId }),
+    enabled: !!userId,
   });
 }
 
@@ -570,6 +582,74 @@ export function useGetGoogleBindInfo() {
         code: string;
         key: string;
       }>('/googleAuthenticator/bindInfo'),
+  });
+}
+/**
+ * 获取用户信息
+ */
+export function useGetUserProfile(userId: string) {
+  return useQuery({
+    queryKey: ['GetUserProfile', userId],
+    queryFn: () => apiGet<CrmUserProfileData>(`/system/crmUser/getUserInfo?id=${userId}`),
+    enabled: !!userId,
+  });
+}
+/**
+ * 获取用户关键信息
+ */
+export function useGetUserTagProgress(userId: string) {
+  return useQuery({
+    queryKey: ['GetUserTagProgress', userId],
+    queryFn: () => apiGet<UserTagProgressRes>(`/system/crmUser/getUserTagProgress?id=${userId}`),
+    enabled: !!userId,
+  });
+}
+/**
+ * 获取用户kyc tab信息
+ */
+export function useGetUserKycTab(userId: string) {
+  return useQuery({
+    queryKey: ['GetUserKycTab', userId],
+    queryFn: () => apiGet<UserKycTabRes>(`/system/crmUser/getKycInfo/${userId}`),
+    enabled: !!userId,
+  });
+}
+/**
+ * 获取账户操作信息
+ */
+export function useGetUserAccountOperation(userId: string) {
+  return useQuery({
+    queryKey: ['GetUserAccountOperation', userId],
+    queryFn: () => apiFormPost<UserAccountOperationRes>(`/system/crmUser/manage/6/${userId}`),
+    enabled: !!userId,
+  });
+}
+/**
+ * 获取返佣账户tab信息
+ */
+export function useGetUserRebateAccountTab(userId: string) {
+  return useQuery({
+    queryKey: ['GetUserRebateAccountTab', userId],
+    queryFn: () =>
+      apiGet<UserRebateAccountTabRes>(`/system/crmUserRebateTemplate/getRebateAccount/${userId}`),
+    enabled: !!userId,
+  });
+}
+/**
+ * 编辑用户备注信息
+ */
+export function useEditUserRemark() {
+  return useMutation({
+    mutationFn: (params: { id: string; adminRemark: string }) =>
+      apiFormPost('/system/crmUser/editAdminRemark', params),
+  });
+}
+/**
+ * 编辑用户信息
+ */
+export function useEditCrmUserInfo() {
+  return useMutation({
+    mutationFn: (params: EditCrmUserInfoParams) => apiFormPost('/system/crmUser/edit', params),
   });
 }
 //

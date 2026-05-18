@@ -107,136 +107,134 @@ export const ReviewWithdrawalForm = ({
     });
   };
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      onKeyDown={e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          if (e.target instanceof HTMLTextAreaElement) return;
 
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="name"
-            label={t('table.nameOrLastNameOrId')}
-            placeholder={t('common.pleaseInput', { field: t('table.nameOrLastNameOrId') })}
-          />
-          <FormSelect
-            verticalLabel
-            name="withdrawWay"
-            label={t('table.withdrawMethods')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={withdrawMethodList.map(item => ({
-              label: item.name,
-              value: item.id,
-            }))}
-          />
-          <FormInput
-            verticalLabel
-            name="tradeAccount"
-            label={t('table.tradeAccount')}
-            placeholder={t('common.pleaseInput', { field: t('table.tradeAccount') })}
-          />
-          <FormInput
-            verticalLabel
-            name="orderNumber"
-            label={t('table.orderNumber')}
-            placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
-          />
-          <FormSelect
-            verticalLabel
-            name="verifyStatus"
-            label={t('table.reviewStatus')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={[
-              { label: t('table.pending'), value: '2' },
-              { label: t('table.reviewing'), value: '-1' },
-              { label: t('table.pass'), value: '1' },
-              { label: t('table.refuse'), value: '0' },
-              { label: t('common.Cancel'), value: '-2' },
-            ]}
-          />
-          <FormField
-            name="submitTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="text-foreground basis-3/12">
-                  {t('table.submitTime')}
-                </FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="submitTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormInput
-            verticalLabel
-            name="verifyUserName"
-            label={t('table.currentAuditor')}
-            placeholder={t('common.pleaseInput', { field: t('table.currentAuditor') })}
-          />
-          <FormSelect
-            verticalLabel
-            name="status"
-            label={t('table.status')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={[
-              { label: t('common.normal'), value: '0' },
-              { label: t('common.abnormal'), value: '1' },
-            ]}
-          />
+          e.preventDefault();
+          form.handleSubmit(onSubmit)();
+        }
+      }}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        verticalLabel
+        name="name"
+        label={t('table.nameOrLastNameOrId')}
+        placeholder={t('common.pleaseInput', { field: t('table.nameOrLastNameOrId') })}
+      />
+      <FormSelect
+        verticalLabel
+        name="withdrawWay"
+        label={t('table.withdrawMethods')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={withdrawMethodList.map(item => ({
+          label: item.name,
+          value: item.id,
+        }))}
+      />
+      <FormInput
+        verticalLabel
+        name="tradeAccount"
+        label={t('table.tradingAccount')}
+        placeholder={t('common.pleaseInput', { field: t('table.tradingAccount') })}
+      />
+      <FormInput
+        verticalLabel
+        name="orderNumber"
+        label={t('table.orderNumber')}
+        placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
+      />
+      <FormSelect
+        verticalLabel
+        name="verifyStatus"
+        label={t('table.reviewStatus')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={[
+          { label: t('table.pending'), value: '2' },
+          { label: t('table.reviewing'), value: '-1' },
+          { label: t('table.pass'), value: '1' },
+          { label: t('table.refuse'), value: '0' },
+          { label: t('common.Cancel'), value: '-2' },
+        ]}
+      />
+      <FormField
+        name="submitTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="text-foreground basis-3/12">{t('table.submitTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="submitTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormInput
+        verticalLabel
+        name="verifyUserName"
+        label={t('table.currentAuditor')}
+        placeholder={t('common.pleaseInput', { field: t('table.currentAuditor') })}
+      />
+      <FormSelect
+        verticalLabel
+        name="status"
+        label={t('table.status')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={[
+          { label: t('common.normal'), value: '0' },
+          { label: t('common.abnormal'), value: '1' },
+        ]}
+      />
 
-          <FormInput
-            verticalLabel
-            name="tradeServerOrderNumber"
-            label={t('table.tradeServerOrderNumber')}
-            placeholder={t('common.pleaseInput', { field: t('table.tradeServerOrderNumber') })}
-          />
-          <FormSelect
-            verticalLabel
-            name="outAccountType"
-            label={t('table.withdrawAccount')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={[
-              { label: t('table.tradeAccount'), value: '1' },
-              { label: t('table.wallet'), value: '2' },
-            ]}
-          />
-          <SelectUpperDropdown />
-          <FormField
-            name="finishTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="text-foreground basis-3/12">
-                  {t('table.submitTime')}
-                </FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="finishTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+      <FormInput
+        verticalLabel
+        name="tradeServerOrderNumber"
+        label={t('table.tradeServerOrderNumber')}
+        placeholder={t('common.pleaseInput', { field: t('table.tradeServerOrderNumber') })}
+      />
+      <FormSelect
+        verticalLabel
+        name="outAccountType"
+        label={t('table.withdrawAccount')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={[
+          { label: t('table.tradingAccount'), value: '1' },
+          { label: t('table.wallet'), value: '2' },
+        ]}
+      />
+      <SelectUpperDropdown />
+      <FormField
+        name="finishTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="text-foreground basis-3/12">{t('table.submitTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="finishTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" loading={loading}>
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" loading={loading}>
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

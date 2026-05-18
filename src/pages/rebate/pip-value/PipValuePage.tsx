@@ -27,7 +27,7 @@ import { EditPipValueDialog } from './components/EditPipValueDialog';
 
 export const PipValuePage = () => {
   const { t } = useTranslation();
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [otherParams, setOtherParams] = useState<Omit<RebateBasePointParams, keyof BasicParams>>({
@@ -62,7 +62,7 @@ export const PipValuePage = () => {
       serverId: '',
       serverType: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
   };
@@ -193,13 +193,12 @@ export const PipValuePage = () => {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('common.pleaseInput', { field: t('table.pointValueName') })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
-              onLeftIconClick={() => {
-                setOtherParams(prev => ({ ...prev, pointValueName: keyword }));
+              onLeftIconClick={value => {
+                setOtherParams(prev => ({ ...prev, pointValueName: value }));
                 setPageNum(0);
               }}
             />

@@ -50,7 +50,7 @@ export const ReviewWithdrawalDetailPage = () => {
   );
   const withdrawalInfo = withdrawalRes?.data?.detail;
   const isAudit = searchParams.get('type') === 'audit' || withdrawalInfo?.status === 2;
-  const { mutate: withdrawalVerify, data: verifyData, isPending } = useWithdrawalVerify();
+  const { mutate: withdrawalVerify, isPending } = useWithdrawalVerify();
   const reviewTabs = ['withdrawalInfo', 'depositRecord', 'withdrawalRecord'];
   const form = useForm<WithdrawalFormData>({
     defaultValues: {
@@ -140,7 +140,6 @@ export const ReviewWithdrawalDetailPage = () => {
   ] as RrhStepProps['steps'];
   const onSubmit = (val: WithdrawalFormData) => {
     if (isPending) return;
-    console.log(val, 'submit val');
     const params = {
       id: withdrawalId,
       status: val.reviewStatus,
@@ -168,9 +167,6 @@ export const ReviewWithdrawalDetailPage = () => {
       orderComment: withdrawalInfo.orderComment,
     };
     withdrawalVerify(params);
-    console.log(verifyData, 'verifyData');
-
-    console.log(params, 'submit params');
   };
   return (
     <div>

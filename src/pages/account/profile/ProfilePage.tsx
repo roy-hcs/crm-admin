@@ -126,6 +126,7 @@ export const ProfilePage = () => {
             src={userInfo?.avatar || ''}
             alt={t('profile.avatarTips')}
             className="size-20 rounded-full"
+            loading="lazy"
           />
           <div className="grid gap-2">
             <div>{t('profile.avatarTips')}</div>

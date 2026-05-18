@@ -100,6 +100,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
         src={this.__src}
         alt={this.__alt}
         style={{ maxWidth: '100%', display: 'block', margin: '8px 0' }}
+        loading="lazy"
       />
     );
   }

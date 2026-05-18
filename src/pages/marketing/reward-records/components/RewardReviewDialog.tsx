@@ -38,7 +38,6 @@ export const RewardReviewDialog = ({ onSuccess }: { onSuccess: () => void }) => 
       async function fetchConfig() {
         try {
           const res = await getConfig();
-          console.log(res, '/system/marketing/rewardRecord/rewardVerifyConfigs');
           if (res?.code === 0 && res?.data) {
             form.setValue('depositRewardChecked', String(res?.data?.depositRewardChecked || '0'));
             form.setValue(

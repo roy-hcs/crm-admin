@@ -126,7 +126,7 @@ export function WalletTransactionsPage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [params, setParams] = useState<CrmUserDealDetailParams['params']>({
     account: '',
     selectOther: '',
@@ -185,7 +185,7 @@ export function WalletTransactionsPage() {
       mtOrder: '',
     });
     setPageNum(0);
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageSize(10);
   };
 
@@ -299,13 +299,12 @@ export function WalletTransactionsPage() {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('table.nameOrEmail')}
               className="h-9"
               leftIcon={<Search className="size-4" />}
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
-              onLeftIconClick={() => {
-                setParams(prev => ({ ...prev, account: keyword }));
+              onLeftIconClick={value => {
+                setParams(prev => ({ ...prev, account: value }));
                 setPageNum(0);
               }}
             />

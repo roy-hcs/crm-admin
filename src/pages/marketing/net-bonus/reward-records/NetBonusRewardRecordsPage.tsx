@@ -36,6 +36,8 @@ export const NetBonusRewardRecordsPage = () => {
   const tableRef = useRef<DataTableRef>(null);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
   const [orderByColumn, setOrderByColumn] = useState<string>('');
+
+  const [resetKey, setResetKey] = useState(0);
   const [params, setParams] = useState<NetBonusRewardRecordsListParams['params']>({
     drirectFlag: 'a',
     agentUserId: '',
@@ -56,7 +58,6 @@ export const NetBonusRewardRecordsPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
   const { t } = useTranslation();
   const {
     mutate: getNetBonusRewardRecordsTotal,
@@ -108,7 +109,7 @@ export const NetBonusRewardRecordsPage = () => {
       status: '',
       orderNo: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
 
@@ -380,13 +381,12 @@ export const NetBonusRewardRecordsPage = () => {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4 cursor-pointer" />}
-              onLeftIconClick={() => {
-                setOtherParams(prev => ({ ...prev, orderNo: keyword }));
+              onLeftIconClick={e => {
+                setOtherParams(prev => ({ ...prev, orderNo: e }));
                 setPageNum(0);
               }}
             />

@@ -21,7 +21,7 @@ export function DepositsPage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [params, setParams] = useState<TradingParams['params']>({
     startTraderTime: '',
     endTraderTime: '',
@@ -66,7 +66,7 @@ export function DepositsPage() {
       endVerifyTime: '',
       accounts: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
   };
@@ -166,10 +166,9 @@ export function DepositsPage() {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('common.pleaseInput', { field: t('trading.mtOrder') })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
               onLeftIconClick={e => {
                 setPageNum(0);

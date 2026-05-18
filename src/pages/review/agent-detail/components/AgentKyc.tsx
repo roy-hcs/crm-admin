@@ -11,7 +11,6 @@ import { KycStatus, kycStatusTextMap } from '@/components/common/RrhKycStatus';
 type kycInfoSteps = KycInfoStep[];
 
 export const AgentKyc = ({ detail }: { detail: AgentReviewDetailRes['data'] }) => {
-  console.log('detail', detail);
   const { t } = useTranslation();
   const createTime = detail?.detail?.createTime || '';
   const userName = detail?.detail?.userName || '';

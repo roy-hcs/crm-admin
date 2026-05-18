@@ -23,7 +23,7 @@ import { MenuListItem } from '@/api/hooks/system';
 export const ManagementMenuTab = () => {
   const [menuName, setMenuName] = useState('');
   const [menuState, setMenuState] = useState('');
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
 
   const { data: menuList, isLoading: menuListLoading } = useMenuList(menuName, menuState);
@@ -42,7 +42,7 @@ export const ManagementMenuTab = () => {
   const reset = () => {
     setMenuName('');
     setMenuState('');
-    setKeyword('');
+    setResetKey(k => k + 1);
   };
 
   const tableRef = useRef<DataTableRef>(null);
@@ -143,13 +143,12 @@ export const ManagementMenuTab = () => {
     <div>
       <div className="mb-3 flex justify-between">
         <RrhInputWithIcon
+          key={resetKey}
           placeholder={t('common.pleaseInput', { field: t('menuManagement.menuName') })}
           className="h-9"
-          value={keyword}
-          onChange={e => setKeyword(e.target.value)}
           leftIcon={<Search className="size-4" />}
-          onLeftIconClick={() => {
-            setMenuName(keyword);
+          onLeftIconClick={value => {
+            setMenuName(value);
           }}
         />
         <div className="flex items-center gap-2">

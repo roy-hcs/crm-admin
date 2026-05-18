@@ -39,7 +39,7 @@ export const CommissionReviewPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
 
   const { data: data, isLoading: loading } = usePammCommissionList({
@@ -71,7 +71,7 @@ export const CommissionReviewPage = () => {
       verifyStatus: '',
       profitType: '',
     }));
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
 
@@ -176,13 +176,12 @@ export const CommissionReviewPage = () => {
       <TableContentWrapper>
         <div className="mb-3 flex justify-between">
           <RrhInputWithIcon
+            key={resetKey}
             placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
             className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
             leftIcon={<Search className="size-4" />}
-            onLeftIconClick={() => {
-              setOtherParams(prev => ({ ...prev, projectName: keyword }));
+            onLeftIconClick={value => {
+              setOtherParams(prev => ({ ...prev, projectName: value }));
               setPageNum(0);
             }}
           />

@@ -26,7 +26,7 @@ import { useTabActions } from '@/hooks/useTabActions';
 
 export const TicketUnassigned = () => {
   const { t } = useTranslation();
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [otherParams, setOtherParams] = useState<Omit<CrmTicketParams, keyof BasicParams>>({
@@ -63,7 +63,7 @@ export const TicketUnassigned = () => {
       endDate: '',
       belongUser: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
   };
@@ -253,13 +253,12 @@ export const TicketUnassigned = () => {
     <TableContentWrapper>
       <div className="mb-3 flex flex-wrap justify-between gap-2">
         <RrhInputWithIcon
+          key={resetKey}
           placeholder={t('common.pleaseInput', { field: t('ticketList.orderId') })}
           className="h-9"
-          value={keyword}
-          onChange={e => setKeyword(e.target.value)}
           leftIcon={<Search className="size-4" />}
-          onLeftIconClick={() => {
-            setOtherParams(prev => ({ ...prev, orderId: keyword }));
+          onLeftIconClick={value => {
+            setOtherParams(prev => ({ ...prev, orderId: value }));
             setPageNum(0);
           }}
         />

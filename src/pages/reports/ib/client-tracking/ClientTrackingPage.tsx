@@ -24,7 +24,7 @@ export function ClientTrackingPage() {
   const [isAsc, setIsAsc] = useState<'asc' | 'desc'>('asc');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [params, setParams] = useState<
     Pick<ClientTrackingParams, 'userName' | 'email' | 'statisticMonth' | 'level'>
   >({
@@ -50,7 +50,7 @@ export function ClientTrackingPage() {
       statisticMonth: '',
       level: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
     setIsAsc('asc');
@@ -166,13 +166,12 @@ export function ClientTrackingPage() {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('customerTracking.nameOrAccountId')}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
-              onLeftIconClick={() => {
-                setParams(prev => ({ ...prev, userName: keyword }));
+              onLeftIconClick={value => {
+                setParams(prev => ({ ...prev, userName: value }));
                 setPageNum(0);
               }}
             />

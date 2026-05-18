@@ -50,7 +50,7 @@ function getServerTypeName(serverType: string) {
 
 export const DepositRebateSettingsPage = () => {
   const { t } = useTranslation();
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [currentItem, setCurrentItem] = useState<RebateDepositSettingsItem | null>(null);
@@ -107,7 +107,7 @@ export const DepositRebateSettingsPage = () => {
       serverId: '',
       hasUsed: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
   };
@@ -298,13 +298,12 @@ export const DepositRebateSettingsPage = () => {
       <TableContentWrapper>
         <div className="mb-3 flex flex-wrap justify-between gap-2">
           <RrhInputWithIcon
+            key={resetKey}
             placeholder={t('common.pleaseInput', { field: t('table.ruleName') })}
             className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
             leftIcon={<Search className="size-4" />}
-            onLeftIconClick={() => {
-              setOtherParams(prev => ({ ...prev, ruleName: keyword }));
+            onLeftIconClick={value => {
+              setOtherParams(prev => ({ ...prev, ruleName: value }));
               setPageNum(0);
             }}
           />

@@ -37,7 +37,6 @@ export const NetBonusRewardReportsPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
   const { t } = useTranslation();
   const {
     mutate: getNetBonusRewardReportsTotal,
@@ -81,7 +80,6 @@ export const NetBonusRewardReportsPage = () => {
       bonusUser: '',
       status: 1,
     });
-    setKeyword('');
     setPageNum(0);
   };
 
@@ -173,11 +171,9 @@ export const NetBonusRewardReportsPage = () => {
             <RrhInputWithIcon
               placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4 cursor-pointer" />}
-              onLeftIconClick={() => {
-                setOtherParams(prev => ({ ...prev, orderNo: keyword }));
+              onLeftIconClick={e => {
+                setOtherParams(prev => ({ ...prev, orderNo: e }));
                 setPageNum(0);
               }}
             />

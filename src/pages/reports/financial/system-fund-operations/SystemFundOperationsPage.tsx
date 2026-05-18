@@ -42,7 +42,7 @@ export const SystemFundOperationsPage = () => {
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
 
   const { data: systemFunOperationRecordList, isLoading: systemFunOperationRecordListLoading } =
@@ -100,7 +100,7 @@ export const SystemFundOperationsPage = () => {
     setOtherParams({
       type: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
   const allColumns: CRMColumnDef<SystemFundOperationRecordItem, unknown>[] = [
@@ -187,10 +187,9 @@ export const SystemFundOperationsPage = () => {
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-between">
           <RrhInputWithIcon
+            key={resetKey}
             placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
             className="h-9"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
             leftIcon={<Search className="size-4 cursor-pointer" />}
             onLeftIconClick={e => {
               setParams(prev => ({ ...prev, ticket: e }));

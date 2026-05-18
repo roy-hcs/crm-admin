@@ -307,6 +307,17 @@ export const encryptWithPublicKey = (data: string) => {
   }
   return encryptedData;
 };
+/**
+ * 国际化货币显示（主要是英文的数值千分位显示），默认保留两位小数
+ */
+export const formatMoneyNumber = (value: number | string, significantDigits = 2) => {
+  if (isNaN(Number(value))) {
+    return value;
+  }
+  return new Intl.NumberFormat('en-US', { minimumFractionDigits: significantDigits }).format(
+    Number(value),
+  );
+};
 
 /**
  * 规范化百分比输入，允许用户输入过程中出现的中间状态（如 "0."），最终结果限制在0-100之间，且最多两位小数。

@@ -58,15 +58,13 @@ export const DepositRecordPage = ({ userId }: { userId: string }) => {
     { enabled: true },
   );
 
-  const { mutate: getDepositSum, data: sumData } = useDepositListSum();
+  const { mutate: getDepositSum } = useDepositListSum();
   useEffect(() => {
     getDepositSum({
       params,
       ...otherParams,
     });
   }, [getDepositSum, otherParams, params]);
-
-  console.log('sumData----', sumData);
 
   const reset = () => {
     setParams({

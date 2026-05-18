@@ -19,7 +19,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     // Log to help with debugging
-    console.log('ErrorBoundary: getDerivedStateFromError called with:', error);
+    console.error('ErrorBoundary: getDerivedStateFromError called with:', error);
     return { hasError: true, error };
   }
 
@@ -34,7 +34,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   render(): ReactNode {
     if (this.state.hasError) {
-      console.log('ErrorBoundary: Rendering fallback UI');
+      console.error('ErrorBoundary: Rendering fallback UI');
       return this.props.fallback || <AppError />;
     }
 

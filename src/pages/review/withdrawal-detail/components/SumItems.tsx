@@ -57,7 +57,7 @@ const SumItem = ({ currency, amount, orderCount }: SumItemProps) => {
   return (
     <div className="bg-card flex min-w-[48%] flex-col rounded-lg p-3 md:min-w-36">
       <div className="flex items-center gap-2">
-        <img src={getCurrencyIcon(currency)} alt={currency} className="h-5 w-5" />
+        <img src={getCurrencyIcon(currency)} alt={currency} loading="lazy" className="h-5 w-5" />
         <span className="text-card-foreground text-xs font-medium">{currency}</span>
       </div>
       <div className="text-card-foreground mt-2 mb-1.5 text-sm font-semibold">{amount}</div>

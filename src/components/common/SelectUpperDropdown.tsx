@@ -7,11 +7,13 @@ import { useCallback, useMemo } from 'react';
 export const SelectUpperDropdown = ({
   name = 'accounts',
   rawLabel,
+  customMapOptions,
   labelShow = true,
   className = '',
 }: {
-  name?: 'inviter' | 'accounts' | 'agentUserId';
+  name?: 'inviter' | 'accounts' | 'agentUserId' | string;
   rawLabel?: string;
+  customMapOptions?: (item: CrmUserItem) => { value: string; label: string };
   labelShow?: boolean;
   className?: string;
 }) => {
@@ -22,12 +24,14 @@ export const SelectUpperDropdown = ({
 
   const mapOption = useCallback(
     (item: CrmUserItem) => {
-      return {
-        value: `${item.id}`,
-        label: `${item.lastName ?? ''} ${item.name ?? ''}${name === 'inviter' ? ` (${item.showId})` : `-${t('common.subordinate')}`}`,
-      };
+      return customMapOptions
+        ? customMapOptions(item)
+        : {
+            value: item.id,
+            label: `${item.lastName ?? ''} ${item.name ?? ''}${name === 'inviter' ? ` (${item.showId})` : `-${t('common.subordinate')}`}`,
+          };
     },
-    [name, t],
+    [name, t, customMapOptions],
   );
 
   const buildInviterSearchParams = useCallback(

@@ -111,7 +111,7 @@ export const AddEditNewMessageDialog = ({
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   id?: string;
-  onSuccess: () => void;
+  onSuccess?: () => void;
   languageOptions: Array<{ label: string; value: string }>;
   emailOptions: Array<{ label: string; value: string }>;
   msgTemplateOptions: Array<{ label: string; value: string; content: string }>;
@@ -295,7 +295,7 @@ export const AddEditNewMessageDialog = ({
       if (res.code === 0) {
         toast.success(t('common.success'));
         onClose(false);
-        onSuccess();
+        onSuccess?.();
       } else {
         toast.error(res.msg);
       }

@@ -22,7 +22,7 @@ export const ReviewInternalTransferPage = () => {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [keyword, setKeyword] = useState('');
+  const [resetKey, setResetKey] = useState(0);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('desc');
   const [orderByColumn, setOrderByColumn] = useState('');
   const [params, setParams] = useState<InternalTransferListParams['params']>({
@@ -65,7 +65,7 @@ export const ReviewInternalTransferPage = () => {
       verifyUserName: '',
       dealTicket: '',
     });
-    setKeyword('');
+    setResetKey(k => k + 1);
     setPageNum(0);
   };
 
@@ -275,13 +275,12 @@ export const ReviewInternalTransferPage = () => {
         <div className="mb-3 flex justify-between">
           <div className="w-67 max-w-sm">
             <RrhInputWithIcon
+              key={resetKey}
               placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
               className="h-9"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
               leftIcon={<Search className="size-4" />}
-              onLeftIconClick={() => {
-                setOtherParams(prev => ({ ...prev, userId: keyword }));
+              onLeftIconClick={value => {
+                setOtherParams(prev => ({ ...prev, userId: value }));
                 setPageNum(0);
               }}
             />
