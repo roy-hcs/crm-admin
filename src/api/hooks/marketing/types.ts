@@ -419,3 +419,99 @@ export type NetBonusRewardRecordVerifyParams = {
   serverId: string;
   account: string;
 };
+
+export type NetBonusRewardFixedParamItem = {
+  id: string;
+  type: string;
+  startAmount: number | null;
+  endAmount: number | null;
+  rewardParam: number;
+  userId: string;
+  userName: string;
+  showId: string;
+};
+export type NetBonusRewardConfigFixed = {
+  rewardParam: string;
+  type: string;
+  userId: string;
+};
+
+export type EditNetBonusRewardConfigFixedParams = NetBonusRewardConfigFixed[];
+export type NetBonusRewardDepositSetting = {
+  id: string;
+  rewardTarget: string;
+  status: string;
+  crmDeposit: string;
+  sysDeposit: string;
+  depositSubType: string;
+  crmWithdraw: string;
+  sysWithdraw: string;
+  withdrawSubType: string;
+  dataStatisticsTimeRange: number;
+  executionTime: string | null;
+  autoReview: number;
+};
+
+export type NetBonusRewardSubscription = {
+  remainingDays: number;
+  startTime: string;
+  endTime: string;
+  status: number;
+  totalDay: number;
+};
+
+export type NetBonusRewardConfigData = {
+  agent: string;
+  fixedParams: NetBonusRewardFixedParamItem[];
+  netDepositBonus: NetBonusRewardDepositSetting;
+  business: string;
+  subscription: NetBonusRewardSubscription;
+  subStatus: string;
+  sales: string;
+};
+
+export type NetBonusRewardConfigRes = {
+  code: number;
+  msg?: string | null;
+  data: NetBonusRewardConfigData;
+};
+
+export type EditNetBonusRewardConfigParams = {
+  id: string;
+  status: string;
+  autoReview: string;
+  rewardTarget: string[];
+  crmDeposit: string;
+  sysDeposit: string;
+  crmWithdraw: string;
+  sysWithdraw: string;
+  dataStatisticsTimeRange: number;
+  depositSubType: string[];
+  withdrawSubType: string[];
+};
+
+export type NetBonusIntervalsItem = {
+  id: string | null;
+  type: string | null;
+  startAmount: number | null;
+  endAmount: number | null;
+  rewardParam: number | null;
+  userId: string | null;
+  userName: string | null;
+  showId: string | null;
+};
+
+export type NetBonusIntervalsRes = {
+  code: number;
+  msg: string | null;
+  data: NetBonusIntervalsItem[];
+};
+
+export type NetBonusIntervalsParamsItem = {
+  endAmount: number;
+  rewardParam: number;
+  startAmount: number;
+  type: string;
+};
+
+export type EditNetBonusIntervalsParams = NetBonusIntervalsParamsItem[];

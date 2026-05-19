@@ -1,4 +1,5 @@
 import { AdsPage } from '@/pages/marketing/ads/AdsPage';
+import { NetBonusRewardConfigPage } from '@/pages/marketing/net-bonus/reward-config/NetBonusRewardConfigPage';
 import { NetBonusRewardRecordsDetailPage } from '@/pages/marketing/net-bonus/reward-records-detail/NetBonusRewardRecordsDetailPage';
 import { NetBonusRewardRecordsPage } from '@/pages/marketing/net-bonus/reward-records/NetBonusRewardRecordsPage';
 import { NetBonusRewardReportsPage } from '@/pages/marketing/net-bonus/reward-reports/NetBonusRewardReportsPage';
@@ -46,10 +47,10 @@ export const marketingRoutes: RouteObject[] = [
     path: '/marketing/ads',
     element: <AdsPage />,
   },
-  // {
-  //   path: '/marketing/net-bonus/reward-config',
-  //   element: <RewardConfigPage />,
-  // },
+  {
+    path: '/marketing/net-bonus/reward-config',
+    element: <NetBonusRewardConfigPage />,
+  },
   {
     path: '/marketing/net-bonus/reward-records',
     element: <NetBonusRewardRecordsPage />,

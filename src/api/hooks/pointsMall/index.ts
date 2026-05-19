@@ -217,6 +217,15 @@ export function usePointsConfig() {
 }
 
 /**
+ * 积分配置 保存
+ */
+export function useEditPointsConfig() {
+  return useMutation({
+    mutationFn: (params: EditPointsConfig) => apiPost('/system/marketing/points/settings', params),
+  });
+}
+
+/**
  * 提交商城说明
  */
 export function useSubmitPointsIntro() {
@@ -233,15 +242,6 @@ export function usePointsIntro() {
   return useQuery({
     queryKey: ['pointsIntro'],
     queryFn: () => apiGetCustom<PointsIntroRes>(`/system/marketing/points/introInfo`),
-  });
-}
-
-/**
- * 积分配置 保存
- */
-export function useEditPointsConfig() {
-  return useMutation({
-    mutationFn: (params: EditPointsConfig) => apiPost('/system/marketing/points/settings', params),
   });
 }
 

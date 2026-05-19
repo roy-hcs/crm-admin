@@ -18,6 +18,7 @@ interface FormSwitchProps<T extends FieldValues> {
   verticalLabel?: boolean;
   labeTipsDom?: React.ReactNode;
   description?: string;
+  disabled?: boolean;
 }
 
 export function FormSwitch<T extends FieldValues>({
@@ -27,6 +28,7 @@ export function FormSwitch<T extends FieldValues>({
   className,
   labeTipsDom,
   description,
+  disabled = false,
 }: FormSwitchProps<T> & React.ComponentPropsWithoutRef<typeof Switch>) {
   const { form } = useCrmFormContext<T>();
   return (
@@ -43,19 +45,21 @@ export function FormSwitch<T extends FieldValues>({
               className,
             )}
           >
-            <div className="flex items-center gap-2">
-              {label && (
+            {label && (
+              <div className="flex items-center gap-2">
                 <FormLabel className={cn(verticalLabel ? '' : 'basis-3/12', 'leading-5')}>
                   {label}
                 </FormLabel>
-              )}
-              {labeTipsDom && <div>{labeTipsDom}</div>}
-            </div>
+                {labeTipsDom && <div>{labeTipsDom}</div>}
+              </div>
+            )}
             <FormControl className="shrink-0 basis-9/12">
               <Switch
                 className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
                 checked={value === '1'}
+                disabled={disabled}
                 onClick={() => {
+                  if (disabled) return;
                   const newValue = value === '1' ? '0' : '1';
                   field.onChange(newValue);
                 }}

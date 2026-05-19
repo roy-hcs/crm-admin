@@ -9,7 +9,6 @@ import {
 } from '../ui/form';
 import { useCrmFormContext } from '@/contexts/form';
 import { cn } from '@/lib/utils';
-import { Switch } from '@/components/ui/switch';
 import { RrhCheckBoxGroup } from '../common/RrhCheckBoxGroup';
 
 interface FormCheckBoxGroupProps<T extends FieldValues> {
@@ -19,6 +18,9 @@ interface FormCheckBoxGroupProps<T extends FieldValues> {
   labeTipsDom?: React.ReactNode;
   description?: string;
   options: { value: string; label: string; disabled?: boolean }[];
+  valueType?: 'string' | 'array';
+  checkGroupClassName?: string;
+  checkItemClassName?: string;
 }
 
 export function FormCheckBoxGroup<T extends FieldValues>({
@@ -28,8 +30,31 @@ export function FormCheckBoxGroup<T extends FieldValues>({
   labeTipsDom,
   description,
   options,
-}: FormCheckBoxGroupProps<T> & React.ComponentPropsWithoutRef<typeof Switch>) {
+  valueType = 'string',
+  checkGroupClassName,
+  checkItemClassName,
+}: FormCheckBoxGroupProps<T>) {
   const { form } = useCrmFormContext<T>();
+
+  const toCommaString = (value: unknown) => {
+    if (Array.isArray(value)) {
+      return value
+        .map(item => String(item).trim())
+        .filter(Boolean)
+        .join(',');
+    }
+    if (typeof value === 'string') {
+      return value;
+    }
+    return '';
+  };
+
+  const toArrayValue = (value: string) =>
+    value
+      .split(',')
+      .map(item => item.trim())
+      .filter(Boolean);
+
   return (
     <FormField
       control={form.control}
@@ -46,10 +71,16 @@ export function FormCheckBoxGroup<T extends FieldValues>({
             <FormControl>
               <RrhCheckBoxGroup
                 onValueChange={v => {
+                  if (valueType === 'array') {
+                    field.onChange(toArrayValue(v));
+                    return;
+                  }
                   field.onChange(v);
                 }}
-                value={field.value}
+                value={toCommaString(field.value)}
                 checkItems={options || []}
+                className={checkGroupClassName}
+                checkItemClassName={checkItemClassName}
               />
             </FormControl>
             {description && <FormDescription>{description}</FormDescription>}

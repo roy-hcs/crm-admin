@@ -1,27 +1,26 @@
-import { useChangePointStoreStatus } from '@/api/hooks/pointsMall';
 import { RrhCard } from '@/components/common/RrhCard';
 import { RrhStatusAlert } from '@/components/common/RrhStatusAlert';
 import { useTranslation } from 'react-i18next';
-import { PointsSubscription } from '@/api/hooks/pointsMall';
 import { RrhRenewDialog } from '@/components/common/RrhRenewDialog';
+import { NetBonusRewardSubscription, useChangeNetBonusRewardStatus } from '@/api/hooks/marketing';
 
-export function StoreInfo({
+export function RewardActivationStatus({
   status,
   subscription,
   success,
 }: {
   status: number;
-  subscription: PointsSubscription;
+  subscription?: NetBonusRewardSubscription;
   success: () => void;
 }) {
   const { t } = useTranslation();
-  const { mutateAsync: modifyStatus } = useChangePointStoreStatus();
+  const { mutateAsync: modifyStatus } = useChangeNetBonusRewardStatus();
   const hasSubscriptionPeriod = Boolean(subscription?.startTime && subscription?.endTime);
 
   return (
     <RrhCard>
       <div className="grid gap-3 md:gap-6">
-        <div>{t('pointsMallSettings.pointsMall')}</div>
+        <div>{t('netBonusRewardConfig.netBonusReward')}</div>
         <div className="flex items-center justify-between">
           <div className="text-foreground text-sm leading-5 font-medium">
             {t('pointsMallSettings.enableStatus')}
@@ -37,11 +36,6 @@ export function StoreInfo({
             confirmFunction={modifyStatus}
             onSuccess={success}
           />
-        </div>
-        <div className="bg-primary-foreground text-muted-foreground grid gap-1 rounded-md p-3 text-xs leading-4">
-          <div>{t('pointsMallSettings.pointsMalltips.1')}</div>
-          <div>{t('pointsMallSettings.pointsMalltips.2')}</div>
-          <div>{t('pointsMallSettings.pointsMalltips.3')}</div>
         </div>
         <div className="grid gap-4">
           <div className="grid grid-cols-1 gap-2">
