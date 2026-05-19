@@ -43,7 +43,7 @@ export function BaseConfigCard4({ editable }: { editable: boolean }) {
     name: 'fixedParams',
   });
 
-  const fetchFunction = useCallback(
+  const fetchUser = useCallback(
     async (params: CrmUserParams) => {
       const cacheKey = JSON.stringify(params);
       const now = Date.now();
@@ -202,7 +202,7 @@ export function BaseConfigCard4({ editable }: { editable: boolean }) {
                               )}
                             >
                               <RrhSearchSelect<CrmUserParams, CrmUserItem>
-                                fetchFunction={fetchFunction}
+                                fetchFunction={fetchUser}
                                 mapOption={mapOption}
                                 params={userSearchParams}
                                 buildSearchParams={buildSearchParams}
