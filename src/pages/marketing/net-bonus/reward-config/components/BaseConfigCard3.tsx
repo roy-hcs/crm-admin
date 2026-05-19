@@ -4,23 +4,15 @@ import { useCrmFormContext } from '@/contexts/form';
 import { useTranslation } from 'react-i18next';
 import { FormInputWithUnit } from '@/components/form/FormInputWithUnit';
 import { FieldPath, useFieldArray } from 'react-hook-form';
-
-type AgentRewardIntervalFormItem = {
-  startAmount: string;
-  endAmount: string;
-  rewardParam: string;
-  type: string;
-};
+import { GroupItem } from '../NetBonusRewardConfigPage';
 
 type BaseConfigCard3FormValues = {
-  agentRewardIntervals: AgentRewardIntervalFormItem[];
-  salesRewardIntervals: AgentRewardIntervalFormItem[];
-  businessRewardIntervals: AgentRewardIntervalFormItem[];
+  agentRewardIntervals: GroupItem[];
+  salesRewardIntervals: GroupItem[];
+  businessRewardIntervals: GroupItem[];
 };
 
-const createEmptyRewardInterval = (
-  type: 'agent' | 'sales' | 'business',
-): AgentRewardIntervalFormItem => ({
+const createEmptyRewardInterval = (type: 'agent' | 'sales' | 'business'): GroupItem => ({
   startAmount: '',
   endAmount: '',
   rewardParam: '',
@@ -51,7 +43,7 @@ export function BaseConfigCard3({ editable }: { editable: boolean }) {
     fieldName: 'agentRewardIntervals' | 'salesRewardIntervals' | 'businessRewardIntervals',
     itemType: 'agent' | 'sales' | 'business',
     fields: Array<{ id: string }>,
-    append: (value: AgentRewardIntervalFormItem) => void,
+    append: (value: GroupItem) => void,
     remove: (index: number) => void,
   ) => (
     <>

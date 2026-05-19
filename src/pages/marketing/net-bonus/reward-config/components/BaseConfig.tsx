@@ -9,6 +9,7 @@ import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { FormStepper } from '@/components/form/FormStepper';
 import { BaseConfigCard4 } from './BaseConfigCard4';
 import { BaseConfigCard3 } from './BaseConfigCard3';
+import { GroupItem } from '../NetBonusRewardConfigPage';
 
 type BaseConfigFormValues = {
   rewardTarget: string[];
@@ -25,24 +26,9 @@ type BaseConfigFormValues = {
     rewardParam: string;
     type: string;
   }>;
-  agentRewardIntervals: Array<{
-    startAmount: string;
-    endAmount: string;
-    rewardParam: string;
-    type: string;
-  }>;
-  salesRewardIntervals: Array<{
-    startAmount: string;
-    endAmount: string;
-    rewardParam: string;
-    type: string;
-  }>;
-  businessRewardIntervals: Array<{
-    startAmount: string;
-    endAmount: string;
-    rewardParam: string;
-    type: string;
-  }>;
+  agentRewardIntervals: GroupItem[];
+  salesRewardIntervals: GroupItem[];
+  businessRewardIntervals: GroupItem[];
 };
 
 export function BaseConfig({

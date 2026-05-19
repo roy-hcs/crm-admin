@@ -26,6 +26,13 @@ import { useDictType } from '@/api/hooks/system';
 import { RewardActivationStatus } from './components/RewardActivationStatus';
 import { Faq } from './components/Faq';
 
+export type GroupItem = {
+  startAmount: string;
+  endAmount: string;
+  rewardParam: string;
+  type: string;
+};
+
 type FormValues = {
   rewardTarget: string[];
   status: string;
@@ -41,24 +48,9 @@ type FormValues = {
     rewardParam: string;
     type: string;
   }>;
-  agentRewardIntervals: Array<{
-    startAmount: string;
-    endAmount: string;
-    rewardParam: string;
-    type: string;
-  }>;
-  salesRewardIntervals: Array<{
-    startAmount: string;
-    endAmount: string;
-    rewardParam: string;
-    type: string;
-  }>;
-  businessRewardIntervals: Array<{
-    startAmount: string;
-    endAmount: string;
-    rewardParam: string;
-    type: string;
-  }>;
+  agentRewardIntervals: GroupItem[];
+  salesRewardIntervals: GroupItem[];
+  businessRewardIntervals: GroupItem[];
 };
 
 const createEmptyFixedParam = () => ({
@@ -239,28 +231,14 @@ const buildEditIntervalsPayload = (values: FormValues): EditNetBonusIntervalsPar
       Number.isFinite(item.rewardParam),
   );
 };
+
 // 处理接口数据，构建表单初始值结构
 const buildFormValuesFromConfigData = (
   payload: NetBonusRewardConfigData,
   intervalGroups: {
-    agent: Array<{
-      startAmount: number | null;
-      endAmount: number | null;
-      rewardParam: number | null;
-      type: string | null;
-    }>;
-    sales: Array<{
-      startAmount: number | null;
-      endAmount: number | null;
-      rewardParam: number | null;
-      type: string | null;
-    }>;
-    business: Array<{
-      startAmount: number | null;
-      endAmount: number | null;
-      rewardParam: number | null;
-      type: string | null;
-    }>;
+    agent: GroupItem[];
+    sales: GroupItem[];
+    business: GroupItem[];
   },
 ): FormValues => {
   const setting = payload.netDepositBonus;
@@ -281,15 +259,7 @@ const buildFormValuesFromConfigData = (
     withdrawSelected.push('2');
   }
 
-  const mapIntervals = (
-    intervals: Array<{
-      startAmount: number | null;
-      endAmount: number | null;
-      rewardParam: number | null;
-      type: string | null;
-    }>,
-    type: 'agent' | 'sales' | 'business',
-  ) => {
+  const mapIntervals = (intervals: GroupItem[], type: 'agent' | 'sales' | 'business') => {
     const mapped = (intervals || []).map(item => ({
       startAmount: String(item.startAmount ?? ''),
       endAmount: String(item.endAmount ?? ''),
@@ -389,9 +359,24 @@ export function NetBonusRewardConfigPage() {
     const businessIntervals = businessIntervalsData?.data;
     if (!payload || !agentIntervals || !salesIntervals || !businessIntervals) return;
     const resetValues = buildFormValuesFromConfigData(payload, {
-      agent: agentIntervals,
-      sales: salesIntervals,
-      business: businessIntervals,
+      agent: agentIntervals.map(i => ({
+        startAmount: `${i.startAmount ?? ''}`,
+        endAmount: `${i.endAmount ?? ''}`,
+        rewardParam: `${i.rewardParam ?? ''}`,
+        type: i.type ?? '1',
+      })),
+      sales: salesIntervals.map(i => ({
+        startAmount: `${i.startAmount ?? ''}`,
+        endAmount: `${i.endAmount ?? ''}`,
+        rewardParam: `${i.rewardParam ?? ''}`,
+        type: i.type ?? '1',
+      })),
+      business: businessIntervals.map(i => ({
+        startAmount: `${i.startAmount ?? ''}`,
+        endAmount: `${i.endAmount ?? ''}`,
+        rewardParam: `${i.rewardParam ?? ''}`,
+        type: i.type ?? '1',
+      })),
     });
 
     // Keep editing values stable; apply fresh server values only when not editing.
