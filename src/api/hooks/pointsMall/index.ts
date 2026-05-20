@@ -2,6 +2,8 @@ import { apiFormPostCustom, apiGetCustom, apiPost } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AddGoodsClassificationParams,
+  ChooseCountriesRes,
+  CreateProductParams,
   CrmDealGoodsListParams,
   CrmDealGoodsListRes,
   EditPointsConfig,
@@ -14,9 +16,11 @@ import {
   PointsChangeListParams,
   PointsChangeListRes,
   PointsConfigRes,
+  ProductDetailRes,
   PointsHistoryListParams,
   PointsHistoryListRes,
   PointsIntroRes,
+  EditProductParams,
 } from './types';
 
 export * from './types';
@@ -252,5 +256,44 @@ export function useChangePointStoreStatus() {
   return useMutation({
     mutationFn: (params: { status: number }) =>
       apiPost(`/system/marketing/points/switch?status=${params.status}`, {}),
+  });
+}
+
+/**
+ * 创建商品
+ */
+export function useCreateProduct() {
+  return useMutation({
+    mutationFn: (params: CreateProductParams) => apiPost(`/system/points/goods/add`, params),
+  });
+}
+
+/**
+ * 编辑商品
+ */
+export function useEditProduct() {
+  return useMutation({
+    mutationFn: (params: EditProductParams) => apiPost(`/system/points/goods/edit`, params),
+  });
+}
+
+/**
+ * 获取商品详情
+ */
+export function useProductDetail(id: string, mode: string) {
+  return useQuery({
+    queryKey: ['productDetail', id],
+    queryFn: () => apiGetCustom<ProductDetailRes>(`/system/points/goods/detail/${id}`),
+    enabled: Boolean(id) && mode === 'edit',
+  });
+}
+
+/**
+ * 获取国家地区
+ */
+export function useChooseCountries() {
+  return useQuery({
+    queryKey: ['chooseCountries'],
+    queryFn: () => apiGetCustom<ChooseCountriesRes>(`/system/country/chooseCountries`),
   });
 }

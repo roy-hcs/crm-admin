@@ -154,7 +154,7 @@ export const ProfitSharingReviewPage = () => {
     },
     {
       id: 'verifyStatus',
-      header: t('common.status'),
+      header: t('table.status'),
       cell: ({ row }) => {
         const text = commissionReviewOptions.find(
           res => res.value === String(row?.original?.verifyStatus),

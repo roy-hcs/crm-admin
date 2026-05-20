@@ -110,7 +110,7 @@ export function RefundFailureLogsPage() {
     },
     {
       id: 'status',
-      header: t('common.status'),
+      header: t('table.status'),
       cell: ({ row }) => <RrhOrderStatusTag status={String(row.original.status)} />,
     },
     {

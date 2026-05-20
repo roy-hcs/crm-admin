@@ -53,7 +53,7 @@ const addUserSchema = (t: TFunction<'translation', undefined>) => {
     accountType: z.string().min(1, t('rules.required', { field: t('rules.accountType') })),
     roleId: z.string().min(1, t('rules.required', { field: t('rules.roleId') })),
     colorPreference: z.string().min(1, t('rules.required', { field: t('rules.colorPreference') })),
-    status: z.string().min(1, t('rules.required', { field: t('rules.status') })),
+    status: z.string().min(1, t('rules.required', { field: t('table.status') })),
   };
 };
 
@@ -313,7 +313,7 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
                     />
                   </div>
                   <FormLabel className="basis-3/12 whitespace-nowrap">
-                    {t('CRMAccountPage.status')}
+                    {t('table.status')}
                   </FormLabel>
                 </div>
               </FormItem>

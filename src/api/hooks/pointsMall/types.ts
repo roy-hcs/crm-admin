@@ -346,3 +346,146 @@ export type EditPointsConfig = {
     timeInterval: string;
   }>;
 };
+
+type NumberLike = string | number;
+
+export type CreateProductLanguageItem = {
+  language: string;
+  goodsName: string;
+  goodsContent: string;
+};
+
+export type CreateProductCombinationPaymentItem = {
+  exchangePoint: NumberLike;
+  exchangeAmount: NumberLike;
+};
+
+type ProductSharedFields<
+  TExchangePoints,
+  TVirtualGoodsType,
+  TAmount,
+  TCurrency,
+  TFirstClassificationId,
+  TSecondClassificationId,
+  TApplicableRoles,
+  TCombinationPaymentItem,
+  TSort,
+> = {
+  exchangePoints: TExchangePoints;
+  goodsType: number;
+  virtualGoodsType: TVirtualGoodsType;
+  amount: TAmount;
+  currency: TCurrency;
+  coverPicture: string;
+  goodsPicture: string;
+  countryId: string;
+  firstClassificationId: TFirstClassificationId;
+  secondClassificationId: TSecondClassificationId;
+  applicableRoles: TApplicableRoles;
+  paymentPlan: string;
+  combinationPaymentList: TCombinationPaymentItem[];
+  sort: TSort;
+};
+
+export type CreateProductParams = ProductSharedFields<
+  NumberLike,
+  NumberLike,
+  NumberLike,
+  string,
+  string,
+  string,
+  string,
+  CreateProductCombinationPaymentItem,
+  NumberLike
+> & {
+  status: number;
+  languageList: CreateProductLanguageItem[];
+};
+
+export type EditProductLanguageItem = CreateProductLanguageItem & {
+  id?: string;
+};
+
+export type EditProductCombinationPaymentItem = CreateProductCombinationPaymentItem & {
+  id?: string;
+  goodsId?: string;
+};
+
+export type EditProductParams = ProductSharedFields<
+  NumberLike,
+  NumberLike | null,
+  NumberLike | null,
+  string | null,
+  string | null,
+  string | null,
+  string | null,
+  EditProductCombinationPaymentItem,
+  NumberLike
+> & {
+  id: NumberLike;
+  status: number;
+  languageList: EditProductLanguageItem[];
+};
+
+export type CountryItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: number;
+  status: boolean;
+  sort: number;
+  countryName: string;
+  continent: string;
+  continentName: string;
+  language: string | null;
+  countryCode: string | null;
+};
+
+export type ChooseCountriesRes = {
+  code: number;
+  data: {
+    dataList: Array<{
+      continent: string;
+      country: CountryItem[];
+    }>;
+  };
+};
+
+export type ProductDetailCombinationPaymentItem = {
+  id: string;
+  goodsId: string;
+  exchangePoint: number;
+  exchangeAmount: number;
+};
+
+export type ProductDetailGoodsObject = BaseEntity &
+  ProductSharedFields<
+    string,
+    string | null,
+    string | null,
+    string | null,
+    string | null,
+    string | null,
+    string | null,
+    ProductDetailCombinationPaymentItem,
+    number
+  > & {
+    id: string;
+    goodsName: string;
+    goodsContent: string;
+    status: number;
+    viewCount: number;
+    exchangeCount: number;
+    delFlag: boolean;
+    languageList: string | null;
+  };
+
+export type ProductDetailRes = {
+  code: number;
+  data: {
+    goodsObject: ProductDetailGoodsObject;
+  };
+};

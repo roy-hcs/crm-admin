@@ -4,7 +4,6 @@
     "desc": "管理和查看CRM账户信息",
     "Index": "序号",
     "UserName": "姓名",
-    "Status": "状态",
     "Mobile": "手机号",
     "CRMAccountType": "CRM账户类型",
     "Level": "层级",
@@ -20,7 +19,6 @@
     "ConfirmEnableAccount": "确认要启用该账户吗？",
     "NameOrAccountId": "姓名/账户ID",
     "ID": "证件号码",
-    "status": "状态",
     "registerTime": "注册时间",
     "tagName": "标签名称",
     "Export": "导出",
@@ -133,7 +131,6 @@
     "subTime": "提交时间",
     "statisticTime": "统计时间",
     "verifyTime": "完结时间",
-    "status": "状态",
     "enable": "启用",
     "disable": "停用",
     "delete": "删除",
@@ -593,7 +590,6 @@
     "accountType": "账户类型",
     "roleId": "角色",
     "colorPreference": "颜色",
-    "status": "状态",
     "limitLength": "{{field}}个字符以内",
     "passwordComplexity": "请输入密码,{{min}}-{{max}}位英文(大小写)+数字",
     "emailAlreadyUsed": "当前邮箱已被使用",
@@ -770,6 +766,7 @@
     "title": "商品列表",
     "goodsName": "名称",
     "name": "商品名称",
+    "goodIntroduction": "商品介绍",
     "goodId": "商品ID",
     "exchangePoints": "兑换积分",
     "exchangeAmount": "兑换金额",
@@ -783,7 +780,36 @@
     "confirm": {
       "stop": "确认要停用该商品信息吗？",
       "open": "确认要启用该商品信息吗？"
-    }
+    },
+    "addGoods": "创建商品",
+    "editGoods": "编辑商品",
+    "enterExchangePoints": "请输入兑换积分(正整数)",
+    "productCategory": "商品分类(选填)",
+    "cosmetics": "化妆品",
+    "electronics": "电子产品",
+    "cosmeticsOptions": {
+      "1": "口红",
+      "2": "粉底"
+    },
+    "electronicsOptions": {
+      "1": "手机",
+      "2": "电脑"
+    },
+    "virtualGoodsCategory": "虚拟商品类别(选填)",
+    "virtualGoodsOptions": {
+      "1": "其他",
+      "2": "真实入金",
+      "3": "信用金"
+    },
+    "goodPreviewImage": "商品预览图",
+    "applicableRoles": "适用角色(选填)",
+    "applicableRolesDesc": "符合条件的用户才会启用积分商城功能",
+    "countryId": "可兑换国家/地区(选填)",
+    "countryIdDesc": "若您配置商品可兑换国家或地区，则仅该地区的客户可以兑换商品",
+    "countryIdPlaceholder": "选择国家或地区",
+    "countryIdSelected": "已选 {{fields}} 个国家或地区",
+    "combinationPayment": "组合支付(选填)",
+    "enterExchangeAmount": "请输入兑换金额(正整数)"
   },
   "profile": {
     "title": "个人资料",

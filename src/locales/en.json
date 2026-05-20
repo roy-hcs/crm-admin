@@ -10,7 +10,6 @@
     "Level": "Level",
     "Mobile": "Phone number",
     "RealAccount": "Real account",
-    "Status": "state",
     "TagsName": "Tag name",
     "Upper": "Superior",
     "UpperEmail": "Advanced mailbox",
@@ -19,7 +18,6 @@
     "ID": "ID number",
     "NameOrAccountId": "Name/Account ID",
     "registerTime": "Registration time",
-    "status": "state",
     "tagName": "Tag name",
     "AccountRange": "Account scope",
     "ColorPreferences": "Color preferences for rising and falling",
@@ -102,7 +100,6 @@
     "live": "reality",
     "subordinate": "Next level",
     "operationTime": "Operation time",
-    "status": "state",
     "tips": "The data on this page will have a slight delay. \nFor instant data, please wait 1-2 minutes before refreshing the page for query.",
     "statisticTime": "Statistics time",
     "account": {
@@ -1253,7 +1250,37 @@
     "updateBy": "operator",
     "viewCount": "Views",
     "virtualGoods": "virtual goods",
-    "confirmDeleteTips": "Are you sure you want to delete this record?"
+    "confirmDeleteTips": "Are you sure you want to delete this record?",
+    "addGoods": "Create product",
+    "applicableRoles": "Applicable roles (optional)",
+    "applicableRolesDesc": "Only users who meet the conditions will enable the points mall function",
+    "combinationPayment": "Combined payment (optional)",
+    "cosmetics": "cosmetic",
+    "cosmeticsOptions": {
+      "1": "lipstick",
+      "2": "Foundation"
+    },
+    "countryId": "Redeemable countries/regions (optional)",
+    "countryIdDesc": "If you configure a country or region where the product can be redeemed, only customers in that region can redeem the product.",
+    "countryIdPlaceholder": "Select country or region",
+    "countryIdSelected": "{{fields}} countries or regions selected",
+    "editGoods": "Edit product",
+    "electronics": "electronic products",
+    "electronicsOptions": {
+      "1": "cell phone",
+      "2": "computer"
+    },
+    "enterExchangeAmount": "Please enter the exchange amount (positive integer)",
+    "enterExchangePoints": "Please enter redemption points (positive integer)",
+    "goodIntroduction": "Product introduction",
+    "goodPreviewImage": "Product preview",
+    "productCategory": "Product category (optional)",
+    "virtualGoodsCategory": "Virtual product category (optional)",
+    "virtualGoodsOptions": {
+      "1": "other",
+      "2": "Real deposit",
+      "3": "credit"
+    }
   },
   "profile": {
     "gooleKey": "Google token",
@@ -1632,7 +1659,6 @@
     "pwd": "password",
     "required": "{{field}} cannot be empty",
     "roleId": "Role",
-    "status": "state",
     "passwordComplexity": "Please enter your password, {{min}}-{{max}} English (uppercase and lowercase) digits",
     "emailAlreadyUsed": "The current email address is already in use",
     "phoneAlreadyUsed": "Current number is already in use",

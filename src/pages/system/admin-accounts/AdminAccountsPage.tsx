@@ -115,7 +115,7 @@ export const AdminAccountsPage = () => {
     },
     {
       id: 'status',
-      header: t('common.status'),
+      header: t('table.status'),
       cell: ({ row }) => {
         return (
           <Switch

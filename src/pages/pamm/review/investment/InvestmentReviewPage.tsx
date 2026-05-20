@@ -86,7 +86,7 @@ export const InvestmentReviewPage = () => {
     },
     {
       id: 'auditStatus',
-      header: t('common.status'),
+      header: t('table.status'),
       cell: ({ row }) => {
         const text = InvestmentReviewStatusOptions.find(
           res => res.value === String(row?.original?.auditStatus),

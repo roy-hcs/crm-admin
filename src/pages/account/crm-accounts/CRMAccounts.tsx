@@ -153,7 +153,7 @@ export const CRMAccounts = () => {
       {
         id: 'status',
         accessorKey: 'status',
-        header: t('CRMAccountPage.Status'),
+        header: t('table.status'),
         cell: ({ row }) => <StatusCell row={row} />,
       },
       {
