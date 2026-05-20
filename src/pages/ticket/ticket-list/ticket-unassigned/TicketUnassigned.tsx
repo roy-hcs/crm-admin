@@ -206,7 +206,7 @@ export const TicketUnassigned = () => {
     },
     {
       id: 'status',
-      header: t('common.status'),
+      header: t('table.status'),
       cell: ({ row }) => {
         if ([0, 1, 2].includes(row.original.status)) {
           return <div>{t(`ticketList.statusOptions.${row.original.status}`)}</div>;

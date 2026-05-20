@@ -126,7 +126,7 @@ export const RewardRecordsForm = ({
       <FormSelect
         verticalLabel
         name="status"
-        label={t('common.status')}
+        label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
         showRowValue={false}
         options={VerifyStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}

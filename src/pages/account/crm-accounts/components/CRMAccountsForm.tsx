@@ -148,7 +148,7 @@ export const CRMAccountsForm = ({
       <FormSelect
         verticalLabel
         name="status"
-        label={t('CRMAccountPage.Status')}
+        label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
         options={statusOptions.map(i => ({ label: t(i.label), value: i.value }))}
       />

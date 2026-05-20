@@ -85,84 +85,86 @@ export const RedemptionRecordsForm = ({
   };
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="fuzzyName"
-            label={t('table.nameOrId')}
-            placeholder={t('common.pleaseInput', {
-              field: t('table.nameOrId'),
-            })}
-          />
-          <FormInput
-            verticalLabel
-            name="fuzzyEmail"
-            label={t('table.email')}
-            placeholder={t('common.pleaseInput', {
-              field: t('table.email'),
-            })}
-          />
-          <FormInput
-            verticalLabel
-            name="fuzzyGoods"
-            label={t('redemptionRecords.fuzzyGoods')}
-            placeholder={t('common.pleaseInput', {
-              field: t('redemptionRecords.fuzzyGoods'),
-            })}
-          />
-          <FormSelect
-            verticalLabel
-            name="verifyStatus"
-            label={t('common.status')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={pointsHistoryVerifyStatus.map(i => ({ label: t(i.label), value: i.value }))}
-          />
-          <FormSelect
-            verticalLabel
-            name="payType"
-            label={t('redemptionRecords.payType')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={pointsHistoryPayType.map(i => ({ label: t(i.label), value: i.value }))}
-          />
-          <FormField
-            name="exchangeTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('redemptionRecords.exchangeTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="exchangeTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="updateTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('table.updateTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="updateTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" loading={loading}>
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        verticalLabel
+        name="fuzzyName"
+        label={t('table.nameOrId')}
+        placeholder={t('common.pleaseInput', {
+          field: t('table.nameOrId'),
+        })}
+      />
+      <FormInput
+        verticalLabel
+        name="fuzzyEmail"
+        label={t('table.email')}
+        placeholder={t('common.pleaseInput', {
+          field: t('table.email'),
+        })}
+      />
+      <FormInput
+        verticalLabel
+        name="fuzzyGoods"
+        label={t('redemptionRecords.fuzzyGoods')}
+        placeholder={t('common.pleaseInput', {
+          field: t('redemptionRecords.fuzzyGoods'),
+        })}
+      />
+      <FormSelect
+        verticalLabel
+        name="verifyStatus"
+        label={t('table.status')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={pointsHistoryVerifyStatus.map(i => ({ label: t(i.label), value: i.value }))}
+      />
+      <FormSelect
+        verticalLabel
+        name="payType"
+        label={t('redemptionRecords.payType')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={pointsHistoryPayType.map(i => ({ label: t(i.label), value: i.value }))}
+      />
+      <FormField
+        name="exchangeTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('redemptionRecords.exchangeTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="exchangeTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="updateTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('table.updateTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="updateTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant={'outline'} onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" loading={loading}>
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

@@ -159,7 +159,7 @@ export function AccountOpeningPage() {
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>{t('common.status')}</div>
+            <div>{t('table.status')}</div>
             <RrhSorter
               orderByColumn={orderByColumn}
               isAsc={isAsc}
@@ -170,7 +170,7 @@ export function AccountOpeningPage() {
           </div>
         );
       },
-      label: t('common.status'),
+      label: t('table.status'),
       accessorKey: 'status',
       cell: ({ row }) => (
         <RrhOrderStatusTag status={String(row.original.status)} options={VerifyStatusOptions} />

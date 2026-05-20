@@ -78,7 +78,7 @@ export const AgreementSettingsPage = () => {
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>{t('common.status')}</div>
+            <div>{t('table.status')}</div>
             <RrhSorter
               isAsc={isAsc}
               setIsAsc={setIsAsc}
@@ -89,7 +89,7 @@ export const AgreementSettingsPage = () => {
           </div>
         );
       },
-      label: t('common.status'),
+      label: t('table.status'),
       cell: ({ row }) => {
         return <Switch checked={row?.original?.status === 1} />;
       },

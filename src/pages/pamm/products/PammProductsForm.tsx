@@ -61,87 +61,89 @@ export const PammProductsForm = ({
     });
   };
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      onKeyDown={e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          if (e.target instanceof HTMLTextAreaElement) return;
 
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="projectName"
-            label={t('table.projectName')}
-            placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
-          />
-          <FormSelect
-            verticalLabel
-            name="model"
-            label={t('productReview.model')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={[
-              {
-                label: t('table.all'),
-                value: 'all',
-              },
-              {
-                label: t('PammProduct.typeOne'),
-                value: '1',
-              },
-              {
-                label: t('PammProduct.typeTwo'),
-                value: '2',
-              },
-            ]}
-          />
-          <FormSelect
-            verticalLabel
-            name="serverType"
-            label={t('table.server')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={serverTypes.map(item => {
-              return { label: item.dictLabel, value: item.dictValue };
-            })}
-          />
-          <FormSelect
-            verticalLabel
-            name="status"
-            label={t('common.status')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={[
-              {
-                label: t('table.all'),
-                value: 'all',
-              },
-              {
-                label: t('common.enable'),
-                value: '1',
-              },
-              {
-                label: t('common.disable'),
-                value: '0',
-              },
-            ]}
-          />
+          e.preventDefault();
+          form.handleSubmit(onSubmit)();
+        }
+      }}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        verticalLabel
+        name="projectName"
+        label={t('table.projectName')}
+        placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
+      />
+      <FormSelect
+        verticalLabel
+        name="model"
+        label={t('productReview.model')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={[
+          {
+            label: t('table.all'),
+            value: 'all',
+          },
+          {
+            label: t('PammProduct.typeOne'),
+            value: '1',
+          },
+          {
+            label: t('PammProduct.typeTwo'),
+            value: '2',
+          },
+        ]}
+      />
+      <FormSelect
+        verticalLabel
+        name="serverType"
+        label={t('table.server')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={serverTypes.map(item => {
+          return { label: item.dictLabel, value: item.dictValue };
+        })}
+      />
+      <FormSelect
+        verticalLabel
+        name="status"
+        label={t('table.status')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={[
+          {
+            label: t('table.all'),
+            value: 'all',
+          },
+          {
+            label: t('common.enable'),
+            value: '1',
+          },
+          {
+            label: t('common.disable'),
+            value: '0',
+          },
+        ]}
+      />
 
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" loading={loading}>
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" loading={loading}>
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };
