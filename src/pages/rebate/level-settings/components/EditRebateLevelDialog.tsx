@@ -19,7 +19,7 @@ export const EditRebateLevelDialog = ({
     <RrhDialog
       open={open}
       onOpenChange={setOpen}
-      title={t('common.modify', { field: t('RebateLevelSettings.rebateLevel') })}
+      title={t('common.modify', { field: t('table.rebateLevel') })}
       footerShow={false}
     >
       <RebateLevelForm

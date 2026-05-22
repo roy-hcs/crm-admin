@@ -305,7 +305,8 @@
     "modifyFailed": "修改失败",
     "submit": "提交",
     "back": "返回",
-    "failed": "失败"
+    "failed": "失败",
+    "faq": "FAQ"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -360,7 +361,6 @@
     "directBroker": "直客",
     "title": "IB客户追踪",
     "Index": "序号",
-    "userName": "代理姓名",
     "levelName": "返佣等级",
     "statisticMonthStr": "月份",
     "allFirstDeposit": "首次入金数(全部)",
@@ -383,7 +383,6 @@
   "overview": {
     "title": "IB数据总览",
     "Index": "序号",
-    "userName": "代理姓名",
     "email": "邮箱",
     "rebateLevelId": "返佣等级",
     "userNumber": "CRM账户数",
@@ -1397,7 +1396,10 @@
     "riskLow": "低风险",
     "riskNone": "无风险",
     "setRiskDialogTitle": "设置IP和设备是否可信",
-    "accountBelongToUpper": "账号归属的上级为"
+    "accountBelongToUpper": "账号归属的上级为",
+    "userName": "代理姓名",
+    "rebateLevel": "返佣层级",
+    "commissionGroupName": "佣金组名称"
   },
   "settings": {
     "title": "审核设置",
@@ -1595,7 +1597,6 @@
   "RebateLevelSettings": {
     "title": "返佣层级设置",
     "levelPlaceholder": "请输入层级，当前可输入最高层级为14",
-    "rebateLevel": "返佣层级",
     "levelSkippingSettings": "平级越级设置",
     "settingOne": "不允许平级或越级",
     "settingOneDesc": "下级的层级数字只能大于上级的层级数字",
@@ -1881,7 +1882,6 @@
     "netBonusReward": "净入金奖励",
     "faqTitle": "F.A.Q常见问题",
     "faq": {
-      "title": "FAQ",
       "basic": "功能基础理解",
       "q1": "净入金奖励功能的核心目标是什么？",
       "q2": "净入金奖励与常规佣金的区别是什么？",
@@ -2010,5 +2010,82 @@
     },
     "explanation": " 说明({{field}})",
     "explanationPlaceholder": "请填写说明文案，让用户了解积分商城的规则"
+  },
+  "commissionRebateSettings": {
+    "tabs": {
+      "1": "佣金组设置",
+      "2": "自定义佣金参数"
+    },
+    "subIbSettings": "Sub-IB参数设置",
+    "subIbParamsDesc": "填写下级代理的参数，当前参数填写方式：级差方式",
+    "totalRebate": "返佣总值",
+    "totalRebateDesc": "当前代理链路总返佣额度合计，返佣金额相加不得超过该数额。",
+    "rebateValue": "返佣参数",
+    "chiefSteward": "总管",
+    "superAgent": "特级代理",
+    "firstAgent": "1级代理",
+    "leverTotalRebate": "层级返佣合计",
+    "faq": {
+      "title1": "页面中展示的是代理及其返佣层级用户的客户关系数据（不包含直客）。",
+      "title2": "若代理链中存在断层（例如某人非代理），则系统仅展示至断点为止，断点之后的代理将被视为新的代理线重新计算。",
+      "q1": "返佣总值是什么？",
+      "q2": "如何设置代理返佣参数？",
+      "q3": "自定义方案有哪些填写返佣参数方式？",
+      "q4": "Basic方式如何填写及计算佣金？",
+      "q5": "级差方案如何填写及计算佣金？",
+      "q6": "中途调整返佣参数会影响之前的交易吗？",
+      "a1": "返佣总值是指一条完整代理链中，所有代理累计可获得的返佣金额上限。每条代理线的返佣总值是固定的，不可超过。",
+      "a2": "请点击代理编辑按钮打开客户关系图谱：\n1.首先设定该代理线的返佣总值\n2.然后按层级填写每个代理的返佣参数，根据不同的佣金参数方式填写不同的佣金参数。",
+      "a3": "返佣自定义参数设置有两种方式：1.Basic方式 2.级差方式，你可以自行选择用哪种方式来计算具体返佣参数。",
+      "a4": "Basic方式填写用户的具体返佣参数值，返佣时根据填写的返佣参数给对应的代理用户进行返佣（填多少返多少），最底层代理无需填写返佣参数，而是通过返佣总值-上级代理的返佣总和。\n备注：返佣合计不得超过返佣总值。",
+      "a5": "级差方式填写每级代理的返佣参数，返佣时，命中的代理返佣金返填写的参数，上级代理返级差（上级代理参数-下级代理参数），填写时，最顶级代理A1（客户关系首层）返佣参数即为返佣总值。下级代理B1的返佣参数需小于等于上级代理的返佣参数值，依次类推。每个代理的返佣参数值不得大于上级代理的返佣参数值；\n=备注：(1)参数最多允许两位小数（2）需为正数",
+      "a6": "不会。返佣参数调整只会影响设置生效之后的交易行为，历史交易不受影响。"
+    },
+    "addCommissionGroup": "新增返佣组",
+    "editCommissionGroup": "修改返佣组",
+    "commissionGroupNameTips": "平级：该层级等级=下级层级的等级。\n越级：该层级等级＞下级层级的等级。\n不返佣：出现平级或越级时，该层级不获得返佣。\n固定返佣：出现平级或越级时，该层级获得固定返佣。\n获取下级佣金%：出现平级或越级时，该层级获得的佣金为直接下级获得的佣金的百分比，下级所获佣金不受影响。",
+    "equalTypeOptions": {
+      "0": "不返佣",
+      "1": "固定返佣",
+      "2": "获取下级佣金%"
+    },
+    "peerLever": "平级",
+    "crossLevel": "越级",
+    "limit": "限定",
+    "passLimit": "代",
+    "pointsPerOrder": "点/订单",
+    "commissionPreferenceSettings": "佣金方案偏好设置",
+    "commissionParameterScheme": "佣金参数方案",
+    "commissionParameterSchemeDesc": "系统将按照选择的佣金参数方案进行返佣",
+    "commissionTypeOptions": {
+      "1": "佣金组方案",
+      "2": "自定义方案 "
+    },
+    "parameterFillMethod": "参数填写方式",
+    "parameterFillMethodTips": "修改参数填写方式将会清空所有用户已填写的返佣参数",
+    "paramFillTypeOptions": {
+      "1": "Basic方式",
+      "2": "级差方式"
+    },
+    "paramsNotMethod": "参数未填返佣方案",
+    "notFillTypeOptions": {
+      "1": "不返佣",
+      "2": "视为参数=0"
+    },
+    "agentEdit": "代理编辑佣金",
+    "agentEditDesc": "代理在用户端可编辑直属下级佣金参数",
+    "editLevel": "返佣层级(选填)",
+    "editLevelDesc": "选择开放编辑权限的返佣层级",
+    "viewSubordinate": "查看下级返佣参数",
+    "viewSubordinateDesc": "代理可在用户端查看下级代理的参数",
+    "viewGenerations": "可查看代数(选填)",
+    "viewGenerationsPlaceholder": "0-99(不配置视为不限)",
+    "confirmDeleteRebate": "确定删除该 返佣组？",
+    "selectAtLeastOneRebateLevel": "至少选择一个返佣层级",
+    "editCommissionParams": "编辑佣金参数",
+    "emptyAncestorError": "上级未输入返佣参数时，下级不能输入",
+    "exceedAncestorError": "下级返佣参数不能大于上级返佣参数",
+    "modifyTotalRebateWarning": "修改返佣总值将会清空已填写的下级代理参数，确定要修改吗？",
+    "maxTwoDecimalPlaces": "最多保留两位小数"
   }
 }

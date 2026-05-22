@@ -1,8 +1,7 @@
-import { RrhSwitchGroup } from '@/components/common/RrhSwitchGroup';
 import { FormCheckBoxGroup } from '@/components/form/FormCheckBoxGroup';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
-import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { useTranslation } from 'react-i18next';
 import { UploadFile } from './UploadFile';
 import { FormSwitch } from '@/components/form/FormSwitch';
@@ -15,6 +14,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { useCrmFormContext } from '@/contexts/form';
 import { useFieldArray } from 'react-hook-form';
 import { FormValues } from '../form-types';
+import { FormSwitchGroup } from '@/components/form/FormSwitchGroup';
 
 export function StepOne({
   payTypeValue,
@@ -144,68 +144,38 @@ export function StepOne({
           />
         </div>
       </FormItem>
-      <FormField
+      <FormSwitchGroup
         name="goodsType"
-        render={({ field }) => {
-          return (
-            <FormItem>
-              <FormLabel>{t('products.goodsType')}</FormLabel>
-              <FormControl>
-                <RrhSwitchGroup
-                  value={field.value ?? '0'}
-                  onValueChange={value => {
-                    field.onChange(value);
-                  }}
-                  labelClassName="font-medium"
-                  switchItems={[
-                    {
-                      value: '1',
-                      label: t('products.virtualGoods'),
-                    },
-                    {
-                      value: '2',
-                      label: t('products.physicalGoods'),
-                    },
-                  ]}
-                />
-              </FormControl>
-            </FormItem>
-          );
-        }}
+        label={t('products.goodsType')}
+        switchItems={[
+          {
+            value: '1',
+            label: t('products.virtualGoods'),
+          },
+          {
+            value: '2',
+            label: t('products.physicalGoods'),
+          },
+        ]}
       />
       {goodsTypeValue === '1' && (
-        <FormField
+        <FormSwitchGroup
           name="virtualGoodsType"
-          render={({ field }) => {
-            return (
-              <FormItem>
-                <FormLabel>{t('products.goodsType')}</FormLabel>
-                <FormControl>
-                  <RrhSwitchGroup
-                    value={field.value ?? '0'}
-                    onValueChange={value => {
-                      field.onChange(value);
-                    }}
-                    labelClassName="font-medium"
-                    switchItems={[
-                      {
-                        value: '1',
-                        label: t('products.virtualGoodsOptions.1'),
-                      },
-                      {
-                        value: '2',
-                        label: t('products.virtualGoodsOptions.2'),
-                      },
-                      {
-                        value: '3',
-                        label: t('products.virtualGoodsOptions.3'),
-                      },
-                    ]}
-                  />
-                </FormControl>
-              </FormItem>
-            );
-          }}
+          label={t('products.goodsType')}
+          switchItems={[
+            {
+              value: '1',
+              label: t('products.virtualGoodsOptions.1'),
+            },
+            {
+              value: '2',
+              label: t('products.virtualGoodsOptions.2'),
+            },
+            {
+              value: '3',
+              label: t('products.virtualGoodsOptions.3'),
+            },
+          ]}
         />
       )}
       <FormField

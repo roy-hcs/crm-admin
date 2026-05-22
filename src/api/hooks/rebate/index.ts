@@ -1,5 +1,5 @@
 // Rebate module API hooks
-import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom, apiPost } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AddRebateBasePointParams,
@@ -39,6 +39,18 @@ import {
   RebateDepositSettingsHistoryListRes,
   RebateSettingsTemplateListRes,
   AddRebateSettingsTemplateParams,
+  CustomerCommissionParams,
+  CustomerCommissionRes,
+  TwoCommissionGroupParams,
+  TwoCommissionGroupRes,
+  RebateTwoCommissionGroupAddParams,
+  TwoCommissionGroupDetailRes,
+  SetCommissionTypeParams,
+  GetCommissionTypeRes,
+  LevelListRes,
+  CustomerCommissionDetailRes,
+  TraderUserChildrenRes,
+  EditCustomerCommissionDetailParams,
 } from './types';
 import { BasicParams } from '../review';
 import { RebateLevelItem } from '../system';
@@ -594,9 +606,177 @@ export function useEditRebateSettingsTemplate(type: number) {
       apiFormPost(`/system/crmRebateTemplate/edit/${type}`, params),
   });
 }
+
 export function useDeleteRebateSettingsTemplate(type: number) {
   return useMutation({
     mutationFn: (params: { ids: string }) =>
       apiFormPost(`/system/crmRebateTemplate/remove/${type}`, params),
+  });
+}
+
+/**
+ * 获取自定义佣金参数列表
+ */
+export function useCustomerCommissionList(
+  params: CustomerCommissionParams,
+  { enabled }: { enabled?: boolean } = { enabled: true },
+) {
+  return useQuery({
+    queryKey: ['getCustomerCommissionList', params],
+    queryFn: () =>
+      apiFormPostCustom<CustomerCommissionRes>('/system/crmRebateCustomerCommission/list', params),
+    enabled,
+  });
+}
+
+/**
+ * 获取自定义佣金参数详情
+ */
+export function useCustomerCommissionDetail(
+  params: {
+    traderId: string;
+    userId: string;
+  },
+  { enabled }: { enabled?: boolean } = { enabled: true },
+) {
+  return useQuery({
+    queryKey: ['getCustomerCommissionDetail', params],
+    queryFn: () =>
+      apiGetCustom<CustomerCommissionDetailRes>(
+        `/system/crmRebateCustomerCommission/paramDetail?traderId=${params.traderId}&userId=${params.userId}`,
+      ),
+    enabled,
+  });
+}
+/**
+ * 获取交易员的下级用户列表（用于设置自定义佣金参数）
+ */
+export function useTraderUserChildren() {
+  return useMutation({
+    mutationFn: (params: { userId: string; traderId: string }) =>
+      apiFormPostCustom<TraderUserChildrenRes>(
+        `/system/crmRebateCustomerCommission/traderUserChildren`,
+        params,
+      ),
+  });
+}
+
+/**
+ * 编辑自定义佣金参数详情
+ */
+export function useEditCustomerCommissionDetail() {
+  return useMutation({
+    mutationFn: (params: EditCustomerCommissionDetailParams) =>
+      apiPost(`/system/crmRebateCustomerCommission/save?userId=${params.userId}`, params.arr),
+  });
+}
+
+/**
+ * 获取佣金组设置列表
+ */
+export function useTwoCommissionGroupList(
+  params: TwoCommissionGroupParams,
+  { enabled }: { enabled?: boolean } = { enabled: true },
+) {
+  return useQuery({
+    queryKey: ['getTwoCommissionGroupList', params],
+    queryFn: () =>
+      apiFormPostCustom<TwoCommissionGroupRes>(
+        `/system/crmRebateTwoCommissionGroup/list/1/${params.rebateTraderId}`,
+        params,
+      ),
+    enabled,
+  });
+}
+
+/**
+ * 获取 system/crmRebateTwoCommissionGroup/getLevelList
+ */
+export function useLevelList(
+  params: {
+    rebateTraderId: string;
+    type: string;
+  },
+  { enabled }: { enabled?: boolean } = { enabled: true },
+) {
+  return useQuery({
+    queryKey: ['getLevelList', params],
+    queryFn: () =>
+      apiFormPostCustom<LevelListRes>(`/system/crmRebateTwoCommissionGroup/getLevelList`, params),
+    enabled,
+  });
+}
+
+/**
+ * 佣金组设置-删除佣金组
+ */
+export function useRemoveRebateGroup() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost('/system/crmRebateTwoCommissionGroup/remove', params),
+  });
+}
+
+/**
+ * 获取佣金组详情
+ */
+export function useTwoCommissionGroupDetail(
+  params: {
+    id: string;
+  },
+  { enabled }: { enabled?: boolean } = { enabled: true },
+) {
+  return useQuery({
+    queryKey: ['getTwoCommissionGroupDetail', params],
+    queryFn: () =>
+      apiFormPostCustom<TwoCommissionGroupDetailRes>(
+        `/system/crmRebateTwoCommissionGroup/getOneGroupData`,
+        params,
+      ),
+    enabled,
+  });
+}
+
+/**
+ * 佣金组设置新增
+ */
+export function useRebateTwoCommissionGroupAdd() {
+  return useMutation({
+    mutationFn: (params: RebateTwoCommissionGroupAddParams) =>
+      apiPost(`/system/crmRebateTwoCommissionGroup/addJson`, params),
+  });
+}
+
+/**
+ * 佣金组设置编辑
+ */
+export function useRebateTwoCommissionGroupEdit() {
+  return useMutation({
+    mutationFn: (params: RebateTwoCommissionGroupAddParams & { id: string }) =>
+      apiPost(`/system/crmRebateTwoCommissionGroup/editJson`, params),
+  });
+}
+
+/**
+ * 获取佣金方案偏好设置
+ */
+export function useGetCommissionSetting({ enabled }: { enabled?: boolean } = { enabled: true }) {
+  return useQuery({
+    queryKey: ['getCommissionSetting'],
+    queryFn: () =>
+      apiGetCustom<GetCommissionTypeRes>(
+        `/system/crmRebateCustomerCommission/getCommissionSetting`,
+      ),
+    enabled,
+  });
+}
+
+/**
+ * 编辑佣金方案偏好设置
+ */
+export function useSetCommissionType() {
+  return useMutation({
+    mutationFn: (params: SetCommissionTypeParams) =>
+      apiPost(`/system/crmRebateCustomerCommission/setCommissionType`, params),
   });
 }

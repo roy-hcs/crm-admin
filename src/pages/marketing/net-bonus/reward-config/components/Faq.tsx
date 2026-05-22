@@ -125,7 +125,7 @@ export function Faq() {
     <RrhCard>
       <div className="grid gap-3 md:gap-6">
         <div className="flex items-center justify-between">
-          <div>{t('netBonusRewardConfig.faq.title')}</div>
+          <div>{t('common.faq')}</div>
           <div>
             <RrhDialog
               title={t('netBonusRewardConfig.faqTitle')}
