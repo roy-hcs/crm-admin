@@ -11,7 +11,6 @@ import { FormHiddenInput } from '@/components/form/FormHiddenInput';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
 
-
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -95,37 +94,41 @@ export const RebateSettingsTemplateForm = ({
   };
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 py-4">
-          <FormHiddenInput name="rebateType" value={type} control={form.control} />
-          <FormInput
-            name="templateName"
-            label={t('RebateTemplate.templateName')}
-            placeholder={t('rules.limitLength', { field: 16 })}
-            onChange={e => setTemplateName(e.target.value)}
-            verticalLabel
-          />
-          <FormSelect
-            verticalLabel
-            name="rebateLevel"
-            label={t('RebateLevelSettings.rebateLevel')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={(rebateLevelList || [])?.map(item => ({
-              label: item.levelName,
-              value: item.id.toString(),
-            }))}
-          />
-          <div className="border-border bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 rounded-b-lg border-t p-6">
-            <RrhButton type="button" onClick={onCancel}>
-              {t('common.Cancel')}
-            </RrhButton>
-            <RrhButton type="submit">{t('common.Confirm')}</RrhButton>
-          </div>
-          {isPending && (
-            <div className="bg-background/60 absolute inset-0">
-              <RrhCircleLoading />
-            </div>
-          )}
-        </RrhForm>
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="flex flex-col gap-4 py-4"
+    >
+      <FormHiddenInput name="rebateType" value={type} control={form.control} />
+      <FormInput
+        name="templateName"
+        label={t('RebateTemplate.templateName')}
+        placeholder={t('rules.limitLength', { field: 16 })}
+        onChange={e => setTemplateName(e.target.value)}
+        verticalLabel
+      />
+      <FormSelect
+        verticalLabel
+        name="rebateLevel"
+        label={t('table.rebateLevel')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={(rebateLevelList || [])?.map(item => ({
+          label: item.levelName,
+          value: item.id.toString(),
+        }))}
+      />
+      <div className="border-border bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 rounded-b-lg border-t p-6">
+        <RrhButton type="button" onClick={onCancel}>
+          {t('common.Cancel')}
+        </RrhButton>
+        <RrhButton type="submit">{t('common.Confirm')}</RrhButton>
+      </div>
+      {isPending && (
+        <div className="bg-background/60 absolute inset-0">
+          <RrhCircleLoading />
+        </div>
+      )}
+    </RrhForm>
   );
 };

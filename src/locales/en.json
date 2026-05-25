@@ -286,7 +286,8 @@
     "piece": "indivual",
     "points": "point",
     "back": "return",
-    "failed": "fail"
+    "failed": "fail",
+    "faq": "FAQ"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -373,7 +374,6 @@
     "time": "time",
     "title": "IB Customer Tracking",
     "tradeClient": "Number of transaction users",
-    "userName": "Agent name",
     "withdrawTotalStr": "Accumulated amount of funds",
     "directBroker": "direct customer"
   },
@@ -394,7 +394,6 @@
     "serverId": "server",
     "swaps": "Inventory fee",
     "title": "IB data overview",
-    "userName": "Agent name",
     "userNumber": "Number of CRM accounts",
     "volume": "Trading volume",
     "withdrawAmount": "Withdrawal (statistics)",
@@ -807,7 +806,10 @@
     "signature": "sign",
     "trust": "trust",
     "untrust": "risk",
-    "accountBelongToUpper": "The superior to whom the account belongs is"
+    "accountBelongToUpper": "The superior to whom the account belongs is",
+    "commissionGroupName": "Commission group name",
+    "rebateLevel": "Rebate levels",
+    "userName": "Agent name"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1417,7 +1419,6 @@
     "confirmWarning": "This modification will clear the existing user rebate levels and commission settings, please operate with caution",
     "levelPlaceholder": "Please enter the level. Currently, the highest level that can be entered is 14.",
     "levelSkippingSettings": "Level skipping settings",
-    "rebateLevel": "Rebate level",
     "settingOne": "Leveling or skipping is not allowed",
     "settingOneDesc": "The subordinate level number can only be greater than the superior level number",
     "settingThree": "Allow level skipping",
@@ -1963,8 +1964,7 @@
       "q2": "What is the difference between net deposit bonus and regular commission?",
       "q3": "On which day is the reward calculation performed? \nAutomatic?",
       "q4": "What will happen to users whose net deposit ≤ 0?",
-      "q5": "What types of reward objects are supported?",
-      "title": "FAQ"
+      "q5": "What types of reward objects are supported?"
     },
     "faqTitle": "FAQ",
     "fundDepositStatistics": "Deposit statistics",
@@ -2010,5 +2010,82 @@
     "sysDeposit": "System deposit",
     "sysWithdraw": "System withdrawal",
     "title": "Net deposit bonus configuration"
+  },
+  "commissionRebateSettings": {
+    "addCommissionGroup": "Added rebate group",
+    "agentEdit": "Agency Editorial Commission",
+    "agentEditDesc": "Agents can edit the commission parameters of direct subordinates on the user terminal.",
+    "chiefSteward": "steward",
+    "commissionGroupNameTips": "Level: The level of this level = the level of the lower level.\n\nLeap level: the level of this level > the level of the lower level.\n\nNo commission rebate: When a level is leveled or skipped, the level will not receive commission rebate.\n\nFixed commission: When there is a leveling or skipping level, the level will receive a fixed commission.\n\nObtain commission % from subordinates: When there is a level or skip level, the commission obtained by this level is the percentage of the commission obtained by the direct subordinate, and the commission obtained by the subordinate will not be affected.",
+    "commissionParameterScheme": "Commission parameter plan",
+    "commissionParameterSchemeDesc": "The system will rebate the commission according to the selected commission parameter plan.",
+    "commissionPreferenceSettings": "Commission plan preferences",
+    "commissionTypeOptions": {
+      "1": "Commission group plan",
+      "2": "Custom plan"
+    },
+    "confirmDeleteRebate": "Are you sure you want to delete this rebate group?",
+    "crossLevel": "leapfrog",
+    "editCommissionGroup": "Modify rebate group",
+    "editCommissionParams": "Edit commission parameters",
+    "editLevel": "Rebate level (optional)",
+    "editLevelDesc": "Select the rebate level with editing permissions",
+    "emptyAncestorError": "When the superior does not enter the rebate parameters, the subordinate cannot enter them.",
+    "equalTypeOptions": {
+      "0": "No commission rebate",
+      "1": "Fixed rebate",
+      "2": "Get lower level commission %"
+    },
+    "exceedAncestorError": "Subordinate rebate parameters cannot be greater than superior rebate parameters",
+    "faq": {
+      "a1": "The total rebate value refers to the upper limit of the cumulative rebate amount that can be obtained by all agents in a complete agency chain. \nThe total rebate value for each agent line is fixed and cannot be exceeded.",
+      "a2": "Please click the Agent Edit button to open the customer relationship graph:\n\n1. First set the total rebate value of the agent line\n\n2. Then fill in the rebate parameters of each agent by level, and fill in different commission parameters according to different commission parameter methods.",
+      "a3": "There are two ways to set rebate custom parameters: 1.Basic method 2.Grade method. You can choose which method to use to calculate specific rebate parameters.",
+      "a4": "Basic method fills in the user's specific rebate parameter value. When rebate is given to the corresponding agent user according to the filled in rebate parameters (how much is returned), the lowest-level agent does not need to fill in the rebate parameters, but uses the total rebate value - the total rebate of the upper-level agent.\n\nNote: The total rebate amount shall not exceed the total rebate value.",
+      "a5": "Fill in the rebate parameters of each level of agents in the level difference method. When rebates are made, the rebate parameters of the hit agent will be filled in. The rebate level difference of the upper-level agent (upper-level agent parameters - lower-level agent parameters) is filled in. When filling in, the rebate parameters of the top agent A1 (the first level of customer relationship) are the total rebate value. \nThe rebate parameter of the subordinate agent B1 must be less than or equal to the rebate parameter value of the upper-level agent, and so on. \nThe rebate parameter value of each agent shall not be greater than the rebate parameter value of the superior agent;\n\n=Remarks: (1) The parameter allows up to two decimal places (2) must be a positive number",
+      "a6": "Won't. \nThe adjustment of rebate parameters will only affect the trading behavior after the setting takes effect, and historical transactions will not be affected.",
+      "q1": "What is the total rebate value?",
+      "q2": "How to set agent rebate parameters?",
+      "q3": "What are the ways to fill in rebate parameters for custom plans?",
+      "q4": "How to fill in and calculate commission in Basic method?",
+      "q5": "How to fill in and calculate the commission for the differential plan?",
+      "q6": "Will adjusting the rebate parameters midway affect previous transactions?",
+      "title1": "The page displays the customer relationship data of agents and their rebate-level users (excluding direct customers).",
+      "title2": "If there is a break in the agent chain (for example, someone is not an agent), the system will only display it until the breakpoint, and the agents after the breakpoint will be regarded as a new agent line and recalculated."
+    },
+    "firstAgent": "Level 1 agent",
+    "leverTotalRebate": "Total level rebates",
+    "limit": "limited",
+    "maxTwoDecimalPlaces": "Keep up to two decimal places",
+    "modifyTotalRebateWarning": "Modifying the total rebate value will clear the filled-in sub-agent parameters. Are you sure you want to modify it?",
+    "notFillTypeOptions": {
+      "1": "No commission rebate",
+      "2": "Treat as parameter=0"
+    },
+    "paramFillTypeOptions": {
+      "1": "Basic mode",
+      "2": "step difference method"
+    },
+    "parameterFillMethod": "Parameter filling method",
+    "parameterFillMethodTips": "Modifying the parameter filling method will clear all rebate parameters filled in by users.",
+    "paramsNotMethod": "Rebate plan with parameters not filled in",
+    "passLimit": "generation",
+    "peerLever": "Level",
+    "pointsPerOrder": "points/orders",
+    "rebateValue": "Rebate parameters",
+    "selectAtLeastOneRebateLevel": "Select at least one rebate tier",
+    "subIbParamsDesc": "Fill in the parameters of the subordinate agent. The current parameter filling method is: step difference method.",
+    "subIbSettings": "Sub-IB parameter settings",
+    "superAgent": "Special agent",
+    "tabs": {
+      "1": "Commission group settings",
+      "2": "Custom commission parameters"
+    },
+    "totalRebate": "Total rebate value",
+    "totalRebateDesc": "The total rebate amount of the current agent link, and the sum of the rebate amount shall not exceed this amount.",
+    "viewGenerations": "Can view algebra (optional)",
+    "viewGenerationsPlaceholder": "0-99 (no limit if not configured)",
+    "viewSubordinate": "Check the lower level rebate parameters",
+    "viewSubordinateDesc": "The agent can view the parameters of the lower-level agent on the user side"
   }
 }

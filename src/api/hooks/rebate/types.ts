@@ -514,3 +514,175 @@ export type AddRebateSettingsTemplateParams = {
   templateDefault?: string; // 设置默认模板时传 'Y'/'N
   defaultTemplate?: string; //设置默认模板时需要传，值同id，其他时候不传
 };
+
+export type CustomerCommissionParams = BasicParams & {
+  rebateTraderId?: string;
+  name?: string;
+  email?: string;
+};
+
+export type CustomerCommissionItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: string | null;
+  userId: string | null;
+  rebateTraderId: string | null;
+  rebateValue: number | null;
+  totalRebate: number | null;
+  maxRebate: number | null;
+  minRebate: number | null;
+  rebateType: number | null;
+  lastName: string | null;
+  name: string | null;
+  showId: string | null;
+  email: string | null;
+  inviter: string | null;
+  rebateLevelId: string | null;
+  rebateLevel: string | null;
+  rebateLevelName: string | null;
+  hasChildren: boolean | null;
+  fullName: string | null;
+};
+
+export type CustomerCommissionRes = BasicRes<CustomerCommissionItem>;
+
+export type TwoCommissionGroupParams = BasicParams & {
+  rebateTraderId?: string;
+  settleUnit?: string;
+  model?: string;
+};
+
+export type TwoCommissionAgencyItem = BaseEntity & {
+  id: string;
+  groupId: string;
+  levelId: string;
+  rebateType: number;
+  price: number | null;
+  equal: boolean;
+  equalType: number;
+  equalMoney: number | null;
+  equalLimit: number | null;
+  pass: boolean;
+  passType: number;
+  passMoney: number | null;
+  passLimit: number | null;
+  delFlag: boolean | null;
+  status: boolean;
+  levelName: string;
+  level: number | null;
+  selected: boolean | null;
+  userTwoId: string | null;
+  commissionGroupName: string | null;
+  settleType: string | number | null;
+  settleUnit: string | null;
+};
+
+export type TwoCommissionGroupItem = BaseEntity & {
+  id: string;
+  rebateTraderId: string;
+  rebateType: number;
+  name: string;
+  delFlag: boolean;
+  agency: TwoCommissionAgencyItem[];
+  linkAccountNum: number;
+};
+
+export type TwoCommissionGroupRes = BasicRes<TwoCommissionGroupItem>;
+
+export type RebateTwoCommissionGroupAddAgencyItem = Omit<
+  Pick<
+    TwoCommissionAgencyItem,
+    | 'rebateType'
+    | 'levelId'
+    | 'status'
+    | 'price'
+    | 'equalType'
+    | 'equalMoney'
+    | 'equalLimit'
+    | 'passType'
+    | 'passMoney'
+    | 'passLimit'
+  >,
+  'levelId'
+> & {
+  levelId: string | number;
+};
+
+export type LevelListItem = Omit<
+  RebateLevelItem,
+  'level' | 'relatedAccountCount' | 'relatedRebateRuleCount' | 'relatedRebateTemplateCount'
+> & {
+  level: number;
+  relatedAccountCount: string | null;
+  relatedRebateRuleCount: string | null;
+  relatedRebateTemplateCount: string | null;
+};
+
+export type LevelListRes = {
+  code: number;
+  data: LevelListItem[];
+};
+
+export type RebateTwoCommissionGroupAddParams = Pick<
+  TwoCommissionGroupItem,
+  'rebateTraderId' | 'rebateType' | 'name'
+> & {
+  levelId: string | number;
+  agency: RebateTwoCommissionGroupAddAgencyItem[];
+};
+
+export type TwoCommissionGroupDetailRes = {
+  code: number;
+  data: TwoCommissionGroupItem;
+};
+
+export type CommissionTypeSettings = {
+  agentEdit: string;
+  commissionType: string;
+  editLevel: string;
+  notFillType: string;
+  paramFillType: string;
+  viewGenerations: string;
+  viewSubordinate: string;
+};
+
+export type SetCommissionTypeParams = CommissionTypeSettings;
+
+export type CommissionTypeLevelItem = LevelListItem;
+
+export type GetCommissionTypeData = CommissionTypeSettings & {
+  allLevel: CommissionTypeLevelItem[];
+};
+
+export type GetCommissionTypeRes = {
+  code: number;
+  data: GetCommissionTypeData;
+};
+
+export type CustomerCommissionDetailRes = {
+  code: number;
+  data: {
+    userSetting: CustomerCommissionItem;
+  };
+};
+
+export type TraderUserChildrenRes = CustomerCommissionItem[];
+
+export type EditCustomerCommissionDetailParamsItem = {
+  userId: string;
+  rebateValue: string;
+  inviter: number;
+  totalRebate: string;
+  lastName: string;
+  rebateTraderId: string;
+  rebateType: number;
+};
+
+export type EditCustomerCommissionDetailParams = {
+  userId: string;
+  arr: EditCustomerCommissionDetailParamsItem[];
+};

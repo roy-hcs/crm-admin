@@ -13,7 +13,7 @@ import { Switch } from '@/components/ui/switch';
 
 interface FormSwitchProps<T extends FieldValues> {
   name: FieldPath<T>;
-  label: string;
+  label?: string;
   className?: string;
   verticalLabel?: boolean;
   labeTipsDom?: React.ReactNode;

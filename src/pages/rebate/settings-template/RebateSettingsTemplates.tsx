@@ -68,7 +68,7 @@ export const RebateSettingsTemplates = ({ type }: { type: 1 | 2 | 3 }) => {
     },
     {
       id: 'rebateLevel',
-      header: t('RebateLevelSettings.rebateLevel'),
+      header: t('table.rebateLevel'),
       accessorFn: row => row.rebateLevel,
     },
     {

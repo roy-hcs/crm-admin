@@ -73,7 +73,7 @@ export function OverviewPage() {
     },
     {
       id: 'userName',
-      header: t('overview.userName'),
+      header: t('table.userName'),
       accessorFn: row => row.username,
     },
     {

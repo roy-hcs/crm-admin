@@ -13,7 +13,7 @@ export const AddRebateLevelButton = ({ onSuccess }: { onSuccess: () => void }) =
     <RrhDialog
       open={open}
       onOpenChange={setOpen}
-      title={t('common.addField', { field: t('RebateLevelSettings.rebateLevel') })}
+      title={t('common.addField', { field: t('table.rebateLevel') })}
       trigger={
         <RrhButton>
           <Plus />

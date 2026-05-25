@@ -112,6 +112,8 @@ export const TradingRebateSettingsPage = () => {
     refetch();
   };
 
+  const { openTab } = useTabActions();
+
   const allColumns: CRMColumnDef<RebateTraderDealItem, unknown>[] = [
     {
       id: 'No.',
@@ -288,6 +290,15 @@ export const TradingRebateSettingsPage = () => {
               case 'delete':
                 setDeleteDialogOpen(true);
                 break;
+              case 'commissionSettings': {
+                const url = `/rebate/commission-settings?id=${row?.original.id}`;
+                openTab({
+                  key: url,
+                  title: t('table.commissionSettings'),
+                  path: url,
+                });
+                break;
+              }
             }
           }}
         />
@@ -299,7 +310,7 @@ export const TradingRebateSettingsPage = () => {
     useColumnVisibility('trading-rebate-settings-table', allColumns);
 
   const { mutateAsync: deleteRebateTraderDeal } = useDeleteRebateTraderDeal();
-  const { openTab } = useTabActions();
+  // const { openTab } = useTabActions();
   return (
     <div>
       <PageInfo title={t('TradingRebateSettings.title')} desc={t('TradingRebateSettings.warn')} />
