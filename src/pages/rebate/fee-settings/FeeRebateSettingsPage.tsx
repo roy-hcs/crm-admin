@@ -288,6 +288,16 @@ export const FeeRebateSettingsPage = () => {
               case 'delete':
                 setDeleteDialogOpen(true);
                 break;
+              case 'commissionSettings': {
+                const type = 'fee';
+                const url = `/rebate/commission-settings?id=${row?.original.id}&type=${type}`;
+                openTab({
+                  key: url,
+                  title: t('table.commissionSettings'),
+                  path: url,
+                });
+                break;
+              }
             }
           }}
         />

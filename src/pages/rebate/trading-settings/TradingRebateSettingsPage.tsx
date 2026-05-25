@@ -291,7 +291,8 @@ export const TradingRebateSettingsPage = () => {
                 setDeleteDialogOpen(true);
                 break;
               case 'commissionSettings': {
-                const url = `/rebate/commission-settings?id=${row?.original.id}`;
+                const type = 'trading';
+                const url = `/rebate/commission-settings?id=${row?.original.id}&type=${type}`;
                 openTab({
                   key: url,
                   title: t('table.commissionSettings'),

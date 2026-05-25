@@ -32,17 +32,27 @@ type DetailAgencySource = Partial<RebateTwoCommissionGroupAddAgencyItem> & {
   levelId?: string | number;
 };
 
-// 0 1 2 分别是 总管 特级代理 1级代理
 function createAgency(leverOptions: LevelListItem[] = []) {
-  const sortedLeverOptions = [...leverOptions]
-    .sort((a, b) => (a.level ?? 0) - (b.level ?? 0))
-    .slice(0, 3);
+  const sortedLeverOptions = [...leverOptions].sort((a, b) => (a.level ?? 0) - (b.level ?? 0));
 
-  const fallbackCount = Math.max(3, sortedLeverOptions.length);
+  if (sortedLeverOptions.length === 0) {
+    return Array.from({ length: 3 }, () => ({
+      rebateType: 1,
+      levelId: '',
+      status: false,
+      price: 0,
+      equalType: 1,
+      equalMoney: 0,
+      equalLimit: 0,
+      passType: 1,
+      passMoney: 0,
+      passLimit: 0,
+    }));
+  }
 
-  return Array.from({ length: fallbackCount }, (_, index) => ({
+  return sortedLeverOptions.map(item => ({
     rebateType: 1,
-    levelId: sortedLeverOptions[index]?.id ?? '',
+    levelId: item.id,
     status: false,
     price: 0,
     equalType: 1,
@@ -64,8 +74,15 @@ function buildAgencyFromDetail(
     return defaults;
   }
 
+  const sourceMap = new Map(
+    agency
+      .filter(item => item.levelId !== undefined && item.levelId !== null)
+      .map(item => [String(item.levelId), item]),
+  );
+
   return defaults.map((item, index) => {
-    const source = agency[index];
+    const hasLevelId = item.levelId !== undefined && item.levelId !== null && item.levelId !== '';
+    const source = hasLevelId ? sourceMap.get(String(item.levelId)) : agency[index];
     if (!source) {
       return item;
     }
@@ -171,7 +188,6 @@ export const AddEditCommissionGroupDialog = ({
       (sum, item) => sum + Number(item?.price ?? 0),
       0,
     );
-
     form.setValue('countPrice', Number(totalPrice.toFixed(2)), {
       shouldDirty: false,
       shouldTouch: false,
@@ -243,9 +259,9 @@ export const AddEditCommissionGroupDialog = ({
     }
   };
 
-  const sortedLeverOptions = [...(leverOptions ?? [])]
-    .sort((a, b) => (a.level ?? 0) - (b.level ?? 0))
-    .slice(0, 3);
+  const sortedLeverOptions = [...(leverOptions ?? [])].sort(
+    (a, b) => (a.level ?? 0) - (b.level ?? 0),
+  );
 
   const agencyLabels = sortedLeverOptions.length
     ? sortedLeverOptions.map(item => item.levelName)
@@ -299,7 +315,10 @@ export const AddEditCommissionGroupDialog = ({
         />
         <div className="space-y-3">
           {agencyValues?.map((_, index) => (
-            <div key={index} className="bg-primary-foreground grid gap-3 rounded-2xl p-3">
+            <div
+              key={`${agencyValues?.[index]?.levelId ?? 'agency'}-${index}`}
+              className="bg-primary-foreground grid gap-3 rounded-2xl p-3"
+            >
               <div className="flex items-end gap-2">
                 <div className="flex flex-1 items-end gap-2">
                   <FormInput
