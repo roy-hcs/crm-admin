@@ -676,13 +676,13 @@ export function useEditCustomerCommissionDetail() {
  */
 export function useTwoCommissionGroupList(
   params: TwoCommissionGroupParams,
-  { enabled }: { enabled?: boolean } = { enabled: true },
+  { type, enabled }: { type: string; enabled?: boolean } = { enabled: true, type: '1' },
 ) {
   return useQuery({
     queryKey: ['getTwoCommissionGroupList', params],
     queryFn: () =>
       apiFormPostCustom<TwoCommissionGroupRes>(
-        `/system/crmRebateTwoCommissionGroup/list/1/${params.rebateTraderId}`,
+        `/system/crmRebateTwoCommissionGroup/list/${type}/${params.rebateTraderId}`,
         params,
       ),
     enabled,
