@@ -793,6 +793,10 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
           title: '表现费记录',
           path: '/copy-trading/performance-fee-record',
         },
+        {
+          title: '表现费返佣',
+          path: '/copy-trading/performance-fee-rebate',
+        },
       ],
     },
   ];

@@ -1,4 +1,5 @@
 import { BaseEntity, BasicParams, BasicRes } from '@/api/types';
+import { LeverageReview, VerifyLogItem } from '../review/types';
 
 export type OrderByColumn =
   | 'totalProfit'
@@ -284,6 +285,87 @@ export type PerformanceFeeItem = {
 
 export type PerformanceFeeListRes = BasicRes<PerformanceFeeItem>;
 
+export type PerformanceFeeRebateVerifyListParams = BasicParams & {
+  orderNo?: string;
+  performanceFeeOrderNo?: string;
+  signalSourceName?: string;
+  trader?: string;
+  client?: string;
+  status?: string;
+  userId?: string;
+  params: {
+    beginTime?: string;
+    endTime?: string;
+    beginReviewTime?: string;
+    endReviewTime?: string;
+  };
+};
+
+export type PerformanceFeeRebateReportListParams = BasicParams & {
+  orderNo?: string;
+  performanceFeeOrderNo?: string;
+  signalSourceName?: string;
+  trader?: string;
+  client?: string;
+  payStatus?: string;
+  userId?: string;
+  params: {
+    beginTime?: string;
+    endTime?: string;
+    beginPayTime?: string;
+    endPayTime?: string;
+  };
+};
+
+export type PerformanceFeeRebateVerifyItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string | null;
+  followId: string | null;
+  performanceFeeOrderNo: string | null;
+  orderNo: string | null;
+  performanceFee: number | null;
+  managementFee: number | null;
+  netPerformanceFee: number | null;
+  baseRebateRatio: number | null;
+  extraRebateRatio: number | null;
+  rebateAmount: number | null;
+  userId: string | null;
+  userName: string | null;
+  userShowId: string | null;
+  payAccount: string | null;
+  payAccountName: string | null;
+  payServerId: string | null;
+  status: number | null;
+  currency: string | null;
+  verifyTime: string | null;
+  verifyUser: string | null;
+  verifyRemark: string | null;
+  verifyStep: number | null;
+  verifyUserName: string | null;
+  payStatus: number | null;
+  payTime: string | null;
+  signalSourceName: string | null;
+  signalSourceOwner: string | null;
+  signalSourceEmail: string | null;
+  trader: string | null;
+  traderServer: string | null;
+  traderServerId: string | null;
+  client: string | null;
+  clientServer: string | null;
+  clientServerId: string | null;
+  clientName: string | null;
+  clientShowId: string | null;
+};
+
+export type PerformanceFeeRebateVerifyListRes = BasicRes<PerformanceFeeRebateVerifyItem>;
+
+export type PerformanceFeeRebateReportListRes = BasicRes<PerformanceFeeRebateVerifyItem>;
+
 export type Setting = {
   id: string;
   key: string;
@@ -361,4 +443,44 @@ export type PerformanceFeeParams = {
 export type LoyaltyRewardParams = {
   vipData: string;
   tab: number;
+};
+
+export type PayParams = {
+  id: string;
+  payAccount: string;
+  payServerId: string;
+};
+
+export type ReceiveAccountsRes = {
+  code: number;
+  msg: string;
+  data: {
+    accountList: Array<{
+      account: string;
+      serverId: string;
+      serverName: string;
+      currency: string;
+      id: string;
+    }>;
+    walletList: Array<{
+      id: string;
+    }>;
+  };
+};
+
+export type PerformanceFeeRebateDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    detail: PerformanceFeeRebateVerifyItem;
+    verifyLogs: VerifyLogItem[];
+    reviewer: LeverageReview;
+  };
+};
+
+export type PerformanceFeeRebateVerifyParams = {
+  id: string;
+  status: string;
+  verifyRemark: string;
+  verifyStep: string;
 };

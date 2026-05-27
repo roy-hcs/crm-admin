@@ -4,8 +4,10 @@ import { AgreementSettingsPage } from '@/pages/copy-trading/agreement-settings/A
 import { SignalReviewPage } from '@/pages/copy-trading/signal-review/SignalReviewPage';
 import { SignalsPage } from '@/pages/copy-trading/signals/SignalsPage';
 import { VarietyManagementPage } from '@/pages/copy-trading/variety-management/VarietyManagementPage';
-import { RouteObject } from 'react-router-dom';
+import { RouteObject, useSearchParams } from 'react-router-dom';
 import { SettingsPage } from '@/pages/copy-trading/settings/SettingsPage';
+import { PerformanceFeeRebatePage } from '@/pages/copy-trading/performance-fee-rebate/PerformanceFeeRebatePage';
+import { PerformanceVerifyDetailPage } from '@/pages/copy-trading/performance-fee-rebate-verify-detail/PerformanceVerifyDetailPage';
 
 /**
  * Copy Trading routes - corresponds to "CopyTrading" menu item
@@ -19,6 +21,12 @@ import { SettingsPage } from '@/pages/copy-trading/settings/SettingsPage';
  * - /copy-trading/order-management    - 订单管理 (Order Management)
  * - /copy-trading/copy-trade          - Copy Trade
  */
+
+const PerformanceVerifyDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <PerformanceVerifyDetailPage key={searchParams.get('id')} />;
+};
+
 export const copyTradingRoutes: RouteObject[] = [
   {
     path: '/copy-trading/signals',
@@ -47,6 +55,14 @@ export const copyTradingRoutes: RouteObject[] = [
   {
     path: '/copy-trading/settings',
     element: <SettingsPage />,
+  },
+  {
+    path: '/copy-trading/performance-fee-rebate',
+    element: <PerformanceFeeRebatePage />,
+  },
+  {
+    path: '/copy-trading/performance-fee-rebate/verify-detail',
+    element: <PerformanceVerifyDetailPageWrapper />,
   },
   // TODO: Add routes as pages are developed
   /*

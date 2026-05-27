@@ -105,7 +105,7 @@ export const PerformanceFeeRecordPage = () => {
     },
     {
       id: 'payAccountName',
-      header: t('performanceFeeRecord.payAccountName'),
+      header: t('table.subscriberAccount'),
       cell: ({ row }) => row?.original?.payAccountName || '-',
     },
     {
