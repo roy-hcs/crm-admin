@@ -1849,7 +1849,9 @@
     "signalSourceAuthor": "Signal Source Author",
     "subscriber": "Subscriber",
     "reviewTime": "Review Time",
-    "payAccount": "Pay Account"
+    "payAccount": "Pay Account",
+    "payAccountDesc": "If the currency of the commission is different from the currency of the receiving account, the system will automatically convert the commission currency into the currency of the receiving account and then execute the commission deposit.",
+    "selectPayAccount": "Please select the account from which the superior/agent withdraws commissions"
   },
   "netBonus": {
     "netBonusRewardReport": "Net Deposit Bonus Report"
