@@ -262,6 +262,11 @@ export type MamFollowListRes = BasicRes<MamFollowItem> & {
   totalList: TotalItem[];
 };
 
+export type MamFollowDetailRes = {
+  code: number;
+  data: MamFollowItem;
+};
+
 export type PerformanceFeeListParams = BasicParams & {
   signalSourceName?: string;
   traderServerId?: string;
@@ -310,6 +315,11 @@ export type PerformanceFeeItem = {
 };
 
 export type PerformanceFeeListRes = BasicRes<PerformanceFeeItem>;
+
+export type PerformanceFeeDetailRes = {
+  code: number;
+  data: PerformanceFeeItem;
+};
 
 export type PerformanceFeeRebateVerifyListParams = BasicParams & {
   orderNo?: string;

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { MamFollowItem, MamFollowListParams } from '@/api/hooks/copyTrading/type';
 import { useMamFollowList } from '@/api/hooks/copyTrading';
 import { OrderManagementForm } from './OrderManagementForm';
-import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
+import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { PageInfo } from '@/components/common/PageInfo';
@@ -16,9 +16,10 @@ import { arrivalStatusOptions } from '@/lib/const';
 import { reviewStatusMap } from '@/lib/constant';
 import { RrhTag } from '@/components/common/RrhTag';
 import { RrhSorter } from '@/components/common/RrhSorter';
-import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableCell } from '@/components/ui/table';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { OrderDetailDialog } from './components/OrderDetailDialog';
+import { RrhButton } from '@/components/common/RrhButton';
 
 export const OrderManagementPage = () => {
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('');
@@ -43,6 +44,8 @@ export const OrderManagementPage = () => {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [resetKey, setResetKey] = useState(0);
+  const [id, setId] = useState<string>();
+  const [detailOpen, setDetailOpen] = useState(false);
   const { t } = useTranslation();
 
   const { data: data, isLoading: loading } = useMamFollowList({
@@ -131,7 +134,7 @@ export const OrderManagementPage = () => {
     {
       id: 'managementFeeRatio',
       header: t('orderManagementTable.managementFeeRatio'),
-      cell: ({ row }) => row?.original?.managementFeeRatio || '-',
+      cell: ({ row }) => row?.original?.estimatedManagementFee || '-',
     },
     {
       id: 'payAccountName',
@@ -302,12 +305,16 @@ export const OrderManagementPage = () => {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[{ label: t('common.View'), value: 'view' }]}
-          callToAction={() => {}}
-        />
+      cell: ({ row }) => (
+        <RrhButton
+          variant="ghost"
+          onClick={() => {
+            setId(row?.original?.id);
+            setDetailOpen(true);
+          }}
+        >
+          {t('common.View')}
+        </RrhButton>
       ),
       fixed: 'right',
       size: 50,
@@ -404,6 +411,7 @@ export const OrderManagementPage = () => {
           }
         />
       </TableContentWrapper>
+      <OrderDetailDialog open={detailOpen} setOpen={setDetailOpen} id={id || ''} />
     </div>
   );
 };

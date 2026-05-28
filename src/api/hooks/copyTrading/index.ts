@@ -29,6 +29,8 @@ import {
   PerformanceFeeRebateVerifyParams,
   AddMamSymbolParams,
   MamSymbolDetailRes,
+  MamFollowDetailRes,
+  PerformanceFeeDetailRes,
 } from './type';
 
 export function useChangeMamSignalSource() {
@@ -141,6 +143,14 @@ export function usePerformanceFeeList(params: PerformanceFeeListParams) {
   });
 }
 
+export function usePerformanceFeeDetail(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['performanceFeeDetail', id],
+    queryFn: () => apiGetCustom<PerformanceFeeDetailRes>(`/system/performanceFee/detailInfo/${id}`),
+    enabled: options.enabled,
+  });
+}
+
 /**
  * 表现费返佣审核列表
  */
@@ -231,6 +241,14 @@ export function useMamFollowList(params: MamFollowListParams) {
   return useQuery({
     queryKey: ['mamFollowList', params],
     queryFn: () => apiFormPostCustom<MamFollowListRes>('/system/mamFollow/list', params),
+  });
+}
+
+export function useMamFollowDetail(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['mamFollowDetail', id],
+    queryFn: () => apiGetCustom<MamFollowDetailRes>(`/system/mamFollow/detailInfo/${id}`),
+    enabled: options.enabled,
   });
 }
 
