@@ -120,6 +120,32 @@ export type MamSymbolItem = {
 
 export type MamSymbolListRes = BasicRes<MamSymbolItem>;
 
+export type MamSymbolDetailRes = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string | null;
+  symbolCategory: string | null;
+  symbol: string | null;
+  cname: string | null;
+  enname: string | null;
+  name: string | null;
+  defaultNames: string[];
+  sort: number | null;
+};
+
+export type AddMamSymbolParams = {
+  symbolCategory: string;
+  symbol: string;
+  cname: string;
+  enname: string;
+  sort: string;
+  defaultNames: string[];
+};
+
 export type MamProtocolItem = BaseEntity & {
   id: string;
   applicableScenarios: number;

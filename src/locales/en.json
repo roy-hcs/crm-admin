@@ -287,7 +287,8 @@
     "points": "point",
     "back": "return",
     "failed": "fail",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "cannotModifyAfterSubmit": "Cannot be modified after submission"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1608,7 +1609,9 @@
     "name": "default name",
     "symbol": "Standard name",
     "symbolCategory": "Variety classification",
-    "title": "Variety management"
+    "title": "Variety management",
+    "add": "New variety management",
+    "deleteTips": "Are you sure you want to delete this category management?"
   },
   "PammCommissionReport": {
     "title": "PAMM commission report"

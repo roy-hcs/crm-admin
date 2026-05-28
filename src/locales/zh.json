@@ -306,7 +306,8 @@
     "submit": "提交",
     "back": "返回",
     "failed": "失败",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "cannotModifyAfterSubmit": "提交后不可修改"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -1014,7 +1015,9 @@
     "symbolCategory": "品种分类",
     "cname": "中文名称",
     "enname": "英文名称",
-    "name": "默认名称"
+    "name": "默认名称",
+    "add": "新增品种管理",
+    "deleteTips": "确定删除该 品种管理？"
   },
   "performanceFeeRecord": {
     "title": "表现费记录",
