@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { MamSymbolItem, MamSymbolListParams } from '@/api/hooks/copyTrading/type';
-import { useMamSymbolList } from '@/api/hooks/copyTrading';
+import { useMamSymbolList, useRemoveMamSymbol } from '@/api/hooks/copyTrading';
 import { VarietyManagementForm } from './VarietyManagementForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
@@ -13,24 +13,52 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { AddEditVarietyManagementDialog } from './components/AddEditVarietyManagementDialog';
+import { useDictType } from '@/api/hooks/system';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 
 export const VarietyManagementPage = () => {
+  const [dialogState, setDialogState] = useState<{
+    type: 'none' | 'edit' | 'view' | 'delete';
+    id: string;
+  }>({
+    type: 'none',
+    id: '',
+  });
+  const { mutateAsync: removeMamSymbol } = useRemoveMamSymbol();
   const [otherParams, setOtherParams] = useState<Omit<MamSymbolListParams, keyof BasicParams>>({
     symbolCategory: '',
     symbol: '',
   });
+
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
 
-  const { data: data, isLoading: loading } = useMamSymbolList({
+  const {
+    data: data,
+    isLoading: loading,
+    refetch,
+  } = useMamSymbolList({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn: '',
     isAsc: 'asc',
     ...otherParams,
   });
+
+  const { data: symbolCategoryDataRes, isLoading: symbolCategoryLoading } =
+    useDictType('mam_symbol_category');
+
+  const symbolCategoryOptions = useMemo(
+    () =>
+      (symbolCategoryDataRes || []).map(i => ({
+        label: i.dictLabel,
+        value: i.dictValue,
+      })),
+    [symbolCategoryDataRes],
+  );
 
   const reset = () => {
     setOtherParams(pre => ({
@@ -83,11 +111,26 @@ export const VarietyManagementPage = () => {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
+      cell: ({ row }) => (
         <RrhDropdown
           Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[{ label: t('table.audit'), value: 'audit' }]}
-          callToAction={() => {}}
+          dropdownList={[
+            { label: t('common.Edit'), value: 'edit' },
+            { label: t('common.View'), value: 'view' },
+            { label: t('common.delete'), value: 'delete' },
+          ]}
+          callToAction={action => {
+            const id = row.original.id || '';
+            if (action === 'edit') {
+              setDialogState({ type: 'edit', id });
+            }
+            if (action === 'view') {
+              setDialogState({ type: 'view', id });
+            }
+            if (action === 'delete') {
+              setDialogState({ type: 'delete', id });
+            }
+          }}
         />
       ),
       fixed: 'right',
@@ -137,6 +180,12 @@ export const VarietyManagementPage = () => {
               reset={reset}
               loading={loading}
               otherParams={otherParams}
+              symbolCategoryOptions={
+                (symbolCategoryDataRes || []).map(i => ({
+                  label: i.dictLabel,
+                  value: i.dictValue,
+                })) || []
+              }
             />
           </RrhDrawer>
           <ColumnVisibilityButton
@@ -145,6 +194,52 @@ export const VarietyManagementPage = () => {
             onToggle={toggleColumn}
             onBatchReorder={batchUpdateColumns}
             columns={columns}
+          />
+          <AddEditVarietyManagementDialog
+            mode="add"
+            onSuccess={refetch}
+            title={t('varietyManagement.add')}
+            symbolCategoryOptions={symbolCategoryOptions}
+          />
+          <AddEditVarietyManagementDialog
+            mode="edit"
+            open={dialogState.type === 'edit'}
+            onOpenChange={open => {
+              if (!open) {
+                setDialogState(prev => ({ ...prev, type: 'none' }));
+              }
+            }}
+            id={dialogState.id}
+            onSuccess={refetch}
+            title={t('common.modify', { field: t('varietyManagement.title') })}
+            symbolCategoryOptions={symbolCategoryOptions}
+          />
+          <AddEditVarietyManagementDialog
+            mode="view"
+            open={dialogState.type === 'view'}
+            onOpenChange={open => {
+              if (!open) {
+                setDialogState(prev => ({ ...prev, type: 'none' }));
+              }
+            }}
+            id={dialogState.id}
+            onSuccess={() => {}}
+            title={t('common.detail', { field: t('varietyManagement.title') })}
+            symbolCategoryOptions={symbolCategoryOptions}
+          />
+          <RrhDeleteAlert<{
+            ids: string;
+          }>
+            open={dialogState.type === 'delete'}
+            setOpen={open => {
+              if (!open) {
+                setDialogState(prev => ({ ...prev, type: 'none' }));
+              }
+            }}
+            onSuccess={refetch}
+            confirmFunction={removeMamSymbol}
+            params={{ ids: dialogState.id || '' }}
+            tipsText={t('varietyManagement.deleteTips')}
           />
         </div>
       </div>
@@ -156,7 +251,7 @@ export const VarietyManagementPage = () => {
         pageSize={pageSize}
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
-        loading={loading}
+        loading={loading || symbolCategoryLoading}
       />
     </div>
   );

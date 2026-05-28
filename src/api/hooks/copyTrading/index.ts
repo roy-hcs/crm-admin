@@ -27,6 +27,8 @@ import {
   ReceiveAccountsRes,
   PerformanceFeeRebateDetailRes,
   PerformanceFeeRebateVerifyParams,
+  AddMamSymbolParams,
+  MamSymbolDetailRes,
   MamFollowDetailRes,
   PerformanceFeeDetailRes,
 } from './type';
@@ -71,6 +73,63 @@ export function useMamSymbolList(params: MamSymbolListParams) {
   return useQuery({
     queryKey: ['mamSymbolList', params],
     queryFn: () => apiFormPostCustom<MamSymbolListRes>(`/system/mamSymbol/list`, params),
+  });
+}
+
+/**
+ * 品种管理-删除
+ */
+export function useRemoveMamSymbol() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) => apiFormPost('/system/mamSymbol/remove', params),
+  });
+}
+
+/**
+ * 品种管理添加
+ */
+export function useAddMamSymbol() {
+  return useMutation({
+    mutationFn: (params: AddMamSymbolParams) => apiFormPost('/system/mamSymbol/add', params),
+  });
+}
+
+/**
+ * 品种管理编辑
+ */
+export function useEditMamSymbol() {
+  return useMutation({
+    mutationFn: (params: AddMamSymbolParams & { id: string }) =>
+      apiFormPost('/system/mamSymbol/edit', params),
+  });
+}
+
+/**
+ * 品种管理详情
+ */
+export function useMamSymbolDetail() {
+  return useMutation({
+    mutationFn: (id: string) => apiGet<MamSymbolDetailRes>(`/system/mamSymbol/detailInfo/${id}`),
+  });
+}
+
+/**
+ * 品种管理新增校验标准名称
+ */
+export function useCheckNameUnique() {
+  return useMutation({
+    mutationFn: (params: { symbol: string }) =>
+      apiFormPostCustom<boolean>('/system/mamSymbol/checkNameUnique', params),
+  });
+}
+
+/**
+ * 品种管理新增修改校验默认名称
+ */
+export function useCheckDefaultNameUnique() {
+  return useMutation({
+    mutationFn: (params: { name: string; id: string }) =>
+      apiFormPostCustom<boolean>('/system/mamSymbol/checkDefaultNameUnique', params),
   });
 }
 
