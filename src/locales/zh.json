@@ -1019,12 +1019,10 @@
   "performanceFeeRecord": {
     "title": "表现费记录",
     "clientName": "订阅用户",
-    "payAccountName": "订阅者账号",
     "performanceFee": "表现费",
     "managementFee": "管理费",
     "payTime": "支付时间",
     "payAccount": "支付账号",
-    "trader": "信号源账号",
     "arrivalStatus": "到账情况",
     "payStatusOptions": {
       "0": "未支付",
@@ -1399,7 +1397,10 @@
     "accountBelongToUpper": "账号归属的上级为",
     "userName": "代理姓名",
     "rebateLevel": "返佣层级",
-    "commissionGroupName": "佣金组名称"
+    "commissionGroupName": "佣金组名称",
+    "netPerformanceFee": "净表现费",
+    "baseRebateRatio": "基础佣金参数",
+    "extraRebateRatio": "额外奖励参数"
   },
   "settings": {
     "title": "审核设置",
@@ -1836,6 +1837,21 @@
     "performanceFeeRebatBonus": "表现费返佣奖金",
     "performanceFeeRebatBonusTip": "当伞下客户结算表现费返佣时，忠诚客户将在原本返佣奖励的基础上额外获得奖励。例如净表现费=100USD，你可获得2%的基础返佣奖励。但由于你是Level3的忠诚客户，可以获得额外3%的奖励，那么你将获得100*(2%+3%)=5USD奖励，其中3USD为忠诚奖励。",
     "enterExtraReward": "请输入额外奖励"
+  },
+  "performanceFeeRebatePage": {
+    "verifyTab": "返佣审核",
+    "reportTab": "返佣报表",
+    "performanceFeeOrderNo": "表现费订单号",
+    "traderAccount": "交易账号",
+    "clientAccount": "返佣账号",
+    "rebateAmount": "代理佣金",
+    "performanceFeeDetail": "表现费返佣审核详情",
+    "signalSourceAuthor": "信号源作者",
+    "subscriber": "订阅者",
+    "reviewTime": "审核时间",
+    "payAccount": "支付账户",
+    "selectPayAccount": "请选择上级/代理提取佣金的账户",
+    "payAccountDesc": "如若佣金的货币与收款账户货币不同，系统将自动化将佣金货币自动换算为收款账户货币后执行佣金入金。"
   },
   "netBonus": {
     "netBonusRewardReport": "净入金奖励报表"

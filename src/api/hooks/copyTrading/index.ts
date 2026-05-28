@@ -1,4 +1,4 @@
-import { apiFormPostCustom, apiGet, apiPost } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom, apiPost } from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   BaseSettingsParams,
@@ -15,10 +15,18 @@ import {
   MamSymbolListRes,
   PerformanceFeeListParams,
   PerformanceFeeListRes,
+  PerformanceFeeRebateReportListParams,
+  PerformanceFeeRebateReportListRes,
+  PerformanceFeeRebateVerifyListParams,
+  PerformanceFeeRebateVerifyListRes,
   FeeConfigParams,
   SubscriptionSettingParams,
   PerformanceFeeParams,
   LoyaltyRewardParams,
+  PayParams,
+  ReceiveAccountsRes,
+  PerformanceFeeRebateDetailRes,
+  PerformanceFeeRebateVerifyParams,
 } from './type';
 
 export function useChangeMamSignalSource() {
@@ -73,6 +81,80 @@ export function usePerformanceFeeList(params: PerformanceFeeListParams) {
     queryFn: () => apiFormPostCustom<PerformanceFeeListRes>(`/system/performanceFee/list`, params),
   });
 }
+
+/**
+ * 表现费返佣审核列表
+ */
+export function usePerformanceFeeRebateVerifyList(params: PerformanceFeeRebateVerifyListParams) {
+  return useQuery({
+    queryKey: ['performanceFeeRebateVerifyList', params],
+    queryFn: () =>
+      apiFormPostCustom<PerformanceFeeRebateVerifyListRes>(
+        '/system/performanceFeeRebate/verifyList',
+        params,
+      ),
+  });
+}
+
+/**
+ * 表现费返佣审核详情
+ */
+export function usePerformanceFeeRebateDetail(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['performanceFeeRebateDetail', id],
+    queryFn: () =>
+      apiGetCustom<PerformanceFeeRebateDetailRes>(`/system/performanceFeeRebate/detailInfo/${id}`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 表现费返佣审核提交
+ */
+export function usePerformanceFeeRebateVerify() {
+  return useMutation({
+    mutationFn: (params: PerformanceFeeRebateVerifyParams) =>
+      apiFormPost(`/system/performanceFeeRebate/verify`, params),
+  });
+}
+
+/**
+ * 表现费返佣报表列表
+ */
+export function usePerformanceFeeRebateReportList(params: PerformanceFeeRebateReportListParams) {
+  return useQuery({
+    queryKey: ['performanceFeeRebateReportList', params],
+    queryFn: () =>
+      apiFormPostCustom<PerformanceFeeRebateReportListRes>(
+        '/system/performanceFeeRebate/reportList',
+        params,
+      ),
+  });
+}
+
+/**
+ * 表现费返佣报表-获取支付账号列表
+ */
+export function useGetReceiveAccounts(userId: string) {
+  return useQuery({
+    queryKey: ['getReceiveAccounts', userId],
+    queryFn: () =>
+      apiGetCustom<ReceiveAccountsRes>(
+        `/system/performanceFeeRebate/getReceiveAccounts?userId=${userId}`,
+      ),
+    enabled: !!userId,
+  });
+}
+
+/**
+ * 返佣报表支付
+ */
+export function usePay() {
+  return useMutation({
+    mutationFn: (params: PayParams) => apiFormPost('/system/performanceFeeRebate/doPay', params),
+  });
+}
+
 /**
  * 协议设置
  */

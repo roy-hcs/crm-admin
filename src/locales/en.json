@@ -809,7 +809,10 @@
     "accountBelongToUpper": "The superior to whom the account belongs is",
     "commissionGroupName": "Commission group name",
     "rebateLevel": "Rebate levels",
-    "userName": "Agent name"
+    "userName": "Agent name",
+    "baseRebateRatio": "Basic commission parameters",
+    "extraRebateRatio": "Additional reward parameters",
+    "netPerformanceFee": "net performance fee"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1619,15 +1622,13 @@
     "clientName": "Subscriber",
     "managementFee": "management fee",
     "payAccount": "Payment account",
-    "payAccountName": "Subscriber account",
     "payStatusOptions": {
       "0": "Not paid",
       "1": "paid"
     },
     "payTime": "payment time",
     "performanceFee": "performance fee",
-    "title": "Performance fee record",
-    "trader": "Signal source account"
+    "title": "Performance fee record"
   },
   "PammSettlementReport": {
     "title": "PAMM Provision Report"
@@ -1836,6 +1837,21 @@
     },
     "unifiedSetting": "Unified settings",
     "unifiedSettingDesc": "When the signal source turns on the performance fee rebate and does not set the performance fee rebate parameters separately, the system will execute the rebate according to the default parameter settings below."
+  },
+  "performanceFeeRebatePage": {
+    "verifyTab": "Rebate Review",
+    "reportTab": "Rebate Report",
+    "performanceFeeOrderNo": "Performance Fee Order No",
+    "traderAccount": "Trader Account",
+    "clientAccount": "Rebate Account",
+    "rebateAmount": "Agent Commission",
+    "performanceFeeDetail": "Performance Fee Rebate Review Detail",
+    "signalSourceAuthor": "Signal Source Author",
+    "subscriber": "Subscriber",
+    "reviewTime": "Review Time",
+    "payAccount": "Pay Account",
+    "payAccountDesc": "If the currency of the commission is different from the currency of the receiving account, the system will automatically convert the commission currency into the currency of the receiving account and then execute the commission deposit.",
+    "selectPayAccount": "Please select the account from which the superior/agent withdraws commissions"
   },
   "netBonus": {
     "netBonusRewardReport": "Net Deposit Bonus Report"

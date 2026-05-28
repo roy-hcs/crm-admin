@@ -99,107 +99,109 @@ export const PerformanceFeeRecordForm = ({
     return server?.rows || [];
   }, [server]);
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      onKeyDown={e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          if (e.target instanceof HTMLTextAreaElement) return;
 
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="signalSourceName"
-            label={t('signals.name')}
-            placeholder={t('common.pleaseInput', {
-              field: t('signals.name'),
-            })}
-          />
+          e.preventDefault();
+          form.handleSubmit(onSubmit)();
+        }
+      }}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        verticalLabel
+        name="signalSourceName"
+        label={t('signals.name')}
+        placeholder={t('common.pleaseInput', {
+          field: t('signals.name'),
+        })}
+      />
 
-          <FormInput
-            verticalLabel
-            name="signalSourceOwner"
-            label={t('signals.signalSourceAuthor')}
-            placeholder={t('common.pleaseInput', {
-              field: t('signals.signalSourceAuthor'),
-            })}
-          />
-          <FormInput
-            verticalLabel
-            name="follower"
-            label={t('performanceFeeRecord.clientName')}
-            placeholder={t('common.pleaseInput', {
-              field: t('performanceFeeRecord.clientName'),
-            })}
-          />
-          <RrhServerSelector serverOptions={serverData} name="traderServerId" />
-          <FormInput
-            verticalLabel
-            name="trader"
-            label={t('performanceFeeRecord.trader')}
-            placeholder={t('common.pleaseInput', {
-              field: t('performanceFeeRecord.trader'),
-            })}
-          />
-          <FormInput
-            verticalLabel
-            name="client"
-            label={t('performanceFeeRecord.payAccountName')}
-            placeholder={t('common.pleaseInput', {
-              field: t('performanceFeeRecord.payAccountName'),
-            })}
-          />
-          <FormSelect
-            verticalLabel
-            name="payStatus"
-            label={t('performanceFeeRecord.arrivalStatus')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={PerformanceFeePayStatusOptions.map(i => ({
-              label: t(i.label),
-              value: i.value,
-            }))}
-          />
+      <FormInput
+        verticalLabel
+        name="signalSourceOwner"
+        label={t('signals.signalSourceAuthor')}
+        placeholder={t('common.pleaseInput', {
+          field: t('signals.signalSourceAuthor'),
+        })}
+      />
+      <FormInput
+        verticalLabel
+        name="follower"
+        label={t('performanceFeeRecord.clientName')}
+        placeholder={t('common.pleaseInput', {
+          field: t('performanceFeeRecord.clientName'),
+        })}
+      />
+      <RrhServerSelector serverOptions={serverData} name="traderServerId" />
+      <FormInput
+        verticalLabel
+        name="trader"
+        label={t('table.signalSourceAccount')}
+        placeholder={t('common.pleaseInput', {
+          field: t('table.signalSourceAccount'),
+        })}
+      />
+      <FormInput
+        verticalLabel
+        name="client"
+        label={t('table.subscriberAccount')}
+        placeholder={t('common.pleaseInput', {
+          field: t('table.subscriberAccount'),
+        })}
+      />
+      <FormSelect
+        verticalLabel
+        name="payStatus"
+        label={t('performanceFeeRecord.arrivalStatus')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={PerformanceFeePayStatusOptions.map(i => ({
+          label: t(i.label),
+          value: i.value,
+        }))}
+      />
 
-          <FormField
-            name="Time"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('common.createTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="Time" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+      <FormField
+        name="Time"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('common.createTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="Time" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
-          <FormField
-            name="PayTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('performanceFeeRecord.payTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="PayTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" loading={loading}>
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <FormField
+        name="PayTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('performanceFeeRecord.payTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="PayTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" loading={loading}>
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };
