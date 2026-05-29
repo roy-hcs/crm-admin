@@ -1598,7 +1598,18 @@
   "signalReview": {
     "hide": "Do not display",
     "minBalanceForSubscription": "Subscription minimum balance limit (optional)",
+    "maxBalanceForSubscription": "Subscription maximum balance limit (optional)",
     "performanceFeeRatio": "Performance fee ratio",
+    "subscriptionReview": "Subscription review",
+    "charge": "Charge",
+    "free": "Free",
+    "paid": "Paid",
+    "performanceFeeCycleOptions": {
+      "3": "Full subscription cycle",
+      "0": "Daily",
+      "1": "Weekly",
+      "2": "Monthly"
+    },
     "show": "exhibit",
     "title": "Signal source review",
     "upperLimit": "Subscription limit (optional)"
@@ -1637,7 +1648,16 @@
     "title": "PAMM Provision Report"
   },
   "CopyTradingSettings": {
-    "title": "Protocol settings"
+    "title": "Protocol settings",
+    "applicableScenarios": "Applicable scenarios",
+    "confirmDelete": "Are you sure you want to delete this CopyTrading agreement? \nThis data will not be recoverable after deletion!",
+    "content": "Agreement content",
+    "copyTrading": "CopyTrading Agreement",
+    "type": "protocol type",
+    "typeOptions": {
+      "0": "Text entry",
+      "1": "File upload"
+    }
   },
   "orderManagementTable": {
     "arrivalStatusOptions": {

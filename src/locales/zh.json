@@ -1007,7 +1007,18 @@
     "show": "展示",
     "hide": "不展示",
     "upperLimit": "订阅上限(选填)",
-    "minBalanceForSubscription": "订阅最低余额限制(选填)"
+    "minBalanceForSubscription": "订阅最低余额限制(选填)",
+    "maxBalanceForSubscription": "订阅最高余额限制(选填)",
+    "subscriptionReview": "订阅审核",
+    "charge": "收费",
+    "free": "免费",
+    "paid": "收费",
+    "performanceFeeCycleOptions": {
+      "3": "完整订阅周期",
+      "0": "每日",
+      "1": "每周",
+      "2": "每月"
+    }
   },
   "varietyManagement": {
     "title": "品种管理",
@@ -1697,7 +1708,16 @@
     "title": "PAMM计提报表"
   },
   "CopyTradingSettings": {
-    "title": "协议设置"
+    "title": "协议设置",
+    "copyTrading": "CopyTrading协议",
+    "applicableScenarios": "适用场景",
+    "type": "协议类型",
+    "typeOptions": {
+      "0": "文本录入",
+      "1": "文件上传"
+    },
+    "content": "协议内容",
+    "confirmDelete": "确定删除该 CopyTrading协议？删除后该条数据将不可恢复!"
   },
   "RebateBasicSettingsPage": {
     "title": "基础设置",

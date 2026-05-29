@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { useGlobalLoading } from '@/contexts/loading';
-import { uploadFilesInArr } from '@/pages/ticket/ticket-list/components/AddTicketDialog';
+import { uploadFilesInArr } from '@/lib/upload';
 import { useDictType, useUploadFile, useUserRoleList } from '@/api/hooks/system/system';
 import { useCreateProduct, useEditProduct, useProductDetail } from '@/api/hooks/pointsMall';
 import { toast } from 'sonner';

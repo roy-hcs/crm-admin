@@ -20,6 +20,8 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { $patchStyleText, $setBlocksType } from '@lexical/selection';
 import { HeadingNode, QuoteNode, $createHeadingNode, $createQuoteNode } from '@lexical/rich-text';
 import {
+  $isDecoratorNode,
+  $isElementNode,
   $createParagraphNode,
   $createTextNode,
   $getRoot,
@@ -67,13 +69,22 @@ function setEditorHtml(editor: LexicalEditor, html: string) {
     const parser = new DOMParser();
     const dom = parser.parseFromString(html, 'text/html');
     const nodes = $generateNodesFromDOM(editor, dom);
+    const validNodes = nodes.filter(node => $isElementNode(node) || $isDecoratorNode(node));
 
-    if (nodes.length === 0) {
+    if (validNodes.length === 0) {
+      const plainText = dom.body.textContent?.trim() || '';
+      if (plainText) {
+        const paragraph = $createParagraphNode();
+        paragraph.append($createTextNode(plainText));
+        root.append(paragraph);
+        return;
+      }
+
       root.append($createParagraphNode());
       return;
     }
 
-    root.append(...nodes);
+    root.append(...validNodes);
   });
 }
 
@@ -380,7 +391,7 @@ function ValueSyncPlugin({ value, htmlRef }: { value: string; htmlRef: MutableRe
 export function RrhEditor({
   value = '',
   onChange,
-  placeholder = '请输入内容',
+  placeholder = '',
   className,
   disabled = false,
   onUploadImage,

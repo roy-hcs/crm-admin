@@ -6,9 +6,8 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from 'react-hook-form';
-import { BasicParams } from '@/api/types';
+import { BasicParams, SelectOption } from '@/api/types';
 import { Dispatch, SetStateAction } from 'react';
-import { DictTypeItem } from '@/api/hooks/system';
 import { MamProtocolListParams } from '@/api/hooks/copyTrading/type';
 import { RrhForm } from '@/components/form/RrhForm';
 
@@ -21,13 +20,13 @@ export const AgreementSettingsForm = ({
   setOtherParams,
   reset,
   loading,
-  scenarioTypes = [],
+  scenarioOptions,
   otherParams,
 }: {
   setOtherParams: Dispatch<SetStateAction<Omit<MamProtocolListParams, keyof BasicParams>>>;
   reset: () => void;
   loading: boolean;
-  scenarioTypes?: DictTypeItem[];
+  scenarioOptions: SelectOption[];
   otherParams: Omit<MamProtocolListParams, keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
@@ -80,7 +79,7 @@ export const AgreementSettingsForm = ({
         label={t('table.applicableScenario')}
         placeholder={t('common.pleaseSelect')}
         showRowValue={false}
-        options={scenarioTypes.map(item => ({ label: item.dictLabel, value: item.dictValue }))}
+        options={scenarioOptions}
       />
       <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
         <RrhButton type="reset" variant="outline" onClick={onReset}>
