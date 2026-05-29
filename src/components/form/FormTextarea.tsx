@@ -32,7 +32,7 @@ export function FormTextarea<T extends FieldValues>({
         return (
           <FormItem className={cn(className)}>
             {label && (
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2">
                 {label && <FormLabel>{label}</FormLabel>}
                 {labeTipsDom && <div>{labeTipsDom}</div>}
               </div>

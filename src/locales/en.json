@@ -1598,7 +1598,18 @@
   "signalReview": {
     "hide": "Do not display",
     "minBalanceForSubscription": "Subscription minimum balance limit (optional)",
+    "maxBalanceForSubscription": "Subscription maximum balance limit (optional)",
     "performanceFeeRatio": "Performance fee ratio",
+    "subscriptionReview": "Subscription review",
+    "charge": "Charge",
+    "free": "Free",
+    "paid": "Paid",
+    "performanceFeeCycleOptions": {
+      "3": "Full subscription cycle",
+      "0": "Daily",
+      "1": "Weekly",
+      "2": "Monthly"
+    },
     "show": "exhibit",
     "title": "Signal source review",
     "upperLimit": "Subscription limit (optional)"

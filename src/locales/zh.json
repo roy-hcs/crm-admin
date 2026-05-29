@@ -1007,7 +1007,18 @@
     "show": "展示",
     "hide": "不展示",
     "upperLimit": "订阅上限(选填)",
-    "minBalanceForSubscription": "订阅最低余额限制(选填)"
+    "minBalanceForSubscription": "订阅最低余额限制(选填)",
+    "maxBalanceForSubscription": "订阅最高余额限制(选填)",
+    "subscriptionReview": "订阅审核",
+    "charge": "收费",
+    "free": "免费",
+    "paid": "收费",
+    "performanceFeeCycleOptions": {
+      "3": "完整订阅周期",
+      "0": "每日",
+      "1": "每周",
+      "2": "每月"
+    }
   },
   "varietyManagement": {
     "title": "品种管理",

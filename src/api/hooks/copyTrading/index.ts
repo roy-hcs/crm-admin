@@ -34,6 +34,8 @@ import {
   AddMamProtocolParams,
   EditMamProtocolParams,
   MamProtocolDetailRes,
+  MamSignalSourceDetailRes,
+  MamSignalSourceVerifyParams,
 } from './type';
 
 export function useChangeMamSignalSource() {
@@ -66,6 +68,25 @@ export function useMamSignalSourceVerifyList(params: MamSignalSourceVerifyListPa
         `/system/mamSignalSourceVerify/verifyList`,
         params,
       ),
+  });
+}
+
+export function useMamSignalSourceDetail(id: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['mamSignalSourceDetail', id],
+    queryFn: () =>
+      apiGetCustom<MamSignalSourceDetailRes>(`/system/mamSignalSourceVerify/detailInfo/${id}`),
+    enabled: options.enabled,
+  });
+}
+
+/**
+ * 信号源审核
+ */
+export function useMamSignalSourceVerify() {
+  return useMutation({
+    mutationFn: (params: MamSignalSourceVerifyParams) =>
+      apiFormPost('/system/mamSignalSourceVerify/verify', params),
   });
 }
 

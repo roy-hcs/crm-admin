@@ -96,6 +96,71 @@ export type MamSignalSourceVerifyListParams = BasicParams & {
 
 export type MamSignalSourceVerifyListRes = BasicRes<MamSignalSourceItem>;
 
+export type MamSignalSourceVerifyParams = {
+  id: string;
+  verifyStatus: string;
+  remark: string;
+};
+
+export type MamSignalSourceDetailItem = BaseEntity & {
+  id: string;
+  name: string;
+  serverId: string;
+  server: string;
+  account: string;
+  userId: string;
+  icon: string;
+  upperLimit: number | null;
+  publicShow: number;
+  charge: number;
+  subscribeFee: number;
+  receiveType: number;
+  receiveAccount: string;
+  receiveServerId: string | null;
+  description: string | null;
+  status: number | null;
+  subTime: string | null;
+  verifyTime: string | null;
+  verifyUser: string | null;
+  verifyStatus: number;
+  delFlag: number;
+  closeType: string | null;
+  closeReason: string | null;
+  closeTime: string | null;
+  userName: string;
+  userLastName: string;
+  showId: string;
+  email: string;
+  subscribeNum: number | null;
+  totalProfit: number | null;
+  totalProfitRate: number | null;
+  currency: string | null;
+  serverProperty: string | null;
+  subscriptionReview: number;
+  minBalanceForSubscription: number | null;
+  maxBalanceForSubscription: number | null;
+  performanceFeeEnable: number;
+  performanceFeeCycle: number;
+  performanceFeeRatio: number;
+  performanceFeeRebateEnabled: number;
+  performanceFeeRebateScheme: string | null;
+  performanceFeeRebateLevel: number;
+  levels: unknown;
+  countryId: string | null;
+  countryName: string | null;
+};
+
+export type MamSignalSourceDetailData = {
+  userLanguageTip: string;
+  receiveAccount: string;
+  detail: MamSignalSourceDetailItem;
+};
+
+export type MamSignalSourceDetailRes = {
+  code: number;
+  data: MamSignalSourceDetailData;
+};
+
 export type MamSymbolListParams = BasicParams & {
   symbolCategory?: string;
   symbol?: string;
