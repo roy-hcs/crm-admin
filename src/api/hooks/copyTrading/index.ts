@@ -31,6 +31,9 @@ import {
   MamSymbolDetailRes,
   MamFollowDetailRes,
   PerformanceFeeDetailRes,
+  AddMamProtocolParams,
+  EditMamProtocolParams,
+  MamProtocolDetailRes,
 } from './type';
 
 export function useChangeMamSignalSource() {
@@ -231,6 +234,43 @@ export function useMamProtocolList(params: MamProtocolListParams) {
   return useQuery({
     queryKey: ['mamProtocolList', params],
     queryFn: () => apiFormPostCustom<MamProtocolListRes>('/system/mamProtocol/list', params),
+  });
+}
+
+/**
+ * 新增协议
+ */
+export function useAddMamProtocol() {
+  return useMutation({
+    mutationFn: (params: AddMamProtocolParams) => apiPost('/system/mamProtocol/add', params),
+  });
+}
+
+/**
+ * 修改协议
+ */
+export function useEditMamProtocol() {
+  return useMutation({
+    mutationFn: (params: EditMamProtocolParams) => apiPost('/system/mamProtocol/edit', params),
+  });
+}
+
+/**
+ * 协议详情
+ */
+export function useMamProtocolDetail() {
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiGet<MamProtocolDetailRes>(`/system/mamProtocol/detailInfo/${id}`),
+  });
+}
+
+/**
+ * 删除协议
+ */
+export function useDeleteMamProtocol() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) => apiFormPost('/system/mamProtocol/remove', params),
   });
 }
 

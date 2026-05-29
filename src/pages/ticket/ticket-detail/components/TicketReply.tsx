@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import z from 'zod';
 import { UploadFile } from '../../ticket-list/components/UploadFile';
 import { toast } from 'sonner';
-import { uploadFilesInArr } from '../../ticket-list/components/AddTicketDialog';
+import { uploadFilesInArr } from '@/lib/upload';
 import { useUploadFile } from '@/api/hooks/system/system';
 import { useDeleteReply, useReplyOrder } from '@/api/hooks/ticket/ticket';
 import { RrhButton } from '@/components/common/RrhButton';

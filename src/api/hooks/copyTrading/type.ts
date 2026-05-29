@@ -152,14 +152,55 @@ export type MamProtocolItem = BaseEntity & {
   status: number;
   sort: number;
   delFlag: number;
-  name: string;
+  name: string | null;
   language: string | null;
   languages: string | null;
 };
 export type MamProtocolListRes = BasicRes<MamProtocolItem>;
+
+export type MamProtocolLanguageItem = BaseEntity & {
+  id: string;
+  protocolId: string;
+  type: number;
+  name: string;
+  content: string;
+  fileUrl: string;
+  language: string;
+  languageName: string | null;
+};
+
+export type MamProtocolDetailData = Omit<MamProtocolItem, 'languages'> & {
+  languages: MamProtocolLanguageItem[];
+};
+
+export type MamProtocolDetailRes = MamProtocolDetailData;
+
 export type MamProtocolListParams = BasicParams & {
   name: string;
   applicableScenarios: string;
+};
+
+export type MamProtocolLanguagePayload = {
+  language: string;
+  name: string;
+  type: string;
+  content: string;
+  fileUrl: string;
+};
+
+export type LanguagesItem = MamProtocolLanguagePayload;
+
+export type MamProtocolUpsertParams = {
+  applicableScenarios: string;
+  sort: string;
+  status: string;
+  languages: MamProtocolLanguagePayload[];
+};
+
+export type AddMamProtocolParams = MamProtocolUpsertParams;
+
+export type EditMamProtocolParams = MamProtocolUpsertParams & {
+  id: string;
 };
 
 export type MamFollowListParams = BasicParams & {

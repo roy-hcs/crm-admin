@@ -30,6 +30,8 @@ interface UploadFileProps<TFieldValues extends FieldValues> {
   label: string;
   description?: string;
   fileWrapperCls?: string;
+  maxSize?: number; // 单个文件的最大大小，单位MB，默认为10MB
+  accept?: string; // 可接受的文件类型，默认为常见文档和图片格式
 }
 
 export const UploadFile = <TFieldValues extends FieldValues>({
@@ -37,6 +39,8 @@ export const UploadFile = <TFieldValues extends FieldValues>({
   label,
   description,
   fileWrapperCls,
+  maxSize = 10,
+  accept = '.txt,.doc,.docx,.ppt,.pptx,.xlsx,.pdf,.jpg,.jpeg,.png,.gif',
 }: UploadFileProps<TFieldValues>) => {
   const { t } = useTranslation();
 
@@ -47,12 +51,12 @@ export const UploadFile = <TFieldValues extends FieldValues>({
     const selectedFiles = Array.from(e.target.files || []);
     if (selectedFiles.length === 0) return;
 
-    // 大于10m的文件不允许上传
-    const validFiles = selectedFiles.filter(file => file.size <= 10 * 1024 * 1024);
+    // 大于指定大小的文件不允许上传
+    const validFiles = selectedFiles.filter(file => file.size <= maxSize * 1024 * 1024);
     if (validFiles.length !== selectedFiles.length) {
       toast.error(
         t('rules.maxSize', {
-          maxSize: '10MB',
+          maxSize: maxSize,
         }),
       );
       return;
@@ -77,7 +81,7 @@ export const UploadFile = <TFieldValues extends FieldValues>({
           <input
             ref={fileInputRef}
             type="file"
-            accept=".txt,.doc,.docx,.ppt,.pptx,.xlsx,.pdf,.jpg,.jpeg,.png,.gif"
+            accept={accept}
             className="hidden"
             onChange={handleImageUpload}
             multiple
