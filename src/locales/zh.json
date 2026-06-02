@@ -987,9 +987,11 @@
     "title": "信号源",
     "name": "信号源名称",
     "signalSourceAuthor": "信号源作者",
+    "signalSourceAuthorDesc": "信号源作者需为CRM用户",
     "totalProfit": "收益(Total)",
     "totalProfitRate": "收益率(Total)",
     "subscribeFee": "订阅费",
+    "subscribeFeeDesc": "一个完整订阅周期结束后，您将获得订阅费",
     "subscribeNum": "订阅数",
     "statusOptions": {
       "0": "关闭",
@@ -999,6 +1001,23 @@
     "confirm": {
       "stop": "确认要修改为不公开展示？",
       "open": "确认要修改为公开展示？"
+    },
+    "icon": "信号源icon(选填)",
+    "iconDesc": "个性的icon 会让人印象深刻 支持jpg、jpeg、png格式的图片,且不超过 100KB",
+    "minMaxBalanceForSubscription": "订阅最低-最高余额限制(选填)",
+    "minBalanceForSubscription": "最低余额（正整数）",
+    "maxBalanceForSubscription": "最高余额（正整数）",
+    "performanceFeeEnable": "订阅费",
+    "charge": "表现费",
+    "chargeDesc": "表现费根据不同周期收取，可选完成订阅周期、每周、周月。当信号源的盈利超过高水位线后，超过的部分将收取一定的业绩表现费。",
+    "description": "信号源描述(选填)",
+    "performanceFeeRebateEnabled": "上级/代理返佣",
+    "performanceFeeRebateEnabledDesc": "收取的净表现费(扣除管理费的部分)将优先用于代理/上级返佣提成",
+    "performanceFeeRebateScheme": "返佣方案",
+    "performanceFeeRebateSchemeDesc": "单独设置：需要单独设置本信号源的表现费返佣设置，并依据此方案执行返佣。统一设置：无需单独设置信号源表现费返佣设置，依据系统的统一设定进行返佣。",
+    "performanceFeeRebateSchemeOptions": {
+      "1": "单独设置",
+      "2": "统一设置"
     }
   },
   "signalReview": {
@@ -1010,6 +1029,7 @@
     "minBalanceForSubscription": "订阅最低余额限制(选填)",
     "maxBalanceForSubscription": "订阅最高余额限制(选填)",
     "subscriptionReview": "订阅审核",
+    "subscriptionReviewDesc": "开启：用户申请信号源订阅将需要进行人工审核后方可启用。关闭：用户申请信号源无需审核即可订阅成功。",
     "charge": "收费",
     "free": "免费",
     "paid": "收费",

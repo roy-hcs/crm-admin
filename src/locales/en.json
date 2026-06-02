@@ -1586,7 +1586,26 @@
     "subscribeNum": "Number of subscriptions",
     "title": "signal source",
     "totalProfit": "Revenue(Total)",
-    "totalProfitRate": "Yield(Total)"
+    "totalProfitRate": "Yield(Total)",
+    "charge": "performance fee",
+    "chargeDesc": "Performance fees are charged according to different cycles, and you can choose to complete the subscription cycle, weekly, or weekly or monthly. \nWhen the profit of the signal source exceeds the high water mark, a certain performance fee will be charged for the excess portion.",
+    "description": "Signal source description (optional)",
+    "icon": "Signal source icon (optional)",
+    "iconDesc": "Personalized icons will impress people. Images in jpg, jpeg, and png formats are supported and should not exceed 100KB.",
+    "maxBalanceForSubscription": "Maximum balance (positive integer)",
+    "minBalanceForSubscription": "Minimum balance (positive integer)",
+    "minMaxBalanceForSubscription": "Subscription minimum-maximum balance limit (optional)",
+    "performanceFeeEnable": "Subscription fee",
+    "performanceFeeRebateEnabled": "Superior/Agent Rebate",
+    "performanceFeeRebateEnabledDesc": "The net performance fee collected (the part minus the management fee) will be used first for agent/superior rebate commission.",
+    "performanceFeeRebateScheme": "Rebate program",
+    "performanceFeeRebateSchemeDesc": "Separate settings: You need to set up the performance fee rebate settings for this signal source separately, and perform rebates according to this plan. \nUnified settings: There is no need to separately set the signal source performance fee rebate settings, and the rebates are based on the unified settings of the system.",
+    "performanceFeeRebateSchemeOptions": {
+      "1": "Separate settings",
+      "2": "Unified settings"
+    },
+    "signalSourceAuthorDesc": "The signal source author must be a CRM user",
+    "subscribeFeeDesc": "After a full subscription period, you will receive the subscription fee"
   },
   "PammInvestReport": {
     "cancel": "Cancel",
@@ -1605,14 +1624,15 @@
     "free": "Free",
     "paid": "Paid",
     "performanceFeeCycleOptions": {
-      "3": "Full subscription cycle",
       "0": "Daily",
       "1": "Weekly",
-      "2": "Monthly"
+      "2": "Monthly",
+      "3": "Full subscription cycle"
     },
     "show": "exhibit",
     "title": "Signal source review",
-    "upperLimit": "Subscription limit (optional)"
+    "upperLimit": "Subscription limit (optional)",
+    "subscriptionReviewDesc": "Enable: Users applying for signal source subscriptions will need to undergo manual review before they can be enabled. \nOff: Users who apply for signal sources can successfully subscribe without review."
   },
   "varietyManagement": {
     "cname": "Chinese name",

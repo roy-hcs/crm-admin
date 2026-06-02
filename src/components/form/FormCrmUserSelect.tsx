@@ -153,7 +153,7 @@ export function FormCrmUserSelect<T extends FieldValues>({
           <FormControl
             className={cn('shrink-0', verticalLabel || !label ? 'basis-full' : 'basis-9/12')}
           >
-            <div className={cn('w-full', disabled && 'pointer-events-none opacity-60')}>
+            <div className="w-full">
               <RrhSearchSelect<CrmUserParams, CrmUserItem>
                 fetchFunction={fetchUser}
                 mapOption={mapOption}
@@ -161,6 +161,7 @@ export function FormCrmUserSelect<T extends FieldValues>({
                 buildSearchParams={buildSearchParams}
                 getNextParams={getNextParams}
                 lazy
+                disabled={disabled}
                 value={field.value ?? ''}
                 displayLabel={
                   labelName ? (form.watch(labelName) as string | undefined) || undefined : undefined
