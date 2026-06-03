@@ -36,6 +36,9 @@ import {
   MamProtocolDetailRes,
   MamSignalSourceDetailRes,
   MamSignalSourceVerifyParams,
+  MamSignalSourceEditDetailRes,
+  MamSignalSourceEditParams,
+  GetTradeAccounts,
 } from './type';
 
 export function useChangeMamSignalSource() {
@@ -54,6 +57,51 @@ export function useMamSignalSourceList(params: MamSignalSourceListParams) {
     queryKey: ['mamSignalSourceList', params],
     queryFn: () =>
       apiFormPostCustom<MamSignalSourceListRes>(`/system/mamSignalSource/list`, params),
+  });
+}
+
+/**
+ * 信号源列表编辑详情
+ */
+export function useMamSignalSourceEditDetail() {
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiGetCustom<MamSignalSourceEditDetailRes>(`/system/mamSignalSource/detailInfo/${id}`),
+  });
+}
+
+/**
+ * 信号源编辑-修改接口
+ */
+export function useMamSignalSourceEdit() {
+  return useMutation({
+    mutationFn: (params: MamSignalSourceEditParams & { id: string }) =>
+      apiFormPost(`/system/mamSignalSource/edit`, params),
+  });
+}
+
+/**
+ * 信号源编辑-新增接口
+ */
+export function useMamSignalSourceAdd() {
+  return useMutation({
+    mutationFn: (params: MamSignalSourceEditParams) =>
+      apiFormPost(`/system/mamSignalSource/add`, params),
+  });
+}
+
+/**
+ * 信号源新增/编辑-获取账户列表
+ */
+export function useGetTradeAccounts(params: { userId: string }) {
+  return useQuery({
+    queryKey: ['getTradeAccounts', params],
+    queryFn: () =>
+      apiFormPostCustom<GetTradeAccounts>(
+        `/system/mamSignalSource/getTradeAccounts?userId=${params.userId}`,
+        {},
+      ),
+    enabled: !!params.userId,
   });
 }
 

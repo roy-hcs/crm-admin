@@ -23,6 +23,7 @@ export interface RrhSearchSelectProps<TParams, TItem> {
   value?: string;
   displayLabel?: string;
   lazy?: boolean;
+  disabled?: boolean;
 }
 
 export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TParams, TItem>) {
@@ -36,6 +37,7 @@ export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TPar
     value,
     displayLabel,
     lazy = false,
+    disabled = false,
   } = props;
   const { t } = useTranslation();
   const [itemsData, setItemsData] = useState<TItem[]>([]);
@@ -263,9 +265,10 @@ export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TPar
         <PopoverAnchor asChild>
           <input
             ref={inputRef}
-            className="border-input bg-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border px-3 py-2 text-sm shadow-sm focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+            className="border-input bg-background placeholder:text-muted-foreground focus-visible:ring-ring disabled:bg-muted disabled:text-muted-foreground disabled:border-muted-foreground/20 flex h-9 w-full rounded-md border px-3 py-2 text-sm shadow-sm focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-100"
             placeholder={t('common.pleaseSelect')}
             value={inputText}
+            disabled={disabled}
             onFocus={() => setOpen(true)}
             onChange={e => {
               const nextValue = e.target.value;

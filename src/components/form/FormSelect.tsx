@@ -19,6 +19,7 @@ interface FormSelectProps<T extends FieldValues, O extends BaseOption = BaseOpti
   disabled?: boolean;
   selectCls?: string;
   labeTipsDom?: React.ReactNode;
+  displayValue?: string;
 }
 
 // 提取 Select 组件额外支持的属性
@@ -71,8 +72,14 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
                 options={options}
                 value={field.value?.toString()}
                 onValueChange={field.onChange}
-                className={cn('w-full', selectCls)}
+                className={cn(
+                  'w-full',
+                  disabled &&
+                    'data-[disabled]:bg-muted data-[disabled]:text-muted-foreground data-[disabled]:border-muted-foreground/20 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-100',
+                  selectCls,
+                )}
                 placeholder={placeholder}
+                displayValue={props.displayValue}
                 renderItem={renderItem}
                 showRowValue={showRowValue}
                 disabled={disabled}

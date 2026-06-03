@@ -79,6 +79,85 @@ export type MamSignalSourceItem = {
 
 export type MamSignalSourceListRes = BasicRes<MamSignalSourceItem>;
 
+export type MamSignalSourceRebateLevelItem = {
+  id?: string;
+  signalSourceId?: string;
+  rebateLevel: number;
+  rebateRatio: number;
+};
+
+export type MamSignalSourceEditDetailItem = MamSignalSourceItem & {
+  maxBalanceForSubscription: number | null;
+  performanceFeeRebateEnabled: number;
+  performanceFeeRebateScheme: number;
+  performanceFeeRebateLevel: number;
+  levels: MamSignalSourceRebateLevelItem[];
+  countryId: string;
+  countryName: string | null;
+};
+
+export type MamSignalSourceEditDetailRes = {
+  code: number;
+  data: {
+    chargingMethod: string;
+    allowedSignalSelfRebateSet: string;
+    detail: MamSignalSourceEditDetailItem;
+  };
+  msg?: string;
+};
+
+export type MamSignalSourceEditParams = {
+  name: string;
+  userId: string;
+  // account: string;
+  icon?: string;
+  serverId?: string;
+  server?: string;
+  minBalanceForSubscription?: string | number;
+  maxBalanceForSubscription?: string | number;
+  upperLimit?: string | number;
+  subscribeFee?: string | number;
+  performanceFeeCycle?: string | number;
+  performanceFeeRatio?: string | number;
+  receiveType?: string | number;
+  receiveServerId?: string;
+  receiveAccount?: string;
+  countryId?: string;
+  description?: string;
+  performanceFeeRebateScheme?: string | number;
+  performanceFeeRebateLevel?: string | number;
+  levels?: MamSignalSourceRebateLevelItem[];
+  publicShow?: string | number;
+  charge?: string | number;
+  performanceFeeEnable?: string | number;
+  subscriptionReview?: string | number;
+  performanceFeeRebateEnabled?: string | number;
+};
+
+export type TradeAccountItem = {
+  id: string;
+  userId: string;
+  name: string | null;
+  account: string;
+  serviceType: number;
+  serviceProperty: number;
+  server: string;
+  serverName: string;
+  currency: string | null;
+  balance: number;
+  netWorth: number;
+  params: object;
+  [key: string]: unknown;
+};
+
+export type GetTradeAccounts = {
+  code: number;
+  data: {
+    receiveList: TradeAccountItem[];
+    walletList: TradeAccountItem[];
+    accountList: TradeAccountItem[];
+  };
+};
 export type MamSignalSourceVerifyListParams = BasicParams & {
   name?: string;
   userName?: string;

@@ -9,7 +9,8 @@ export const RrhServerSelector: FC<{
   name?: string;
   label?: string;
   serverOptions: ServerItem[];
-}> = ({ name = 'serverId', label, serverOptions }) => {
+  disabled?: boolean;
+}> = ({ name = 'serverId', label, serverOptions, disabled = false }) => {
   const { t } = useTranslation();
   return (
     <FormSelect<
@@ -39,6 +40,7 @@ export const RrhServerSelector: FC<{
           </div>
         );
       }}
+      disabled={disabled}
     />
   );
 };

@@ -7,7 +7,7 @@ import { ReactElement } from 'react';
 
 interface FormInputProps<T extends FieldValues> {
   name: FieldPath<T>;
-  label: string;
+  label?: string;
   placeholder: string;
   className?: string;
   verticalLabel?: boolean;
