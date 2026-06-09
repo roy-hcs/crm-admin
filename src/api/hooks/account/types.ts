@@ -695,3 +695,104 @@ export type CrmDealAccountLimitOrderItem = {
 export type CrmDealAccountLimitOrderRes = BasicRes<CrmDealAccountLimitOrderItem> & {
   totalVolume: number;
 };
+
+export type CustomerLoyaltyPlanItem = BaseEntity & {
+  id: string;
+  name: string;
+  sort: number;
+  description: string;
+  userCount: number;
+  status: number;
+  performanceFeeReduce: number | null;
+  performanceFeeRebatBonus: number | null;
+  delFlag: string;
+  language: string | null;
+  languageList: string[] | null;
+  crmUserVipAndRuleList: unknown[] | null;
+  crmUserVipOrRuleList: unknown[] | null;
+};
+
+export type CustomerLoyaltyPlanRes = {
+  code: number;
+  data: {
+    userVipStatus: string;
+    userVipList: CustomerLoyaltyPlanItem[];
+  };
+};
+
+export type CrmUserVipUpdateSortParams = {
+  id: string;
+  sort: number;
+};
+
+export type CrmUserVipGetPreferenceRes = {
+  code: number;
+  data: {
+    targetAccount: string;
+    evaluationMode: string;
+  };
+};
+
+export type CrmUserVipPreferenceEditParams = {
+  targetAccount: string[];
+  evaluationMode: string;
+};
+
+export type CrmUserVipLanguageItem = {
+  id?: string;
+  vipId?: string;
+  language: string;
+  languageName?: string;
+  name: string;
+  description: string;
+  delFlag?: string | null;
+};
+
+export type CrmUserVipRuleItem = {
+  id?: string;
+  vipId?: string;
+  ruleType: string;
+  ruleEvent: string | number;
+  ruleSymbol: string;
+  ruleValue: string | number;
+  ruleLevel: string | null;
+  ruleTag: string | null;
+  delFlag?: string | null;
+};
+
+export type CrmUserVipAddParams = {
+  sort: number;
+  status: number;
+  languageList: CrmUserVipLanguageItem[];
+  crmUserVipAndRuleList: CrmUserVipRuleItem[];
+  crmUserVipOrRuleList: CrmUserVipRuleItem[];
+};
+
+export type CrmUserVipEditParams = CrmUserVipAddParams & {
+  id: string;
+};
+
+export type CrmUserVipDetailRes = {
+  code: number;
+  data: {
+    createBy: string | null;
+    createTime: string | null;
+    updateBy: string | null;
+    updateTime: string | null;
+    remark: string | null;
+    params: Record<string, unknown>;
+    id: string;
+    name: string | null;
+    sort: number;
+    description: string | null;
+    userCount: number | null;
+    status: number;
+    performanceFeeReduce: number | null;
+    performanceFeeRebatBonus: number | null;
+    delFlag: string;
+    language: string | null;
+    languageList: CrmUserVipLanguageItem[];
+    crmUserVipAndRuleList: CrmUserVipRuleItem[];
+    crmUserVipOrRuleList: CrmUserVipRuleItem[];
+  };
+};

@@ -1,5 +1,12 @@
 // Account module API hooks
-import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom, apiPost } from '@/api/client';
+import {
+  apiDelete,
+  apiFormPost,
+  apiFormPostCustom,
+  apiGet,
+  apiGetCustom,
+  apiPost,
+} from '@/api/client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   CrmUserParams,
@@ -35,6 +42,13 @@ import {
   CrmDealAccountLimitOrderRes,
   AccountDetailInfo,
   DetailInfoEditParams,
+  CustomerLoyaltyPlanRes,
+  CrmUserVipUpdateSortParams,
+  CrmUserVipPreferenceEditParams,
+  CrmUserVipAddParams,
+  CrmUserVipEditParams,
+  CrmUserVipDetailRes,
+  CrmUserVipGetPreferenceRes,
 } from './types';
 
 export * from './types';
@@ -466,5 +480,102 @@ export function useCrmDealAccountLimitOrder(id: string, params: CrmDealAccountLi
         `/system/crmDealAccount/positionOrder/2/${id}`,
         params,
       ),
+  });
+}
+
+/**
+ * 账户管理-客户忠诚计划配置获取
+ */
+export function useCustomerLoyaltyPlan() {
+  return useQuery({
+    queryKey: ['CustomerLoyaltyPlan'],
+    queryFn: () => apiGetCustom<CustomerLoyaltyPlanRes>(`/system/crmUserVip/getSetting`),
+  });
+}
+
+/**
+ * 账户管理-客户忠诚计划 启用状态
+ */
+export function usePreferenceEdit() {
+  return useMutation({
+    mutationFn: (params: { userVipStatus: number }) =>
+      apiPost(`/system/crmUserVip/preferenceEdit`, params),
+  });
+}
+
+/**
+ * 账户管理-客户忠诚计划 启用状态
+ */
+export function useCrmUserVipChangeStatus() {
+  return useMutation({
+    mutationFn: (params: { id: string; status: number }) =>
+      apiPost(`/system/crmUserVip/changeStatus`, params),
+  });
+}
+
+/**
+ * 账户管理-客户忠诚计划 删除等级配置
+ */
+export function useDeleteCrmUserVip() {
+  return useMutation({
+    mutationFn: (params: { id: string }) => apiDelete(`/system/crmUserVip/remove/${params.id}`),
+  });
+}
+
+/**
+ * 账户管理-客户忠诚计划 等级排序
+ */
+export function useCrmUserVipUpdateSort() {
+  return useMutation({
+    mutationFn: (params: CrmUserVipUpdateSortParams[]) =>
+      apiPost(`/system/crmUserVip/updateSort`, params),
+  });
+}
+
+/**
+ * 账户管理-客户忠诚计划 偏好详情
+ */
+export function useCrmUserVipGetPreference() {
+  return useMutation({
+    mutationFn: () => apiGetCustom<CrmUserVipGetPreferenceRes>(`/system/crmUserVip/getPreference`),
+  });
+}
+
+/**
+ * 账户管理-客户忠诚计划 偏好设置
+ */
+export function useCrmUserVipPreferenceEdit() {
+  return useMutation({
+    mutationFn: (params: CrmUserVipPreferenceEditParams) =>
+      apiPost(`/system/crmUserVip/preferenceEdit`, params),
+  });
+}
+
+/**
+ * 账户管理-客户忠诚计划 新增等级配置详情
+ */
+export function useCrmUserVipDetail(id: string) {
+  return useQuery({
+    queryKey: ['crmUserVipDetail', id],
+    queryFn: () => apiGetCustom<CrmUserVipDetailRes>(`/system/crmUserVip/detail/${id}`),
+    enabled: Boolean(id),
+  });
+}
+
+/**
+ * 账户管理-客户忠诚计划 新增等级配置
+ */
+export function useCrmUserVipAdd() {
+  return useMutation({
+    mutationFn: (params: CrmUserVipAddParams) => apiPost(`/system/crmUserVip/add`, params),
+  });
+}
+
+/**
+ * 账户管理-客户忠诚计划 编辑等级配置
+ */
+export function useCrmUserVipEdit() {
+  return useMutation({
+    mutationFn: (params: CrmUserVipEditParams) => apiPost(`/system/crmUserVip/edit`, params),
   });
 }

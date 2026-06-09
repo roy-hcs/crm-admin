@@ -9,10 +9,17 @@ import { WalletAccountsDetailPage } from '@/pages/account/wallet-accounts-detail
 import { TradingAccountsDetailPage } from '@/pages/account/trading-accounts-detail/TradingAccountsDetailPage';
 import { CrmAccountsDetail } from '@/pages/account/crm-accounts-detail/CrmAccountsDetail';
 import { CrmUserWalletDetailPage } from '@/pages/account/crm-accounts-detail/pages/CrmUserWalletDetailPage';
+import { CustomerLoyaltyPlan } from '@/pages/account/customer-loyalty-plan/CustomerLoyaltyPlan';
+import { CustomerLoyaltyPlanConfig } from '@/pages/account/customer-loyalty-plan-config/CustomerLoyaltyPlanConfig';
 
 const TradingAccountsDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();
   return <TradingAccountsDetailPage key={searchParams.get('id')} />;
+};
+
+const CustomerLoyaltyPlanConfigWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <CustomerLoyaltyPlanConfig key={searchParams.get('id')} />;
 };
 
 // Import other account pages as they are developed
@@ -69,5 +76,13 @@ export const accountRoutes: RouteObject[] = [
   {
     path: '/account/crm-accounts/wallets/detail',
     element: <CrmUserWalletDetailPage />,
+  },
+  {
+    path: '/account/customer-loyalty-plan',
+    element: <CustomerLoyaltyPlan />,
+  },
+  {
+    path: '/account/customer-loyalty-plan/config',
+    element: <CustomerLoyaltyPlanConfigWrapper />,
   },
 ];
