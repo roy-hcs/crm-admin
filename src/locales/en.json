@@ -288,7 +288,9 @@
     "back": "return",
     "failed": "fail",
     "faq": "FAQ",
-    "cannotModifyAfterSubmit": "Cannot be modified after submission"
+    "cannotModifyAfterSubmit": "Cannot be modified after submission",
+    "settled": "Settled",
+    "unsettled": "Pending settlement"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -2146,5 +2148,25 @@
     "viewGenerationsPlaceholder": "0-99 (no limit if not configured)",
     "viewSubordinate": "Check the lower level rebate parameters",
     "viewSubordinateDesc": "The agent can view the parameters of the lower-level agent on the user side"
+  },
+  "dashboard": {
+    "agreementSetting": "Protocol settings",
+    "copyTradingDisabled": "After closing, the user terminal will not display the CopyTrading interface.",
+    "copyTradingEarnings": "CopyTrading income situation",
+    "copyTradingEligibility": "Only users who meet the conditions will enable the Copytrading function",
+    "copyTradingMultiAccountManager": "CopyTrading(Multi-Account Manager)",
+    "estimatedManagementFee": "Estimated management fees",
+    "estimatedSubscribeFee": "Estimated subscription fee",
+    "followerCount": "Subscriber",
+    "managementFee": "Management fee(USD)",
+    "setting": "set up",
+    "signalSourceCount": "signal source",
+    "subscriptionFee": "Subscription fee(USD)",
+    "subscriptionStatus": "Subscription status (number)",
+    "title": "Dashboard",
+    "todayEstimatedManagementFee": "Estimated management fee (USD)",
+    "todayEstimatedSubscribeFee": "Estimated subscription fee (USD)",
+    "todayOrders": "Today’s order (number)",
+    "totalSubscriptionFee": "Total subscription fee"
   }
 }

@@ -307,7 +307,9 @@
     "back": "返回",
     "failed": "失败",
     "faq": "FAQ",
-    "cannotModifyAfterSubmit": "提交后不可修改"
+    "cannotModifyAfterSubmit": "提交后不可修改",
+    "settled": "已结算",
+    "unsettled": "待结算"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -2146,5 +2148,25 @@
     "exceedAncestorError": "下级返佣参数不能大于上级返佣参数",
     "modifyTotalRebateWarning": "修改返佣总值将会清空已填写的下级代理参数，确定要修改吗？",
     "maxTwoDecimalPlaces": "最多保留两位小数"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "copyTradingEarnings": "CopyTrading收益情况",
+    "subscriptionStatus": "订阅情况(个)",
+    "subscriptionFee": "订阅费(USD)",
+    "managementFee": "管理费(USD)",
+    "signalSourceCount": "信号源",
+    "followerCount": "订阅者",
+    "totalSubscriptionFee": "订阅费合计",
+    "estimatedSubscribeFee": "预估订阅费",
+    "estimatedManagementFee": "预估管理费",
+    "todayOrders": "今日订单(个)",
+    "todayEstimatedSubscribeFee": "预估订阅费(USD)",
+    "todayEstimatedManagementFee": "预估管理费(USD)",
+    "copyTradingEligibility": "符合条件的用户才会启用Copytrading功能",
+    "copyTradingMultiAccountManager": "CopyTrading(Multi-Account Manager)",
+    "copyTradingDisabled": "关闭后用户端将不展示CopyTrading界面",
+    "setting": "设置",
+    "agreementSetting": "协议设置"
   }
 }

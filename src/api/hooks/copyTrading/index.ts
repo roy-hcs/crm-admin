@@ -39,6 +39,8 @@ import {
   MamSignalSourceEditDetailRes,
   MamSignalSourceEditParams,
   GetTradeAccounts,
+  CopyTradingDashboardDataRes,
+  GetEstimatedFeeRes,
 } from './type';
 
 export function useChangeMamSignalSource() {
@@ -413,5 +415,42 @@ export function useEditPerformanceFeeRebate() {
 export function useEditLoyaltyReward() {
   return useMutation({
     mutationFn: (params: LoyaltyRewardParams) => apiPost('/system/mamConfig/edit', params),
+  });
+}
+
+/**
+ * dashboard 数据
+ */
+export function useMamDashboardInfo() {
+  return useQuery({
+    queryKey: ['mamDashboardInfo'],
+    queryFn: () => apiGetCustom<CopyTradingDashboardDataRes>(`/system/mamDashboard/info`),
+  });
+}
+
+/**
+ * dashboard CopyTrading收益情况
+ */
+export function useGetEstimatedFee() {
+  return useQuery({
+    queryKey: ['getEstimatedFee'],
+    queryFn: () => apiGetCustom<GetEstimatedFeeRes>(`/system/mapReport/getEstimatedFee?stime=30`),
+  });
+}
+
+/**
+ * 编辑copytranding 启用关闭
+ */
+export function useEditCopyTradingStatus() {
+  return useMutation({
+    mutationFn: (params: { status: number }) => apiPost('/system/mamConfig/edit', params),
+  });
+}
+/**
+ * 编辑copytranding 设置适用用户
+ */
+export function useEditCopyTradingApplicableUsers() {
+  return useMutation({
+    mutationFn: (params: { roleIds: string }) => apiPost('/system/mamConfig/edit', params),
   });
 }
