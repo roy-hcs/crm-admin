@@ -282,7 +282,7 @@ export const AddTicketDialog = ({
           ]}
         />
 
-        <FormSwitch verticalLabel name="isFollow" label={t('ticketList.isFollow')} />
+        <FormSwitch name="isFollow" label={t('ticketList.isFollow')} />
       </RrhForm>
     </RrhDialog>
   );

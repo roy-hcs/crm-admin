@@ -105,7 +105,7 @@ export function StepOne({
           ))}
         </div>
       )}
-      <FormSwitch verticalLabel name="status" label={t('table.status')} />
+      <FormSwitch name="status" label={t('table.status')} />
       <FormInput name="sort" label={t('table.sort')} placeholder="1-99999" />
       <FormItem>
         <div>

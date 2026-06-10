@@ -346,7 +346,7 @@ export const AddEditAdsDialog = ({
               maxLength={64}
             />
 
-            <FormSwitch verticalLabel name="status" label={t('table.status')} />
+            <FormSwitch name="status" label={t('table.status')} />
             <FormField
               name="webPicture"
               render={({ field }) => {

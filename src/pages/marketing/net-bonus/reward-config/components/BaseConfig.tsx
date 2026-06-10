@@ -71,12 +71,7 @@ export function BaseConfig({
                 </div>
               }
             />
-            <FormSwitch
-              verticalLabel
-              name="status"
-              label={t('common.enable')}
-              disabled={!editable}
-            />
+            <FormSwitch name="status" label={t('common.enable')} disabled={!editable} />
           </div>
         </div>
       </RrhCard>
@@ -157,7 +152,6 @@ export function BaseConfig({
             />
 
             <FormSwitch
-              verticalLabel
               name="autoReview"
               label={t('netBonusRewardConfig.autoReview')}
               disabled={!editable}

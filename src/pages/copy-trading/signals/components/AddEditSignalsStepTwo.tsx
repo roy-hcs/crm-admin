@@ -40,7 +40,6 @@ export function AddEditSignalsStepTwo({
             {t('signals.performanceFeeRebateEnabledDesc')}
           </div>
         }
-        verticalLabel
       />
 
       <FormRadio

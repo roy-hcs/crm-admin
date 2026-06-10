@@ -109,7 +109,6 @@ export function FeeConfig() {
   return (
     <RrhForm form={form} className="grid gap-y-6" onSubmit={form.handleSubmit(onSubmit)}>
       <FormSwitch
-        verticalLabel
         name="managementFeeSwitch"
         label={t('copyTradingSettings.managementFeeSwitch')}
         labeTipsDom={
@@ -151,7 +150,6 @@ export function FeeConfig() {
       )}
 
       <FormSwitch
-        verticalLabel
         name="signalSourceFeeSwitch"
         label={t('copyTradingSettings.signalSourceFeeSwitch')}
         labeTipsDom={
@@ -234,7 +232,6 @@ export function FeeConfig() {
 
       {signalSourceFeeSwitchValue === '1' && (
         <FormSwitch
-          verticalLabel
           name="refundSwitch"
           label={t('copyTradingSettings.managementFeeSwitch')}
           labeTipsDom={

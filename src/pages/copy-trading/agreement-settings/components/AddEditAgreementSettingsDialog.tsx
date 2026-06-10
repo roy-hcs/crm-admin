@@ -359,7 +359,7 @@ export const AddEditAgreementSettingsDialog = ({
             options={scenarioOptions}
           />
 
-          <FormSwitch name="status" label={t('table.status')} verticalLabel />
+          <FormSwitch name="status" label={t('table.status')} />
 
           <FormInput name="sort" label={t('table.sort')} placeholder="1-999" />
           <div>

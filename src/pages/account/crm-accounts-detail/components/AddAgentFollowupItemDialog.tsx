@@ -167,7 +167,7 @@ export const AddAgentFollowupItemDialog = ({
           label={t('table.followTime')}
           showTime
         />
-        <FormSwitch name="remind" label={t('CRMAccountPage.remind')} verticalLabel />
+        <FormSwitch name="remind" label={t('CRMAccountPage.remind')} />
         {enableRemind === '1' && (
           <>
             <SelectAdminUserDropdown

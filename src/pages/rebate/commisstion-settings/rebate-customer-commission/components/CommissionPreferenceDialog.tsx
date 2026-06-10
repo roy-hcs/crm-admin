@@ -221,7 +221,6 @@ export const CommissionPreferenceDialog = () => {
               <div>
                 <FormSwitch
                   className="py-6"
-                  verticalLabel
                   name="agentEdit"
                   label={t('commissionRebateSettings.agentEdit')}
                   labeTipsDom={
@@ -243,7 +242,6 @@ export const CommissionPreferenceDialog = () => {
 
                 <FormSwitch
                   className="py-6"
-                  verticalLabel
                   name="viewSubordinate"
                   label={t('commissionRebateSettings.viewSubordinate')}
                   labeTipsDom={

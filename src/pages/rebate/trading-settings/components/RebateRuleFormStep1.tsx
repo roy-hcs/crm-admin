@@ -151,7 +151,7 @@ export const RebateRuleFormStep1 = ({
           />
         </>
       )}
-      <FormSwitch label={t('table.status')} name="hasUsed" verticalLabel />
+      <FormSwitch label={t('table.status')} name="hasUsed" />
       {props.type === 'trading' && (
         <>
           <FormField

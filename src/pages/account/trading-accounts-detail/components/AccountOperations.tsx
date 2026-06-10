@@ -1,7 +1,6 @@
 import { useGetAccountOperateInfo, useSetAccountOperateInfo } from '@/api/hooks/account';
 import { useEffect, useState } from 'react';
 
-
 import { useForm } from 'react-hook-form';
 import { FormSwitch } from '@/components/form/FormSwitch';
 import { useTranslation } from 'react-i18next';
@@ -93,18 +92,10 @@ export function AccountOperations({ id }: { id: string }) {
   return (
     <div className="grid gap-6">
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
-            <FormSwitch verticalLabel name="outMoney" label={t('table.Withdrawal')} />
-            <FormSwitch
-              verticalLabel
-              name="insideTransfer"
-              label={t('home.nav.InternalTransfer')}
-            />
-            <FormSwitch
-              verticalLabel
-              name="enableInternalTransferOut"
-              label={t('home.enableInternalTransferOut')}
-            />
-          </RrhForm>
+        <FormSwitch name="outMoney" label={t('table.Withdrawal')} />
+        <FormSwitch name="insideTransfer" label={t('home.nav.InternalTransfer')} />
+        <FormSwitch name="enableInternalTransferOut" label={t('home.enableInternalTransferOut')} />
+      </RrhForm>
       <div className="flex justify-end">
         <RrhButton
           type="submit"

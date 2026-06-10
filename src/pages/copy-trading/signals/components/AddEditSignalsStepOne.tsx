@@ -96,22 +96,17 @@ export function AddEditSignalsStepOne({
           field: t('signalReview.upperLimit'),
         })}
       />
-      <FormSwitch name="publicShow" label={t('signals.publicShow')} verticalLabel />
+      <FormSwitch name="publicShow" label={t('signals.publicShow')} />
       <FormSwitch
         name="subscriptionReview"
         label={t('signalReview.subscriptionReview')}
-        verticalLabel
         labeTipsDom={
           <div className="text-muted-foreground text-xs leading-4">
             {t('signalReview.subscriptionReviewDesc')}
           </div>
         }
       />
-      <FormSwitch
-        name="performanceFeeEnable"
-        label={t('signals.performanceFeeEnable')}
-        verticalLabel
-      />
+      <FormSwitch name="performanceFeeEnable" label={t('signals.performanceFeeEnable')} />
       {performanceFeeEnableValue === '1' && (
         <FormInputWithUnit
           name="subscribeFee"
@@ -131,7 +126,6 @@ export function AddEditSignalsStepOne({
         labeTipsDom={
           <div className="text-muted-foreground text-xs leading-4">{t('signals.chargeDesc')}</div>
         }
-        verticalLabel
       />
       {chargeValue === '1' && (
         <FormRadio

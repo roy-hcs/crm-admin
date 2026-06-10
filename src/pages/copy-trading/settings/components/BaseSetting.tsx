@@ -93,7 +93,6 @@ export function BaseSetting() {
   return (
     <RrhForm form={form} className="grid gap-y-6" onSubmit={form.handleSubmit(onSubmit)}>
       <FormSwitch
-        verticalLabel
         name="addSignalPermSwitch"
         label={t('copyTradingSettings.addSignalPermSwitch')}
         labeTipsDom={
@@ -103,7 +102,6 @@ export function BaseSetting() {
         }
       />
       <FormSwitch
-        verticalLabel
         name="signalAddModelSwitch"
         label={t('copyTradingSettings.signalAddModelSwitch')}
         labeTipsDom={
@@ -113,7 +111,6 @@ export function BaseSetting() {
         }
       />
       <FormSwitch
-        verticalLabel
         name="signalAuditSwitch"
         label={t('copyTradingSettings.signalAuditSwitch')}
         labeTipsDom={
@@ -123,7 +120,6 @@ export function BaseSetting() {
         }
       />
       <FormSwitch
-        verticalLabel
         name="signalAuthorShow"
         label={t('copyTradingSettings.signalAuthorShow')}
         labeTipsDom={
@@ -133,7 +129,6 @@ export function BaseSetting() {
         }
       />
       <FormSwitch
-        verticalLabel
         name="dealAccountPasswordSwitch"
         label={t('copyTradingSettings.dealAccountPasswordSwitch')}
       />
