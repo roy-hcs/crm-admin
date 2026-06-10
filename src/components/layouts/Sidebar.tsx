@@ -394,6 +394,10 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
           title: '钱包账户',
           path: '/account/wallet-accounts',
         },
+        {
+          title: '客户忠诚计划',
+          path: '/account/customer-loyalty-plan',
+        },
       ],
     },
     {

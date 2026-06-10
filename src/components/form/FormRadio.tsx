@@ -1,5 +1,12 @@
 import { FieldPath, FieldValues } from 'react-hook-form';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../ui/form';
 import { BaseOption } from '../common/RrhSelect';
 import { useCrmFormContext } from '@/contexts/form';
 import { cn } from '@/lib/utils';
@@ -14,6 +21,7 @@ interface FormRadioProps<T extends FieldValues, O extends BaseOption = BaseOptio
   loading?: boolean;
   orientation?: 'horizontal' | 'vertical';
   labeTipsDom?: React.ReactNode;
+  description?: string;
 }
 
 export function FormRadio<T extends FieldValues, O extends BaseOption = BaseOption>({
@@ -25,6 +33,7 @@ export function FormRadio<T extends FieldValues, O extends BaseOption = BaseOpti
   loading = false,
   orientation,
   labeTipsDom,
+  description,
 }: FormRadioProps<T, O>) {
   const { form } = useCrmFormContext<T>();
   return (
@@ -33,7 +42,7 @@ export function FormRadio<T extends FieldValues, O extends BaseOption = BaseOpti
       control={form.control}
       render={({ field }) => (
         <FormItem className={className}>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             {label && <FormLabel>{label}</FormLabel>}
             {labeTipsDom && <div>{labeTipsDom}</div>}
           </div>
@@ -53,10 +62,12 @@ export function FormRadio<T extends FieldValues, O extends BaseOption = BaseOpti
                 radioItems={options.map(i => ({
                   value: String(i.value),
                   label: i.label,
+                  disabled: 'disabled' in i ? Boolean(i.disabled) : false,
                 }))}
               />
             )}
           </FormControl>
+          {description && <FormDescription>{description}</FormDescription>}
           <FormMessage className="text-end" />
         </FormItem>
       )}

@@ -2146,5 +2146,29 @@
     "exceedAncestorError": "下级返佣参数不能大于上级返佣参数",
     "modifyTotalRebateWarning": "修改返佣总值将会清空已填写的下级代理参数，确定要修改吗？",
     "maxTwoDecimalPlaces": "最多保留两位小数"
+  },
+  "customerLoyaltyPlan": {
+    "title": "客户忠诚计划",
+    "preference": "偏好设置",
+    "rankSort": "等级排序",
+    "rankSortDesc": "拖拽下方客户等级，越靠近顶部视为更高的等级，反之，靠下方则为较低的客户等级。",
+    "quantity": "数量",
+    "targetAccount": "目标账户(多选)",
+    "targetAccountDesc": "仅目标账户类型会参与客户忠诚计划",
+    "evaluationMode": "评估模式",
+    "evaluationModeOptions": {
+      "1": "考核模式",
+      "2": "成就模式"
+    },
+    "evaluationModeDesc": "考核模式：①周期性(周/月)进行等级考核②等级可升级/降级③每个周期重新评估 \n 成就模式：①达标即升级②永不降级③一次达成终生有效",
+    "vipLevelConfig": "VIP等级配置",
+    "name": "等级名称",
+    "description": "等级描述",
+    "ruleJudgment": "规则判断",
+    "ruleJudgmentDesc": "同一事件仅允许被添加一次",
+    "ruleEvent": "事件",
+    "ruleSymbol": "判断",
+    "ruleValue": "数值",
+    "or": "或"
   }
 }
