@@ -172,7 +172,6 @@ export const TradingAccountTransactionsForm = ({
     >
       <RrhServerSelector serverOptions={serverOptions} />
       <FormSelect
-        verticalLabel
         name="opeTypeList"
         label={t('table.operationType')}
         placeholder={t('common.pleaseSelect')}
@@ -188,7 +187,6 @@ export const TradingAccountTransactionsForm = ({
       />
 
       <FormMultiSelect
-        verticalLabel
         name="serverGroupList"
         label={t('table.groups')}
         placeholder={t('common.pleaseSelect')}
@@ -197,7 +195,6 @@ export const TradingAccountTransactionsForm = ({
       />
 
       <FormInput
-        verticalLabel
         name="ticket"
         label={t('table.orderNumber')}
         placeholder={t('common.pleaseInput', {
@@ -205,7 +202,6 @@ export const TradingAccountTransactionsForm = ({
         })}
       />
       <FormInput
-        verticalLabel
         name="historyFuzzyName"
         label={t('tradingAccountTransactions.name')}
         placeholder={t('common.pleaseInput', {
@@ -213,7 +209,6 @@ export const TradingAccountTransactionsForm = ({
         })}
       />
       <FormInput
-        verticalLabel
         name="login"
         label={t('tradingAccountTransactions.login')}
         placeholder={t('common.pleaseInput', {
@@ -222,7 +217,6 @@ export const TradingAccountTransactionsForm = ({
       />
 
       <FormMultiSelect
-        verticalLabel
         name="accountGroupList"
         label={t('table.accountGroup')}
         placeholder={t('common.pleaseSelect')}
@@ -234,7 +228,6 @@ export const TradingAccountTransactionsForm = ({
         }
       />
       <FormInput
-        verticalLabel
         name="comment"
         label={t('tradingAccountTransactions.comment')}
         placeholder={t('common.pleaseInput', {
@@ -255,7 +248,6 @@ export const TradingAccountTransactionsForm = ({
         )}
       />
       <FormInput
-        verticalLabel
         name="fuzzyCrmAccount"
         label={t('tradingAccountTransactions.crmLastName')}
         placeholder={t('common.pleaseInput', {

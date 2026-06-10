@@ -104,7 +104,6 @@ export function BaseConfigCard4({ editable }: { editable: boolean }) {
                       name={rewardParamName}
                       unit="%"
                       label={t('table.rewardParams')}
-                      verticalLabel
                       disabled={!editable}
                     />
                   </div>

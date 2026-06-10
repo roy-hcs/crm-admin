@@ -33,14 +33,12 @@ export function PointConfigCard5({
               name="deductionDays"
               unit={t('common.day')}
               label={t('pointsMallSettings.deductionDays')}
-              verticalLabel
               disabled={!editable}
             />
             <FormInputWithUnit<PointsMallSettingsFormValues>
               name="deductionRatio"
               unit="%"
               label={t('pointsMallSettings.deductionRatio')}
-              verticalLabel
               disabled={!editable}
             />
           </div>
@@ -59,7 +57,6 @@ export function PointConfigCard5({
             <FormMultiSelect
               name="exemptRoleIds"
               label={t('pointsMallSettings.exemptRoleIds')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={allRoles}
@@ -68,7 +65,6 @@ export function PointConfigCard5({
             <FormMultiSelect
               name="exemptTagIds"
               label={t('pointsMallSettings.exemptTagIds')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={allTags}

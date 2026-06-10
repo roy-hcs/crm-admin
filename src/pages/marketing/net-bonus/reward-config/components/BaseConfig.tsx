@@ -56,7 +56,6 @@ export function BaseConfig({
           </div>
           <div className="grid gap-6">
             <FormMultiSelect
-              verticalLabel
               name="rewardTarget"
               label={t('netBonusRewardConfig.rewardTarget')}
               placeholder={t('common.pleaseSelect')}
@@ -71,12 +70,7 @@ export function BaseConfig({
                 </div>
               }
             />
-            <FormSwitch
-              verticalLabel
-              name="status"
-              label={t('common.enable')}
-              disabled={!editable}
-            />
+            <FormSwitch name="status" label={t('common.enable')} disabled={!editable} />
           </div>
         </div>
       </RrhCard>
@@ -108,7 +102,6 @@ export function BaseConfig({
             />
             {hasSysDeposit && (
               <FormMultiSelect
-                verticalLabel
                 name="depositSubType"
                 placeholder={t('common.pleaseSelect')}
                 disabled={!editable}
@@ -136,7 +129,6 @@ export function BaseConfig({
             />
             {hasSysWithdraw && (
               <FormMultiSelect
-                verticalLabel
                 name="withdrawSubType"
                 placeholder={t('common.pleaseSelect')}
                 disabled={!editable}
@@ -157,7 +149,6 @@ export function BaseConfig({
             />
 
             <FormSwitch
-              verticalLabel
               name="autoReview"
               label={t('netBonusRewardConfig.autoReview')}
               disabled={!editable}

@@ -24,7 +24,7 @@ interface FormSwitchProps<T extends FieldValues> {
 export function FormSwitch<T extends FieldValues>({
   name,
   label,
-  verticalLabel = false,
+  verticalLabel = true,
   className,
   labeTipsDom,
   description,

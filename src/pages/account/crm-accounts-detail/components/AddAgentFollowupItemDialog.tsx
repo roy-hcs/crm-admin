@@ -148,7 +148,6 @@ export const AddAgentFollowupItemDialog = ({
         <FormInput
           name="title"
           label={t('table.title')}
-          verticalLabel
           placeholder={t('rules.limitLength', { field: 32 })}
           maxLength={32}
         />
@@ -168,7 +167,7 @@ export const AddAgentFollowupItemDialog = ({
           label={t('table.followTime')}
           showTime
         />
-        <FormSwitch name="remind" label={t('CRMAccountPage.remind')} verticalLabel />
+        <FormSwitch name="remind" label={t('CRMAccountPage.remind')} />
         {enableRemind === '1' && (
           <>
             <SelectAdminUserDropdown
@@ -187,7 +186,6 @@ export const AddAgentFollowupItemDialog = ({
             />
             <FormSelect
               name="remindWay"
-              verticalLabel
               showRowValue={false}
               label={t('CRMAccountPage.remindWay')}
               options={[

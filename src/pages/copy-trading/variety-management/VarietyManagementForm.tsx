@@ -68,7 +68,6 @@ export const VarietyManagementForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormSelect
-        verticalLabel
         name="symbolCategory"
         label={t('varietyManagement.symbolCategory')}
         placeholder={t('common.pleaseSelect')}
@@ -77,7 +76,6 @@ export const VarietyManagementForm = ({
       />
 
       <FormInput
-        verticalLabel
         name="symbol"
         label={t('varietyManagement.symbol')}
         placeholder={t('common.pleaseInput', {

@@ -132,32 +132,31 @@ export const AddEditTemplateDialog = ({
       formLoading={isSubmitting}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="py-6">
-              <FormInput
-                verticalLabel
-                name="title"
-                label={t('table.title')}
-                placeholder={t('common.pleaseInput', { field: t('table.title') })}
-                maxLength={64}
-              />
-            </div>
-            <div className="py-6">
-              <FormField
-                name="content"
-                render={({ field }) => {
-                  return (
-                    <RichTextEditor
-                      field={field}
-                      title={t('table.content')}
-                      placeholder={t('common.pleaseInput', {
-                        field: t('table.content'),
-                      })}
-                    />
-                  );
-                }}
-              />
-            </div>
-          </RrhForm>
+        <div className="py-6">
+          <FormInput
+            name="title"
+            label={t('table.title')}
+            placeholder={t('common.pleaseInput', { field: t('table.title') })}
+            maxLength={64}
+          />
+        </div>
+        <div className="py-6">
+          <FormField
+            name="content"
+            render={({ field }) => {
+              return (
+                <RichTextEditor
+                  field={field}
+                  title={t('table.content')}
+                  placeholder={t('common.pleaseInput', {
+                    field: t('table.content'),
+                  })}
+                />
+              );
+            }}
+          />
+        </div>
+      </RrhForm>
     </RrhDialog>
   );
 };

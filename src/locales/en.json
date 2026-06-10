@@ -810,6 +810,8 @@
     "trust": "trust",
     "untrust": "risk",
     "accountBelongToUpper": "The superior to whom the account belongs is",
+    "bankAccount": "bank account",
+    "wireTransferAccount": "wire transfer account",
     "commissionGroupName": "Commission group name",
     "rebateLevel": "Rebate levels",
     "userName": "Agent name",
@@ -2168,5 +2170,29 @@
     "todayEstimatedSubscribeFee": "Estimated subscription fee (USD)",
     "todayOrders": "Today’s order (number)",
     "totalSubscriptionFee": "Total subscription fee"
+  },
+  "customerLoyaltyPlan": {
+    "description": "Level description",
+    "evaluationMode": "Assessment mode",
+    "evaluationModeDesc": "Assessment mode: ① Periodic (weekly/monthly) level assessment ② Level can be upgraded/downgraded ③ Re-evaluation every cycle\n \nAchievement mode: ① Upgrade when you reach the standard ② Never downgrade ③ Once achieved, it is valid for life",
+    "evaluationModeOptions": {
+      "1": "Assessment mode",
+      "2": "achievement mode"
+    },
+    "name": "Level name",
+    "or": "or",
+    "preference": "Preferences",
+    "quantity": "quantity",
+    "rankSort": "Ranking",
+    "rankSortDesc": "Drag the customer level below. The closer to the top, the higher the customer level. On the contrary, the lower the customer level, the lower the customer level.",
+    "ruleEvent": "event",
+    "ruleJudgment": "Rule judgment",
+    "ruleJudgmentDesc": "The same event is only allowed to be added once",
+    "ruleSymbol": "judge",
+    "ruleValue": "numerical value",
+    "targetAccount": "Target account (multiple choices)",
+    "targetAccountDesc": "Only the target account type will participate in the customer loyalty program",
+    "title": "customer loyalty program",
+    "vipLevelConfig": "VIP level configuration"
   }
 }

@@ -27,7 +27,6 @@ export function PointConfigCard3({ editable }: { editable: boolean }) {
               name="inviteRegister.bonusPoints"
               unit={`${t('common.points')}/${t('common.piece')}`}
               label={t('pointsMallSettings.rewardCalculation')}
-              verticalLabel
               disabled={!editable}
             />
             <CappedPointsWithUnitFields
@@ -57,7 +56,6 @@ export function PointConfigCard3({ editable }: { editable: boolean }) {
               name="inviteOpenAccount.bonusPoints"
               unit={`${t('common.points')}/${t('common.piece')}`}
               label={t('pointsMallSettings.rewardCalculation')}
-              verticalLabel
               disabled={!editable}
             />
             <CappedPointsWithUnitFields
@@ -117,7 +115,6 @@ export function PointConfigCard3({ editable }: { editable: boolean }) {
               name="inviteDeposit.bonusPoints"
               unit={`${t('common.points')}/${t('common.piece')}`}
               label={t('pointsMallSettings.rewardCalculation')}
-              verticalLabel
               disabled={!editable}
             />
             <CappedPointsWithUnitFields

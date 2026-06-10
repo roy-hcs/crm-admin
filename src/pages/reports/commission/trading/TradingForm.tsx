@@ -150,90 +150,86 @@ export const TradingForm = ({
   }, [form, getGroupData, serverId]);
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <RrhServerSelector serverOptions={serverOptions} />
-          <FormMultiSelect
-            verticalLabel
-            name="serverGroup"
-            label={t('table.groups')}
-            placeholder={t('common.pleaseSelect')}
-            options={groupList}
-            loading={groupLoading}
-          />
-          <FormInput
-            verticalLabel
-            name="mtOrder"
-            label={t('trading.mtOrder')}
-            placeholder={t('common.pleaseInput', { field: t('trading.mtOrder') })}
-          />
-          <FormInput
-            verticalLabel
-            name="trderAccount"
-            label={t('trading.trderAccount')}
-            placeholder={t('common.pleaseInput', { field: t('trading.trderAccount') })}
-          />
-          <FormInput
-            verticalLabel
-            name="taderType"
-            label={t('trading.taderType')}
-            placeholder={t('common.pleaseInput', { field: t('trading.taderType') })}
-          />
-          <FormField
-            name="tradingTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('trading.traderTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="tradingTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormInput
-            verticalLabel
-            name="conditionName"
-            label={t('trading.conditionName')}
-            placeholder={t('common.pleaseInput', {
-              field: t('trading.conditionName'),
-            })}
-          />
-          <FormField
-            name="rebateTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('trading.rebateTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="rebateTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormSelect
-            verticalLabel
-            name="rebateTraderId"
-            label={t('trading.rebateTraderId')}
-            placeholder={t('common.pleaseSelect')}
-            options={RebateTradersOptions.map((it: CrmRebateTradersItem) => ({
-              label: it.ruleName,
-              value: it.id,
-            }))}
-          />
-          <SelectUpperDropdown />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit">
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <RrhServerSelector serverOptions={serverOptions} />
+      <FormMultiSelect
+        name="serverGroup"
+        label={t('table.groups')}
+        placeholder={t('common.pleaseSelect')}
+        options={groupList}
+        loading={groupLoading}
+      />
+      <FormInput
+        name="mtOrder"
+        label={t('trading.mtOrder')}
+        placeholder={t('common.pleaseInput', { field: t('trading.mtOrder') })}
+      />
+      <FormInput
+        name="trderAccount"
+        label={t('trading.trderAccount')}
+        placeholder={t('common.pleaseInput', { field: t('trading.trderAccount') })}
+      />
+      <FormInput
+        name="taderType"
+        label={t('trading.taderType')}
+        placeholder={t('common.pleaseInput', { field: t('trading.taderType') })}
+      />
+      <FormField
+        name="tradingTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('trading.traderTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="tradingTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormInput
+        name="conditionName"
+        label={t('trading.conditionName')}
+        placeholder={t('common.pleaseInput', {
+          field: t('trading.conditionName'),
+        })}
+      />
+      <FormField
+        name="rebateTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('trading.rebateTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="rebateTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormSelect
+        name="rebateTraderId"
+        label={t('trading.rebateTraderId')}
+        placeholder={t('common.pleaseSelect')}
+        options={RebateTradersOptions.map((it: CrmRebateTradersItem) => ({
+          label: it.ruleName,
+          value: it.id,
+        }))}
+      />
+      <SelectUpperDropdown />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant={'outline'} onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit">
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

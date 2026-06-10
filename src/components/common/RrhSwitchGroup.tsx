@@ -5,6 +5,7 @@ export const RrhSwitchGroup: FC<{
   switchItems: {
     value: string;
     label: string;
+    disabled?: boolean;
   }[];
   switchItemClassName?: string;
   labelClassName?: string;
@@ -52,6 +53,7 @@ export const RrhSwitchGroup: FC<{
           )}
           onClick={() => handleItemClick(i.value)}
           key={i.value}
+          disabled={i.disabled}
         >
           <span className={labelClassName}>{i.label}</span>
         </button>

@@ -156,7 +156,6 @@ export const BindNewEmailDialog = ({ onSuccess }: { onSuccess: () => void }) => 
           className="py-3"
           name="address"
           label={t('table.email')}
-          verticalLabel
           placeholder={t('rules.limitLength', { field: 32 })}
           maxLength={32}
         />

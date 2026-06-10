@@ -62,49 +62,48 @@ export const ClientTrackingForm = ({
   };
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="userName"
-            label={t('CRMAccountPage.NameOrAccountId')}
-            placeholder={t('customerTracking.nameOrAccountId')}
-          />
-          <FormInput
-            verticalLabel
-            name="email"
-            label={t('customerTracking.email') + ':'}
-            placeholder={t('customerTracking.enteremail')}
-          />
-          <FormMonthPicker
-            control={form.control}
-            name="statisticMonth"
-            label={t('customerTracking.time') + ':'}
-            placeholder={t('customerTracking.enterstatisticMonthStr')}
-          />
-          <FormSelect
-            verticalLabel
-            name="level"
-            label={t('customerTracking.levelName') + ':'}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={(rebateLevel?.rows || []).map(item => ({
-              label: item.levelName,
-              value: item.id,
-            }))}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit">
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        name="userName"
+        label={t('CRMAccountPage.NameOrAccountId')}
+        placeholder={t('customerTracking.nameOrAccountId')}
+      />
+      <FormInput
+        name="email"
+        label={t('customerTracking.email') + ':'}
+        placeholder={t('customerTracking.enteremail')}
+      />
+      <FormMonthPicker
+        control={form.control}
+        name="statisticMonth"
+        label={t('customerTracking.time') + ':'}
+        placeholder={t('customerTracking.enterstatisticMonthStr')}
+      />
+      <FormSelect
+        name="level"
+        label={t('customerTracking.levelName') + ':'}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={(rebateLevel?.rows || []).map(item => ({
+          label: item.levelName,
+          value: item.id,
+        }))}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant={'outline'} onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit">
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

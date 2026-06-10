@@ -85,13 +85,11 @@ export const NetBonusRewardReportsForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="orderNo"
         label={t('table.orderNo')}
         placeholder={t('common.pleaseInput', { field: t('table.orderNo') })}
       />
       <FormInput
-        verticalLabel
         name="rewardTarget"
         label={t('rewardRecords.rewardTarget')}
         placeholder={t('common.pleaseInput', { field: t('rewardRecords.rewardTarget') })}

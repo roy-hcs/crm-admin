@@ -1,7 +1,6 @@
 import { useGetAuthorityInfoPerm, useSetAuthorityInfoPerm } from '@/api/hooks/account';
 import { useEffect, useState } from 'react';
 
-
 import { useForm } from 'react-hook-form';
 import { FormSwitch } from '@/components/form/FormSwitch';
 import { useTranslation } from 'react-i18next';
@@ -263,158 +262,105 @@ export function AccountPermission({ id }: { id: string }) {
   return (
     <div className="grid gap-6">
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
-            {serviceType === 1 && (
-              <div className="grid gap-y-6">
-                <div className="grid gap-2">
-                  <div className="text-foreground text-sm leading-5 font-medium">
-                    {t('common.selectAll')}
-                  </div>
-                  <Switch
-                    className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
-                    checked={selectAll}
-                    onCheckedChange={checked => {
-                      setSelectAll(checked);
-                      (Object.keys(SERVICE_TYPE_1_BITS) as Array<keyof FormValues>).forEach(key => {
-                        form.setValue(key, checked ? 1 : 0);
-                      });
-                    }}
-                  />
-                </div>
-                <FormSwitch
-                  verticalLabel
-                  name="enableThisAccount"
-                  label={t('trading.enableThisAccount')}
-                />
-                <FormSwitch
-                  verticalLabel
-                  name="enablTransaction"
-                  label={t('trading.enablTransaction')}
-                />
-                <FormSwitch
-                  verticalLabel
-                  name="allowPasswordChange"
-                  label={t('trading.allowPasswordChange')}
-                />
-                <FormSwitch
-                  verticalLabel
-                  name="allowTrackingStopLoss"
-                  label={t('trading.allowTrackingStopLoss')}
-                />
-                <FormSwitch
-                  verticalLabel
-                  name="enableDynamicPassword"
-                  label={t('trading.enableDynamicPassword')}
-                />
-                <FormSwitch
-                  verticalLabel
-                  name="enableEATransactions"
-                  label={t('trading.enableEATransactions')}
-                />
-                <FormSwitch
-                  verticalLabel
-                  name="enableWebAPILinks"
-                  label={t('trading.enableWebAPILinks')}
-                />
-                <FormSwitch
-                  verticalLabel
-                  name="enableDayReport"
-                  label={t('trading.enableDayReport')}
-                />
-                <FormSwitch
-                  verticalLabel
-                  name="nextLoginChangePassword"
-                  label={t('trading.nextLoginChangePassword')}
-                />
+        {serviceType === 1 && (
+          <div className="grid gap-y-6">
+            <div className="grid gap-2">
+              <div className="text-foreground text-sm leading-5 font-medium">
+                {t('common.selectAll')}
               </div>
-            )}
-            {serviceType === 5 && (
-              <div className="grid gap-y-6">
-                <div className="grid gap-2">
-                  <div className="text-foreground text-sm leading-5 font-medium">
-                    {t('common.selectAll')}
-                  </div>
-                  <Switch
-                    className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
-                    checked={selectAll}
-                    onCheckedChange={checked => {
-                      setSelectAll(checked);
-                      (Object.keys(SERVICE_TYPE_5_BITS) as Array<keyof FormValues>).forEach(key => {
-                        form.setValue(key, checked ? 1 : 0);
-                      });
-                    }}
-                  />
-                </div>
-                <FormSwitch
-                  verticalLabel
-                  name="enablTransactionXoh"
-                  label={t('trading.enablTransaction')}
-                />
-                <FormSwitch
-                  verticalLabel
-                  name="passwordChangeXoh"
-                  label={t('trading.allowPasswordChange')}
-                />
+              <Switch
+                className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
+                checked={selectAll}
+                onCheckedChange={checked => {
+                  setSelectAll(checked);
+                  (Object.keys(SERVICE_TYPE_1_BITS) as Array<keyof FormValues>).forEach(key => {
+                    form.setValue(key, checked ? 1 : 0);
+                  });
+                }}
+              />
+            </div>
+            <FormSwitch name="enableThisAccount" label={t('trading.enableThisAccount')} />
+            <FormSwitch name="enablTransaction" label={t('trading.enablTransaction')} />
+            <FormSwitch name="allowPasswordChange" label={t('trading.allowPasswordChange')} />
+            <FormSwitch name="allowTrackingStopLoss" label={t('trading.allowTrackingStopLoss')} />
+            <FormSwitch name="enableDynamicPassword" label={t('trading.enableDynamicPassword')} />
+            <FormSwitch name="enableEATransactions" label={t('trading.enableEATransactions')} />
+            <FormSwitch name="enableWebAPILinks" label={t('trading.enableWebAPILinks')} />
+            <FormSwitch name="enableDayReport" label={t('trading.enableDayReport')} />
+            <FormSwitch
+              name="nextLoginChangePassword"
+              label={t('trading.nextLoginChangePassword')}
+            />
+          </div>
+        )}
+        {serviceType === 5 && (
+          <div className="grid gap-y-6">
+            <div className="grid gap-2">
+              <div className="text-foreground text-sm leading-5 font-medium">
+                {t('common.selectAll')}
               </div>
-            )}
-            {serviceType === 2 && (
-              <div className="grid gap-y-6">
-                <div className="grid gap-2">
-                  <div className="text-foreground text-sm leading-5 font-medium">
-                    {t('common.selectAll')}
-                  </div>
-                  <Switch
-                    className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
-                    checked={selectAll}
-                    onCheckedChange={checked => {
-                      setSelectAll(checked);
-                      (Object.keys(SERVICE_TYPE_2_BITS) as Array<keyof FormValues>).forEach(key => {
-                        form.setValue(key, checked ? 1 : 0);
-                      });
-                    }}
-                  />
-                </div>
-                <FormSwitch verticalLabel name="enable4" label={t('common.enable')} />
-                <FormSwitch verticalLabel name="readOnly4" label={t('common.readOnly')} />
-                <FormSwitch
-                  verticalLabel
-                  name="passwordChange4"
-                  label={t('trading.allowPasswordChange')}
-                />
-                <FormSwitch verticalLabel name="sendReport4" label={t('table.sendReport')} />
-                <FormSwitch
-                  verticalLabel
-                  name="dynamicPassword4"
-                  label={t('trading.enableDynamicPassword')}
-                />
+              <Switch
+                className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
+                checked={selectAll}
+                onCheckedChange={checked => {
+                  setSelectAll(checked);
+                  (Object.keys(SERVICE_TYPE_5_BITS) as Array<keyof FormValues>).forEach(key => {
+                    form.setValue(key, checked ? 1 : 0);
+                  });
+                }}
+              />
+            </div>
+            <FormSwitch name="enablTransactionXoh" label={t('trading.enablTransaction')} />
+            <FormSwitch name="passwordChangeXoh" label={t('trading.allowPasswordChange')} />
+          </div>
+        )}
+        {serviceType === 2 && (
+          <div className="grid gap-y-6">
+            <div className="grid gap-2">
+              <div className="text-foreground text-sm leading-5 font-medium">
+                {t('common.selectAll')}
               </div>
-            )}
-            {serviceType === 3 && (
-              <div className="grid gap-y-6">
-                <div className="grid gap-2">
-                  <div className="text-foreground text-sm leading-5 font-medium">
-                    {t('common.selectAll')}
-                  </div>
-                  <Switch
-                    className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
-                    checked={selectAll}
-                    onCheckedChange={checked => {
-                      setSelectAll(checked);
-                      (Object.keys(SERVICE_TYPE_3_BITS) as Array<keyof FormValues>).forEach(key => {
-                        form.setValue(key, checked ? 1 : 0);
-                      });
-                    }}
-                  />
-                </div>
-                <FormSwitch verticalLabel name="readOnlyLx" label={t('common.readOnly')} />
-                <FormSwitch
-                  verticalLabel
-                  name="passwordChangeLx"
-                  label={t('trading.allowPasswordChange')}
-                />
-                <FormSwitch verticalLabel name="sendReportLx" label={t('table.sendReport')} />
+              <Switch
+                className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
+                checked={selectAll}
+                onCheckedChange={checked => {
+                  setSelectAll(checked);
+                  (Object.keys(SERVICE_TYPE_2_BITS) as Array<keyof FormValues>).forEach(key => {
+                    form.setValue(key, checked ? 1 : 0);
+                  });
+                }}
+              />
+            </div>
+            <FormSwitch name="enable4" label={t('common.enable')} />
+            <FormSwitch name="readOnly4" label={t('common.readOnly')} />
+            <FormSwitch name="passwordChange4" label={t('trading.allowPasswordChange')} />
+            <FormSwitch name="sendReport4" label={t('table.sendReport')} />
+            <FormSwitch name="dynamicPassword4" label={t('trading.enableDynamicPassword')} />
+          </div>
+        )}
+        {serviceType === 3 && (
+          <div className="grid gap-y-6">
+            <div className="grid gap-2">
+              <div className="text-foreground text-sm leading-5 font-medium">
+                {t('common.selectAll')}
               </div>
-            )}
-          </RrhForm>
+              <Switch
+                className="cursor-pointer bg-white data-[state=checked]:bg-slate-700"
+                checked={selectAll}
+                onCheckedChange={checked => {
+                  setSelectAll(checked);
+                  (Object.keys(SERVICE_TYPE_3_BITS) as Array<keyof FormValues>).forEach(key => {
+                    form.setValue(key, checked ? 1 : 0);
+                  });
+                }}
+              />
+            </div>
+            <FormSwitch name="readOnlyLx" label={t('common.readOnly')} />
+            <FormSwitch name="passwordChangeLx" label={t('trading.allowPasswordChange')} />
+            <FormSwitch name="sendReportLx" label={t('table.sendReport')} />
+          </div>
+        )}
+      </RrhForm>
       <div className="flex justify-end">
         <RrhButton
           type="submit"

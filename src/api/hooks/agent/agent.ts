@@ -16,9 +16,23 @@ import {
   AgentTradeRes,
   CreateCustomerFollowupParams,
   CustomerFollowupRes,
+  CustomRebateData,
+  GetRuleGroupsParams,
+  GetTraderListParams,
+  InviterCustomRebateItem,
+  InviterLevelData,
   KycInfoProtocolRes,
   KycInfoRes,
   MtServerGroupRes,
+  RebateSettingPageData,
+  ReceiveAccountInfoParams,
+  ReceiveAccountInfoRes,
+  RuleGroupItem,
+  SaveRebateSettingModel1Params,
+  SaveRebateSettingModel2Params,
+  SpreadLinkItem,
+  TraderListItem,
+  UpperInputRule,
   UserAccountActivityListRes,
   UserWalletDetail,
   UserWalletListRes,
@@ -279,5 +293,195 @@ export function useMtServerGroupInfo(params: { serverId: string; groupName: stri
         params,
       ),
     enabled: !!params.serverId && !!params.groupName,
+  });
+}
+/**
+ * 获取收款账户信息
+ */
+export function useGetReceiveAccountInfo(
+  userId: string,
+  type: string,
+  params: ReceiveAccountInfoParams,
+  options: { enabled: boolean },
+) {
+  return useQuery({
+    queryKey: ['getReceiveAccountInfo', userId, type, params],
+    queryFn: () =>
+      apiFormPostCustom<ReceiveAccountInfoRes>(
+        `/system/crmUserBankInfo/list/${userId}/${type}`,
+        params,
+      ),
+    enabled: !!userId && !!type && options.enabled,
+  });
+}
+
+// ─── 返佣设置页面 API ────────────────────────────────────────────────────────
+
+/**
+ * 获取返佣设置页面初始数据
+ * TODO: 原始页面为 Thymeleaf 服务端渲染，model/commissionType/paramFillType/rebateLevelSetting
+ *       由控制器注入，需与后端确认对应的 JSON REST 接口路径及返回结构
+ */
+export function useGetRebateSettingPageData(userId: string, rebateType: number) {
+  return useQuery({
+    queryKey: ['getRebateSettingPageData', userId, rebateType],
+    queryFn: () =>
+      apiGet<RebateSettingPageData>(
+        `/system/crmUserRebateTemplate/oneUserTemplateInfo/${rebateType}/${userId}`,
+      ),
+    enabled: !!userId,
+  });
+}
+
+/**
+ * 获取指定返佣层级下的交易规则列表
+ * POST /system/crmRebateTraderDeal/getTraderList
+ */
+export function useGetTraderListForLevel() {
+  return useMutation({
+    mutationFn: (params: GetTraderListParams) =>
+      apiFormPostCustom<TraderListItem[]>('/system/crmRebateTraderDeal/getTraderList', params),
+  });
+}
+
+/**
+ * 获取交易规则对应的佣金组选项（model=2，commissionType=1）
+ * POST /system/crmRebateTwoCommissionGroup/getRuleGroups
+ */
+export function useGetRuleGroups() {
+  return useMutation({
+    mutationFn: (params: GetRuleGroupsParams) =>
+      apiFormPostCustom<{ code: number; data: RuleGroupItem[] }>(
+        '/system/crmRebateTwoCommissionGroup/getRuleGroups',
+        params,
+      ),
+  });
+}
+
+/**
+ * 获取自定义返佣值及上下限（model=2，commissionType=2）
+ * POST /system/crmRebateTwoCommissionGroup/getCustomRebate
+ */
+export function useGetCustomRebate() {
+  return useMutation({
+    mutationFn: (params: { rebateTraderId: string; userId: string; inviter?: string }) =>
+      apiFormPostCustom<{ code: number; data: CustomRebateData }>(
+        '/system/crmRebateTwoCommissionGroup/getCustomRebate',
+        params,
+      ),
+  });
+}
+
+/**
+ * 初始化时获取上级用户返佣规则输入区（model=2）
+ * POST /system/crmUserRebateTwo/getUpperInput
+ */
+export function useGetUpperInput() {
+  return useMutation({
+    mutationFn: (params: { userId: string; levelId: string; upperId: string }) =>
+      apiFormPostCustom<{ code: number; data: UpperInputRule[] }>(
+        '/system/crmUserRebateTwo/getUpperInput',
+        params,
+      ),
+  });
+}
+
+/**
+ * 切换上级后获取新上级的返佣规则（model=2）
+ * POST /system/crmUserRebateTwo/getUpperUserRebateTwo
+ */
+export function useGetUpperUserRebateTwo() {
+  return useMutation({
+    mutationFn: (params: { upperUserId: string; levelId: string }) =>
+      apiFormPostCustom<{ code: number; data: UpperInputRule[] }>(
+        '/system/crmUserRebateTwo/getUpperUserRebateTwo',
+        params,
+      ),
+  });
+}
+
+/**
+ * 校验上级关系（不能将自身设为下级的上级）
+ * POST /system/crmUser/notInviteBoss
+ */
+export function useCheckNotInviteBoss() {
+  return useMutation({
+    mutationFn: (params: { userId: string; inviterId: string }) =>
+      apiFormPostCustom<boolean>('/system/crmUser/notInviteBoss', params),
+  });
+}
+
+/**
+ * 获取上级用户姓名及返佣层级信息
+ * POST /system/crmUser/getUserInviterLevel
+ */
+export function useGetUserInviterLevel() {
+  return useMutation({
+    mutationFn: (params: { userId: string }) =>
+      apiFormPostCustom<{ code: number; data: InviterLevelData }>(
+        '/system/crmUser/getUserInviterLevel',
+        params,
+      ),
+  });
+}
+
+/**
+ * 获取推荐来源下拉选项（Select2 异步搜索）
+ * POST /system/spreadLink/link
+ */
+export function useGetSpreadLinks() {
+  return useMutation({
+    mutationFn: (params: { userId?: string; keyword?: string; linkType?: number }) =>
+      apiFormPostCustom<{ code: number; rows: SpreadLinkItem[] }>(
+        '/system/spreadLink/link',
+        params,
+      ),
+  });
+}
+
+/**
+ * 保存前校验：子用户佣金组设置是否与上级冲突（model=2）
+ * POST /system/crmUserRebateTemplate/checkSubUserGroupSetting
+ */
+export function useCheckSubUserGroupSetting() {
+  return useMutation({
+    mutationFn: (params: SaveRebateSettingModel2Params) =>
+      apiPost('/system/crmUserRebateTemplate/checkSubUserGroupSetting', params),
+  });
+}
+
+/**
+ * 保存返佣设置（model=1 模板模式）
+ * POST /system/crmUserRebateTemplate/oneUserTemplateInfo/edit
+ */
+export function useSaveRebateSettingModel1() {
+  return useMutation({
+    mutationFn: (params: SaveRebateSettingModel1Params) =>
+      apiFormPost('/system/crmUserRebateTemplate/oneUserTemplateInfo/edit', params),
+  });
+}
+
+/**
+ * 保存返佣设置（model=2 直接配置模式）
+ * POST /system/crmUserRebateTemplate/oneUserTemplateInfo/editSaveModel2
+ */
+export function useSaveRebateSettingModel2() {
+  return useMutation({
+    mutationFn: (params: SaveRebateSettingModel2Params) =>
+      apiPost('/system/crmUserRebateTemplate/oneUserTemplateInfo/editSaveModel2', params),
+  });
+}
+
+/**
+ * 查看上级返佣链详情（自定义方案，commissionType=2）
+ * POST /system/crmRebateTwoCommissionGroup/getInviterCustomRebate
+ */
+export function useGetInviterCustomRebate() {
+  return useMutation({
+    mutationFn: (params: { rebateTraderId: string; userId: string; inviter?: string }) =>
+      apiFormPostCustom<{ code: number; data: InviterCustomRebateItem[] }>(
+        '/system/crmRebateTwoCommissionGroup/getInviterCustomRebate',
+        params,
+      ),
   });
 }

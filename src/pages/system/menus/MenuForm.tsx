@@ -1,4 +1,3 @@
-
 import { useForm } from 'react-hook-form';
 
 import { FormInput } from '@/components/form/FormInput';
@@ -59,43 +58,43 @@ export const MenuForm = ({
   );
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="menuName"
-            label={t('menuManagement.menuName')}
-            placeholder={t('common.pleaseInput', {
-              field: t('menuManagement.menuName'),
-            })}
-          />
-          <FormSelect
-            verticalLabel
-            name="menuState"
-            label={t('menuManagement.menuStatus')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={menuStateOptions}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit">
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      onKeyDown={e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          if (e.target instanceof HTMLTextAreaElement) return;
+          e.preventDefault();
+          form.handleSubmit(onSubmit)();
+        }
+      }}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        name="menuName"
+        label={t('menuManagement.menuName')}
+        placeholder={t('common.pleaseInput', {
+          field: t('menuManagement.menuName'),
+        })}
+      />
+      <FormSelect
+        name="menuState"
+        label={t('menuManagement.menuStatus')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={menuStateOptions}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant={'outline'} onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit">
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

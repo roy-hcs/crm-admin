@@ -243,7 +243,6 @@ export const AddTicketDialog = ({
             <FormSelect
               name="roleId"
               label={t('ticketList.receiverId')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={roleOptions}
@@ -254,7 +253,6 @@ export const AddTicketDialog = ({
             <FormSelect
               name="receiverId"
               label={''}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={allocatedList}
@@ -266,7 +264,6 @@ export const AddTicketDialog = ({
         <FormMultiSelect
           name="carbonCopy"
           label={t('ticketList.carbonCopy')}
-          verticalLabel
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={userOptions}
@@ -275,7 +272,6 @@ export const AddTicketDialog = ({
         <FormSelect
           name="priority"
           label={t('ticketList.priority')}
-          verticalLabel
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={[
@@ -285,7 +281,7 @@ export const AddTicketDialog = ({
           ]}
         />
 
-        <FormSwitch verticalLabel name="isFollow" label={t('ticketList.isFollow')} />
+        <FormSwitch name="isFollow" label={t('ticketList.isFollow')} />
       </RrhForm>
     </RrhDialog>
   );

@@ -86,19 +86,16 @@ export const TicketAllListForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="orderId"
         label={t('ticketList.orderId')}
         placeholder={t('common.pleaseInput', { field: t('ticketList.orderId') })}
       />
       <FormInput
-        verticalLabel
         name="content"
         label={t('ticketList.content')}
         placeholder={t('common.pleaseInput', { field: t('ticketList.content') })}
       />
       <FormSelect
-        verticalLabel
         name="priority"
         label={t('ticketList.priority')}
         placeholder={t('common.pleaseSelect')}
@@ -118,7 +115,6 @@ export const TicketAllListForm = ({
         )}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
@@ -126,7 +122,6 @@ export const TicketAllListForm = ({
         options={ticketStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
       />
       <FormSelect
-        verticalLabel
         name="receiverId"
         label={t('ticketList.receiverId')}
         placeholder={t('common.pleaseSelect')}
@@ -134,7 +129,6 @@ export const TicketAllListForm = ({
         options={userData.map(i => ({ label: i.wholeName, value: i.userId }))}
       />
       <FormInput
-        verticalLabel
         name="belongUser"
         label={t('ticketList.belongUser')}
         placeholder={t('common.pleaseInput', { field: t('ticketList.belongUser') })}

@@ -12,7 +12,6 @@ import { Eye, EyeClosed } from 'lucide-react';
 import { useCrmDealAccountResetPwd, useMtServerGroup } from '@/api/hooks/system/system';
 import { FormSelect } from '@/components/form/FormSelect';
 
-
 import { passwordTypeOptions } from '@/lib/const';
 import { CrmDealAccountListItem } from '@/api/hooks/account';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -177,64 +176,58 @@ export const ResetPasswordDialog = ({
     >
       <div>
         <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="mb-4 grid gap-2">
-                <div className="text-foreground text-sm leading-5 font-medium">
-                  {t('common.accountType')}
-                </div>
-                <div className="text-muted-foreground text-sm leading-5">{info?.account}</div>
-              </div>
-              <div className="mb-4">
-                <FormSelect
-                  verticalLabel
-                  name="pwdType"
-                  label={t('common.pwdType')}
-                  placeholder={t('common.pleaseSelect')}
-                  showRowValue={false}
-                  options={passwordTypeOptions
-                    .map(i => ({ label: t(i.label), value: i.value }))
-                    .filter(i => {
-                      if (info?.serviceType === 5) {
-                        // XOH 只展示交易密码
-                        return i.value === '1';
-                      } else {
-                        // 其他 展示所有
-                        return i.value !== '';
-                      }
-                    })}
-                />
-              </div>
-              <PasswordField
-                control={form.control}
-                name="newPassword"
-                label={t('common.newPassword')}
-                show={showNewPWD}
-                setShow={setShowNewPWD}
-              />
+          <div className="mb-4 grid gap-2">
+            <div className="text-foreground text-sm leading-5 font-medium">
+              {t('common.accountType')}
+            </div>
+            <div className="text-muted-foreground text-sm leading-5">{info?.account}</div>
+          </div>
+          <div className="mb-4">
+            <FormSelect
+              name="pwdType"
+              label={t('common.pwdType')}
+              placeholder={t('common.pleaseSelect')}
+              showRowValue={false}
+              options={passwordTypeOptions
+                .map(i => ({ label: t(i.label), value: i.value }))
+                .filter(i => {
+                  if (info?.serviceType === 5) {
+                    // XOH 只展示交易密码
+                    return i.value === '1';
+                  } else {
+                    // 其他 展示所有
+                    return i.value !== '';
+                  }
+                })}
+            />
+          </div>
+          <PasswordField
+            control={form.control}
+            name="newPassword"
+            label={t('common.newPassword')}
+            show={showNewPWD}
+            setShow={setShowNewPWD}
+          />
 
-              <PasswordField
-                control={form.control}
-                name="againPassword"
-                label={t('common.confirmPassword')}
-                show={showAgainPWD}
-                setShow={setShowAgainPWD}
-              />
+          <PasswordField
+            control={form.control}
+            name="againPassword"
+            label={t('common.confirmPassword')}
+            show={showAgainPWD}
+            setShow={setShowAgainPWD}
+          />
 
-              <div className="col-span-full -mx-6 flex justify-end px-6 py-6 sm:pb-0">
-                <div className="flex justify-end gap-4">
-                  <RrhButton
-                    variant="outline"
-                    type="button"
-                    className="px-4 py-2"
-                    onClick={onCancel}
-                  >
-                    {t('common.Cancel')}
-                  </RrhButton>
-                  <RrhButton type="submit" className="px-4 py-2">
-                    {t('common.Confirm')}
-                  </RrhButton>
-                </div>
-              </div>
-            </RrhForm>
+          <div className="col-span-full -mx-6 flex justify-end px-6 py-6 sm:pb-0">
+            <div className="flex justify-end gap-4">
+              <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
+                {t('common.Cancel')}
+              </RrhButton>
+              <RrhButton type="submit" className="px-4 py-2">
+                {t('common.Confirm')}
+              </RrhButton>
+            </div>
+          </div>
+        </RrhForm>
       </div>
     </RrhDialog>
   );

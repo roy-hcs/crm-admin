@@ -68,59 +68,57 @@ export const TicketUnassignedListForm = ({
   };
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="orderId"
-            label={t('ticketList.orderId')}
-            placeholder={t('common.pleaseInput', { field: t('ticketList.orderId') })}
-          />
-          <FormInput
-            verticalLabel
-            name="content"
-            label={t('ticketList.content')}
-            placeholder={t('common.pleaseInput', { field: t('ticketList.content') })}
-          />
-          <FormSelect
-            verticalLabel
-            name="priority"
-            label={t('ticketList.priority')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={priorityOptions.map(i => ({ label: t(i.label), value: i.value }))}
-          />
-          <FormField
-            name="time"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('common.createTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="time" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormInput
-            verticalLabel
-            name="belongUser"
-            label={t('ticketList.belongUser')}
-            placeholder={t('common.pleaseInput', { field: t('ticketList.belongUser') })}
-          />
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        name="orderId"
+        label={t('ticketList.orderId')}
+        placeholder={t('common.pleaseInput', { field: t('ticketList.orderId') })}
+      />
+      <FormInput
+        name="content"
+        label={t('ticketList.content')}
+        placeholder={t('common.pleaseInput', { field: t('ticketList.content') })}
+      />
+      <FormSelect
+        name="priority"
+        label={t('ticketList.priority')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={priorityOptions.map(i => ({ label: t(i.label), value: i.value }))}
+      />
+      <FormField
+        name="time"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('common.createTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="time" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormInput
+        name="belongUser"
+        label={t('ticketList.belongUser')}
+        placeholder={t('common.pleaseInput', { field: t('ticketList.belongUser') })}
+      />
 
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit">
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit">
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

@@ -183,7 +183,6 @@ export function PerformanceFeeRebate() {
         desc={t('copyTradingSettings.performanceFeeRebateDesc')}
       />
       <FormSwitch
-        verticalLabel
         name="performanceFeeRebateSwitch"
         label={t('copyTradingSettings.performanceFeeRebateSwitch')}
       />
@@ -202,7 +201,6 @@ export function PerformanceFeeRebate() {
         ]}
       />
       <FormMultiSelect
-        verticalLabel
         name="rebateTarget"
         label={t('copyTradingSettings.rebateTarget')}
         placeholder={t('common.pleaseSelect')}
@@ -219,7 +217,6 @@ export function PerformanceFeeRebate() {
         }
       />
       <FormSwitch
-        verticalLabel
         name="allowedSignalSelfRebateSet"
         label={t('copyTradingSettings.allowedSignalSelfRebateSet')}
         labeTipsDom={
@@ -229,7 +226,6 @@ export function PerformanceFeeRebate() {
         }
       />
       <FormSwitch
-        verticalLabel
         name="performanceFeeRebateAutoApprove"
         label={t('copyTradingSettings.performanceFeeRebateAutoApprove')}
         labeTipsDom={

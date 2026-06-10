@@ -83,14 +83,12 @@ export const RebateRuleFormStep1 = ({
     <div className="flex flex-col gap-y-4 pb-4">
       <div>{t('TradingRebateSettings.baseSetting')}</div>
       <FormInput
-        verticalLabel
         name="ruleName"
         label={t('table.ruleName') + `${defaultLang ? ` (${defaultLang})` : ''}`}
         placeholder={t('rules.limitLength', { field: 64 })}
       />
       <FormSelect
         name="suitType"
-        verticalLabel
         showRowValue={false}
         label={t('DepositRebateSettings.depositAccount')}
         placeholder={t('common.pleaseSelect')}
@@ -113,7 +111,6 @@ export const RebateRuleFormStep1 = ({
               serviceType: number;
             }
           >
-            verticalLabel
             label={t('table.server') + `(${t('common.supportMultipleSelection')})`}
             placeholder={t('common.pleaseSelect')}
             name="serverName"
@@ -144,7 +141,6 @@ export const RebateRuleFormStep1 = ({
           <FormMultiSelect
             name="accountGroup"
             label={t('common.optionalField', { field: t('table.accountGroup') })}
-            verticalLabel
             placeholder={`${t('table.allAccountGroup')}`}
             options={(dealAccountGroupListRes || []).map(item => ({
               label: item.name,
@@ -153,7 +149,7 @@ export const RebateRuleFormStep1 = ({
           />
         </>
       )}
-      <FormSwitch label={t('table.status')} name="hasUsed" verticalLabel />
+      <FormSwitch label={t('table.status')} name="hasUsed" />
       {props.type === 'trading' && (
         <>
           <FormField
@@ -188,13 +184,13 @@ export const RebateRuleFormStep1 = ({
           <FormInput
             name="settleValue"
             label={t('TradingRebateSettings.settleUnit')}
-            verticalLabel
             type="number"
             placeholder=""
             disabled={props.currentSettleUnit === '1'}
             inputCls="border-r-0 rounded-r-none"
             rightElement={
               <FormSelect
+                verticalLabel={false}
                 showRowValue={false}
                 name="settleUnit"
                 label=""
@@ -214,7 +210,6 @@ export const RebateRuleFormStep1 = ({
               ? t('TradingRebateSettings.highestRebateLevel')
               : t('TradingRebateSettings.settleLevel')
           }
-          verticalLabel
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={
@@ -232,7 +227,6 @@ export const RebateRuleFormStep1 = ({
       <FormInput
         name="serialNumber"
         label={t('table.sort')}
-        verticalLabel
         type="number"
         placeholder={t('common.sortPlaceholder')}
       />
@@ -242,7 +236,6 @@ export const RebateRuleFormStep1 = ({
           label={t('common.optionalField', {
             field: t('TradingRebateSettings.commissionSettlementTiming'),
           })}
-          verticalLabel
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={[

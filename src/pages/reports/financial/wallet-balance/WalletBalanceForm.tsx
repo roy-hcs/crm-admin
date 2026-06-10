@@ -88,13 +88,11 @@ export const WalletBalanceForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="name"
         label={t('table.nameOrId')}
         placeholder={t('common.pleaseInput', { field: t('table.nameOrId') })}
       />
       <FormInput
-        verticalLabel
         name="email"
         label={t('table.email')}
         placeholder={t('common.pleaseInput', { field: t('table.email') })}

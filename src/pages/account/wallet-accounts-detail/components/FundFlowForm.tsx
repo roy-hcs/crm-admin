@@ -117,7 +117,6 @@ export const FundFlowForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormSelect
-        verticalLabel
         name="operationType"
         label={t('table.operationType')}
         placeholder={t('common.pleaseSelect')}
@@ -126,7 +125,6 @@ export const FundFlowForm = ({
       />
 
       <FormSelect
-        verticalLabel
         name="inMethod"
         label={t('table.inMethod')}
         placeholder={t('common.pleaseSelect')}
@@ -136,7 +134,6 @@ export const FundFlowForm = ({
       />
 
       <FormInput
-        verticalLabel
         name="serialNum"
         label={t('walletTransactions.serialNumTable')}
         placeholder={t('common.pleaseInput', { field: t('walletTransactions.serialNumTable') })}

@@ -97,7 +97,6 @@ export function PointConfigCard2({
                   name="depositSuccess.bonusPoints"
                   unit={t('common.points')}
                   label={t('pointsMallSettings.rewardCalculation')}
-                  verticalLabel
                   disabled={!editable}
                 />
               </div>
@@ -106,6 +105,7 @@ export function PointConfigCard2({
               </div>
               <div className="flex-1">
                 <FormInputWithUnit<PointsMallSettingsFormValues>
+                  verticalLabel={false}
                   name="depositSuccess.bonusBasis"
                   unit="USD"
                   disabled={!editable}

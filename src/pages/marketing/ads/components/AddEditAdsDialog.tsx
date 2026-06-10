@@ -325,7 +325,6 @@ export const AddEditAdsDialog = ({
         <div className={cn(step === 'one' ? 'block' : 'hidden')}>
           <div className="grid gap-6">
             <FormInput
-              verticalLabel
               name="name"
               label={t('ads.adsName')}
               placeholder={t('common.pleaseInput', { field: t('ads.adsName') })}
@@ -335,21 +334,19 @@ export const AddEditAdsDialog = ({
             <FormSelect
               name="position"
               label={t('ads.position')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={[{ label: t('ads.positionType.1'), value: '1' }]}
             />
 
             <FormInput
-              verticalLabel
               name="sort"
               label={t('table.sort')}
               placeholder={t('common.pleaseInput', { field: t('table.sort') })}
               maxLength={64}
             />
 
-            <FormSwitch verticalLabel name="status" label={t('table.status')} />
+            <FormSwitch name="status" label={t('table.status')} />
             <FormField
               name="webPicture"
               render={({ field }) => {
@@ -401,18 +398,12 @@ export const AddEditAdsDialog = ({
                           ]}
                         />
                         {jumpType === '1' && (
-                          <FormInput
-                            verticalLabel
-                            name="customLink"
-                            label={''}
-                            placeholder={t('ads.entering')}
-                          />
+                          <FormInput name="customLink" label={''} placeholder={t('ads.entering')} />
                         )}
                         {jumpType === '2' && (
                           <FormSelect
                             name="msgId"
                             label={''}
-                            verticalLabel
                             placeholder={t('common.pleaseSelect')}
                             showRowValue={false}
                             options={templateOptions}
@@ -430,7 +421,6 @@ export const AddEditAdsDialog = ({
               <FormMultiSelect
                 name="crmRoleIds"
                 label={t('ads.visibleRole')}
-                verticalLabel
                 placeholder={t('common.pleaseSelect')}
                 showRowValue={false}
                 options={roleOptions}

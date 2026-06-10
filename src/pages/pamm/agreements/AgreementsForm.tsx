@@ -58,53 +58,52 @@ export const AgreementsForm = ({
     });
   };
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      onKeyDown={e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          if (e.target instanceof HTMLTextAreaElement) return;
 
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="name"
-            label={t('table.protocolName')}
-            placeholder={t('common.pleaseInput', { field: t('table.protocolName') })}
-          />
-          <FormSelect
-            verticalLabel
-            name="projectId"
-            label={t('table.relatedProduct')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={productList}
-          />
-          <FormSelect
-            verticalLabel
-            name="applicableScenarios"
-            label={t('table.applicableScenario')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={scenariosType.map(item => {
-              return { label: item.dictLabel, value: item.dictValue };
-            })}
-          />
+          e.preventDefault();
+          form.handleSubmit(onSubmit)();
+        }
+      }}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        name="name"
+        label={t('table.protocolName')}
+        placeholder={t('common.pleaseInput', { field: t('table.protocolName') })}
+      />
+      <FormSelect
+        name="projectId"
+        label={t('table.relatedProduct')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={productList}
+      />
+      <FormSelect
+        name="applicableScenarios"
+        label={t('table.applicableScenario')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={scenariosType.map(item => {
+          return { label: item.dictLabel, value: item.dictValue };
+        })}
+      />
 
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" loading={loading}>
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" loading={loading}>
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

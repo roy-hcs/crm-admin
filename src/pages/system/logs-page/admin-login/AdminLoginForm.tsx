@@ -73,66 +73,64 @@ export const AdminLoginForm = ({
     });
   };
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      onKeyDown={e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          if (e.target instanceof HTMLTextAreaElement) return;
 
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="ipaddr"
-            label={t('table.operationIP')}
-            placeholder={t('common.pleaseInput', { field: t('table.operationIP') })}
-          />
-          <FormInput
-            verticalLabel
-            name="userName"
-            label={t('adminLogin.name')}
-            placeholder={t('common.pleaseInput', { field: t('adminLogin.name') })}
-          />
-          <FormSelect
-            verticalLabel
-            name="status"
-            label={t('common.operStatus')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={adminOperationsStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
-          />
-          <FormField
-            name="time"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('common.operTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="time" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormInput
-            verticalLabel
-            name="loginLocation"
-            label={t('common.operLocation')}
-            placeholder={t('common.pleaseInput', { field: t('common.operLocation') })}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" loading={loading}>
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+          e.preventDefault();
+          form.handleSubmit(onSubmit)();
+        }
+      }}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        name="ipaddr"
+        label={t('table.operationIP')}
+        placeholder={t('common.pleaseInput', { field: t('table.operationIP') })}
+      />
+      <FormInput
+        name="userName"
+        label={t('adminLogin.name')}
+        placeholder={t('common.pleaseInput', { field: t('adminLogin.name') })}
+      />
+      <FormSelect
+        name="status"
+        label={t('common.operStatus')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={adminOperationsStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
+      />
+      <FormField
+        name="time"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('common.operTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="time" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormInput
+        name="loginLocation"
+        label={t('common.operLocation')}
+        placeholder={t('common.pleaseInput', { field: t('common.operLocation') })}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" loading={loading}>
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

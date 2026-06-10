@@ -39,7 +39,6 @@ export function SidebarMultiSelectCard({
         <FormMultiSelect<PointsMallSettingsFormValues>
           name={name}
           label={label}
-          verticalLabel
           placeholder={placeholder}
           showRowValue={false}
           options={options}

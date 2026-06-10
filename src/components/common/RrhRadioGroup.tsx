@@ -9,6 +9,7 @@ export const RrhRadioGroup: FC<{
     value: string;
     label: string;
     desc?: string;
+    disabled?: boolean;
   }[];
   radioItemClassName?: string;
   labelClassName?: string;
@@ -38,8 +39,20 @@ export const RrhRadioGroup: FC<{
       {radioItems.map((item, index) => {
         const radioId = `${groupIdPrefix}-${item.value}-${index}`;
         return (
-          <div className={cn('flex gap-3', radioItemClassName)} key={`${item.value}-${index}`}>
-            <RadioGroupItem className="mt-0.5 size-4 [&_svg]:h-2" value={item.value} id={radioId} />
+          <div
+            className={cn(
+              'flex gap-3',
+              item.disabled ? 'cursor-not-allowed opacity-60' : '',
+              radioItemClassName,
+            )}
+            key={`${item.value}-${index}`}
+          >
+            <RadioGroupItem
+              className="mt-0.5 size-4 [&_svg]:h-2"
+              value={item.value}
+              id={radioId}
+              disabled={item.disabled}
+            />
             <div>
               <Label className={cn('text-sm', labelClassName)} htmlFor={radioId}>
                 {item.label}

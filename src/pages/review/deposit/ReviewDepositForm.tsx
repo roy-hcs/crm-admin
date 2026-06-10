@@ -129,13 +129,11 @@ export const ReviewDepositForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="name"
         label={t('table.nameOrLastNameOrId')}
         placeholder={t('common.pleaseInput', { field: t('table.nameOrLastNameOrId') })}
       />
       <FormSelect
-        verticalLabel
         name="depositMethods"
         label={t('table.depositMethods')}
         placeholder={t('common.pleaseSelect')}
@@ -150,19 +148,16 @@ export const ReviewDepositForm = ({
         ]}
       />
       <FormInput
-        verticalLabel
         name="tradeAccount"
         label={t('table.tradingAccount')}
         placeholder={t('common.pleaseInput', { field: t('table.tradingAccount') })}
       />
       <FormInput
-        verticalLabel
         name="orderNumber"
         label={t('table.orderNumber')}
         placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
       />
       <FormSelect
-        verticalLabel
         name="verifyStatus"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
@@ -187,14 +182,12 @@ export const ReviewDepositForm = ({
         )}
       />
       <FormInput
-        verticalLabel
         name="verifyUserName"
         label={t('table.currentAuditor')}
         placeholder={t('common.pleaseInput', { field: t('table.currentAuditor') })}
       />
 
       <FormSelect
-        verticalLabel
         name="inAccountType"
         label={t('table.depositAccount')}
         placeholder={t('common.pleaseSelect')}
@@ -208,7 +201,6 @@ export const ReviewDepositForm = ({
       <SelectUpperDropdown />
       {depositMethod === '5' && (
         <FormSelect
-          verticalLabel
           name="channel"
           label={t('table.paymentChannel')}
           placeholder={t('common.pleaseSelect')}
@@ -220,7 +212,6 @@ export const ReviewDepositForm = ({
         />
       )}
       <FormSelect
-        verticalLabel
         name="currency"
         label={t('table.paymentCurrency')}
         placeholder={t('common.pleaseSelect')}
@@ -232,13 +223,11 @@ export const ReviewDepositForm = ({
       />
 
       <FormInput
-        verticalLabel
         name="tradeServerOrderNumber"
         label={t('table.tradeServerOrderNumber')}
         placeholder={t('common.pleaseInput', { field: t('table.tradeServerOrderNumber') })}
       />
       <FormInput
-        verticalLabel
         name="payOrderNum"
         label={t('table.paymentOrderNumber')}
         placeholder={t('common.pleaseInput', { field: t('table.paymentOrderNumber') })}

@@ -78,83 +78,80 @@ export const AccrualReportForm = ({
     });
   };
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      onKeyDown={e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          if (e.target instanceof HTMLTextAreaElement) return;
 
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <RrhServerSelector serverOptions={serverOptions} />
-          <FormInput
-            verticalLabel
-            name="projectName"
-            label={t('table.projectName')}
-            placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
-          />
-          <FormInput
-            verticalLabel
-            name="userName"
-            label={t('table.customerName')}
-            placeholder={t('common.pleaseInput', { field: t('table.customerName') })}
-          />
-          <FormInput
-            verticalLabel
-            name="managerName"
-            label={t('productReview.investmentManager')}
-            placeholder={t('common.pleaseInput', { field: t('productReview.investmentManager') })}
-          />
-          <FormInput
-            verticalLabel
-            name="orderNo"
-            label={t('table.orderNumber')}
-            placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
-          />
-          <FormSelect
-            verticalLabel
-            name="settlementType"
-            label={t('profitSharingReview.settlementType')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={[
-              {
-                label: t('table.periodicSettlement'),
-                value: '1',
-              },
-              {
-                label: t('table.redemptionSettlement'),
-                value: '2',
-              },
-            ]}
-          />
-          <FormField
-            name="settlementTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('table.settlementTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="settlementTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          e.preventDefault();
+          form.handleSubmit(onSubmit)();
+        }
+      }}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <RrhServerSelector serverOptions={serverOptions} />
+      <FormInput
+        name="projectName"
+        label={t('table.projectName')}
+        placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
+      />
+      <FormInput
+        name="userName"
+        label={t('table.customerName')}
+        placeholder={t('common.pleaseInput', { field: t('table.customerName') })}
+      />
+      <FormInput
+        name="managerName"
+        label={t('productReview.investmentManager')}
+        placeholder={t('common.pleaseInput', { field: t('productReview.investmentManager') })}
+      />
+      <FormInput
+        name="orderNo"
+        label={t('table.orderNumber')}
+        placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
+      />
+      <FormSelect
+        name="settlementType"
+        label={t('profitSharingReview.settlementType')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={[
+          {
+            label: t('table.periodicSettlement'),
+            value: '1',
+          },
+          {
+            label: t('table.redemptionSettlement'),
+            value: '2',
+          },
+        ]}
+      />
+      <FormField
+        name="settlementTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('table.settlementTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="settlementTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" loading={loading}>
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" loading={loading}>
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

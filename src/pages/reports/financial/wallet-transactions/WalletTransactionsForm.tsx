@@ -114,96 +114,90 @@ export const WalletTransactionsForm = ({
   };
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="account"
-            label={t('walletTransactions.account')}
-            placeholder={t('common.pleaseInput', {
-              field: t('walletTransactions.account'),
-            })}
-          />
-          <FormSelect
-            verticalLabel
-            name="operationType"
-            label={t('table.operationType')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={
-              operationTypeRes
-                ?.filter(item => item)
-                .map(item => ({
-                  label: item.dictLabel,
-                  value: item.dictValue,
-                })) || []
-            }
-          />
-          <FormSelect
-            verticalLabel
-            name="inMethod"
-            label={t('table.inMethod')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={inMethodOptions}
-          />
-          <FormInput
-            verticalLabel
-            name="serialNum"
-            label={t('walletTransactions.serialNum')}
-            placeholder={t('common.pleaseInput', {
-              field: t('walletTransactions.serialNum'),
-            })}
-          />
-          <FormSelect
-            verticalLabel
-            name="serverId"
-            label={t('walletTransactions.wallet')}
-            placeholder={t('common.pleaseSelect')}
-            options={
-              currencyListRes?.rows
-                ?.filter(item => item)
-                .map(item => ({
-                  label: item.currencyAbbr,
-                  value: item.id,
-                })) || []
-            }
-          />
-          <FormField
-            name="operationTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">
-                  {t('walletTransactions.operationTime')}
-                </FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="operationTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <SelectUpperDropdown />
-          <FormInput
-            verticalLabel
-            name="mtOrder"
-            label={t('walletTransactions.mtOrder')}
-            placeholder={t('common.pleaseInput', {
-              field: t('walletTransactions.mtOrder'),
-            })}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit">
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        name="account"
+        label={t('walletTransactions.account')}
+        placeholder={t('common.pleaseInput', {
+          field: t('walletTransactions.account'),
+        })}
+      />
+      <FormSelect
+        name="operationType"
+        label={t('table.operationType')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={
+          operationTypeRes
+            ?.filter(item => item)
+            .map(item => ({
+              label: item.dictLabel,
+              value: item.dictValue,
+            })) || []
+        }
+      />
+      <FormSelect
+        name="inMethod"
+        label={t('table.inMethod')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={inMethodOptions}
+      />
+      <FormInput
+        name="serialNum"
+        label={t('walletTransactions.serialNum')}
+        placeholder={t('common.pleaseInput', {
+          field: t('walletTransactions.serialNum'),
+        })}
+      />
+      <FormSelect
+        name="serverId"
+        label={t('walletTransactions.wallet')}
+        placeholder={t('common.pleaseSelect')}
+        options={
+          currencyListRes?.rows
+            ?.filter(item => item)
+            .map(item => ({
+              label: item.currencyAbbr,
+              value: item.id,
+            })) || []
+        }
+      />
+      <FormField
+        name="operationTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('walletTransactions.operationTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="operationTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <SelectUpperDropdown />
+      <FormInput
+        name="mtOrder"
+        label={t('walletTransactions.mtOrder')}
+        placeholder={t('common.pleaseInput', {
+          field: t('walletTransactions.mtOrder'),
+        })}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant={'outline'} onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit">
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

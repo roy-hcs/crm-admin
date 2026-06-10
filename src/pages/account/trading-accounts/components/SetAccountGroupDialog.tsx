@@ -1,5 +1,3 @@
-
-
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -77,30 +75,29 @@ export const SetAccountGroupDialog = ({
       formLoading={isSubmitting}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
-            <div className="text-foreground text-sm leading-5 font-medium">
-              {t('tradingAccountTransactions.selectedAccounts', { count: ids.length })}
-            </div>
+        <div className="text-foreground text-sm leading-5 font-medium">
+          {t('tradingAccountTransactions.selectedAccounts', { count: ids.length })}
+        </div>
 
-            <FormSelect
-              name="accountGroup"
-              label={t('table.accountGroup')}
-              verticalLabel
-              placeholder={t('common.pleaseSelect')}
-              showRowValue={false}
-              options={dealAccountGroup}
-            />
+        <FormSelect
+          name="accountGroup"
+          label={t('table.accountGroup')}
+          placeholder={t('common.pleaseSelect')}
+          showRowValue={false}
+          options={dealAccountGroup}
+        />
 
-            <div className="col-span-full -mx-6 flex justify-end px-6 py-6 sm:pb-0">
-              <div className="flex justify-end gap-4">
-                <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
-                  {t('common.Cancel')}
-                </RrhButton>
-                <RrhButton type="submit" className="px-4 py-2" disabled={isSubmitting}>
-                  {t('common.Confirm')}
-                </RrhButton>
-              </div>
-            </div>
-          </RrhForm>
+        <div className="col-span-full -mx-6 flex justify-end px-6 py-6 sm:pb-0">
+          <div className="flex justify-end gap-4">
+            <RrhButton variant="outline" type="button" className="px-4 py-2" onClick={onCancel}>
+              {t('common.Cancel')}
+            </RrhButton>
+            <RrhButton type="submit" className="px-4 py-2" disabled={isSubmitting}>
+              {t('common.Confirm')}
+            </RrhButton>
+          </div>
+        </div>
+      </RrhForm>
     </RrhDialog>
   );
 };

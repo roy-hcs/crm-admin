@@ -226,7 +226,6 @@ export const AddEditVarietyManagementDialog = ({
           <FormSelect
             name="symbolCategory"
             label={t('varietyManagement.symbolCategory')}
-            verticalLabel
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={symbolCategoryOptions}
@@ -241,7 +240,6 @@ export const AddEditVarietyManagementDialog = ({
           />
 
           <FormInput
-            verticalLabel
             name="symbol"
             label={t('varietyManagement.symbol')}
             placeholder={t('common.pleaseInput', { field: t('varietyManagement.symbol') })}
@@ -270,7 +268,6 @@ export const AddEditVarietyManagementDialog = ({
           />
 
           <FormInput
-            verticalLabel
             name="cname"
             label={t('varietyManagement.cname')}
             placeholder={t('common.pleaseInput', { field: t('varietyManagement.cname') })}
@@ -278,7 +275,6 @@ export const AddEditVarietyManagementDialog = ({
           />
 
           <FormInput
-            verticalLabel
             name="enname"
             label={t('varietyManagement.enname')}
             placeholder={t('common.pleaseInput', { field: t('varietyManagement.enname') })}
@@ -320,7 +316,6 @@ export const AddEditVarietyManagementDialog = ({
             {defaultNames.map((_: string, index: number) => (
               <FormInput
                 key={`default-name-${index}`}
-                verticalLabel
                 name={`defaultNames.${index}` as FieldPath<FormValues>}
                 label=""
                 placeholder={t('common.pleaseInput', { field: t('varietyManagement.name') })}
@@ -348,7 +343,6 @@ export const AddEditVarietyManagementDialog = ({
           </div>
 
           <FormInput
-            verticalLabel
             name="sort"
             label={t('table.sort')}
             placeholder="1-9999"

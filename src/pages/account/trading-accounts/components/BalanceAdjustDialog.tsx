@@ -174,59 +174,54 @@ export const BalanceAdjustDialog = ({
       formLoading={isSubmitting}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
-            <div className="bg-destructive/5 flex items-center gap-1 rounded-md p-2">
-              <CircleAlert className="text-destructive size-4" />
-              <span className="text-destructive text-sm leading-5 font-medium">
-                {t('tradingAccountTransactions.balanceAdjustDescription')}
-              </span>
-            </div>
-            <div className="text-foreground text-sm leading-5 font-medium">
-              {t('tradingAccountTransactions.selectedAccounts', {
-                count: accounts.length,
-              })}
-            </div>
+        <div className="bg-destructive/5 flex items-center gap-1 rounded-md p-2">
+          <CircleAlert className="text-destructive size-4" />
+          <span className="text-destructive text-sm leading-5 font-medium">
+            {t('tradingAccountTransactions.balanceAdjustDescription')}
+          </span>
+        </div>
+        <div className="text-foreground text-sm leading-5 font-medium">
+          {t('tradingAccountTransactions.selectedAccounts', {
+            count: accounts.length,
+          })}
+        </div>
 
-            <div className="grid gap-2">
-              <div className="text-foreground text-sm leading-5 font-medium">
-                {t('table.account')}
-              </div>
-              <div className="text-muted-foreground text-sm leading-5">{accounts?.join(', ')}</div>
-            </div>
+        <div className="grid gap-2">
+          <div className="text-foreground text-sm leading-5 font-medium">{t('table.account')}</div>
+          <div className="text-muted-foreground text-sm leading-5">{accounts?.join(', ')}</div>
+        </div>
 
-            <FormField
-              name="operationType"
-              render={({ field }) => {
-                return <SelectMethod verticalLabel field={field} />;
-              }}
-            />
-            {hideFlag && (
-              <FormSelect
-                name="opType"
-                label={t('table.operationType')}
-                verticalLabel
-                placeholder={t('common.pleaseSelect')}
-                showRowValue={false}
-                options={typeOptions}
-                loading={operationTypeLoading}
-              />
-            )}
+        <FormField
+          name="operationType"
+          render={({ field }) => {
+            return <SelectMethod verticalLabel field={field} />;
+          }}
+        />
+        {hideFlag && (
+          <FormSelect
+            name="opType"
+            label={t('table.operationType')}
+            placeholder={t('common.pleaseSelect')}
+            showRowValue={false}
+            options={typeOptions}
+            loading={operationTypeLoading}
+          />
+        )}
 
-            <FormInput
-              name="amount"
-              label={t('table.operationAmount')}
-              verticalLabel
-              placeholder={t('rules.limitLength', { field: 11 })}
-              maxLength={11}
-            />
+        <FormInput
+          name="amount"
+          label={t('table.operationAmount')}
+          placeholder={t('rules.limitLength', { field: 11 })}
+          maxLength={11}
+        />
 
-            <FormInput
-              name="remark"
-              label={t('table.remarks')}
-              verticalLabel
-              placeholder={t('rules.limitLength', { field: 10 })}
-              maxLength={10}
-            />
-          </RrhForm>
+        <FormInput
+          name="remark"
+          label={t('table.remarks')}
+          placeholder={t('rules.limitLength', { field: 10 })}
+          maxLength={10}
+        />
+      </RrhForm>
     </RrhDialog>
   );
 };

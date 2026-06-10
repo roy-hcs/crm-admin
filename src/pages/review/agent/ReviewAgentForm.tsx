@@ -85,86 +85,82 @@ export const ReviewAgentForm = ({
     });
   };
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      onKeyDown={e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          if (e.target instanceof HTMLTextAreaElement) return;
 
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="name"
-            label={t('table.fullName')}
-            placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
-          />
-          <FormInput
-            verticalLabel
-            name="mobile"
-            label={t('table.mobile')}
-            placeholder={t('common.pleaseInput', { field: t('table.mobile') })}
-          />
-          <FormInput
-            verticalLabel
-            name="email"
-            label={t('table.email')}
-            placeholder={t('common.pleaseInput', { field: t('table.email') })}
-          />
-          <FormSelect
-            verticalLabel
-            name="verifyStatus"
-            label={t('table.status')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={Object.entries(reviewStatusMap).map(([key, value]) => {
-              return { label: t(`table.${value}`), value: key };
-            })}
-          />
-          <FormField
-            name="submitTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="text-foreground basis-3/12">
-                  {t('table.orderPlacementTime')}
-                </FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="submitTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormSelect
-            verticalLabel
-            name="applySource"
-            label={t('table.applySource')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={Object.entries(applySourceMap).map(([key, value]) => {
-              return { label: t(`table.${value}`), value: key };
-            })}
-          />
-          <FormInput
-            verticalLabel
-            name="verifyUserName"
-            label={t('table.currentAuditor')}
-            placeholder={t('common.pleaseInput', { field: t('table.currentAuditor') })}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" loading={loading}>
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+          e.preventDefault();
+          form.handleSubmit(onSubmit)();
+        }
+      }}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        name="name"
+        label={t('table.fullName')}
+        placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
+      />
+      <FormInput
+        name="mobile"
+        label={t('table.mobile')}
+        placeholder={t('common.pleaseInput', { field: t('table.mobile') })}
+      />
+      <FormInput
+        name="email"
+        label={t('table.email')}
+        placeholder={t('common.pleaseInput', { field: t('table.email') })}
+      />
+      <FormSelect
+        name="verifyStatus"
+        label={t('table.status')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={Object.entries(reviewStatusMap).map(([key, value]) => {
+          return { label: t(`table.${value}`), value: key };
+        })}
+      />
+      <FormField
+        name="submitTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="text-foreground basis-3/12">
+              {t('table.orderPlacementTime')}
+            </FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="submitTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormSelect
+        name="applySource"
+        label={t('table.applySource')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={Object.entries(applySourceMap).map(([key, value]) => {
+          return { label: t(`table.${value}`), value: key };
+        })}
+      />
+      <FormInput
+        name="verifyUserName"
+        label={t('table.currentAuditor')}
+        placeholder={t('common.pleaseInput', { field: t('table.currentAuditor') })}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" loading={loading}>
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

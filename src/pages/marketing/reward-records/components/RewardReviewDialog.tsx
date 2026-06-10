@@ -129,17 +129,11 @@ export const RewardReviewDialog = ({ onSuccess }: { onSuccess: () => void }) => 
           </span>
         </div>
         <FormSwitch
-          verticalLabel
           name="openAccountRewardChecked"
           label={t('rewardRecords.accountOpeningReward')}
         />
+        <FormSwitch name="depositRewardChecked" label={t('rewardRecords.depositRewardCredit')} />
         <FormSwitch
-          verticalLabel
-          name="depositRewardChecked"
-          label={t('rewardRecords.depositRewardCredit')}
-        />
-        <FormSwitch
-          verticalLabel
           name="closePositionRewardChecked"
           label={t('rewardRecords.orderClosingReward')}
         />

@@ -99,14 +99,12 @@ export function PerformanceFeeRebateReportForm({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="orderNo"
         label={t('table.orderNumber')}
         placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
       />
 
       <FormInput
-        verticalLabel
         name="performanceFeeOrderNo"
         label={t('performanceFeeRebatePage.performanceFeeOrderNo')}
         placeholder={t('common.pleaseInput', {
@@ -115,14 +113,12 @@ export function PerformanceFeeRebateReportForm({
       />
 
       <FormInput
-        verticalLabel
         name="signalSourceName"
         label={t('signals.name')}
         placeholder={t('common.pleaseInput', { field: t('signals.name') })}
       />
 
       <FormInput
-        verticalLabel
         name="trader"
         label={t('table.signalSourceAccount')}
         placeholder={t('common.pleaseInput', {
@@ -131,7 +127,6 @@ export function PerformanceFeeRebateReportForm({
       />
 
       <FormInput
-        verticalLabel
         name="client"
         label={t('table.subscriberAccount')}
         placeholder={t('common.pleaseInput', {
@@ -140,7 +135,6 @@ export function PerformanceFeeRebateReportForm({
       />
 
       <FormSelect
-        verticalLabel
         name="payStatus"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

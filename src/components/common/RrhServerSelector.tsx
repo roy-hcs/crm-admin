@@ -20,7 +20,6 @@ export const RrhServerSelector: FC<{
         serviceType: number;
       }
     >
-      verticalLabel
       name={name}
       label={label ?? t('table.server')}
       placeholder={t('common.pleaseSelect')}

@@ -85,7 +85,6 @@ export const PayDialog = ({
         </div>
 
         <FormSelect
-          verticalLabel
           name="payAccount"
           label={t('performanceFeeRebatePage.selectPayAccount')}
           placeholder={t('common.pleaseSelect')}
