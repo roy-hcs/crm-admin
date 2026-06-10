@@ -2,15 +2,14 @@ import { useGetUserAccountActivityList } from '@/api/hooks/agent/agent';
 import { AccountActivityItem } from '@/api/hooks/agent/types';
 import { useDictType } from '@/api/hooks/system';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
-import { PageInfo } from '@/components/common/PageInfo';
 import { RrhButton } from '@/components/common/RrhButton';
-import { RrhCard } from '@/components/common/RrhCard';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SetRiskButton } from '../components/SetRiskButton';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
 export const CrmAccountActivityListPage = ({ userId }: { userId: string }) => {
   const { t } = useTranslation();
@@ -170,8 +169,7 @@ export const CrmAccountActivityListPage = ({ userId }: { userId: string }) => {
     refetch();
   };
   return (
-    <RrhCard>
-      <PageInfo title={t('CRMAccountPage.accountActivity')} />
+    <TableContentWrapper>
       <div className="mb-3 flex items-center justify-end">
         <div className="flex items-center gap-2">
           <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
@@ -196,6 +194,6 @@ export const CrmAccountActivityListPage = ({ userId }: { userId: string }) => {
         onPageSizeChange={setPageSize}
         loading={isPending}
       />
-    </RrhCard>
+    </TableContentWrapper>
   );
 };

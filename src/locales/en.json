@@ -808,6 +808,8 @@
     "trust": "trust",
     "untrust": "risk",
     "accountBelongToUpper": "The superior to whom the account belongs is",
+    "bankAccount": "bank account",
+    "wireTransferAccount": "wire transfer account",
     "commissionGroupName": "Commission group name",
     "rebateLevel": "Rebate levels",
     "userName": "Agent name",

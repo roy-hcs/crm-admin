@@ -184,7 +184,6 @@ export const CrmRebateAccountPage = ({ userId }: { userId: string }) => {
 
   return (
     <RrhCard>
-      <div className="mb-4 text-lg font-medium">{t('trading.rebateAccountName')}</div>
       <RrhForm
         form={form}
         className="flex flex-col gap-4"

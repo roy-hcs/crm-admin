@@ -1,7 +1,6 @@
 import { useDeleteUserWallet, useGetUserWalletList } from '@/api/hooks/agent/agent';
 import { WalletItem } from '@/api/hooks/system';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
-import { PageInfo } from '@/components/common/PageInfo';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
@@ -112,8 +111,7 @@ export const CrmUserWalletListPage = ({ userId }: { userId: string }) => {
     refetch();
   };
   return (
-    <div>
-      <PageInfo title={t('walletAccountsPage.title')} />
+    <TableContentWrapper>
       <div className="mb-3 flex items-center justify-end">
         <div className="flex items-center gap-2">
           <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
@@ -132,18 +130,16 @@ export const CrmUserWalletListPage = ({ userId }: { userId: string }) => {
           </RrhButton>
         </div>
       </div>
-      <TableContentWrapper>
-        <DataTable
-          columns={tableColumns}
-          data={data?.rows || []}
-          pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
-          pageIndex={pageNum}
-          pageSize={pageSize}
-          onPageChange={setPageNum}
-          onPageSizeChange={setPageSize}
-          loading={isPending}
-        />
-      </TableContentWrapper>
+      <DataTable
+        columns={tableColumns}
+        data={data?.rows || []}
+        pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
+        pageIndex={pageNum}
+        pageSize={pageSize}
+        onPageChange={setPageNum}
+        onPageSizeChange={setPageSize}
+        loading={isPending}
+      />
       <CrmAddWalletDialog
         userId={userId}
         open={isAddDialogOpen}
@@ -158,6 +154,6 @@ export const CrmUserWalletListPage = ({ userId }: { userId: string }) => {
         params={{ ids: info?.id || '' }}
         tipsText={t('common.deleteFieldConfirm', { field: t('walletAccountsPage.title') })}
       />
-    </div>
+    </TableContentWrapper>
   );
 };

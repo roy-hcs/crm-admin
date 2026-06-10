@@ -1429,6 +1429,8 @@
     "riskNone": "无风险",
     "setRiskDialogTitle": "设置IP和设备是否可信",
     "accountBelongToUpper": "账号归属的上级为",
+    "bankAccount": "银行账户",
+    "wireTransferAccount": "电汇账户",
     "userName": "代理姓名",
     "rebateLevel": "返佣层级",
     "commissionGroupName": "佣金组名称",
