@@ -95,13 +95,13 @@ export function BaseConfigCard3({ editable }: { editable: boolean }) {
                     name={startAmountName}
                     unit="USD"
                     label={t('netBonusRewardConfig.amountRange')}
-                    verticalLabel
                     disabled={!editable}
                   />
                 </div>
                 <div className="pb-2 text-sm">~</div>
                 <div className="flex-1">
                   <FormInputWithUnit<BaseConfigCard3FormValues>
+                    verticalLabel={false}
                     name={endAmountName}
                     unit="USD"
                     disabled={!editable || index === fields.length - 1}
@@ -117,7 +117,6 @@ export function BaseConfigCard3({ editable }: { editable: boolean }) {
                     name={rewardParamName}
                     unit="%"
                     label={t('table.rewardParams')}
-                    verticalLabel
                     disabled={!editable}
                   />
                 </div>

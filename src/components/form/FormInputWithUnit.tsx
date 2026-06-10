@@ -22,7 +22,7 @@ export function FormInputWithUnit<T extends FieldValues>({
   name,
   unit,
   label,
-  verticalLabel = false,
+  verticalLabel = true,
   className,
   inputClassName,
   disabled = false,

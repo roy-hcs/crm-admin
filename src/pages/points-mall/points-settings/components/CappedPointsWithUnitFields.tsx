@@ -26,7 +26,6 @@ export function CappedPointsWithUnitFields({
           name={cappedPointsName}
           unit={pointsUnit}
           label={t('pointsMallSettings.cappedPointsPerTime')}
-          verticalLabel
           disabled={!editable}
         />
       </div>

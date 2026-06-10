@@ -117,7 +117,6 @@ export function AddEditSignalsStepOne({
               {t('signals.subscribeFeeDesc')}
             </div>
           }
-          verticalLabel
         />
       )}
       <FormSwitch
@@ -146,7 +145,6 @@ export function AddEditSignalsStepOne({
           unit="%"
           label={t('signalReview.performanceFeeRatio')}
           placeholder="0-100"
-          verticalLabel
         />
       )}
       <FormSelect

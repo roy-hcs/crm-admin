@@ -33,14 +33,12 @@ export function PointConfigCard5({
               name="deductionDays"
               unit={t('common.day')}
               label={t('pointsMallSettings.deductionDays')}
-              verticalLabel
               disabled={!editable}
             />
             <FormInputWithUnit<PointsMallSettingsFormValues>
               name="deductionRatio"
               unit="%"
               label={t('pointsMallSettings.deductionRatio')}
-              verticalLabel
               disabled={!editable}
             />
           </div>

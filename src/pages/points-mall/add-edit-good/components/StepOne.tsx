@@ -73,6 +73,7 @@ export function StepOne({
               </div>
               <div className="flex-1">
                 <FormInputWithUnit
+                  verticalLabel={false}
                   name={`combinationPaymentList.${index}.exchangeAmount`}
                   unit="USD"
                   placeholder={t('products.enterExchangeAmount')}

@@ -365,14 +365,13 @@ export const AddEditCommissionGroupDialog = ({
                     />
                   </div>
                   <div className="flex-1">
-                    <FormInputWithUnit name={`agency.${index}.equalMoney`} unit="%" verticalLabel />
+                    <FormInputWithUnit name={`agency.${index}.equalMoney`} unit="%" />
                   </div>
                 </div>
                 <FormInputWithUnit
                   name={`agency.${index}.equalLimit`}
                   unit={t('commissionRebateSettings.passLimit')}
                   label={t('commissionRebateSettings.limit')}
-                  verticalLabel
                 />
               </div>
               <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -399,14 +398,13 @@ export const AddEditCommissionGroupDialog = ({
                     />
                   </div>
                   <div className="flex-1">
-                    <FormInputWithUnit name={`agency.${index}.passMoney`} unit="%" verticalLabel />
+                    <FormInputWithUnit name={`agency.${index}.passMoney`} unit="%" />
                   </div>
                 </div>
                 <FormInputWithUnit
                   name={`agency.${index}.passLimit`}
                   unit={t('commissionRebateSettings.passLimit')}
                   label={t('commissionRebateSettings.limit')}
-                  verticalLabel
                 />
               </div>
             </div>

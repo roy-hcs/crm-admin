@@ -101,7 +101,6 @@ export function TransactionConfigItem({
             name={`${namePrefix}.${index}.bonusPoints` as FieldPath<PointsMallSettingsFormValues>}
             unit={t('common.points')}
             label={t('pointsMallSettings.rewardCalculation')}
-            verticalLabel
             disabled={!editable}
           />
         </div>
@@ -130,7 +129,6 @@ export function TransactionConfigItem({
             name={`${namePrefix}.${index}.cappedPoints` as FieldPath<PointsMallSettingsFormValues>}
             unit={t('common.points')}
             label={t('pointsMallSettings.cappedPointsPerTime')}
-            verticalLabel
             disabled={!editable}
           />
         </div>
