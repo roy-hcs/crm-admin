@@ -1,7 +1,6 @@
 import { SelectOption } from '@/api/types';
 import { RrhCard } from '@/components/common/RrhCard';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
-import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 import { FieldPath } from 'react-hook-form';
 import { PointsMallSettingsFormValues } from '../types';
@@ -36,21 +35,18 @@ export function SidebarMultiSelectCard({
             <div className="text-muted-foreground text-sm leading-5">{description}</div>
           ) : null}
         </div>
-        <div
-          className={cn(!editable && 'pointer-events-none opacity-60')}
-          aria-disabled={!editable}
-        >
-          <FormMultiSelect<PointsMallSettingsFormValues>
-            name={name}
-            label={label}
-            verticalLabel
-            placeholder={placeholder}
-            showRowValue={false}
-            options={options}
-            className="gap-3"
-            labeTipsDom={labelTipsDom}
-          />
-        </div>
+
+        <FormMultiSelect<PointsMallSettingsFormValues>
+          name={name}
+          label={label}
+          verticalLabel
+          placeholder={placeholder}
+          showRowValue={false}
+          options={options}
+          className="gap-3"
+          labeTipsDom={labelTipsDom}
+          disabled={!editable}
+        />
       </div>
     </RrhCard>
   );

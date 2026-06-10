@@ -4,7 +4,6 @@
     "desc": "管理和查看CRM账户信息",
     "Index": "序号",
     "UserName": "姓名",
-    "Status": "状态",
     "Mobile": "手机号",
     "CRMAccountType": "CRM账户类型",
     "Level": "层级",
@@ -20,7 +19,6 @@
     "ConfirmEnableAccount": "确认要启用该账户吗？",
     "NameOrAccountId": "姓名/账户ID",
     "ID": "证件号码",
-    "status": "状态",
     "registerTime": "注册时间",
     "tagName": "标签名称",
     "Export": "导出",
@@ -133,7 +131,6 @@
     "subTime": "提交时间",
     "statisticTime": "统计时间",
     "verifyTime": "完结时间",
-    "status": "状态",
     "enable": "启用",
     "disable": "停用",
     "delete": "删除",
@@ -308,7 +305,9 @@
     "modifyFailed": "修改失败",
     "submit": "提交",
     "back": "返回",
-    "failed": "失败"
+    "failed": "失败",
+    "faq": "FAQ",
+    "cannotModifyAfterSubmit": "提交后不可修改"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -363,7 +362,6 @@
     "directBroker": "直客",
     "title": "IB客户追踪",
     "Index": "序号",
-    "userName": "代理姓名",
     "levelName": "返佣等级",
     "statisticMonthStr": "月份",
     "allFirstDeposit": "首次入金数(全部)",
@@ -386,7 +384,6 @@
   "overview": {
     "title": "IB数据总览",
     "Index": "序号",
-    "userName": "代理姓名",
     "email": "邮箱",
     "rebateLevelId": "返佣等级",
     "userNumber": "CRM账户数",
@@ -593,7 +590,6 @@
     "accountType": "账户类型",
     "roleId": "角色",
     "colorPreference": "颜色",
-    "status": "状态",
     "limitLength": "{{field}}个字符以内",
     "passwordComplexity": "请输入密码,{{min}}-{{max}}位英文(大小写)+数字",
     "emailAlreadyUsed": "当前邮箱已被使用",
@@ -770,6 +766,7 @@
     "title": "商品列表",
     "goodsName": "名称",
     "name": "商品名称",
+    "goodIntroduction": "商品介绍",
     "goodId": "商品ID",
     "exchangePoints": "兑换积分",
     "exchangeAmount": "兑换金额",
@@ -783,7 +780,36 @@
     "confirm": {
       "stop": "确认要停用该商品信息吗？",
       "open": "确认要启用该商品信息吗？"
-    }
+    },
+    "addGoods": "创建商品",
+    "editGoods": "编辑商品",
+    "enterExchangePoints": "请输入兑换积分(正整数)",
+    "productCategory": "商品分类(选填)",
+    "cosmetics": "化妆品",
+    "electronics": "电子产品",
+    "cosmeticsOptions": {
+      "1": "口红",
+      "2": "粉底"
+    },
+    "electronicsOptions": {
+      "1": "手机",
+      "2": "电脑"
+    },
+    "virtualGoodsCategory": "虚拟商品类别(选填)",
+    "virtualGoodsOptions": {
+      "1": "其他",
+      "2": "真实入金",
+      "3": "信用金"
+    },
+    "goodPreviewImage": "商品预览图",
+    "applicableRoles": "适用角色(选填)",
+    "applicableRolesDesc": "符合条件的用户才会启用积分商城功能",
+    "countryId": "可兑换国家/地区(选填)",
+    "countryIdDesc": "若您配置商品可兑换国家或地区，则仅该地区的客户可以兑换商品",
+    "countryIdPlaceholder": "选择国家或地区",
+    "countryIdSelected": "已选 {{fields}} 个国家或地区",
+    "combinationPayment": "组合支付(选填)",
+    "enterExchangeAmount": "请输入兑换金额(正整数)"
   },
   "profile": {
     "title": "个人资料",
@@ -961,9 +987,11 @@
     "title": "信号源",
     "name": "信号源名称",
     "signalSourceAuthor": "信号源作者",
+    "signalSourceAuthorDesc": "信号源作者需为CRM用户",
     "totalProfit": "收益(Total)",
     "totalProfitRate": "收益率(Total)",
     "subscribeFee": "订阅费",
+    "subscribeFeeDesc": "一个完整订阅周期结束后，您将获得订阅费",
     "subscribeNum": "订阅数",
     "statusOptions": {
       "0": "关闭",
@@ -973,6 +1001,23 @@
     "confirm": {
       "stop": "确认要修改为不公开展示？",
       "open": "确认要修改为公开展示？"
+    },
+    "icon": "信号源icon(选填)",
+    "iconDesc": "个性的icon 会让人印象深刻 支持jpg、jpeg、png格式的图片,且不超过 100KB",
+    "minMaxBalanceForSubscription": "订阅最低-最高余额限制(选填)",
+    "minBalanceForSubscription": "最低余额（正整数）",
+    "maxBalanceForSubscription": "最高余额（正整数）",
+    "performanceFeeEnable": "订阅费",
+    "charge": "表现费",
+    "chargeDesc": "表现费根据不同周期收取，可选完成订阅周期、每周、周月。当信号源的盈利超过高水位线后，超过的部分将收取一定的业绩表现费。",
+    "description": "信号源描述(选填)",
+    "performanceFeeRebateEnabled": "上级/代理返佣",
+    "performanceFeeRebateEnabledDesc": "收取的净表现费(扣除管理费的部分)将优先用于代理/上级返佣提成",
+    "performanceFeeRebateScheme": "返佣方案",
+    "performanceFeeRebateSchemeDesc": "单独设置：需要单独设置本信号源的表现费返佣设置，并依据此方案执行返佣。统一设置：无需单独设置信号源表现费返佣设置，依据系统的统一设定进行返佣。",
+    "performanceFeeRebateSchemeOptions": {
+      "1": "单独设置",
+      "2": "统一设置"
     }
   },
   "signalReview": {
@@ -981,7 +1026,19 @@
     "show": "展示",
     "hide": "不展示",
     "upperLimit": "订阅上限(选填)",
-    "minBalanceForSubscription": "订阅最低余额限制(选填)"
+    "minBalanceForSubscription": "订阅最低余额限制(选填)",
+    "maxBalanceForSubscription": "订阅最高余额限制(选填)",
+    "subscriptionReview": "订阅审核",
+    "subscriptionReviewDesc": "开启：用户申请信号源订阅将需要进行人工审核后方可启用。关闭：用户申请信号源无需审核即可订阅成功。",
+    "charge": "收费",
+    "free": "免费",
+    "paid": "收费",
+    "performanceFeeCycleOptions": {
+      "3": "完整订阅周期",
+      "0": "每日",
+      "1": "每周",
+      "2": "每月"
+    }
   },
   "varietyManagement": {
     "title": "品种管理",
@@ -989,17 +1046,17 @@
     "symbolCategory": "品种分类",
     "cname": "中文名称",
     "enname": "英文名称",
-    "name": "默认名称"
+    "name": "默认名称",
+    "add": "新增品种管理",
+    "deleteTips": "确定删除该 品种管理？"
   },
   "performanceFeeRecord": {
     "title": "表现费记录",
     "clientName": "订阅用户",
-    "payAccountName": "订阅者账号",
     "performanceFee": "表现费",
     "managementFee": "管理费",
     "payTime": "支付时间",
     "payAccount": "支付账号",
-    "trader": "信号源账号",
     "arrivalStatus": "到账情况",
     "payStatusOptions": {
       "0": "未支付",
@@ -1373,7 +1430,13 @@
     "setRiskDialogTitle": "设置IP和设备是否可信",
     "accountBelongToUpper": "账号归属的上级为",
     "bankAccount": "银行账户",
-    "wireTransferAccount": "电汇账户"
+    "wireTransferAccount": "电汇账户",
+    "userName": "代理姓名",
+    "rebateLevel": "返佣层级",
+    "commissionGroupName": "佣金组名称",
+    "netPerformanceFee": "净表现费",
+    "baseRebateRatio": "基础佣金参数",
+    "extraRebateRatio": "额外奖励参数"
   },
   "settings": {
     "title": "审核设置",
@@ -1571,7 +1634,6 @@
   "RebateLevelSettings": {
     "title": "返佣层级设置",
     "levelPlaceholder": "请输入层级，当前可输入最高层级为14",
-    "rebateLevel": "返佣层级",
     "levelSkippingSettings": "平级越级设置",
     "settingOne": "不允许平级或越级",
     "settingOneDesc": "下级的层级数字只能大于上级的层级数字",
@@ -1668,7 +1730,16 @@
     "title": "PAMM计提报表"
   },
   "CopyTradingSettings": {
-    "title": "协议设置"
+    "title": "协议设置",
+    "copyTrading": "CopyTrading协议",
+    "applicableScenarios": "适用场景",
+    "type": "协议类型",
+    "typeOptions": {
+      "0": "文本录入",
+      "1": "文件上传"
+    },
+    "content": "协议内容",
+    "confirmDelete": "确定删除该 CopyTrading协议？删除后该条数据将不可恢复!"
   },
   "RebateBasicSettingsPage": {
     "title": "基础设置",
@@ -1812,6 +1883,21 @@
     "performanceFeeRebatBonusTip": "当伞下客户结算表现费返佣时，忠诚客户将在原本返佣奖励的基础上额外获得奖励。例如净表现费=100USD，你可获得2%的基础返佣奖励。但由于你是Level3的忠诚客户，可以获得额外3%的奖励，那么你将获得100*(2%+3%)=5USD奖励，其中3USD为忠诚奖励。",
     "enterExtraReward": "请输入额外奖励"
   },
+  "performanceFeeRebatePage": {
+    "verifyTab": "返佣审核",
+    "reportTab": "返佣报表",
+    "performanceFeeOrderNo": "表现费订单号",
+    "traderAccount": "交易账号",
+    "clientAccount": "返佣账号",
+    "rebateAmount": "代理佣金",
+    "performanceFeeDetail": "表现费返佣审核详情",
+    "signalSourceAuthor": "信号源作者",
+    "subscriber": "订阅者",
+    "reviewTime": "审核时间",
+    "payAccount": "支付账户",
+    "selectPayAccount": "请选择上级/代理提取佣金的账户",
+    "payAccountDesc": "如若佣金的货币与收款账户货币不同，系统将自动化将佣金货币自动换算为收款账户货币后执行佣金入金。"
+  },
   "netBonus": {
     "netBonusRewardReport": "净入金奖励报表"
   },
@@ -1829,6 +1915,74 @@
     "deleteConfirm": "确定删除该 净入金奖励记录？",
     "detail": "奖励审核详情",
     "titleDesc": "实发金额为实际发放给用户的奖励金额，通常与奖励金额一致。若因特殊情况需要调整实发金额，请填写调整原因备注"
+  },
+  "netBonusRewardConfig": {
+    "title": "净入金奖励配置",
+    "baseInfo": "基础信息",
+    "rewardTarget": "奖励对象(多选)",
+    "rewardTargetDesc": "目标对象才会执行净入金统计及奖励",
+    "fundsStatisticsRewards": "资金统计及奖励",
+    "fundDepositStatistics": "入金统计",
+    "fundWithdrawalStatistics": "出金统计",
+    "crmDeposit": "CRM入金",
+    "sysDeposit": "系统入金",
+    "crmWithdraw": "CRM出金",
+    "sysWithdraw": "系统出金",
+    "dataStatisticsTimeRange": "数据统计时间范围",
+    "autoReview": "奖励自动审核",
+    "autoReviewDesc": "开启时净入金奖励将自动审核通过",
+    "setRewardLevel": "设置奖励分级参数表",
+    "setRewardLevelDesc": "为不同的CRM账户类型设置不同的奖励分级度对照数据",
+    "setRewardLevelParams": "固定奖励参数设置(选填)",
+    "setRewardLevelParamsDesc": "固定奖励参数设置(选填)",
+    "agentRewardLevelTable": "代理-奖励分级对照表",
+    "salesRewardLevelTable": "销售-奖励分级对照表",
+    "businessRewardLevelTable": "业务-奖励分级对照表",
+    "maxBaseAmount": "最高值",
+    "amountRange": "金额区间",
+    "netBonusReward": "净入金奖励",
+    "faqTitle": "F.A.Q常见问题",
+    "faq": {
+      "basic": "功能基础理解",
+      "q1": "净入金奖励功能的核心目标是什么？",
+      "q2": "净入金奖励与常规佣金的区别是什么？",
+      "q3": "奖励计算在哪一天执行？是否自动？",
+      "q4": "净入金≤0的用户会怎样？",
+      "q5": "奖励对象支持哪些类型？",
+      "a1": "通过统计代理、销售或业务的净入金表现，自动发放对应奖励或返佣，以激励拉新与资金增长行为",
+      "a2": "净入金奖励依据「入金减出金」计算资金净流入表现，不依赖交易量或客户下单数据，更偏向资金贡献激励。",
+      "a3": "系统会在每月1号自动执行上一个周期的统计与奖励计算，周期长度由配置项“统计月数”决定（1–12个月可选）。例如：若周期为3个月，2025年10月1日统计的是7月、8月、9月的数据。",
+      "a4": "若平均净入金(奖励) ≤ 0，则该用户本月无奖励记录，系统自动跳过计算。",
+      "a5": "管理员可在配置中多选以下账户类型：● 用户（终端客户）● 代理（IB）● 销售● 业务 仅被选中的类型会纳入统计与奖励执行。"
+    },
+    "moreFaq": {
+      "1": "计算与执行类",
+      "2": "异常与排错类",
+      "q1": "入金与出金数据来源哪里？",
+      "a1": "● CRM入金：来自入金审核通过的订单（剔除手续费，按汇率转USD）。\n● 系统入金：来自系统资金操作记录中选中的操作类型。\n● 汇率计算采用中间价 = (买入价 + 卖出价) / 2。",
+      "q2": "什么是净入金？",
+      "a2": "净入金 = 入金总额 − 出金总额。统计周期为配置项中设定的自然月数（如3个月）",
+      "q3": "个人平均净入金、平均净入金(奖励)、分级平均净入金有什么区别？",
+      "a3": "个人平均净入金：仅计算该用户个人的平均净入金。\n平均净入金(奖励)=计算“自己 + 直属下级(用户)”的平均净入金\n分级平均净入金：计算“自己 + 所有下级”的平均净入金，用于对照分级奖励表确定奖励参数。",
+      "q4": "奖励参数是怎么确定的？",
+      "a4": "系统会根据每位用户的“分级平均净入金”去查找其账户类型对应的分级奖励参数表区间，自动匹配相应百分比（%）。",
+      "q5": "奖励参数有固定值的用户怎么处理？",
+      "a5": "若管理员在配置中为某用户设定了“固定参数”，则系统忽略分级表，直接使用该固定参数计算奖励。",
+      "q6": "净入金奖励的计算周期是什么？",
+      "a6": "默认在每月1号执行上一个周期（配置项定义的1–12个月）内的数据统计与计算。例如：若周期为3个月，2025年10月1日统计的是7月、8月、9月的数据。",
+      "q7": "计算个人与分级奖励的顺序是什么？",
+      "a7": "①先计算个人平均净入金与分级平均净入金。\n② 再匹配奖励参数。\n③ 执行个人奖励。\n④ 再逐层向上执行分级差额奖励（即上级取级差返佣）。\n⑤ 按配置决定是否自动审核与发放。",
+      "q8": "奖励公式是什么？",
+      "a8": "● 个人奖励 = 平均净入金(奖励) × 奖励参数\n● 分级差额奖励 = 平均净入金(下级) × (上级参数 − 下级参数)",
+      "q9": "奖励如何入账？",
+      "a9": "● 自动审核模式下：系统直接入账到 Wallet(USD) 或绑定的 USD 交易账户。\n● 若用户未设置收款账户，则进入“待审”状态，需人工审核确认",
+      "q10": "审核机制有哪些？",
+      "a10": "● 自动审核开启 → 奖励直接入账；\n● 关闭自动审核 → 奖励进入“待审”，管理员在奖励审核列表中人工操作。",
+      "q11": "哪些情况会导致奖励未生成？",
+      "a11": "● 平均净入金(奖励) ≤ 0\n● 奖励参数 ≤ 0\n● 奖励参数差额 ≤ 0\n● 用户无收款账户且未启用自动审核",
+      "q12": "奖励计算失败怎么办？",
+      "a12": "管理员可在“净入金数据统计表”中查看统计结果是否为空；如异常，可重新触发统计任务或联系技术团队执行手动重算。"
+    }
   },
   "pointsMallSettings": {
     "title": "积分商城设置",
@@ -1917,5 +2071,106 @@
     },
     "explanation": " 说明({{field}})",
     "explanationPlaceholder": "请填写说明文案，让用户了解积分商城的规则"
+  },
+  "commissionRebateSettings": {
+    "tabs": {
+      "1": "佣金组设置",
+      "2": "自定义佣金参数"
+    },
+    "subIbSettings": "Sub-IB参数设置",
+    "subIbParamsDesc": "填写下级代理的参数，当前参数填写方式：级差方式",
+    "totalRebate": "返佣总值",
+    "totalRebateDesc": "当前代理链路总返佣额度合计，返佣金额相加不得超过该数额。",
+    "rebateValue": "返佣参数",
+    "chiefSteward": "总管",
+    "superAgent": "特级代理",
+    "firstAgent": "1级代理",
+    "leverTotalRebate": "层级返佣合计",
+    "faq": {
+      "title1": "页面中展示的是代理及其返佣层级用户的客户关系数据（不包含直客）。",
+      "title2": "若代理链中存在断层（例如某人非代理），则系统仅展示至断点为止，断点之后的代理将被视为新的代理线重新计算。",
+      "q1": "返佣总值是什么？",
+      "q2": "如何设置代理返佣参数？",
+      "q3": "自定义方案有哪些填写返佣参数方式？",
+      "q4": "Basic方式如何填写及计算佣金？",
+      "q5": "级差方案如何填写及计算佣金？",
+      "q6": "中途调整返佣参数会影响之前的交易吗？",
+      "a1": "返佣总值是指一条完整代理链中，所有代理累计可获得的返佣金额上限。每条代理线的返佣总值是固定的，不可超过。",
+      "a2": "请点击代理编辑按钮打开客户关系图谱：\n1.首先设定该代理线的返佣总值\n2.然后按层级填写每个代理的返佣参数，根据不同的佣金参数方式填写不同的佣金参数。",
+      "a3": "返佣自定义参数设置有两种方式：1.Basic方式 2.级差方式，你可以自行选择用哪种方式来计算具体返佣参数。",
+      "a4": "Basic方式填写用户的具体返佣参数值，返佣时根据填写的返佣参数给对应的代理用户进行返佣（填多少返多少），最底层代理无需填写返佣参数，而是通过返佣总值-上级代理的返佣总和。\n备注：返佣合计不得超过返佣总值。",
+      "a5": "级差方式填写每级代理的返佣参数，返佣时，命中的代理返佣金返填写的参数，上级代理返级差（上级代理参数-下级代理参数），填写时，最顶级代理A1（客户关系首层）返佣参数即为返佣总值。下级代理B1的返佣参数需小于等于上级代理的返佣参数值，依次类推。每个代理的返佣参数值不得大于上级代理的返佣参数值；\n=备注：(1)参数最多允许两位小数（2）需为正数",
+      "a6": "不会。返佣参数调整只会影响设置生效之后的交易行为，历史交易不受影响。"
+    },
+    "addCommissionGroup": "新增返佣组",
+    "editCommissionGroup": "修改返佣组",
+    "commissionGroupNameTips": "平级：该层级等级=下级层级的等级。\n越级：该层级等级＞下级层级的等级。\n不返佣：出现平级或越级时，该层级不获得返佣。\n固定返佣：出现平级或越级时，该层级获得固定返佣。\n获取下级佣金%：出现平级或越级时，该层级获得的佣金为直接下级获得的佣金的百分比，下级所获佣金不受影响。",
+    "equalTypeOptions": {
+      "0": "不返佣",
+      "1": "固定返佣",
+      "2": "获取下级佣金%"
+    },
+    "peerLever": "平级",
+    "crossLevel": "越级",
+    "limit": "限定",
+    "passLimit": "代",
+    "pointsPerOrder": "点/订单",
+    "commissionPreferenceSettings": "佣金方案偏好设置",
+    "commissionParameterScheme": "佣金参数方案",
+    "commissionParameterSchemeDesc": "系统将按照选择的佣金参数方案进行返佣",
+    "commissionTypeOptions": {
+      "1": "佣金组方案",
+      "2": "自定义方案 "
+    },
+    "parameterFillMethod": "参数填写方式",
+    "parameterFillMethodTips": "修改参数填写方式将会清空所有用户已填写的返佣参数",
+    "paramFillTypeOptions": {
+      "1": "Basic方式",
+      "2": "级差方式"
+    },
+    "paramsNotMethod": "参数未填返佣方案",
+    "notFillTypeOptions": {
+      "1": "不返佣",
+      "2": "视为参数=0"
+    },
+    "agentEdit": "代理编辑佣金",
+    "agentEditDesc": "代理在用户端可编辑直属下级佣金参数",
+    "editLevel": "返佣层级(选填)",
+    "editLevelDesc": "选择开放编辑权限的返佣层级",
+    "viewSubordinate": "查看下级返佣参数",
+    "viewSubordinateDesc": "代理可在用户端查看下级代理的参数",
+    "viewGenerations": "可查看代数(选填)",
+    "viewGenerationsPlaceholder": "0-99(不配置视为不限)",
+    "confirmDeleteRebate": "确定删除该 返佣组？",
+    "selectAtLeastOneRebateLevel": "至少选择一个返佣层级",
+    "editCommissionParams": "编辑佣金参数",
+    "emptyAncestorError": "上级未输入返佣参数时，下级不能输入",
+    "exceedAncestorError": "下级返佣参数不能大于上级返佣参数",
+    "modifyTotalRebateWarning": "修改返佣总值将会清空已填写的下级代理参数，确定要修改吗？",
+    "maxTwoDecimalPlaces": "最多保留两位小数"
+  },
+  "customerLoyaltyPlan": {
+    "title": "客户忠诚计划",
+    "preference": "偏好设置",
+    "rankSort": "等级排序",
+    "rankSortDesc": "拖拽下方客户等级，越靠近顶部视为更高的等级，反之，靠下方则为较低的客户等级。",
+    "quantity": "数量",
+    "targetAccount": "目标账户(多选)",
+    "targetAccountDesc": "仅目标账户类型会参与客户忠诚计划",
+    "evaluationMode": "评估模式",
+    "evaluationModeOptions": {
+      "1": "考核模式",
+      "2": "成就模式"
+    },
+    "evaluationModeDesc": "考核模式：①周期性(周/月)进行等级考核②等级可升级/降级③每个周期重新评估 \n 成就模式：①达标即升级②永不降级③一次达成终生有效",
+    "vipLevelConfig": "VIP等级配置",
+    "name": "等级名称",
+    "description": "等级描述",
+    "ruleJudgment": "规则判断",
+    "ruleJudgmentDesc": "同一事件仅允许被添加一次",
+    "ruleEvent": "事件",
+    "ruleSymbol": "判断",
+    "ruleValue": "数值",
+    "or": "或"
   }
 }

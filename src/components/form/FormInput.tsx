@@ -7,12 +7,13 @@ import { ReactElement } from 'react';
 
 interface FormInputProps<T extends FieldValues> {
   name: FieldPath<T>;
-  label: string;
+  label?: string;
   placeholder: string;
   className?: string;
   verticalLabel?: boolean;
   rightElement?: ReactElement;
   inputCls?: string;
+  labeTipsDom?: React.ReactNode;
 }
 
 export function FormInput<T extends FieldValues>({
@@ -24,6 +25,7 @@ export function FormInput<T extends FieldValues>({
   rightElement,
   onBlur,
   inputCls,
+  labeTipsDom,
   ...props
 }: FormInputProps<T> & React.ComponentPropsWithoutRef<'input'>) {
   const { form } = useCrmFormContext<T>();
@@ -42,9 +44,12 @@ export function FormInput<T extends FieldValues>({
               className,
             )}
           >
-            <FormLabel className={cn(verticalLabel ? '' : 'basis-3/12', 'leading-5')}>
-              {label}
-            </FormLabel>
+            {label && (
+              <div className="flex items-center gap-2">
+                <FormLabel className={cn(verticalLabel ? '' : 'basis-3/12')}>{label}</FormLabel>
+                {labeTipsDom && <div>{labeTipsDom}</div>}
+              </div>
+            )}
             <FormControl className="shrink-0 basis-9/12">
               <div className={cn('relative', rightElement ? 'flex' : '')}>
                 <Input

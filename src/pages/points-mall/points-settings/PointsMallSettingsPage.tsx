@@ -27,6 +27,13 @@ import {
 
 type FormValues = PointsMallSettingsFormValues;
 
+const cloneFormValues = (values: FormValues): FormValues => {
+  if (typeof structuredClone === 'function') {
+    return structuredClone(values);
+  }
+  return JSON.parse(JSON.stringify(values)) as FormValues;
+};
+
 const toText = (value: string | number | null | undefined) =>
   value === null || value === undefined ? '' : String(value);
 
@@ -494,7 +501,7 @@ export function PointsMallSettingsPage() {
     // Keep editing values stable; apply fresh server values only when not editing.
     if (editable) {
       if (!isFormReady) {
-        initialFormValuesRef.current = resetValues;
+        initialFormValuesRef.current = cloneFormValues(resetValues);
         lastHydratedAtRef.current = dataUpdatedAt;
         setIsFormReady(true);
       }
@@ -507,7 +514,7 @@ export function PointsMallSettingsPage() {
     }
 
     form.reset(resetValues);
-    initialFormValuesRef.current = resetValues;
+    initialFormValuesRef.current = cloneFormValues(resetValues);
     lastHydratedAtRef.current = dataUpdatedAt;
     setIsFormReady(true);
   }, [configData, dataUpdatedAt, editable, form, isFormReady]);
@@ -524,6 +531,8 @@ export function PointsMallSettingsPage() {
         const params = buildEditPointsConfigPayload(values, intervalSettings);
         const res = await editPointsConfig(params);
         if (res.code === 0) {
+          initialFormValuesRef.current = cloneFormValues(values);
+          setEditable(false);
           toast.success(t('common.success'));
           refetch();
         } else {
@@ -536,13 +545,13 @@ export function PointsMallSettingsPage() {
   };
 
   const onStartEdit = () => {
-    initialFormValuesRef.current = form.getValues();
+    initialFormValuesRef.current = cloneFormValues(form.getValues());
     setEditable(true);
   };
 
   const onCancelEdit = () => {
     if (initialFormValuesRef.current) {
-      form.reset(initialFormValuesRef.current);
+      form.reset(cloneFormValues(initialFormValuesRef.current));
     }
     setEditable(false);
   };
@@ -582,11 +591,7 @@ export function PointsMallSettingsPage() {
       <RrhForm form={form}>
         <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
           <div className="flex-1">
-            <Tabs
-              value={tabValue}
-              onValueChange={setTabValue}
-              className="flex-1 gap-3 overflow-auto"
-            >
+            <Tabs value={tabValue} onValueChange={setTabValue} className="flex-1 gap-3">
               <TabsList>
                 {settingTabs.map(i => (
                   <TabsTrigger key={i.value} value={i.value}>

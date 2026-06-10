@@ -22,6 +22,11 @@ import {
   NetBonusRewardRecordsTotalRes,
   NetBonusRewardRecordReviewDetailRes,
   NetBonusRewardRecordVerifyParams,
+  NetBonusRewardConfigRes,
+  EditNetBonusRewardConfigParams,
+  EditNetBonusRewardConfigFixedParams,
+  NetBonusIntervalsRes,
+  EditNetBonusIntervalsParams,
 } from './types';
 
 export * from './types';
@@ -353,5 +358,70 @@ export function useNetBonusRewardRecordVerify() {
   return useMutation({
     mutationFn: (params: NetBonusRewardRecordVerifyParams) =>
       apiFormPost(`/system/marketing/netDepositBonus/verify`, params),
+  });
+}
+
+/**
+ * 净入金奖励配置 获取
+ */
+export function useNetBonusRewardConfig() {
+  return useQuery({
+    queryKey: ['netBonusRewardConfig'],
+    queryFn: () =>
+      apiGetCustom<NetBonusRewardConfigRes>(`/system/marketing/netDepositBonus/setting`),
+  });
+}
+
+/**
+ * 净入金奖励配置 保存
+ */
+export function useEditNetBonusRewardConfig() {
+  return useMutation({
+    mutationFn: (params: EditNetBonusRewardConfigParams) =>
+      apiPost('/system/marketing/netDepositBonus/save', params),
+  });
+}
+
+/**
+ * 净入金奖励配置-固定奖励参数设置要单独使用接口保存
+ */
+export function useEditNetBonusRewardConfigFixed() {
+  return useMutation({
+    mutationFn: (params: EditNetBonusRewardConfigFixedParams) =>
+      apiPost('/system/marketing/netDepositBonus/saveRewardIntervals', params),
+  });
+}
+
+/**
+ * 净入金奖励配置 代理-奖励分级对照表 获取
+ */
+export function useGetNetBonusIntervals(params: { type: string }) {
+  return useQuery({
+    queryKey: ['getNetBonusIntervals', params],
+    queryFn: () =>
+      apiFormPostCustom<NetBonusIntervalsRes>(
+        `/system/marketing/netDepositBonus/getNetBonusIntervals`,
+        params,
+      ),
+  });
+}
+
+/**
+ * 净入金奖励配置 代理-奖励分级对照表 保存
+ */
+export function useEditNetBonusIntervals() {
+  return useMutation({
+    mutationFn: (params: EditNetBonusIntervalsParams) =>
+      apiPost('/system/marketing/netDepositBonus/saveRewardIntervals', params),
+  });
+}
+
+/**
+ * 净入金奖励启用状态
+ */
+export function useChangeNetBonusRewardStatus() {
+  return useMutation({
+    mutationFn: (params: { status: number }) =>
+      apiPost(`/system/marketing/netDepositBonus/switch?status=${params.status}`, {}),
   });
 }

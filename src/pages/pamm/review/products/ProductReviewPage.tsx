@@ -89,7 +89,7 @@ export const ProductReviewPage = () => {
     },
     {
       id: 'applyStatus',
-      header: t('common.status'),
+      header: t('table.status'),
       cell: ({ row }) => {
         const typeMap: Record<number | string, 'error' | 'success' | 'warning' | 'info'> = {
           0: 'warning',

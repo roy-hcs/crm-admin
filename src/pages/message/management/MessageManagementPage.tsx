@@ -108,7 +108,7 @@ export function MessageManagementPage() {
     },
     {
       id: 'status',
-      header: t('common.status'),
+      header: t('table.status'),
       cell: ({ row }) => {
         switch (row.original.status) {
           case -1:

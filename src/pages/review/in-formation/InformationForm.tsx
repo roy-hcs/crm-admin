@@ -78,68 +78,70 @@ export const InformationForm = ({
   };
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="userId"
-            label={t('paymentOrders.userName')}
-            placeholder={t('common.pleaseInput', {
-              field: t('paymentOrders.userName'),
-            })}
-          />
-          <FormSelect
-            verticalLabel
-            name="infoType"
-            label={t('information.infoType')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={infoTypeList.map(item => ({
-              label: item.dictLabel || '',
-              value: Number(item.dictValue),
-            }))}
-          />
-          <FormField
-            name="time"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('common.subTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="time" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormSelect
-            verticalLabel
-            name="status"
-            label={t('common.status')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={VerifyStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
-          />
-          <FormInput
-            verticalLabel
-            name="verifyUserName"
-            label={t('information.verifyUserName')}
-            placeholder={t('common.pleaseInput', {
-              field: t('information.verifyUserName'),
-            })}
-          />
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        verticalLabel
+        name="userId"
+        label={t('paymentOrders.userName')}
+        placeholder={t('common.pleaseInput', {
+          field: t('paymentOrders.userName'),
+        })}
+      />
+      <FormSelect
+        verticalLabel
+        name="infoType"
+        label={t('information.infoType')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={infoTypeList.map(item => ({
+          label: item.dictLabel || '',
+          value: Number(item.dictValue),
+        }))}
+      />
+      <FormField
+        name="time"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('common.subTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="time" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormSelect
+        verticalLabel
+        name="status"
+        label={t('table.status')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={VerifyStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
+      />
+      <FormInput
+        verticalLabel
+        name="verifyUserName"
+        label={t('information.verifyUserName')}
+        placeholder={t('common.pleaseInput', {
+          field: t('information.verifyUserName'),
+        })}
+      />
 
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit">
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant={'outline'} onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit">
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

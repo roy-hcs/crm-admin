@@ -69,55 +69,57 @@ export const RefundFailureLogsForm = ({
   };
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="userId"
-            label={t('paymentOrders.userName')}
-            placeholder={t('common.pleaseInput', {
-              field: t('paymentOrders.userName'),
-            })}
-          />
-          <FormSelect
-            verticalLabel
-            name="status"
-            label={t('common.status')}
-            placeholder={t('common.pleaseSelect')}
-            options={StatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
-          />
-          <FormField
-            name="operationTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('common.operationTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="operationTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormInput
-            verticalLabel
-            name="refundAccount"
-            label={t('refundFailLog.refundAccount')}
-            placeholder={t('common.pleaseInput', {
-              field: t('refundFailLog.refundAccount'),
-            })}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit">
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        verticalLabel
+        name="userId"
+        label={t('paymentOrders.userName')}
+        placeholder={t('common.pleaseInput', {
+          field: t('paymentOrders.userName'),
+        })}
+      />
+      <FormSelect
+        verticalLabel
+        name="status"
+        label={t('table.status')}
+        placeholder={t('common.pleaseSelect')}
+        options={StatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
+      />
+      <FormField
+        name="operationTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('common.operationTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="operationTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormInput
+        verticalLabel
+        name="refundAccount"
+        label={t('refundFailLog.refundAccount')}
+        placeholder={t('common.pleaseInput', {
+          field: t('refundFailLog.refundAccount'),
+        })}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant={'outline'} onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit">
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

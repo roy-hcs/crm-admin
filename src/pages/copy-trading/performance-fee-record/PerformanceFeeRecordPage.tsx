@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { PerformanceFeeItem, PerformanceFeeListParams } from '@/api/hooks/copyTrading/type';
 import { usePerformanceFeeList } from '@/api/hooks/copyTrading';
 import { PerformanceFeeRecordForm } from './PerformanceFeeRecordForm';
-import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
+import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { PageInfo } from '@/components/common/PageInfo';
@@ -14,8 +14,9 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { BasicParams } from '@/api/types';
 import { PerformanceFeePayStatusOptions } from '@/lib/const';
 import { RrhSorter } from '@/components/common/RrhSorter';
-import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { PerformanceFeeRecordDetailDialog } from './components/PerformanceFeeRecordDetailDialog';
+import { RrhButton } from '@/components/common/RrhButton';
 
 export const PerformanceFeeRecordPage = () => {
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('');
@@ -40,6 +41,9 @@ export const PerformanceFeeRecordPage = () => {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [resetKey, setResetKey] = useState(0);
+
+  const [id, setId] = useState<string>();
+  const [detailOpen, setDetailOpen] = useState(false);
   const { t } = useTranslation();
 
   const { data: data, isLoading: loading } = usePerformanceFeeList({
@@ -105,7 +109,7 @@ export const PerformanceFeeRecordPage = () => {
     },
     {
       id: 'payAccountName',
-      header: t('performanceFeeRecord.payAccountName'),
+      header: t('table.subscriberAccount'),
       cell: ({ row }) => row?.original?.payAccountName || '-',
     },
     {
@@ -158,12 +162,16 @@ export const PerformanceFeeRecordPage = () => {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[{ label: t('table.audit'), value: 'audit' }]}
-          callToAction={() => {}}
-        />
+      cell: ({ row }) => (
+        <RrhButton
+          variant="ghost"
+          onClick={() => {
+            setId(row?.original?.id || '');
+            setDetailOpen(true);
+          }}
+        >
+          {t('common.View')}
+        </RrhButton>
       ),
       fixed: 'right',
       size: 50,
@@ -237,6 +245,7 @@ export const PerformanceFeeRecordPage = () => {
           loading={loading}
         />
       </TableContentWrapper>
+      <PerformanceFeeRecordDetailDialog open={detailOpen} setOpen={setDetailOpen} id={id || ''} />
     </div>
   );
 };

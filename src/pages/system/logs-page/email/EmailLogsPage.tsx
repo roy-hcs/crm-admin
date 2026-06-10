@@ -80,7 +80,7 @@ export const EmailLogsPage = () => {
     },
     {
       id: 'status',
-      header: t('common.status'), // 0: buy, 1: sell
+      header: t('table.status'), // 0: buy, 1: sell
       cell: ({ row }) => {
         switch (row.original.status) {
           case 1:

@@ -5,25 +5,57 @@ export const RrhSwitchGroup: FC<{
   switchItems: {
     value: string;
     label: string;
+    disabled?: boolean;
   }[];
   switchItemClassName?: string;
   labelClassName?: string;
-  value: string;
+  value?: string;
+  values?: string[];
+  multiple?: boolean;
   onValueChange?: (value: string) => void;
-}> = ({ value, switchItems, switchItemClassName, onValueChange }) => {
+  onValuesChange?: (values: string[]) => void;
+}> = ({
+  value,
+  values,
+  multiple = false,
+  switchItems,
+  switchItemClassName,
+  labelClassName,
+  onValueChange,
+  onValuesChange,
+}) => {
+  const selectedValues = multiple ? (values ?? []) : [value ?? ''];
+
+  const handleItemClick = (itemValue: string) => {
+    if (multiple) {
+      const currentValues = values ?? [];
+      const isSelected = currentValues.includes(itemValue);
+      const nextValues = isSelected
+        ? currentValues.filter(v => v !== itemValue)
+        : [...currentValues, itemValue];
+      onValuesChange?.(nextValues);
+      return;
+    }
+    onValueChange?.(itemValue);
+  };
+
   return (
     <div className="flex flex-wrap gap-4">
       {switchItems.map(i => (
         <button
+          type="button"
           className={cn(
             'rounded-full px-3 py-2 text-xs leading-4 font-medium',
-            value == i.value ? 'bg-primary text-primary-foreground' : 'text-foreground border',
+            selectedValues.includes(i.value)
+              ? 'bg-primary text-primary-foreground'
+              : 'text-foreground border',
             switchItemClassName,
           )}
-          onClick={() => onValueChange?.(i.value)}
+          onClick={() => handleItemClick(i.value)}
           key={i.value}
+          disabled={i.disabled}
         >
-          {i.label}
+          <span className={labelClassName}>{i.label}</span>
         </button>
       ))}
     </div>

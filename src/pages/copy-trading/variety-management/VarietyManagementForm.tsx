@@ -5,11 +5,10 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction, useMemo } from 'react';
-import { BasicParams } from '@/api/types';
+import { Dispatch, SetStateAction } from 'react';
+import { BasicParams, SelectOption } from '@/api/types';
 import { MamSymbolListParams } from '@/api/hooks/copyTrading/type';
 import { FormSelect } from '@/components/form/FormSelect';
-import { useDictType } from '@/api/hooks/system';
 import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
@@ -22,13 +21,14 @@ export const VarietyManagementForm = ({
   reset,
   loading,
   otherParams,
+  symbolCategoryOptions,
 }: {
   setOtherParams: Dispatch<SetStateAction<Omit<MamSymbolListParams, keyof BasicParams>>>;
   reset: () => void;
   loading: boolean;
   otherParams: Omit<MamSymbolListParams, keyof BasicParams>;
+  symbolCategoryOptions: SelectOption[];
 }) => {
-  const { data: symbolCategoryDataRes } = useDictType('mam_symbol_category');
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
@@ -52,10 +52,6 @@ export const VarietyManagementForm = ({
     });
   };
 
-  const symbolCategoryData = useMemo(() => {
-    return symbolCategoryDataRes || [];
-  }, [symbolCategoryDataRes]);
-
   return (
     <RrhForm
       form={form}
@@ -77,7 +73,7 @@ export const VarietyManagementForm = ({
         label={t('varietyManagement.symbolCategory')}
         placeholder={t('common.pleaseSelect')}
         showRowValue={false}
-        options={symbolCategoryData.map(i => ({ label: i.dictLabel, value: i.dictValue }))}
+        options={symbolCategoryOptions}
       />
 
       <FormInput

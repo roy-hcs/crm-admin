@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   useCrmDealGoodsList,
@@ -23,6 +23,8 @@ import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { ProductsForm } from './components/ProductsForm';
 import { RrhStatusAlert } from '@/components/common/RrhStatusAlert';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
+import { useTabActions } from '@/hooks/useTabActions';
+import { RrhButton } from '@/components/common/RrhButton';
 
 export const ProductsPage = () => {
   const { t } = useTranslation();
@@ -61,6 +63,21 @@ export const ProductsPage = () => {
     setIsAsc('asc');
     setOrderByColumn('');
   };
+
+  const { openTab } = useTabActions();
+
+  const goToDetail = useCallback(
+    (type: 'add' | 'edit', row?: GoodsListItem) => {
+      const id = row?.id || '';
+      const url = `/points-mall/add-edit-good?type=${type}&id=${id}`;
+      openTab({
+        key: url,
+        title: type === 'add' ? t('products.addGoods') : t('products.editGoods'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
 
   const allColumns: CRMColumnDef<GoodsListItem, unknown>[] = [
     {
@@ -249,6 +266,7 @@ export const ProductsPage = () => {
             callToAction={action => {
               switch (action) {
                 case 'edit':
+                  goToDetail('edit', row.original);
                   break;
                 case 'delete':
                   setIds(String(row?.original.id));
@@ -285,6 +303,7 @@ export const ProductsPage = () => {
             />
           </div>
           <div className="flex items-center gap-2">
+            <RrhButton onClick={() => goToDetail('add')}>{t('products.addGoods')}</RrhButton>
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </Button>

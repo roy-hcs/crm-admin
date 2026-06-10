@@ -1,4 +1,5 @@
 import { BaseEntity, BasicParams, BasicRes } from '@/api/types';
+import { LeverageReview, VerifyLogItem } from '../review/types';
 
 export type OrderByColumn =
   | 'totalProfit'
@@ -78,6 +79,85 @@ export type MamSignalSourceItem = {
 
 export type MamSignalSourceListRes = BasicRes<MamSignalSourceItem>;
 
+export type MamSignalSourceRebateLevelItem = {
+  id?: string;
+  signalSourceId?: string;
+  rebateLevel: number;
+  rebateRatio: number;
+};
+
+export type MamSignalSourceEditDetailItem = MamSignalSourceItem & {
+  maxBalanceForSubscription: number | null;
+  performanceFeeRebateEnabled: number;
+  performanceFeeRebateScheme: number;
+  performanceFeeRebateLevel: number;
+  levels: MamSignalSourceRebateLevelItem[];
+  countryId: string;
+  countryName: string | null;
+};
+
+export type MamSignalSourceEditDetailRes = {
+  code: number;
+  data: {
+    chargingMethod: string;
+    allowedSignalSelfRebateSet: string;
+    detail: MamSignalSourceEditDetailItem;
+  };
+  msg?: string;
+};
+
+export type MamSignalSourceEditParams = {
+  name: string;
+  userId: string;
+  // account: string;
+  icon?: string;
+  serverId?: string;
+  server?: string;
+  minBalanceForSubscription?: string | number;
+  maxBalanceForSubscription?: string | number;
+  upperLimit?: string | number;
+  subscribeFee?: string | number;
+  performanceFeeCycle?: string | number;
+  performanceFeeRatio?: string | number;
+  receiveType?: string | number;
+  receiveServerId?: string;
+  receiveAccount?: string;
+  countryId?: string;
+  description?: string;
+  performanceFeeRebateScheme?: string | number;
+  performanceFeeRebateLevel?: string | number;
+  levels?: MamSignalSourceRebateLevelItem[];
+  publicShow?: string | number;
+  charge?: string | number;
+  performanceFeeEnable?: string | number;
+  subscriptionReview?: string | number;
+  performanceFeeRebateEnabled?: string | number;
+};
+
+export type TradeAccountItem = {
+  id: string;
+  userId: string;
+  name: string | null;
+  account: string;
+  serviceType: number;
+  serviceProperty: number;
+  server: string;
+  serverName: string;
+  currency: string | null;
+  balance: number;
+  netWorth: number;
+  params: object;
+  [key: string]: unknown;
+};
+
+export type GetTradeAccounts = {
+  code: number;
+  data: {
+    receiveList: TradeAccountItem[];
+    walletList: TradeAccountItem[];
+    accountList: TradeAccountItem[];
+  };
+};
 export type MamSignalSourceVerifyListParams = BasicParams & {
   name?: string;
   userName?: string;
@@ -94,6 +174,71 @@ export type MamSignalSourceVerifyListParams = BasicParams & {
 };
 
 export type MamSignalSourceVerifyListRes = BasicRes<MamSignalSourceItem>;
+
+export type MamSignalSourceVerifyParams = {
+  id: string;
+  verifyStatus: string;
+  remark: string;
+};
+
+export type MamSignalSourceDetailItem = BaseEntity & {
+  id: string;
+  name: string;
+  serverId: string;
+  server: string;
+  account: string;
+  userId: string;
+  icon: string;
+  upperLimit: number | null;
+  publicShow: number;
+  charge: number;
+  subscribeFee: number;
+  receiveType: number;
+  receiveAccount: string;
+  receiveServerId: string | null;
+  description: string | null;
+  status: number | null;
+  subTime: string | null;
+  verifyTime: string | null;
+  verifyUser: string | null;
+  verifyStatus: number;
+  delFlag: number;
+  closeType: string | null;
+  closeReason: string | null;
+  closeTime: string | null;
+  userName: string;
+  userLastName: string;
+  showId: string;
+  email: string;
+  subscribeNum: number | null;
+  totalProfit: number | null;
+  totalProfitRate: number | null;
+  currency: string | null;
+  serverProperty: string | null;
+  subscriptionReview: number;
+  minBalanceForSubscription: number | null;
+  maxBalanceForSubscription: number | null;
+  performanceFeeEnable: number;
+  performanceFeeCycle: number;
+  performanceFeeRatio: number;
+  performanceFeeRebateEnabled: number;
+  performanceFeeRebateScheme: string | null;
+  performanceFeeRebateLevel: number;
+  levels: unknown;
+  countryId: string | null;
+  countryName: string | null;
+};
+
+export type MamSignalSourceDetailData = {
+  userLanguageTip: string;
+  receiveAccount: string;
+  detail: MamSignalSourceDetailItem;
+};
+
+export type MamSignalSourceDetailRes = {
+  code: number;
+  data: MamSignalSourceDetailData;
+};
 
 export type MamSymbolListParams = BasicParams & {
   symbolCategory?: string;
@@ -119,20 +264,87 @@ export type MamSymbolItem = {
 
 export type MamSymbolListRes = BasicRes<MamSymbolItem>;
 
+export type MamSymbolDetailRes = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string | null;
+  symbolCategory: string | null;
+  symbol: string | null;
+  cname: string | null;
+  enname: string | null;
+  name: string | null;
+  defaultNames: string[];
+  sort: number | null;
+};
+
+export type AddMamSymbolParams = {
+  symbolCategory: string;
+  symbol: string;
+  cname: string;
+  enname: string;
+  sort: string;
+  defaultNames: string[];
+};
+
 export type MamProtocolItem = BaseEntity & {
   id: string;
   applicableScenarios: number;
   status: number;
   sort: number;
   delFlag: number;
-  name: string;
+  name: string | null;
   language: string | null;
   languages: string | null;
 };
 export type MamProtocolListRes = BasicRes<MamProtocolItem>;
+
+export type MamProtocolLanguageItem = BaseEntity & {
+  id: string;
+  protocolId: string;
+  type: number;
+  name: string;
+  content: string;
+  fileUrl: string;
+  language: string;
+  languageName: string | null;
+};
+
+export type MamProtocolDetailData = Omit<MamProtocolItem, 'languages'> & {
+  languages: MamProtocolLanguageItem[];
+};
+
+export type MamProtocolDetailRes = MamProtocolDetailData;
+
 export type MamProtocolListParams = BasicParams & {
   name: string;
   applicableScenarios: string;
+};
+
+export type MamProtocolLanguagePayload = {
+  language: string;
+  name: string;
+  type: string;
+  content: string;
+  fileUrl: string;
+};
+
+export type LanguagesItem = MamProtocolLanguagePayload;
+
+export type MamProtocolUpsertParams = {
+  applicableScenarios: string;
+  sort: string;
+  status: string;
+  languages: MamProtocolLanguagePayload[];
+};
+
+export type AddMamProtocolParams = MamProtocolUpsertParams;
+
+export type EditMamProtocolParams = MamProtocolUpsertParams & {
+  id: string;
 };
 
 export type MamFollowListParams = BasicParams & {
@@ -235,6 +447,11 @@ export type MamFollowListRes = BasicRes<MamFollowItem> & {
   totalList: TotalItem[];
 };
 
+export type MamFollowDetailRes = {
+  code: number;
+  data: MamFollowItem;
+};
+
 export type PerformanceFeeListParams = BasicParams & {
   signalSourceName?: string;
   traderServerId?: string;
@@ -283,6 +500,92 @@ export type PerformanceFeeItem = {
 };
 
 export type PerformanceFeeListRes = BasicRes<PerformanceFeeItem>;
+
+export type PerformanceFeeDetailRes = {
+  code: number;
+  data: PerformanceFeeItem;
+};
+
+export type PerformanceFeeRebateVerifyListParams = BasicParams & {
+  orderNo?: string;
+  performanceFeeOrderNo?: string;
+  signalSourceName?: string;
+  trader?: string;
+  client?: string;
+  status?: string;
+  userId?: string;
+  params: {
+    beginTime?: string;
+    endTime?: string;
+    beginReviewTime?: string;
+    endReviewTime?: string;
+  };
+};
+
+export type PerformanceFeeRebateReportListParams = BasicParams & {
+  orderNo?: string;
+  performanceFeeOrderNo?: string;
+  signalSourceName?: string;
+  trader?: string;
+  client?: string;
+  payStatus?: string;
+  userId?: string;
+  params: {
+    beginTime?: string;
+    endTime?: string;
+    beginPayTime?: string;
+    endPayTime?: string;
+  };
+};
+
+export type PerformanceFeeRebateVerifyItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string | null;
+  followId: string | null;
+  performanceFeeOrderNo: string | null;
+  orderNo: string | null;
+  performanceFee: number | null;
+  managementFee: number | null;
+  netPerformanceFee: number | null;
+  baseRebateRatio: number | null;
+  extraRebateRatio: number | null;
+  rebateAmount: number | null;
+  userId: string | null;
+  userName: string | null;
+  userShowId: string | null;
+  payAccount: string | null;
+  payAccountName: string | null;
+  payServerId: string | null;
+  status: number | null;
+  currency: string | null;
+  verifyTime: string | null;
+  verifyUser: string | null;
+  verifyRemark: string | null;
+  verifyStep: number | null;
+  verifyUserName: string | null;
+  payStatus: number | null;
+  payTime: string | null;
+  signalSourceName: string | null;
+  signalSourceOwner: string | null;
+  signalSourceEmail: string | null;
+  trader: string | null;
+  traderServer: string | null;
+  traderServerId: string | null;
+  client: string | null;
+  clientServer: string | null;
+  clientServerId: string | null;
+  clientName: string | null;
+  clientShowId: string | null;
+};
+
+export type PerformanceFeeRebateVerifyListRes = BasicRes<PerformanceFeeRebateVerifyItem>;
+
+export type PerformanceFeeRebateReportListRes = BasicRes<PerformanceFeeRebateVerifyItem>;
 
 export type Setting = {
   id: string;
@@ -361,4 +664,44 @@ export type PerformanceFeeParams = {
 export type LoyaltyRewardParams = {
   vipData: string;
   tab: number;
+};
+
+export type PayParams = {
+  id: string;
+  payAccount: string;
+  payServerId: string;
+};
+
+export type ReceiveAccountsRes = {
+  code: number;
+  msg: string;
+  data: {
+    accountList: Array<{
+      account: string;
+      serverId: string;
+      serverName: string;
+      currency: string;
+      id: string;
+    }>;
+    walletList: Array<{
+      id: string;
+    }>;
+  };
+};
+
+export type PerformanceFeeRebateDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    detail: PerformanceFeeRebateVerifyItem;
+    verifyLogs: VerifyLogItem[];
+    reviewer: LeverageReview;
+  };
+};
+
+export type PerformanceFeeRebateVerifyParams = {
+  id: string;
+  status: string;
+  verifyRemark: string;
+  verifyStep: string;
 };

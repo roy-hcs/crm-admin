@@ -10,7 +10,6 @@
     "Level": "Level",
     "Mobile": "Phone number",
     "RealAccount": "Real account",
-    "Status": "state",
     "TagsName": "Tag name",
     "Upper": "Superior",
     "UpperEmail": "Advanced mailbox",
@@ -19,7 +18,6 @@
     "ID": "ID number",
     "NameOrAccountId": "Name/Account ID",
     "registerTime": "Registration time",
-    "status": "state",
     "tagName": "Tag name",
     "AccountRange": "Account scope",
     "ColorPreferences": "Color preferences for rising and falling",
@@ -102,7 +100,6 @@
     "live": "reality",
     "subordinate": "Next level",
     "operationTime": "Operation time",
-    "status": "state",
     "tips": "The data on this page will have a slight delay. \nFor instant data, please wait 1-2 minutes before refreshing the page for query.",
     "statisticTime": "Statistics time",
     "account": {
@@ -289,7 +286,9 @@
     "piece": "indivual",
     "points": "point",
     "back": "return",
-    "failed": "fail"
+    "failed": "fail",
+    "faq": "FAQ",
+    "cannotModifyAfterSubmit": "Cannot be modified after submission"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -376,7 +375,6 @@
     "time": "time",
     "title": "IB Customer Tracking",
     "tradeClient": "Number of transaction users",
-    "userName": "Agent name",
     "withdrawTotalStr": "Accumulated amount of funds",
     "directBroker": "direct customer"
   },
@@ -397,7 +395,6 @@
     "serverId": "server",
     "swaps": "Inventory fee",
     "title": "IB data overview",
-    "userName": "Agent name",
     "userNumber": "Number of CRM accounts",
     "volume": "Trading volume",
     "withdrawAmount": "Withdrawal (statistics)",
@@ -812,7 +809,13 @@
     "untrust": "risk",
     "accountBelongToUpper": "The superior to whom the account belongs is",
     "bankAccount": "bank account",
-    "wireTransferAccount": "wire transfer account"
+    "wireTransferAccount": "wire transfer account",
+    "commissionGroupName": "Commission group name",
+    "rebateLevel": "Rebate levels",
+    "userName": "Agent name",
+    "baseRebateRatio": "Basic commission parameters",
+    "extraRebateRatio": "Additional reward parameters",
+    "netPerformanceFee": "net performance fee"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1255,7 +1258,37 @@
     "updateBy": "operator",
     "viewCount": "Views",
     "virtualGoods": "virtual goods",
-    "confirmDeleteTips": "Are you sure you want to delete this record?"
+    "confirmDeleteTips": "Are you sure you want to delete this record?",
+    "addGoods": "Create product",
+    "applicableRoles": "Applicable roles (optional)",
+    "applicableRolesDesc": "Only users who meet the conditions will enable the points mall function",
+    "combinationPayment": "Combined payment (optional)",
+    "cosmetics": "cosmetic",
+    "cosmeticsOptions": {
+      "1": "lipstick",
+      "2": "Foundation"
+    },
+    "countryId": "Redeemable countries/regions (optional)",
+    "countryIdDesc": "If you configure a country or region where the product can be redeemed, only customers in that region can redeem the product.",
+    "countryIdPlaceholder": "Select country or region",
+    "countryIdSelected": "{{fields}} countries or regions selected",
+    "editGoods": "Edit product",
+    "electronics": "electronic products",
+    "electronicsOptions": {
+      "1": "cell phone",
+      "2": "computer"
+    },
+    "enterExchangeAmount": "Please enter the exchange amount (positive integer)",
+    "enterExchangePoints": "Please enter redemption points (positive integer)",
+    "goodIntroduction": "Product introduction",
+    "goodPreviewImage": "Product preview",
+    "productCategory": "Product category (optional)",
+    "virtualGoodsCategory": "Virtual product category (optional)",
+    "virtualGoodsOptions": {
+      "1": "other",
+      "2": "Real deposit",
+      "3": "credit"
+    }
   },
   "profile": {
     "gooleKey": "Google token",
@@ -1392,7 +1425,6 @@
     "confirmWarning": "This modification will clear the existing user rebate levels and commission settings, please operate with caution",
     "levelPlaceholder": "Please enter the level. Currently, the highest level that can be entered is 14.",
     "levelSkippingSettings": "Level skipping settings",
-    "rebateLevel": "Rebate level",
     "settingOne": "Leveling or skipping is not allowed",
     "settingOneDesc": "The subordinate level number can only be greater than the superior level number",
     "settingThree": "Allow level skipping",
@@ -1556,7 +1588,26 @@
     "subscribeNum": "Number of subscriptions",
     "title": "signal source",
     "totalProfit": "Revenue(Total)",
-    "totalProfitRate": "Yield(Total)"
+    "totalProfitRate": "Yield(Total)",
+    "charge": "performance fee",
+    "chargeDesc": "Performance fees are charged according to different cycles, and you can choose to complete the subscription cycle, weekly, or weekly or monthly. \nWhen the profit of the signal source exceeds the high water mark, a certain performance fee will be charged for the excess portion.",
+    "description": "Signal source description (optional)",
+    "icon": "Signal source icon (optional)",
+    "iconDesc": "Personalized icons will impress people. Images in jpg, jpeg, and png formats are supported and should not exceed 100KB.",
+    "maxBalanceForSubscription": "Maximum balance (positive integer)",
+    "minBalanceForSubscription": "Minimum balance (positive integer)",
+    "minMaxBalanceForSubscription": "Subscription minimum-maximum balance limit (optional)",
+    "performanceFeeEnable": "Subscription fee",
+    "performanceFeeRebateEnabled": "Superior/Agent Rebate",
+    "performanceFeeRebateEnabledDesc": "The net performance fee collected (the part minus the management fee) will be used first for agent/superior rebate commission.",
+    "performanceFeeRebateScheme": "Rebate program",
+    "performanceFeeRebateSchemeDesc": "Separate settings: You need to set up the performance fee rebate settings for this signal source separately, and perform rebates according to this plan. \nUnified settings: There is no need to separately set the signal source performance fee rebate settings, and the rebates are based on the unified settings of the system.",
+    "performanceFeeRebateSchemeOptions": {
+      "1": "Separate settings",
+      "2": "Unified settings"
+    },
+    "signalSourceAuthorDesc": "The signal source author must be a CRM user",
+    "subscribeFeeDesc": "After a full subscription period, you will receive the subscription fee"
   },
   "PammInvestReport": {
     "cancel": "Cancel",
@@ -1568,10 +1619,22 @@
   "signalReview": {
     "hide": "Do not display",
     "minBalanceForSubscription": "Subscription minimum balance limit (optional)",
+    "maxBalanceForSubscription": "Subscription maximum balance limit (optional)",
     "performanceFeeRatio": "Performance fee ratio",
+    "subscriptionReview": "Subscription review",
+    "charge": "Charge",
+    "free": "Free",
+    "paid": "Paid",
+    "performanceFeeCycleOptions": {
+      "0": "Daily",
+      "1": "Weekly",
+      "2": "Monthly",
+      "3": "Full subscription cycle"
+    },
     "show": "exhibit",
     "title": "Signal source review",
-    "upperLimit": "Subscription limit (optional)"
+    "upperLimit": "Subscription limit (optional)",
+    "subscriptionReviewDesc": "Enable: Users applying for signal source subscriptions will need to undergo manual review before they can be enabled. \nOff: Users who apply for signal sources can successfully subscribe without review."
   },
   "varietyManagement": {
     "cname": "Chinese name",
@@ -1579,7 +1642,9 @@
     "name": "default name",
     "symbol": "Standard name",
     "symbolCategory": "Variety classification",
-    "title": "Variety management"
+    "title": "Variety management",
+    "add": "New variety management",
+    "deleteTips": "Are you sure you want to delete this category management?"
   },
   "PammCommissionReport": {
     "title": "PAMM commission report"
@@ -1593,21 +1658,28 @@
     "clientName": "Subscriber",
     "managementFee": "management fee",
     "payAccount": "Payment account",
-    "payAccountName": "Subscriber account",
     "payStatusOptions": {
       "0": "Not paid",
       "1": "paid"
     },
     "payTime": "payment time",
     "performanceFee": "performance fee",
-    "title": "Performance fee record",
-    "trader": "Signal source account"
+    "title": "Performance fee record"
   },
   "PammSettlementReport": {
     "title": "PAMM Provision Report"
   },
   "CopyTradingSettings": {
-    "title": "Protocol settings"
+    "title": "Protocol settings",
+    "applicableScenarios": "Applicable scenarios",
+    "confirmDelete": "Are you sure you want to delete this CopyTrading agreement? \nThis data will not be recoverable after deletion!",
+    "content": "Agreement content",
+    "copyTrading": "CopyTrading Agreement",
+    "type": "protocol type",
+    "typeOptions": {
+      "0": "Text entry",
+      "1": "File upload"
+    }
   },
   "orderManagementTable": {
     "arrivalStatusOptions": {
@@ -1634,7 +1706,6 @@
     "pwd": "password",
     "required": "{{field}} cannot be empty",
     "roleId": "Role",
-    "status": "state",
     "passwordComplexity": "Please enter your password, {{min}}-{{max}} English (uppercase and lowercase) digits",
     "emailAlreadyUsed": "The current email address is already in use",
     "phoneAlreadyUsed": "Current number is already in use",
@@ -1812,6 +1883,21 @@
     "unifiedSetting": "Unified settings",
     "unifiedSettingDesc": "When the signal source turns on the performance fee rebate and does not set the performance fee rebate parameters separately, the system will execute the rebate according to the default parameter settings below."
   },
+  "performanceFeeRebatePage": {
+    "verifyTab": "Rebate Review",
+    "reportTab": "Rebate Report",
+    "performanceFeeOrderNo": "Performance Fee Order No",
+    "traderAccount": "Trader Account",
+    "clientAccount": "Rebate Account",
+    "rebateAmount": "Agent Commission",
+    "performanceFeeDetail": "Performance Fee Rebate Review Detail",
+    "signalSourceAuthor": "Signal Source Author",
+    "subscriber": "Subscriber",
+    "reviewTime": "Review Time",
+    "payAccount": "Pay Account",
+    "payAccountDesc": "If the currency of the commission is different from the currency of the receiving account, the system will automatically convert the commission currency into the currency of the receiving account and then execute the commission deposit.",
+    "selectPayAccount": "Please select the account from which the superior/agent withdraws commissions"
+  },
   "netBonus": {
     "netBonusRewardReport": "Net Deposit Bonus Report"
   },
@@ -1917,5 +2003,174 @@
     "selectedRecords": "{{count}} records selected",
     "title": "Net deposit bonus record",
     "titleDesc": "The actual issuance amount is the reward amount actually issued to the user, which is usually consistent with the reward amount. \nIf the actual payment amount needs to be adjusted due to special circumstances, please fill in the remarks for the reason for the adjustment."
+  },
+  "netBonusRewardConfig": {
+    "agentRewardLevelTable": "Agency-Reward Grading Comparison Table",
+    "amountRange": "Amount range",
+    "autoReview": "Automatic reward review",
+    "autoReviewDesc": "Net deposit rewards will be automatically approved when turned on",
+    "baseInfo": "Basic information",
+    "businessRewardLevelTable": "Business-Reward Grading Comparison Table",
+    "crmDeposit": "CRM deposit",
+    "crmWithdraw": "CRM withdrawal",
+    "dataStatisticsTimeRange": "Data statistics time range",
+    "faq": {
+      "a1": "By counting the net deposit performance of agents, sales or businesses, corresponding rewards or rebates are automatically issued to encourage new recruits and capital growth behaviors.",
+      "a2": "The net deposit reward is based on \"deposit minus withdrawal\" to calculate the net fund inflow performance. It does not rely on transaction volume or customer order data, and is more focused on fund contribution incentives.",
+      "a3": "The system will automatically perform statistics and reward calculations for the previous cycle on the 1st of each month. The length of the cycle is determined by the configuration item \"Number of Statistics Months\" (optional from 1 to 12 months). \nFor example: If the period is 3 months, the statistics for October 1, 2025 will be the data for July, August, and September.",
+      "a4": "If the average net deposit (reward) ≤ 0, the user has no reward record this month and the system will automatically skip the calculation.",
+      "a5": "Administrators can multiple-select the following account types in the configuration: ● User (end customer) ● Agent (IB) ● Sales ● Business. Only the selected types will be included in statistics and reward execution.",
+      "basic": "Basic understanding of functions",
+      "q1": "What is the core goal of the net deposit bonus feature?",
+      "q2": "What is the difference between net deposit bonus and regular commission?",
+      "q3": "On which day is the reward calculation performed? \nAutomatic?",
+      "q4": "What will happen to users whose net deposit ≤ 0?",
+      "q5": "What types of reward objects are supported?"
+    },
+    "faqTitle": "FAQ",
+    "fundDepositStatistics": "Deposit statistics",
+    "fundWithdrawalStatistics": "Withdrawal statistics",
+    "fundsStatisticsRewards": "Fund statistics and rewards",
+    "maxBaseAmount": "highest value",
+    "moreFaq": {
+      "1": "Computing and Execution Class",
+      "2": "Exceptions and troubleshooting",
+      "a1": "● CRM deposit: from orders that have passed the deposit review (excluding handling fees, converted to USD based on the exchange rate).\n\n● System deposit: from the operation type selected in the system fund operation record.\n\n● The exchange rate calculation uses the central parity rate = (buying price selling price) / 2.",
+      "a10": "● Automatic review is turned on → rewards are credited directly to your account;\n\n● Turn off automatic review → the reward will enter \"pending review\" and the administrator will manually operate it in the reward review list.",
+      "a11": "● Average net deposit (reward) ≤ 0\n\n● Reward parameter ≤ 0\n\n● Reward parameter difference ≤ 0\n\n● The user does not have a collection account and automatic review is not enabled.",
+      "a12": "Administrators can check whether the statistical results are empty in the \"Net Deposit Data Statistics Table\"; if abnormal, they can re-trigger the statistical task or contact the technical team to perform manual recalculation.",
+      "a2": "Net deposit = total deposit − total withdrawal. \nThe statistical period is the number of natural months set in the configuration item (such as 3 months)",
+      "a3": "Personal average net deposit: only calculate the user's personal average net deposit.\n\nAverage net deposit (reward) = Calculate the average net deposit of \"own direct subordinates (users)\"\n\nGraded average net deposit: Calculate the average net deposit of \"all your subordinates\" and use it to determine reward parameters based on the graded reward table.",
+      "a4": "The system will look for the tiered reward parameter table range corresponding to the account type based on each user's \"tiered average net deposit\" and automatically match the corresponding percentage (%).",
+      "a5": "If the administrator sets \"fixed parameters\" for a user in the configuration, the system ignores the grading table and directly uses the fixed parameters to calculate rewards.",
+      "a6": "By default, data statistics and calculations in the previous cycle (1-12 months defined by the configuration item) are executed on the 1st of each month. \nFor example: If the period is 3 months, the statistics for October 1, 2025 will be the data for July, August, and September.",
+      "a7": "① First calculate the individual average net deposit and the graded average net deposit.\n\n② Then match the reward parameters.\n\n③ Implement personal rewards.\n\n④ Then implement the graded difference rewards step by step upwards (that is, the superior will get the graded difference rebate).\n\n⑤ Determine whether to automatically review and issue according to configuration.",
+      "a8": "● Personal reward = average net deposit (reward) × reward parameter\n\n● Level difference reward = average net deposit (lower level) × (upper level parameter − lower level parameter)",
+      "a9": "● In automatic review mode: the system directly credits Wallet(USD) or the bound USD trading account.\n\n● If the user has not set up a collection account, it will enter the \"Pending Review\" state and requires manual review and confirmation.",
+      "q1": "Where does the deposit and withdrawal data come from?",
+      "q10": "What are the review mechanisms?",
+      "q11": "What situations would cause rewards not to be generated?",
+      "q12": "What should I do if the reward calculation fails?",
+      "q2": "What is net deposit?",
+      "q3": "What is the difference between individual average net deposit, average net deposit (reward), and graded average net deposit?",
+      "q4": "How are reward parameters determined?",
+      "q5": "How to deal with users whose reward parameters have fixed values?",
+      "q6": "What is the calculation period for net deposit bonus?",
+      "q7": "What is the order in which individual and tiered awards are calculated?",
+      "q8": "What is the reward formula?",
+      "q9": "How are rewards credited?"
+    },
+    "netBonusReward": "Net deposit bonus",
+    "rewardTarget": "Reward objects (multiple choices)",
+    "rewardTargetDesc": "Only the target object will perform net deposit statistics and rewards.",
+    "salesRewardLevelTable": "Sales-Reward Grading Comparison Table",
+    "setRewardLevel": "Set reward grading parameter table",
+    "setRewardLevelDesc": "Set different reward grading comparison data for different CRM account types",
+    "setRewardLevelParams": "Fixed reward parameter settings (optional)",
+    "setRewardLevelParamsDesc": "Fixed reward parameter settings (optional)",
+    "sysDeposit": "System deposit",
+    "sysWithdraw": "System withdrawal",
+    "title": "Net deposit bonus configuration"
+  },
+  "commissionRebateSettings": {
+    "addCommissionGroup": "Added rebate group",
+    "agentEdit": "Agency Editorial Commission",
+    "agentEditDesc": "Agents can edit the commission parameters of direct subordinates on the user terminal.",
+    "chiefSteward": "steward",
+    "commissionGroupNameTips": "Level: The level of this level = the level of the lower level.\n\nLeap level: the level of this level > the level of the lower level.\n\nNo commission rebate: When a level is leveled or skipped, the level will not receive commission rebate.\n\nFixed commission: When there is a leveling or skipping level, the level will receive a fixed commission.\n\nObtain commission % from subordinates: When there is a level or skip level, the commission obtained by this level is the percentage of the commission obtained by the direct subordinate, and the commission obtained by the subordinate will not be affected.",
+    "commissionParameterScheme": "Commission parameter plan",
+    "commissionParameterSchemeDesc": "The system will rebate the commission according to the selected commission parameter plan.",
+    "commissionPreferenceSettings": "Commission plan preferences",
+    "commissionTypeOptions": {
+      "1": "Commission group plan",
+      "2": "Custom plan"
+    },
+    "confirmDeleteRebate": "Are you sure you want to delete this rebate group?",
+    "crossLevel": "leapfrog",
+    "editCommissionGroup": "Modify rebate group",
+    "editCommissionParams": "Edit commission parameters",
+    "editLevel": "Rebate level (optional)",
+    "editLevelDesc": "Select the rebate level with editing permissions",
+    "emptyAncestorError": "When the superior does not enter the rebate parameters, the subordinate cannot enter them.",
+    "equalTypeOptions": {
+      "0": "No commission rebate",
+      "1": "Fixed rebate",
+      "2": "Get lower level commission %"
+    },
+    "exceedAncestorError": "Subordinate rebate parameters cannot be greater than superior rebate parameters",
+    "faq": {
+      "a1": "The total rebate value refers to the upper limit of the cumulative rebate amount that can be obtained by all agents in a complete agency chain. \nThe total rebate value for each agent line is fixed and cannot be exceeded.",
+      "a2": "Please click the Agent Edit button to open the customer relationship graph:\n\n1. First set the total rebate value of the agent line\n\n2. Then fill in the rebate parameters of each agent by level, and fill in different commission parameters according to different commission parameter methods.",
+      "a3": "There are two ways to set rebate custom parameters: 1.Basic method 2.Grade method. You can choose which method to use to calculate specific rebate parameters.",
+      "a4": "Basic method fills in the user's specific rebate parameter value. When rebate is given to the corresponding agent user according to the filled in rebate parameters (how much is returned), the lowest-level agent does not need to fill in the rebate parameters, but uses the total rebate value - the total rebate of the upper-level agent.\n\nNote: The total rebate amount shall not exceed the total rebate value.",
+      "a5": "Fill in the rebate parameters of each level of agents in the level difference method. When rebates are made, the rebate parameters of the hit agent will be filled in. The rebate level difference of the upper-level agent (upper-level agent parameters - lower-level agent parameters) is filled in. When filling in, the rebate parameters of the top agent A1 (the first level of customer relationship) are the total rebate value. \nThe rebate parameter of the subordinate agent B1 must be less than or equal to the rebate parameter value of the upper-level agent, and so on. \nThe rebate parameter value of each agent shall not be greater than the rebate parameter value of the superior agent;\n\n=Remarks: (1) The parameter allows up to two decimal places (2) must be a positive number",
+      "a6": "Won't. \nThe adjustment of rebate parameters will only affect the trading behavior after the setting takes effect, and historical transactions will not be affected.",
+      "q1": "What is the total rebate value?",
+      "q2": "How to set agent rebate parameters?",
+      "q3": "What are the ways to fill in rebate parameters for custom plans?",
+      "q4": "How to fill in and calculate commission in Basic method?",
+      "q5": "How to fill in and calculate the commission for the differential plan?",
+      "q6": "Will adjusting the rebate parameters midway affect previous transactions?",
+      "title1": "The page displays the customer relationship data of agents and their rebate-level users (excluding direct customers).",
+      "title2": "If there is a break in the agent chain (for example, someone is not an agent), the system will only display it until the breakpoint, and the agents after the breakpoint will be regarded as a new agent line and recalculated."
+    },
+    "firstAgent": "Level 1 agent",
+    "leverTotalRebate": "Total level rebates",
+    "limit": "limited",
+    "maxTwoDecimalPlaces": "Keep up to two decimal places",
+    "modifyTotalRebateWarning": "Modifying the total rebate value will clear the filled-in sub-agent parameters. Are you sure you want to modify it?",
+    "notFillTypeOptions": {
+      "1": "No commission rebate",
+      "2": "Treat as parameter=0"
+    },
+    "paramFillTypeOptions": {
+      "1": "Basic mode",
+      "2": "step difference method"
+    },
+    "parameterFillMethod": "Parameter filling method",
+    "parameterFillMethodTips": "Modifying the parameter filling method will clear all rebate parameters filled in by users.",
+    "paramsNotMethod": "Rebate plan with parameters not filled in",
+    "passLimit": "generation",
+    "peerLever": "Level",
+    "pointsPerOrder": "points/orders",
+    "rebateValue": "Rebate parameters",
+    "selectAtLeastOneRebateLevel": "Select at least one rebate tier",
+    "subIbParamsDesc": "Fill in the parameters of the subordinate agent. The current parameter filling method is: step difference method.",
+    "subIbSettings": "Sub-IB parameter settings",
+    "superAgent": "Special agent",
+    "tabs": {
+      "1": "Commission group settings",
+      "2": "Custom commission parameters"
+    },
+    "totalRebate": "Total rebate value",
+    "totalRebateDesc": "The total rebate amount of the current agent link, and the sum of the rebate amount shall not exceed this amount.",
+    "viewGenerations": "Can view algebra (optional)",
+    "viewGenerationsPlaceholder": "0-99 (no limit if not configured)",
+    "viewSubordinate": "Check the lower level rebate parameters",
+    "viewSubordinateDesc": "The agent can view the parameters of the lower-level agent on the user side"
+  },
+  "customerLoyaltyPlan": {
+    "description": "Level description",
+    "evaluationMode": "Assessment mode",
+    "evaluationModeDesc": "Assessment mode: ① Periodic (weekly/monthly) level assessment ② Level can be upgraded/downgraded ③ Re-evaluation every cycle\n \nAchievement mode: ① Upgrade when you reach the standard ② Never downgrade ③ Once achieved, it is valid for life",
+    "evaluationModeOptions": {
+      "1": "Assessment mode",
+      "2": "achievement mode"
+    },
+    "name": "Level name",
+    "or": "or",
+    "preference": "Preferences",
+    "quantity": "quantity",
+    "rankSort": "Ranking",
+    "rankSortDesc": "Drag the customer level below. The closer to the top, the higher the customer level. On the contrary, the lower the customer level, the lower the customer level.",
+    "ruleEvent": "event",
+    "ruleJudgment": "Rule judgment",
+    "ruleJudgmentDesc": "The same event is only allowed to be added once",
+    "ruleSymbol": "judge",
+    "ruleValue": "numerical value",
+    "targetAccount": "Target account (multiple choices)",
+    "targetAccountDesc": "Only the target account type will participate in the customer loyalty program",
+    "title": "customer loyalty program",
+    "vipLevelConfig": "VIP level configuration"
   }
 }

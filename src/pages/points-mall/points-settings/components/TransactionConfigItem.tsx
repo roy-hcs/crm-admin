@@ -1,12 +1,16 @@
 import { BaseOption, RrhSelect } from '@/components/common/RrhSelect';
 import { SelectMtTypeGroup } from '@/components/common/SelectMtTypeGroup';
 import { RrhInputWithUnit } from '@/components/common/RrhInputWithUnit';
-import { FormControl, FormField, FormMessage } from '@/components/ui/form';
+import { FormControl, FormField } from '@/components/ui/form';
+import { FormInputWithUnit } from '@/components/form/FormInputWithUnit';
+import { FormSelect } from '@/components/form/FormSelect';
 import { cappedTimeUnitTwoOptions } from '@/lib/const';
 import { serverMap } from '@/lib/constant';
 import { Slash } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
+import { FieldPath } from 'react-hook-form';
+import { PointsMallSettingsFormValues } from '../types';
 
 type ServerOption = BaseOption & {
   serviceProperty: number;
@@ -93,27 +97,12 @@ export function TransactionConfigItem({
       </div>
       <div className="flex items-end gap-3">
         <div className="flex-1">
-          <FormField
-            name={`${namePrefix}.${index}.bonusPoints`}
-            render={({ field: basisField }) => (
-              <div className="grid gap-3">
-                <div>
-                  <div className="text-foreground text-sm leading-5 font-medium">
-                    {t('pointsMallSettings.rewardCalculation')}
-                  </div>
-                  <FormMessage />
-                </div>
-
-                <FormControl>
-                  <RrhInputWithUnit
-                    unit={t('common.points')}
-                    disabled={!editable}
-                    value={basisField.value ?? ''}
-                    onChange={e => basisField.onChange(e.target.value)}
-                  />
-                </FormControl>
-              </div>
-            )}
+          <FormInputWithUnit<PointsMallSettingsFormValues>
+            name={`${namePrefix}.${index}.bonusPoints` as FieldPath<PointsMallSettingsFormValues>}
+            unit={t('common.points')}
+            label={t('pointsMallSettings.rewardCalculation')}
+            verticalLabel
+            disabled={!editable}
           />
         </div>
         <div className="flex h-10 w-3.5 items-center">
@@ -137,46 +126,26 @@ export function TransactionConfigItem({
       </div>
       <div className="flex items-end gap-3">
         <div className="flex-1">
-          <FormField
-            name={`${namePrefix}.${index}.cappedPoints`}
-            render={({ field: basisField }) => (
-              <div className="grid gap-3">
-                <div>
-                  <div className="text-foreground text-sm leading-5 font-medium">
-                    {t('pointsMallSettings.cappedPointsPerTime')}
-                  </div>
-                  <FormMessage />
-                </div>
-                <FormControl>
-                  <RrhInputWithUnit
-                    unit={t('common.points')}
-                    disabled={!editable}
-                    value={basisField.value ?? ''}
-                    onChange={e => basisField.onChange(e.target.value)}
-                  />
-                </FormControl>
-              </div>
-            )}
+          <FormInputWithUnit<PointsMallSettingsFormValues>
+            name={`${namePrefix}.${index}.cappedPoints` as FieldPath<PointsMallSettingsFormValues>}
+            unit={t('common.points')}
+            label={t('pointsMallSettings.cappedPointsPerTime')}
+            verticalLabel
+            disabled={!editable}
           />
         </div>
         <div className="flex-1">
-          <FormField
-            name={`${namePrefix}.${index}.cappedTimeUnit`}
-            render={({ field: basisField }) => (
-              <FormControl>
-                <RrhSelect
-                  options={cappedTimeUnitTwoOptions.map(i => ({
-                    label: t(i.label),
-                    value: i.value,
-                  }))}
-                  disabled={!editable}
-                  value={basisField.value ?? ''}
-                  showRowValue={false}
-                  onValueChange={e => basisField.onChange(e)}
-                  className="h-10 w-full"
-                />
-              </FormControl>
-            )}
+          <FormSelect<PointsMallSettingsFormValues>
+            name={
+              `${namePrefix}.${index}.cappedTimeUnit` as FieldPath<PointsMallSettingsFormValues>
+            }
+            options={cappedTimeUnitTwoOptions.map(i => ({
+              label: t(i.label),
+              value: i.value,
+            }))}
+            disabled={!editable}
+            showRowValue={false}
+            selectCls="h-10 w-full"
           />
         </div>
       </div>

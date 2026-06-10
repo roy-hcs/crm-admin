@@ -64,7 +64,7 @@ export function ClientTrackingPage() {
     },
     {
       id: 'userName',
-      header: t('customerTracking.userName'),
+      header: t('table.userName'),
       cell: ({ row }) => (
         <div>
           <div>{row.original.userName}</div>

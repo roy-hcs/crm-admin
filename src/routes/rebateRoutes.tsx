@@ -1,4 +1,5 @@
 import { RebateBasicSettingsPage } from '@/pages/rebate/basic-settings/RebateBasicSettingsPage';
+import { CommissionSettingsPage } from '@/pages/rebate/commisstion-settings/CommissionSettingsPage';
 import { DepositRebateSettingsHistoryPage } from '@/pages/rebate/deposit-settings-history/DepositRebateSettingsHistoryPage';
 import { DepositRebateSettingsTemplate } from '@/pages/rebate/deposit-settings-template/DepositRebateSettingsTemplate';
 import { DepositRebateSettingsPage } from '@/pages/rebate/deposit-settings/DepositRebateSettingsPage';
@@ -11,7 +12,12 @@ import { ProductGroupPage } from '@/pages/rebate/product-group/ProductGroupPage'
 import { TradingRebateSettingsHistoryPage } from '@/pages/rebate/trading-settings-history/TradingRebateSettingsHistoryPage';
 import { TradingRebateSettingsTemplate } from '@/pages/rebate/trading-settings-template/TradingRebateSettingsTemplate';
 import { TradingRebateSettingsPage } from '@/pages/rebate/trading-settings/TradingRebateSettingsPage';
-import { RouteObject } from 'react-router-dom';
+import { RouteObject, useSearchParams } from 'react-router-dom';
+
+const CommissionSettingsPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <CommissionSettingsPage key={searchParams.get('id')} />;
+};
 
 /**
  * Rebate Management routes - corresponds to "返佣管理" menu item
@@ -78,5 +84,9 @@ export const rebateRoutes: RouteObject[] = [
   {
     path: '/rebate/deposit-settings-template',
     element: <DepositRebateSettingsTemplate />,
+  },
+  {
+    path: '/rebate/commission-settings',
+    element: <CommissionSettingsPageWrapper />,
   },
 ];

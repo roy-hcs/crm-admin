@@ -445,7 +445,10 @@ export function useUploadFile() {
     mutationFn: (file: File) => {
       const formData = new FormData();
       formData.append('file', file);
-      return apiPostFormData<{ url: string; code: number }>('/common/upload', formData);
+      return apiPostFormData<{ url: string; code: number; msg?: string }>(
+        '/common/upload',
+        formData,
+      );
     },
   });
 }

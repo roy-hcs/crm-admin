@@ -12,7 +12,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import z from 'zod';
-import { uploadFilesInArr } from '../../ticket-list/components/AddTicketDialog';
+import { uploadFilesInArr } from '@/lib/upload';
 import { useUploadFile } from '@/api/hooks/system/system';
 import { useGetAllocatedUsers, useTicketEdit } from '@/api/hooks/ticket/ticket';
 import { toast } from 'sonner';

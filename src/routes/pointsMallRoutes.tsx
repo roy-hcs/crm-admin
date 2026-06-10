@@ -1,10 +1,16 @@
+import { AddEditGoodPage } from '@/pages/points-mall/add-edit-good/AddEditGoodPage';
 import { PointsBalancePage } from '@/pages/points-mall/points-balance/PointsBalancePage';
 import { PointsHistoryPage } from '@/pages/points-mall/points-history/PointsHistoryPage';
 import { PointsMallSettingsPage } from '@/pages/points-mall/points-settings/PointsMallSettingsPage';
 import { ProductCategoriesPage } from '@/pages/points-mall/product-categories/ProductCategoriesPage';
 import { ProductsPage } from '@/pages/points-mall/products/ProductsPage';
 import { RedemptionRecordsPage } from '@/pages/points-mall/redemption-records/RedemptionRecordsPage';
-import { RouteObject } from 'react-router-dom';
+import { RouteObject, useSearchParams } from 'react-router-dom';
+
+const PointsMallAddEditGoodPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <AddEditGoodPage key={searchParams.get('id')} />;
+};
 
 /**
  * Points Mall routes - corresponds to "积分商城" menu item
@@ -41,6 +47,10 @@ export const pointsMallRoutes: RouteObject[] = [
   {
     path: '/points-mall/settings',
     element: <PointsMallSettingsPage />,
+  },
+  {
+    path: '/points-mall/add-edit-good',
+    element: <PointsMallAddEditGoodPageWrapper />,
   },
   // TODO: Add routes as pages are developed
   /*

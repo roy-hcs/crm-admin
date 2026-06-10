@@ -124,7 +124,7 @@ export const DepositRebateSettingsForm = ({
       <FormSelect
         verticalLabel
         name="hasUsed"
-        label={t('common.status')}
+        label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
         showRowValue={false}
         options={[

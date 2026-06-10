@@ -8,7 +8,7 @@ import {
 } from '@/api/hooks/copyTrading/type';
 import { useMamSignalSourceVerifyList } from '@/api/hooks/copyTrading';
 import { SignalReviewForm } from './SignalReviewForm';
-import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
+import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
 import { PageInfo } from '@/components/common/PageInfo';
@@ -18,11 +18,14 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { BasicParams } from '@/api/types';
 import { SignalReviewVerifyStatusOptions } from '@/lib/const';
 import { RrhSorter } from '@/components/common/RrhSorter';
-import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { RrhButton } from '@/components/common/RrhButton';
+import { ReviewDialog } from './components/ReviewDialog';
 
 export const SignalReviewPage = () => {
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('');
-  const [orderByColumn, setOrderByColumn] = useState<string | signalReviewOrderByColumn>('');
+  const [orderByColumn, setOrderByColumn] = useState<string | signalReviewOrderByColumn>(
+    'verify_status desc,subTime desc',
+  );
   const [params, setParams] = useState<MamSignalSourceVerifyListParams['params']>({
     beginTime: '',
     endTime: '',
@@ -43,7 +46,11 @@ export const SignalReviewPage = () => {
   const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
 
-  const { data: data, isLoading: loading } = useMamSignalSourceVerifyList({
+  const {
+    data: data,
+    isLoading: loading,
+    refetch,
+  } = useMamSignalSourceVerifyList({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn: orderByColumn,
@@ -71,6 +78,8 @@ export const SignalReviewPage = () => {
     setResetKey(k => k + 1);
     setPageNum(0);
   };
+  const [id, setId] = useState('');
+  const [open, setOpen] = useState(false);
 
   const allColumns: CRMColumnDef<MamSignalSourceItem, unknown>[] = [
     {
@@ -239,12 +248,18 @@ export const SignalReviewPage = () => {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[{ label: t('table.audit'), value: 'audit' }]}
-          callToAction={() => {}}
-        />
+      cell: ({ row }) => (
+        <RrhButton
+          variant="ghost"
+          onClick={() => {
+            setId(row?.original?.id || '');
+            setOpen(true);
+          }}
+        >
+          {[-1, 2].includes(Number(row?.original?.verifyStatus))
+            ? t('table.audit')
+            : t('common.View')}
+        </RrhButton>
       ),
       fixed: 'right',
       size: 50,
@@ -315,6 +330,13 @@ export const SignalReviewPage = () => {
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
         loading={loading}
+      />
+      <ReviewDialog
+        open={open}
+        onOpenChange={setOpen}
+        id={id}
+        onSuccess={refetch}
+        title={t('copyTradingSettings.signalAuditSwitch')}
       />
     </div>
   );

@@ -22,6 +22,8 @@ import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { Ellipsis } from 'lucide-react';
 import { SignalStatusOptions } from '@/lib/const';
 import { Row } from '@tanstack/react-table';
+import { AddEditSignalsDialog } from './components/AddEditSignalsDialog';
+import { useServerList } from '@/api/hooks/system';
 
 const StatusCell = ({ row }: { row: Row<MamSignalSourceItem> }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,7 +66,7 @@ const StatusCell = ({ row }: { row: Row<MamSignalSourceItem> }) => {
 
 export const SignalsPage = () => {
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('');
-  const [orderByColumn, setOrderByColumn] = useState<string>('');
+  const [orderByColumn, setOrderByColumn] = useState<string>('status desc,subTime desc');
   const [params, setParams] = useState<MamSignalSourceListParams['params']>({
     beginTime: '',
     endTime: '',
@@ -83,7 +85,11 @@ export const SignalsPage = () => {
   const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
 
-  const { data: data, isLoading: loading } = useMamSignalSourceList({
+  const {
+    data: data,
+    isLoading: loading,
+    refetch,
+  } = useMamSignalSourceList({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn,
@@ -91,6 +97,8 @@ export const SignalsPage = () => {
     ...otherParams,
     params,
   });
+
+  const { data: server, isLoading: serverLoading } = useServerList();
 
   const reset = () => {
     setParams(pre => ({
@@ -109,6 +117,9 @@ export const SignalsPage = () => {
     setResetKey(k => k + 1);
     setPageNum(0);
   };
+
+  const [id, setId] = useState<string>('');
+  const [open, setOpen] = useState(false);
 
   const allColumns: CRMColumnDef<MamSignalSourceItem, unknown>[] = [
     {
@@ -304,12 +315,23 @@ export const SignalsPage = () => {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
+      cell: ({ row }) => (
         <div>
           <RrhDropdown
             Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[{ label: t('table.audit'), value: 'edit' }]}
-            callToAction={() => {}}
+            dropdownList={[
+              { label: t('common.Edit'), value: 'edit' },
+              { label: t('common.View'), value: 'view' },
+            ]}
+            callToAction={action => {
+              if (action === 'edit') {
+                setId(row.original.id);
+                setOpen(true);
+                // Handle edit action
+              } else if (action === 'view') {
+                // Handle view action
+              }
+            }}
           />
         </div>
       ),
@@ -357,9 +379,10 @@ export const SignalsPage = () => {
               setParams={setParams}
               setOtherParams={setOtherParams}
               reset={reset}
-              loading={loading}
+              loading={loading || serverLoading}
               otherParams={otherParams}
               params={params}
+              server={server}
             />
           </RrhDrawer>
           <ColumnVisibilityButton
@@ -369,6 +392,8 @@ export const SignalsPage = () => {
             onBatchReorder={batchUpdateColumns}
             columns={columns}
           />
+
+          <AddEditSignalsDialog mode="add" onSuccess={refetch} />
         </div>
       </div>
       <DataTable
@@ -379,7 +404,14 @@ export const SignalsPage = () => {
         pageSize={pageSize}
         onPageChange={setPageNum}
         onPageSizeChange={setPageSize}
-        loading={loading}
+        loading={loading || serverLoading}
+      />
+      <AddEditSignalsDialog
+        open={open}
+        id={id}
+        onOpenChange={setOpen}
+        mode="edit"
+        onSuccess={refetch}
       />
     </div>
   );

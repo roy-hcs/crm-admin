@@ -18,6 +18,8 @@ interface FormSelectProps<T extends FieldValues, O extends BaseOption = BaseOpti
   loading?: boolean;
   disabled?: boolean;
   selectCls?: string;
+  labeTipsDom?: React.ReactNode;
+  displayValue?: string;
 }
 
 // 提取 Select 组件额外支持的属性
@@ -36,6 +38,7 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
   loading = false,
   disabled = false,
   selectCls,
+  labeTipsDom,
   ...props
 }: FormSelectProps<T, O> & SelectExtraProps) {
   const { form } = useCrmFormContext<T>();
@@ -44,39 +47,46 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
       name={name}
       control={form.control}
       render={({ field }) => (
-        <FormItem>
-          <div
-            className={cn(
-              'text-foreground text-sm',
-              verticalLabel ? '' : 'flex items-center',
-              className,
-            )}
-          >
-            {label && (
-              <FormLabel className={cn(verticalLabel ? 'mb-2' : 'shrink-0 basis-3/12')}>
+        <FormItem
+          className={cn(
+            'text-foreground text-sm',
+            verticalLabel ? '' : 'flex items-center',
+            className,
+          )}
+        >
+          {label && (
+            <div className="flex items-center gap-2">
+              <FormLabel className={cn(verticalLabel ? '' : 'basis-3/12', 'leading-5')}>
                 {label}
               </FormLabel>
+              {labeTipsDom && <div>{labeTipsDom}</div>}
+            </div>
+          )}
+          <FormControl
+            className={cn('grow-0', verticalLabel || !label ? 'basis-full' : 'basis-9/12')}
+          >
+            {loading ? (
+              <div className="bg-muted h-10 w-full animate-pulse rounded-md" />
+            ) : (
+              <RrhSelect<O>
+                options={options}
+                value={field.value?.toString()}
+                onValueChange={field.onChange}
+                className={cn(
+                  'w-full',
+                  disabled &&
+                    'data-[disabled]:bg-muted data-[disabled]:text-muted-foreground data-[disabled]:border-muted-foreground/20 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-100',
+                  selectCls,
+                )}
+                placeholder={placeholder}
+                displayValue={props.displayValue}
+                renderItem={renderItem}
+                showRowValue={showRowValue}
+                disabled={disabled}
+                {...props}
+              />
             )}
-            <FormControl
-              className={cn('grow-0', verticalLabel || !label ? 'basis-full' : 'basis-9/12')}
-            >
-              {loading ? (
-                <div className="bg-muted h-10 w-full animate-pulse rounded-md" />
-              ) : (
-                <RrhSelect<O>
-                  options={options}
-                  value={field.value?.toString()}
-                  onValueChange={field.onChange}
-                  className={cn('w-full', selectCls)}
-                  placeholder={placeholder}
-                  renderItem={renderItem}
-                  showRowValue={showRowValue}
-                  disabled={disabled}
-                  {...props}
-                />
-              )}
-            </FormControl>
-          </div>
+          </FormControl>
           <FormMessage className="text-end" />
         </FormItem>
       )}

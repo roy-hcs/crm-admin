@@ -26,6 +26,7 @@ export const RrhSelect = <T extends BaseOption>({
   className,
   renderItem,
   disabled = false,
+  displayValue = '',
   ...selectProps
 }: {
   options: T[];
@@ -37,13 +38,14 @@ export const RrhSelect = <T extends BaseOption>({
   showI18nLabel?: boolean;
   renderItem?: (option: T) => ReactNode;
   disabled?: boolean;
+  displayValue?: string;
 } & SelectExtraProps) => {
   const { t } = useTranslation();
   return (
     <Select value={value} onValueChange={onValueChange} disabled={disabled} {...selectProps}>
       <SelectTrigger className={cn('bg-background', className)}>
         {showRowValue ? (
-          <div className="truncate text-sm">{value || placeholder}</div>
+          <div className="truncate text-sm">{displayValue || value || placeholder}</div>
         ) : (
           <SelectValue placeholder={placeholder} />
         )}

@@ -17,11 +17,12 @@ import { SelectOption } from '@/api/types';
 import { AllocatedUsersItem } from '@/api/hooks/ticket/types';
 import { FormSwitch } from '@/components/form/FormSwitch';
 import { FormTextarea } from '@/components/form/FormTextarea';
-import { ExistingUploadFile, UploadFile, UploadItem } from './UploadFile';
+import { UploadFile } from './UploadFile';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { useUploadFile } from '@/api/hooks/system/system';
 import { useUserStore } from '@/store/userStore';
 import { RrhForm } from '@/components/form/RrhForm';
+import { uploadFilesInArr } from '@/lib/upload';
 
 type FormValues = {
   belongUserId?: string;
@@ -46,56 +47,6 @@ const schemaConfig = (t: TFunction<'translation', undefined>) => {
     fileList: z.array(z.instanceof(File)).optional(),
   };
 };
-
-/**
- * 并发上传数组中的所有 File 类型值
- * @param arr 原始数组 [File]
- * @param uploadFn 上传函数
- * @param errorMsg 错误提示信息
- */
-export async function uploadFilesInArr(
-  arr: UploadItem[] | undefined,
-  uploadFn: (file: File) => Promise<{ code: number; url: string; msg?: string }>,
-  errorMsg: string = 'Upload failed',
-): Promise<Array<{ fileUrls: string; fileNames: string }>> {
-  if (!arr) return [];
-
-  // 创建并发任务
-  const tasks = arr.map(async file => {
-    if (file instanceof File) {
-      try {
-        const res = await uploadFn(file);
-        if (res.code === 0) {
-          return { fileUrls: res.url, fileNames: file.name };
-        } else {
-          toast.error(errorMsg);
-          return { fileUrls: '', fileNames: '' };
-        }
-      } catch (e) {
-        console.error(e);
-        toast.error(errorMsg);
-        return { fileUrls: '', fileNames: '' };
-      }
-    }
-    // 非 File 的已有附件直接保留，不走上传。
-    const existed = file as ExistingUploadFile;
-    if (existed?.fileUrl || existed?.fileName) {
-      return {
-        fileUrls: existed.fileUrl || '',
-        fileNames: existed.fileName || '',
-      };
-    }
-
-    // 其他非文件项忽略
-    return { fileUrls: '', fileNames: '' };
-  });
-
-  // 等待所有上传完成
-  const results = await Promise.all(tasks);
-
-  // 组装回对象
-  return results.map(({ fileUrls, fileNames }) => ({ fileUrls, fileNames }));
-}
 
 export const AddTicketDialog = ({
   onSuccess,

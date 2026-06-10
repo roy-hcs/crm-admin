@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { MamProtocolItem, MamProtocolListParams } from '@/api/hooks/copyTrading/type';
-import { useMamProtocolList } from '@/api/hooks/copyTrading';
+import { useDeleteMamProtocol, useMamProtocolList } from '@/api/hooks/copyTrading';
 import { AgreementSettingsForm } from './AgreementSettingsForm';
 import { Funnel, Search, RefreshCcw, Ellipsis } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
@@ -16,6 +16,8 @@ import { useDictType } from '@/api/hooks/system';
 import { Switch } from '@/components/ui/switch';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { RrhSorter } from '@/components/common/RrhSorter';
+import { AddEditAgreementSettingsDialog } from './components/AddEditAgreementSettingsDialog';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 
 export const AgreementSettingsPage = () => {
   const [otherParams, setOtherParams] = useState<Omit<MamProtocolListParams, keyof BasicParams>>({
@@ -29,8 +31,13 @@ export const AgreementSettingsPage = () => {
   const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
   const { data: scenarioTypes } = useDictType('mam_protocol_scenario');
+  const { data: languageList } = useDictType('sys_language');
 
-  const { data: mamProtocolList, isLoading: mamProtocolListLoading } = useMamProtocolList({
+  const {
+    data: mamProtocolList,
+    isLoading: mamProtocolListLoading,
+    refetch,
+  } = useMamProtocolList({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn,
@@ -46,6 +53,24 @@ export const AgreementSettingsPage = () => {
     setResetKey(k => k + 1);
     setPageNum(0);
   };
+  const [dialogState, setDialogState] = useState({
+    id: '',
+    editOpen: false,
+    deleteOpen: false,
+  });
+
+  const setId = (id: string) => {
+    setDialogState(prev => ({ ...prev, id }));
+  };
+
+  const setOpen = (editOpen: boolean) => {
+    setDialogState(prev => ({ ...prev, editOpen }));
+  };
+
+  const setDeleteDialogOpen = (deleteOpen: boolean) => {
+    setDialogState(prev => ({ ...prev, deleteOpen }));
+  };
+  const { mutateAsync: deleteAgreement } = useDeleteMamProtocol();
 
   const allColumns: CRMColumnDef<MamProtocolItem, unknown>[] = [
     {
@@ -78,7 +103,7 @@ export const AgreementSettingsPage = () => {
       header: () => {
         return (
           <div className="flex items-center justify-between gap-2">
-            <div>{t('common.status')}</div>
+            <div>{t('table.status')}</div>
             <RrhSorter
               isAsc={isAsc}
               setIsAsc={setIsAsc}
@@ -89,7 +114,7 @@ export const AgreementSettingsPage = () => {
           </div>
         );
       },
-      label: t('common.status'),
+      label: t('table.status'),
       cell: ({ row }) => {
         return <Switch checked={row?.original?.status === 1} />;
       },
@@ -123,7 +148,7 @@ export const AgreementSettingsPage = () => {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
+      cell: ({ row }) => (
         <RrhDropdown
           Trigger={<Ellipsis className="size-4" />}
           dropdownList={[
@@ -137,10 +162,12 @@ export const AgreementSettingsPage = () => {
             },
           ]}
           callToAction={action => {
+            setId(row?.original.id);
             if (action === 'edit') {
-              // Edit functionality
+              setOpen(true);
             } else if (action === 'delete') {
               // Delete functionality
+              setDeleteDialogOpen(true);
             }
           }}
         />
@@ -188,11 +215,14 @@ export const AgreementSettingsPage = () => {
             footerShow={false}
           >
             <AgreementSettingsForm
-              scenarioTypes={scenarioTypes || []}
               setOtherParams={setOtherParams}
               reset={reset}
               loading={mamProtocolListLoading}
               otherParams={otherParams}
+              scenarioOptions={(scenarioTypes || []).map(item => ({
+                label: item.dictLabel,
+                value: item.dictValue,
+              }))}
             />
           </RrhDrawer>
           <ColumnVisibilityButton
@@ -201,6 +231,47 @@ export const AgreementSettingsPage = () => {
             onToggle={toggleColumn}
             onBatchReorder={batchUpdateColumns}
             columns={columns}
+          />
+          <AddEditAgreementSettingsDialog
+            mode="add"
+            onSuccess={refetch}
+            title={t('common.addField', {
+              field: t('CopyTradingSettings.copyTrading'),
+            })}
+            scenarioOptions={(scenarioTypes || []).map(item => ({
+              label: item.dictLabel,
+              value: item.dictValue,
+            }))}
+            languageOptions={(languageList || []).map(item => ({
+              label: item.dictLabel,
+              value: item.dictValue,
+            }))}
+          />
+          <AddEditAgreementSettingsDialog
+            open={dialogState.editOpen}
+            onOpenChange={setOpen}
+            id={dialogState.id}
+            mode="edit"
+            onSuccess={refetch}
+            title={t('common.modify', {
+              field: t('CopyTradingSettings.copyTrading'),
+            })}
+            scenarioOptions={(scenarioTypes || []).map(item => ({
+              label: item.dictLabel,
+              value: item.dictValue,
+            }))}
+            languageOptions={(languageList || []).map(item => ({
+              label: item.dictLabel,
+              value: item.dictValue,
+            }))}
+          />
+          <RrhDeleteAlert<{ ids: string }>
+            open={dialogState.deleteOpen}
+            setOpen={setDeleteDialogOpen}
+            onSuccess={refetch}
+            confirmFunction={deleteAgreement}
+            params={{ ids: dialogState.id || '' }}
+            tipsText={t('CopyTradingSettings.confirmDelete')}
           />
         </div>
       </div>
