@@ -111,7 +111,6 @@ export const RebateRuleFormStep1 = ({
               serviceType: number;
             }
           >
-            verticalLabel
             label={t('table.server') + `(${t('common.supportMultipleSelection')})`}
             placeholder={t('common.pleaseSelect')}
             name="serverName"
@@ -142,7 +141,6 @@ export const RebateRuleFormStep1 = ({
           <FormMultiSelect
             name="accountGroup"
             label={t('common.optionalField', { field: t('table.accountGroup') })}
-            verticalLabel
             placeholder={`${t('table.allAccountGroup')}`}
             options={(dealAccountGroupListRes || []).map(item => ({
               label: item.name,

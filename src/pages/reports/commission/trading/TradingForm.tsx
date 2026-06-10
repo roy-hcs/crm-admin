@@ -158,7 +158,6 @@ export const TradingForm = ({
     >
       <RrhServerSelector serverOptions={serverOptions} />
       <FormMultiSelect
-        verticalLabel
         name="serverGroup"
         label={t('table.groups')}
         placeholder={t('common.pleaseSelect')}

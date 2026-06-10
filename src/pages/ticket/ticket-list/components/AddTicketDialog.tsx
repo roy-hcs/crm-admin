@@ -264,7 +264,6 @@ export const AddTicketDialog = ({
         <FormMultiSelect
           name="carbonCopy"
           label={t('ticketList.carbonCopy')}
-          verticalLabel
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={userOptions}

@@ -538,7 +538,6 @@ export const AddEditNewMessageDialog = ({
               <FormMultiSelect
                 name="sendEmails"
                 label={t('table.sendEmailAddress')}
-                verticalLabel
                 placeholder={t('common.pleaseSelect')}
                 showRowValue={false}
                 options={emailOptions}
@@ -576,7 +575,6 @@ export const AddEditNewMessageDialog = ({
             )}
             {receiveType === '2' && (
               <FormMultiSelect
-                verticalLabel
                 name="roles"
                 label={t('messageManagement.receiveTypeOption.2')}
                 placeholder={t('common.pleaseSelect')}

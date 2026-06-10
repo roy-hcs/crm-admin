@@ -92,7 +92,6 @@ export const FundFlowForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
       />
       <FormMultiSelect
-        verticalLabel
         name="opeTypeList"
         label={t('table.operationType')}
         placeholder={t('common.pleaseSelect')}

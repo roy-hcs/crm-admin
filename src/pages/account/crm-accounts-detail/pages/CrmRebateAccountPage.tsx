@@ -198,7 +198,6 @@ export const CrmRebateAccountPage = ({ userId }: { userId: string }) => {
             <>
               <FormMultiSelect
                 name="accounts"
-                verticalLabel
                 options={accountOptions}
                 label={''}
                 placeholder={t('common.pleaseSelect')}

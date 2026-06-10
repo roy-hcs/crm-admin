@@ -204,7 +204,6 @@ export function StepOne({
       <FormMultiSelect
         name="applicableRoles"
         label={t('products.applicableRoles')}
-        verticalLabel
         placeholder={t('common.pleaseSelect')}
         showRowValue={false}
         options={roleOptions}

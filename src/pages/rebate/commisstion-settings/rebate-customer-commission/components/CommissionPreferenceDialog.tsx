@@ -232,7 +232,6 @@ export const CommissionPreferenceDialog = () => {
                 {agentEditValue === '1' && (
                   <FormMultiSelect
                     className="py-6"
-                    verticalLabel
                     name="editLevel"
                     label={t('commissionRebateSettings.editLevel')}
                     options={levelOptions}

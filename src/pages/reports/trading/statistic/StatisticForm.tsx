@@ -138,7 +138,6 @@ export const StatisticForm = ({
         }}
       />
       <FormMultiSelect
-        verticalLabel
         name="serverGroupList"
         label={t('table.groups')}
         placeholder={t('common.pleaseSelect')}
@@ -178,7 +177,6 @@ export const StatisticForm = ({
       />
 
       <FormMultiSelect
-        verticalLabel
         name="accountGroupList"
         label={t('table.accountGroup')}
         placeholder={t('common.pleaseSelect')}

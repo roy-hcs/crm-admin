@@ -243,7 +243,6 @@ export const RrhDynamicForm = ({
       case CT.MultiSelect:
         return (
           <FormMultiSelect
-            verticalLabel
             name={name}
             label={`${col.columnName}${col.require ? '' : ` (${t('common.optional')})`}`}
             options={mapColumnOptions(col.options)}

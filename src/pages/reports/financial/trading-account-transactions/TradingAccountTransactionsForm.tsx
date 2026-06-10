@@ -187,7 +187,6 @@ export const TradingAccountTransactionsForm = ({
       />
 
       <FormMultiSelect
-        verticalLabel
         name="serverGroupList"
         label={t('table.groups')}
         placeholder={t('common.pleaseSelect')}
@@ -218,7 +217,6 @@ export const TradingAccountTransactionsForm = ({
       />
 
       <FormMultiSelect
-        verticalLabel
         name="accountGroupList"
         label={t('table.accountGroup')}
         placeholder={t('common.pleaseSelect')}

@@ -421,7 +421,6 @@ export const AddEditAdsDialog = ({
               <FormMultiSelect
                 name="crmRoleIds"
                 label={t('ads.visibleRole')}
-                verticalLabel
                 placeholder={t('common.pleaseSelect')}
                 showRowValue={false}
                 options={roleOptions}

@@ -157,7 +157,6 @@ export const LimitOrderForm = ({
         }}
       />
       <FormMultiSelect
-        verticalLabel
         name="serverGroupList"
         label={t('table.groups')}
         placeholder={t('common.pleaseSelect')}

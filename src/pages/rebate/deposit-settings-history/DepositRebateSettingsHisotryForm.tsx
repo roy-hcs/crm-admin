@@ -166,7 +166,6 @@ export const DepositRebateSettingsHistoryForm = ({
         }}
       />
       <FormMultiSelect
-        verticalLabel
         name="serverGroupList"
         label={t('table.groups')}
         placeholder={t('common.pleaseSelect')}
@@ -212,7 +211,6 @@ export const DepositRebateSettingsHistoryForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.tradingAccount') })}
       />
       <FormMultiSelect
-        verticalLabel
         name="accountGroupList"
         label={t('table.accountGroup')}
         placeholder={t('common.pleaseSelect')}

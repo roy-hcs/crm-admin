@@ -97,7 +97,6 @@ export const UserOperationsLogsForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.operator') })}
       />
       <FormMultiSelect
-        verticalLabel
         name="operationType"
         label={t('table.operationType')}
         placeholder={t('common.pleaseSelect')}

@@ -59,7 +59,6 @@ export function PointConfigCard5({
             <FormMultiSelect
               name="exemptRoleIds"
               label={t('pointsMallSettings.exemptRoleIds')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={allRoles}
@@ -68,7 +67,6 @@ export function PointConfigCard5({
             <FormMultiSelect
               name="exemptTagIds"
               label={t('pointsMallSettings.exemptTagIds')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={allTags}

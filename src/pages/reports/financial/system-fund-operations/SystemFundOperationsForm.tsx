@@ -175,7 +175,6 @@ export const SystemFundOperationsForm = ({
           }))}
       />
       <FormMultiSelect
-        verticalLabel
         name="opTypes"
         label={t('table.depositWay')}
         placeholder={t('common.pleaseSelect')}
@@ -189,7 +188,6 @@ export const SystemFundOperationsForm = ({
       <FormMultiSelect
         name="accountTypes"
         label={`${t('CRMAccountPage.CRMAccountType')}`}
-        verticalLabel
         placeholder={t('common.pleaseSelect')}
         options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
       />
