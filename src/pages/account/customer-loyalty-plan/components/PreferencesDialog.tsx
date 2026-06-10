@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 type FormValues = {
-  targetAccount: string | string[];
+  targetAccount: string[];
   evaluationMode: string;
 };
 
@@ -25,7 +25,7 @@ export const PreferencesDialog = ({ onSuccess }: { onSuccess?: () => void }) => 
 
   const form = useForm<FormValues>({
     defaultValues: {
-      targetAccount: '',
+      targetAccount: [],
       evaluationMode: '2',
     },
   });
@@ -39,26 +39,24 @@ export const PreferencesDialog = ({ onSuccess }: { onSuccess?: () => void }) => 
   };
 
   const onConfirm = async () => {
-    const values = form.getValues();
-    const targetAccount = Array.isArray(values.targetAccount)
-      ? values.targetAccount
-      : (values.targetAccount || '')
-          .split(',')
-          .map(item => item.trim())
-          .filter(Boolean);
+    try {
+      const values = form.getValues();
 
-    const res = await vipUpdatePreferenceEdit({
-      targetAccount,
-      evaluationMode: values.evaluationMode,
-    });
-    if (res.code === 0) {
-      toast.success(t('common.success'));
-      onSuccess?.();
-      onClose();
-      return;
+      const res = await vipUpdatePreferenceEdit({
+        targetAccount: values.targetAccount.join(','),
+        evaluationMode: values.evaluationMode,
+      });
+      if (res.code === 0) {
+        toast.success(t('common.success'));
+        onSuccess?.();
+        onClose();
+        return;
+      }
+
+      toast.error(res.msg);
+    } catch {
+      toast.error(t('common.AnErrorOccurred'));
     }
-
-    toast.error(res.msg);
   };
 
   useEffect(() => {
@@ -67,8 +65,9 @@ export const PreferencesDialog = ({ onSuccess }: { onSuccess?: () => void }) => 
     (async () => {
       const res = await getDetail();
       if (res.code === 0 && res.data) {
+        const targetAccount = res.data.targetAccount.split(',').map((item: string) => item.trim());
         form.reset({
-          targetAccount: res.data.targetAccount || [],
+          targetAccount: targetAccount || [],
           evaluationMode: res.data.evaluationMode || '2',
         });
       }

@@ -208,50 +208,45 @@ export function CustomerLoyaltyPlanConfig() {
         return (
           <div key={field.fieldKey} className="bg-primary-foreground rounded-2xl p-3">
             <div className="flex items-end gap-3">
-              <div className="flex-1">
-                <FormSelect
-                  verticalLabel
-                  name={ruleEventName}
-                  label={eventLabel}
-                  placeholder={t('common.pleaseSelect')}
-                  showRowValue={false}
-                  options={vipEventOptions}
-                />
-              </div>
-              <div className="flex-1">
-                <FormSelect
-                  verticalLabel
-                  name={ruleSymbolName}
-                  label={showSymbolLabel ? t('customerLoyaltyPlan.ruleSymbol') : undefined}
-                  placeholder={t('common.pleaseSelect')}
-                  showRowValue={false}
-                  options={ruleSymbolOptions}
-                />
-              </div>
-              <div className="flex-1">
-                <FormInput
-                  verticalLabel
-                  name={ruleValueName}
-                  label={showValueLabel ? t('customerLoyaltyPlan.ruleValue') : undefined}
-                  placeholder={t('common.pleaseInput', {
-                    field: '',
-                  })}
-                />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <RrhButton type="button" variant="outline" size="sm" onClick={onAdd}>
-                    +
-                  </RrhButton>
-                  <RrhButton
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onRemove(index)}
-                  >
-                    -
-                  </RrhButton>
-                </div>
+              <FormSelect
+                className="flex-1"
+                verticalLabel
+                name={ruleEventName}
+                label={eventLabel}
+                placeholder={t('common.pleaseSelect')}
+                showRowValue={false}
+                options={vipEventOptions}
+              />
+              <FormSelect
+                className="flex-1"
+                verticalLabel
+                name={ruleSymbolName}
+                label={showSymbolLabel ? t('customerLoyaltyPlan.ruleSymbol') : undefined}
+                placeholder={t('common.pleaseSelect')}
+                showRowValue={false}
+                options={ruleSymbolOptions}
+              />
+              <FormInput
+                className="flex-1"
+                verticalLabel
+                name={ruleValueName}
+                label={showValueLabel ? t('customerLoyaltyPlan.ruleValue') : undefined}
+                placeholder={t('common.pleaseInput', {
+                  field: '',
+                })}
+              />
+              <div className="flex items-center gap-2">
+                <RrhButton type="button" variant="outline" size="sm" onClick={onAdd}>
+                  +
+                </RrhButton>
+                <RrhButton
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onRemove(index)}
+                >
+                  -
+                </RrhButton>
               </div>
             </div>
           </div>
@@ -419,25 +414,23 @@ export function CustomerLoyaltyPlanConfig() {
                   key={i.dictValue}
                   className={cn(activeLang === i.dictValue ? 'block' : 'hidden')}
                 >
-                  <div className="py-3">
-                    <FormInput
-                      verticalLabel
-                      name={`languageList.${index}.name` as const}
-                      label={t('customerLoyaltyPlan.name')}
-                      placeholder={t('rules.limitLength', {
-                        field: 50,
-                      })}
-                      maxLength={50}
-                    />
-                  </div>
-                  <div className="py-3">
-                    <FormTextarea
-                      name={`languageList.${index}.description` as const}
-                      label={t('customerLoyaltyPlan.description')}
-                      placeholder={t('rules.limitLength', { field: 300 })}
-                      maxLength={300}
-                    />
-                  </div>
+                  <FormInput
+                    className="py-3"
+                    verticalLabel
+                    name={`languageList.${index}.name` as const}
+                    label={t('customerLoyaltyPlan.name')}
+                    placeholder={t('rules.limitLength', {
+                      field: 50,
+                    })}
+                    maxLength={50}
+                  />
+                  <FormTextarea
+                    className="py-3"
+                    name={`languageList.${index}.description` as const}
+                    label={t('customerLoyaltyPlan.description')}
+                    placeholder={t('rules.limitLength', { field: 300 })}
+                    maxLength={300}
+                  />
                 </div>
               );
             })}

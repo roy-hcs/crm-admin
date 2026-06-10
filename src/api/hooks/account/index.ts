@@ -547,7 +547,7 @@ export function useCrmUserVipGetPreference() {
 export function useCrmUserVipPreferenceEdit() {
   return useMutation({
     mutationFn: (params: CrmUserVipPreferenceEditParams) =>
-      apiPost(`/system/crmUserVip/preferenceEdit`, params),
+      apiFormPost(`/system/crmUserVip/preferenceEdit`, params),
   });
 }
 

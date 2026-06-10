@@ -21,13 +21,12 @@ export function CustomerLoyaltyPlan() {
   const { t } = useTranslation();
   const [deleteOpen, setDeleteOpen] = useState({ open: false, id: '', name: '' });
   const { openTab } = useTabActions();
-  const { data, isLoading, refetch } = useCustomerLoyaltyPlan();
+  const { data, refetch } = useCustomerLoyaltyPlan();
   const { mutateAsync: modifyStatus } = usePreferenceEdit();
   const { mutateAsync: changeStatus } = useCrmUserVipChangeStatus();
   const { mutateAsync: deleteCrmUserVip } = useDeleteCrmUserVip();
   const userVipStatus = Number(data?.data?.userVipStatus || 0);
   const configArr = data?.data?.userVipList || [];
-  console.log(data, isLoading);
   return (
     <div className="grid gap-6">
       <div className="flex items-center justify-between">

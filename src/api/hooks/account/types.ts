@@ -734,7 +734,7 @@ export type CrmUserVipGetPreferenceRes = {
 };
 
 export type CrmUserVipPreferenceEditParams = {
-  targetAccount: string[];
+  targetAccount: string;
   evaluationMode: string;
 };
 
