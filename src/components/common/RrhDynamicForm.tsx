@@ -226,7 +226,6 @@ export const RrhDynamicForm = ({
       case CT.Input:
         return (
           <FormInput
-            verticalLabel
             name={name}
             label={`${col.columnName}${col.require ? '' : ` (${t('common.optional')})`}`}
             placeholder={phInput}

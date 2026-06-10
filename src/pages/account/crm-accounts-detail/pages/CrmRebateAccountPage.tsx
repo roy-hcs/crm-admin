@@ -247,7 +247,6 @@ export const CrmRebateAccountPage = ({ userId }: { userId: string }) => {
               <FormInput
                 name="account"
                 type="number"
-                verticalLabel
                 label={`${t('table.account')}(${t('common.optional')})`}
                 placeholder={t('common.pleaseInput', { field: t('table.account') })}
               />

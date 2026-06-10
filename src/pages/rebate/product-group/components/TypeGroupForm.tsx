@@ -145,67 +145,66 @@ export const TypeGroupForm = ({
 
   return (
     <RrhForm form={form} className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
-          <FormInput
-            name="typeGroupName"
-            label={t('table.typeGroup')}
-            verticalLabel
-            placeholder={t('rules.limitLength', { field: 16 })}
-          />
-          <FormSelect
-            key={`serverType-${initializedRef.current || 'new'}`}
-            verticalLabel
-            name="serverType"
-            label={t('table.transactionPlatform')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={serverTypeOptions}
-          />
-          <FormSelect<
-            Record<string, string>,
-            BaseOption & {
-              serviceProperty: number;
-              serviceType: number;
-            }
-          >
-            key={`server-${initializedRef.current || 'new'}`}
-            verticalLabel
-            name="serverId"
-            label={t('table.server')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={serverOptions}
-            renderItem={option => {
-              return (
-                <div>
-                  {/* TODO: 优化样式 */}
-                  <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
-                  {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
-                  <span>{option.label}</span>
-                </div>
-              );
-            }}
-          />
-          <FormField
-            name="typeName"
-            render={({ field }) => {
-              return (
-                <SelectMtTypeGroup
-                  defaultValue={productGroupItem?.typeName || ''}
-                  verticalLabel
-                  field={field}
-                  serverId={form.watch('serverId')}
-                />
-              );
-            }}
-          />
-          <div className="border-border -mx-6 flex justify-end gap-4 border-t px-6 pt-6">
-            <RrhButton type="button" variant="outline" disabled={isPending} onClick={onCancel}>
-              {t('common.Cancel')}
-            </RrhButton>
-            <RrhButton loading={isPending} type="submit">
-              {t('common.Confirm')}
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <FormInput
+        name="typeGroupName"
+        label={t('table.typeGroup')}
+        placeholder={t('rules.limitLength', { field: 16 })}
+      />
+      <FormSelect
+        key={`serverType-${initializedRef.current || 'new'}`}
+        verticalLabel
+        name="serverType"
+        label={t('table.transactionPlatform')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={serverTypeOptions}
+      />
+      <FormSelect<
+        Record<string, string>,
+        BaseOption & {
+          serviceProperty: number;
+          serviceType: number;
+        }
+      >
+        key={`server-${initializedRef.current || 'new'}`}
+        verticalLabel
+        name="serverId"
+        label={t('table.server')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={serverOptions}
+        renderItem={option => {
+          return (
+            <div>
+              {/* TODO: 优化样式 */}
+              <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
+              {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
+              <span>{option.label}</span>
+            </div>
+          );
+        }}
+      />
+      <FormField
+        name="typeName"
+        render={({ field }) => {
+          return (
+            <SelectMtTypeGroup
+              defaultValue={productGroupItem?.typeName || ''}
+              verticalLabel
+              field={field}
+              serverId={form.watch('serverId')}
+            />
+          );
+        }}
+      />
+      <div className="border-border -mx-6 flex justify-end gap-4 border-t px-6 pt-6">
+        <RrhButton type="button" variant="outline" disabled={isPending} onClick={onCancel}>
+          {t('common.Cancel')}
+        </RrhButton>
+        <RrhButton loading={isPending} type="submit">
+          {t('common.Confirm')}
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

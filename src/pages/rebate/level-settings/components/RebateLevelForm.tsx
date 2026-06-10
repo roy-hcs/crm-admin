@@ -1,7 +1,6 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { FormInput } from '@/components/form/FormInput';
 
-
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod';
@@ -91,26 +90,24 @@ export const RebateLevelForm = ({
   };
   return (
     <RrhForm form={form} className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
-          <FormInput
-            name="level"
-            label={t('table.level')}
-            verticalLabel
-            placeholder={t('RebateLevelSettings.levelPlaceholder')}
-          />
-          <FormInput
-            name="levelName"
-            label={t('table.levelName')}
-            verticalLabel
-            placeholder={t('rules.limitLength', { field: 16 })}
-          />
-          <div className="border-border -mx-6 flex justify-end gap-4 border-t px-6 pt-3 pb-3 md:pt-6 md:pb-0">
-            <RrhButton type="button" variant="outline" disabled={isPending} onClick={onCancel}>
-              {t('common.Cancel')}
-            </RrhButton>
-            <RrhButton loading={isPending} type="submit">
-              {t('common.Confirm')}
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <FormInput
+        name="level"
+        label={t('table.level')}
+        placeholder={t('RebateLevelSettings.levelPlaceholder')}
+      />
+      <FormInput
+        name="levelName"
+        label={t('table.levelName')}
+        placeholder={t('rules.limitLength', { field: 16 })}
+      />
+      <div className="border-border -mx-6 flex justify-end gap-4 border-t px-6 pt-3 pb-3 md:pt-6 md:pb-0">
+        <RrhButton type="button" variant="outline" disabled={isPending} onClick={onCancel}>
+          {t('common.Cancel')}
+        </RrhButton>
+        <RrhButton loading={isPending} type="submit">
+          {t('common.Confirm')}
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

@@ -77,7 +77,6 @@ export const VarietyManagementForm = ({
       />
 
       <FormInput
-        verticalLabel
         name="symbol"
         label={t('varietyManagement.symbol')}
         placeholder={t('common.pleaseInput', {

@@ -70,83 +70,84 @@ export const PipValueForm = ({
     });
   };
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="pointValueName"
-            label={t('table.pointValueName')}
-            placeholder={t('common.pleaseInput', { field: t('table.pointValueName') })}
-          />
-          <FormSelect
-            verticalLabel
-            name="serverType"
-            label={t('table.transactionPlatform')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={serverTypes.map(item => {
-              return { label: item.dictLabel, value: item.dictValue };
-            })}
-          />
-          <FormSelect<
-            Record<string, string>,
-            BaseOption & {
-              serviceProperty: number;
-              serviceType: number;
-            }
-          >
-            verticalLabel
-            name="serverId"
-            label={t('table.server')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={(serverList || []).map(item => ({
-              label: item.serverName,
-              value: item.id,
-              serviceProperty: item.serviceProperty,
-              serviceType: item.serviceType,
-            }))}
-            renderItem={option => {
-              return (
-                <div>
-                  {/* TODO: 优化样式 */}
-                  <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
-                  {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
-                  <span>{option.label}</span>
-                </div>
-              );
-            }}
-          />
-          <FormSelect
-            verticalLabel
-            name="pointValueType"
-            label={t('table.pointValueType')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={[
-              {
-                label: t('table.fixedPipValue'),
-                value: '1',
-              },
-              {
-                label: t('table.floatingPipValue'),
-                value: '2',
-              },
-            ]}
-          />
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        name="pointValueName"
+        label={t('table.pointValueName')}
+        placeholder={t('common.pleaseInput', { field: t('table.pointValueName') })}
+      />
+      <FormSelect
+        verticalLabel
+        name="serverType"
+        label={t('table.transactionPlatform')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={serverTypes.map(item => {
+          return { label: item.dictLabel, value: item.dictValue };
+        })}
+      />
+      <FormSelect<
+        Record<string, string>,
+        BaseOption & {
+          serviceProperty: number;
+          serviceType: number;
+        }
+      >
+        verticalLabel
+        name="serverId"
+        label={t('table.server')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={(serverList || []).map(item => ({
+          label: item.serverName,
+          value: item.id,
+          serviceProperty: item.serviceProperty,
+          serviceType: item.serviceType,
+        }))}
+        renderItem={option => {
+          return (
+            <div>
+              {/* TODO: 优化样式 */}
+              <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
+              {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
+              <span>{option.label}</span>
+            </div>
+          );
+        }}
+      />
+      <FormSelect
+        verticalLabel
+        name="pointValueType"
+        label={t('table.pointValueType')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={[
+          {
+            label: t('table.fixedPipValue'),
+            value: '1',
+          },
+          {
+            label: t('table.floatingPipValue'),
+            value: '2',
+          },
+        ]}
+      />
 
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit">
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit">
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

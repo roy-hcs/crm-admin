@@ -296,7 +296,6 @@ export const AddEditCommissionGroupDialog = ({
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
         <FormInput
           className="py-6"
-          verticalLabel
           name="name"
           label={t('table.commissionGroupName')}
           placeholder={t('common.pleaseInput', { field: t('table.commissionGroupName') })}
@@ -323,7 +322,6 @@ export const AddEditCommissionGroupDialog = ({
                 <div className="flex flex-1 items-end gap-2">
                   <FormInput
                     className="flex-1"
-                    verticalLabel
                     name={`agency.${index}.price`}
                     label={agencyLabels[index] ?? t('commissionRebateSettings.chiefSteward')}
                     placeholder={t('common.pleaseInput', { field: '' })}
@@ -419,7 +417,6 @@ export const AddEditCommissionGroupDialog = ({
         <div className="flex items-end gap-2 py-6">
           <FormInput
             className="flex-1"
-            verticalLabel
             name="countPrice"
             label={t('commissionRebateSettings.leverTotalRebate')}
             placeholder={t('common.pleaseInput', { field: '' })}

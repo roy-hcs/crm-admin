@@ -362,7 +362,7 @@ export const AddEditAgreementSettingsDialog = ({
 
           <FormSwitch name="status" label={t('table.status')} verticalLabel />
 
-          <FormInput verticalLabel name="sort" label={t('table.sort')} placeholder="1-999" />
+          <FormInput name="sort" label={t('table.sort')} placeholder="1-999" />
           <div>
             <RrhSwitchGroup
               value={activeLang}
@@ -379,7 +379,6 @@ export const AddEditAgreementSettingsDialog = ({
                 <div key={i.value} className={cn(activeLang === i.value ? 'block' : 'hidden')}>
                   <div className="grid gap-6">
                     <FormInput
-                      verticalLabel
                       name={`languages.${index}.name`}
                       label={t('table.protocolName')}
                       placeholder={t('common.pleaseInput', { field: t('table.protocolName') })}

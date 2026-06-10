@@ -37,7 +37,6 @@ export function StepOne({
   return (
     <div className="grid gap-6">
       <FormInput
-        verticalLabel
         name="goodName"
         label={t('products.name')}
         placeholder={t('rules.limitLength', {
@@ -54,7 +53,6 @@ export function StepOne({
         ]}
       />
       <FormInput
-        verticalLabel
         name="exchangePoints"
         label={t('products.exchangePoints')}
         placeholder={t('products.enterExchangePoints')}
@@ -67,7 +65,6 @@ export function StepOne({
                 <FormInput
                   name={`combinationPaymentList.${index}.exchangePoint`}
                   label={index === 0 ? t('products.combinationPayment') : ''}
-                  verticalLabel
                   placeholder={t('products.enterExchangePoints')}
                 />
               </div>
@@ -109,7 +106,7 @@ export function StepOne({
         </div>
       )}
       <FormSwitch verticalLabel name="status" label={t('table.status')} />
-      <FormInput verticalLabel name="sort" label={t('table.sort')} placeholder="1-99999" />
+      <FormInput name="sort" label={t('table.sort')} placeholder="1-99999" />
       <FormItem>
         <div>
           <FormLabel>{t('products.productCategory')}</FormLabel>

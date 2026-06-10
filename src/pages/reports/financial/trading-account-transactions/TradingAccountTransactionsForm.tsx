@@ -197,7 +197,6 @@ export const TradingAccountTransactionsForm = ({
       />
 
       <FormInput
-        verticalLabel
         name="ticket"
         label={t('table.orderNumber')}
         placeholder={t('common.pleaseInput', {
@@ -205,7 +204,6 @@ export const TradingAccountTransactionsForm = ({
         })}
       />
       <FormInput
-        verticalLabel
         name="historyFuzzyName"
         label={t('tradingAccountTransactions.name')}
         placeholder={t('common.pleaseInput', {
@@ -213,7 +211,6 @@ export const TradingAccountTransactionsForm = ({
         })}
       />
       <FormInput
-        verticalLabel
         name="login"
         label={t('tradingAccountTransactions.login')}
         placeholder={t('common.pleaseInput', {
@@ -234,7 +231,6 @@ export const TradingAccountTransactionsForm = ({
         }
       />
       <FormInput
-        verticalLabel
         name="comment"
         label={t('tradingAccountTransactions.comment')}
         placeholder={t('common.pleaseInput', {
@@ -255,7 +251,6 @@ export const TradingAccountTransactionsForm = ({
         )}
       />
       <FormInput
-        verticalLabel
         name="fuzzyCrmAccount"
         label={t('tradingAccountTransactions.crmLastName')}
         placeholder={t('common.pleaseInput', {

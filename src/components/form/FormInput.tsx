@@ -19,7 +19,7 @@ interface FormInputProps<T extends FieldValues> {
 export function FormInput<T extends FieldValues>({
   name,
   label,
-  verticalLabel = false,
+  verticalLabel = true,
   placeholder,
   className,
   rightElement,

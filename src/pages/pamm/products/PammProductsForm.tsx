@@ -76,7 +76,6 @@ export const PammProductsForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="projectName"
         label={t('table.projectName')}
         placeholder={t('common.pleaseInput', { field: t('table.projectName') })}

@@ -166,14 +166,12 @@ export const GoogleKeyDialog = ({
           className="py-3"
           name="password"
           label={t('profile.loginPwd')}
-          verticalLabel
           placeholder={t('common.pleaseInput', { field: t('rules.pwd') })}
         />
         <FormInput
           className="py-3"
           name="code"
           label={t('profile.googleAuthCode')}
-          verticalLabel
           placeholder={t('common.pleaseInput', { field: t('profile.googleAuthCode') })}
         />
       </RrhForm>

@@ -76,7 +76,6 @@ export const RefundFailureLogsForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="userId"
         label={t('paymentOrders.userName')}
         placeholder={t('common.pleaseInput', {
@@ -103,7 +102,6 @@ export const RefundFailureLogsForm = ({
         )}
       />
       <FormInput
-        verticalLabel
         name="refundAccount"
         label={t('refundFailLog.refundAccount')}
         placeholder={t('common.pleaseInput', {

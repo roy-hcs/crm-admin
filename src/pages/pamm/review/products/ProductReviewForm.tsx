@@ -70,79 +70,78 @@ export const ProductReviewForm = ({
   };
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="investmentManager"
-            label={t('productReview.investmentManager')}
-            placeholder={t('common.pleaseInput', {
-              field: t('productReview.investmentManager'),
-            })}
-          />
-          <FormInput
-            verticalLabel
-            name="projectName"
-            label={t('table.projectName')}
-            placeholder={t('common.pleaseInput', {
-              field: t('table.projectName'),
-            })}
-          />
-          <FormField
-            name="submitTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('table.submitTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="submitTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="verifyTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('table.verifyTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="verifyTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormInput
-            verticalLabel
-            name="login"
-            label={t('table.login')}
-            placeholder={t('common.pleaseInput', {
-              field: t('table.login'),
-            })}
-          />
-          <FormSelect
-            verticalLabel
-            name="applyStatus"
-            label={t('table.status')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={commissionReviewOptions.map(i => ({
-              label: t(i.label),
-              value: i.value,
-            }))}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit">
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        name="investmentManager"
+        label={t('productReview.investmentManager')}
+        placeholder={t('common.pleaseInput', {
+          field: t('productReview.investmentManager'),
+        })}
+      />
+      <FormInput
+        name="projectName"
+        label={t('table.projectName')}
+        placeholder={t('common.pleaseInput', {
+          field: t('table.projectName'),
+        })}
+      />
+      <FormField
+        name="submitTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('table.submitTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="submitTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="verifyTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('table.verifyTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="verifyTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormInput
+        name="login"
+        label={t('table.login')}
+        placeholder={t('common.pleaseInput', {
+          field: t('table.login'),
+        })}
+      />
+      <FormSelect
+        verticalLabel
+        name="applyStatus"
+        label={t('table.status')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={commissionReviewOptions.map(i => ({
+          label: t(i.label),
+          value: i.value,
+        }))}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit">
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

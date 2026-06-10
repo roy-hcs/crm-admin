@@ -95,112 +95,112 @@ export const StatisticForm = ({
     });
   };
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              if (e.target instanceof HTMLTextAreaElement) return;
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      onKeyDown={e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          if (e.target instanceof HTMLTextAreaElement) return;
 
-              e.preventDefault();
-              form.handleSubmit(onSubmit)();
-            }
-          }}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormSelect<
-            Record<string, string>,
-            BaseOption & {
-              serviceProperty: number;
-              serviceType: number;
-            }
-          >
-            verticalLabel
-            name="serverId"
-            label={t('table.server')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={serverList.map(item => ({
-              label: item.serverName,
-              value: item.id,
-              serviceProperty: item.serviceProperty,
-              serviceType: item.serviceType,
-            }))}
-            renderItem={option => {
-              return (
-                <div>
-                  {/* TODO: 优化样式 */}
-                  <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
-                  {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
-                  <span>{option.label}</span>
-                </div>
-              );
-            }}
-          />
-          <FormMultiSelect
-            verticalLabel
-            name="serverGroupList"
-            label={t('table.groups')}
-            placeholder={t('common.pleaseSelect')}
-            options={
-              groupData
-                ?.filter(item => item)
-                .map(item => ({
-                  label: item,
-                  value: item,
-                })) || []
-            }
-          />
+          e.preventDefault();
+          form.handleSubmit(onSubmit)();
+        }
+      }}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormSelect<
+        Record<string, string>,
+        BaseOption & {
+          serviceProperty: number;
+          serviceType: number;
+        }
+      >
+        verticalLabel
+        name="serverId"
+        label={t('table.server')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={serverList.map(item => ({
+          label: item.serverName,
+          value: item.id,
+          serviceProperty: item.serviceProperty,
+          serviceType: item.serviceType,
+        }))}
+        renderItem={option => {
+          return (
+            <div>
+              {/* TODO: 优化样式 */}
+              <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
+              {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
+              <span>{option.label}</span>
+            </div>
+          );
+        }}
+      />
+      <FormMultiSelect
+        verticalLabel
+        name="serverGroupList"
+        label={t('table.groups')}
+        placeholder={t('common.pleaseSelect')}
+        options={
+          groupData
+            ?.filter(item => item)
+            .map(item => ({
+              label: item,
+              value: item,
+            })) || []
+        }
+      />
 
-          <FormInput
-            verticalLabel
-            name="login"
-            label={t('table.tradingAccount')}
-            placeholder={t('common.pleaseInput', { field: t('table.tradingAccount') })}
-          />
+      <FormInput
+        name="login"
+        label={t('table.tradingAccount')}
+        placeholder={t('common.pleaseInput', { field: t('table.tradingAccount') })}
+      />
 
-          <FormInput
-            verticalLabel
-            name="name"
-            label={t('table.fullName')}
-            placeholder={t('common.pleaseInput', { field: t('table.firstNameOrLastName') })}
-          />
+      <FormInput
+        name="name"
+        label={t('table.fullName')}
+        placeholder={t('common.pleaseInput', { field: t('table.firstNameOrLastName') })}
+      />
 
-          <FormField
-            name="statisticTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('table.statisticTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="statisticTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+      <FormField
+        name="statisticTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('table.statisticTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="statisticTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
-          <FormMultiSelect
-            verticalLabel
-            name="accountGroupList"
-            label={t('table.accountGroup')}
-            placeholder={t('common.pleaseSelect')}
-            options={
-              dealAccountGroupListData?.map(item => ({
-                label: item.name,
-                value: item.id,
-              })) || []
-            }
-          />
+      <FormMultiSelect
+        verticalLabel
+        name="accountGroupList"
+        label={t('table.accountGroup')}
+        placeholder={t('common.pleaseSelect')}
+        options={
+          dealAccountGroupListData?.map(item => ({
+            label: item.name,
+            value: item.id,
+          })) || []
+        }
+      />
 
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" loading={loading}>
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" loading={loading}>
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

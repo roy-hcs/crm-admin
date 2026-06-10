@@ -87,7 +87,6 @@ export const PaymentOrdersForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="userName"
         label={t('paymentOrders.userName')}
         placeholder={t('common.pleaseInput', {
@@ -95,7 +94,6 @@ export const PaymentOrdersForm = ({
         })}
       />
       <FormInput
-        verticalLabel
         name="account"
         label={t('paymentOrders.account')}
         placeholder={t('common.pleaseInput', {
@@ -124,7 +122,6 @@ export const PaymentOrdersForm = ({
         options={OrderStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
       />
       <FormInput
-        verticalLabel
         name="orderId"
         label={t('table.orderNumber')}
         placeholder={t('common.pleaseInput', {

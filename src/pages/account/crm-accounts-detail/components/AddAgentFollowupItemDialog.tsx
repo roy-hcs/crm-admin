@@ -148,7 +148,6 @@ export const AddAgentFollowupItemDialog = ({
         <FormInput
           name="title"
           label={t('table.title')}
-          verticalLabel
           placeholder={t('rules.limitLength', { field: 32 })}
           maxLength={32}
         />

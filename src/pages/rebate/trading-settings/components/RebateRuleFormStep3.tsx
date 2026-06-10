@@ -49,7 +49,6 @@ export const RebateRuleFormStep3 = ({
                     name={`traderLanguages.${index}.ruleName`}
                     disabled={isDefault}
                     label={t('table.ruleName') + ` (${lang.dictLabel})`}
-                    verticalLabel
                     placeholder=""
                   />
                 </div>

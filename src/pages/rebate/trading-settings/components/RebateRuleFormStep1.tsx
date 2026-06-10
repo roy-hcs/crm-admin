@@ -83,7 +83,6 @@ export const RebateRuleFormStep1 = ({
     <div className="flex flex-col gap-y-4 pb-4">
       <div>{t('TradingRebateSettings.baseSetting')}</div>
       <FormInput
-        verticalLabel
         name="ruleName"
         label={t('table.ruleName') + `${defaultLang ? ` (${defaultLang})` : ''}`}
         placeholder={t('rules.limitLength', { field: 64 })}
@@ -188,7 +187,6 @@ export const RebateRuleFormStep1 = ({
           <FormInput
             name="settleValue"
             label={t('TradingRebateSettings.settleUnit')}
-            verticalLabel
             type="number"
             placeholder=""
             disabled={props.currentSettleUnit === '1'}
@@ -232,7 +230,6 @@ export const RebateRuleFormStep1 = ({
       <FormInput
         name="serialNumber"
         label={t('table.sort')}
-        verticalLabel
         type="number"
         placeholder={t('common.sortPlaceholder')}
       />

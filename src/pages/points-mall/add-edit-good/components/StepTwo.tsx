@@ -37,7 +37,6 @@ export function StepTwo() {
             <div key={i.language} className={cn(activeLang === i.language ? 'block' : 'hidden')}>
               <div className="py-3">
                 <FormInput
-                  verticalLabel
                   name={`languageList.${index}.goodsName`}
                   label={t('products.name')}
                   placeholder={t('rules.limitLength', {

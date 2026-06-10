@@ -255,7 +255,6 @@ export const CommissionPreferenceDialog = () => {
                 {viewSubordinateValue === '1' && (
                   <FormInput
                     className="py-6"
-                    verticalLabel
                     name="viewGenerations"
                     label={t('commissionRebateSettings.viewGenerations')}
                     placeholder={t('commissionRebateSettings.viewGenerationsPlaceholder')}

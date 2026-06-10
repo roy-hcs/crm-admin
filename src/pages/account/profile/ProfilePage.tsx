@@ -174,7 +174,6 @@ export const ProfilePage = () => {
                   <FormInput
                     name="userLastName"
                     label={t('CRMAccountPage.lastName')}
-                    verticalLabel
                     placeholder={t('rules.limitLength', { field: 32 })}
                     maxLength={32}
                   />
@@ -190,7 +189,6 @@ export const ProfilePage = () => {
                   <FormInput
                     name="userName"
                     label={t('CRMAccountPage.firstName')}
-                    verticalLabel
                     placeholder={t('rules.limitLength', { field: 32 })}
                     maxLength={32}
                   />

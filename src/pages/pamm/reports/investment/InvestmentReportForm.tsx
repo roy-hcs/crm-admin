@@ -105,7 +105,6 @@ export const InvestmentReportForm = ({
     >
       <RrhServerSelector serverOptions={serverOptions} />
       <FormInput
-        verticalLabel
         name="projectName"
         label={t('table.projectName')}
         placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
@@ -128,7 +127,6 @@ export const InvestmentReportForm = ({
         ]}
       />
       <FormInput
-        verticalLabel
         name="userName"
         label={t('table.customerName')}
         placeholder={t('common.pleaseInput', { field: t('table.customerName') })}
@@ -151,7 +149,6 @@ export const InvestmentReportForm = ({
         ]}
       />
       <FormInput
-        verticalLabel
         name="orderNo"
         label={t('table.orderNumber')}
         placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}

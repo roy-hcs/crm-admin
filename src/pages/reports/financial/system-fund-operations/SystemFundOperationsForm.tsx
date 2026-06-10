@@ -150,97 +150,95 @@ export const SystemFundOperationsForm = ({
     });
   };
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="name"
-            label={t('table.nameOrId')}
-            placeholder={t('common.pleaseInput', { field: t('table.nameOrId') })}
-          />
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        name="name"
+        label={t('table.nameOrId')}
+        placeholder={t('common.pleaseInput', { field: t('table.nameOrId') })}
+      />
 
-          <FormSelect
-            verticalLabel
-            name="type"
-            label={t('table.inMethod')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={financeType
-              .filter(item => ['3', '4', '5', '6'].includes(item.dictValue)) // 根据现在的后台代码写死的筛选条件，不安全，但目前没有更好的办法，后续可以优化
-              .map(item => ({
-                label: item.dictLabel,
-                value: item.dictValue,
-              }))}
-          />
-          <FormMultiSelect
-            verticalLabel
-            name="opTypes"
-            label={t('table.depositWay')}
-            placeholder={t('common.pleaseSelect')}
-            options={opTypeOptions}
-          />
-          <FormInput
-            verticalLabel
-            name="login"
-            label={t('table.tradingAccount')}
-            placeholder={t('common.pleaseInput', { field: t('table.tradingAccount') })}
-          />
-          <FormMultiSelect
-            name="accountTypes"
-            label={`${t('CRMAccountPage.CRMAccountType')}`}
-            verticalLabel
-            placeholder={t('common.pleaseSelect')}
-            options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
-          />
+      <FormSelect
+        verticalLabel
+        name="type"
+        label={t('table.inMethod')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={financeType
+          .filter(item => ['3', '4', '5', '6'].includes(item.dictValue)) // 根据现在的后台代码写死的筛选条件，不安全，但目前没有更好的办法，后续可以优化
+          .map(item => ({
+            label: item.dictLabel,
+            value: item.dictValue,
+          }))}
+      />
+      <FormMultiSelect
+        verticalLabel
+        name="opTypes"
+        label={t('table.depositWay')}
+        placeholder={t('common.pleaseSelect')}
+        options={opTypeOptions}
+      />
+      <FormInput
+        name="login"
+        label={t('table.tradingAccount')}
+        placeholder={t('common.pleaseInput', { field: t('table.tradingAccount') })}
+      />
+      <FormMultiSelect
+        name="accountTypes"
+        label={`${t('CRMAccountPage.CRMAccountType')}`}
+        verticalLabel
+        placeholder={t('common.pleaseSelect')}
+        options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
+      />
 
-          <FormField
-            name="operationTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('table.operationTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="operationTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+      <FormField
+        name="operationTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('table.operationTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="operationTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
-          <FormInput
-            verticalLabel
-            name="operator"
-            label={t('table.operationPerson')}
-            placeholder={t('common.pleaseInput', { field: t('table.operationPerson') })}
-          />
-          <SelectUpperDropdown />
+      <FormInput
+        name="operator"
+        label={t('table.operationPerson')}
+        placeholder={t('common.pleaseInput', { field: t('table.operationPerson') })}
+      />
+      <SelectUpperDropdown />
 
-          <FormInput
-            verticalLabel
-            name="serverOrder"
-            label={t('table.tradingServerOrderNumber')}
-            placeholder={t('common.pleaseInput', { field: t('table.tradingServerOrderNumber') })}
-          />
-          <FormSearchMultiSelect
-            verticalLabel
-            name="inviters"
-            label={t('table.inviters')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={true}
-            fetchOptions={fetchCrmUserOptions}
-          />
+      <FormInput
+        name="serverOrder"
+        label={t('table.tradingServerOrderNumber')}
+        placeholder={t('common.pleaseInput', { field: t('table.tradingServerOrderNumber') })}
+      />
+      <FormSearchMultiSelect
+        verticalLabel
+        name="inviters"
+        label={t('table.inviters')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={true}
+        fetchOptions={fetchCrmUserOptions}
+      />
 
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" loading={loading}>
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" loading={loading}>
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

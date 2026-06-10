@@ -168,17 +168,11 @@ export const AccountGroupDialog = ({
         <FormInput
           name="name"
           label={t('accountGroups.name')}
-          verticalLabel
           placeholder={t('rules.limitLength', { field: 32 })}
           onBlur={e => validateName(String((e.target as HTMLInputElement).value))}
           maxLength={32}
         />
-        <FormInput
-          name="sort"
-          label={t('table.sort')}
-          verticalLabel
-          placeholder={t('common.sortPlaceholder')}
-        />
+        <FormInput name="sort" label={t('table.sort')} placeholder={t('common.sortPlaceholder')} />
       </RrhForm>
     </RrhDialog>
   );

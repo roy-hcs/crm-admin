@@ -99,116 +99,113 @@ export const ProfitSharingReviewForm = ({
   };
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      {!serverLoading && (
+        <FormSelect<
+          Record<string, string>,
+          BaseOption & {
+            serviceProperty: number;
+            serviceType: number;
+          }
         >
-          {!serverLoading && (
-            <FormSelect<
-              Record<string, string>,
-              BaseOption & {
-                serviceProperty: number;
-                serviceType: number;
-              }
-            >
-              verticalLabel
-              name="serverId"
-              label={t('table.server')}
-              placeholder={t('common.pleaseSelect')}
-              showRowValue={false}
-              options={(server?.rows || []).map(item => ({
-                label: item.serverName,
-                value: item.id,
-                serviceProperty: item.serviceProperty,
-                serviceType: item.serviceType,
-              }))}
-              renderItem={option => {
-                return (
-                  <div>
-                    <span>
-                      {option.serviceProperty === 1 ? t('common.live') : t('common.demo')}
-                    </span>
-                    {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
-                    <span>{option.label}</span>
-                  </div>
-                );
-              }}
-            />
-          )}
-          <FormInput
-            verticalLabel
-            name="projectName"
-            label={t('table.projectName')}
-            placeholder={t('common.pleaseInput', {
-              field: t('table.projectName'),
-            })}
-          />
-          <FormInput
-            verticalLabel
-            name="customerName"
-            label={t('table.customerName')}
-            placeholder={t('common.pleaseInput', {
-              field: t('table.customerName'),
-            })}
-          />
-          <FormInput
-            verticalLabel
-            name="orderNo"
-            label={t('table.orderNumber')}
-            placeholder={t('common.pleaseInput', {
-              field: t('table.orderNumber'),
-            })}
-          />
-          <FormSelect
-            verticalLabel
-            name="settlementType"
-            label={t('profitSharingReview.settlementType')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={settlementTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
-          />
-          <FormSelect
-            verticalLabel
-            name="verifyStatus"
-            label={t('table.status')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={commissionReviewOptions.map(i => ({ label: t(i.label), value: i.value }))}
-          />
-          <FormField
-            name="beginTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('table.submitTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="beginTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="auditTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('table.verifyTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="auditTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit">
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+          verticalLabel
+          name="serverId"
+          label={t('table.server')}
+          placeholder={t('common.pleaseSelect')}
+          showRowValue={false}
+          options={(server?.rows || []).map(item => ({
+            label: item.serverName,
+            value: item.id,
+            serviceProperty: item.serviceProperty,
+            serviceType: item.serviceType,
+          }))}
+          renderItem={option => {
+            return (
+              <div>
+                <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
+                {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
+                <span>{option.label}</span>
+              </div>
+            );
+          }}
+        />
+      )}
+      <FormInput
+        name="projectName"
+        label={t('table.projectName')}
+        placeholder={t('common.pleaseInput', {
+          field: t('table.projectName'),
+        })}
+      />
+      <FormInput
+        name="customerName"
+        label={t('table.customerName')}
+        placeholder={t('common.pleaseInput', {
+          field: t('table.customerName'),
+        })}
+      />
+      <FormInput
+        name="orderNo"
+        label={t('table.orderNumber')}
+        placeholder={t('common.pleaseInput', {
+          field: t('table.orderNumber'),
+        })}
+      />
+      <FormSelect
+        verticalLabel
+        name="settlementType"
+        label={t('profitSharingReview.settlementType')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={settlementTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
+      />
+      <FormSelect
+        verticalLabel
+        name="verifyStatus"
+        label={t('table.status')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={commissionReviewOptions.map(i => ({ label: t(i.label), value: i.value }))}
+      />
+      <FormField
+        name="beginTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('table.submitTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="beginTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="auditTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('table.verifyTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="auditTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit">
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

@@ -80,13 +80,11 @@ export const EmailLogsForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="acceptEmail"
         label={t('table.acceptEmail')}
         placeholder={t('common.pleaseInput', { field: t('table.acceptEmail') })}
       />
       <FormInput
-        verticalLabel
         name="title"
         label={t('table.title')}
         placeholder={t('common.pleaseInput', { field: t('table.title') })}

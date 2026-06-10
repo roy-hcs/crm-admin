@@ -125,25 +125,21 @@ export const CRMAccountsForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="name"
         label={t('CRMAccountPage.NameOrAccountId')}
         placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.NameOrAccountId') })}
       />
       <FormInput
-        verticalLabel
         name="email"
         label={t('loginPage.email')}
         placeholder={t('common.pleaseInput', { field: t('loginPage.email') })}
       />
       <FormInput
-        verticalLabel
         name="certiricateNo"
         label={t('CRMAccountPage.ID')}
         placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.ID') })}
       />
       <FormInput
-        verticalLabel
         name="mobile"
         label={t('CRMAccountPage.Mobile')}
         placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.Mobile') })}

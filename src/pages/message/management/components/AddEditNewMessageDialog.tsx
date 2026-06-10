@@ -705,7 +705,6 @@ export const AddEditNewMessageDialog = ({
                   <div key={lang} className={cn(activeLang === lang ? 'block' : 'hidden')}>
                     <div className="py-6">
                       <FormInput
-                        verticalLabel
                         name={`title.${lang}`}
                         label={t('messageManagement.inputTitle', { field: label })}
                         placeholder={t('common.pleaseInput', { field: t('table.title') })}

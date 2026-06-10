@@ -122,7 +122,6 @@ export const ReviewWithdrawalForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="name"
         label={t('table.nameOrLastNameOrId')}
         placeholder={t('common.pleaseInput', { field: t('table.nameOrLastNameOrId') })}
@@ -139,13 +138,11 @@ export const ReviewWithdrawalForm = ({
         }))}
       />
       <FormInput
-        verticalLabel
         name="tradeAccount"
         label={t('table.tradingAccount')}
         placeholder={t('common.pleaseInput', { field: t('table.tradingAccount') })}
       />
       <FormInput
-        verticalLabel
         name="orderNumber"
         label={t('table.orderNumber')}
         placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
@@ -177,7 +174,6 @@ export const ReviewWithdrawalForm = ({
         )}
       />
       <FormInput
-        verticalLabel
         name="verifyUserName"
         label={t('table.currentAuditor')}
         placeholder={t('common.pleaseInput', { field: t('table.currentAuditor') })}
@@ -195,7 +191,6 @@ export const ReviewWithdrawalForm = ({
       />
 
       <FormInput
-        verticalLabel
         name="tradeServerOrderNumber"
         label={t('table.tradeServerOrderNumber')}
         placeholder={t('common.pleaseInput', { field: t('table.tradeServerOrderNumber') })}

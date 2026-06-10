@@ -136,7 +136,6 @@ export const FundFlowForm = ({
       />
 
       <FormInput
-        verticalLabel
         name="serialNum"
         label={t('walletTransactions.serialNumTable')}
         placeholder={t('common.pleaseInput', { field: t('walletTransactions.serialNumTable') })}

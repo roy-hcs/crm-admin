@@ -97,7 +97,6 @@ export const AdminAccountsForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="userName"
         label={t('table.fullName')}
         placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
@@ -119,13 +118,11 @@ export const AdminAccountsForm = ({
         options={statusOptions.map(i => ({ label: t(i.label), value: i.value }))}
       />
       <FormInput
-        verticalLabel
         name="phonenumber"
         label={t('table.mobile')}
         placeholder={t('common.pleaseInput', { field: t('table.mobile') })}
       />
       <FormInput
-        verticalLabel
         name="email"
         label={t('table.email')}
         placeholder={t('common.pleaseInput', { field: t('table.email') })}

@@ -228,7 +228,6 @@ export function CustomerLoyaltyPlanConfig() {
               />
               <FormInput
                 className="flex-1"
-                verticalLabel
                 name={ruleValueName}
                 label={showValueLabel ? t('customerLoyaltyPlan.ruleValue') : undefined}
                 placeholder={t('common.pleaseInput', {
@@ -416,7 +415,6 @@ export function CustomerLoyaltyPlanConfig() {
                 >
                   <FormInput
                     className="py-3"
-                    verticalLabel
                     name={`languageList.${index}.name` as const}
                     label={t('customerLoyaltyPlan.name')}
                     placeholder={t('rules.limitLength', {

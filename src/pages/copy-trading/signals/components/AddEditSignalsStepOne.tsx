@@ -35,7 +35,6 @@ export function AddEditSignalsStepOne({
   return (
     <div className="grid gap-6">
       <FormInput
-        verticalLabel
         name="name"
         label={t('signals.name')}
         placeholder={t('common.pleaseInput', {
@@ -77,7 +76,6 @@ export function AddEditSignalsStepOne({
       />
       <div className="grid grid-cols-2 items-end gap-6">
         <FormInput
-          verticalLabel
           name="minBalanceForSubscription"
           label={t('signals.minBalanceForSubscription')}
           placeholder={t('common.pleaseInput', {
@@ -85,7 +83,6 @@ export function AddEditSignalsStepOne({
           })}
         />
         <FormInput
-          verticalLabel
           name="maxBalanceForSubscription"
           label={t('signals.maxBalanceForSubscription')}
           placeholder={t('common.pleaseInput', {
@@ -94,7 +91,6 @@ export function AddEditSignalsStepOne({
         />
       </div>
       <FormInput
-        verticalLabel
         name="upperLimit"
         label={t('signalReview.upperLimit')}
         placeholder={t('common.pleaseInput', {

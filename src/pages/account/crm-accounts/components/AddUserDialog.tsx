@@ -209,7 +209,6 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
           <FormInput
             name="lastName"
             label={`${t('CRMAccountPage.lastName')}`}
-            verticalLabel
             placeholder={t('rules.limitLength', { field: 32 })}
           />
           {/* 等api可用之后再使用该功能 */}
@@ -221,7 +220,6 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
         <FormInput
           name="name"
           label={`${t('CRMAccountPage.firstName')}`}
-          verticalLabel
           placeholder={t('rules.limitLength', { field: 32 })}
         />
         <FormPhoneInput
@@ -237,7 +235,6 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
         <FormInput
           name="email"
           label={`${t('loginPage.email')}`}
-          verticalLabel
           placeholder={`${t('common.pleaseInput', { field: t('loginPage.email') })}`}
           onBlur={async e => {
             await checkEmailUnique({ email: e.target.value });
@@ -251,7 +248,6 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
           <FormInput
             name="pwd"
             label={`${t('loginPage.password')} (${t('common.optional')})`}
-            verticalLabel
             placeholder={`${t('rules.pwdPlaceholder')}`}
           />
           <div className="mt-2 text-xs">{t('rules.pwdTips')}</div>
