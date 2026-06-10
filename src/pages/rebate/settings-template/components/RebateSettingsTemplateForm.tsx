@@ -107,7 +107,6 @@ export const RebateSettingsTemplateForm = ({
         onChange={e => setTemplateName(e.target.value)}
       />
       <FormSelect
-        verticalLabel
         name="rebateLevel"
         label={t('table.rebateLevel')}
         placeholder={t('common.pleaseSelect')}

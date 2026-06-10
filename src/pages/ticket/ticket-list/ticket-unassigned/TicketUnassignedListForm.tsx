@@ -85,7 +85,6 @@ export const TicketUnassignedListForm = ({
         placeholder={t('common.pleaseInput', { field: t('ticketList.content') })}
       />
       <FormSelect
-        verticalLabel
         name="priority"
         label={t('ticketList.priority')}
         placeholder={t('common.pleaseSelect')}

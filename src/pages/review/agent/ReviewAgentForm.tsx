@@ -115,7 +115,6 @@ export const ReviewAgentForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.email') })}
       />
       <FormSelect
-        verticalLabel
         name="verifyStatus"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
@@ -139,7 +138,6 @@ export const ReviewAgentForm = ({
         )}
       />
       <FormSelect
-        verticalLabel
         name="applySource"
         label={t('table.applySource')}
         placeholder={t('common.pleaseSelect')}

@@ -95,7 +95,6 @@ export const InvestmentReviewForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="operType"
         label={t('investmentReview.operType')}
         placeholder={t('common.pleaseSelect')}
@@ -113,7 +112,6 @@ export const InvestmentReviewForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="auditStatus"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

@@ -89,7 +89,6 @@ export const RebateRuleFormStep1 = ({
       />
       <FormSelect
         name="suitType"
-        verticalLabel
         showRowValue={false}
         label={t('DepositRebateSettings.depositAccount')}
         placeholder={t('common.pleaseSelect')}
@@ -193,6 +192,7 @@ export const RebateRuleFormStep1 = ({
             inputCls="border-r-0 rounded-r-none"
             rightElement={
               <FormSelect
+                verticalLabel={false}
                 showRowValue={false}
                 name="settleUnit"
                 label=""
@@ -212,7 +212,6 @@ export const RebateRuleFormStep1 = ({
               ? t('TradingRebateSettings.highestRebateLevel')
               : t('TradingRebateSettings.settleLevel')
           }
-          verticalLabel
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={
@@ -239,7 +238,6 @@ export const RebateRuleFormStep1 = ({
           label={t('common.optionalField', {
             field: t('TradingRebateSettings.commissionSettlementTiming'),
           })}
-          verticalLabel
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={[

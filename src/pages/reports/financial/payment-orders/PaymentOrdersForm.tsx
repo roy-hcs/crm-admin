@@ -101,7 +101,6 @@ export const PaymentOrdersForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="channelId"
         label={t('paymentOrders.channelId')}
         placeholder={t('common.pleaseSelect')}
@@ -115,7 +114,6 @@ export const PaymentOrdersForm = ({
         }
       />
       <FormSelect
-        verticalLabel
         name="orderStatus"
         label={t('paymentOrders.orderStatus')}
         placeholder={t('common.pleaseSelect')}

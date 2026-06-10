@@ -134,7 +134,6 @@ export const ReviewDepositForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.nameOrLastNameOrId') })}
       />
       <FormSelect
-        verticalLabel
         name="depositMethods"
         label={t('table.depositMethods')}
         placeholder={t('common.pleaseSelect')}
@@ -159,7 +158,6 @@ export const ReviewDepositForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
       />
       <FormSelect
-        verticalLabel
         name="verifyStatus"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
@@ -190,7 +188,6 @@ export const ReviewDepositForm = ({
       />
 
       <FormSelect
-        verticalLabel
         name="inAccountType"
         label={t('table.depositAccount')}
         placeholder={t('common.pleaseSelect')}
@@ -204,7 +201,6 @@ export const ReviewDepositForm = ({
       <SelectUpperDropdown />
       {depositMethod === '5' && (
         <FormSelect
-          verticalLabel
           name="channel"
           label={t('table.paymentChannel')}
           placeholder={t('common.pleaseSelect')}
@@ -216,7 +212,6 @@ export const ReviewDepositForm = ({
         />
       )}
       <FormSelect
-        verticalLabel
         name="currency"
         label={t('table.paymentCurrency')}
         placeholder={t('common.pleaseSelect')}

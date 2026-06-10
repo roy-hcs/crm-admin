@@ -96,7 +96,6 @@ export const TicketAllListForm = ({
         placeholder={t('common.pleaseInput', { field: t('ticketList.content') })}
       />
       <FormSelect
-        verticalLabel
         name="priority"
         label={t('ticketList.priority')}
         placeholder={t('common.pleaseSelect')}
@@ -116,7 +115,6 @@ export const TicketAllListForm = ({
         )}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
@@ -124,7 +122,6 @@ export const TicketAllListForm = ({
         options={ticketStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
       />
       <FormSelect
-        verticalLabel
         name="receiverId"
         label={t('ticketList.receiverId')}
         placeholder={t('common.pleaseSelect')}

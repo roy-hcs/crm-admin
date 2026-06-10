@@ -113,6 +113,7 @@ export function StepOne({
         </div>
         <div className="grid gap-2">
           <FormSelect
+            verticalLabel={false}
             options={[
               { label: t('products.cosmetics'), value: '1' },
               { label: t('products.electronics'), value: '2' },
@@ -122,6 +123,7 @@ export function StepOne({
             placeholder={t('common.pleaseSelect')}
           />
           <FormSelect
+            verticalLabel={false}
             options={
               firstClassificationIdValue === '1'
                 ? [

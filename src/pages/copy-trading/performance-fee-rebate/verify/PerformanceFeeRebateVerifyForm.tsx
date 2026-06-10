@@ -132,7 +132,6 @@ export function PerformanceFeeRebateVerifyForm({
       />
 
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.reviewStatus')}
         placeholder={t('common.pleaseSelect')}

@@ -201,7 +201,6 @@ export const BalanceAdjustDialog = ({
           <FormSelect
             name="opType"
             label={t('table.operationType')}
-            verticalLabel
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={typeOptions}

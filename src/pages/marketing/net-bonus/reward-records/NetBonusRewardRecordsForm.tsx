@@ -124,7 +124,6 @@ export const NetBonusRewardRecordsForm = ({
         placeholder={t('common.pleaseSelect')}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.reviewStatus')}
         placeholder={t('common.pleaseSelect')}
@@ -136,7 +135,6 @@ export const NetBonusRewardRecordsForm = ({
         <div className="flex w-full gap-1">
           <SelectUpperDropdown name="agentUserId" className="w-full flex-1" labelShow={false} />
           <FormSelect
-            verticalLabel
             name="directFlag"
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}

@@ -102,7 +102,6 @@ export const AdminAccountsForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
       />
       <FormSelect
-        verticalLabel
         name="roleId"
         label={t('adminAccounts.roleName')}
         placeholder={t('common.pleaseSelect')}
@@ -110,7 +109,6 @@ export const AdminAccountsForm = ({
         options={roleList.map(i => ({ label: i.roleName, value: i.roleId }))}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
@@ -128,7 +126,6 @@ export const AdminAccountsForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.email') })}
       />
       <FormSelect
-        verticalLabel
         name="onlineStatus"
         label={t('loginPage.login')}
         placeholder={t('common.pleaseSelect')}

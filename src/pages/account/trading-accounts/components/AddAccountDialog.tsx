@@ -280,116 +280,113 @@ export const AddAccountDialog = ({
       type="submit"
       formLoading={isSubmitting}
     >
-      <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2"
-          >
-            <FormField
-              name="userId"
-              render={({ field }) => {
-                return <SelectUser verticalLabel field={field} title={t('table.threeCons')} />;
-              }}
-            />
+      <RrhForm
+        form={form}
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2"
+      >
+        <FormField
+          name="userId"
+          render={({ field }) => {
+            return <SelectUser verticalLabel field={field} title={t('table.threeCons')} />;
+          }}
+        />
 
-            <FormField
-              name="serviceProperty"
-              render={({ field }) => {
-                return <SelectType verticalLabel field={field} />;
-              }}
-            />
+        <FormField
+          name="serviceProperty"
+          render={({ field }) => {
+            return <SelectType verticalLabel field={field} />;
+          }}
+        />
 
-            <FormSelect
-              name="serviceType"
-              label={t('tradingAccountTransactions.serverType')}
-              verticalLabel
-              placeholder={t('common.pleaseSelect')}
-              showRowValue={false}
-              options={serverTypeList}
-            />
+        <FormSelect
+          name="serviceType"
+          label={t('tradingAccountTransactions.serverType')}
+          placeholder={t('common.pleaseSelect')}
+          showRowValue={false}
+          options={serverTypeList}
+        />
 
-            <FormSelect
-              name="server"
-              label={t('table.server')}
-              verticalLabel
-              placeholder={t('common.pleaseSelect')}
-              showRowValue={false}
-              options={serverList}
-            />
+        <FormSelect
+          name="server"
+          label={t('table.server')}
+          placeholder={t('common.pleaseSelect')}
+          showRowValue={false}
+          options={serverList}
+        />
 
-            <FormSelect
-              name="serverGroup"
-              label={t('table.groups')}
-              verticalLabel
-              placeholder={t('common.pleaseSelect')}
-              showRowValue={false}
-              options={groupList}
-              loading={groupLoading}
-            />
+        <FormSelect
+          name="serverGroup"
+          label={t('table.groups')}
+          placeholder={t('common.pleaseSelect')}
+          showRowValue={false}
+          options={groupList}
+          loading={groupLoading}
+        />
 
-            <FormField
-              control={form.control}
-              name="account"
-              render={({ field }) => (
-                <FormItem>
-                  <div className={cn('text-foreground text-sm')}>
-                    <FormLabel className={'mb-2'}>{t('table.account')}</FormLabel>
-                    <FormControl className="shrink-0 basis-9/12">
-                      <div>
-                        <Input
-                          type="text"
-                          className={cn('h-9 w-full border px-2')}
-                          placeholder={
-                            (accountInfo?.accountStart || 0) > 0
-                              ? t('tradingAccountTransactions.accountPlaceholder', {
-                                  accountStart: accountInfo?.accountStart,
-                                  accountEnd: accountInfo?.accountEnd,
-                                })
-                              : t('common.pleaseInput', { field: t('table.account') })
-                          }
-                          value={field.value}
-                          onChange={e => {
-                            field.onChange(e.target.value);
-                          }}
-                        />
-                        {accountInfo?.maxAccount && (
-                          <div className="text-muted-foreground mt-2 text-sm leading-5">
-                            {t('tradingAccountTransactions.maxAccount', {
-                              maxAccount: accountInfo?.maxAccount,
-                            })}
-                          </div>
-                        )}
+        <FormField
+          control={form.control}
+          name="account"
+          render={({ field }) => (
+            <FormItem>
+              <div className={cn('text-foreground text-sm')}>
+                <FormLabel className={'mb-2'}>{t('table.account')}</FormLabel>
+                <FormControl className="shrink-0 basis-9/12">
+                  <div>
+                    <Input
+                      type="text"
+                      className={cn('h-9 w-full border px-2')}
+                      placeholder={
+                        (accountInfo?.accountStart || 0) > 0
+                          ? t('tradingAccountTransactions.accountPlaceholder', {
+                              accountStart: accountInfo?.accountStart,
+                              accountEnd: accountInfo?.accountEnd,
+                            })
+                          : t('common.pleaseInput', { field: t('table.account') })
+                      }
+                      value={field.value}
+                      onChange={e => {
+                        field.onChange(e.target.value);
+                      }}
+                    />
+                    {accountInfo?.maxAccount && (
+                      <div className="text-muted-foreground mt-2 text-sm leading-5">
+                        {t('tradingAccountTransactions.maxAccount', {
+                          maxAccount: accountInfo?.maxAccount,
+                        })}
                       </div>
-                    </FormControl>
+                    )}
                   </div>
-                  <FormMessage className="text-end" />
-                </FormItem>
-              )}
-            />
+                </FormControl>
+              </div>
+              <FormMessage className="text-end" />
+            </FormItem>
+          )}
+        />
 
-            <FormSelect
-              name="lever"
-              label={t('common.level')}
-              verticalLabel
-              placeholder={t('common.pleaseSelect')}
-              showRowValue={false}
-              options={leverList}
-            />
+        <FormSelect
+          name="lever"
+          label={t('common.level')}
+          placeholder={t('common.pleaseSelect')}
+          showRowValue={false}
+          options={leverList}
+        />
 
-            <FormSelect
-              name="accountGroupId"
-              label={t('table.accountGroup')}
-              verticalLabel
-              placeholder={t('common.pleaseSelect')}
-              showRowValue={false}
-              options={dealAccountGroup}
-            />
+        <FormSelect
+          name="accountGroupId"
+          label={t('table.accountGroup')}
+          placeholder={t('common.pleaseSelect')}
+          showRowValue={false}
+          options={dealAccountGroup}
+        />
 
-            <FormField
-              name="directBroker"
-              render={({ field }) => {
-                return <SelectUser verticalLabel field={field} title={t('table.directAgent')} />;
-              }}
-            />
-          </RrhForm>
+        <FormField
+          name="directBroker"
+          render={({ field }) => {
+            return <SelectUser verticalLabel field={field} title={t('table.directAgent')} />;
+          }}
+        />
+      </RrhForm>
     </RrhDialog>
   );
 };

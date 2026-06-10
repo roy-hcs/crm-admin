@@ -139,7 +139,6 @@ export const ReviewDepositRebateForm = ({
           serviceType: number;
         }
       >
-        verticalLabel
         name="serverId"
         label={t('table.serverOrWallet')}
         placeholder={t('common.pleaseSelect')}
@@ -186,7 +185,6 @@ export const ReviewDepositRebateForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.tradingAccount') })}
       />
       <FormSelect
-        verticalLabel
         name="rebateStatus"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
@@ -236,7 +234,6 @@ export const ReviewDepositRebateForm = ({
         )}
       />
       <FormSelect
-        verticalLabel
         name="rule"
         label={t('table.targetRule')}
         placeholder={t('common.pleaseSelect')}

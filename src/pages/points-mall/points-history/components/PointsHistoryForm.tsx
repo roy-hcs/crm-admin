@@ -98,7 +98,6 @@ export const PointsHistoryForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="businessType"
         label={t('table.triggerBusiness')}
         placeholder={t('common.pleaseSelect')}

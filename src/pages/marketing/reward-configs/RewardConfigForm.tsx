@@ -74,7 +74,6 @@ export const RewardConfigForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.activityName') })}
       />
       <FormSelect
-        verticalLabel
         name="businessType"
         label={t('table.triggerBusiness')}
         placeholder={t('common.pleaseSelect')}

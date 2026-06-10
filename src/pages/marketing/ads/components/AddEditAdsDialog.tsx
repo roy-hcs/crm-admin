@@ -334,7 +334,6 @@ export const AddEditAdsDialog = ({
             <FormSelect
               name="position"
               label={t('ads.position')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={[{ label: t('ads.positionType.1'), value: '1' }]}
@@ -405,7 +404,6 @@ export const AddEditAdsDialog = ({
                           <FormSelect
                             name="msgId"
                             label={''}
-                            verticalLabel
                             placeholder={t('common.pleaseSelect')}
                             showRowValue={false}
                             options={templateOptions}

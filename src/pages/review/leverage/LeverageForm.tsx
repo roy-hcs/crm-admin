@@ -111,7 +111,6 @@ export const LeverageForm = ({
           serviceType: number;
         }
       >
-        verticalLabel
         name="serverId"
         label={t('table.server')}
         placeholder={t('common.pleaseSelect')}
@@ -153,7 +152,6 @@ export const LeverageForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

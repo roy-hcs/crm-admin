@@ -86,7 +86,6 @@ export const MessageManagementForm = ({
       />
 
       <FormSelect
-        verticalLabel
         name="type"
         label={t('table.infoType')}
         placeholder={t('common.pleaseSelect')}

@@ -135,7 +135,6 @@ export function PerformanceFeeRebateReportForm({
       />
 
       <FormSelect
-        verticalLabel
         name="payStatus"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

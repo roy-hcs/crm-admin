@@ -226,7 +226,6 @@ export const AddEditVarietyManagementDialog = ({
           <FormSelect
             name="symbolCategory"
             label={t('varietyManagement.symbolCategory')}
-            verticalLabel
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={symbolCategoryOptions}

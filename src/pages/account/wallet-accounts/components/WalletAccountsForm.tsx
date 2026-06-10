@@ -88,7 +88,6 @@ export const WalletAccountsForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.nameOrId') })}
       />
       <FormSelect
-        verticalLabel
         name="currency"
         label={t('table.currency')}
         placeholder={t('common.pleaseSelect')}

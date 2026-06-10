@@ -210,7 +210,6 @@ export function CustomerLoyaltyPlanConfig() {
             <div className="flex items-end gap-3">
               <FormSelect
                 className="flex-1"
-                verticalLabel
                 name={ruleEventName}
                 label={eventLabel}
                 placeholder={t('common.pleaseSelect')}
@@ -219,7 +218,6 @@ export function CustomerLoyaltyPlanConfig() {
               />
               <FormSelect
                 className="flex-1"
-                verticalLabel
                 name={ruleSymbolName}
                 label={showSymbolLabel ? t('customerLoyaltyPlan.ruleSymbol') : undefined}
                 placeholder={t('common.pleaseSelect')}

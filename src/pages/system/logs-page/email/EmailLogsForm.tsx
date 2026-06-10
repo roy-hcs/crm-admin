@@ -90,7 +90,6 @@ export const EmailLogsForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.title') })}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

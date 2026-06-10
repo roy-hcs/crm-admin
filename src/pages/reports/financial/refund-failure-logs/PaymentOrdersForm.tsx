@@ -83,7 +83,6 @@ export const RefundFailureLogsForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

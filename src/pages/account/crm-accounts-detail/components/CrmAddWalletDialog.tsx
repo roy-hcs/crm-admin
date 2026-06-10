@@ -73,7 +73,6 @@ export const CrmAddWalletDialog = ({
         <FormSelect
           name="currency"
           label={t('table.wallet')}
-          verticalLabel
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={walletList}

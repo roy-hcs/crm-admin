@@ -114,7 +114,6 @@ export const AccrualReportForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
       />
       <FormSelect
-        verticalLabel
         name="settlementType"
         label={t('profitSharingReview.settlementType')}
         placeholder={t('common.pleaseSelect')}

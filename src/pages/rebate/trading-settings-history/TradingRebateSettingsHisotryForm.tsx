@@ -144,7 +144,6 @@ export const TradingRebateSettingsHistoryForm = ({
           serviceType: number;
         }
       >
-        verticalLabel
         name="serverId"
         label={t('table.server')}
         placeholder={t('common.pleaseSelect')}
@@ -181,7 +180,6 @@ export const TradingRebateSettingsHistoryForm = ({
         }
       />
       <FormSelect
-        verticalLabel
         name="type"
         label={t('table.transactionType')}
         placeholder={t('common.pleaseSelect')}
@@ -243,7 +241,6 @@ export const TradingRebateSettingsHistoryForm = ({
       />
       {selectedServer?.serviceType === 1 && (
         <FormSelect
-          verticalLabel
           name="entry"
           label={t('table.entry')}
           placeholder={t('common.pleaseSelect')}

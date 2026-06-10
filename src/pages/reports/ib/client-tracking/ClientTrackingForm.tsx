@@ -85,7 +85,6 @@ export const ClientTrackingForm = ({
         placeholder={t('customerTracking.enterstatisticMonthStr')}
       />
       <FormSelect
-        verticalLabel
         name="level"
         label={t('customerTracking.levelName') + ':'}
         placeholder={t('common.pleaseSelect')}

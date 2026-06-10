@@ -152,7 +152,6 @@ export const TypeGroupForm = ({
       />
       <FormSelect
         key={`serverType-${initializedRef.current || 'new'}`}
-        verticalLabel
         name="serverType"
         label={t('table.transactionPlatform')}
         placeholder={t('common.pleaseSelect')}
@@ -167,7 +166,6 @@ export const TypeGroupForm = ({
         }
       >
         key={`server-${initializedRef.current || 'new'}`}
-        verticalLabel
         name="serverId"
         label={t('table.server')}
         placeholder={t('common.pleaseSelect')}

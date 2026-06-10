@@ -212,7 +212,6 @@ export const FeesForm = ({
         )}
       />
       <FormSelect
-        verticalLabel
         name="rebateTraderId"
         label={t('trading.rebateTraderId')}
         placeholder={t('common.pleaseSelect')}

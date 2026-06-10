@@ -78,7 +78,6 @@ export const AgreementsForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.protocolName') })}
       />
       <FormSelect
-        verticalLabel
         name="projectId"
         label={t('table.relatedProduct')}
         placeholder={t('common.pleaseSelect')}
@@ -86,7 +85,6 @@ export const AgreementsForm = ({
         options={productList}
       />
       <FormSelect
-        verticalLabel
         name="applicableScenarios"
         label={t('table.applicableScenario')}
         placeholder={t('common.pleaseSelect')}

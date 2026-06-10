@@ -136,6 +136,7 @@ export function TransactionConfigItem({
         </div>
         <div className="flex-1">
           <FormSelect<PointsMallSettingsFormValues>
+            verticalLabel={false}
             name={
               `${namePrefix}.${index}.cappedTimeUnit` as FieldPath<PointsMallSettingsFormValues>
             }

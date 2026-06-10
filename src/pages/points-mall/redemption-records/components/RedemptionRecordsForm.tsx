@@ -113,7 +113,6 @@ export const RedemptionRecordsForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="verifyStatus"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
@@ -121,7 +120,6 @@ export const RedemptionRecordsForm = ({
         options={pointsHistoryVerifyStatus.map(i => ({ label: t(i.label), value: i.value }))}
       />
       <FormSelect
-        verticalLabel
         name="payType"
         label={t('redemptionRecords.payType')}
         placeholder={t('common.pleaseSelect')}

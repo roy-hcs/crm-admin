@@ -152,7 +152,6 @@ export const OrderManagementForm = ({
       />
 
       <FormSelect
-        verticalLabel
         name="arrivalStatus"
         label={t('table.arrivalStatus')}
         placeholder={t('common.pleaseSelect')}

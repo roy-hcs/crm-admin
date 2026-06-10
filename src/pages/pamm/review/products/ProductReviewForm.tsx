@@ -122,7 +122,6 @@ export const ProductReviewForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="applyStatus"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

@@ -132,7 +132,6 @@ export const SignalReviewForm = ({
       />
 
       <FormSelect
-        verticalLabel
         name="verifyStatus"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

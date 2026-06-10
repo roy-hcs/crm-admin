@@ -107,14 +107,12 @@ export const DailyRebateForm = ({
         placeholder={t('common.pleaseInput', { field: t('daily-rebate.account') })}
       />
       <FormSelect
-        verticalLabel
         name="rebateType"
         label={t('daily-rebate.rebateType')}
         placeholder={t('common.pleaseSelect')}
         options={RebateTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
       />
       <FormSelect
-        verticalLabel
         name="rebateStatus"
         label={t('daily-rebate.rebateStatus')}
         placeholder={t('common.pleaseSelect')}

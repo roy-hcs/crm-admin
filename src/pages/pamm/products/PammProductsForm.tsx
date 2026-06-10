@@ -81,7 +81,6 @@ export const PammProductsForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
       />
       <FormSelect
-        verticalLabel
         name="model"
         label={t('productReview.model')}
         placeholder={t('common.pleaseSelect')}
@@ -102,7 +101,6 @@ export const PammProductsForm = ({
         ]}
       />
       <FormSelect
-        verticalLabel
         name="serverType"
         label={t('table.server')}
         placeholder={t('common.pleaseSelect')}
@@ -112,7 +110,6 @@ export const PammProductsForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

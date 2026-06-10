@@ -103,7 +103,6 @@ export const HisStoryForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
       />
       <FormSelect
-        verticalLabel
         name="type"
         label={t('table.transactionType')}
         placeholder={t('common.pleaseSelect')}
@@ -128,7 +127,6 @@ export const HisStoryForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.symbol') })}
       />
       <FormSelect
-        verticalLabel
         name="entry"
         label={t('table.entry')}
         placeholder={t('common.pleaseSelect')}

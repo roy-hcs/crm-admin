@@ -113,7 +113,6 @@ export const ProfitSharingReviewForm = ({
             serviceType: number;
           }
         >
-          verticalLabel
           name="serverId"
           label={t('table.server')}
           placeholder={t('common.pleaseSelect')}
@@ -157,7 +156,6 @@ export const ProfitSharingReviewForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="settlementType"
         label={t('profitSharingReview.settlementType')}
         placeholder={t('common.pleaseSelect')}
@@ -165,7 +163,6 @@ export const ProfitSharingReviewForm = ({
         options={settlementTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
       />
       <FormSelect
-        verticalLabel
         name="verifyStatus"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

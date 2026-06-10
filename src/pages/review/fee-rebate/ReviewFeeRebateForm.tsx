@@ -143,7 +143,6 @@ export const ReviewFeeRebateForm = ({
           serviceType: number;
         }
       >
-        verticalLabel
         name="serverId"
         label={t('table.server')}
         placeholder={t('common.pleaseSelect')}
@@ -195,7 +194,6 @@ export const ReviewFeeRebateForm = ({
         placeholder={t('common.pleaseInput', { field: t('trading.taderType') })}
       />
       <FormSelect
-        verticalLabel
         name="rebateStatus"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
@@ -245,7 +243,6 @@ export const ReviewFeeRebateForm = ({
         )}
       />
       <FormSelect
-        verticalLabel
         name="rule"
         label={t('table.targetRule')}
         placeholder={t('common.pleaseSelect')}

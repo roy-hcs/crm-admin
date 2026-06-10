@@ -89,7 +89,6 @@ export const MyTicketsForm = ({
         placeholder={t('common.pleaseInput', { field: t('ticketList.content') })}
       />
       <FormSelect
-        verticalLabel
         name="priority"
         label={t('ticketList.priority')}
         placeholder={t('common.pleaseSelect')}
@@ -110,7 +109,6 @@ export const MyTicketsForm = ({
       />
       {showStatus && (
         <FormSelect
-          verticalLabel
           name="status"
           label={t('table.status')}
           placeholder={t('common.pleaseSelect')}

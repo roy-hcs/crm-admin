@@ -107,7 +107,6 @@ export const PaymentLogsForm = ({
         )}
       />
       <FormSelect
-        verticalLabel
         name="orderStatus"
         label={t('paymentOrders.orderStatus')}
         placeholder={t('common.pleaseSelect')}
@@ -120,7 +119,6 @@ export const PaymentLogsForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.title') })}
       />
       <FormSelect
-        verticalLabel
         name="channelName"
         label={t('paymentOrders.channelName')}
         placeholder={t('common.pleaseSelect')}
@@ -130,7 +128,6 @@ export const PaymentLogsForm = ({
         }
       />
       <FormSelect
-        verticalLabel
         name="payResult"
         label={t('table.payResult')}
         placeholder={t('common.pleaseSelect')}

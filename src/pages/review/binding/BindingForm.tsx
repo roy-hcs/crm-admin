@@ -126,7 +126,6 @@ export const BindingForm = ({
           serviceType: number;
         }
       >
-        verticalLabel
         name="serverId"
         label={t('table.server')}
         placeholder={t('common.pleaseSelect')}
@@ -149,7 +148,6 @@ export const BindingForm = ({
         }}
       />
       <FormSelect
-        verticalLabel
         name="serverProperty"
         label={t('common.type')}
         placeholder={t('common.pleaseSelect')}
@@ -160,7 +158,6 @@ export const BindingForm = ({
         }))}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

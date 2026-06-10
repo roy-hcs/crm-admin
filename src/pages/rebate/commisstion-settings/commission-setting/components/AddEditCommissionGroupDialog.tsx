@@ -345,7 +345,6 @@ export const AddEditCommissionGroupDialog = ({
                 <div className="flex items-end gap-3">
                   <div className="flex-1">
                     <FormSelect
-                      verticalLabel
                       name={`agency.${index}.equalType`}
                       label={t('commissionRebateSettings.peerLever')}
                       options={[
@@ -380,7 +379,6 @@ export const AddEditCommissionGroupDialog = ({
                 <div className="flex items-end gap-3">
                   <div className="flex-1">
                     <FormSelect
-                      verticalLabel
                       name={`agency.${index}.passType`}
                       label={t('commissionRebateSettings.crossLevel')}
                       options={[

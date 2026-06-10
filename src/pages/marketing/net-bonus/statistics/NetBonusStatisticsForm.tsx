@@ -99,7 +99,6 @@ export const NetBonusStatisticsForm = ({
         placeholder={t('common.pleaseInput', { field: t('common.account.type.user') })}
       />
       <FormSelect
-        verticalLabel
         name="accountType"
         showRowValue={false}
         label={t('table.rewardType')}
@@ -132,7 +131,6 @@ export const NetBonusStatisticsForm = ({
         <div className="flex w-full gap-1">
           <SelectUpperDropdown className="w-full flex-1" labelShow={false} />
           <FormSelect
-            verticalLabel
             name="directFlag"
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}

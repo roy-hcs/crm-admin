@@ -109,7 +109,6 @@ export const CommissionReviewForm = ({
             serviceType: number;
           }
         >
-          verticalLabel
           name="serverId"
           label={t('table.server')}
           placeholder={t('common.pleaseSelect')}
@@ -153,7 +152,6 @@ export const CommissionReviewForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="verifyStatus"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

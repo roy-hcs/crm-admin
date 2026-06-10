@@ -186,7 +186,6 @@ export const AddAgentFollowupItemDialog = ({
             />
             <FormSelect
               name="remindWay"
-              verticalLabel
               showRowValue={false}
               label={t('CRMAccountPage.remindWay')}
               options={[

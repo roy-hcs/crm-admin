@@ -82,7 +82,6 @@ export const PipValueForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.pointValueName') })}
       />
       <FormSelect
-        verticalLabel
         name="serverType"
         label={t('table.transactionPlatform')}
         placeholder={t('common.pleaseSelect')}
@@ -98,7 +97,6 @@ export const PipValueForm = ({
           serviceType: number;
         }
       >
-        verticalLabel
         name="serverId"
         label={t('table.server')}
         placeholder={t('common.pleaseSelect')}
@@ -121,7 +119,6 @@ export const PipValueForm = ({
         }}
       />
       <FormSelect
-        verticalLabel
         name="pointValueType"
         label={t('table.pointValueType')}
         placeholder={t('common.pleaseSelect')}

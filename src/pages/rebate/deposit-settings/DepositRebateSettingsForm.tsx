@@ -82,7 +82,6 @@ export const DepositRebateSettingsForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.ruleName') })}
       />
       <FormSelect
-        verticalLabel
         name="serverType"
         label={t('table.transactionPlatform')}
         placeholder={t('common.pleaseSelect')}
@@ -98,7 +97,6 @@ export const DepositRebateSettingsForm = ({
           serviceType: number;
         }
       >
-        verticalLabel
         name="serverId"
         label={t('table.server')}
         placeholder={t('common.pleaseSelect')}
@@ -121,7 +119,6 @@ export const DepositRebateSettingsForm = ({
         }}
       />
       <FormSelect
-        verticalLabel
         name="hasUsed"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

@@ -135,7 +135,6 @@ export const PositionOrderForm = ({
           serviceType: number;
         }
       >
-        verticalLabel
         name="serverId"
         label={t('table.server')}
         placeholder={t('common.pleaseSelect')}
@@ -172,7 +171,6 @@ export const PositionOrderForm = ({
         }
       />
       <FormSelect
-        verticalLabel
         name="type"
         label={t('table.transactionType')}
         placeholder={t('common.pleaseSelect')}

@@ -335,7 +335,6 @@ export const GoodSortDialog = ({
             <FormSelect
               name="parentId"
               label={t('productCategories.parentId')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={parentOptions}

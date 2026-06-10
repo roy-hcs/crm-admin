@@ -79,7 +79,6 @@ export const MenuForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="menuState"
         label={t('menuManagement.menuStatus')}
         placeholder={t('common.pleaseSelect')}

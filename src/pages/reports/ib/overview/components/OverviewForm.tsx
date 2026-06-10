@@ -120,7 +120,6 @@ export const OverviewForm = ({
         )}
       />
       <FormSelect
-        verticalLabel
         name="level"
         label={t('customerTracking.levelName') + ':'}
         placeholder={t('common.pleaseSelect')}

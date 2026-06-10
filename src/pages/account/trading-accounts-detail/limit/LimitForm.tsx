@@ -90,7 +90,6 @@ export const LimitForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
       />
       <FormSelect
-        verticalLabel
         name="positionFuzzyType"
         label={t('table.transactionType')}
         placeholder={t('common.pleaseSelect')}

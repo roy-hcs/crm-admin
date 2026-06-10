@@ -98,7 +98,6 @@ export const AdminLoginForm = ({
         placeholder={t('common.pleaseInput', { field: t('adminLogin.name') })}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('common.operStatus')}
         placeholder={t('common.pleaseSelect')}

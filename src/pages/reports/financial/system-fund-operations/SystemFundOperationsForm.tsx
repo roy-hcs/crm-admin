@@ -163,7 +163,6 @@ export const SystemFundOperationsForm = ({
       />
 
       <FormSelect
-        verticalLabel
         name="type"
         label={t('table.inMethod')}
         placeholder={t('common.pleaseSelect')}

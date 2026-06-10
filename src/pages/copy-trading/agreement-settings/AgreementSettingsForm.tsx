@@ -73,7 +73,6 @@ export const AgreementSettingsForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="applicableScenarios"
         label={t('table.applicableScenario')}
         placeholder={t('common.pleaseSelect')}

@@ -115,7 +115,6 @@ export const CommissionReportForm = ({
         placeholder={t('common.pleaseInput', { field: t('common.account.type.agent') })}
       />
       <FormSelect
-        verticalLabel
         name="profitType"
         label={t('productReview.model')}
         placeholder={t('common.pleaseSelect')}

@@ -227,7 +227,6 @@ export const PointValueForm = ({
       />
       <FormSelect
         key={`serverType-${initializedRef.current || 'new'}`}
-        verticalLabel
         name="serverType"
         label={t('table.transactionPlatform')}
         placeholder={t('common.pleaseSelect')}
@@ -242,7 +241,6 @@ export const PointValueForm = ({
         }
       >
         key={`server-${initializedRef.current || 'new'}`}
-        verticalLabel
         name="serverId"
         label={t('table.server')}
         placeholder={t('common.pleaseSelect')}
@@ -260,7 +258,6 @@ export const PointValueForm = ({
         }}
       />
       <FormSelect
-        verticalLabel
         name="pointValueType"
         label={t('table.pointValueType')}
         placeholder={t('common.pleaseSelect')}
@@ -302,7 +299,6 @@ export const PointValueForm = ({
               />
               <span>*</span>
               <FormSelect
-                verticalLabel
                 className="mt-2"
                 name="pointValueRules"
                 label=""
@@ -316,7 +312,6 @@ export const PointValueForm = ({
             </div>
           </div>
           <FormSelect
-            verticalLabel
             name="pointValueCurrency"
             label={t('table.pointValueCurrency')}
             placeholder={t('common.pleaseSelect')}

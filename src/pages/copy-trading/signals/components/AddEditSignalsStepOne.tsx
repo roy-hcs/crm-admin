@@ -54,7 +54,6 @@ export function AddEditSignalsStepOne({
         }
       />
       <FormSelect
-        verticalLabel
         name="serverId"
         label={t('table.signalSourceAccount')}
         options={serverOptions}
@@ -157,7 +156,6 @@ export function AddEditSignalsStepOne({
         />
       )}
       <FormSelect
-        verticalLabel
         name="receiveAccount"
         label={t('table.paymentAccount')}
         showRowValue={false}

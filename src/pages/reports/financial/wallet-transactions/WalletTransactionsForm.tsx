@@ -128,7 +128,6 @@ export const WalletTransactionsForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="operationType"
         label={t('table.operationType')}
         placeholder={t('common.pleaseSelect')}
@@ -143,7 +142,6 @@ export const WalletTransactionsForm = ({
         }
       />
       <FormSelect
-        verticalLabel
         name="inMethod"
         label={t('table.inMethod')}
         placeholder={t('common.pleaseSelect')}
@@ -158,7 +156,6 @@ export const WalletTransactionsForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="serverId"
         label={t('walletTransactions.wallet')}
         placeholder={t('common.pleaseSelect')}

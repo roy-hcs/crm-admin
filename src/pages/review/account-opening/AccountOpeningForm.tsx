@@ -106,7 +106,6 @@ export const AccountOpeningForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
@@ -120,7 +119,6 @@ export const AccountOpeningForm = ({
           serviceType: number;
         }
       >
-        verticalLabel
         name="serverId"
         label={t('table.server')}
         placeholder={t('common.pleaseSelect')}
@@ -143,7 +141,6 @@ export const AccountOpeningForm = ({
         }}
       />
       <FormSelect
-        verticalLabel
         name="serverType"
         label={t('common.serverType')}
         placeholder={t('common.pleaseSelect')}
@@ -154,7 +151,6 @@ export const AccountOpeningForm = ({
         }))}
       />
       <FormSelect
-        verticalLabel
         name="serverProperty"
         label={t('common.type')}
         placeholder={t('common.pleaseSelect')}

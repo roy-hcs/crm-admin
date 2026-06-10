@@ -234,7 +234,6 @@ export const RrhDynamicForm = ({
       case CT.Select:
         return (
           <FormSelect
-            verticalLabel
             name={name}
             label={`${col.columnName}${col.require ? '' : ` (${t('common.optional')})`}`}
             options={mapColumnOptions(col.options)}
@@ -275,7 +274,6 @@ export const RrhDynamicForm = ({
       case CT.CountrySelect:
         return (
           <FormSelect
-            verticalLabel
             name={name}
             label={`${col.columnName}${col.require ? '' : ` (${t('common.optional')})`}`}
             options={mapCountryOptions(countryList)}

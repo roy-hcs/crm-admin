@@ -354,7 +354,6 @@ export const AddEditAgreementSettingsDialog = ({
           <FormSelect
             name="applicableScenarios"
             label={t('CopyTradingSettings.applicableScenarios')}
-            verticalLabel
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={scenarioOptions}

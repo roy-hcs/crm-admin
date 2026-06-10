@@ -503,7 +503,6 @@ export const AddEditNewMessageDialog = ({
             <FormSelect
               name="type"
               label={t('table.infoType')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={infoTypeOptions.map(i => ({
@@ -611,7 +610,6 @@ export const AddEditNewMessageDialog = ({
             <FormSelect
               name="template"
               label={t('messageManagement.messageTemplate')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={msgTemplateOptions}
@@ -674,7 +672,6 @@ export const AddEditNewMessageDialog = ({
             <FormSelect
               name="primaryLanguage"
               label={t('messageManagement.mainLanguage')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={primaryLanguageOptions}

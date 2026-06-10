@@ -98,7 +98,6 @@ export const ReviewInternalTransferForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

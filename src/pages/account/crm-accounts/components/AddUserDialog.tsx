@@ -255,7 +255,6 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
         <FormSelect
           name="preferenceLanguage"
           label={`${t('rules.preferenceLanguage')}`}
-          verticalLabel
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={(languageList || []).map(i => ({
@@ -266,7 +265,6 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
         <FormSelect
           name="accountType"
           label={`${t('CRMAccountPage.CRMAccountType')}`}
-          verticalLabel
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
@@ -274,7 +272,6 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
         <FormSelect
           name="roleId"
           label={`${t('table.role')}`}
-          verticalLabel
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={roleOptions.map(i => ({ label: t(i.label), value: i.value }))}
@@ -282,7 +279,6 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
         <FormSelect
           name="colorPreference"
           label={`${t('CRMAccountPage.ColorPreferences')}`}
-          verticalLabel
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={colorPreferenceOptions.map(i => ({ label: t(i.label), value: i.value }))}

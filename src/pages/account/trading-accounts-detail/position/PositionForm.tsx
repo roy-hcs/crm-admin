@@ -97,7 +97,6 @@ export const PositionForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
       />
       <FormSelect
-        verticalLabel
         name="type"
         label={t('table.transactionType')}
         placeholder={t('common.pleaseSelect')}

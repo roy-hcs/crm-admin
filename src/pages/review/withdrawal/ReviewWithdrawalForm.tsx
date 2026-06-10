@@ -127,7 +127,6 @@ export const ReviewWithdrawalForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.nameOrLastNameOrId') })}
       />
       <FormSelect
-        verticalLabel
         name="withdrawWay"
         label={t('table.withdrawMethods')}
         placeholder={t('common.pleaseSelect')}
@@ -148,7 +147,6 @@ export const ReviewWithdrawalForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
       />
       <FormSelect
-        verticalLabel
         name="verifyStatus"
         label={t('table.reviewStatus')}
         placeholder={t('common.pleaseSelect')}
@@ -179,7 +177,6 @@ export const ReviewWithdrawalForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.currentAuditor') })}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
@@ -196,7 +193,6 @@ export const ReviewWithdrawalForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.tradeServerOrderNumber') })}
       />
       <FormSelect
-        verticalLabel
         name="outAccountType"
         label={t('table.withdrawAccount')}
         placeholder={t('common.pleaseSelect')}

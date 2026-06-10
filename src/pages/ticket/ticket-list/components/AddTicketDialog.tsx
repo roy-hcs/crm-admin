@@ -243,7 +243,6 @@ export const AddTicketDialog = ({
             <FormSelect
               name="roleId"
               label={t('ticketList.receiverId')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={roleOptions}
@@ -254,7 +253,6 @@ export const AddTicketDialog = ({
             <FormSelect
               name="receiverId"
               label={''}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={allocatedList}
@@ -275,7 +273,6 @@ export const AddTicketDialog = ({
         <FormSelect
           name="priority"
           label={t('ticketList.priority')}
-          verticalLabel
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={[

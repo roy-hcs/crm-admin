@@ -151,7 +151,6 @@ export const PerformanceFeeRecordForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="payStatus"
         label={t('performanceFeeRecord.arrivalStatus')}
         placeholder={t('common.pleaseSelect')}

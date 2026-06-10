@@ -78,7 +78,6 @@ export const ProductGroupForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.typeGroup') })}
       />
       <FormSelect
-        verticalLabel
         name="serverType"
         label={t('table.transactionPlatform')}
         placeholder={t('common.pleaseSelect')}
@@ -94,7 +93,6 @@ export const ProductGroupForm = ({
           serviceType: number;
         }
       >
-        verticalLabel
         name="serverId"
         label={t('table.server')}
         placeholder={t('common.pleaseSelect')}

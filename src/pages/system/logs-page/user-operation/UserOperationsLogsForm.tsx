@@ -109,7 +109,6 @@ export const UserOperationsLogsForm = ({
         }
       />
       <FormSelect
-        verticalLabel
         name="operationStatus"
         label={t('table.operationStatus')}
         placeholder={t('common.pleaseSelect')}

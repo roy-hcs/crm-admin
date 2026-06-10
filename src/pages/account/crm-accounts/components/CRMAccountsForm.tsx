@@ -145,14 +145,12 @@ export const CRMAccountsForm = ({
         placeholder={t('common.pleaseInput', { field: t('CRMAccountPage.Mobile') })}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
         options={statusOptions.map(i => ({ label: t(i.label), value: i.value }))}
       />
       <FormSelect
-        verticalLabel
         name="role"
         label={t('table.role')}
         placeholder={t('common.pleaseSelect')}
@@ -182,12 +180,10 @@ export const CRMAccountsForm = ({
         name="accountType"
         label={t('CRMAccountPage.CRMAccountType')}
         placeholder={t('common.pleaseSelect')}
-        verticalLabel
         options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
       />
       <FormSelect
         name="tags"
-        verticalLabel
         label={t('CRMAccountPage.TagsName')}
         placeholder={t('common.pleaseSelect')}
         options={tagsOptions}

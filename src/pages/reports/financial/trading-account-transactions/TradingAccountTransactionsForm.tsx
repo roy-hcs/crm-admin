@@ -172,7 +172,6 @@ export const TradingAccountTransactionsForm = ({
     >
       <RrhServerSelector serverOptions={serverOptions} />
       <FormSelect
-        verticalLabel
         name="opeTypeList"
         label={t('table.operationType')}
         placeholder={t('common.pleaseSelect')}

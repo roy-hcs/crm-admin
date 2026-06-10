@@ -102,7 +102,6 @@ export const RewardRecordsForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.CRMAccount') })}
       />
       <FormSelect
-        verticalLabel
         name="businessType"
         label={t('table.triggerBusiness')}
         placeholder={t('common.pleaseSelect')}
@@ -122,7 +121,6 @@ export const RewardRecordsForm = ({
         )}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

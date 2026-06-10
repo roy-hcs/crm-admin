@@ -110,7 +110,6 @@ export const InvestmentReportForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.projectName') })}
       />
       <FormSelect
-        verticalLabel
         name="profitType"
         label={t('productReview.model')}
         placeholder={t('common.pleaseSelect')}
@@ -132,7 +131,6 @@ export const InvestmentReportForm = ({
         placeholder={t('common.pleaseInput', { field: t('table.customerName') })}
       />
       <FormSelect
-        verticalLabel
         name="type"
         label={t('investmentReview.operType')}
         placeholder={t('common.pleaseSelect')}
@@ -155,7 +153,6 @@ export const InvestmentReportForm = ({
       />
 
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

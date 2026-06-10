@@ -92,7 +92,6 @@ export const InformationForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="infoType"
         label={t('information.infoType')}
         placeholder={t('common.pleaseSelect')}
@@ -115,7 +114,6 @@ export const InformationForm = ({
         )}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
