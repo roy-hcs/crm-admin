@@ -503,7 +503,6 @@ export const AddEditNewMessageDialog = ({
             <FormSelect
               name="type"
               label={t('table.infoType')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={infoTypeOptions.map(i => ({
@@ -539,7 +538,6 @@ export const AddEditNewMessageDialog = ({
               <FormMultiSelect
                 name="sendEmails"
                 label={t('table.sendEmailAddress')}
-                verticalLabel
                 placeholder={t('common.pleaseSelect')}
                 showRowValue={false}
                 options={emailOptions}
@@ -577,7 +575,6 @@ export const AddEditNewMessageDialog = ({
             )}
             {receiveType === '2' && (
               <FormMultiSelect
-                verticalLabel
                 name="roles"
                 label={t('messageManagement.receiveTypeOption.2')}
                 placeholder={t('common.pleaseSelect')}
@@ -611,7 +608,6 @@ export const AddEditNewMessageDialog = ({
             <FormSelect
               name="template"
               label={t('messageManagement.messageTemplate')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={msgTemplateOptions}
@@ -674,7 +670,6 @@ export const AddEditNewMessageDialog = ({
             <FormSelect
               name="primaryLanguage"
               label={t('messageManagement.mainLanguage')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={primaryLanguageOptions}
@@ -705,7 +700,6 @@ export const AddEditNewMessageDialog = ({
                   <div key={lang} className={cn(activeLang === lang ? 'block' : 'hidden')}>
                     <div className="py-6">
                       <FormInput
-                        verticalLabel
                         name={`title.${lang}`}
                         label={t('messageManagement.inputTitle', { field: label })}
                         placeholder={t('common.pleaseInput', { field: t('table.title') })}

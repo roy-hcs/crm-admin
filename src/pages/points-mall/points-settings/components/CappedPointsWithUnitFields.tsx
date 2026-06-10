@@ -26,12 +26,12 @@ export function CappedPointsWithUnitFields({
           name={cappedPointsName}
           unit={pointsUnit}
           label={t('pointsMallSettings.cappedPointsPerTime')}
-          verticalLabel
           disabled={!editable}
         />
       </div>
       <div className="flex-1">
         <FormSelect<PointsMallSettingsFormValues>
+          verticalLabel={false}
           name={cappedTimeUnitName}
           options={timeUnitOptions}
           disabled={!editable}

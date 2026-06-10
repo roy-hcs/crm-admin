@@ -125,17 +125,14 @@ export function SubscriptionSetting() {
         ]}
       />
       <FormSwitch
-        verticalLabel
         name="multipleNumberSwitch"
         label={t('copyTradingSettings.multipleNumberSwitch')}
       />
       <FormSwitch
-        verticalLabel
         name="directionFollowingSwitch"
         label={t('copyTradingSettings.directionFollowingSwitch')}
       />
       <FormSwitch
-        verticalLabel
         name="selectiveFollowingSwitch"
         label={t('copyTradingSettings.selectiveFollowingSwitch')}
       />

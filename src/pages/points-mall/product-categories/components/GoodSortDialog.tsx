@@ -322,7 +322,6 @@ export const GoodSortDialog = ({
         <div className={cn(step === 'one' ? 'block' : 'hidden')}>
           <div className="py-3">
             <FormInput
-              verticalLabel
               name="name"
               label={t('productCategories.classificationNameSimplified', {
                 language: t('productCategories.zhName'),
@@ -336,7 +335,6 @@ export const GoodSortDialog = ({
             <FormSelect
               name="parentId"
               label={t('productCategories.parentId')}
-              verticalLabel
               placeholder={t('common.pleaseSelect')}
               showRowValue={false}
               options={parentOptions}
@@ -344,7 +342,6 @@ export const GoodSortDialog = ({
           </div>
           <div className="py-3">
             <FormInput
-              verticalLabel
               name="sort"
               label={t('table.sort')}
               placeholder={t('common.sortPlaceholder')}
@@ -403,7 +400,6 @@ export const GoodSortDialog = ({
               return (
                 <div className="py-3" key={lang}>
                   <FormInput
-                    verticalLabel
                     name={`classificationName.${lang}`}
                     label={t('productCategories.classificationNameSimplified', {
                       language: label,

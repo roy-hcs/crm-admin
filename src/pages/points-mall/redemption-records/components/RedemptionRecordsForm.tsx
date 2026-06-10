@@ -92,7 +92,6 @@ export const RedemptionRecordsForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="fuzzyName"
         label={t('table.nameOrId')}
         placeholder={t('common.pleaseInput', {
@@ -100,7 +99,6 @@ export const RedemptionRecordsForm = ({
         })}
       />
       <FormInput
-        verticalLabel
         name="fuzzyEmail"
         label={t('table.email')}
         placeholder={t('common.pleaseInput', {
@@ -108,7 +106,6 @@ export const RedemptionRecordsForm = ({
         })}
       />
       <FormInput
-        verticalLabel
         name="fuzzyGoods"
         label={t('redemptionRecords.fuzzyGoods')}
         placeholder={t('common.pleaseInput', {
@@ -116,7 +113,6 @@ export const RedemptionRecordsForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="verifyStatus"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
@@ -124,7 +120,6 @@ export const RedemptionRecordsForm = ({
         options={pointsHistoryVerifyStatus.map(i => ({ label: t(i.label), value: i.value }))}
       />
       <FormSelect
-        verticalLabel
         name="payType"
         label={t('redemptionRecords.payType')}
         placeholder={t('common.pleaseSelect')}

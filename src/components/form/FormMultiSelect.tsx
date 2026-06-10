@@ -41,7 +41,7 @@ export function FormMultiSelect<T extends FieldValues, O extends BaseOption = Ba
   name,
   label,
   placeholder,
-  verticalLabel = false,
+  verticalLabel = true,
   className,
   renderItem,
   showRowValue = true,

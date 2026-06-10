@@ -94,7 +94,6 @@ export const PreferencesDialog = ({ onSuccess }: { onSuccess?: () => void }) => 
     >
       <RrhForm form={form} className="grid gap-6">
         <FormMultiSelect
-          verticalLabel
           name="targetAccount"
           label={t('customerLoyaltyPlan.targetAccount')}
           placeholder={t('common.pleaseSelect')}

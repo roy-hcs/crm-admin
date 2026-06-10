@@ -35,7 +35,6 @@ export const RebateRuleFormStep2 = ({
             <FormMultiSelect
               name={`traderServers.${index}.mtGroups`}
               label={t('common.optionalField', { field: t('table.groups') })}
-              verticalLabel
               placeholder={t('TradingRebateSettings.allMtGroups')}
               options={
                 mtAndRebateTypeList[index]?.groups.map(item => ({
@@ -48,7 +47,6 @@ export const RebateRuleFormStep2 = ({
               <FormMultiSelect
                 name={`traderServers.${index}.rebateGroupTypes`}
                 label={t('common.optionalField', { field: t('table.typeGroup') })}
-                verticalLabel
                 placeholder={t('TradingRebateSettings.allRebateGroupType')}
                 options={
                   mtAndRebateTypeList[index]?.types.map(item => ({

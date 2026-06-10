@@ -130,163 +130,154 @@ export const ReviewFeeRebateForm = ({
   };
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormSelect<
-            Record<string, string>,
-            BaseOption & {
-              serviceProperty: number;
-              serviceType: number;
-            }
-          >
-            verticalLabel
-            name="serverId"
-            label={t('table.server')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={serverList.map(item => ({
-              label: item.serverName,
-              value: item.id,
-              serviceProperty: item.serviceProperty,
-              serviceType: item.serviceType,
-            }))}
-            renderItem={option => {
-              return (
-                <div>
-                  {/* TODO: 优化样式 */}
-                  <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
-                  {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
-                  <span>{option.label}</span>
-                </div>
-              );
-            }}
-          />
-          <FormMultiSelect
-            verticalLabel
-            name="serverGroupList"
-            label={t('table.groups')}
-            placeholder={t('common.pleaseSelect')}
-            options={
-              groupData
-                ?.filter(item => item)
-                .map(item => ({
-                  label: item,
-                  value: item,
-                })) || []
-            }
-          />
-          <FormInput
-            verticalLabel
-            name="tradingOrderNumber"
-            label={t('table.tradingOrderNumber')}
-            placeholder={t('common.pleaseInput', { field: t('table.tradingOrderNumber') })}
-          />
-          <FormInput
-            verticalLabel
-            name="tradeAccount"
-            label={t('table.symbol')}
-            placeholder={t('common.pleaseInput', { field: t('table.symbol') })}
-          />
-          <FormInput
-            verticalLabel
-            name="tradeType"
-            label={t('trading.taderType')}
-            placeholder={t('common.pleaseInput', { field: t('trading.taderType') })}
-          />
-          <FormSelect
-            verticalLabel
-            name="rebateStatus"
-            label={t('table.status')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={[
-              { label: t('table.pending'), value: '2' },
-              { label: t('table.reviewing'), value: '3' },
-              { label: t('table.pass'), value: '1' },
-              { label: t('table.refuse'), value: '0' },
-            ]}
-          />
-          <FormField
-            name="tradingTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">
-                  {selectedServer?.serviceType === 1 ? t('table.tradingTime') : t('table.openTime')}
-                </FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="tradingTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormInput
-            verticalLabel
-            name="rebateUser"
-            label={t('table.rebateUser')}
-            placeholder={t('common.pleaseInput', { field: t('table.rebateUser') })}
-          />
-          <FormInput
-            verticalLabel
-            name="orderNumber"
-            label={t('table.orderNumber')}
-            placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
-          />
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormSelect<
+        Record<string, string>,
+        BaseOption & {
+          serviceProperty: number;
+          serviceType: number;
+        }
+      >
+        name="serverId"
+        label={t('table.server')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={serverList.map(item => ({
+          label: item.serverName,
+          value: item.id,
+          serviceProperty: item.serviceProperty,
+          serviceType: item.serviceType,
+        }))}
+        renderItem={option => {
+          return (
+            <div>
+              {/* TODO: 优化样式 */}
+              <span>{option.serviceProperty === 1 ? t('common.live') : t('common.demo')}</span>
+              {option.serviceType && <span> {serverMap[option.serviceType]} | </span>}
+              <span>{option.label}</span>
+            </div>
+          );
+        }}
+      />
+      <FormMultiSelect
+        name="serverGroupList"
+        label={t('table.groups')}
+        placeholder={t('common.pleaseSelect')}
+        options={
+          groupData
+            ?.filter(item => item)
+            .map(item => ({
+              label: item,
+              value: item,
+            })) || []
+        }
+      />
+      <FormInput
+        name="tradingOrderNumber"
+        label={t('table.tradingOrderNumber')}
+        placeholder={t('common.pleaseInput', { field: t('table.tradingOrderNumber') })}
+      />
+      <FormInput
+        name="tradeAccount"
+        label={t('table.symbol')}
+        placeholder={t('common.pleaseInput', { field: t('table.symbol') })}
+      />
+      <FormInput
+        name="tradeType"
+        label={t('trading.taderType')}
+        placeholder={t('common.pleaseInput', { field: t('trading.taderType') })}
+      />
+      <FormSelect
+        name="rebateStatus"
+        label={t('table.status')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={[
+          { label: t('table.pending'), value: '2' },
+          { label: t('table.reviewing'), value: '3' },
+          { label: t('table.pass'), value: '1' },
+          { label: t('table.refuse'), value: '0' },
+        ]}
+      />
+      <FormField
+        name="tradingTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">
+              {selectedServer?.serviceType === 1 ? t('table.tradingTime') : t('table.openTime')}
+            </FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="tradingTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormInput
+        name="rebateUser"
+        label={t('table.rebateUser')}
+        placeholder={t('common.pleaseInput', { field: t('table.rebateUser') })}
+      />
+      <FormInput
+        name="orderNumber"
+        label={t('table.orderNumber')}
+        placeholder={t('common.pleaseInput', { field: t('table.orderNumber') })}
+      />
 
-          <FormField
-            name="submitTime"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('table.submitTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="submitTime" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormSelect
-            verticalLabel
-            name="rule"
-            label={t('table.targetRule')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={rebateRuleList.map(item => ({
-              label: item.ruleName,
-              value: item.id,
-            }))}
-          />
-          <FormInput
-            verticalLabel
-            name="verifyUserName"
-            label={t('table.currentAuditor')}
-            placeholder={t('common.pleaseInput', { field: t('table.currentAuditor') })}
-          />
-          <FormMultiSelect
-            verticalLabel
-            name="accountGroupList"
-            label={t('table.accountGroup')}
-            placeholder={t('common.pleaseSelect')}
-            options={
-              dealAccountGroupListData?.map(item => ({
-                label: item.name,
-                value: item.id,
-              })) || []
-            }
-          />
+      <FormField
+        name="submitTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('table.submitTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="submitTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormSelect
+        name="rule"
+        label={t('table.targetRule')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={rebateRuleList.map(item => ({
+          label: item.ruleName,
+          value: item.id,
+        }))}
+      />
+      <FormInput
+        name="verifyUserName"
+        label={t('table.currentAuditor')}
+        placeholder={t('common.pleaseInput', { field: t('table.currentAuditor') })}
+      />
+      <FormMultiSelect
+        name="accountGroupList"
+        label={t('table.accountGroup')}
+        placeholder={t('common.pleaseSelect')}
+        options={
+          dealAccountGroupListData?.map(item => ({
+            label: item.name,
+            value: item.id,
+          })) || []
+        }
+      />
 
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant="outline" onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" loading={loading}>
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant="outline" onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" loading={loading}>
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

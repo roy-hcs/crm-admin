@@ -94,13 +94,11 @@ export const NetBonusStatisticsForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="userName"
         label={t('common.account.type.user')}
         placeholder={t('common.pleaseInput', { field: t('common.account.type.user') })}
       />
       <FormSelect
-        verticalLabel
         name="accountType"
         showRowValue={false}
         label={t('table.rewardType')}
@@ -133,7 +131,6 @@ export const NetBonusStatisticsForm = ({
         <div className="flex w-full gap-1">
           <SelectUpperDropdown className="w-full flex-1" labelShow={false} />
           <FormSelect
-            verticalLabel
             name="directFlag"
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}

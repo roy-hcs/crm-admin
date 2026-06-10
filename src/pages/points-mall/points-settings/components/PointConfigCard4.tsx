@@ -72,7 +72,6 @@ export function PointConfigCard4({
                   name="agentCustomerDeposit.bonusPoints"
                   unit={t('common.points')}
                   label={t('pointsMallSettings.rewardCalculation')}
-                  verticalLabel
                   disabled={!editable}
                 />
               </div>
@@ -81,6 +80,7 @@ export function PointConfigCard4({
               </div>
               <div className="flex-1">
                 <FormInputWithUnit<PointsMallSettingsFormValues>
+                  verticalLabel={false}
                   name="agentCustomerDeposit.bonusBasis"
                   unit="USD"
                   disabled={!editable}
@@ -177,7 +177,6 @@ export function PointConfigCard4({
                   disabled={!editable}
                   showRowValue={false}
                   selectCls="h-10 w-full"
-                  verticalLabel
                 />
               </div>
               <div className="flex h-10 w-3.5 items-center">
@@ -191,7 +190,6 @@ export function PointConfigCard4({
                   }
                   unit={t('common.points')}
                   label={t('pointsMallSettings.rewardCalculation')}
-                  verticalLabel
                   disabled={!editable}
                 />
               </div>
@@ -205,12 +203,12 @@ export function PointConfigCard4({
                   }
                   unit={t('common.points')}
                   label={t('pointsMallSettings.cappedPointsPerTime')}
-                  verticalLabel
                   disabled={!editable}
                 />
               </div>
               <div className="flex-1">
                 <FormSelect<PointsMallSettingsFormValues>
+                  verticalLabel={false}
                   key={`commission-capped-unit-${commissionRewardSelectedId || 'empty'}`}
                   name={
                     `${commissionNamePrefix}.cappedTimeUnit` as FieldPath<PointsMallSettingsFormValues>

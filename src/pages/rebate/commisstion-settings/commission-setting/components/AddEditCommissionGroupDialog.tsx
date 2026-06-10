@@ -296,7 +296,6 @@ export const AddEditCommissionGroupDialog = ({
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
         <FormInput
           className="py-6"
-          verticalLabel
           name="name"
           label={t('table.commissionGroupName')}
           placeholder={t('common.pleaseInput', { field: t('table.commissionGroupName') })}
@@ -323,7 +322,6 @@ export const AddEditCommissionGroupDialog = ({
                 <div className="flex flex-1 items-end gap-2">
                   <FormInput
                     className="flex-1"
-                    verticalLabel
                     name={`agency.${index}.price`}
                     label={agencyLabels[index] ?? t('commissionRebateSettings.chiefSteward')}
                     placeholder={t('common.pleaseInput', { field: '' })}
@@ -347,7 +345,6 @@ export const AddEditCommissionGroupDialog = ({
                 <div className="flex items-end gap-3">
                   <div className="flex-1">
                     <FormSelect
-                      verticalLabel
                       name={`agency.${index}.equalType`}
                       label={t('commissionRebateSettings.peerLever')}
                       options={[
@@ -368,21 +365,19 @@ export const AddEditCommissionGroupDialog = ({
                     />
                   </div>
                   <div className="flex-1">
-                    <FormInputWithUnit name={`agency.${index}.equalMoney`} unit="%" verticalLabel />
+                    <FormInputWithUnit name={`agency.${index}.equalMoney`} unit="%" />
                   </div>
                 </div>
                 <FormInputWithUnit
                   name={`agency.${index}.equalLimit`}
                   unit={t('commissionRebateSettings.passLimit')}
                   label={t('commissionRebateSettings.limit')}
-                  verticalLabel
                 />
               </div>
               <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                 <div className="flex items-end gap-3">
                   <div className="flex-1">
                     <FormSelect
-                      verticalLabel
                       name={`agency.${index}.passType`}
                       label={t('commissionRebateSettings.crossLevel')}
                       options={[
@@ -403,14 +398,13 @@ export const AddEditCommissionGroupDialog = ({
                     />
                   </div>
                   <div className="flex-1">
-                    <FormInputWithUnit name={`agency.${index}.passMoney`} unit="%" verticalLabel />
+                    <FormInputWithUnit name={`agency.${index}.passMoney`} unit="%" />
                   </div>
                 </div>
                 <FormInputWithUnit
                   name={`agency.${index}.passLimit`}
                   unit={t('commissionRebateSettings.passLimit')}
                   label={t('commissionRebateSettings.limit')}
-                  verticalLabel
                 />
               </div>
             </div>
@@ -419,7 +413,6 @@ export const AddEditCommissionGroupDialog = ({
         <div className="flex items-end gap-2 py-6">
           <FormInput
             className="flex-1"
-            verticalLabel
             name="countPrice"
             label={t('commissionRebateSettings.leverTotalRebate')}
             placeholder={t('common.pleaseInput', { field: '' })}

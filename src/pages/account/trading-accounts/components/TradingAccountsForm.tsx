@@ -142,74 +142,71 @@ export const TradingAccountsForm = ({
   }, [form, getGroupData, serverId]);
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <RrhServerSelector serverOptions={serverOptions} />
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <RrhServerSelector serverOptions={serverOptions} />
 
-          <FormMultiSelect
-            verticalLabel
-            name="serverGroupList"
-            label={t('table.groups')}
-            placeholder={t('common.pleaseSelect')}
-            options={groupList}
-            loading={groupLoading}
-          />
-          <FormField
-            name="Time"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('CRMAccountPage.registerTime')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="Time" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormInput
-            verticalLabel
-            name="fuzzyAccount"
-            label={t('tradingAccountTransactions.login')}
-            placeholder={t('common.pleaseInput', {
-              field: t('tradingAccountTransactions.login'),
-            })}
-          />
-          <FormInput
-            verticalLabel
-            name="fuzzyName"
-            label={t('tradingAccountTransactions.name')}
-            placeholder={t('common.pleaseInput', {
-              field: t('tradingAccountTransactions.name'),
-            })}
-          />
-          <SelectUpperDropdown />
-          <FormMultiSelect
-            verticalLabel
-            name="accountGroupList"
-            label={t('table.accountGroup')}
-            placeholder={t('common.pleaseSelect')}
-            options={dealAccountGroup}
-          />
-          <FormInput
-            verticalLabel
-            name="threeCons"
-            label={t('table.threeCons')}
-            placeholder={t('common.pleaseInput', {
-              field: t('table.threeCons'),
-            })}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" loading={loading}>
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+      <FormMultiSelect
+        name="serverGroupList"
+        label={t('table.groups')}
+        placeholder={t('common.pleaseSelect')}
+        options={groupList}
+        loading={groupLoading}
+      />
+      <FormField
+        name="Time"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('CRMAccountPage.registerTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="Time" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormInput
+        name="fuzzyAccount"
+        label={t('tradingAccountTransactions.login')}
+        placeholder={t('common.pleaseInput', {
+          field: t('tradingAccountTransactions.login'),
+        })}
+      />
+      <FormInput
+        name="fuzzyName"
+        label={t('tradingAccountTransactions.name')}
+        placeholder={t('common.pleaseInput', {
+          field: t('tradingAccountTransactions.name'),
+        })}
+      />
+      <SelectUpperDropdown />
+      <FormMultiSelect
+        name="accountGroupList"
+        label={t('table.accountGroup')}
+        placeholder={t('common.pleaseSelect')}
+        options={dealAccountGroup}
+      />
+      <FormInput
+        name="threeCons"
+        label={t('table.threeCons')}
+        placeholder={t('common.pleaseInput', {
+          field: t('table.threeCons'),
+        })}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant={'outline'} onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" loading={loading}>
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

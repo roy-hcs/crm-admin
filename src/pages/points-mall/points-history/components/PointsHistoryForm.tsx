@@ -77,56 +77,55 @@ export const PointsHistoryForm = ({
   };
 
   return (
-    <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
-          className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
-        >
-          <FormInput
-            verticalLabel
-            name="fuzzyName"
-            label={t('table.nameOrId')}
-            placeholder={t('common.pleaseInput', {
-              field: t('table.nameOrId'),
-            })}
-          />
-          <FormInput
-            verticalLabel
-            name="fuzzyEmail"
-            label={t('table.email')}
-            placeholder={t('common.pleaseInput', {
-              field: t('table.email'),
-            })}
-          />
-          <FormSelect
-            verticalLabel
-            name="businessType"
-            label={t('table.triggerBusiness')}
-            placeholder={t('common.pleaseSelect')}
-            showRowValue={false}
-            options={operationTypeList.map(i => ({ label: i.dictLabel, value: i.dictValue }))}
-          />
-          <FormField
-            name="time"
-            render={() => (
-              <FormItem className="flex flex-col gap-2 text-sm">
-                <FormLabel className="basis-3/12">{t('table.time')}</FormLabel>
-                <FormControl className="basis-9/12">
-                  <FormDateRangeInput name="time" control={form.control} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
-            <RrhButton type="reset" variant={'outline'} onClick={onReset}>
-              <RefreshCcw className="size-3.5" />
-              <span>{t('common.Reset')}</span>
-            </RrhButton>
-            <RrhButton type="submit" loading={loading} disabled={loading}>
-              <Search className="size-3.5" />
-              <span>{t('common.Search')}</span>
-            </RrhButton>
-          </div>
-        </RrhForm>
+    <RrhForm
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+      onReset={onReset}
+      className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
+    >
+      <FormInput
+        name="fuzzyName"
+        label={t('table.nameOrId')}
+        placeholder={t('common.pleaseInput', {
+          field: t('table.nameOrId'),
+        })}
+      />
+      <FormInput
+        name="fuzzyEmail"
+        label={t('table.email')}
+        placeholder={t('common.pleaseInput', {
+          field: t('table.email'),
+        })}
+      />
+      <FormSelect
+        name="businessType"
+        label={t('table.triggerBusiness')}
+        placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
+        options={operationTypeList.map(i => ({ label: i.dictLabel, value: i.dictValue }))}
+      />
+      <FormField
+        name="time"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="basis-3/12">{t('table.time')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="time" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
+        <RrhButton type="reset" variant={'outline'} onClick={onReset}>
+          <RefreshCcw className="size-3.5" />
+          <span>{t('common.Reset')}</span>
+        </RrhButton>
+        <RrhButton type="submit" loading={loading} disabled={loading}>
+          <Search className="size-3.5" />
+          <span>{t('common.Search')}</span>
+        </RrhButton>
+      </div>
+    </RrhForm>
   );
 };

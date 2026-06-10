@@ -132,7 +132,6 @@ export const AddDialog = ({
           <FormSelect
             name="businessType"
             label={t('table.triggerBusiness')}
-            verticalLabel
             placeholder={t('common.pleaseSelect')}
             showRowValue={false}
             options={operationTypeList.map(i => ({ label: i.dictLabel, value: i.dictValue }))}

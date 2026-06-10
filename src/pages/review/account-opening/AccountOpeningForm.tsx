@@ -99,7 +99,6 @@ export const AccountOpeningForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="userId"
         label={t('paymentOrders.userName')}
         placeholder={t('common.pleaseInput', {
@@ -107,7 +106,6 @@ export const AccountOpeningForm = ({
         })}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
@@ -121,7 +119,6 @@ export const AccountOpeningForm = ({
           serviceType: number;
         }
       >
-        verticalLabel
         name="serverId"
         label={t('table.server')}
         placeholder={t('common.pleaseSelect')}
@@ -144,7 +141,6 @@ export const AccountOpeningForm = ({
         }}
       />
       <FormSelect
-        verticalLabel
         name="serverType"
         label={t('common.serverType')}
         placeholder={t('common.pleaseSelect')}
@@ -155,7 +151,6 @@ export const AccountOpeningForm = ({
         }))}
       />
       <FormSelect
-        verticalLabel
         name="serverProperty"
         label={t('common.type')}
         placeholder={t('common.pleaseSelect')}
@@ -166,7 +161,6 @@ export const AccountOpeningForm = ({
         }))}
       />
       <FormInput
-        verticalLabel
         name="source"
         label={t('accountOpening.source')}
         placeholder={t('common.pleaseInput', {
@@ -186,7 +180,6 @@ export const AccountOpeningForm = ({
         )}
       />
       <FormInput
-        verticalLabel
         name="verifyUserName"
         label={t('information.verifyUserName')}
         placeholder={t('common.pleaseInput', {

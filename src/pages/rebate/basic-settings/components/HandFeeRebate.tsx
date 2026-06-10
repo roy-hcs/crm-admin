@@ -1,5 +1,3 @@
-
-
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -135,97 +133,96 @@ export function HandFeeRebate() {
   return (
     <div className="grid gap-6">
       <RrhForm form={form} className="grid gap-y-6">
+        <FormRadio
+          name="hasOpen"
+          orientation="horizontal"
+          label={t('RebateBasicSettingsPage.enableFeeRebate')}
+          options={[
+            { label: t('common.yes'), value: '1' },
+            { label: t('common.no'), value: '0' },
+          ]}
+        />
+        <FormRadio
+          name="getMyselfRebate"
+          orientation="horizontal"
+          label={t('RebateBasicSettingsPage.getMyselfFeeRebate')}
+          options={[
+            { label: t('common.yes'), value: '1' },
+            { label: t('common.no'), value: '0' },
+          ]}
+          labeTipsDom={
+            <div className="text-muted-foreground text-xs leading-4">
+              *{t('RebateBasicSettingsPage.getMyselfRebateDesc')}
+            </div>
+          }
+        />
+
+        <FormDateInput
+          label={t('RebateBasicSettingsPage.lastOrderRebateTime')}
+          labeTipsDom={
+            <div className="text-muted-foreground text-xs leading-4">
+              *{t('RebateBasicSettingsPage.handFeeLastOrderRebateTimeDesc')}
+            </div>
+          }
+          name="lastOrderRebateTime"
+          showTime
+        />
+
+        <FormRadio
+          name="personRabateCheck"
+          orientation="horizontal"
+          label={t('RebateBasicSettingsPage.personRabateCheck')}
+          labeTipsDom={
+            <div className="text-muted-foreground text-xs leading-4">
+              *{t('RebateBasicSettingsPage.personRabateCheckDesc')}
+            </div>
+          }
+          options={[
+            { label: t('common.yes'), value: '1' },
+            { label: t('common.no'), value: '0' },
+          ]}
+        />
+
+        {personRabateCheckValue === '1' && (
+          <div className="grid gap-6">
             <FormRadio
-              name="hasOpen"
-              orientation="horizontal"
-              label={t('RebateBasicSettingsPage.enableFeeRebate')}
+              name="settleStyle"
+              label={t('RebateBasicSettingsPage.settleStyle')}
               options={[
-                { label: t('common.yes'), value: '1' },
-                { label: t('common.no'), value: '0' },
+                { label: t('RebateBasicSettingsPage.settleTimeRadio.0'), value: '0' },
+                { label: t('RebateBasicSettingsPage.settleTimeRadio.1'), value: '1' },
+                { label: t('RebateBasicSettingsPage.settleTimeRadio.2'), value: '2' },
               ]}
             />
-            <FormRadio
-              name="getMyselfRebate"
-              orientation="horizontal"
-              label={t('RebateBasicSettingsPage.getMyselfFeeRebate')}
-              options={[
-                { label: t('common.yes'), value: '1' },
-                { label: t('common.no'), value: '0' },
-              ]}
-              labeTipsDom={
-                <div className="text-muted-foreground text-xs leading-4">
-                  *{t('RebateBasicSettingsPage.getMyselfRebateDesc')}
-                </div>
-              }
-            />
-
-            <FormDateInput
-              label={t('RebateBasicSettingsPage.lastOrderRebateTime')}
-              labeTipsDom={
-                <div className="text-muted-foreground text-xs leading-4">
-                  *{t('RebateBasicSettingsPage.handFeeLastOrderRebateTimeDesc')}
-                </div>
-              }
-              name="lastOrderRebateTime"
-              showTime
-            />
-
-            <FormRadio
-              name="personRabateCheck"
-              orientation="horizontal"
-              label={t('RebateBasicSettingsPage.personRabateCheck')}
-              labeTipsDom={
-                <div className="text-muted-foreground text-xs leading-4">
-                  *{t('RebateBasicSettingsPage.personRabateCheckDesc')}
-                </div>
-              }
-              options={[
-                { label: t('common.yes'), value: '1' },
-                { label: t('common.no'), value: '0' },
-              ]}
-            />
-
-            {personRabateCheckValue === '1' && (
-              <div className="grid gap-6">
-                <FormRadio
-                  name="settleStyle"
-                  label={t('RebateBasicSettingsPage.settleStyle')}
-                  options={[
-                    { label: t('RebateBasicSettingsPage.settleTimeRadio.0'), value: '0' },
-                    { label: t('RebateBasicSettingsPage.settleTimeRadio.1'), value: '1' },
-                    { label: t('RebateBasicSettingsPage.settleTimeRadio.2'), value: '2' },
-                  ]}
-                />
-                {settleStyleValue === '1' && (
-                  <FormTimeOfDayInput<FormValues>
-                    name="settleTime"
-                    label={t('RebateBasicSettingsPage.daySummary')}
-                    precision="minute"
-                  />
-                )}
-                {settleStyleValue === '2' && (
-                  <FormSelect
-                    name="settleWeek"
-                    label={t('RebateBasicSettingsPage.weekSummary')}
-                    verticalLabel
-                    placeholder={t('common.pleaseSelect')}
-                    showRowValue={false}
-                    options={weekOptions.map(item => ({
-                      label: t(item.label),
-                      value: item.value,
-                    }))}
-                  />
-                )}
-                {settleStyleValue === '2' && (
-                  <FormTimeOfDayInput<FormValues>
-                    name="settleWeekTime"
-                    label={t('RebateBasicSettingsPage.weekSummary')}
-                    precision="minute"
-                  />
-                )}
-              </div>
+            {settleStyleValue === '1' && (
+              <FormTimeOfDayInput<FormValues>
+                name="settleTime"
+                label={t('RebateBasicSettingsPage.daySummary')}
+                precision="minute"
+              />
             )}
-          </RrhForm>
+            {settleStyleValue === '2' && (
+              <FormSelect
+                name="settleWeek"
+                label={t('RebateBasicSettingsPage.weekSummary')}
+                placeholder={t('common.pleaseSelect')}
+                showRowValue={false}
+                options={weekOptions.map(item => ({
+                  label: t(item.label),
+                  value: item.value,
+                }))}
+              />
+            )}
+            {settleStyleValue === '2' && (
+              <FormTimeOfDayInput<FormValues>
+                name="settleWeekTime"
+                label={t('RebateBasicSettingsPage.weekSummary')}
+                precision="minute"
+              />
+            )}
+          </div>
+        )}
+      </RrhForm>
       <div className="flex justify-end">
         <RrhButton variant="default" onClick={handleConfirm}>
           {t('common.Confirm')}

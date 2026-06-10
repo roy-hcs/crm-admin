@@ -71,20 +71,8 @@ export const SetRiskButton = ({
       onOpenChange={setOpen}
     >
       <RrhForm className="flex flex-col gap-4" form={form} onSubmit={form.handleSubmit(onSubmit)}>
-        <FormSelect
-          verticalLabel
-          showRowValue={false}
-          label={ip}
-          name="ipTrust"
-          options={trustOptions}
-        />
-        <FormSelect
-          verticalLabel
-          showRowValue={false}
-          label={device}
-          name="deviceTrust"
-          options={trustOptions}
-        />
+        <FormSelect showRowValue={false} label={ip} name="ipTrust" options={trustOptions} />
+        <FormSelect showRowValue={false} label={device} name="deviceTrust" options={trustOptions} />
         <div className="flex justify-end gap-4">
           <RrhButton type="button" variant="outline" onClick={() => setOpen(false)}>
             {t('common.Cancel')}

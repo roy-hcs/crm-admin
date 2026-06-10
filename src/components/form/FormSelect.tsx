@@ -31,7 +31,7 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
   name,
   label,
   placeholder,
-  verticalLabel = false,
+  verticalLabel = true,
   className,
   renderItem,
   showRowValue = true,

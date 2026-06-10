@@ -198,7 +198,6 @@ export const CrmRebateAccountPage = ({ userId }: { userId: string }) => {
             <>
               <FormMultiSelect
                 name="accounts"
-                verticalLabel
                 options={accountOptions}
                 label={''}
                 placeholder={t('common.pleaseSelect')}
@@ -225,7 +224,6 @@ export const CrmRebateAccountPage = ({ userId }: { userId: string }) => {
               <FormSelect
                 showRowValue={false}
                 name="serviceType"
-                verticalLabel
                 options={serverTypeOptions}
                 label={t('tradingAccountTransactions.serverType')}
               />
@@ -234,20 +232,17 @@ export const CrmRebateAccountPage = ({ userId }: { userId: string }) => {
                 showRowValue={false}
                 options={serverOptions}
                 label={t('table.server')}
-                verticalLabel
               />
               <FormSelect
                 name="serverGroup"
                 showRowValue={false}
                 label={t('table.groups')}
                 options={groupOptions}
-                verticalLabel
                 disabled={groupOptions.length === 0}
               />
               <FormInput
                 name="account"
                 type="number"
-                verticalLabel
                 label={`${t('table.account')}(${t('common.optional')})`}
                 placeholder={t('common.pleaseInput', { field: t('table.account') })}
               />
@@ -257,13 +252,11 @@ export const CrmRebateAccountPage = ({ userId }: { userId: string }) => {
                 showRowValue={false}
                 label={t('common.level')}
                 options={leverOptions}
-                verticalLabel
               />
               <FormSelect
                 name="accountGroupId"
                 showRowValue={false}
                 label={`${t('table.accountGroup')}(${t('common.optional')})`}
-                verticalLabel
                 options={
                   rebateAccountsInfo?.allDealAccountGroup.map(item => ({
                     label: item.name,

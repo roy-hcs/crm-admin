@@ -108,7 +108,6 @@ export const AddWalletDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
         <FormSelect
           name="currency"
           label={t('table.wallet')}
-          verticalLabel
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={walletList}

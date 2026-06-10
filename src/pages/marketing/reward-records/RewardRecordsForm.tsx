@@ -92,19 +92,16 @@ export const RewardRecordsForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="rewardTitle"
         label={t('table.activityName')}
         placeholder={t('common.pleaseInput', { field: t('table.activityName') })}
       />
       <FormInput
-        verticalLabel
         name="crmAccount"
         label={t('table.CRMAccount')}
         placeholder={t('common.pleaseInput', { field: t('table.CRMAccount') })}
       />
       <FormSelect
-        verticalLabel
         name="businessType"
         label={t('table.triggerBusiness')}
         placeholder={t('common.pleaseSelect')}
@@ -124,7 +121,6 @@ export const RewardRecordsForm = ({
         )}
       />
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}

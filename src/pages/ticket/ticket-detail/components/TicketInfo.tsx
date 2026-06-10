@@ -359,7 +359,6 @@ export function TicketInfo({
                   <FormSelect
                     name="roleId"
                     label={t('ticketList.receiverId')}
-                    verticalLabel
                     placeholder={t('common.pleaseSelect')}
                     showRowValue={false}
                     options={roleOptions}
@@ -370,7 +369,6 @@ export function TicketInfo({
                   <FormSelect
                     name="receiverId"
                     label={''}
-                    verticalLabel
                     placeholder={t('common.pleaseSelect')}
                     showRowValue={false}
                     options={allocatedList}
@@ -382,7 +380,6 @@ export function TicketInfo({
               <FormMultiSelect
                 name="carbonCopy"
                 label={t('ticketList.carbonCopy')}
-                verticalLabel
                 placeholder={t('common.pleaseSelect')}
                 showRowValue={false}
                 options={userOptions}
@@ -391,7 +388,6 @@ export function TicketInfo({
               <FormSelect
                 name="status"
                 label={t('table.status')}
-                verticalLabel
                 placeholder={t('common.pleaseSelect')}
                 showRowValue={false}
                 options={statusMap.map(i => ({
@@ -403,7 +399,6 @@ export function TicketInfo({
               <FormSelect
                 name="priority"
                 label={t('ticketList.priority')}
-                verticalLabel
                 placeholder={t('common.pleaseSelect')}
                 showRowValue={false}
                 options={priorityMap.map(i => ({

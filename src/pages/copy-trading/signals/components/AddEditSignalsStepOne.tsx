@@ -35,7 +35,6 @@ export function AddEditSignalsStepOne({
   return (
     <div className="grid gap-6">
       <FormInput
-        verticalLabel
         name="name"
         label={t('signals.name')}
         placeholder={t('common.pleaseInput', {
@@ -55,7 +54,6 @@ export function AddEditSignalsStepOne({
         }
       />
       <FormSelect
-        verticalLabel
         name="serverId"
         label={t('table.signalSourceAccount')}
         options={serverOptions}
@@ -77,7 +75,6 @@ export function AddEditSignalsStepOne({
       />
       <div className="grid grid-cols-2 items-end gap-6">
         <FormInput
-          verticalLabel
           name="minBalanceForSubscription"
           label={t('signals.minBalanceForSubscription')}
           placeholder={t('common.pleaseInput', {
@@ -85,7 +82,6 @@ export function AddEditSignalsStepOne({
           })}
         />
         <FormInput
-          verticalLabel
           name="maxBalanceForSubscription"
           label={t('signals.maxBalanceForSubscription')}
           placeholder={t('common.pleaseInput', {
@@ -94,29 +90,23 @@ export function AddEditSignalsStepOne({
         />
       </div>
       <FormInput
-        verticalLabel
         name="upperLimit"
         label={t('signalReview.upperLimit')}
         placeholder={t('common.pleaseInput', {
           field: t('signalReview.upperLimit'),
         })}
       />
-      <FormSwitch name="publicShow" label={t('signals.publicShow')} verticalLabel />
+      <FormSwitch name="publicShow" label={t('signals.publicShow')} />
       <FormSwitch
         name="subscriptionReview"
         label={t('signalReview.subscriptionReview')}
-        verticalLabel
         labeTipsDom={
           <div className="text-muted-foreground text-xs leading-4">
             {t('signalReview.subscriptionReviewDesc')}
           </div>
         }
       />
-      <FormSwitch
-        name="performanceFeeEnable"
-        label={t('signals.performanceFeeEnable')}
-        verticalLabel
-      />
+      <FormSwitch name="performanceFeeEnable" label={t('signals.performanceFeeEnable')} />
       {performanceFeeEnableValue === '1' && (
         <FormInputWithUnit
           name="subscribeFee"
@@ -127,7 +117,6 @@ export function AddEditSignalsStepOne({
               {t('signals.subscribeFeeDesc')}
             </div>
           }
-          verticalLabel
         />
       )}
       <FormSwitch
@@ -136,7 +125,6 @@ export function AddEditSignalsStepOne({
         labeTipsDom={
           <div className="text-muted-foreground text-xs leading-4">{t('signals.chargeDesc')}</div>
         }
-        verticalLabel
       />
       {chargeValue === '1' && (
         <FormRadio
@@ -157,11 +145,9 @@ export function AddEditSignalsStepOne({
           unit="%"
           label={t('signalReview.performanceFeeRatio')}
           placeholder="0-100"
-          verticalLabel
         />
       )}
       <FormSelect
-        verticalLabel
         name="receiveAccount"
         label={t('table.paymentAccount')}
         showRowValue={false}

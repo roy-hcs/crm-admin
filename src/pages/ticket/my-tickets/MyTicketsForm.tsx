@@ -79,19 +79,16 @@ export const MyTicketsForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="orderId"
         label={t('ticketList.orderId')}
         placeholder={t('common.pleaseInput', { field: t('ticketList.orderId') })}
       />
       <FormInput
-        verticalLabel
         name="content"
         label={t('ticketList.content')}
         placeholder={t('common.pleaseInput', { field: t('ticketList.content') })}
       />
       <FormSelect
-        verticalLabel
         name="priority"
         label={t('ticketList.priority')}
         placeholder={t('common.pleaseSelect')}
@@ -112,7 +109,6 @@ export const MyTicketsForm = ({
       />
       {showStatus && (
         <FormSelect
-          verticalLabel
           name="status"
           label={t('table.status')}
           placeholder={t('common.pleaseSelect')}

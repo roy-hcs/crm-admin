@@ -210,7 +210,6 @@ export function CustomerLoyaltyPlanConfig() {
             <div className="flex items-end gap-3">
               <FormSelect
                 className="flex-1"
-                verticalLabel
                 name={ruleEventName}
                 label={eventLabel}
                 placeholder={t('common.pleaseSelect')}
@@ -219,7 +218,6 @@ export function CustomerLoyaltyPlanConfig() {
               />
               <FormSelect
                 className="flex-1"
-                verticalLabel
                 name={ruleSymbolName}
                 label={showSymbolLabel ? t('customerLoyaltyPlan.ruleSymbol') : undefined}
                 placeholder={t('common.pleaseSelect')}
@@ -228,7 +226,6 @@ export function CustomerLoyaltyPlanConfig() {
               />
               <FormInput
                 className="flex-1"
-                verticalLabel
                 name={ruleValueName}
                 label={showValueLabel ? t('customerLoyaltyPlan.ruleValue') : undefined}
                 placeholder={t('common.pleaseInput', {
@@ -416,7 +413,6 @@ export function CustomerLoyaltyPlanConfig() {
                 >
                   <FormInput
                     className="py-3"
-                    verticalLabel
                     name={`languageList.${index}.name` as const}
                     label={t('customerLoyaltyPlan.name')}
                     placeholder={t('rules.limitLength', {

@@ -102,7 +102,6 @@ export const SignalsForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        verticalLabel
         name="name"
         label={t('signals.name')}
         placeholder={t('common.pleaseInput', {
@@ -111,7 +110,6 @@ export const SignalsForm = ({
       />
 
       <FormInput
-        verticalLabel
         name="userName"
         label={t('signals.signalSourceAuthor')}
         placeholder={t('common.pleaseInput', {
@@ -122,7 +120,6 @@ export const SignalsForm = ({
       <RrhServerSelector serverOptions={server?.rows || []} />
 
       <FormInput
-        verticalLabel
         name="account"
         label={t('table.tradingAccount')}
         placeholder={t('common.pleaseInput', {
@@ -131,7 +128,6 @@ export const SignalsForm = ({
       />
 
       <FormSelect
-        verticalLabel
         name="status"
         label={t('table.status')}
         placeholder={t('common.pleaseSelect')}
