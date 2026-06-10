@@ -294,7 +294,8 @@ const AgentFundInfo = ({ userId, serverList }: { userId: string; serverList: Ser
             <RrhSelect
               options={serverOptions}
               showRowValue={false}
-              className="px-3 py-2"
+              className="min-w-40 px-3 py-2"
+              placeholder={t('common.pleaseSelect')}
               value={serverId}
               renderItem={option => {
                 return (
@@ -506,13 +507,14 @@ const AgentTradeInfo = ({ userId, serverList }: { userId: string; serverList: Se
   return (
     <RrhCard>
       <div className="mb-3 flex items-end justify-between border-b pb-3">
-        <h3 className="text-xl font-semibold">{t('CRMAccountPage.customerFundOverview')}</h3>
+        <h3 className="text-xl font-semibold">{t('home.CustomerTrading')}</h3>
         <div className="flex flex-wrap items-center gap-1 lg:flex-nowrap lg:gap-4">
           <div className="flex-1">
             <RrhSelect
               options={serverOptions}
               showRowValue={false}
-              className="px-3 py-2"
+              className="min-w-40 px-3 py-2"
+              placeholder={t('common.pleaseSelect')}
               value={serverId}
               renderItem={option => {
                 return (
@@ -551,7 +553,7 @@ const AgentTradeInfo = ({ userId, serverList }: { userId: string; serverList: Se
             setCurrentTab(value);
           }}
         >
-          <TabsList>
+          <TabsList className="mb-3">
             {tabs.map(tab => (
               <TabsTrigger key={tab.value} value={tab.value}>
                 {t(tab.value)}

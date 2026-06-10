@@ -47,6 +47,7 @@ import {
   UserTagProgressRes,
   UserKycTabRes,
   CrmUserInfo,
+  RoleItem,
 } from './types';
 import { UserAccountOperationRes, UserRebateAccountTabRes } from '../agent/types';
 
@@ -661,5 +662,12 @@ export function useGeCrmUserInfo(userId: string) {
   return useQuery({
     queryKey: ['GetUserInfo', userId],
     queryFn: () => apiGetCustom<CrmUserInfo>(`/system/crmUser/getUserInfo?id=${userId}`),
+  });
+}
+
+export function useGetUserRoles() {
+  return useQuery({
+    queryKey: ['GetUserRoles'],
+    queryFn: () => apiFormPost<RoleItem[]>(`/system/user/role/getAllRole`),
   });
 }

@@ -5,7 +5,7 @@ import { CrmUserParams, TagUserItem } from '@/api/hooks/account';
 import { RefreshCcw, Search } from 'lucide-react';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
-import { crmAccountTypeOptions, roleOptions, statusOptions } from '@/lib/const';
+import { crmAccountTypeOptions, statusOptions } from '@/lib/const';
 import { RrhButton } from '@/components/common/RrhButton';
 import { useTranslation } from 'react-i18next';
 import { formatDate } from '@/lib/utils';
@@ -13,6 +13,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { BasicParams } from '@/api/types';
 import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 import { RrhForm } from '@/components/form/RrhForm';
+import { useGetUserRoles } from '@/api/hooks/system/system';
 
 type FormData = {
   accountType: string;
@@ -64,6 +65,8 @@ export const CRMAccountsForm = ({
       accountType: otherParams.accountType || '',
     },
   });
+  const { data: userRoles } = useGetUserRoles();
+  console.log('userRoles', userRoles);
 
   const { t } = useTranslation();
 
@@ -157,7 +160,7 @@ export const CRMAccountsForm = ({
         name="role"
         label={t('table.role')}
         placeholder={t('common.pleaseSelect')}
-        options={roleOptions.map(i => ({ label: t(i.label), value: i.value }))}
+        options={(userRoles?.data || [])?.map(i => ({ label: t(i.roleName), value: i.roleId }))}
       />
 
       <FormField

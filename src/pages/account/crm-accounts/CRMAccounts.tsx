@@ -33,6 +33,7 @@ import { AccountTags } from './components/AccountTags';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useTabActions } from '@/hooks/useTabActions';
+import { ToolTip } from '@/components/common/ToolTip';
 type DialogType = 'password' | 'fundPassword' | 'delete' | null;
 export const CRMAccounts = () => {
   const formRef = useRef<CRMFormRef>(null);
@@ -143,12 +144,27 @@ export const CRMAccounts = () => {
         id: 'userName',
         header: t('CRMAccountPage.UserName'),
         accessorFn: row => row.userName,
-        cell: ({ row }) => (
-          <div>
-            <div>{row.original.userName}</div>
-            <div>{row.original.showId}</div>
-          </div>
-        ),
+        cell: ({ row }) => {
+          const exceedLength = row.original.userName.length > 24;
+          const content = exceedLength
+            ? row.original.userName.slice(0, 24) + '...'
+            : row.original.userName;
+          return (
+            <div>
+              {exceedLength ? (
+                <ToolTip
+                  maxWidth="500px"
+                  content={<div className="break-all">{row.original.userName}</div>}
+                >
+                  <div>{content}</div>
+                </ToolTip>
+              ) : (
+                <div>{content}</div>
+              )}
+              <div>{row.original.showId}</div>
+            </div>
+          );
+        },
       },
       {
         id: 'status',
