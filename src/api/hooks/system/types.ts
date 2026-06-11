@@ -843,3 +843,32 @@ export type CrmUserInfo = {
     userLanguage: string | null;
   };
 };
+export interface CrmUserWalletItem {
+  createBy: string | null;
+  createTime: string;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, string>;
+  id: string;
+  crmUserId: string;
+  balance: string;
+  currency: string;
+  major: string | null;
+  permissionJson: string | null;
+  delFlag: string | null;
+  crmUserName: string | null;
+  crmUserShowId: string | null;
+  allIn: string | null;
+  allOut: string | null;
+  accounts: string | null;
+  digits: number | null;
+}
+export type AddCrmUserWalletParams = {
+  crmUserId: string;
+  amount: string;
+  walletId: string;
+  operationType: string;
+  remark: string;
+  opType: string;
+};
