@@ -62,67 +62,33 @@ const exportWalletRowsToExcel = (
   URL.revokeObjectURL(url);
 };
 
+// 入金操作类型映射
+const DEPOSIT_TYPE_MAP: Record<string, number> = {
+  '线下入金/Offline Deposit': 1,
+  '活动奖金/Promotion Bonus': 2,
+  '客户约定转账/Agreed Transfer In': 3,
+  '系统补偿/System Compensation': 4,
+  '佣金回补/Commission Rebate': 5,
+  '补穿仓/Covering a Shortfall': 6,
+  '底薪奖励/Base Salary Bonus': 7,
+  '净入金奖励/Net Deposit Bonus': 8,
+  '其他/Others': 99,
+};
+
+// 出金操作类型映射
+const WITHDRAWAL_TYPE_MAP: Record<string, number> = {
+  '线下出金/Offline Withdrawal': 1,
+  '系统扣款/System Deduction': 2,
+  '活动扣回/Promotion Reversal': 3,
+  '客户约定转账/Agreed Transfer Out': 4,
+  '佣金扣回/Commission deducted': 5,
+  '其他/Others': 99,
+};
+
 const handleType = (operate: number, opTypeName: string) => {
-  let optType: number | null = null;
-  if (operate === 1) {
-    // 入金
-    switch (opTypeName) {
-      case '线下入金/Offline Deposit':
-        optType = 1;
-        break;
-      case '活动奖金/Promotion Bonus':
-        optType = 2;
-        break;
-      case '客户约定转账/Agreed Transfer In':
-        optType = 3;
-        break;
-      case '系统补偿/System Compensation':
-        optType = 4;
-        break;
-      case '佣金回补/Commission Rebate':
-        optType = 5;
-        break;
-      case '补穿仓/Covering a Shortfall':
-        optType = 6;
-        break;
-      case '底薪奖励/Base Salary Bonus':
-        optType = 7;
-        break;
-      case '净入金奖励/Net Deposit Bonus':
-        optType = 8;
-        break;
-      case '其他/Others':
-        optType = 99;
-        break;
-      default:
-        optType = null;
-    }
-  } else if (operate === 2) {
-    // 出金
-    switch (opTypeName) {
-      case '线下出金/Offline Withdrawal':
-        optType = 1;
-        break;
-      case '系统扣款/System Deduction':
-        optType = 2;
-        break;
-      case '活动扣回/Promotion Reversal':
-        optType = 3;
-        break;
-      case '客户约定转账/Agreed Transfer Out':
-        optType = 4;
-        break;
-      case '佣金扣回/Commission deducted':
-        optType = 5;
-        break;
-      case '其他/Others':
-        optType = 99;
-        break;
-      default:
-        optType = null;
-    }
-  }
-  return optType;
+  if (operate === 1) return DEPOSIT_TYPE_MAP[opTypeName] ?? null;
+  if (operate === 2) return WITHDRAWAL_TYPE_MAP[opTypeName] ?? null;
+  return null;
 };
 
 const parseWalletExcelFile = (file: File): Promise<{ header: string[]; rows: WalletRow[] }> => {
@@ -144,31 +110,11 @@ const parseWalletExcelFile = (file: File): Promise<{ header: string[]; rows: Wal
           defval: '',
         });
 
+        // 必填列：展示ID(1)、邮箱(2)、币种(4)、操作名称(5)、操作类型名称(6)、金额(7)。手机号(3)和备注(8)为选填
+        const REQUIRED_COL_INDICES = [1, 2, 4, 5, 6, 7];
         const filteredRows = (aoaData as RowData[]).filter((row: RowData, index) => {
           if (index === 0) return true;
-          const secondCol = row[1];
-          const thirdCol = row[2];
-          const fifthCol = row[4];
-          const sixthCol = row[5];
-          const seventhCol = row[6];
-          const eighthCol = row[7];
-          if (
-            secondCol === undefined ||
-            String(secondCol).trim() === '' ||
-            thirdCol === undefined ||
-            String(thirdCol).trim() === '' ||
-            fifthCol === undefined ||
-            String(fifthCol).trim() === '' ||
-            sixthCol === undefined ||
-            String(sixthCol).trim() === '' ||
-            seventhCol === undefined ||
-            String(seventhCol).trim() === '' ||
-            eighthCol === undefined ||
-            String(eighthCol).trim() === ''
-          ) {
-            return false;
-          }
-          return true;
+          return !REQUIRED_COL_INDICES.some(i => !row[i] || !String(row[i]).trim());
         });
         // 如果必填列有空值，则认为该行无效，过滤掉，并在后续提示用户
         if (!filteredRows.length) {
