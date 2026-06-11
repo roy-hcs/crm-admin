@@ -705,3 +705,43 @@ export type PerformanceFeeRebateVerifyParams = {
   verifyRemark: string;
   verifyStep: string;
 };
+
+export type CopyTradingDashboardDataRes = {
+  code: number;
+  data: {
+    feeInfo: {
+      pendingManagementFee: 71.7072;
+      pendingSubscribeFee: 3820.46;
+      settledSubscribeFee: 64841.82;
+      settledManagementFee: 1070.8701;
+    };
+    subscribeInfo: {
+      remainingDays: 51;
+      startTime: '2026-06-04';
+      endTime: '2026-07-31';
+      status: 1;
+      totalDay: 51;
+    };
+    followerCount: number;
+    isEdit: number;
+    signalSourceCount: number;
+    status: string;
+    roleIds: string[];
+    allRoles: Array<{
+      roleId: string;
+      roleName: string;
+    }>;
+  };
+};
+
+export type GetEstimatedFeeItem = {
+  subscribeFee: 100;
+  managementFee: 2;
+  createTime: '2024-12-05';
+  orderCount: '1';
+};
+
+export type GetEstimatedFeeRes = {
+  code: number;
+  data: GetEstimatedFeeItem[];
+};

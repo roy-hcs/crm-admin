@@ -8,6 +8,7 @@ import { RouteObject, useSearchParams } from 'react-router-dom';
 import { SettingsPage } from '@/pages/copy-trading/settings/SettingsPage';
 import { PerformanceFeeRebatePage } from '@/pages/copy-trading/performance-fee-rebate/PerformanceFeeRebatePage';
 import { PerformanceVerifyDetailPage } from '@/pages/copy-trading/performance-fee-rebate-verify-detail/PerformanceVerifyDetailPage';
+import { CopyTradingDashboardPage } from '@/pages/copy-trading/dashboard/CopyTradingDashboardPage';
 
 /**
  * Copy Trading routes - corresponds to "CopyTrading" menu item
@@ -63,6 +64,10 @@ export const copyTradingRoutes: RouteObject[] = [
   {
     path: '/copy-trading/performance-fee-rebate/verify-detail',
     element: <PerformanceVerifyDetailPageWrapper />,
+  },
+  {
+    path: '/copy-trading/dashboard',
+    element: <CopyTradingDashboardPage />,
   },
   // TODO: Add routes as pages are developed
   /*
