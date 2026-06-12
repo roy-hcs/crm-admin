@@ -2200,5 +2200,9 @@
     "desc": "本操作无需审核，直接更改钱包的余额",
     "walletBatchAdjustmentDesc": "使用excel批量调整方案，可以批量对用户的钱包进行入金、出金调整操作",
     "walletBatchAdjustmentTip": "注：该方案可能会存在一定的失败概率。"
+  },
+  "accountAdjustment": {
+    "title": "账户余额调整",
+    "operateAccountNumber": "操作账户数"
   }
 }

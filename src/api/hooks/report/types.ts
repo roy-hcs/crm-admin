@@ -1,4 +1,5 @@
 import { BasicRes, BaseEntity, BasicParams } from '../../types';
+import { CrmDealAccountListItem } from '../account/types';
 
 // ib客户追踪
 export type ClientTrackingParams = BasicParams & {
@@ -939,59 +940,7 @@ export type UserDeal = {
   typeName: string | null;
 };
 
-export type DealAccount = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: Record<string, string>;
-  id: string;
-  userId: string;
-  username: string | null;
-  name: string;
-  account: string;
-  serviceType: number;
-  serviceProperty: number;
-  servicePropertyStr: string | null;
-  servicePropertyValue: string | null;
-  server: string;
-  serverName: string;
-  accountSupervisorName: string | null;
-  directBrokerName: string | null;
-  accountGroupId: string | null;
-  accountGroupName: string | null;
-  accountSupervisorShowId: string | null;
-  serverGroup: string;
-  accountType: string;
-  accountTypeName: string | null;
-  lever: string;
-  balance: number;
-  netWorth: number;
-  creditAmount: number;
-  registerTime: string; // ISO date string format
-  registerTimeStr: string; // Formatted time string
-  dealAuth: number;
-  usedAdvance: number;
-  usableAdvance: number;
-  advanceScale: number;
-  status: number;
-  initialAmount: number;
-  currency: string;
-  authority: string;
-  directBroker: string;
-  permissionJson: string | null;
-  digits: number;
-  hasClearAccount: string;
-  buildRebateAccount: boolean;
-  accountGroupList: string | null;
-  accounts: string | null;
-  accountIds: string | null;
-  crmAuthority: number;
-  source: string | null;
-  roleName: string | null;
-  triggeringEvent: string | null;
-};
+export type DealAccount = CrmDealAccountListItem;
 
 export type CrmUserDealListDetailRes = {
   userDeal: UserDeal;
