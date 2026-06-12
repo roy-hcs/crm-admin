@@ -2200,5 +2200,9 @@
     "title": "Wallet balance adjustment",
     "walletBatchAdjustmentDesc": "Using the excel batch adjustment plan, you can make deposit and withdrawal adjustments to the user's wallet in batches.",
     "walletBatchAdjustmentTip": "Note: This solution may have a certain probability of failure."
+  },
+  "accountAdjustment": {
+    "operateAccountNumber": "Number of operating accounts",
+    "title": "Account balance adjustment"
   }
 }

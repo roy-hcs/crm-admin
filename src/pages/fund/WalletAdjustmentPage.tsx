@@ -83,7 +83,6 @@ export const WalletAdjustmentPage = () => {
       },
       {
         onSuccess: result => {
-          console.log('Operation result:', result);
           if (result?.code === 0) {
             form.reset();
             setOpen(false);

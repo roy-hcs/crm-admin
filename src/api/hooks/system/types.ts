@@ -2,6 +2,7 @@ import { KycStatus } from '@/components/common/RrhKycStatus';
 import { BasicParams, BasicRes, BaseEntity } from '../../types';
 import { CrmUserItem } from '../account';
 import { OperationsLogsItem } from '../monitor/type';
+import { CrmDealAccountListItem } from '../account/types';
 
 export type ServerItem = {
   id: string;
@@ -492,59 +493,7 @@ export type WalletItem = {
   allOut: string | null;
   accounts: string | null;
 };
-export type AccountItem = {
-  createBy: string | null;
-  createTime: string | null;
-  updateBy: string | null;
-  updateTime: string | null;
-  remark: string | null;
-  params: object;
-  id: string | null;
-  userId: string | null;
-  username: string | null;
-  name: string | null;
-  account: string | null;
-  serviceType: number | null;
-  serviceProperty: number | null;
-  servicePropertyStr: string | null;
-  servicePropertyValue: string | null;
-  server: string | null;
-  serverName: string | null;
-  accountSupervisorName: string | null;
-  directBrokerName: string | null;
-  accountGroupId: string | null;
-  accountGroupName: string | null;
-  accountSupervisorShowId: string | null;
-  serverGroup: string | null;
-  accountType: string | null;
-  accountTypeName: string | null;
-  lever: string | null;
-  balance: number | null;
-  netWorth: number | null;
-  creditAmount: number | null;
-  registerTime: string | null;
-  registerTimeStr: string | null;
-  dealAuth: number | null;
-  usedAdvance: number | null;
-  usableAdvance: number | null;
-  advanceScale: number | null;
-  status: number | null;
-  initialAmount: number | null;
-  currency: string | null;
-  authority: string | null;
-  directBroker: string | null;
-  permissionJson: string | null;
-  digits: number | null;
-  hasClearAccount: string | null;
-  buildRebateAccount: boolean;
-  accountGroupList: string | null;
-  accounts: string | null;
-  accountIds: string | null;
-  crmAuthority: number | null;
-  source: string | null;
-  roleName: string | null;
-  triggeringEvent: string | null;
-};
+export type AccountItem = CrmDealAccountListItem;
 
 export type MtServerItem = {
   createBy: string | null;
@@ -871,4 +820,31 @@ export type AddCrmUserWalletParams = {
   operationType: string;
   remark: string;
   opType: string;
+};
+export type CrmDealAccountListRes = {
+  code: number;
+  msg: string;
+  total: string;
+  rows: CrmDealAccountListItem[];
+};
+export type CrmDealAccountListParams = {
+  origin: number;
+  username: string;
+  pageNum: number;
+  pageSize: number;
+  page: number;
+};
+export type AdjustBalanceParams = {
+  amount: string;
+  serverId: string;
+  logins: string[];
+  remark?: string;
+  opType?: string;
+  operationType: string;
+};
+export type AdjustBalanceRes = {
+  failedMsg: string;
+  failedNum: number;
+  successNum: number;
+  total: number;
 };

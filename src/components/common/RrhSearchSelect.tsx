@@ -6,6 +6,7 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import { Popover, PopoverAnchor, PopoverContent } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 import {} from '@base-ui/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +25,7 @@ export interface RrhSearchSelectProps<TParams, TItem> {
   displayLabel?: string;
   lazy?: boolean;
   disabled?: boolean;
+  popoverContentCls?: string;
 }
 
 export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TParams, TItem>) {
@@ -38,6 +40,7 @@ export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TPar
     displayLabel,
     lazy = false,
     disabled = false,
+    popoverContentCls = '',
   } = props;
   const { t } = useTranslation();
   const [itemsData, setItemsData] = useState<TItem[]>([]);
@@ -279,7 +282,7 @@ export function RrhSearchSelect<TParams, TItem>(props: RrhSearchSelectProps<TPar
           />
         </PopoverAnchor>
         <PopoverContent
-          className="p-0"
+          className={cn('w-100', popoverContentCls)}
           align="start"
           onOpenAutoFocus={e => e.preventDefault()}
           onInteractOutside={e => {
