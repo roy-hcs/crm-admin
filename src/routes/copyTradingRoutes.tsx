@@ -9,6 +9,7 @@ import { SettingsPage } from '@/pages/copy-trading/settings/SettingsPage';
 import { PerformanceFeeRebatePage } from '@/pages/copy-trading/performance-fee-rebate/PerformanceFeeRebatePage';
 import { PerformanceVerifyDetailPage } from '@/pages/copy-trading/performance-fee-rebate-verify-detail/PerformanceVerifyDetailPage';
 import { CopyTradingDashboardPage } from '@/pages/copy-trading/dashboard/CopyTradingDashboardPage';
+import { SignalsDetailPage } from '@/pages/copy-trading/signals-detail/SignalsDetailPage';
 
 /**
  * Copy Trading routes - corresponds to "CopyTrading" menu item
@@ -28,10 +29,19 @@ const PerformanceVerifyDetailPageWrapper = () => {
   return <PerformanceVerifyDetailPage key={searchParams.get('id')} />;
 };
 
+const SignalsDetailPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <SignalsDetailPage key={searchParams.get('id')} />;
+};
+
 export const copyTradingRoutes: RouteObject[] = [
   {
     path: '/copy-trading/signals',
     element: <SignalsPage />,
+  },
+  {
+    path: '/copy-trading/signals/detail',
+    element: <SignalsDetailPageWrapper />,
   },
   {
     path: '/copy-trading/signal-review',

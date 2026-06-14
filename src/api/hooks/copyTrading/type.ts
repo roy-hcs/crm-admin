@@ -447,6 +447,98 @@ export type MamFollowListRes = BasicRes<MamFollowItem> & {
   totalList: TotalItem[];
 };
 
+export type MamFollowListByTraderParams = BasicParams & {
+  yieldDateRange: string;
+};
+
+export type MamFollowListByTraderRes = BasicRes<MamFollowItem>;
+
+export type MamSignalPositionOrderParams = BasicParams & {
+  params: {
+    positionDealBJStartTime?: string;
+    positionDealBJEndTime?: string;
+  };
+};
+
+export type MamSignalPositionOrderItem = {
+  id: string | null;
+  ticket: number | null;
+  time: string | null;
+  login: string | null;
+  type: number | null;
+  volume: number | null;
+  symbol: string | null;
+  price: number | null;
+  profit: number | null;
+};
+
+export type MamSignalPositionOrderRes = BasicRes<MamSignalPositionOrderItem>;
+
+export type MamSignalFundHistoryParams = BasicParams & {
+  params: {
+    historyDealCloseTimeStart?: string;
+    historyDealCloseTimeEnd?: string;
+  };
+};
+
+export type MamSignalFundHistoryItem = {
+  id: string | null;
+  ticket: number | null;
+  openTime: string | null;
+  login: string | null;
+  type: number | null;
+  volume: number | null;
+  symbol: string | null;
+  openPrice: number | null;
+  closePrice: number | null;
+  profit: number | null;
+  commission: number | null;
+  swaps: number | null;
+};
+
+export type MamSignalFundHistoryRes = BasicRes<MamSignalFundHistoryItem>;
+
+export type MamClientTradeOrdersParams = BasicParams & {
+  clientServerId: string;
+  params: {
+    positionDealBJStartTime?: string;
+    positionDealBJEndTime?: string;
+    historyCloseStartTime?: string;
+    historyCloseEndTime?: string;
+  };
+};
+
+export type MamClientPositionItem = {
+  id: string | null;
+  ticket: number | null;
+  time: string | null;
+  login: string | null;
+  type: number | null;
+  volume: number | null;
+  symbol: string | null;
+  price: number | null;
+  profit: number | null;
+};
+
+export type MamClientHistoryItem = {
+  id: string | null;
+  ticket: number | null;
+  time: string | null;
+  openTime: string | null;
+  login: string | null;
+  type: number | null;
+  volume: number | null;
+  symbol: string | null;
+  openPrice: number | null;
+  closePrice: number | null;
+  profit: number | null;
+  commission: number | null;
+  swaps: number | null;
+};
+
+export type MamClientPositionRes = BasicRes<MamClientPositionItem>;
+export type MamClientHistoryRes = BasicRes<MamClientHistoryItem>;
+
 export type MamFollowDetailRes = {
   code: number;
   data: MamFollowItem;
@@ -710,17 +802,17 @@ export type CopyTradingDashboardDataRes = {
   code: number;
   data: {
     feeInfo: {
-      pendingManagementFee: 71.7072;
-      pendingSubscribeFee: 3820.46;
-      settledSubscribeFee: 64841.82;
-      settledManagementFee: 1070.8701;
+      pendingManagementFee: number;
+      pendingSubscribeFee: number;
+      settledSubscribeFee: number;
+      settledManagementFee: number;
     };
     subscribeInfo: {
-      remainingDays: 51;
-      startTime: '2026-06-04';
-      endTime: '2026-07-31';
-      status: 1;
-      totalDay: 51;
+      remainingDays: number;
+      startTime: string;
+      endTime: string;
+      status: number;
+      totalDay: number;
     };
     followerCount: number;
     isEdit: number;
@@ -735,13 +827,181 @@ export type CopyTradingDashboardDataRes = {
 };
 
 export type GetEstimatedFeeItem = {
-  subscribeFee: 100;
-  managementFee: 2;
-  createTime: '2024-12-05';
-  orderCount: '1';
+  subscribeFee: number;
+  managementFee: number;
+  createTime: string;
+  orderCount: string;
 };
 
 export type GetEstimatedFeeRes = {
   code: number;
   data: GetEstimatedFeeItem[];
 };
+
+export type MamSignalSourceDetailViewRes = {
+  code: number;
+  data: {
+    totalNotReceivedFee: number;
+    server: {
+      createBy: string | null;
+      createTime: string | null;
+      updateBy: string | null;
+      updateTime: string | null;
+      remark: string | null;
+      params: Record<string, unknown>;
+      id: string;
+      serviceType: number;
+      serviceProperty: number;
+      servicePropertyValue: string | null;
+      aliasName: string;
+      serverName: string;
+      serviceHost: string;
+      managerAccount: string;
+      managerSecret: string;
+      salt: string | null;
+      accountStart: number;
+      accountEnd: number;
+      status: number;
+      processStatus: number;
+      syncTime: string | null;
+      lastTicket: number;
+      checkTime: string | null;
+      port: string;
+      isBindAllowed: number;
+      pid: string | null;
+      flag: boolean;
+      sort: number;
+      generateType: number;
+      interType: string;
+      reportingHost: string | null;
+      reportingDbName: string | null;
+      reportingAccount: string | null;
+      reportingSecret: string | null;
+    };
+    clientServer: Record<string, unknown>;
+    colorPreference: string;
+    totalSubscribeFee: number;
+    totalNotReceivedManagementFee: number;
+    totalReceiptManagementFee: number;
+    totalReceiptFee: number;
+    historyFollowNum: number;
+    accountId: string;
+    tab: number;
+    currentFollowNum: number;
+    detail: MamSignalSourceDetailItem;
+    totalManagementFee: number;
+  };
+};
+
+export type AccountHistoryItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string;
+  serverId: string;
+  account: string;
+  statisticsDate: number;
+  equity: number;
+  balance: number;
+  margin: number;
+  marginFree: number;
+  credit: number;
+  marginLevel: number;
+  rateSuccess: number;
+  deposit: number;
+  maxRetreat: number;
+  totalProfit: number;
+  rateProfit: number;
+  lastDayProfit: number;
+  todayProfit: number;
+  positionProfit: number;
+  profit7d: number;
+  rateProfit7d: number;
+  profit30d: number;
+  rateProfit30d: number;
+  profit90d: number;
+  rateProfit90d: number;
+  profit180d: number;
+  rateProfit180d: number;
+};
+
+export type AccountHistoryRes = {
+  code: number;
+  data: AccountHistoryItem[];
+};
+
+export type MapReportSymbolReportItem = {
+  symbol: string;
+  volume: number;
+  profit: number;
+  buyCount: number;
+  sellCount: number;
+};
+export type MapReportSymbolReportRes = BasicRes<MapReportSymbolReportItem>;
+
+export type MamSignalSourceParams = {
+  id: string;
+  closeReason?: string;
+  closeType: string;
+};
+
+export type MamSignalSourceFundOverviewRes = {
+  code: number;
+  data: {
+    totalCreditWithdraw: number;
+    totalWithdraw: number;
+    totalDeposit: number;
+    totalCreditDeposit: number;
+    totalCreditDepositCount: number;
+    totalCreditWithdrawCount: number;
+    totalWithdrawCount: number;
+    totalDepositCount: number;
+  };
+};
+
+export type crmDealAccountFundFlowParams = BasicParams & {
+  yieldDateRange: string;
+  login: string;
+  serverId: string;
+  opeTypeList: string;
+};
+
+export type crmDealAccountFundFlowItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string;
+  login: string;
+  serverId: string;
+  server: string;
+  serverType: number;
+  ticket: number;
+  type: number;
+  time: string;
+  profit: number;
+  comment: string;
+  currency: string;
+  digits: number;
+  flowType: number;
+  serviceProperty: number | null;
+  name: string;
+  crmUserName: string | null;
+  typeName: string | null;
+  timeStr: string;
+  crmOrderNo: string | null;
+  accountGroupList: string | null;
+  serverGroupList: string | null;
+  opeTypeList: string | null;
+  accounts: string | null;
+  orderNum: number | null;
+  balance: number | null;
+  crmShowId: string | null;
+};
+
+export type crmDealAccountFundFlowRes = BasicRes<crmDealAccountFundFlowItem>;

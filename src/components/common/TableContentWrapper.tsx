@@ -6,4 +6,13 @@ export const TableContentWrapper = ({
 }: {
   children: React.ReactNode;
   className?: string;
-}) => <div className={cn('bg-background mt-3 rounded-md p-3', className)}>{children}</div>;
+}) => (
+  <div
+    className={cn(
+      'bg-background mt-3 max-w-full min-w-0 overflow-hidden rounded-md p-3',
+      className,
+    )}
+  >
+    {children}
+  </div>
+);

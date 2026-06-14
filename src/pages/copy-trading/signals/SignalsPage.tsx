@@ -24,6 +24,7 @@ import { SignalStatusOptions } from '@/lib/const';
 import { Row } from '@tanstack/react-table';
 import { AddEditSignalsDialog } from './components/AddEditSignalsDialog';
 import { useServerList } from '@/api/hooks/system';
+import { useTabActions } from '@/hooks/useTabActions';
 
 const StatusCell = ({ row }: { row: Row<MamSignalSourceItem> }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -120,6 +121,8 @@ export const SignalsPage = () => {
 
   const [id, setId] = useState<string>('');
   const [open, setOpen] = useState(false);
+
+  const { openTab } = useTabActions();
 
   const allColumns: CRMColumnDef<MamSignalSourceItem, unknown>[] = [
     {
@@ -327,9 +330,13 @@ export const SignalsPage = () => {
               if (action === 'edit') {
                 setId(row.original.id);
                 setOpen(true);
-                // Handle edit action
               } else if (action === 'view') {
-                // Handle view action
+                const url = `/copy-trading/signals/detail?id=${row?.original?.id}`;
+                openTab({
+                  key: url,
+                  title: t('dashboard.signalSourceCount'),
+                  path: url,
+                });
               }
             }}
           />

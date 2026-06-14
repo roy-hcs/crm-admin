@@ -1020,6 +1020,83 @@
     "performanceFeeRebateSchemeOptions": {
       "1": "单独设置",
       "2": "统一设置"
+    },
+    "tabs": {
+      "1": "收益趋势",
+      "2": "资金总览",
+      "3": "订阅情况",
+      "4": "交易订单(信号源)",
+      "5": "交易订单(订阅者)"
+    },
+    "headerOptions": {
+      "1": "收益率(Total)",
+      "2": "收益率(30d)",
+      "3": "总收益(USD)",
+      "4": "总收益30d(USD)",
+      "5": "最大回撤",
+      "6": "胜率"
+    },
+    "currentSubscription": "当前订阅(个)",
+    "historicalSubscription": "历史订阅(个)",
+    "chartOptions": {
+      "1": "收益率",
+      "2": "平仓收益",
+      "3": "净值/余额",
+      "4": "交易品种概览"
+    },
+    "profit": "收益(USD)",
+    "netWorthBalanceOptions": {
+      "1": "净值(当前)",
+      "2": "余额(当前)",
+      "3": "已用预付款",
+      "4": "预付款比例"
+    },
+    "signalSourceOptions": {
+      "1": "关闭信号源",
+      "2": "开启信号源"
+    },
+    "signalSourceSwitch": {
+      "confirmDisableTips": "您确认要结束信号吗？结束后，信号源将关闭，订阅者将无法获得信号，若有剩余的订阅费用则系统将返回给订阅者。",
+      "confirmEnableTips": "确认要开启该信号源吗？",
+      "disableDialogTitle": "关闭信号源",
+      "enableDialogTitle": "开启信号源",
+      "dialogPlaceholder": "二次确认弹窗内容待补充"
+    },
+    "closeType": "关闭后订单处理",
+    "closeTypeDesc": "结束信号后，当前已跟随的订单，您期望使用那种方式处理",
+    "closeTypeOptions": {
+      "1": "平仓",
+      "2": "不平仓"
+    },
+    "closeReason": "关闭原因",
+    "closeReasonDesc": "简要描述结束信号的原因",
+    "overviewFundsOptions": {
+      "1": "总入金(USD)",
+      "2": "总出金(USD)",
+      "3": "总信用额入金(USD)",
+      "4": "总信用额出金(USD)"
+    },
+    "followTable": {
+      "tradingAccount": "交易账号",
+      "belongUser": "归属用户",
+      "followProfit": "跟单收益",
+      "followOrderCount": "跟随订单数",
+      "followDirection": "跟单方向",
+      "followType": "跟随类型",
+      "status": "状态",
+      "followDuration": "跟单时长",
+      "operation": "操作"
+    },
+    "tradeOrders": {
+      "signalSource": "信号源",
+      "positionOrderTime": "持仓订单时间",
+      "historyOrderTime": "交易历史时间",
+      "openClosePrice": "开/平仓价格",
+      "inventoryFee": "库存费"
+    },
+    "directionOptions": {
+      "1": "正向",
+      "2": "反向"
     }
   },
   "signalReview": {
@@ -1312,6 +1389,7 @@
     "verifyUser": "审核人",
     "verifyTime": "审核时间",
     "buy": "买入",
+    "sell": "卖出",
     "redemption": "赎回",
     "productModel": "产品类型",
     "belongedUserName": "主账号归属",
