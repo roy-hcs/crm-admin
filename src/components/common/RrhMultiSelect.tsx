@@ -7,7 +7,7 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Check, ChevronsUpDown, X } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { RrhButton } from './RrhButton';
@@ -159,7 +159,7 @@ export const RrhMultiSelect = <T extends BaseOption>({
           aria-expanded={open}
           disabled={disabled}
           className={cn(
-            '!h-auto min-h-9 w-full justify-between text-start font-normal whitespace-normal',
+            '!h-auto min-h-9 !w-full justify-between text-start font-normal whitespace-normal',
             selectedOptions.length > 0 ? 'hover:bg-transparent' : '',
             className,
           )}
@@ -193,7 +193,6 @@ export const RrhMultiSelect = <T extends BaseOption>({
                 : placeholder}
             </span>
           )}
-          <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
         </RrhButton>
       </PopoverTrigger>
       <PopoverContent

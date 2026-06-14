@@ -18,6 +18,8 @@ export interface AlertDialogProps {
   cancelText?: string;
   confirmText?: string;
   confirmVariant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  /** 确认按钮加载状态，loading 时禁用按钮防止重复提交 */
+  confirmLoading?: boolean;
   onCancel?: () => void;
   onConfirm?: () => void;
   open?: boolean;
@@ -31,6 +33,7 @@ export const RrhAlert = ({
   cancelText = 'Cancel',
   confirmText = 'Confirm',
   confirmVariant = 'default',
+  confirmLoading = false,
   onCancel,
   onConfirm,
   open,
@@ -45,15 +48,21 @@ export const RrhAlert = ({
           <AlertDialogDescription>{content}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={onCancel}>{cancelText}</AlertDialogCancel>
+          <AlertDialogCancel onClick={onCancel} disabled={confirmLoading}>
+            {cancelText}
+          </AlertDialogCancel>
           <AlertDialogAction
             className={
               confirmVariant === 'destructive'
                 ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
                 : ''
             }
+            disabled={confirmLoading}
             onClick={onConfirm}
           >
+            {confirmLoading && (
+              <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+            )}
             {confirmText}
           </AlertDialogAction>
         </AlertDialogFooter>

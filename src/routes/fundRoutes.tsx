@@ -1,3 +1,5 @@
+import { AccountAdjustmentPage } from '@/pages/fund/AccountAdjustmentPage';
+import { WalletAdjustmentPage } from '@/pages/fund/WalletAdjustmentPage';
 import { RouteObject } from 'react-router-dom';
 
 /**
@@ -9,7 +11,6 @@ import { RouteObject } from 'react-router-dom';
  */
 export const fundRoutes: RouteObject[] = [
   // TODO: Add routes as pages are developed
-  /*
   {
     path: '/fund/wallet-adjustment',
     element: <WalletAdjustmentPage />,
@@ -18,5 +19,4 @@ export const fundRoutes: RouteObject[] = [
     path: '/fund/account-adjustment',
     element: <AccountAdjustmentPage />,
   },
-  */
 ];

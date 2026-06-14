@@ -48,6 +48,12 @@ import {
   UserKycTabRes,
   CrmUserInfo,
   RoleItem,
+  CrmUserWalletItem,
+  AddCrmUserWalletParams,
+  CrmDealAccountListRes,
+  CrmDealAccountListParams,
+  AdjustBalanceParams,
+  AdjustBalanceRes,
 } from './types';
 import { UserAccountOperationRes, UserRebateAccountTabRes } from '../agent/types';
 
@@ -672,5 +678,36 @@ export function useGetUserRoles() {
   return useQuery({
     queryKey: ['GetUserRoles'],
     queryFn: () => apiFormPost<RoleItem[]>(`/system/user/role/getAllRole`),
+  });
+}
+export function useGetUserWallets(crmUserId: string) {
+  return useQuery({
+    queryKey: ['GetUserWallet', crmUserId],
+    queryFn: () =>
+      apiFormPostCustom<CrmUserWalletItem[]>('system/crmUserWallet/crmUserWallets', { crmUserId }),
+    enabled: !!crmUserId,
+    staleTime: 0, // 数据立即视为过期，每次都重新请求
+    gcTime: 0, // 不保留缓存
+  });
+}
+export function useAddUserWallet() {
+  return useMutation({
+    mutationFn: (params: AddCrmUserWalletParams) =>
+      apiFormPost('/system/crmUserDealDetail/add', params),
+  });
+}
+export function useGetCrmDealAccountList(serverId: string) {
+  return useMutation({
+    mutationFn: (params: CrmDealAccountListParams) =>
+      apiFormPostCustom<CrmDealAccountListRes>(
+        `/system/crmDealAccount/accountList?serverId=${serverId}`,
+        params,
+      ),
+  });
+}
+export function useAdjustBalance() {
+  return useMutation({
+    mutationFn: (params: AdjustBalanceParams) =>
+      apiFormPost<AdjustBalanceRes>('/system/crmUserDeal/adjustBalances', params),
   });
 }
