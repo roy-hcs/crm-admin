@@ -29,7 +29,6 @@ export const AdsPage = () => {
   const { mutateAsync: modifyStatus } = useChangeAdsStatus();
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  // const [detailOpen, setDetailOpen] = useState(false);
   const [id, setId] = useState('');
   const { mutateAsync: remove } = useRemoveAds();
   const {

@@ -5,6 +5,15 @@ import {
   BaseSettingsRes,
   MamFollowListParams,
   MamFollowListRes,
+  MamFollowListByTraderParams,
+  MamFollowListByTraderRes,
+  MamSignalPositionOrderParams,
+  MamSignalPositionOrderRes,
+  MamSignalFundHistoryParams,
+  MamSignalFundHistoryRes,
+  MamClientTradeOrdersParams,
+  MamClientPositionRes,
+  MamClientHistoryRes,
   MamProtocolListParams,
   MamProtocolListRes,
   MamSignalSourceListParams,
@@ -41,6 +50,13 @@ import {
   GetTradeAccounts,
   CopyTradingDashboardDataRes,
   GetEstimatedFeeRes,
+  MamSignalSourceDetailViewRes,
+  AccountHistoryRes,
+  MapReportSymbolReportRes,
+  MamSignalSourceParams,
+  MamSignalSourceFundOverviewRes,
+  crmDealAccountFundFlowParams,
+  crmDealAccountFundFlowRes,
 } from './type';
 
 export function useChangeMamSignalSource() {
@@ -355,11 +371,107 @@ export function useMamFollowList(params: MamFollowListParams) {
   });
 }
 
+/**
+ * 信号源详情-订阅情况（按信号源账号）
+ */
+export function useMamFollowListByTrader(
+  params: MamFollowListByTraderParams,
+  options: { traderServerId: string; trader: string },
+) {
+  return useQuery({
+    queryKey: ['mamFollowListByTrader', options.traderServerId, options.trader, params],
+    queryFn: () =>
+      apiFormPostCustom<MamFollowListByTraderRes>(
+        `/system/mamFollow/listByTrader?traderServerId=${options.traderServerId}&trader=${options.trader}`,
+        params,
+      ),
+    enabled: Boolean(options.traderServerId && options.trader),
+  });
+}
+
 export function useMamFollowDetail(id: string, options: { enabled: boolean }) {
   return useQuery({
     queryKey: ['mamFollowDetail', id],
     queryFn: () => apiGetCustom<MamFollowDetailRes>(`/system/mamFollow/detailInfo/${id}`),
     enabled: options.enabled,
+  });
+}
+
+/**
+ * 信号源详情-交易订单(信号源)-持仓订单
+ */
+export function useMamSignalPositionOrder(
+  accountId: string,
+  params: MamSignalPositionOrderParams,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['mamSignalPositionOrder', accountId, params],
+    queryFn: () =>
+      apiFormPostCustom<MamSignalPositionOrderRes>(
+        `/system/crmDealAccount/positionOrder/1/${accountId}`,
+        params,
+      ),
+    enabled: (options?.enabled ?? true) && Boolean(accountId),
+  });
+}
+
+/**
+ * 信号源详情-交易订单(信号源)-交易历史
+ */
+export function useMamSignalFundHistory(
+  accountId: string,
+  params: MamSignalFundHistoryParams,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['mamSignalFundHistory', accountId, params],
+    queryFn: () =>
+      apiFormPostCustom<MamSignalFundHistoryRes>(
+        `/system/crmDealAccount/fundHistory/${accountId}`,
+        params,
+      ),
+    enabled: (options?.enabled ?? true) && Boolean(accountId),
+  });
+}
+
+/**
+ * 信号源详情-交易订单(订阅者)-持仓订单
+ */
+export function useMamClientPositionList(
+  account: string,
+  serverId: string,
+  params: MamClientTradeOrdersParams,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['mamClientPositionList', account, serverId, params],
+    queryFn: () =>
+      apiFormPostCustom<MamClientPositionRes>(
+        `/system/mapReport/getClientPositionList?account=${account}&serverId=${serverId}`,
+        params,
+      ),
+    enabled: (options?.enabled ?? true) && Boolean(account && serverId),
+  });
+}
+
+/**
+ * 信号源详情-交易订单(订阅者)-交易历史
+ */
+export function useMamClientHistoryList(
+  account: string,
+  serverId: string,
+  params: MamClientTradeOrdersParams,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['mamClientHistoryList', account, serverId, params],
+    queryFn: () =>
+      apiFormPostCustom<MamClientHistoryRes>(
+        `/system/mapReport/getClientHistoryList?account=${account}&serverId=${serverId}`,
+        params,
+      ),
+    enabled: (options?.enabled ?? true) && Boolean(account && serverId),
   });
 }
 
@@ -452,5 +564,84 @@ export function useEditCopyTradingStatus() {
 export function useEditCopyTradingApplicableUsers() {
   return useMutation({
     mutationFn: (params: { roleIds: string }) => apiPost('/system/mamConfig/edit', params),
+  });
+}
+/**
+ * 信号源详情
+ */
+export function useMamSignalSourceDetailView(id: string) {
+  return useQuery({
+    queryKey: ['mamFollowDetail', id],
+    queryFn: () =>
+      apiGetCustom<MamSignalSourceDetailViewRes>(`/system/mamSignalSource/detailView/${id}`),
+    enabled: Boolean(id),
+  });
+}
+
+/**
+ * 信号源详情-收益率-平仓收益-净值/余额
+ */
+export function useGetAccountHistory(params: { serverId: string; account: string; stime: string }) {
+  return useQuery({
+    queryKey: ['getAccountHistory', params.serverId, params.account, params.stime],
+    queryFn: () =>
+      apiGetCustom<AccountHistoryRes>(
+        `/system/mapReport/getAccountHistory?serverId=${params.serverId}&account=${params.account}&stime=${params.stime || 30}`,
+      ),
+    enabled: Boolean(params.serverId && params.account),
+  });
+}
+
+/**
+ * 信号源详情-交易品种概览
+ */
+export function useMapReportSymbolReport(params: {
+  pageNum?: string;
+  orderByColumn?: string;
+  isAsc?: string;
+  stime: string;
+  serverId: string;
+  login: string;
+}) {
+  return useQuery({
+    queryKey: ['mapReportSymbolReport', params],
+    queryFn: () =>
+      apiFormPostCustom<MapReportSymbolReportRes>('/system/mapReport/symbolReport', params),
+  });
+}
+
+/**
+ * 信号源详情 关闭开启信号源
+ */
+export function useEditSignalSourceStatus() {
+  return useMutation({
+    mutationFn: (params: MamSignalSourceParams) =>
+      apiFormPost('/system/mamSignalSource/close', params),
+  });
+}
+
+/**
+ * 信号源详情 资金总览-总数据
+ */
+export function useMamSignalSourceFundOverview(id: string) {
+  return useQuery({
+    queryKey: ['mamSignalSourceFundOverview', id],
+    queryFn: () =>
+      apiGetCustom<MamSignalSourceFundOverviewRes>(`/system/mamSignalSource/fundOverview?id=${id}`),
+    enabled: Boolean(id),
+  });
+}
+
+/**
+ * 信号源详情 资金总览-table数据
+ */
+export function useCrmDealAccountFundFlow(params: crmDealAccountFundFlowParams, accountId: string) {
+  return useQuery({
+    queryKey: ['crmDealAccountFundFlow', params],
+    queryFn: () =>
+      apiFormPostCustom<crmDealAccountFundFlowRes>(
+        `/system/crmDealAccount/fundFlow/${accountId}`,
+        params,
+      ),
   });
 }

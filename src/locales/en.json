@@ -817,7 +817,8 @@
     "userName": "Agent name",
     "baseRebateRatio": "Basic commission parameters",
     "extraRebateRatio": "Additional reward parameters",
-    "netPerformanceFee": "net performance fee"
+    "netPerformanceFee": "net performance fee",
+    "sell": "sell"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1609,7 +1610,84 @@
       "2": "Unified settings"
     },
     "signalSourceAuthorDesc": "The signal source author must be a CRM user",
-    "subscribeFeeDesc": "After a full subscription period, you will receive the subscription fee"
+    "subscribeFeeDesc": "After a full subscription period, you will receive the subscription fee",
+    "signalSourceOptions": {
+      "1": "Close signal source",
+      "2": "Open signal source"
+    },
+    "signalSourceSwitch": {
+      "confirmDisableTips": "Are you sure you want to close this signal source?",
+      "confirmEnableTips": "Are you sure you want to open this signal source?",
+      "disableDialogTitle": "Close signal source",
+      "enableDialogTitle": "Open signal source",
+      "dialogPlaceholder": "Secondary dialog content will be added later"
+    },
+    "followTable": {
+      "tradingAccount": "Trading account",
+      "belongUser": "Belonging user",
+      "followProfit": "Follow profit",
+      "followOrderCount": "Follow order count",
+      "followDirection": "Follow direction",
+      "followType": "Follow type",
+      "status": "Status",
+      "followDuration": "Follow duration",
+      "operation": "Operation"
+    },
+    "tradeOrders": {
+      "signalSource": "Signal source",
+      "positionOrderTime": "Position order time",
+      "historyOrderTime": "History order time",
+      "openClosePrice": "Open/Close price",
+      "inventoryFee": "Swap fee"
+    },
+    "chartOptions": {
+      "1": "Yield",
+      "2": "Proceeds from closing position",
+      "3": "Equity/Balance",
+      "4": "Overview of trading instruments"
+    },
+    "closeReason": "Reason for closure",
+    "closeReasonDesc": "Briefly describe the reason for the end signal",
+    "closeType": "Post-closure order processing",
+    "closeTypeDesc": "After ending the signal, the currently followed order is processed in the way you want it to be",
+    "closeTypeOptions": {
+      "1": "Close position",
+      "2": "Not closing the position"
+    },
+    "currentSubscription": "Current subscription(s)",
+    "directionOptions": {
+      "1": "forward",
+      "2": "reverse"
+    },
+    "headerOptions": {
+      "1": "Yield(Total)",
+      "2": "Yield(30d)",
+      "3": "Total revenue(USD)",
+      "4": "Total income 30d(USD)",
+      "5": "maximum drawdown",
+      "6": "winning rate"
+    },
+    "historicalSubscription": "Historical subscriptions (number)",
+    "netWorthBalanceOptions": {
+      "1": "Net worth (current)",
+      "2": "Balance (current)",
+      "3": "Advance payment used",
+      "4": "Advance payment ratio"
+    },
+    "overviewFundsOptions": {
+      "1": "Total deposit(USD)",
+      "2": "Total withdrawals (USD)",
+      "3": "Total credit deposit (USD)",
+      "4": "Total credit withdrawal (USD)"
+    },
+    "profit": "Revenue(USD)",
+    "tabs": {
+      "1": "earnings trends",
+      "2": "Funding Overview",
+      "3": "Subscription status",
+      "4": "Trading orders (signal source)",
+      "5": "Trading orders (subscribers)"
+    }
   },
   "PammInvestReport": {
     "cancel": "Cancel",
