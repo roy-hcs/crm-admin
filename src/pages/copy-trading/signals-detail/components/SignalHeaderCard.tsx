@@ -26,18 +26,16 @@ export function SignalHeaderCard({
           <img src={icon} alt={name || 'signal-source'} />
         </div>
         <div>
+          <div>{name}</div>
           <div>
-            <span>{name}</span>
-          </div>
-          <div>
-            <span>{Number(serverProperty) === 1 ? liveLabel : demoLabel}</span>
-            <span>{accountDisplay}</span>
+            {Number(serverProperty) === 1 ? liveLabel : demoLabel}
+            {accountDisplay}
           </div>
         </div>
       </div>
       <div>
-        <span>{dataUpdateTimeLabel}</span>
-        <span>{String(statisticsDate || '')}</span>
+        {dataUpdateTimeLabel}
+        {String(statisticsDate || '')}
       </div>
     </RrhCard>
   );

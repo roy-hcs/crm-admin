@@ -73,13 +73,10 @@ export function FollowSituation({
         header: t('signals.followTable.followType'),
         accessorFn: row => {
           if (!row.followType) return '-';
-          if (String(row.followType) === '1')
-            return t('copyTradingSettings.trackingMethodOptions.1');
-          if (String(row.followType) === '2')
-            return t('copyTradingSettings.trackingMethodOptions.2');
-          if (String(row.followType) === '3')
-            return t('copyTradingSettings.trackingMethodOptions.3');
-          return String(row.followType);
+          if (row.followType === '1') return t('copyTradingSettings.trackingMethodOptions.1');
+          if (row.followType === '2') return t('copyTradingSettings.trackingMethodOptions.2');
+          if (row.followType === '3') return t('copyTradingSettings.trackingMethodOptions.3');
+          return row.followType || '-';
         },
       },
       {
@@ -131,7 +128,7 @@ export function FollowSituation({
   };
 
   return (
-    <TableContentWrapper>
+    <TableContentWrapper className="max-w-full min-w-0 overflow-hidden">
       <div className="mb-3 flex items-center justify-end gap-2">
         <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
           <RefreshCcw className="size-3.5" />

@@ -146,7 +146,7 @@ export function OverviewFunds({
           );
         })}
       </div>
-      <TableContentWrapper>
+      <TableContentWrapper className="max-w-full min-w-0 overflow-hidden">
         <div className="mb-3 flex items-center justify-end gap-2">
           <div className="flex items-center gap-2">
             <RrhButton

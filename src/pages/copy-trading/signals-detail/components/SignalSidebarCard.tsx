@@ -29,16 +29,16 @@ export function SignalSidebarCard({
   return (
     <RrhCard className="flex flex-col gap-4 p-4">
       <div>
-        <span>{createBy}</span>
-        <span>{email}</span>
+        {createBy}
+        {email}
       </div>
       <div>
-        <span>{currentSubscriptionLabel}</span>
-        <span>{currentFollowNum}</span>
+        {currentSubscriptionLabel}
+        {currentFollowNum}
       </div>
       <div>
-        <span>{historicalSubscriptionLabel}</span>
-        <span>{historyFollowNum}</span>
+        {historicalSubscriptionLabel}
+        {historyFollowNum}
       </div>
       <div>
         <RrhButton type="button" onClick={onEdit}>

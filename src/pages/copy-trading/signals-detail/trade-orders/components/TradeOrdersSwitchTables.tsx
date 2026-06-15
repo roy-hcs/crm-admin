@@ -112,7 +112,7 @@ export function TradeOrdersSwitchTables({
       </RrhForm>
 
       {activeTable === 'position' ? (
-        <TableContentWrapper>
+        <TableContentWrapper className="max-w-full min-w-0 overflow-hidden">
           <div className="mb-3 flex items-center justify-between">
             <div className="text-sm font-medium">{positionTitle}</div>
             {positionActions}
@@ -120,7 +120,7 @@ export function TradeOrdersSwitchTables({
           {positionTable}
         </TableContentWrapper>
       ) : (
-        <TableContentWrapper>
+        <TableContentWrapper className="max-w-full min-w-0 overflow-hidden">
           <div className="mb-3 flex items-center justify-between">
             <div className="text-sm font-medium">{historyTitle}</div>
             {historyActions}

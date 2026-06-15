@@ -1,5 +1,6 @@
 import { BaseEntity, BasicParams, BasicRes } from '@/api/types';
 import { LeverageReview, VerifyLogItem } from '../review/types';
+import { MtServerItem } from '../system/types';
 
 export type OrderByColumn =
   | 'totalProfit'
@@ -520,23 +521,8 @@ export type MamClientPositionItem = {
   profit: number | null;
 };
 
-export type MamClientHistoryItem = {
-  id: string | null;
-  ticket: number | null;
-  time: string | null;
-  openTime: string | null;
-  login: string | null;
-  type: number | null;
-  volume: number | null;
-  symbol: string | null;
-  openPrice: number | null;
-  closePrice: number | null;
-  profit: number | null;
-  commission: number | null;
-  swaps: number | null;
-};
-
 export type MamClientPositionRes = BasicRes<MamClientPositionItem>;
+export type MamClientHistoryItem = MamSignalFundHistoryItem & { time: string | null };
 export type MamClientHistoryRes = BasicRes<MamClientHistoryItem>;
 
 export type MamFollowDetailRes = {
@@ -842,42 +828,7 @@ export type MamSignalSourceDetailViewRes = {
   code: number;
   data: {
     totalNotReceivedFee: number;
-    server: {
-      createBy: string | null;
-      createTime: string | null;
-      updateBy: string | null;
-      updateTime: string | null;
-      remark: string | null;
-      params: Record<string, unknown>;
-      id: string;
-      serviceType: number;
-      serviceProperty: number;
-      servicePropertyValue: string | null;
-      aliasName: string;
-      serverName: string;
-      serviceHost: string;
-      managerAccount: string;
-      managerSecret: string;
-      salt: string | null;
-      accountStart: number;
-      accountEnd: number;
-      status: number;
-      processStatus: number;
-      syncTime: string | null;
-      lastTicket: number;
-      checkTime: string | null;
-      port: string;
-      isBindAllowed: number;
-      pid: string | null;
-      flag: boolean;
-      sort: number;
-      generateType: number;
-      interType: string;
-      reportingHost: string | null;
-      reportingDbName: string | null;
-      reportingAccount: string | null;
-      reportingSecret: string | null;
-    };
+    server: MtServerItem;
     clientServer: Record<string, unknown>;
     colorPreference: string;
     totalSubscribeFee: number;

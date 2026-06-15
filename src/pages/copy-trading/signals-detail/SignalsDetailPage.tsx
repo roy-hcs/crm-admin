@@ -235,27 +235,22 @@ export function SignalsDetailPage() {
           demoLabel={t('common.demo')}
         />
 
-        <div>
-          <div className="grid gap-3 sm:grid-cols-1 lg:grid-cols-6 lg:gap-6">
-            {sumData.map(it => {
-              return (
-                <div
-                  className="bg-card flex flex-col gap-2 rounded-lg p-4 shadow-xs"
-                  key={it.label}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="text-card-foreground text-sm leading-5 font-normal">
-                      {t(it.label)}
-                    </div>
-                    <ChevronRight className="text-card-foreground h-4 w-4" />
+        <div className="grid gap-3 sm:grid-cols-1 lg:grid-cols-6 lg:gap-6">
+          {sumData.map(it => {
+            return (
+              <div className="bg-card flex flex-col gap-2 rounded-lg p-4 shadow-xs" key={it.label}>
+                <div className="flex items-center justify-between">
+                  <div className="text-card-foreground text-sm leading-5 font-normal">
+                    {t(it.label)}
                   </div>
-                  <div className="text-card-foreground truncate text-base leading-4 font-semibold">
-                    {it.value}
-                  </div>
+                  <ChevronRight className="text-card-foreground h-4 w-4" />
                 </div>
-              );
-            })}
-          </div>
+                <div className="text-card-foreground truncate text-base leading-4 font-semibold">
+                  {it.value}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         <Tabs
