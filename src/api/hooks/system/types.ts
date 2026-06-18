@@ -574,15 +574,6 @@ export type CrmUsersParams = {
 
 export type CrmUsers = BasicRes<CrmUser>;
 
-export type CrmUsersTagsParams = {
-  status: string;
-  pageNum: number;
-  pageSize: number;
-  params: {
-    threeCons?: string;
-  };
-};
-
 export type CrmUserTagItem = {
   createBy: string | null;
   createTime: string | null;
@@ -848,3 +839,23 @@ export type AdjustBalanceRes = {
   successNum: number;
   total: number;
 };
+
+export type CrmGroupItem = BaseEntity & {
+  id: string | null;
+  serverId: string | null;
+  groupName: string | null;
+  accountStart: number | null;
+  accountEnd: number | null;
+  maxAccount: number | null;
+  sort: number | null;
+  currency: string | null;
+};
+
+export type CrmGroupRes = BasicRes<CrmGroupItem>;
+
+export type CrmAccountTypeItem = {
+  typeName: string;
+  id: string;
+};
+
+export type CrmAccountTypeRes = CrmAccountTypeItem[];

@@ -604,7 +604,9 @@
     "userPwdTips": "8-20位英文+数字",
     "phoneExists": "手机号已被注册",
     "nameAlreadyUsed": "该名称已存在",
-    "timeShouldBeFuture": "{{field}}需大于当前时间"
+    "timeShouldBeFuture": "{{field}}需大于当前时间",
+    "enterPositiveInteger": "请输入正整数",
+    "enterAmount": "请输入金额"
   },
   "tradingHistoryPage": {
     "tradingHistoryDetail": "交易历史详情",
@@ -716,7 +718,92 @@
     "allowMultipleBonusHits": "开启时，当符合多个奖励时，一笔入金执行多次奖励(按排序依次奖励)",
     "confirmStopTips": "确认要停用该入金奖励配置吗？",
     "confirmRunTips": "确认要启用该入金奖励配置吗？",
-    "confirmDeleteTips": "是否确认删除该条数据？删除后数据将不可恢复。"
+    "confirmDeleteTips": "是否确认删除该条数据？删除后数据将不可恢复。",
+    "createActivity": "创建活动",
+    "createActivityDesc": "您期望对哪些操作执行奖励",
+    "activityList": {
+      "activity1": "推荐奖励",
+      "activity1Desc": "推荐客户注册并达到有效客户认定后，奖励推荐人钱包/交易账号余额",
+      "activity2": "开户奖励",
+      "activity2Desc": "创建交易账号后可获得开户奖励（余额/信用金）",
+      "activity3": "入金奖励",
+      "activity3Desc": "交易账户入金成功奖励",
+      "activity4": "交易奖励",
+      "activity4Desc": "对交易大的客户给予奖励"
+    },
+    "activityName": "活动名称({{field}})",
+    "toClientStatus": "用户端展示",
+    "toClientStatusDesc": "开启后，活动将在用户端进行展示，并且您需要在下一步中填写活动介绍。",
+    "accountLimitType": "账户限制",
+    "accountLimitTypeOptions": {
+      "0": "不限",
+      "1": "CRM角色",
+      "3": "指定用户",
+      "4": "指定用户-下级",
+      "5": "指定标签"
+    },
+    "activityTime": "活动时间",
+    "activityTimeDesc": "结束日期/时间未填视为长期有效",
+    "triggers": "奖励触发条件",
+    "triggersDesc": "推荐客户注册并符合下方配置的时间即视为有效客户认定",
+    "registerSuccess": "注册成功",
+    "triggersEventOptions": {
+      "1": "KYC状态",
+      "2": "交易账号数",
+      "3": "累计入金金额",
+      "4": "首次入金金额"
+    },
+    "RewardConfig": "奖励配置",
+    "RewardConfigOptions": {
+      "label1": "奖励对象",
+      "value1": "推荐人",
+      "label2": "奖励类型",
+      "value2": "一次性奖励",
+      "label3": "奖励账户",
+      "value3": "Wallet"
+    },
+    "rewardAmountDesc": "支持给推荐人及推荐人上级进行奖励(当前仅支持给直接推荐人奖励，我们将在后续支持给推荐人的上级奖励)",
+    "maximumRewardLimit": "封顶奖励限制",
+    "maximumRewardLimitDesc": "奖励对象在活动或者周期内可获得最大奖金金额",
+    "amountCapped": "封顶奖励金额",
+    "period": "周期",
+    "periodOptions": {
+      "1": "累计",
+      "2": "每日",
+      "3": "每月"
+    },
+    "eventIntroduction": "活动介绍",
+    "rewardTitle": "活动标题",
+    "activityImage": "活动插图",
+    "maxAccount": "奖励交易账号数上限(每CRM账号)",
+    "maxAccountPlaceholder": "不设或为 0不启用(0-99)",
+    "rewardType": "奖励类型",
+    "rewardTypeOptions": {
+      "1": "信用金",
+      "2": "真实入金",
+      "3": "可转化信用金"
+    },
+    "bonusAmount": "奖励金额",
+    "rewardLockUnlock": "奖励锁定/解锁",
+    "rewardLockUnlockDesc": "奖励锁定时，奖励余额无法直接提取或用于出金，仅用于交易。",
+    "bonusLock": "奖励锁定",
+    "bonusLockAllowWithdraw": "奖励锁定期间允许出金",
+    "bonusLockAllowWithdrawDesc": "在奖励锁定期间允许交易账号提交出金申请",
+    "unlockLimit": "解锁限制",
+    "unlockLimitOptions": {
+      "1": "入金",
+      "2": "净入金",
+      "3": "交易量"
+    },
+    "serverIdLimit": "交易服务器限制",
+    "serverIdLimitOptions": {
+      "1": "切换为组",
+      "2": "切换为账号类型"
+    },
+    "dealBreedOptions": {
+      "1": "需要针对特殊品种请点此",
+      "2": "不需要配置品种"
+    }
   },
   "tradingAccounts": {
     "title": "交易账户"

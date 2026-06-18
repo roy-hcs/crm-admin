@@ -30,6 +30,7 @@ interface FormSearchMultiSelectProps<T extends FieldValues> {
   pageSize?: number;
   fetchOptions: (params: FetchParams) => Promise<FetchResult>;
   showRowValue?: boolean;
+  initialOptions?: BaseOption[];
 }
 
 export function FormSearchMultiSelect<T extends FieldValues>({
@@ -41,10 +42,11 @@ export function FormSearchMultiSelect<T extends FieldValues>({
   searchPlaceholder = '',
   pageSize = 10,
   showRowValue = false,
+  initialOptions = [],
   fetchOptions,
 }: FormSearchMultiSelectProps<T>) {
   const [keyword, setKeyword] = useState('');
-  const [options, setOptions] = useState<BaseOption[]>([]);
+  const [options, setOptions] = useState<BaseOption[]>(initialOptions);
   const [pageNum, setPageNum] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -58,6 +60,10 @@ export function FormSearchMultiSelect<T extends FieldValues>({
     incoming.forEach(item => map.set(item.value.toString(), item));
     return [...map.values()];
   }, []);
+
+  useEffect(() => {
+    setOptions(prev => mergeUniqueOptions(prev, initialOptions));
+  }, [initialOptions, mergeUniqueOptions]);
 
   const loadOptions = useCallback(
     async (params: FetchParams, append: boolean) => {

@@ -1,12 +1,16 @@
+import { AccountOpeningBonusPage } from '@/pages/marketing/account-opening-bonus/AccountOpeningBonusPage';
 import { AdsPage } from '@/pages/marketing/ads/AdsPage';
+import { DepositBonusPage } from '@/pages/marketing/deposit-bonus/DepositBonusPage';
 import { NetBonusRewardConfigPage } from '@/pages/marketing/net-bonus/reward-config/NetBonusRewardConfigPage';
 import { NetBonusRewardRecordsDetailPage } from '@/pages/marketing/net-bonus/reward-records-detail/NetBonusRewardRecordsDetailPage';
 import { NetBonusRewardRecordsPage } from '@/pages/marketing/net-bonus/reward-records/NetBonusRewardRecordsPage';
 import { NetBonusRewardReportsPage } from '@/pages/marketing/net-bonus/reward-reports/NetBonusRewardReportsPage';
 import { NetBonusStatisticsPage } from '@/pages/marketing/net-bonus/statistics/NetBonusStatisticsPage';
+import { ReferralBonusPage } from '@/pages/marketing/referral-bonus/ReferralBonusPage';
 import { RewardConfigPage } from '@/pages/marketing/reward-configs/RewardConfigsPage';
 import { RewardRecordsDetailPage } from '@/pages/marketing/reward-records-detail/RewardRecordsDetailPage';
 import { RewardRecordsPage } from '@/pages/marketing/reward-records/RewardRecordsPage';
+import { TransactionBonusPage } from '@/pages/marketing/transaction-bonus/TransactionBonusPage';
 import { RouteObject, useSearchParams } from 'react-router-dom';
 
 const RewardRecordsDetailPageWrapper = () => {
@@ -16,6 +20,26 @@ const RewardRecordsDetailPageWrapper = () => {
 const NetBonusRewardRecordsDetailPageWrapper = () => {
   const [searchParams] = useSearchParams();
   return <NetBonusRewardRecordsDetailPage key={searchParams.get('id')} />;
+};
+
+const ReferralBonusPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <ReferralBonusPage key={searchParams.get('id')} />;
+};
+
+const AccountOpeningBonusPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <AccountOpeningBonusPage key={searchParams.get('id')} />;
+};
+
+const DepositBonusPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <DepositBonusPage key={searchParams.get('id')} />;
+};
+
+const TransactionBonusPageWrapper = () => {
+  const [searchParams] = useSearchParams();
+  return <TransactionBonusPage key={searchParams.get('id')} />;
 };
 
 /**
@@ -66,5 +90,25 @@ export const marketingRoutes: RouteObject[] = [
   {
     path: '/marketing/net-bonus/statistics',
     element: <NetBonusStatisticsPage />,
+  },
+  {
+    path: '/marketing/reward-config/referral-bonus',
+    element: <ReferralBonusPageWrapper />,
+  },
+  {
+    path: '/marketing/reward-config/account-opening-bonus',
+    element: <AccountOpeningBonusPageWrapper />,
+  },
+  {
+    path: '/marketing/reward-config/account-opening-bonus',
+    element: <AccountOpeningBonusPageWrapper />,
+  },
+  {
+    path: '/marketing/reward-config/deposit-bonus',
+    element: <DepositBonusPageWrapper />,
+  },
+  {
+    path: '/marketing/reward-config/transaction-bonus',
+    element: <TransactionBonusPageWrapper />,
   },
 ];

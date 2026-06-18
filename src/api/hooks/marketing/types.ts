@@ -1,6 +1,7 @@
 // Marketing module types
 import { BasicParams, BasicRes, BaseEntity } from '../../types';
-import { VerifyLogItem } from '../review';
+import { CrmUser, VerifyLogItem } from '../review';
+import { CrmUserTagItem, RoleItem } from '../system';
 
 // Bonus Setting (Reward Configs) related types
 export type BonusSettingListParams = BasicParams & {
@@ -515,3 +516,119 @@ export type NetBonusIntervalsParamsItem = {
 };
 
 export type EditNetBonusIntervalsParams = NetBonusIntervalsParamsItem[];
+
+export type BonusSettingTriggerItem = {
+  id: string | null;
+  rewardId: string | null;
+  event: number | string;
+  symbol: string | null;
+  value: number | string | null;
+};
+
+export type BonusSettingLevelAmountItem = {
+  id: string | null;
+  rewardId: string | null;
+  level: number | string;
+  amount: number | string;
+};
+
+export type BonusSettingDetailItem = BonusSettingListItem & {
+  period?: number | string | null;
+};
+
+export type BonusSettingInfoItem = {
+  id: string | null;
+  rewardId: string | null;
+  rewardTitle: string | null;
+  activityContent: string | null;
+  language: string;
+  languageName: string | null;
+  icon: string | null;
+  isDefault: 'Y' | 'N' | null;
+};
+
+export type BonusSettingDetailData = {
+  bonusSetting: BonusSettingDetailItem;
+  triggers: BonusSettingTriggerItem[];
+  levelAmounts: BonusSettingLevelAmountItem[];
+  businessType?: number | string;
+  infoList: BonusSettingInfoItem[];
+  selectedUsers: CrmUser[]; // 这个字段是我在接口返回数据基础上添加的，用于编辑时回显已选择的用户
+  selectedRoles: RoleItem[]; // 这个字段是我在接口返回数据基础上添加的，用于编辑时回显已选择的角色
+  selectedAccounts: CrmUser[]; // 这个字段是我在接口返回数据基础上添加的，用于编辑时回显已选择的指定用户-下级
+  selectedTags: CrmUserTagItem[]; // 这个字段是我在接口返回数据基础上添加的，用于编辑时回显已选择的指定标签
+  [key: string]: unknown;
+};
+
+export type BonusSettingDetailRes = {
+  code: number;
+  data: BonusSettingDetailData;
+  msg?: string;
+};
+
+export type BonusSettingTitleLanguageItem = {
+  id: string;
+  language: string;
+  rewardTitle: string;
+  icon: string;
+  activityContent: string;
+};
+
+export type BonusSettingCommonParams = {
+  titleLanguageList: BonusSettingTitleLanguageItem[];
+  sort: string;
+  businessType: string;
+  bonusType: number;
+  bonusMode: number;
+  bonusScheme: number;
+  timeRangeType: number;
+  status: number;
+  startTime: string;
+  endTime: string;
+  accountLimitType: number;
+  userIds?: string | null;
+  crmRoleIds?: string | null;
+  accounts?: string | null;
+  tagIds?: string | null;
+  toClientStatus: number;
+  activityPicture: string | null;
+};
+
+export type ReferralBonusSettingParams = BonusSettingCommonParams & {
+  amountCapped: string;
+  period: string;
+  rewardType: number;
+  bonusAmount: string | null;
+  triggerListJsonStr: string;
+  levelAmountListJsonStr: string;
+};
+
+export type EditReferralBonusSettingParams = ReferralBonusSettingParams & {
+  id: string;
+};
+
+export type AccountOpeningBonusSettingParams = BonusSettingCommonParams & {
+  limitType: number;
+  amountCapped?: string;
+  rewardType: number;
+  maxAccount: string | null;
+  bonusAmount: string | null;
+  bonusLock: number | string | null;
+  bonusLockAllowWithdraw: number | string | null;
+  unlockLimit: string | null;
+  unlockDeposit: string | null;
+  unlockNet: string | null;
+  unlockVolume: string | null;
+  serverId: string | null;
+  serverGroupIds: string | null;
+  accountTypes: string | null;
+  dealBreed: string | null;
+};
+
+export type EditAccountOpeningBonusSettingParams = AccountOpeningBonusSettingParams & {
+  id: string;
+};
+
+export type AddBonusSettingParams = ReferralBonusSettingParams;
+
+export type EditBonusSettingParams = EditReferralBonusSettingParams;

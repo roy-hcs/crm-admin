@@ -65,6 +65,9 @@ export const RrhMultiSelect = <T extends BaseOption>({
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
   const selectedOptions = options.filter(option => value.includes(option.value.toString()));
+  const showSearchNoDataPlaceholder =
+    searchSupport && !selectedOptions.length && !!searchValue?.trim() && options.length === 0;
+  const triggerPlaceholder = showSearchNoDataPlaceholder ? t('common.NoData') : placeholder;
   const triggerRef = useRef<HTMLButtonElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadingMoreRef = useRef(loadingMore);
@@ -183,14 +186,14 @@ export const RrhMultiSelect = <T extends BaseOption>({
                   </div>
                 ))
               ) : (
-                <span className="text-muted-foreground">{placeholder}</span>
+                <span className="text-muted-foreground">{triggerPlaceholder}</span>
               )}
             </div>
           ) : (
             <span className="min-w-0 text-sm break-words whitespace-normal">
               {selectedOptions.length > 0
                 ? selectedOptions.map(o => o.label).join(', ')
-                : placeholder}
+                : triggerPlaceholder}
             </span>
           )}
         </RrhButton>

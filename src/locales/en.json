@@ -1137,7 +1137,92 @@
     "allowMultipleBonusHits": "When turned on, when multiple rewards are met, one deposit will be rewarded multiple times (rewarded in order)",
     "confirmDeleteTips": "Are you sure to delete this data? \nData will not be recoverable after deletion.",
     "confirmRunTips": "Are you sure you want to enable this deposit bonus configuration?",
-    "confirmStopTips": "Are you sure you want to deactivate this deposit bonus configuration?"
+    "confirmStopTips": "Are you sure you want to deactivate this deposit bonus configuration?",
+    "RewardConfig": "Reward configuration",
+    "RewardConfigOptions": {
+      "label1": "Reward objects",
+      "label2": "Reward type",
+      "label3": "Rewards account",
+      "value1": "recommender",
+      "value2": "One-time reward",
+      "value3": "Wallet"
+    },
+    "accountLimitType": "Account restrictions",
+    "accountLimitTypeOptions": {
+      "0": "No limit",
+      "1": "CRM role",
+      "3": "Specify user",
+      "4": "Designated user-subordinate",
+      "5": "Specify label"
+    },
+    "activityImage": "event illustration",
+    "activityList": {
+      "activity1": "Referral rewards",
+      "activity1Desc": "After the recommended customer registers and reaches the valid customer certification, the recommender's wallet/trading account balance will be rewarded",
+      "activity2": "Account opening bonus",
+      "activity2Desc": "After creating a trading account, you can get account opening bonus (balance/credit)",
+      "activity3": "Deposit bonus",
+      "activity3Desc": "Reward for successful deposit into trading account",
+      "activity4": "Trading rewards",
+      "activity4Desc": "Reward customers with large transactions"
+    },
+    "activityName": "Activity name ({{field}})",
+    "activityTime": "Activity time",
+    "activityTimeDesc": "If the end date/time is not filled in, it will be considered as long-term validity.",
+    "amountCapped": "Capped reward amount",
+    "bonusAmount": "Reward amount",
+    "bonusLock": "Rewards locked",
+    "bonusLockAllowWithdraw": "Withdrawals are allowed during the reward lock period",
+    "bonusLockAllowWithdrawDesc": "Trading accounts are allowed to submit withdrawal requests during the reward lock period",
+    "createActivity": "Create event",
+    "createActivityDesc": "Which actions do you expect to be rewarded for?",
+    "dealBreedOptions": {
+      "1": "If you need special varieties, please click here",
+      "2": "No configuration required"
+    },
+    "eventIntroduction": "Activity introduction",
+    "maxAccount": "Maximum number of reward transaction accounts (per CRM account)",
+    "maxAccountPlaceholder": "Not set or 0 is not enabled (0-99)",
+    "maximumRewardLimit": "Capped reward limits",
+    "maximumRewardLimitDesc": "The maximum bonus amount that the reward object can receive during the event or cycle",
+    "period": "cycle",
+    "periodOptions": {
+      "1": "Grand total",
+      "2": "daily",
+      "3": "per month"
+    },
+    "registerSuccess": "Registration successful",
+    "rewardAmountDesc": "Supports rewards for recommenders and their superiors (currently only rewards for direct recommenders are supported, and we will support rewards for recommenders' superiors in the future)",
+    "rewardLockUnlock": "Rewards locked/unlocked",
+    "rewardLockUnlockDesc": "When rewards are locked, the reward balance cannot be directly withdrawn or used for withdrawals, and is only used for transactions.",
+    "rewardTitle": "Event title",
+    "rewardType": "Reward type",
+    "rewardTypeOptions": {
+      "1": "credit",
+      "2": "Real deposit",
+      "3": "convertible credit"
+    },
+    "serverIdLimit": "Trading Server Limitations",
+    "serverIdLimitOptions": {
+      "1": "switch to group",
+      "2": "Switch to account type"
+    },
+    "toClientStatus": "Client display",
+    "toClientStatusDesc": "After opening, the activity will be displayed on the user terminal, and you need to fill in the activity introduction in the next step.",
+    "triggers": "Reward trigger conditions",
+    "triggersDesc": "The time when a recommended customer registers and meets the configuration below is deemed to be a valid customer.",
+    "triggersEventOptions": {
+      "1": "KYC status",
+      "2": "Number of trading accounts",
+      "3": "Cumulative deposit amount",
+      "4": "First deposit amount"
+    },
+    "unlockLimit": "Unlock restrictions",
+    "unlockLimitOptions": {
+      "1": "Deposit",
+      "2": "net deposit",
+      "3": "trading volume"
+    }
   },
   "adminAccounts": {
     "roleName": "Account role",
@@ -1799,7 +1884,9 @@
     "phoneExists": "Mobile phone number has been registered",
     "userPwdTips": "8-20 English digits",
     "nameAlreadyUsed": "The name already exists",
-    "timeShouldBeFuture": "{{field}} needs to be greater than the current time"
+    "timeShouldBeFuture": "{{field}} needs to be greater than the current time",
+    "enterAmount": "Please enter the amount",
+    "enterPositiveInteger": "Please enter a positive integer"
   },
   "messageTemplate": {
     "add": "Add message template",

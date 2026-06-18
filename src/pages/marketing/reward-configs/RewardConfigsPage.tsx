@@ -25,6 +25,8 @@ import { useInitServerId } from '@/hooks/useInitServerId';
 import { ToolTip } from '@/components/common/ToolTip';
 import { StatusCell } from './components/StatusCell';
 import { DeleteAlert } from './components/DeleteAlert';
+import { CreateActivityDialog } from './components/CreateActivityDialog';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export const RewardConfigPage = () => {
   const [params, setParams] = useState<BonusSettingListParams['params']>({
@@ -86,6 +88,8 @@ export const RewardConfigPage = () => {
     },
     [setManyBonusMutateAsync, refetch, getManyBonus],
   );
+
+  const { openTab } = useTabActions();
 
   const allColumns: CRMColumnDef<BonusSettingListItem, unknown>[] = useMemo(
     () => [
@@ -247,6 +251,27 @@ export const RewardConfigPage = () => {
               callToAction={action => {
                 if (action === 'edit') {
                   // Handle edit action
+                  console.log('Edit action for row:', row.original);
+                  const urlEnum = {
+                    '5': `/marketing/reward-config/referral-bonus?id=${row.original.id}`,
+                    '4': `/marketing/reward-config/account-opening-bonus?id=${row.original.id}`,
+                    '3': `/marketing/reward-config/deposit-bonus?id=${row.original.id}`,
+                    '1': `/marketing/reward-config/deposit-bonus?id=${row.original.id}`,
+                    '2': `/marketing/reward-config/transaction-bonus?id=${row.original.id}`,
+                  };
+                  const titleEnum = {
+                    '5': t('rewardConfigPage.activityList.activity1'),
+                    '4': t('rewardConfigPage.activityList.activity2'),
+                    '3': t('rewardConfigPage.activityList.activity3'),
+                    '1': t('rewardConfigPage.activityList.activity3'),
+                    '2': t('rewardConfigPage.activityList.activity4'),
+                  };
+                  const businessTypeStr = String(row.original.businessType);
+                  openTab({
+                    key: urlEnum[businessTypeStr as '5' | '4' | '3' | '1' | '2'] || '',
+                    title: titleEnum[businessTypeStr as '5' | '4' | '3' | '1' | '2'] || '',
+                    path: urlEnum[businessTypeStr as '5' | '4' | '3' | '1' | '2'] || '',
+                  });
                 } else if (action === 'delete') {
                   setRow(row.original);
                   setIsDeleteDialogOpen(true);
@@ -259,7 +284,7 @@ export const RewardConfigPage = () => {
         size: 50,
       },
     ],
-    [t, bonusDictType, server, refetch],
+    [t, bonusDictType, server?.rows, refetch, openTab],
   );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
@@ -290,7 +315,7 @@ export const RewardConfigPage = () => {
             />
           </div>
           <div className="flex items-center gap-2">
-            <RrhButton variant="outline">{t('common.add')}</RrhButton>
+            <CreateActivityDialog />
             <ToolTip content={t('rewardConfigPage.allowMultipleBonusHits')}>
               <div className="flex items-center justify-center gap-2">
                 <span>{t('table.allowMultipleBonusHits')}</span>
