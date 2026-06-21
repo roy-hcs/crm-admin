@@ -309,7 +309,8 @@
     "faq": "FAQ",
     "cannotModifyAfterSubmit": "提交后不可修改",
     "settled": "已结算",
-    "unsettled": "待结算"
+    "unsettled": "待结算",
+    "amountRange": "金额区间"
   },
   "home": {
     "DataOverview": "数据总览",
@@ -738,6 +739,7 @@
     "accountLimitTypeOptions": {
       "0": "不限",
       "1": "CRM角色",
+      "2": "服务器组别",
       "3": "指定用户",
       "4": "指定用户-下级",
       "5": "指定标签"
@@ -803,7 +805,46 @@
     "dealBreedOptions": {
       "1": "需要针对特殊品种请点此",
       "2": "不需要配置品种"
-    }
+    },
+    "minimumAmount": "基础数值限制",
+    "minimumAmountDesc": "当入金金额满足超过这个值才执行奖励",
+    "limitType": "限制类型",
+    "limitTypeOptions": {
+      "1": "单笔数值",
+      "2": "总计数值"
+    },
+    "timeRangeType": "约束期限",
+    "timeRangeTypeOptions": {
+      "1": "业务关联时间",
+      "2": "自定义日期"
+    },
+    "timeUnitOptions": {
+      "1": "小时",
+      "2": "天",
+      "3": "月"
+    },
+    "bonusScheme": "奖励次数",
+    "bonusSchemeDesc": "一次性奖励：符合奖励标准的操作只奖励一次。多次奖励：符合奖励标准的操作执行多次奖励。",
+    "bonusSchemeOptions": {
+      "1": "一次性奖励",
+      "2": "多次奖励"
+    },
+    "bonusType": "奖励方案",
+    "bonusTypeDesc": "百分比：按照目标金额的百分比执行奖励。固定奖励：按照输入的固定金额执行奖励。",
+    "bonusTypeOptions": {
+      "1": "百分比",
+      "2": "固定金额"
+    },
+    "bonusMode": "奖励模式",
+    "bonusModeOptions": {
+      "1": "正常模式",
+      "2": "阶梯模式"
+    },
+    "bonusModeDesc": " 正常模式：按照填写数值来执行奖励。阶梯模式：按照阶梯区间的数值来执行奖励。",
+    "bonusMode2Desc": " 1.至少设置两个区间，区间的数值需要连贯。2.例：区间是为[1,1000)，即区间包含左侧，不包含右侧奖励金额=入金金额 * 入金比例。",
+    "min": "最底值",
+    "max": "最高值",
+    "bonusAmountFormula": "奖励金额=入金金额 * 入金比例"
   },
   "tradingAccounts": {
     "title": "交易账户"

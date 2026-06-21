@@ -1,0 +1,50 @@
+import { ladderBonusListItem } from '@/api/hooks/marketing';
+import { FormTitleLanguageItem } from '../referral-bonus/types';
+
+export type BonusSettingTitleLanguageItem = {
+  id: string;
+  language: string;
+  rewardTitle: string;
+  icon: string;
+  activityContent: string;
+};
+
+export type FormValues = {
+  rewardTitle: string;
+  sort: string;
+  status: string;
+  toClientStatus: string;
+  businessType: string;
+  accountLimitType: string;
+  activityTime: { from: Date | string; to: Date | string };
+  amountCapped: string;
+  maxAccount: string;
+  rewardType: string;
+  bonusAmount: string;
+  bonusLock: string;
+  bonusLockAllowWithdraw: string;
+  unlockLimit: string;
+  unlockDeposit: string;
+  unlockNet: string;
+  unlockVolume: string;
+  dealBreed: string;
+  serverId: string;
+  accountTypes: string[];
+  serverGroupIds: string[];
+  titleLanguageList: FormTitleLanguageItem[];
+  userIds?: string[];
+  crmRoleIds?: string[];
+  accounts?: string[];
+  tagIds?: string[];
+  minimumAmount: string;
+  limitType: string;
+  timeRangeType: string;
+  businessTimeType: string;
+  expire: string;
+  timeUnit: string;
+  bonusScheme: string;
+  bonusType: string;
+  bonusMode: string;
+  bonusPercentage: string;
+  ladderBonusList: ladderBonusListItem[];
+};

@@ -11,6 +11,17 @@ export type BonusSettingListParams = BasicParams & {
   };
 };
 
+export type ladderBonusListItem = {
+  id: string;
+  rewardId: string;
+  startAmount: number;
+  endAmount: number;
+  bonusScale: number;
+  bonusFixed: number | null;
+  dealNum: number | null;
+  dealBasis: string | null;
+};
+
 export type BonusSettingListItem = BaseEntity & {
   id: string;
   rewardTitle: string;
@@ -52,7 +63,7 @@ export type BonusSettingListItem = BaseEntity & {
   activityPicture: string | null;
   activityContent: string | null;
   titleLanguageList: string | null;
-  ladderBonusList: string | null;
+  ladderBonusList: ladderBonusListItem[] | null;
   ladderBonusListJsonStr: string | null;
   bonusLock: string | null;
   unlockLimit: string | null;

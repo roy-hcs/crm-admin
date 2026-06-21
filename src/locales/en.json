@@ -290,7 +290,8 @@
     "faq": "FAQ",
     "cannotModifyAfterSubmit": "Cannot be modified after submission",
     "settled": "Settled",
-    "unsettled": "Pending settlement"
+    "unsettled": "Pending settlement",
+    "amountRange": "Amount range"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1151,6 +1152,7 @@
     "accountLimitTypeOptions": {
       "0": "No limit",
       "1": "CRM role",
+      "2": "Server group",
       "3": "Specify user",
       "4": "Designated user-subordinate",
       "5": "Specify label"
@@ -1222,7 +1224,46 @@
       "1": "Deposit",
       "2": "net deposit",
       "3": "trading volume"
-    }
+    },
+    "bonusMode": "Bonus mode",
+    "bonusMode2Desc": "1. Set at least two intervals, and the values ​​in the intervals need to be consistent. \n2. Example: The interval is [1,1000), that is, the interval includes the left side and does not include the right side. Reward amount = deposit amount * deposit ratio.",
+    "bonusModeDesc": "Normal mode: Rewards are executed according to the filled-in values. \nLadder mode: Rewards are carried out according to the value of the ladder interval.",
+    "bonusModeOptions": {
+      "1": "normal mode",
+      "2": "Ladder mode"
+    },
+    "bonusScheme": "Number of rewards",
+    "bonusSchemeDesc": "One-time reward: Operations that meet the reward criteria will only be rewarded once. \nMultiple rewards: Operations that meet the reward criteria are rewarded multiple times.",
+    "bonusSchemeOptions": {
+      "1": "One-time reward",
+      "2": "Multiple rewards"
+    },
+    "bonusType": "Incentive program",
+    "bonusTypeDesc": "Percentage: Rewards are executed as a percentage of the target amount. \nFixed reward: The reward is executed according to the fixed amount entered.",
+    "bonusTypeOptions": {
+      "1": "percentage",
+      "2": "fixed amount"
+    },
+    "limitType": "Restriction type",
+    "limitTypeOptions": {
+      "1": "Single value",
+      "2": "total value"
+    },
+    "max": "highest value",
+    "min": "lowest value",
+    "minimumAmount": "Basic numerical limits",
+    "minimumAmountDesc": "Rewards will only be executed when the deposit amount exceeds this value",
+    "timeRangeType": "Binding period",
+    "timeRangeTypeOptions": {
+      "1": "Business related time",
+      "2": "Custom date"
+    },
+    "timeUnitOptions": {
+      "1": "Hour",
+      "2": "sky",
+      "3": "moon"
+    },
+    "bonusAmountFormula": "Reward amount = deposit amount * deposit ratio"
   },
   "adminAccounts": {
     "roleName": "Account role",
