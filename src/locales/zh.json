@@ -844,7 +844,8 @@
     "bonusMode2Desc": " 1.至少设置两个区间，区间的数值需要连贯。2.例：区间是为[1,1000)，即区间包含左侧，不包含右侧奖励金额=入金金额 * 入金比例。",
     "min": "最底值",
     "max": "最高值",
-    "bonusAmountFormula": "奖励金额=入金金额 * 入金比例"
+    "bonusAmountFormula": "奖励金额=入金金额 * 入金比例",
+    "activeDeleteBeforeTips": "请停用该奖励配置后，再进行删除动作"
   },
   "tradingAccounts": {
     "title": "交易账户"

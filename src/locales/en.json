@@ -1263,7 +1263,8 @@
       "2": "sky",
       "3": "moon"
     },
-    "bonusAmountFormula": "Reward amount = deposit amount * deposit ratio"
+    "bonusAmountFormula": "Reward amount = deposit amount * deposit ratio",
+    "activeDeleteBeforeTips": "Please deactivate the reward configuration before deleting it."
   },
   "adminAccounts": {
     "roleName": "Account role",

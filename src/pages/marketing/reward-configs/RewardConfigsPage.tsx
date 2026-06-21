@@ -27,6 +27,7 @@ import { StatusCell } from './components/StatusCell';
 import { DeleteAlert } from './components/DeleteAlert';
 import { CreateActivityDialog } from './components/CreateActivityDialog';
 import { useTabActions } from '@/hooks/useTabActions';
+import { toast } from 'sonner';
 
 export const RewardConfigPage = () => {
   const [params, setParams] = useState<BonusSettingListParams['params']>({
@@ -250,8 +251,6 @@ export const RewardConfigPage = () => {
               ]}
               callToAction={action => {
                 if (action === 'edit') {
-                  // Handle edit action
-                  console.log('Edit action for row:', row.original);
                   const urlEnum = {
                     '5': `/marketing/reward-config/referral-bonus?id=${row.original.id}`,
                     '4': `/marketing/reward-config/account-opening-bonus?id=${row.original.id}`,
@@ -273,6 +272,10 @@ export const RewardConfigPage = () => {
                     path: urlEnum[businessTypeStr as '5' | '4' | '3' | '1' | '2'] || '',
                   });
                 } else if (action === 'delete') {
+                  if (row.original.status === 1) {
+                    toast.error(t('rewardConfigPage.activeDeleteBeforeTips'));
+                    return;
+                  }
                   setRow(row.original);
                   setIsDeleteDialogOpen(true);
                 }
