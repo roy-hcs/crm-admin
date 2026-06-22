@@ -87,7 +87,10 @@ export function DepositBonusPage() {
   };
 
   const beforeNext = () => {
-    if (shouldValidateLadderBonusRanges(form) && !validateLadderBonusRanges(form)) {
+    if (
+      shouldValidateLadderBonusRanges(form) &&
+      !validateLadderBonusRanges(form, { errorMessage: t('common.invalidAmountRange') })
+    ) {
       return;
     }
 
@@ -132,7 +135,10 @@ export function DepositBonusPage() {
     setStep('one');
   };
   const handleConfirm = () => {
-    if (shouldValidateLadderBonusRanges(form) && !validateLadderBonusRanges(form)) {
+    if (
+      shouldValidateLadderBonusRanges(form) &&
+      !validateLadderBonusRanges(form, { errorMessage: t('common.invalidAmountRange') })
+    ) {
       return;
     }
 

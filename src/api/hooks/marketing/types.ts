@@ -1,7 +1,7 @@
 // Marketing module types
 import { BasicParams, BasicRes, BaseEntity } from '../../types';
 import { CrmUser, VerifyLogItem } from '../review';
-import { CrmUserTagItem, RoleItem } from '../system';
+import { CrmUserTagItem, RoleItem, ServerItem } from '../system';
 
 // Bonus Setting (Reward Configs) related types
 export type BonusSettingListParams = BasicParams & {
@@ -568,6 +568,7 @@ export type BonusSettingDetailData = {
   selectedRoles: RoleItem[]; // 这个字段是我在接口返回数据基础上添加的，用于编辑时回显已选择的角色
   selectedAccounts: CrmUser[]; // 这个字段是我在接口返回数据基础上添加的，用于编辑时回显已选择的指定用户-下级
   selectedTags: CrmUserTagItem[]; // 这个字段是我在接口返回数据基础上添加的，用于编辑时回显已选择的指定标签
+  mtServiceList: ServerItem[]; // 这个字段是我在接口返回数据基础上添加的，用于编辑时回显服务器列表
   [key: string]: unknown;
 };
 
@@ -637,6 +638,30 @@ export type AccountOpeningBonusSettingParams = BonusSettingCommonParams & {
 };
 
 export type EditAccountOpeningBonusSettingParams = AccountOpeningBonusSettingParams & {
+  id: string;
+};
+
+export type TransactionBonusSettingParams = BonusSettingCommonParams & {
+  minimumAmount: string;
+  limitType: number;
+  businessTimeType: string | null;
+  expire: string | null;
+  timeUnit: string | null;
+  rewardType: number;
+  bonusAmount: string | null;
+  amountCapped: string | null;
+  serverId: string | null;
+  serverGroupIds: string | null;
+  dealServer: string | null;
+  dealBreed: string | null;
+  dealNum: string | null;
+  dealBasis: string | null;
+  issueTimeUnit: string | null;
+  bonusIssueTime: string | null;
+  ladderBonusListJsonStr: string | null;
+};
+
+export type EditTransactionBonusSettingParams = TransactionBonusSettingParams & {
   id: string;
 };
 

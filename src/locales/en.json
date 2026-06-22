@@ -291,7 +291,9 @@
     "cannotModifyAfterSubmit": "Cannot be modified after submission",
     "settled": "Settled",
     "unsettled": "Pending settlement",
-    "amountRange": "Amount range"
+    "invalidAmountRange": "Invalid amount range",
+    "amountRange": "Amount range",
+    "hour": "hour"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -1264,7 +1266,19 @@
       "3": "moon"
     },
     "bonusAmountFormula": "Reward amount = deposit amount * deposit ratio",
-    "activeDeleteBeforeTips": "Please deactivate the reward configuration before deleting it."
+    "activeDeleteBeforeTips": "Please deactivate the reward configuration before deleting it.",
+    "bonusIssueTime": "Reward distribution time",
+    "bonusIssueTimeDesc": "Reward confirmation will be sent at a fixed time every day during the event period.",
+    "dailyTradingVolume": "daily trading volume",
+    "everyDay": "every day",
+    "stepRewardModeDesc": "1. Set at least two intervals, and the values ​​in the intervals need to be consistent. \n2. Example: The interval is [1,1000), that is, the interval includes the left side and does not include the right side.",
+    "stepRewardModeOptions": {
+      "1": "Click here to turn off the ladder reward mode",
+      "2": "Click here to enable ladder reward mode"
+    },
+    "totalTradingVolume": "total transaction volume",
+    "tradingVolumeDesc": "When the transaction volume exceeds this value, rewards will be implemented;",
+    "tradingVolumeRange": "trading volume range"
   },
   "adminAccounts": {
     "roleName": "Account role",

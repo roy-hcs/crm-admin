@@ -32,6 +32,8 @@ import {
   EditReferralBonusSettingParams,
   AccountOpeningBonusSettingParams,
   EditAccountOpeningBonusSettingParams,
+  TransactionBonusSettingParams,
+  EditTransactionBonusSettingParams,
 } from './types';
 
 export * from './types';
@@ -479,6 +481,26 @@ export function useAddAccountOpeningBonusSetting() {
 export function useEditAccountOpeningBonusSetting() {
   return useMutation({
     mutationFn: (params: EditAccountOpeningBonusSettingParams) =>
+      apiPost(`/system/marketing/bonusSetting/edit`, params),
+  });
+}
+
+/**
+ * 交易奖励活动新增
+ */
+export function useAddTransactionBonusSetting() {
+  return useMutation({
+    mutationFn: (params: TransactionBonusSettingParams) =>
+      apiPost(`/system/marketing/bonusSetting/add`, params),
+  });
+}
+
+/**
+ * 交易奖励活动编辑
+ */
+export function useEditTransactionBonusSetting() {
+  return useMutation({
+    mutationFn: (params: EditTransactionBonusSettingParams) =>
       apiPost(`/system/marketing/bonusSetting/edit`, params),
   });
 }

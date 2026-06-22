@@ -94,6 +94,7 @@
   },
   "common": {
     "points": "分",
+    "hour": "时",
     "piece": "个",
     "increase": "增加",
     "subtract": "扣除",
@@ -310,6 +311,7 @@
     "cannotModifyAfterSubmit": "提交后不可修改",
     "settled": "已结算",
     "unsettled": "待结算",
+    "invalidAmountRange": "金额区间有误",
     "amountRange": "金额区间"
   },
   "home": {
@@ -845,7 +847,19 @@
     "min": "最底值",
     "max": "最高值",
     "bonusAmountFormula": "奖励金额=入金金额 * 入金比例",
-    "activeDeleteBeforeTips": "请停用该奖励配置后，再进行删除动作"
+    "activeDeleteBeforeTips": "请停用该奖励配置后，再进行删除动作",
+    "dailyTradingVolume": "每日交易量",
+    "totalTradingVolume": "总计交易量",
+    "tradingVolumeDesc": "当交易量超过此数值后，将执行奖励；",
+    "bonusIssueTime": "奖励发放时间",
+    "bonusIssueTimeDesc": "奖励的确认发送活动期内的每日固定时点发送",
+    "everyDay": "每天",
+    "stepRewardModeOptions": {
+      "1": "关闭阶梯奖励模式点此",
+      "2": "启用阶梯奖励模式点此"
+    },
+    "stepRewardModeDesc": "1.至少设置两个区间，区间的数值需要连贯。2.例：区间是为[1,1000)，即区间包含左侧，不包含右侧",
+    "tradingVolumeRange": "交易量区间"
   },
   "tradingAccounts": {
     "title": "交易账户"
