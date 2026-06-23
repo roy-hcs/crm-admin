@@ -92,8 +92,14 @@ export function StepTwo({ serverOptions = [] }: { serverOptions: ServerOptionsTy
   const handleStepRewardModeToggle = () => {
     if (stepRewardMode === '1') {
       setStepRewardMode('2');
+      // 切回非阶梯模式时清空阶梯数据，避免旧值影响提交模式和校验。
+      form.setValue('ladderBonusList', [], { shouldDirty: true });
     } else {
       setStepRewardMode('1');
+      // 切到阶梯模式时清空非阶梯字段，避免与阶梯字段互相干扰。
+      form.setValue('bonusAmount', '', { shouldDirty: true });
+      form.setValue('dealNum', '', { shouldDirty: true });
+      form.setValue('dealBasis', '', { shouldDirty: true });
       // 切换到阶梯模式时，至少补齐到2条
       const needAppendCount = Math.max(MIN_LADDER_COUNT - fields.length, 0);
       if (needAppendCount > 0) {
