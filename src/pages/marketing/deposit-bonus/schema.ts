@@ -62,27 +62,15 @@ export function createDepositBonusSchema(t: TFunction) {
         .string()
         .trim()
         .min(1, required(t('rewardConfigPage.amountCapped'))),
-      maxAccount: z.string(),
       rewardType: z
         .string()
         .trim()
         .min(1, required(t('rewardConfigPage.rewardType'))),
       bonusAmount: z.string(),
-      bonusLock: z.string(),
-      bonusLockAllowWithdraw: z.string(),
-      unlockLimit: z.string(),
-      unlockDeposit: z.string(),
-      unlockNet: z.string(),
-      unlockVolume: z.string(),
-      dealBreed: z.string(),
       serverId: z.string(),
-      accountTypes: z.array(z.string()),
       serverGroupIds: z.array(z.string()),
       titleLanguageList: z.array(z.any()),
-      userIds: z.array(z.string()).optional(),
       crmRoleIds: z.array(z.string()).optional(),
-      accounts: z.array(z.string()).optional(),
-      tagIds: z.array(z.string()).optional(),
       minimumAmount: z
         .string()
         .trim()
@@ -170,18 +158,13 @@ export function createDepositBonusSchema(t: TFunction) {
       }
 
       if (values.timeRangeType === '2') {
-        if (!hasValidDateLikeValue(values.activityTime?.from)) {
+        if (
+          !hasValidDateLikeValue(values.activityTime?.from) ||
+          !hasValidDateLikeValue(values.activityTime?.to)
+        ) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            path: ['activityTime', 'from'],
-            message: required(t('rewardConfigPage.activityTime')),
-          });
-        }
-
-        if (!hasValidDateLikeValue(values.activityTime?.to)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            path: ['activityTime', 'to'],
+            path: ['activityTime'],
             message: required(t('rewardConfigPage.activityTime')),
           });
         }
@@ -195,12 +178,22 @@ export function createDepositBonusSchema(t: TFunction) {
         });
       }
 
-      if (values.bonusMode === '1' && !hasValue(values.bonusPercentage)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ['bonusPercentage'],
-          message: required(t('rewardConfigPage.bonusModeOptions.1')),
-        });
+      if (values.bonusMode === '1') {
+        if (values.bonusType === '1' && !hasValue(values.bonusPercentage)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['bonusPercentage'],
+            message: required(t('rewardConfigPage.bonusTypeOptions.1')),
+          });
+        }
+
+        if (values.bonusType === '2' && !hasValue(values.bonusAmount)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['bonusAmount'],
+            message: required(t('rewardConfigPage.bonusTypeOptions.2')),
+          });
+        }
       }
 
       if (values.bonusMode === '2') {
@@ -221,6 +214,7 @@ export function createDepositBonusSchema(t: TFunction) {
           const currentStart = toNumberOrNull(row.startAmount);
           const currentEnd = toNumberOrNull(row.endAmount);
           const bonusScale = toNumberOrNull(row.bonusScale);
+          const bonusFixed = toNumberOrNull(row.bonusFixed);
 
           if (currentStart === null) {
             ctx.addIssue({
@@ -238,11 +232,19 @@ export function createDepositBonusSchema(t: TFunction) {
             });
           }
 
-          if (bonusScale === null) {
+          if (values.bonusType === '1' && bonusScale === null) {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
               path: ['ladderBonusList', index, 'bonusScale'],
               message: required(t('table.percentage')),
+            });
+          }
+
+          if (values.bonusType === '2' && bonusFixed === null) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ['ladderBonusList', index, 'bonusFixed'],
+              message: required(t('rewardConfigPage.bonusTypeOptions.2')),
             });
           }
         }

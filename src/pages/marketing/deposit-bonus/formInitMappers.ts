@@ -10,52 +10,58 @@ const splitValues = (value: string | null | undefined) =>
 
 export function buildFormValuesFromDetail(detail: BonusSettingDetailData): FormValues {
   const bonusSetting = detail.bonusSetting;
-  const bonusSettingExtra = bonusSetting as typeof bonusSetting & {
-    bonusLockAllowWithdraw?: string | number | null;
-  };
-
-  const selectedUserIds = (detail.selectedUsers || [])
-    .map(user => toStringValue(user.id))
-    .filter(Boolean);
   const selectedRoleIds = (detail.selectedRoles || [])
     .map(role => toStringValue(role.roleId))
     .filter(Boolean);
-  const selectedAccountIds = (detail.selectedAccounts || [])
-    .map(user => toStringValue(user.id))
-    .filter(Boolean);
-  const selectedTagIds = (detail.selectedTags || [])
-    .map(tag => toStringValue(tag.id))
-    .filter(Boolean);
+
+  const parseLadderList = () => {
+    if (bonusSetting.ladderBonusList && bonusSetting.ladderBonusList.length > 0) {
+      return bonusSetting.ladderBonusList.map(item => ({
+        id: toStringValue(item.id),
+        rewardId: toStringValue(item.rewardId),
+        startAmount: toStringValue(item.startAmount),
+        endAmount: toStringValue(item.endAmount),
+        bonusScale: toStringValue(item.bonusScale),
+        bonusFixed: toStringValue(item.bonusFixed),
+      }));
+    }
+
+    const raw = toStringValue(bonusSetting.ladderBonusListJsonStr);
+    if (!raw) return [];
+
+    try {
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.map(item => ({
+        id: '',
+        rewardId: '',
+        startAmount: toStringValue(item?.startAmount),
+        endAmount: toStringValue(item?.endAmount),
+        bonusScale: toStringValue(item?.bonusScale),
+        bonusFixed: toStringValue(item?.bonusFixed),
+      }));
+    } catch {
+      return [];
+    }
+  };
+
   return {
     rewardTitle: toStringValue(bonusSetting.rewardTitle),
     sort: toStringValue(bonusSetting.sort),
     status: toStringValue(bonusSetting.status, '0'),
     toClientStatus: toStringValue(bonusSetting.toClientStatus, '0'),
-    businessType: toStringValue(detail.businessType ?? bonusSetting.businessType, '5'),
+    businessType: toStringValue(detail.businessType ?? bonusSetting.businessType, '1'),
     accountLimitType: toStringValue(bonusSetting.accountLimitType, '0'),
     activityTime: {
       from: toStringValue(bonusSetting.startTime),
       to: toStringValue(bonusSetting.endTime),
     },
     amountCapped: toStringValue(bonusSetting.amountCapped),
-    maxAccount: toStringValue(bonusSetting.maxAccount),
     rewardType: toStringValue(bonusSetting.rewardType, '1'),
     bonusAmount: toStringValue(bonusSetting.bonusAmount),
-    bonusLock: toStringValue(bonusSetting.bonusLock),
-    bonusLockAllowWithdraw: toStringValue(bonusSettingExtra.bonusLockAllowWithdraw),
-    unlockLimit: toStringValue(bonusSetting.unlockLimit, '1,2,3'),
-    unlockDeposit: toStringValue(bonusSetting.unlockDeposit),
-    unlockNet: toStringValue(bonusSetting.unlockNet),
-    unlockVolume: toStringValue(bonusSetting.unlockVolume),
-    dealBreed: toStringValue(bonusSetting.dealBreed),
     serverId: toStringValue(bonusSetting.serverId),
-    accountTypes: splitValues(bonusSetting.accountTypes),
     serverGroupIds: splitValues(bonusSetting.serverGroupIds),
-    userIds: selectedUserIds.length > 0 ? selectedUserIds : splitValues(bonusSetting.userIds),
     crmRoleIds: selectedRoleIds.length > 0 ? selectedRoleIds : splitValues(bonusSetting.crmRoleIds),
-    accounts:
-      selectedAccountIds.length > 0 ? selectedAccountIds : splitValues(bonusSetting.accounts),
-    tagIds: selectedTagIds.length > 0 ? selectedTagIds : splitValues(bonusSetting.tagIds),
     titleLanguageList: (detail.infoList || []).map(item => ({
       id: toStringValue(item.id),
       language: item.language || '',
@@ -76,7 +82,7 @@ export function buildFormValuesFromDetail(detail: BonusSettingDetailData): FormV
     bonusType: toStringValue(bonusSetting.bonusType, '1'),
     bonusMode: toStringValue(bonusSetting.bonusMode, '1'),
     bonusPercentage: toStringValue(bonusSetting.bonusPercentage),
-    ladderBonusList: bonusSetting.ladderBonusList || [],
+    ladderBonusList: parseLadderList(),
   };
 }
 
@@ -86,27 +92,15 @@ export function createDefaultFormValues(languageList: LanguageDictItem[] = []): 
     sort: '',
     status: '',
     toClientStatus: '',
-    businessType: '4',
+    businessType: '',
     accountLimitType: '0',
     activityTime: { from: '', to: '' },
     amountCapped: '',
-    maxAccount: '',
     rewardType: '',
     bonusAmount: '',
-    bonusLock: '',
-    bonusLockAllowWithdraw: '',
-    unlockLimit: '',
-    unlockDeposit: '',
-    unlockNet: '',
-    unlockVolume: '',
-    dealBreed: '',
     serverId: '',
-    accountTypes: [],
     serverGroupIds: [],
-    userIds: [],
     crmRoleIds: [],
-    accounts: [],
-    tagIds: [],
     titleLanguageList: languageList.map(item => ({
       id: '',
       language: item.dictValue || '',

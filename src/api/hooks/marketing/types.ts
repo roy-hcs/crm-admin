@@ -641,6 +641,25 @@ export type EditAccountOpeningBonusSettingParams = AccountOpeningBonusSettingPar
   id: string;
 };
 
+export type DepositBonusSettingParams = BonusSettingCommonParams & {
+  minimumAmount: string;
+  limitType: number;
+  businessTimeType: string | null;
+  expire: string | null;
+  timeUnit: string | null;
+  rewardType: number;
+  bonusAmount: string | null;
+  bonusPercentage: string | null;
+  amountCapped: string | null;
+  serverId: string | null;
+  serverGroupIds: string | null;
+  ladderBonusListJsonStr: string | null;
+};
+
+export type EditDepositBonusSettingParams = DepositBonusSettingParams & {
+  id: string;
+};
+
 export type TransactionBonusSettingParams = BonusSettingCommonParams & {
   minimumAmount: string;
   limitType: number;

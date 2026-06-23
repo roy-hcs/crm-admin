@@ -57,12 +57,10 @@ export function StepOne({
   const createEmptyLadderItem = (): FormValues['ladderBonusList'][number] => ({
     id: '',
     rewardId: '',
-    startAmount: 0,
-    endAmount: 0,
-    bonusScale: 0,
-    bonusFixed: null,
-    dealNum: null,
-    dealBasis: null,
+    startAmount: '',
+    endAmount: '',
+    bonusScale: '',
+    bonusFixed: '',
   });
 
   useEffect(() => {

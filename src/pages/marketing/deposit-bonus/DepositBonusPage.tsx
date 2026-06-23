@@ -13,9 +13,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
 import {
-  useAddAccountOpeningBonusSetting,
+  useAddDepositBonusSetting,
   useBonusSettingDetail,
-  useEditAccountOpeningBonusSetting,
+  useEditDepositBonusSetting,
 } from '@/api/hooks/marketing';
 import { useTabBackNavigation } from '@/hooks/useTabBackNavigation';
 
@@ -60,8 +60,8 @@ export function DepositBonusPage() {
     defaultValues: addDefaultValues,
   });
 
-  const { mutateAsync: add } = useAddAccountOpeningBonusSetting();
-  const { mutateAsync: edit } = useEditAccountOpeningBonusSetting();
+  const { mutateAsync: add } = useAddDepositBonusSetting();
+  const { mutateAsync: edit } = useEditDepositBonusSetting();
   const { mutateAsync: upload } = useUploadFile();
 
   const toClientStatusValue = form.watch('toClientStatus');
