@@ -27,6 +27,15 @@ import {
   EditNetBonusRewardConfigFixedParams,
   NetBonusIntervalsRes,
   EditNetBonusIntervalsParams,
+  BonusSettingDetailRes,
+  ReferralBonusSettingParams,
+  EditReferralBonusSettingParams,
+  AccountOpeningBonusSettingParams,
+  EditAccountOpeningBonusSettingParams,
+  DepositBonusSettingParams,
+  EditDepositBonusSettingParams,
+  TransactionBonusSettingParams,
+  EditTransactionBonusSettingParams,
 } from './types';
 
 export * from './types';
@@ -425,3 +434,105 @@ export function useChangeNetBonusRewardStatus() {
       apiPost(`/system/marketing/netDepositBonus/switch?status=${params.status}`, {}),
   });
 }
+
+/**
+ * 获取奖励活动详情
+ */
+export function useBonusSettingDetail(id: string) {
+  return useQuery({
+    queryKey: ['bonusSettingDetail', id],
+    queryFn: () =>
+      apiGetCustom<BonusSettingDetailRes>(`/system/marketing/bonusSetting/detail?id=${id}`),
+    enabled: Boolean(id),
+  });
+}
+
+/**
+ * 推荐奖励活动新增
+ */
+export function useAddReferralBonusSetting() {
+  return useMutation({
+    mutationFn: (params: ReferralBonusSettingParams) =>
+      apiPost(`/system/marketing/bonusSetting/add`, params),
+  });
+}
+
+/**
+ * 推荐奖励活动编辑
+ */
+export function useEditReferralBonusSetting() {
+  return useMutation({
+    mutationFn: (params: EditReferralBonusSettingParams) =>
+      apiPost(`/system/marketing/bonusSetting/edit`, params),
+  });
+}
+
+/**
+ * 开户奖励活动新增
+ */
+export function useAddAccountOpeningBonusSetting() {
+  return useMutation({
+    mutationFn: (params: AccountOpeningBonusSettingParams) =>
+      apiPost(`/system/marketing/bonusSetting/add`, params),
+  });
+}
+
+/**
+ * 开户奖励活动编辑
+ */
+export function useEditAccountOpeningBonusSetting() {
+  return useMutation({
+    mutationFn: (params: EditAccountOpeningBonusSettingParams) =>
+      apiPost(`/system/marketing/bonusSetting/edit`, params),
+  });
+}
+
+/**
+ * 入金奖励活动新增
+ */
+export function useAddDepositBonusSetting() {
+  return useMutation({
+    mutationFn: (params: DepositBonusSettingParams) =>
+      apiPost(`/system/marketing/bonusSetting/add`, params),
+  });
+}
+
+/**
+ * 入金奖励活动编辑
+ */
+export function useEditDepositBonusSetting() {
+  return useMutation({
+    mutationFn: (params: EditDepositBonusSettingParams) =>
+      apiPost(`/system/marketing/bonusSetting/edit`, params),
+  });
+}
+
+/**
+ * 交易奖励活动新增
+ */
+export function useAddTransactionBonusSetting() {
+  return useMutation({
+    mutationFn: (params: TransactionBonusSettingParams) =>
+      apiPost(`/system/marketing/bonusSetting/add`, params),
+  });
+}
+
+/**
+ * 交易奖励活动编辑
+ */
+export function useEditTransactionBonusSetting() {
+  return useMutation({
+    mutationFn: (params: EditTransactionBonusSettingParams) =>
+      apiPost(`/system/marketing/bonusSetting/edit`, params),
+  });
+}
+
+/**
+ * @deprecated 请改用 useAddReferralBonusSetting
+ */
+export const useAddBonusSetting = useAddReferralBonusSetting;
+
+/**
+ * @deprecated 请改用 useEditReferralBonusSetting
+ */
+export const useEditBonusSetting = useEditReferralBonusSetting;

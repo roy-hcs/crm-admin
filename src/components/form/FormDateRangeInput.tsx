@@ -17,6 +17,7 @@ interface FormDateRangeInputProps<T extends FieldValues> {
   placeholder?: string;
   disabled?: boolean;
   className?: string;
+  labeTipsDom?: React.ReactNode;
 }
 
 export function FormDateRangeInput<T extends FieldValues>({
@@ -27,6 +28,7 @@ export function FormDateRangeInput<T extends FieldValues>({
   placeholder = '',
   disabled = false,
   className,
+  labeTipsDom,
 }: FormDateRangeInputProps<T>) {
   return (
     <FormField
@@ -34,7 +36,12 @@ export function FormDateRangeInput<T extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem className={className}>
-          {label && <FormLabel>{label}</FormLabel>}
+          {label && (
+            <div className="flex items-center gap-2">
+              <FormLabel>{label}</FormLabel>
+              {labeTipsDom && <div>{labeTipsDom}</div>}
+            </div>
+          )}
           <FormControl>
             <RrhRangeInput
               name={name}

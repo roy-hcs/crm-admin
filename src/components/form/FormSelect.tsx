@@ -46,50 +46,61 @@ export function FormSelect<T extends FieldValues, O extends BaseOption = BaseOpt
     <FormField
       name={name}
       control={form.control}
-      render={({ field }) => (
-        <FormItem
-          className={cn(
-            'text-foreground text-sm',
-            verticalLabel ? '' : 'flex items-center',
-            className,
-          )}
-        >
-          {label && (
-            <div className="flex items-center gap-2">
-              <FormLabel className={cn(verticalLabel ? '' : 'basis-3/12', 'leading-5')}>
-                {label}
-              </FormLabel>
-              {labeTipsDom && <div>{labeTipsDom}</div>}
-            </div>
-          )}
-          <FormControl
-            className={cn('grow-0', verticalLabel || !label ? 'basis-full' : 'basis-9/12')}
-          >
-            {loading ? (
-              <div className="bg-muted h-10 w-full animate-pulse rounded-md" />
-            ) : (
-              <RrhSelect<O>
-                options={options}
-                value={field.value?.toString()}
-                onValueChange={field.onChange}
-                className={cn(
-                  'w-full',
-                  disabled &&
-                    'data-[disabled]:bg-muted data-[disabled]:text-muted-foreground data-[disabled]:border-muted-foreground/20 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-100',
-                  selectCls,
-                )}
-                placeholder={placeholder}
-                displayValue={props.displayValue}
-                renderItem={renderItem}
-                showRowValue={showRowValue}
-                disabled={disabled}
-                {...props}
-              />
+      render={({ field }) => {
+        const fieldValue = field.value == null ? '' : String(field.value);
+        const normalizedValue = fieldValue === '' ? undefined : fieldValue;
+
+        const handleValueChange = (nextValue: string) => {
+          // 防止底层 Select 在重渲染时把已有值回写为空字符串。
+          if (!nextValue && fieldValue) return;
+          field.onChange(nextValue);
+        };
+
+        return (
+          <FormItem
+            className={cn(
+              'text-foreground text-sm',
+              verticalLabel ? '' : 'flex items-center',
+              className,
             )}
-          </FormControl>
-          <FormMessage className="text-end" />
-        </FormItem>
-      )}
+          >
+            {label && (
+              <div className="flex items-center gap-2">
+                <FormLabel className={cn(verticalLabel ? '' : 'basis-3/12', 'leading-5')}>
+                  {label}
+                </FormLabel>
+                {labeTipsDom && <div>{labeTipsDom}</div>}
+              </div>
+            )}
+            <FormControl
+              className={cn('grow-0', verticalLabel || !label ? 'basis-full' : 'basis-9/12')}
+            >
+              {loading ? (
+                <div className="bg-muted h-10 w-full animate-pulse rounded-md" />
+              ) : (
+                <RrhSelect<O>
+                  options={options}
+                  value={normalizedValue}
+                  onValueChange={handleValueChange}
+                  className={cn(
+                    'w-full',
+                    disabled &&
+                      'data-[disabled]:bg-muted data-[disabled]:text-muted-foreground data-[disabled]:border-muted-foreground/20 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-100',
+                    selectCls,
+                  )}
+                  placeholder={placeholder}
+                  displayValue={props.displayValue}
+                  renderItem={renderItem}
+                  showRowValue={showRowValue}
+                  disabled={disabled}
+                  {...props}
+                />
+              )}
+            </FormControl>
+            <FormMessage className="text-end" />
+          </FormItem>
+        );
+      }}
     />
   );
 }

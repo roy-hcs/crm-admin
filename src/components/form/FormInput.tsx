@@ -57,7 +57,7 @@ export function FormInput<T extends FieldValues>({
                   {...props}
                   {...field}
                   className={cn(
-                    'h-9 w-full border px-2',
+                    'h-10 w-full border px-2',
                     max ? 'pr-12' : '',
                     rightElement ? 'flex-1' : '',
                     inputCls,

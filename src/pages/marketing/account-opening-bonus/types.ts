@@ -1,0 +1,30 @@
+import { FormTitleLanguageItem } from '../referral-bonus/types';
+
+export type FormValues = {
+  rewardTitle: string;
+  sort: string;
+  status: string;
+  toClientStatus: string;
+  businessType: string;
+  accountLimitType: string;
+  activityTime: { from: Date | string; to: Date | string };
+  amountCapped: string;
+  maxAccount: string;
+  rewardType: string;
+  bonusAmount: string;
+  bonusLock: string;
+  bonusLockAllowWithdraw: string;
+  unlockLimit: string;
+  unlockDeposit: string;
+  unlockNet: string;
+  unlockVolume: string;
+  dealBreed: string;
+  serverId: string;
+  accountTypes: string[];
+  serverGroupIds: string[];
+  titleLanguageList: FormTitleLanguageItem[];
+  userIds?: string[];
+  crmRoleIds?: string[];
+  accounts?: string[];
+  tagIds?: string[];
+};

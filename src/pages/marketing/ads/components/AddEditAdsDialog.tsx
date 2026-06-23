@@ -21,6 +21,7 @@ import { UploadFile } from './components/UploadFile';
 import { useUploadFile } from '@/api/hooks/system/system';
 import { cloneDeep } from 'es-toolkit';
 import { RrhForm } from '@/components/form/RrhForm';
+import { applyInputNormalizer, normalizeSortInput } from '../../shared/formValueUtils';
 
 type FormValues = {
   name: string;
@@ -344,6 +345,7 @@ export const AddEditAdsDialog = ({
               label={t('table.sort')}
               placeholder={t('common.pleaseInput', { field: t('table.sort') })}
               maxLength={64}
+              onInput={event => applyInputNormalizer(event.currentTarget, normalizeSortInput)}
             />
 
             <FormSwitch name="status" label={t('table.status')} />

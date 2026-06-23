@@ -38,7 +38,6 @@ import {
   AddAccountParams,
   CrmUsers,
   CrmUsersParams,
-  CrmUsersTagsParams,
   CrmUsersTags,
   MyInfoRes,
   EmailVerificationCodeRes,
@@ -54,6 +53,8 @@ import {
   CrmDealAccountListParams,
   AdjustBalanceParams,
   AdjustBalanceRes,
+  CrmGroupRes,
+  CrmAccountTypeRes,
 } from './types';
 import { UserAccountOperationRes, UserRebateAccountTabRes } from '../agent/types';
 
@@ -478,12 +479,65 @@ export function useCrmUsers() {
 }
 
 /**
- * 获取crm用户标签
+ * 获取crm角色
  */
-export function useCrmUserTags() {
+export function useCrmRole() {
   return useMutation({
-    mutationFn: (params: CrmUsersTagsParams) =>
-      apiFormPostCustom<CrmUsersTags>('/system/crmUserTag/list', params),
+    mutationFn: (params: {
+      origin?: string;
+      roleName?: string;
+      pageNum?: number;
+      pageSize?: number;
+    }) => apiFormPostCustom<RoleListRes>('/system/user/role/list', params),
+  });
+}
+
+/**
+ * 获取crm组
+ */
+export function useCrmGroup() {
+  return useMutation({
+    mutationFn: ({
+      params,
+      serverId,
+    }: {
+      params: {
+        origin?: string;
+        pageNum?: number;
+        pageSize?: number;
+        params: {
+          threeCons?: string;
+        };
+      };
+      serverId: string;
+    }) => apiFormPostCustom<CrmGroupRes>(`/system/mtServerGroup/list?serverId=${serverId}`, params),
+  });
+}
+
+/**
+ * 获取crm账号类型
+ */
+export function useCrmAccountType() {
+  return useMutation({
+    mutationFn: ({ serverId }: { serverId: string }) =>
+      apiFormPostCustom<CrmAccountTypeRes>(
+        `/system/mtServerTypeAssociation/allList?serverId=${serverId}`,
+        {},
+      ),
+  });
+}
+
+/**
+ * 获取crm标签
+ */
+export function useCrmTag() {
+  return useMutation({
+    mutationFn: (params: {
+      status: string;
+      tagName?: string;
+      pageNum?: number;
+      pageSize?: number;
+    }) => apiFormPostCustom<CrmUsersTags>('/system/crmUserTag/list', params),
   });
 }
 

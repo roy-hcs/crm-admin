@@ -23,7 +23,7 @@ import { format } from 'date-fns';
 import { infoTypeOptions, receiveTypeOptions } from '@/lib/const';
 import { useUserRoleList } from '@/api/hooks/system';
 import { FormSearchMultiSelect } from '@/components/form/FormSearchMultiSelect';
-import { useCrmUsers, useCrmUserTags } from '@/api/hooks/system/system';
+import { useCrmUsers, useCrmTag } from '@/api/hooks/system/system';
 import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 import { RrhForm } from '@/components/form/RrhForm';
 
@@ -118,7 +118,7 @@ export const AddEditNewMessageDialog = ({
 }) => {
   const { data: RoleRes } = useUserRoleList({});
   const { mutateAsync: getCrmUsers } = useCrmUsers();
-  const { mutateAsync: getCrmUsersTags } = useCrmUserTags();
+  const { mutateAsync: getCrmUsersTags } = useCrmTag();
 
   const { t } = useTranslation();
   const [openLocal, setOpenLocal] = useState(false);
@@ -230,9 +230,10 @@ export const AddEditNewMessageDialog = ({
         status: '1',
         pageNum: params.pageNum,
         pageSize: params.pageSize,
-        params: {
-          threeCons: params.keyword,
-        },
+        tagName: params.keyword,
+        // params: {
+        //   threeCons: params.keyword,
+        // },
       });
 
       const rows = res.rows || [];
