@@ -25,6 +25,7 @@ import { BaseConfig } from './components/BaseConfig';
 import { useDictType } from '@/api/hooks/system';
 import { RewardActivationStatus } from './components/RewardActivationStatus';
 import { Faq } from './components/Faq';
+import { toStringArray } from '../../shared/value';
 
 export type GroupItem = {
   startAmount: string;
@@ -74,11 +75,7 @@ const cloneFormValues = (values: FormValues): FormValues => {
   return JSON.parse(JSON.stringify(values)) as FormValues;
 };
 
-const toArray = (value: string | null | undefined) =>
-  (value ?? '')
-    .split(',')
-    .map(item => item.trim())
-    .filter(Boolean);
+const toArray = (value: string | null | undefined) => toStringArray(value);
 
 const mySchema = (t: TFunction<'translation', undefined>) => {
   const required = (field: string) => {

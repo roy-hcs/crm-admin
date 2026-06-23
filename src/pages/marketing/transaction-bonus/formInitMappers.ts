@@ -1,12 +1,9 @@
 import { BonusSettingDetailData } from '@/api/hooks/marketing';
 import { LanguageDictItem, toStringValue } from '../referral-bonus/formInitMappers';
 import { FormValues, LadderBonusFormItem } from './types';
+import { toStringArray } from '../shared/value';
 
-const splitValues = (value: string | null | undefined) =>
-  toStringValue(value)
-    .split(',')
-    .map(item => item.trim())
-    .filter(Boolean);
+const splitValues = (value: string | null | undefined) => toStringArray(value);
 
 const parseLadderBonusList = (detail: BonusSettingDetailData): LadderBonusFormItem[] => {
   const rawList = detail.bonusSetting.ladderBonusList;

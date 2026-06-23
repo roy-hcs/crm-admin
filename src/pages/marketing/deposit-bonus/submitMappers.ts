@@ -2,14 +2,9 @@ import type {
   DepositBonusSettingParams,
   BonusSettingTitleLanguageItem,
 } from '@/api/hooks/marketing';
-import { format } from 'date-fns';
 import type { FormValues } from './types';
 import { toStringValue } from '../referral-bonus/formInitMappers';
-
-function normalizeDateValue(value: Date | string | undefined): string {
-  if (!value) return '';
-  return value instanceof Date ? format(value, 'yyyy-MM-dd HH:mm:ss') : toStringValue(value);
-}
+import { normalizeDateValue } from '../shared/dateValue';
 
 export function buildSubmitParams(
   data: FormValues,

@@ -4,9 +4,9 @@ import type {
   BonusSettingTitleLanguageItem,
 } from '@/api/hooks/marketing';
 import { uploadFilesInArr } from '@/lib/upload';
-import { format } from 'date-fns';
 import type { FormTitleLanguageItem, FormValues } from './types';
 import { toStringValue } from './formInitMappers';
+import { normalizeDateValue } from '../shared/dateValue';
 
 type LanguageDictItem = { dictValue?: string };
 
@@ -16,11 +16,6 @@ function normalizeTriggerSymbol(event: string, symbol: unknown): string {
   if (symbolValue === '>' || symbolValue === '>=') return '>=';
   if (symbolValue === '=') return '=';
   return '>=';
-}
-
-function normalizeDateValue(value: Date | string | undefined): string {
-  if (!value) return '';
-  return value instanceof Date ? format(value, 'yyyy-MM-dd') : toStringValue(value);
 }
 
 // 根据不同的模式处理不同的多语言列表数据，主要是为了在新增和编辑时都能正确地构建多语言列表数据结构 可以在多个活动类型中复用，避免重复代码
@@ -104,8 +99,8 @@ export function buildSubmitParams(
     rewardType: 2,
     bonusAmount: toStringValue(data.levelAmounts?.[0]?.amount),
     status: Number(data.status || 0),
-    startTime: normalizeDateValue(data.activityTime?.from),
-    endTime: normalizeDateValue(data.activityTime?.to),
+    startTime: normalizeDateValue(data.activityTime?.from, 'yyyy-MM-dd'),
+    endTime: normalizeDateValue(data.activityTime?.to, 'yyyy-MM-dd'),
     accountLimitType: Number(data.accountLimitType || 0),
     userIds: (data.userIds || []).join(',') || null,
     crmRoleIds: (data.crmRoleIds || []).join(',') || null,

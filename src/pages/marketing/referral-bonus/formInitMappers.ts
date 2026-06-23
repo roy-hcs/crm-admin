@@ -1,5 +1,6 @@
 import type { BonusSettingDetailData } from '@/api/hooks/marketing';
 import type { FormValues } from './types';
+import { toStringValue } from '../shared/value';
 
 export type LanguageDictItem = {
   dictValue?: string;
@@ -56,10 +57,7 @@ export function createDefaultFormValues(languageList: LanguageDictItem[] = []): 
   };
 }
 
-export function toStringValue(value: unknown, fallback = ''): string {
-  if (value === null || value === undefined) return fallback;
-  return String(value);
-}
+export { toStringValue };
 
 function normalizeTriggerEvent(event: unknown): string {
   return toStringValue(event);

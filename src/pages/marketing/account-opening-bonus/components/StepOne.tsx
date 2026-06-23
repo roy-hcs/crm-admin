@@ -19,6 +19,7 @@ import { BaseOption } from '@/components/common/RrhMultiSelect';
 import { FormCheckBoxGroup } from '@/components/form/FormCheckBoxGroup';
 import { SelectMtTypeGroup } from '@/components/common/SelectMtTypeGroup';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
+import { toStringArray } from '../../shared/value';
 
 type ServerOptionsType = BaseOption & {
   serviceProperty: number;
@@ -55,10 +56,7 @@ export function StepOne({
   const rewardTypeValue = form.watch('rewardType');
   const unlockLimitValue = form.watch('unlockLimit');
 
-  const unlockLimitList = String(unlockLimitValue || '')
-    .split(',')
-    .map(item => item.trim())
-    .filter(Boolean);
+  const unlockLimitList = toStringArray(unlockLimitValue);
   const unlockDepositEnabled = unlockLimitList.includes('1');
   const unlockNetEnabled = unlockLimitList.includes('2');
   const unlockVolumeEnabled = unlockLimitList.includes('3');

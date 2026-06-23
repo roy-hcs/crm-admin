@@ -28,13 +28,6 @@ import {
   buildSubmitParams,
   resolveTitleLanguageListForSubmit,
 } from './submitMappers';
-// import {
-//   buildFallbackTitleLanguageList,
-//   buildFormValuesFromDetail,
-//   buildSubmitParams,
-//   createDefaultFormValues,
-//   resolveTitleLanguageListForSubmit,
-// } from './dataMappers';
 
 export function ReferralBonusPage() {
   const { t } = useTranslation();

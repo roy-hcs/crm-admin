@@ -100,10 +100,6 @@ export const marketingRoutes: RouteObject[] = [
     element: <AccountOpeningBonusPageWrapper />,
   },
   {
-    path: '/marketing/reward-config/account-opening-bonus',
-    element: <AccountOpeningBonusPageWrapper />,
-  },
-  {
     path: '/marketing/reward-config/deposit-bonus',
     element: <DepositBonusPageWrapper />,
   },
