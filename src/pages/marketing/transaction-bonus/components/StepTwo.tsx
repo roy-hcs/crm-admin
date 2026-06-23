@@ -12,6 +12,12 @@ import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/for
 import { SelectMtTypeGroup } from '@/components/common/SelectMtTypeGroup';
 import { RrhButton } from '@/components/common/RrhButton';
 import { useFieldArray } from 'react-hook-form';
+import {
+  applyInputNormalizer,
+  normalizePositiveDecimalInput,
+  normalizePositiveDecimalTwoPlacesInput,
+  normalizePositiveIntegerInput,
+} from '../../shared/value';
 
 type ServerOptionsType = BaseOption & {
   serviceProperty: number;
@@ -174,6 +180,7 @@ export function StepTwo({ serverOptions = [] }: { serverOptions: ServerOptionsTy
             {t('rewardConfigPage.tradingVolumeDesc')}
           </div>
         }
+        onInput={event => applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)}
       />
 
       <FormSwitchGroup
@@ -227,6 +234,9 @@ export function StepTwo({ serverOptions = [] }: { serverOptions: ServerOptionsTy
           name="bonusAmount"
           unit="USD"
           placeholder={t('rules.enterPositiveInteger')}
+          onInput={event =>
+            applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+          }
         />
       )}
 
@@ -247,6 +257,12 @@ export function StepTwo({ serverOptions = [] }: { serverOptions: ServerOptionsTy
                     placeholder={t('common.pleaseInput', {
                       field: t('table.rewardAmount'),
                     })}
+                    onInput={event =>
+                      applyInputNormalizer(
+                        event.currentTarget,
+                        normalizePositiveDecimalTwoPlacesInput,
+                      )
+                    }
                   />
                 </div>
                 <div className="flex-1">
@@ -256,6 +272,9 @@ export function StepTwo({ serverOptions = [] }: { serverOptions: ServerOptionsTy
                     placeholder={t('common.pleaseInput', {
                       field: '',
                     })}
+                    onInput={event =>
+                      applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+                    }
                   />
                 </div>
               </div>
@@ -304,6 +323,9 @@ export function StepTwo({ serverOptions = [] }: { serverOptions: ServerOptionsTy
                         name={`ladderBonusList.${index}.startAmount`}
                         label={t('rewardConfigPage.tradingVolumeRange')}
                         placeholder={t('rewardConfigPage.min')}
+                        onInput={event =>
+                          applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+                        }
                       />
                     </div>
                     <div className="flex-1">
@@ -312,6 +334,9 @@ export function StepTwo({ serverOptions = [] }: { serverOptions: ServerOptionsTy
                         placeholder={t('rewardConfigPage.max')}
                         disabled={
                           index === fields.length - 1 // 仅最后一个区间的结束金额允许输入，其他区间的结束金额由下一个区间的开始金额决定
+                        }
+                        onInput={event =>
+                          applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
                         }
                       />
                     </div>
@@ -323,6 +348,11 @@ export function StepTwo({ serverOptions = [] }: { serverOptions: ServerOptionsTy
                         placeholder={t('common.pleaseInput', {
                           field: t('rewardConfigPage.bonusAmount'),
                         })}
+                        onInput={event =>
+                          applyInputNormalizer(event.currentTarget, value =>
+                            normalizePositiveDecimalInput(value, 4),
+                          )
+                        }
                       />
                     </div>
                   </div>
@@ -373,6 +403,9 @@ export function StepTwo({ serverOptions = [] }: { serverOptions: ServerOptionsTy
                         name={`ladderBonusList.${index}.startAmount`}
                         label={t('rewardConfigPage.tradingVolumeRange')}
                         placeholder={t('rewardConfigPage.min')}
+                        onInput={event =>
+                          applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+                        }
                       />
                     </div>
                     <div className="flex-1">
@@ -381,6 +414,9 @@ export function StepTwo({ serverOptions = [] }: { serverOptions: ServerOptionsTy
                         placeholder={t('rewardConfigPage.max')}
                         disabled={
                           index === fields.length - 1 // 仅最后一个区间的结束金额允许输入，其他区间的结束金额由下一个区间的开始金额决定
+                        }
+                        onInput={event =>
+                          applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
                         }
                       />
                     </div>
@@ -392,6 +428,12 @@ export function StepTwo({ serverOptions = [] }: { serverOptions: ServerOptionsTy
                         placeholder={t('common.pleaseInput', {
                           field: t('rewardConfigPage.bonusAmount'),
                         })}
+                        onInput={event =>
+                          applyInputNormalizer(
+                            event.currentTarget,
+                            normalizePositiveDecimalTwoPlacesInput,
+                          )
+                        }
                       />
                     </div>
                     <div className="flex-1">
@@ -401,6 +443,9 @@ export function StepTwo({ serverOptions = [] }: { serverOptions: ServerOptionsTy
                         placeholder={t('common.pleaseInput', {
                           field: t('rewardConfigPage.bonusAmount'),
                         })}
+                        onInput={event =>
+                          applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+                        }
                       />
                     </div>
                   </div>
@@ -421,6 +466,9 @@ export function StepTwo({ serverOptions = [] }: { serverOptions: ServerOptionsTy
         placeholder={t('common.pleaseInput', {
           field: t('rewardConfigPage.amountCapped'),
         })}
+        onInput={event =>
+          applyInputNormalizer(event.currentTarget, normalizePositiveDecimalTwoPlacesInput)
+        }
       />
 
       <FormItem>
@@ -449,12 +497,14 @@ export function StepTwo({ serverOptions = [] }: { serverOptions: ServerOptionsTy
                 />
               </div>
               <div className="flex-1">
-                <FormInputWithUnit
+                <FormSelect
+                  options={Array.from({ length: 19 }, (_, i) => ({
+                    label: String(i + 5) + t('common.hour'),
+                    value: i + 5,
+                  }))}
                   name="bonusIssueTime"
-                  unit={t('common.hour')}
-                  placeholder={t('common.pleaseInput', {
-                    field: t('common.hour'),
-                  })}
+                  showRowValue={false}
+                  placeholder={t('common.pleaseSelect')}
                 />
               </div>
             </div>

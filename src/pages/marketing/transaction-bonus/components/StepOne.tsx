@@ -12,6 +12,11 @@ import { FormCrmRoleMultiSelect } from '@/components/form/FormCrmRoleMultiSelect
 import { FormCrmGroupMultiSelect } from '@/components/form/FormCrmGroupMultiSelect';
 import { BaseOption } from '@/components/common/RrhMultiSelect';
 import { useEffect } from 'react';
+import {
+  applyInputNormalizer,
+  normalizePositiveIntegerInput,
+  normalizeSortInput,
+} from '../../shared/value';
 
 type ServerOptionsType = BaseOption & {
   serviceProperty: number;
@@ -69,7 +74,12 @@ export function StepOne({
         })}
         maxLength={12}
       />
-      <FormInput name="sort" label={t('table.sort')} placeholder="0-9999" />
+      <FormInput
+        name="sort"
+        label={t('table.sort')}
+        placeholder="0-9999"
+        onInput={event => applyInputNormalizer(event.currentTarget, normalizeSortInput)}
+      />
       <FormSwitch name="status" label={t('table.status')} />
       <FormSwitch
         name="toClientStatus"
@@ -118,6 +128,9 @@ export function StepOne({
             placeholder={t('common.pleaseInput', {
               field: '',
             })}
+            onInput={event =>
+              applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+            }
           />
           <FormSelect
             className="flex-1"

@@ -19,7 +19,13 @@ import { BaseOption } from '@/components/common/RrhMultiSelect';
 import { FormCheckBoxGroup } from '@/components/form/FormCheckBoxGroup';
 import { SelectMtTypeGroup } from '@/components/common/SelectMtTypeGroup';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
-import { toStringArray } from '../../shared/value';
+import {
+  applyInputNormalizer,
+  normalizePositiveDecimalTwoPlacesInput,
+  normalizePositiveIntegerInput,
+  normalizeSortInput,
+  toStringArray,
+} from '../../shared/value';
 
 type ServerOptionsType = BaseOption & {
   serviceProperty: number;
@@ -167,7 +173,12 @@ export function StepOne({
         })}
         maxLength={12}
       />
-      <FormInput name="sort" label={t('table.sort')} placeholder="0-9999" />
+      <FormInput
+        name="sort"
+        label={t('table.sort')}
+        placeholder="0-9999"
+        onInput={event => applyInputNormalizer(event.currentTarget, normalizeSortInput)}
+      />
       <FormSwitch name="status" label={t('table.status')} />
       <FormSwitch
         name="toClientStatus"
@@ -322,6 +333,7 @@ export function StepOne({
         name="bonusAmount"
         label={t('rewardConfigPage.bonusAmount')}
         placeholder={t('rewardConfigPage.bonusAmount')}
+        onInput={event => applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)}
       />
       {(rewardTypeValue === '2' || rewardTypeValue === '3') && (
         <div className="grid gap-6">
@@ -361,6 +373,9 @@ export function StepOne({
             unit="USD"
             disabled={!unlockDepositEnabled}
             placeholder={t('rules.enterAmount')}
+            onInput={event =>
+              applyInputNormalizer(event.currentTarget, normalizePositiveDecimalTwoPlacesInput)
+            }
           />
 
           <FormInputWithUnit
@@ -369,6 +384,9 @@ export function StepOne({
             unit="USD"
             disabled={!unlockNetEnabled}
             placeholder={t('rules.enterAmount')}
+            onInput={event =>
+              applyInputNormalizer(event.currentTarget, normalizePositiveDecimalTwoPlacesInput)
+            }
           />
 
           <FormInputWithUnit
@@ -379,6 +397,9 @@ export function StepOne({
             placeholder={t('common.pleaseInput', {
               field: t('rewardConfigPage.unlockLimitOptions.3'),
             })}
+            onInput={event =>
+              applyInputNormalizer(event.currentTarget, normalizePositiveDecimalTwoPlacesInput)
+            }
           />
 
           <div className="text-primary text-xs leading-4" onClick={handleDealBreedToggle}>

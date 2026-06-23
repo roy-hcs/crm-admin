@@ -18,6 +18,11 @@ import { FormCrmUserMultiSelect } from '@/components/form/FormCrmUserMultiSelect
 import { FormCrmRoleMultiSelect } from '@/components/form/FormCrmRoleMultiSelect';
 import { FormCrmTagMultiSelect } from '@/components/form/FormCrmTagMultiSelect';
 import { BaseOption } from '@/components/common/RrhMultiSelect';
+import {
+  applyInputNormalizer,
+  normalizePositiveDecimalTwoPlacesInput,
+  normalizeSortInput,
+} from '../../shared/value';
 
 export function StepOne({
   bonusOptions,
@@ -121,7 +126,12 @@ export function StepOne({
         })}
         maxLength={12}
       />
-      <FormInput name="sort" label={t('table.sort')} placeholder="0-9999" />
+      <FormInput
+        name="sort"
+        label={t('table.sort')}
+        placeholder="0-9999"
+        onInput={event => applyInputNormalizer(event.currentTarget, normalizeSortInput)}
+      />
 
       <FormSwitch name="status" label={t('table.status')} />
 
@@ -333,6 +343,12 @@ export function StepOne({
                         name={`triggers.${index}.value`}
                         unit="USD"
                         placeholder={t('rules.enterAmount')}
+                        onInput={event =>
+                          applyInputNormalizer(
+                            event.currentTarget,
+                            normalizePositiveDecimalTwoPlacesInput,
+                          )
+                        }
                       />
                     )}
                   </div>
@@ -385,6 +401,12 @@ export function StepOne({
                   name={`levelAmounts.${index}.amount`}
                   unit="USD"
                   placeholder={t('rules.enterAmount')}
+                  onInput={event =>
+                    applyInputNormalizer(
+                      event.currentTarget,
+                      normalizePositiveDecimalTwoPlacesInput,
+                    )
+                  }
                 />
               </div>
             ))}
@@ -407,6 +429,9 @@ export function StepOne({
               name="amountCapped"
               unit="USD"
               placeholder={t('rules.enterAmount')}
+              onInput={event =>
+                applyInputNormalizer(event.currentTarget, normalizePositiveDecimalTwoPlacesInput)
+              }
             />
             <FormSelect
               className="flex-1"

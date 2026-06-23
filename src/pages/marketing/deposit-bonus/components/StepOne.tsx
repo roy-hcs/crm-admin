@@ -15,6 +15,13 @@ import { FormInputWithUnit } from '@/components/form/FormInputWithUnit';
 import { RrhButton } from '@/components/common/RrhButton';
 import { useFieldArray } from 'react-hook-form';
 import { useEffect } from 'react';
+import {
+  applyInputNormalizer,
+  normalizePositiveDecimalInput,
+  normalizePositiveDecimalTwoPlacesInput,
+  normalizePositiveIntegerInput,
+  normalizeSortInput,
+} from '../../shared/value';
 
 type ServerOptionsType = BaseOption & {
   serviceProperty: number;
@@ -112,7 +119,12 @@ export function StepOne({
         })}
         maxLength={12}
       />
-      <FormInput name="sort" label={t('table.sort')} placeholder="0-9999" />
+      <FormInput
+        name="sort"
+        label={t('table.sort')}
+        placeholder="0-9999"
+        onInput={event => applyInputNormalizer(event.currentTarget, normalizeSortInput)}
+      />
       <FormSwitch name="status" label={t('table.status')} />
       <FormSwitch
         name="toClientStatus"
@@ -191,6 +203,7 @@ export function StepOne({
             {t('rewardConfigPage.minimumAmountDesc')}
           </div>
         }
+        onInput={event => applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)}
       />
 
       <FormSwitchGroup
@@ -238,6 +251,9 @@ export function StepOne({
             placeholder={t('common.pleaseInput', {
               field: '',
             })}
+            onInput={event =>
+              applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+            }
           />
           <FormSelect
             className="flex-1"
@@ -352,6 +368,9 @@ export function StepOne({
               {t('rewardConfigPage.bonusAmountFormula')}
             </div>
           }
+          onInput={event =>
+            applyInputNormalizer(event.currentTarget, normalizePositiveDecimalTwoPlacesInput)
+          }
         />
       )}
       {bonusModeValue === '1' && bonusTypeValue === '2' && (
@@ -361,6 +380,9 @@ export function StepOne({
           placeholder={t('common.pleaseInput', {
             field: t('rewardConfigPage.bonusTypeOptions.2'),
           })}
+          onInput={event =>
+            applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+          }
         />
       )}
 
@@ -404,6 +426,9 @@ export function StepOne({
                         name={`ladderBonusList.${index}.startAmount`}
                         label={t('common.amountRange')}
                         placeholder={t('rewardConfigPage.min')}
+                        onInput={event =>
+                          applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+                        }
                       />
                     </div>
                     <div className="flex-1">
@@ -412,6 +437,9 @@ export function StepOne({
                         placeholder={t('rewardConfigPage.max')}
                         disabled={
                           index === fields.length - 1 // 仅最后一个区间的结束金额允许输入，其他区间的结束金额由下一个区间的开始金额决定
+                        }
+                        onInput={event =>
+                          applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
                         }
                       />
                     </div>
@@ -424,6 +452,11 @@ export function StepOne({
                           placeholder={t('common.pleaseInput', {
                             field: t('table.percentage'),
                           })}
+                          onInput={event =>
+                            applyInputNormalizer(event.currentTarget, value =>
+                              normalizePositiveDecimalInput(value, 4),
+                            )
+                          }
                         />
                       ) : (
                         <FormInput
@@ -431,6 +464,11 @@ export function StepOne({
                           placeholder={t('common.pleaseInput', {
                             field: t('rewardConfigPage.bonusTypeOptions.2'),
                           })}
+                          onInput={event =>
+                            applyInputNormalizer(event.currentTarget, value =>
+                              normalizePositiveDecimalInput(value, 4),
+                            )
+                          }
                         />
                       )}
                     </div>
@@ -448,6 +486,9 @@ export function StepOne({
         placeholder={t('common.pleaseInput', {
           field: t('rewardConfigPage.amountCapped'),
         })}
+        onInput={event =>
+          applyInputNormalizer(event.currentTarget, normalizePositiveDecimalTwoPlacesInput)
+        }
       />
     </div>
   );
