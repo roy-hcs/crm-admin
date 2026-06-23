@@ -25,7 +25,7 @@ import { BaseConfig } from './components/BaseConfig';
 import { useDictType } from '@/api/hooks/system';
 import { RewardActivationStatus } from './components/RewardActivationStatus';
 import { Faq } from './components/Faq';
-import { toStringArray } from '../../shared/value';
+import { toStringArray } from '../../shared/formValueUtils';
 
 export type GroupItem = {
   startAmount: string;

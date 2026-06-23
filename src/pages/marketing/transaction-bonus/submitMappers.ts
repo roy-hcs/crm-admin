@@ -3,8 +3,8 @@ import type {
   BonusSettingTitleLanguageItem,
 } from '@/api/hooks/marketing';
 import type { FormValues } from './types';
-import { toStringValue } from '../referral-bonus/formInitMappers';
-import { normalizeDateValue } from '../shared/dateValue';
+import { toStringValue } from '../shared/formValueUtils';
+import { normalizeDateValue } from '../shared/formValueUtils';
 
 const hasValue = (value: unknown) => {
   if (value === null || value === undefined) return false;

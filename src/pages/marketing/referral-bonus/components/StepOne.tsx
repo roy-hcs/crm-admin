@@ -21,8 +21,9 @@ import { BaseOption } from '@/components/common/RrhMultiSelect';
 import {
   applyInputNormalizer,
   normalizePositiveDecimalTwoPlacesInput,
+  normalizePositiveIntegerInput,
   normalizeSortInput,
-} from '../../shared/value';
+} from '../../shared/formValueUtils';
 
 export function StepOne({
   bonusOptions,
@@ -335,6 +336,9 @@ export function StepOne({
                       <FormInput
                         name={`triggers.${index}.value`}
                         placeholder={t('rules.enterPositiveInteger')}
+                        onInput={event =>
+                          applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+                        }
                       />
                     )}
                     {(triggers[index]?.event === '3' || triggers[index]?.event === '4') && (

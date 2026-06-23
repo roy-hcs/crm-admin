@@ -1,7 +1,8 @@
 import { BonusSettingDetailData } from '@/api/hooks/marketing';
-import { LanguageDictItem, toStringValue } from '../referral-bonus/formInitMappers';
+import { LanguageDictItem } from '../referral-bonus/formInitMappers';
+import { toStringValue } from '../shared/formValueUtils';
 import { FormValues } from './types';
-import { toStringArray } from '../shared/value';
+import { toStringArray } from '../shared/formValueUtils';
 
 const splitValues = (value: string | null | undefined) => toStringArray(value);
 

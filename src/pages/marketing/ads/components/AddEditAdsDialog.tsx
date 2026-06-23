@@ -21,7 +21,7 @@ import { UploadFile } from './components/UploadFile';
 import { useUploadFile } from '@/api/hooks/system/system';
 import { cloneDeep } from 'es-toolkit';
 import { RrhForm } from '@/components/form/RrhForm';
-import { applyInputNormalizer, normalizeSortInput } from '../../shared/value';
+import { applyInputNormalizer, normalizeSortInput } from '../../shared/formValueUtils';
 
 type FormValues = {
   name: string;

@@ -25,7 +25,7 @@ import {
   normalizePositiveIntegerInput,
   normalizeSortInput,
   toStringArray,
-} from '../../shared/value';
+} from '../../shared/formValueUtils';
 
 type ServerOptionsType = BaseOption & {
   serviceProperty: number;

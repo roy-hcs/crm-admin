@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 /**
  * 任意值转字符串，null/undefined 时返回兜底值。
  */
@@ -94,4 +96,12 @@ export function applyInputNormalizer(
   if (nextValue !== inputElement.value) {
     inputElement.value = nextValue;
   }
+}
+
+export function normalizeDateValue(
+  value: Date | string | undefined,
+  pattern = 'yyyy-MM-dd HH:mm:ss',
+): string {
+  if (!value) return '';
+  return value instanceof Date ? format(value, pattern) : toStringValue(value);
 }
