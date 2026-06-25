@@ -40,7 +40,6 @@ export const WalletBalanceAdjustDialog = ({
 }: {
   onSuccess?: () => void;
   operationType: SelectOption[];
-  userOptions: SelectOption[];
   open: boolean;
   setOpen: (open: boolean) => void;
   ids: string[];

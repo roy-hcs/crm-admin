@@ -355,7 +355,6 @@ export const WalletAccountsPage = () => {
           label: item.dictLabel,
           value: item.dictValue,
         }))}
-        userOptions={[]}
         open={openDialog === 'walletBalanceAdjust'}
         setOpen={val => (val ? setOpenDialog('walletBalanceAdjust') : setOpenDialog(null))}
         onSuccess={onSuccess}
