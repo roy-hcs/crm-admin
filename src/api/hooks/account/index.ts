@@ -49,6 +49,8 @@ import {
   CrmUserVipEditParams,
   CrmUserVipDetailRes,
   CrmUserVipGetPreferenceRes,
+  WalletBalanceAdjustParams,
+  WalletBalanceAdjustRes,
 } from './types';
 
 export * from './types';
@@ -270,6 +272,16 @@ export function useDeleteWallet() {
         msg: string;
         data: null;
       }>('/system/crmUserWallet/remove', params),
+  });
+}
+
+/**
+ * 钱包账户-钱包账户余额调整
+ */
+export function useWalletBalanceAdjust() {
+  return useMutation({
+    mutationFn: (params: WalletBalanceAdjustParams) =>
+      apiFormPostCustom<WalletBalanceAdjustRes>('/system/crmUserDealDetail/walletBalance', params),
   });
 }
 

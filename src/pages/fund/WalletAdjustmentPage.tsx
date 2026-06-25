@@ -16,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { RrhAlert } from '@/components/common/RrhAlert';
 import { toast } from 'sonner';
 import { BatchWalletDialog } from '@/pages/account/wallet-accounts/components/BatchWalletDialog';
+import { Sheet } from 'lucide-react';
 type FormValues = {
   crmUserId: string;
   walletId: string;
@@ -169,7 +170,13 @@ export const WalletAdjustmentPage = () => {
           </div>
         </RrhForm>
         <div className="flex flex-1 flex-col items-start gap-2 pt-6">
-          <BatchWalletDialog />
+          <BatchWalletDialog
+            trigger={
+              <RrhButton type="button" Icon={<Sheet className="size-3.5" />}>
+                {t('walletAccountsPage.Excel')}
+              </RrhButton>
+            }
+          />
           <div className="text-xs">{t('walletAdjustment.walletBatchAdjustmentDesc')}</div>
           <div className="text-xs text-red-500">
             {t('walletAdjustment.walletBatchAdjustmentTip')}

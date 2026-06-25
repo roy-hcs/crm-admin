@@ -1,7 +1,7 @@
-import { CircleAlert, Download, FileDown, Link, Sheet, Trash2 } from 'lucide-react';
+import { CircleAlert, Download, FileDown, Link, Trash2 } from 'lucide-react';
 import { useMemo, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -167,14 +167,30 @@ const parseWalletExcelFile = (file: File): Promise<{ header: string[]; rows: Wal
   });
 };
 
-export const BatchWalletDialog = () => {
+type BatchWalletDialogProps = {
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
+  trigger?: ReactNode;
+};
+
+export const BatchWalletDialog = ({
+  open: openProp,
+  setOpen: onOpenChange,
+  trigger,
+}: BatchWalletDialogProps) => {
   const { t, i18n } = useTranslation();
-  const [open, setOpen] = useState(false);
-  const [step, setStep] = useState('one' as 'one' | 'two' | 'three');
+  const [step, setStep] = useState<'one' | 'two' | 'three'>('one');
+  const [openLocal, setOpenLocal] = useState(false);
+  const open = openProp ?? openLocal;
+  const setOpen = onOpenChange ?? setOpenLocal;
   const [tableHeader, setTableHeader] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const { mutateAsync: walletBalanceChange } = useWalletBalanceChange();
+
+  const updateOpen = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+  };
 
   const {
     complete,
@@ -247,8 +263,8 @@ export const BatchWalletDialog = () => {
     }
   };
 
-  const onClose = (open: boolean) => {
-    setOpen(open);
+  const onClose = (nextOpen: boolean) => {
+    updateOpen(nextOpen);
     setStep('one');
     reset();
     setTableHeader([]);
@@ -325,13 +341,9 @@ export const BatchWalletDialog = () => {
 
   return (
     <RrhDialog
-      trigger={
-        <RrhButton type="button" Icon={<Sheet className="size-3.5" />}>
-          {t('walletAccountsPage.Excel')}
-        </RrhButton>
-      }
       title={t('walletAccountsPage.batchWallet')}
       open={open}
+      trigger={trigger}
       cancelText={
         step === 'one' ? t('common.Cancel') : t('walletAccountsPage.dataTransferInterrupted')
       }

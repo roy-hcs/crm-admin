@@ -692,3 +692,22 @@ export type CrmUserVipDetailRes = {
     crmUserVipOrRuleList: CrmUserVipRuleItem[];
   };
 };
+
+export type WalletBalanceAdjustParams = {
+  amount: string;
+  operationType: string;
+  opType: string;
+  remark: string;
+  ids: string;
+};
+
+export type WalletBalanceAdjustRes = {
+  code: number;
+  data: {
+    failedMsg: string;
+    total: number;
+    failedNum: number;
+    successNum: number;
+  };
+  msg: string;
+};
