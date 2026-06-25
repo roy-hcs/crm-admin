@@ -2,7 +2,6 @@ import { CircleAlert, Download, FileDown, Link, Trash2 } from 'lucide-react';
 import { useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-// import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -180,7 +179,7 @@ export const BatchWalletDialog = ({
   trigger,
 }: BatchWalletDialogProps) => {
   const { t, i18n } = useTranslation();
-  const [step, setStep] = useState('one' as 'one' | 'two' | 'three');
+  const [step, setStep] = useState<'one' | 'two' | 'three'>('one');
   const [openLocal, setOpenLocal] = useState(false);
   const open = openProp ?? openLocal;
   const setOpen = onOpenChange ?? setOpenLocal;
