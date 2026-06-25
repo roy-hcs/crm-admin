@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Ellipsis, Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   useWalletAccountsList,
@@ -10,10 +10,10 @@ import {
   WalletAccountsItem,
   WalletAccountsListParams,
 } from '@/api/hooks/account';
-import { useCurrencyList } from '@/api/hooks/system/system';
+import { useCurrencyList, useDictType } from '@/api/hooks/system/system';
 import { TableCell } from '@/components/ui/table';
 import { PageInfo } from '@/components/common/PageInfo';
-import { CRMColumnDef, DataTable } from '@/components/table';
+import { CRMColumnDef, DataTable, DataTableRef } from '@/components/table';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
@@ -25,6 +25,8 @@ import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 import { useDeleteWallet } from '@/api/hooks/account';
 import { BatchWalletDialog } from './components/BatchWalletDialog';
 import { useTabActions } from '@/hooks/useTabActions';
+import { WalletBalanceAdjustDialog } from './components/WalletBalanceAdjustDialog';
+import { toast } from 'sonner';
 
 export const WalletAccountsPage = () => {
   const [params, setParams] = useState<WalletAccountsListParams['params']>({
@@ -41,7 +43,7 @@ export const WalletAccountsPage = () => {
   const [pageSize, setPageSize] = useState(10);
   const [resetKey, setResetKey] = useState(0);
   const [deleteAlert, setDeleteAlert] = useState(false);
-  const [ids, setIds] = useState('');
+  const [id, setId] = useState('');
   const { t } = useTranslation();
   const { mutateAsync: deleteWallet } = useDeleteWallet();
   const { data: walletData, isLoading: walletLoading } = useCurrencyList();
@@ -57,6 +59,23 @@ export const WalletAccountsPage = () => {
     ...otherParams,
     params,
   });
+  const { data: adjustInType } = useDictType('crm_adjust_in_type', { enabled: true });
+
+  type DialogKey = 'excelAdjust' | 'walletBalanceAdjust' | null;
+  const tableRef = useRef<DataTableRef>(null);
+  const [ids, setIds] = useState<string[]>([]);
+  const [openDialog, setOpenDialog] = useState<DialogKey>(null);
+
+  const onSelectionChange = (its: WalletAccountsItem[]) => {
+    const ids = its.filter(i => i.id).map(j => j.id || '');
+    setIds(ids);
+  };
+
+  const onSuccess = () => {
+    setIds([]);
+    tableRef.current?.selectionClear?.();
+    refetch();
+  };
 
   const { mutate: getWalletSum, data: sumData, isPending } = useWalletAccountsListSum();
   const [sumShow, setSumShow] = useState(false);
@@ -184,7 +203,7 @@ export const WalletAccountsPage = () => {
                   goToDetail(row.original);
                   break;
                 case 'delete':
-                  setIds(String(row?.original.id));
+                  setId(String(row?.original.id));
                   setDeleteAlert(true);
                   break;
                 default:
@@ -244,6 +263,30 @@ export const WalletAccountsPage = () => {
                 otherParams={otherParams}
               />
             </RrhDrawer>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                {
+                  label: t('tradingAccountTransactions.balanceAdjust'),
+                  value: 'walletBalanceAdjust',
+                },
+                {
+                  label: t('walletAccountsPage.Excel'),
+                  value: 'excelAdjust',
+                },
+              ]}
+              callToAction={action => {
+                if (action === 'walletBalanceAdjust') {
+                  if (ids && ids?.length === 0) {
+                    toast.error(t('tradingAccountTransactions.atLeastOneAccount'));
+                    return;
+                  }
+                  setOpenDialog(action as DialogKey);
+                } else {
+                  setOpenDialog(action as DialogKey);
+                }
+              }}
+            />
             <ColumnVisibilityButton
               columnMeta={columnMeta}
               visibleColumns={visibleColumns}
@@ -251,11 +294,12 @@ export const WalletAccountsPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+
             <AddWalletDialog onSuccess={refetch} />
-            <BatchWalletDialog />
           </div>
         </div>
         <DataTable
+          ref={tableRef}
           columns={tableColumns}
           data={data?.rows || []}
           pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
@@ -293,6 +337,7 @@ export const WalletAccountsPage = () => {
               ) : null}
             </>
           }
+          onSelectionChange={onSelectionChange}
         />
         <RrhDeleteAlert<{
           ids: string;
@@ -301,10 +346,25 @@ export const WalletAccountsPage = () => {
           setOpen={setDeleteAlert}
           onSuccess={refetch}
           confirmFunction={deleteWallet}
-          params={{ ids: ids }}
+          params={{ ids: id }}
           tipsText={t('walletAccountsPage.deleteTips')}
         />
       </TableContentWrapper>
+      <WalletBalanceAdjustDialog
+        operationType={(adjustInType || []).map(item => ({
+          label: item.dictLabel,
+          value: item.dictValue,
+        }))}
+        userOptions={[]}
+        open={openDialog === 'walletBalanceAdjust'}
+        setOpen={val => (val ? setOpenDialog('walletBalanceAdjust') : setOpenDialog(null))}
+        onSuccess={onSuccess}
+        ids={ids}
+      />
+      <BatchWalletDialog
+        open={openDialog === 'excelAdjust'}
+        setOpen={val => (val ? setOpenDialog('excelAdjust') : setOpenDialog(null))}
+      />
     </div>
   );
 };
