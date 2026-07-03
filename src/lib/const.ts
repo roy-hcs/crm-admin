@@ -331,3 +331,59 @@ export const cappedTimeUnitThreeOptions = [
     value: '3',
   },
 ];
+
+// 报表下载管理 模块名称数据
+export const dowLoadModuleOptions = [
+  {
+    label: 'tradingHistoryPage.tradingHistory',
+    value: '/statistics/deal/history-export',
+  },
+  {
+    label: 'tradingAccountTransactions.title',
+    value: '/system/crmUserDeal/export',
+  },
+  {
+    label: 'trading.title',
+    value: '/statistics/commission/exportRebate1',
+  },
+  {
+    label: 'fees.title',
+    value: '/statistics/commission/exportRebate2',
+  },
+  {
+    label: 'deposits.title',
+    value: '/statistics/commission/exportRebate3',
+  },
+  {
+    label: 'overview.title',
+    value: '/statistics/ib/agencyOverviewExport',
+  },
+];
+
+// 报表下载管理 状态数据
+export const downloadStatusOptions = [
+  {
+    label: 'downloadsPage.statusOptions.queued',
+    value: 'QUEUED',
+  },
+  {
+    label: 'downloadsPage.statusOptions.processing',
+    value: 'PROCESSING',
+  },
+  {
+    label: 'downloadsPage.statusOptions.success',
+    value: 'SUCCESS',
+  },
+  {
+    label: 'downloadsPage.statusOptions.failed',
+    value: 'FAILED',
+  },
+  {
+    label: 'downloadsPage.statusOptions.cancelled',
+    value: 'CANCELLED',
+  },
+  {
+    label: 'downloadsPage.statusOptions.expired',
+    value: 'EXPIRED',
+  },
+];

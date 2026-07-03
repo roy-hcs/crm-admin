@@ -18,6 +18,7 @@ import { DailyRebatePage } from '@/pages/reports/commission/daily-rebate/DailyRe
 import { WeeklyRebatePage } from '@/pages/reports/commission/weekly-rebate/WeeklyRebatePage';
 import { ClientTrackingPage } from '@/pages/reports/ib/client-tracking/ClientTrackingPage';
 import { OverviewPage } from '@/pages/reports/ib/overview/OverviewPage';
+import { DownloadsPage } from '@/pages/reports/downloads/DownloadsPage';
 
 /**
  * Report routes - corresponds to "报表" menu item
@@ -140,5 +141,9 @@ export const reportRoutes: RouteObject[] = [
   {
     path: '/reports/sales',
     element: <TradingPage />, // Redirecting to trading reports, update as needed
+  },
+  {
+    path: '/reports/downloads',
+    element: <DownloadsPage />,
   },
 ];
