@@ -500,6 +500,10 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
             },
           ],
         },
+        {
+          title: '下载管理',
+          path: '/reports/downloads',
+        },
       ],
     },
     {

@@ -379,7 +379,7 @@ export const BatchWalletDialog = ({
             href={templateUrl}
             className="bg-background text-foreground border-border rounded-md border px-3 py-2 text-xs leading-4 font-medium"
           >
-            {t('walletAccountsPage.download')}
+            {t('common.download')}
           </a>
         </div>
         <div className="grid gap-3">
