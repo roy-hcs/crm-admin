@@ -947,3 +947,23 @@ export type CrmUserDealListDetailRes = {
   typeName: string;
   dealAccount: DealAccount;
 };
+
+export type AgencyPreferenceRes = {
+  code: number;
+  msg: string;
+  data: {
+    depositMethods: string;
+    preferenceShowPamm: string;
+    withdrawMethods: string;
+    depositSubTypes: string;
+    withdrawSubTypes: string;
+  };
+};
+
+export type AgencyPreferenceParams = {
+  bizType: string;
+  depositMethods: string;
+  withdrawMethods: string;
+  depositSubTypes?: string;
+  withdrawSubTypes?: string;
+};

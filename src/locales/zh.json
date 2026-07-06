@@ -389,17 +389,27 @@
   "overview": {
     "title": "IB数据总览",
     "Index": "序号",
+    "agentInfo": "代理信息",
     "email": "邮箱",
     "rebateLevelId": "返佣等级",
+    "countryRegion": "国家/地区",
     "userNumber": "CRM账户数",
     "depositUserNumber": "CRM账户数(入金)",
     "accountNumber": "交易账号数",
     "balance": "余额（当前）",
+    "balanceWallet": "余额（钱包）",
+    "balanceTa": "余额（交易账号）",
     "depositAmount": "入金（统计）",
     "withdrawAmount": "出金（统计）",
     "netDeposit": "净入金",
+    "clients": "客户数",
+    "directClients": "直客数",
+    "referClients": "推荐数",
+    "referDirectClients": "推荐直客数",
     "volume": "交易量",
     "profitAndLoss": "盈亏",
+    "personalRebate": "本人返佣",
+    "overallRebate": "整体返佣",
     "commission": "手续费",
     "swaps": "库存费",
     "rebateOnTrade": "交易返佣",
@@ -2425,5 +2435,10 @@
   "accountAdjustment": {
     "title": "账户余额调整",
     "operateAccountNumber": "操作账户数"
+  },
+  "performanceOverview": {
+    "title": "IB业绩概览",
+    "switchToList": "切换为列表",
+    "switchToTree": "切换为树状"
   }
 }

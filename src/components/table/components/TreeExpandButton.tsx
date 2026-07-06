@@ -1,5 +1,4 @@
 import { Row, RowData } from '@tanstack/react-table';
-import { ChevronRight, ChevronDown } from 'lucide-react';
 
 export interface TreeExpandButtonProps<TData extends RowData> {
   row: Row<TData>;
@@ -21,9 +20,9 @@ export const TreeExpandButton = <TData extends RowData>({
             e.stopPropagation();
             row.toggleExpanded();
           }}
-          className="hover:bg-accent mr-2 flex h-4 w-4 items-center justify-center rounded"
+          className="mr-1 flex h-6 w-6 items-center justify-center rounded bg-gray-100"
         >
-          {isExpanded ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+          {isExpanded ? '-' : '+'}
         </button>
       ) : (
         <div className="mr-2 h-4 w-4" />

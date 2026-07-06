@@ -119,6 +119,9 @@ function createDataTable<TData extends RowData, TValue>() {
       getCoreRowModel: getCoreRowModel(),
       getExpandedRowModel: treeConfig?.enabled ? getExpandedRowModel() : undefined,
       getSubRows: treeConfig?.enabled ? getSubRows : undefined,
+      getRowCanExpand: treeConfig?.enabled
+        ? row => (treeConfig.getRowCanExpand ? treeConfig.getRowCanExpand(row.original) : false)
+        : undefined,
       onRowSelectionChange: updater => {
         // 只更新内部 rowSelection，避免在渲染过程中直接触发父组件 setState
         setRowSelection(prev => (typeof updater === 'function' ? updater(prev) : updater));

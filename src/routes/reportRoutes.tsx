@@ -18,6 +18,7 @@ import { DailyRebatePage } from '@/pages/reports/commission/daily-rebate/DailyRe
 import { WeeklyRebatePage } from '@/pages/reports/commission/weekly-rebate/WeeklyRebatePage';
 import { ClientTrackingPage } from '@/pages/reports/ib/client-tracking/ClientTrackingPage';
 import { OverviewPage } from '@/pages/reports/ib/overview/OverviewPage';
+import { PerformanceOverviewPage } from '@/pages/reports/ib/performance-overview/PerformanceOverviewPage';
 
 /**
  * Report routes - corresponds to "报表" menu item
@@ -134,6 +135,10 @@ export const reportRoutes: RouteObject[] = [
   {
     path: '/reports/ib/overview',
     element: <OverviewPage />,
+  },
+  {
+    path: '/reports/ib/performance-overview',
+    element: <PerformanceOverviewPage />,
   },
 
   // Legacy route - keep for backward compatibility

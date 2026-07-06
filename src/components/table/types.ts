@@ -39,6 +39,8 @@ export interface TreeConfig<TData = unknown> {
   enabled: boolean;
   /** Function to get the unique identifier for each row */
   getRowId?: (row: TData) => string | number;
+  /** Function to determine whether a row can be expanded */
+  getRowCanExpand?: (row: TData) => boolean;
   /** Function to get the parent ID for each row */
   getParentId?: (row: TData) => string | number | null;
   /** Function to get children for each row (optional - can be derived from parentId) */

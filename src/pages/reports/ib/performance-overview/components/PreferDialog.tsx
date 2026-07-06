@@ -8,16 +8,29 @@ import { useAgencyPreference, useGetAgencyPreference } from '@/api/hooks/report/
 import { toast } from 'sonner';
 import { RrhForm } from '@/components/form/RrhForm';
 import { FormCheckBoxGroup } from '@/components/form/FormCheckBoxGroup';
+import { DictTypeItem } from '@/api/hooks/system';
+import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 
 type FormValues = {
   depositMethods: string;
   withdrawMethods: string;
+  depositSubTypes: string;
+  withdrawSubTypes: string;
 };
 
-export const PreferDialog = ({ onSuccess }: { onSuccess: () => void }) => {
+export const PreferDialog = ({
+  onSuccess,
+  adjustInTypeOptions,
+  adjustOutTypeOptions,
+}: {
+  onSuccess: () => void;
+  adjustInTypeOptions: DictTypeItem[];
+  adjustOutTypeOptions: DictTypeItem[];
+}) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const { mutateAsync: setPreference } = useAgencyPreference();
   const { mutateAsync: getPreference } = useGetAgencyPreference();
 
@@ -25,21 +38,30 @@ export const PreferDialog = ({ onSuccess }: { onSuccess: () => void }) => {
     defaultValues: {
       depositMethods: '',
       withdrawMethods: '',
+      depositSubTypes: '',
+      withdrawSubTypes: '',
     },
   });
 
+  const depositMethodsValue = form.watch('depositMethods');
+  const withdrawMethodsValue = form.watch('withdrawMethods');
+
   useEffect(() => {
     async function fetchData() {
-      const res = await getPreference(2);
+      const res = await getPreference(3);
       if (res?.code === 0) {
         form.reset({
           depositMethods: res?.data?.depositMethods || '',
           withdrawMethods: res?.data?.withdrawMethods || '',
+          depositSubTypes: res?.data?.depositSubTypes || '',
+          withdrawSubTypes: res?.data?.withdrawSubTypes || '',
         });
       } else {
         form.reset({
           depositMethods: '',
           withdrawMethods: '',
+          depositSubTypes: '',
+          withdrawSubTypes: '',
         });
       }
     }
@@ -52,9 +74,11 @@ export const PreferDialog = ({ onSuccess }: { onSuccess: () => void }) => {
     setIsSubmitting(true);
     try {
       const param = {
-        bizType: '2',
+        bizType: '3',
         depositMethods: data?.depositMethods,
         withdrawMethods: data?.withdrawMethods,
+        depositSubTypes: data?.depositSubTypes,
+        withdrawSubTypes: data?.withdrawSubTypes,
       };
       const res = await setPreference(param);
       if (res.code === 0) {
@@ -103,7 +127,6 @@ export const PreferDialog = ({ onSuccess }: { onSuccess: () => void }) => {
 
         <FormCheckBoxGroup
           name="depositMethods"
-          label={t('table.depositWay')}
           options={[
             {
               value: '1',
@@ -113,28 +136,23 @@ export const PreferDialog = ({ onSuccess }: { onSuccess: () => void }) => {
               value: '2',
               label: t('table.SystemDeposit'),
             },
-            {
-              value: '3',
-              label: t('table.RebateDeposit'),
-            },
-            {
-              value: '4',
-              label: t('table.InternalTransferIn'),
-            },
-            {
-              value: '6',
-              label: t('table.pammDeposit'),
-            },
-            {
-              value: '5',
-              label: t('table.other'),
-            },
           ]}
         />
 
+        {depositMethodsValue.includes('2') && (
+          <FormMultiSelect
+            name="depositSubTypes"
+            label={t('table.depositWay')}
+            placeholder={t('common.pleaseSelect')}
+            options={adjustInTypeOptions.map(i => ({
+              value: i.dictValue,
+              label: i.dictLabel,
+            }))}
+          />
+        )}
+
         <FormCheckBoxGroup
           name="withdrawMethods"
-          label={t('table.depositWay')}
           options={[
             {
               value: '1',
@@ -144,20 +162,20 @@ export const PreferDialog = ({ onSuccess }: { onSuccess: () => void }) => {
               value: '2',
               label: t('table.SystemWithdrawal'),
             },
-            {
-              value: '4',
-              label: t('table.InternalTransferOut'),
-            },
-            {
-              value: '6',
-              label: t('table.pammWithdrawal'),
-            },
-            {
-              value: '5',
-              label: t('table.other'),
-            },
           ]}
         />
+
+        {withdrawMethodsValue.includes('2') && (
+          <FormMultiSelect
+            name="withdrawSubTypes"
+            placeholder={t('common.pleaseSelect')}
+            label={t('table.withdrawMethods')}
+            options={adjustOutTypeOptions.map(i => ({
+              value: i.dictValue,
+              label: i.dictLabel,
+            }))}
+          />
+        )}
       </RrhForm>
     </RrhDialog>
   );
