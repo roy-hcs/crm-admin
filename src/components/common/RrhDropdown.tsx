@@ -12,7 +12,7 @@ export const RrhDropdown = ({
   callToAction,
 }: {
   Trigger: React.ReactNode;
-  dropdownList: { label: string | ReactElement; value: string }[];
+  dropdownList: { label: string | ReactElement; value: string; disabled?: boolean }[];
   callToAction?: (menu: string) => void;
 }) => {
   return (
@@ -26,6 +26,7 @@ export const RrhDropdown = ({
             key={item.value}
             onClick={() => callToAction?.(item.value)}
             className="w-auto cursor-pointer"
+            disabled={item.disabled}
           >
             {item.label}
           </DropdownMenuItem>

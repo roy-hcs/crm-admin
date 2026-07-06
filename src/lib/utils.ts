@@ -345,3 +345,33 @@ export function normalizePercentageInput(value: string) {
 
   return normalized;
 }
+
+/**
+ * 将字节数格式化为可读的文件大小字符串（1024 进制）
+ * @param bytes - 文件大小（字节）
+ * @param decimals - 保留的小数位数，默认 1
+ * @returns 格式化后的字符串，如 "936.8 KB"
+ */
+export function formatFileSize(bytes: string | number, decimals: number = 1): string {
+  if (Number(bytes) === 0) return '';
+  const numericBytes = typeof bytes === 'string' ? parseFloat(bytes) : bytes;
+  if (!Number.isFinite(numericBytes) || numericBytes < 0) {
+    // 如果输入不是有效的数字或为负数，返回空字符串
+    return '';
+  }
+
+  const units: readonly string[] = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const k = 1024;
+  let size = numericBytes;
+  let unitIndex = 0;
+
+  while (size >= k && unitIndex < units.length - 1) {
+    size /= k;
+    unitIndex++;
+  }
+
+  // 保留指定小数位，并移除末尾的零（如 "1.0" → "1"）
+  const formatted = size.toFixed(decimals);
+  const finalSize = parseFloat(formatted);
+  return `${finalSize} ${units[unitIndex]}`;
+}

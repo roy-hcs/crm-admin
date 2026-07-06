@@ -81,7 +81,7 @@ export function FollowSituation({
       },
       {
         id: 'status',
-        header: t('signals.followTable.status'),
+        header: t('table.status'),
         accessorFn: row => {
           if (row.status === 0) return t('signals.statusOptions.0');
           if (row.status === 1) return t('signals.statusOptions.1');

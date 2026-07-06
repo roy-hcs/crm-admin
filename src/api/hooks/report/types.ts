@@ -967,3 +967,34 @@ export type AgencyPreferenceParams = {
   depositSubTypes?: string;
   withdrawSubTypes?: string;
 };
+export type DownloadsListParams = BasicParams & {
+  exportPath: string;
+  status: string;
+  beginTime: string;
+  endTime: string;
+};
+
+export type DownloadsListItem = BaseEntity & {
+  id: string | null;
+  taskId: string;
+  userId: string | null;
+  username: string | null;
+  businessName: string | null;
+  exportPath: string | null;
+  status: string | null;
+  progress: number | null;
+  filePath: string | null;
+  filePaths: string | null;
+  zipFilePath: string | null;
+  fileSize: string | null;
+  downloadUrl: string | null;
+  downloaded: boolean | null;
+  downloadTime: string | null;
+  errorMsg: string | null;
+  errorType: string | null;
+  startTime: string | null;
+  completeTime: string | null;
+  durationMs: string | null;
+};
+
+export type DownloadsListRes = BasicRes<DownloadsListItem>;

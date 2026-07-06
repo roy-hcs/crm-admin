@@ -93,6 +93,7 @@
     "RememberMe": "记住我"
   },
   "common": {
+    "download": "下载",
     "points": "分",
     "hour": "时",
     "piece": "个",
@@ -882,7 +883,6 @@
     "Excel": "Excel批量调整",
     "batchWallet": "批量钱包余额调整",
     "excelTemplateUpdate": "Excel模板有更新，请下载最新模版。",
-    "download": "下载",
     "dataTransferInterrupted": "中断数据传输",
     "pleaseUploadFile": "请上传文件",
     "item": "条",
@@ -1236,7 +1236,6 @@
       "followOrderCount": "跟随订单数",
       "followDirection": "跟单方向",
       "followType": "跟随类型",
-      "status": "状态",
       "followDuration": "跟单时长",
       "operation": "操作"
     },
@@ -2440,5 +2439,25 @@
     "title": "IB业绩概览",
     "switchToList": "切换为列表",
     "switchToTree": "切换为树状"
+  },
+  "downloadsPage": {
+    "title": "下载管理",
+    "moduleName": "模块名称",
+    "taskName": "任务名称",
+    "size": "大小",
+    "initiator": "发起人",
+    "statusOptions": {
+      "queued": "排队中",
+      "processing": "处理中",
+      "success": "已完成",
+      "failed": "已失败",
+      "cancelled": "已取消",
+      "expired": "已失效"
+    },
+    "deleteTips": "确认删除该导出文件？删除后文件将不可下载。",
+    "deleteConfirmAlert": {
+      "title": "删除确认",
+      "content": "系统检测你已下载此文档，请问是否要立即删除文档？若未删除，则系统将在48小时后自动删除文档。"
+    }
   }
 }

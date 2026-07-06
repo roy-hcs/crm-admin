@@ -47,6 +47,8 @@ import {
   CrmUserDealListDetailRes,
   AgencyPreferenceRes,
   AgencyPreferenceParams,
+  DownloadsListParams,
+  DownloadsListRes,
 } from './types';
 
 /**
@@ -564,5 +566,35 @@ export function useSystemFundOperationRecordExport() {
   return useMutation({
     mutationFn: (params: SystemFundOperationRecordListParams) =>
       apiFormPost('/system/statistics/systemFundOperRecordExport', params),
+  });
+}
+
+/**
+ * 下载管理列表
+ */
+export function useDownloadsList(params: DownloadsListParams, options?: { enabled?: boolean }) {
+  return useQuery({
+    queryKey: ['downloadsList', params],
+    queryFn: () => apiFormPostCustom<DownloadsListRes>('/system/export/list', params),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+/**
+ * 下载管理-删除文件
+ */
+export function useRemoveFile() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) => apiFormPost(`/system/export/remove/${params.ids}`, {}),
+  });
+}
+
+/**
+ * 下载管理-标记文件为已下载
+ */
+export function useMarkFileAsDownloaded() {
+  return useMutation({
+    mutationFn: (params: { taskId: string }) =>
+      apiFormPost(`/system/export/markDownloaded/${params.taskId}`, {}),
   });
 }

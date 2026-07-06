@@ -74,6 +74,7 @@
     "rebateToExistAccount": "Return commission to existing account"
   },
   "common": {
+    "download": "download",
     "AnErrorOccurred": "An error occurred",
     "Cancel": "Cancel",
     "Confirm": "confirm",
@@ -1364,7 +1365,6 @@
     "Excel": "Excel batch adjustment",
     "batchWallet": "Batch wallet balance adjustment",
     "dataTransferInterrupted": "Interrupt data transfer",
-    "download": "download",
     "excelTemplateUpdate": "The Excel template has been updated, please download the latest template.",
     "importFailed": "Import failed",
     "importSuccess": "Import successful",
@@ -1780,7 +1780,6 @@
       "followOrderCount": "Follow order count",
       "followDirection": "Follow direction",
       "followType": "Follow type",
-      "status": "Status",
       "followDuration": "Follow duration",
       "operation": "Operation"
     },
@@ -2440,5 +2439,25 @@
     "title": "IB Performance Overview",
     "switchToList": "Switch to List",
     "switchToTree": "Switch to Tree"
+  },
+  "downloadsPage": {
+    "deleteConfirmAlert": {
+      "content": "The system has detected that you have downloaded this document. Do you want to delete the document immediately? \nIf it is not deleted, the system will automatically delete the document after 48 hours.",
+      "title": "Delete confirmation"
+    },
+    "deleteTips": "Confirm to delete this export file? \nOnce deleted, the file will become unavailable for download.",
+    "initiator": "sponsor",
+    "moduleName": "module name",
+    "size": "size",
+    "statusOptions": {
+      "cancelled": "Canceled",
+      "expired": "Expired",
+      "failed": "failed",
+      "processing": "Processing",
+      "queued": "Queuing",
+      "success": "Completed"
+    },
+    "taskName": "Task name",
+    "title": "Download management"
   }
 }
