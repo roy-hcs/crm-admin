@@ -126,7 +126,6 @@ export function DownloadsPage() {
               },
             ]}
             callToAction={action => {
-              console.log('action', action, row.original);
               if (action === 'download') {
                 handleDownload(row.original);
               } else if (action === 'delete') {
@@ -142,7 +141,7 @@ export function DownloadsPage() {
     },
   ];
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility('commission-trading-reports-table', allColumns);
+    useColumnVisibility('reports-downloads-table', allColumns);
 
   // 下载文件
   const handleDownload = async (row: DownloadsListItem) => {

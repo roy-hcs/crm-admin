@@ -482,7 +482,7 @@ export const BatchWalletDialog = ({
                     className="text-muted-foreground cursor-pointer text-sm leading-4 font-normal"
                     onClick={handleDownloadSuccessFile}
                   >
-                    {t('common.downloadSuccessData')}
+                    {t('walletAccountsPage.downloadSuccessData')}
                   </div>
                 </div>
               </div>
@@ -498,7 +498,7 @@ export const BatchWalletDialog = ({
                     className="text-muted-foreground cursor-pointer text-sm leading-4 font-normal"
                     onClick={handleDownloadFailFile}
                   >
-                    {t('common.downloadFailedData')}
+                    {t('walletAccountsPage.downloadFailedData')}
                   </div>
                 </div>
               </div>
@@ -516,7 +516,7 @@ export const BatchWalletDialog = ({
                       className="text-muted-foreground cursor-pointer text-sm leading-4 font-normal"
                       onClick={handleDownloadUnImportedFile}
                     >
-                      {t('common.downloadUnImportedData')}
+                      {t('walletAccountsPage.downloadUnImportedData')}
                     </div>
                   </div>
                 </div>
