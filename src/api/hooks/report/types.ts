@@ -979,3 +979,22 @@ export type DownloadsListItem = BaseEntity & {
 };
 
 export type DownloadsListRes = BasicRes<DownloadsListItem>;
+export type AgencyPreferenceRes = {
+  code: number;
+  msg: string;
+  data: {
+    depositMethods: string;
+    preferenceShowPamm: string;
+    withdrawMethods: string;
+    depositSubTypes: string;
+    withdrawSubTypes: string;
+  };
+};
+
+export type AgencyPreferenceParams = {
+  bizType: string;
+  depositMethods: string;
+  withdrawMethods: string;
+  depositSubTypes?: string;
+  withdrawSubTypes?: string;
+};

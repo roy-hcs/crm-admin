@@ -498,6 +498,10 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
               title: 'IB数据总览',
               path: '/reports/ib/overview',
             },
+            {
+              title: 'IB业绩概览',
+              path: '/reports/ib/performance-overview',
+            },
           ],
         },
         {

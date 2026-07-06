@@ -47,6 +47,8 @@ import {
   CrmUserDealListDetailRes,
   DownloadsListParams,
   DownloadsListRes,
+  AgencyPreferenceRes,
+  AgencyPreferenceParams,
 } from './types';
 
 /**
@@ -75,29 +77,24 @@ export function useAgencyOverviewList(params: OverviewParams, options?: { enable
   });
 }
 /**
- * ib数据总览-获取偏好设置
+ * ib数据总览-获取偏好设置 1 2 3 多个页面共用
  */
 export function useGetAgencyPreference() {
   return useMutation({
-    mutationFn: () =>
-      apiGetCustom<{
-        code: number;
-        msg: string;
-        data: {
-          depositMethods: string;
-          preferenceShowPamm: string;
-          withdrawMethods: string;
-        };
-      }>('/system/statistics/getAgencyPreference?bizType=2', {}),
+    mutationFn: (type: number) =>
+      apiGetCustom<AgencyPreferenceRes>(
+        `/system/statistics/getAgencyPreference?bizType=${type}`,
+        {},
+      ),
   });
 }
 
 /**
- * ib数据总览-提交偏好设置
+ * ib数据总览-提交偏好设置 多个页面共用
  */
 export function useAgencyPreference() {
   return useMutation({
-    mutationFn: (params: { bizType: string; depositMethods: string; withdrawMethods: string }) =>
+    mutationFn: (params: AgencyPreferenceParams) =>
       apiFormPostCustom<{
         code: number;
         msg: string;
