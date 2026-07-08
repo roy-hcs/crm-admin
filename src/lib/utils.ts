@@ -320,6 +320,17 @@ export const formatMoneyNumber = (value: number | string, significantDigits = 2)
 };
 
 /**
+ * 货币金额显示：千分位 + 货币单位，默认 USD
+ */
+export const formatCurrencyAmount = (
+  value: number | string,
+  currency: string = 'USD',
+  significantDigits = 2,
+) => {
+  return `${formatMoneyNumber(value, significantDigits)} ${currency}`;
+};
+
+/**
  * 规范化百分比输入，允许用户输入过程中出现的中间状态（如 "0."），最终结果限制在0-100之间，且最多两位小数。
  */
 export function normalizePercentageInput(value: string) {
