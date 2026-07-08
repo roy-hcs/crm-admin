@@ -1,4 +1,4 @@
-import { useGetLogGeneratedTime, useSaveLogGeneratedTime } from '@/api/hooks/report/report';
+import { useSaveLogGeneratedTime } from '@/api/hooks/report/report';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { FormSelect } from '@/components/form/FormSelect';
@@ -14,16 +14,21 @@ type FormValues = {
   time: string;
 };
 
-export const DailySnapshotDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
+export const DailySnapshotDialog = ({
+  onSuccess,
+  logGeneratedTime,
+}: {
+  onSuccess?: () => void;
+  logGeneratedTime: string | number;
+}) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const { mutateAsync: getDetail } = useGetLogGeneratedTime();
 
   const { mutateAsync: save, isPending } = useSaveLogGeneratedTime();
 
   const form = useForm<FormValues>({
     defaultValues: {
-      time: '',
+      time: `${logGeneratedTime || ''}`,
     },
   });
 
@@ -69,17 +74,10 @@ export const DailySnapshotDialog = ({ onSuccess }: { onSuccess?: () => void }) =
 
   useEffect(() => {
     if (!open) return;
-
-    (async () => {
-      const res = await getDetail();
-      console.log(res, 're');
-      if (res.code === 0 && res.msg) {
-        form.reset({
-          time: res.msg,
-        });
-      }
-    })();
-  }, [open, getDetail, form]);
+    form.reset({
+      time: `${logGeneratedTime || ''}`,
+    });
+  }, [open, logGeneratedTime, form]);
 
   return (
     <RrhDialog

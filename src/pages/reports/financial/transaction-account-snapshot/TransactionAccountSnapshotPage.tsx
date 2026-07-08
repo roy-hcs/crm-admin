@@ -20,6 +20,7 @@ import { useDictType, useServerList } from '@/api/hooks/system';
 import { PreferencesDialog } from './components/PreferencesDialog';
 import { ExportButton } from '@/components/common/ExportButton';
 import { DailySnapshotDialog } from './components/DailySnapshotDialog';
+import { useGetSysConfig } from '@/api/hooks/system/system';
 
 export function TransactionAccountSnapshotPage() {
   const { t } = useTranslation();
@@ -39,6 +40,9 @@ export function TransactionAccountSnapshotPage() {
     currency: '',
     triggeringEvent: '',
   });
+  const { data: logGeneratedTime, isLoading: logGeneratedTimeLoading } = useGetSysConfig(
+    'crm.deal.account.log.generated.time',
+  );
   const { data: server, isLoading: serverLoading } = useServerList();
   const { data: triggeringEventRes, isLoading: triggeringEventLoading } = useDictType(
     'crm_triggering_event',
@@ -247,7 +251,7 @@ export function TransactionAccountSnapshotPage() {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
-            <DailySnapshotDialog />
+            <DailySnapshotDialog logGeneratedTime={logGeneratedTime || ''} />
             <PreferencesDialog />
             <ExportButton<TradingAccountSnapshotParams>
               exportFunction={exportSnapshot}
@@ -268,7 +272,7 @@ export function TransactionAccountSnapshotPage() {
           pageSize={pageSize}
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
-          loading={loading || serverLoading || triggeringEventLoading}
+          loading={loading || serverLoading || triggeringEventLoading || logGeneratedTimeLoading}
         />
       </TableContentWrapper>
     </div>

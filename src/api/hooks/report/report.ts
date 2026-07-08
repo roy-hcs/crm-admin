@@ -627,19 +627,6 @@ export function useTradingAccountSnapshotExport() {
 }
 
 /**
- * 交易账号快照列表-每日快照-获取偏好设置
- */
-export function useGetLogGeneratedTime() {
-  return useMutation({
-    mutationFn: () =>
-      apiGetCustom<{
-        code: number;
-        msg: string;
-      }>(`/system/config/getConfig?key=crm.deal.account.log.generated.time`),
-  });
-}
-
-/**
  * 交易账号快照列表-每日快照-设置
  */
 export function useSaveLogGeneratedTime() {
