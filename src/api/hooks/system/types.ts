@@ -859,3 +859,59 @@ export type CrmAccountTypeItem = {
 };
 
 export type CrmAccountTypeRes = CrmAccountTypeItem[];
+
+export type AgencyPreforOverviewParams = BasicParams & {
+  serverId: string;
+  beginTime: string;
+  endTime: string;
+  serverType: string;
+  rebateLevelId: string;
+  userId: string;
+};
+
+export type AgencyPreforOverviewItem = {
+  userId: string;
+  username: string;
+  showId: string;
+  rebateLevel: string;
+  country: string | null;
+  accountTypeStr: string;
+  accountType: number;
+  balanceWallet: number;
+  balanceTa: number;
+  depositAmount: number;
+  withdrawAmount: number;
+  netDeposit: number;
+  clients: number;
+  directClients: number;
+  referClients: number;
+  referDirectClients: number;
+  accountNumber: number;
+  volume: number;
+  profitAndLoss: number;
+  personalRebate: number;
+  overallRebate: number;
+  rebateLevelId: string;
+  roleName: string | null;
+  inviterName: string | null;
+  inviterEmail: string | null;
+  account: string | null;
+  aspName: string | null;
+  aspShowId: string | null;
+  brokerName: string | null;
+  brokerShowId: string | null;
+  directBroker: string | null;
+  accountId: string | null;
+  parentId: string | null;
+  isTreeLeaf: number;
+};
+
+export type AgencyPreforOverviewRes = BasicRes<AgencyPreforOverviewItem>;
+
+export type AgencyPreforOverviewTreeParams = {
+  pageSize: number;
+  pageNum: number;
+  serverId: string;
+  serverType: string;
+  parentId?: string;
+};

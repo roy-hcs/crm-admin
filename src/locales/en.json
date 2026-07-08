@@ -386,18 +386,28 @@
   },
   "overview": {
     "Index": "Serial number",
+    "agentInfo": "Agent info",
     "accountNumber": "Number of transaction accounts",
     "balance": "Balance (current)",
+    "balanceWallet": "Balance (wallet)",
+    "balanceTa": "Balance (trading account)",
     "commission": "Processing fee",
+    "countryRegion": "Country/Region",
+    "clients": "Clients",
     "depositAmount": "Deposit (statistics)",
     "depositUserNumber": "Number of CRM accounts (deposit)",
+    "directClients": "Direct clients",
     "email": "Mail",
     "netDeposit": "Net deposit",
+    "overallRebate": "Overall rebate",
+    "personalRebate": "Personal rebate",
     "profitAndLoss": "Profit and loss",
     "rebateLevelId": "Rebate level",
     "rebateOnCommission": "Commission rebate",
     "rebateOnDeposit": "Deposit Rebate",
     "rebateOnTrade": "Transaction rebate",
+    "referClients": "Referred clients",
+    "referDirectClients": "Referred direct clients",
     "serverId": "server",
     "swaps": "Inventory fee",
     "title": "IB data overview",
@@ -2424,6 +2434,11 @@
   "accountAdjustment": {
     "operateAccountNumber": "Number of operating accounts",
     "title": "Account balance adjustment"
+  },
+  "performanceOverview": {
+    "title": "IB Performance Overview",
+    "switchToList": "Switch to List",
+    "switchToTree": "Switch to Tree"
   },
   "downloadsPage": {
     "deleteConfirmAlert": {

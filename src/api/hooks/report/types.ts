@@ -948,6 +948,25 @@ export type CrmUserDealListDetailRes = {
   dealAccount: DealAccount;
 };
 
+export type AgencyPreferenceRes = {
+  code: number;
+  msg: string;
+  data: {
+    depositMethods: string;
+    preferenceShowPamm: string;
+    withdrawMethods: string;
+    depositSubTypes: string;
+    withdrawSubTypes: string;
+  };
+};
+
+export type AgencyPreferenceParams = {
+  bizType: string;
+  depositMethods: string;
+  withdrawMethods: string;
+  depositSubTypes?: string;
+  withdrawSubTypes?: string;
+};
 export type DownloadsListParams = BasicParams & {
   exportPath: string;
   status: string;

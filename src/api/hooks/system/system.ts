@@ -55,6 +55,10 @@ import {
   AdjustBalanceRes,
   CrmGroupRes,
   CrmAccountTypeRes,
+  AgencyPreforOverviewParams,
+  AgencyPreforOverviewRes,
+  AgencyPreforOverviewTreeParams,
+  AgencyPreforOverviewItem,
 } from './types';
 import { UserAccountOperationRes, UserRebateAccountTabRes } from '../agent/types';
 
@@ -763,5 +767,52 @@ export function useAdjustBalance() {
   return useMutation({
     mutationFn: (params: AdjustBalanceParams) =>
       apiFormPost<AdjustBalanceRes>('/system/crmUserDeal/adjustBalances', params),
+  });
+}
+
+/**
+ * ib业绩概览普通列表
+ */
+export function useAgencyPreforOverviewList(
+  params: AgencyPreforOverviewParams,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['agencyPreforOverviewList', params],
+    queryFn: () =>
+      apiFormPostCustom<AgencyPreforOverviewRes>(
+        `/system/statistics/agencyPreforOverviewList`,
+        params,
+      ),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+/**
+ * ib业绩概览树形列表
+ */
+export function useAgencyPreforOverviewTreeList(
+  params: AgencyPreforOverviewTreeParams,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['agencyPreforOverviewTreeList', params],
+    queryFn: () =>
+      apiGetCustom<AgencyPreforOverviewRes>(
+        `/system/statistics/agencyPreforOverviewTreeList?pageSize=${params.pageSize}&pageNum=${params.pageNum}&serverId=${params.serverId}&serverType=${params.serverType}&parentId=${params.parentId}`,
+      ),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+/**
+ * ib业绩概览树形查看子数据
+ */
+export function useAgencyPreforOverviewTreeChildren() {
+  return useMutation({
+    mutationFn: (params: { serverId: string; serverType: string; parentId: string }) =>
+      apiGetCustom<AgencyPreforOverviewItem[]>(
+        `/system/statistics/agencyPreforOverviewTreeChildren?serverId=${params.serverId}&serverType=${params.serverType}&parentId=${params.parentId}`,
+      ),
   });
 }
