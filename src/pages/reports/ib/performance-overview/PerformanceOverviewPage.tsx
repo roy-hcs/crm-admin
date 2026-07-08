@@ -19,8 +19,9 @@ import { useInitServerId } from '@/hooks/useInitServerId';
 import { OverviewForm } from './components/OverviewForm';
 import { PreferDialog } from './components/PreferDialog';
 import { AgencyPreforOverviewItem, AgencyPreforOverviewParams } from '@/api/hooks/system/types';
-import { BasicParams, BasicRes } from '@/api/types';
+import { BasicParams } from '@/api/types';
 import { ExpandedState } from '@tanstack/react-table';
+import { formatCurrencyAmount } from '@/lib/utils';
 
 type TreeAgencyPreforOverviewItem = AgencyPreforOverviewItem & {
   children?: TreeAgencyPreforOverviewItem[];
@@ -30,26 +31,6 @@ const buildTreeNode = (item: AgencyPreforOverviewItem): TreeAgencyPreforOverview
   ...item,
   children: (item as TreeAgencyPreforOverviewItem).children?.map(buildTreeNode) || [],
 });
-
-const normalizeChildren = (response: unknown): AgencyPreforOverviewItem[] => {
-  if (Array.isArray(response)) {
-    return response as AgencyPreforOverviewItem[];
-  }
-
-  if (
-    response &&
-    typeof response === 'object' &&
-    Array.isArray((response as BasicRes<AgencyPreforOverviewItem>).rows)
-  ) {
-    return (response as BasicRes<AgencyPreforOverviewItem>).rows;
-  }
-
-  if (response && typeof response === 'object') {
-    return [response as AgencyPreforOverviewItem];
-  }
-
-  return [];
-};
 
 const findTreeNode = (
   rows: TreeAgencyPreforOverviewItem[],
@@ -184,8 +165,6 @@ export function PerformanceOverviewPage() {
     setPageSize(10);
   };
 
-  const formatUsd = (value: number) => `${value} USD`;
-
   const handleTreeExpandedChange = async (expanded: ExpandedState) => {
     const prevExpandedRows = treeExpandedRowsRef.current as Record<string, boolean>;
     const currentExpandedRows = expanded as Record<string, boolean>;
@@ -221,7 +200,7 @@ export function PerformanceOverviewPage() {
             parentId: rowId,
           });
 
-          const children = normalizeChildren(childrenResult).map(buildTreeNode);
+          const children = childrenResult.map(buildTreeNode);
 
           setTreeRows(prev => updateTreeChildren(prev, rowId, children));
           loadedNodeIdsRef.current.add(rowId);
@@ -266,25 +245,25 @@ export function PerformanceOverviewPage() {
     {
       id: 'balanceTa',
       header: t('overview.balanceTa'),
-      accessorFn: row => formatUsd(row.balanceTa),
+      accessorFn: row => formatCurrencyAmount(row.balanceTa),
     },
     {
       id: 'depositAmount',
       accessorKey: 'depositAmount',
       header: t('overview.depositAmount'),
-      accessorFn: row => formatUsd(row.depositAmount),
+      accessorFn: row => formatCurrencyAmount(row.depositAmount),
     },
     {
       id: 'withdrawAmount',
       accessorKey: 'withdrawAmount',
       header: t('overview.withdrawAmount'),
-      accessorFn: row => formatUsd(row.withdrawAmount),
+      accessorFn: row => formatCurrencyAmount(row.withdrawAmount),
     },
     {
       id: 'netDeposit',
       accessorKey: 'netDeposit',
       header: t('overview.netDeposit'),
-      accessorFn: row => formatUsd(row.netDeposit),
+      accessorFn: row => formatCurrencyAmount(row.netDeposit),
     },
     {
       id: 'clients',
@@ -322,17 +301,17 @@ export function PerformanceOverviewPage() {
       id: 'profitAndLoss',
       accessorKey: 'profitAndLoss',
       header: t('overview.profitAndLoss'),
-      accessorFn: row => formatUsd(row.profitAndLoss),
+      accessorFn: row => formatCurrencyAmount(row.profitAndLoss),
     },
     {
       id: 'personalRebate',
       header: t('overview.personalRebate'),
-      accessorFn: row => formatUsd(row.personalRebate),
+      accessorFn: row => formatCurrencyAmount(row.personalRebate),
     },
     {
       id: 'overallRebate',
       header: t('overview.overallRebate'),
-      accessorFn: row => formatUsd(row.overallRebate),
+      accessorFn: row => formatCurrencyAmount(row.overallRebate),
     },
   ];
 

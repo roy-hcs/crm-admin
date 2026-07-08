@@ -811,7 +811,7 @@ export function useAgencyPreforOverviewTreeList(
 export function useAgencyPreforOverviewTreeChildren() {
   return useMutation({
     mutationFn: (params: { serverId: string; serverType: string; parentId: string }) =>
-      apiGetCustom<AgencyPreforOverviewItem>(
+      apiGetCustom<AgencyPreforOverviewItem[]>(
         `/system/statistics/agencyPreforOverviewTreeChildren?serverId=${params.serverId}&serverType=${params.serverType}&parentId=${params.parentId}`,
       ),
   });
