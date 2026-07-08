@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { TradingAccountSnapshotItem, TradingAccountSnapshotParams } from '@/api/hooks/report';
-import { WalletTransactionsForm } from './WalletTransactionsForm';
+import { TransactionAccountSnapshotForm } from './TransactionAccountSnapshotForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
@@ -224,7 +224,7 @@ export function TransactionAccountSnapshotPage() {
               }}
               footerShow={false}
             >
-              <WalletTransactionsForm
+              <TransactionAccountSnapshotForm
                 reset={reset}
                 params={params}
                 commonParams={commonParams}

@@ -22,7 +22,7 @@ type FormData = {
   createTime: { from: string; to: string };
 };
 
-export const WalletTransactionsForm = ({
+export const TransactionAccountSnapshotForm = ({
   setParams,
   setCommonParams,
   reset,
