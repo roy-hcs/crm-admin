@@ -998,3 +998,37 @@ export type AgencyPreferenceParams = {
   depositSubTypes?: string;
   withdrawSubTypes?: string;
 };
+
+export type TradingAccountSnapshotParams = BasicParams & {
+  snapshotId?: string;
+  server?: string;
+  account?: string;
+  currency?: string;
+  triggeringEvent?: string;
+  params: {
+    createTimeStart?: string;
+    createTimeEnd?: string;
+  };
+};
+
+export type TradingAccountSnapshotItem = {
+  id: string;
+  serverName: string;
+  account: string;
+  currency: string;
+  triggeringEvent: string | number | null;
+  createTime: string;
+  balance: number | string | null;
+  changeAmount: number | string | null;
+  equity: number | string | null;
+  credit: number | string | null;
+  usedMargin: number | string | null;
+  freeMargin: number | string | null;
+  marginLevel: number | string | null;
+  lever: number | string | null;
+  positionOrders: number | string | null;
+  positionLots: number | string | null;
+  floatingPl: number | string | null;
+};
+
+export type TradingAccountSnapshotRes = BasicRes<TradingAccountSnapshotItem>;

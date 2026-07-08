@@ -416,6 +416,10 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
               path: '/reports/financial/payment-orders',
             },
             {
+              title: '交易账号快照',
+              path: '/reports/financial/transaction-account-snapshot',
+            },
+            {
               title: '交易账号资金流水',
               path: '/reports/financial/trading-account-transactions',
             },

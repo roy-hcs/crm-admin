@@ -2435,6 +2435,26 @@
     "operateAccountNumber": "Number of operating accounts",
     "title": "Account balance adjustment"
   },
+  "transactionAccountSnapshotPage": {
+    "title": "Trading Account Snapshot",
+    "snapshotId": "Snapshot ID",
+    "serverName": "Server",
+    "account": "Trading Account",
+    "currency": "Account Currency",
+    "event": "Event",
+    "snapshotTime": "Snapshot Time",
+    "balance": "Balance",
+    "changeAmount": "Change Amount",
+    "equity": "Equity",
+    "credit": "Credit",
+    "usedMargin": "Used Margin",
+    "freeMargin": "Free Margin",
+    "marginLevel": "Margin Level",
+    "leverage": "Leverage",
+    "openOrders": "Open Orders",
+    "openLots": "Open Lots",
+    "floatingProfitLoss": "Floating P/L"
+  },
   "downloadsPage": {
     "deleteConfirmAlert": {
       "content": "The system has detected that you have downloaded this document. Do you want to delete the document immediately? \nIf it is not deleted, the system will automatically delete the document after 48 hours.",
