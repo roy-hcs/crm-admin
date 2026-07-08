@@ -98,18 +98,7 @@ export const TradingForm = ({
   const onReset = () => {
     setServerId(initialServerId || '');
     reset();
-    form.reset({
-      serverId: initialServerId || '',
-      tradingTime: { from: '', to: '' },
-      rebateTime: { from: '', to: '' },
-      accounts: '',
-      serverGroup: '',
-      mtOrder: '',
-      trderAccount: '',
-      taderType: '',
-      conditionName: '',
-      rebateTraderId: '',
-    });
+    form.reset();
   };
 
   useEffect(() => {
@@ -214,6 +203,7 @@ export const TradingForm = ({
         name="rebateTraderId"
         label={t('trading.rebateTraderId')}
         placeholder={t('common.pleaseSelect')}
+        showRowValue={false}
         options={RebateTradersOptions.map((it: CrmRebateTradersItem) => ({
           label: it.ruleName,
           value: it.id,

@@ -65,6 +65,15 @@ export function TradingPage() {
       endVerifyTime: '',
       accounts: '',
     });
+    setCommonParams({
+      trderAccount: '',
+      mtOrder: '',
+      taderType: '',
+      conditionName: '',
+      rebateTraderId: '',
+      serverGroup: '',
+      rebateType: '1',
+    });
     setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
