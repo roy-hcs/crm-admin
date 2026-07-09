@@ -948,6 +948,13 @@ export type CrmUserDealListDetailRes = {
   dealAccount: DealAccount;
 };
 
+export type AgencyPreferenceParams = {
+  bizType: string;
+  depositMethods: string;
+  withdrawMethods: string;
+  depositSubTypes?: string;
+  withdrawSubTypes?: string;
+};
 export type DownloadsListParams = BasicParams & {
   exportPath: string;
   status: string;
@@ -989,14 +996,6 @@ export type AgencyPreferenceRes = {
     depositSubTypes: string;
     withdrawSubTypes: string;
   };
-};
-
-export type AgencyPreferenceParams = {
-  bizType: string;
-  depositMethods: string;
-  withdrawMethods: string;
-  depositSubTypes?: string;
-  withdrawSubTypes?: string;
 };
 
 export type TradingAccountSnapshotParams = BasicParams & {

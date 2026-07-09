@@ -2435,7 +2435,11 @@
     "title": "账户余额调整",
     "operateAccountNumber": "操作账户数"
   },
-
+  "performanceOverview": {
+    "title": "IB业绩概览",
+    "switchToList": "切换为列表",
+    "switchToTree": "切换为树状"
+  },
   "downloadsPage": {
     "title": "下载管理",
     "moduleName": "模块名称",
@@ -2455,11 +2459,6 @@
       "title": "删除确认",
       "content": "系统检测你已下载此文档，请问是否要立即删除文档？若未删除，则系统将在48小时后自动删除文档。"
     }
-  },
-  "performanceOverview": {
-    "title": "IB业绩概览",
-    "switchToList": "切换为列表",
-    "switchToTree": "切换为树状"
   },
   "transactionAccountSnapshotPage": {
     "title": "交易账号快照",
