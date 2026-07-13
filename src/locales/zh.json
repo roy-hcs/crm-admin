@@ -1760,8 +1760,7 @@
     "roleName": "账户角色"
   },
   "adminOperations": {
-    "title": "管理员操作日志",
-    "systemModule": "系统模块"
+    "title": "管理员操作日志"
   },
   "adminLogin": {
     "title": "管理员登录日志",

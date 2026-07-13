@@ -1,7 +1,7 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
-import { Ellipsis, Funnel, RefreshCcw, Search } from 'lucide-react';
+import { Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AdminOperationsForm } from './AdminOperationsForm';
@@ -15,11 +15,90 @@ import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { adminOperationsStatusOptions } from '@/lib/const';
 import { RrhTag } from '@/components/common/RrhTag';
-import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { RrhDialog } from '@/components/common/RrhDialog';
+import { LabelItem } from '@/components/common/LabelItem';
+
+const statusTag = (status: number, t: (key: string) => string) => {
+  const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info'> = {
+    1: 'error',
+    0: 'success',
+  };
+  const text = adminOperationsStatusOptions.find(it => Number(it.value) === status)?.label || '';
+  return <RrhTag type={typeMap[status]}>{text ? t(text) : '-'}</RrhTag>;
+};
+
+const DetailInfo = ({ itemInfo }: { itemInfo: AdminOperLogItem }) => {
+  console.log('itemInfo', itemInfo);
+  const { t } = useTranslation();
+
+  const accountInfo = [
+    {
+      label: t('table.systemModule'),
+      value: '-',
+    },
+    {
+      label: t('table.operationType'),
+      value: t('common.View'),
+    },
+    {
+      label: t('common.operObject'),
+      value: itemInfo.operObject || '-',
+    },
+    {
+      label: t('table.operator'),
+      value: itemInfo.operName || '-',
+    },
+    {
+      label: t('table.operationIP'),
+      value: itemInfo.operIp || '-',
+    },
+    {
+      label: t('common.operLocation'),
+      value: itemInfo.operLocation || '-',
+    },
+    {
+      label: t('common.operTime'),
+      value: itemInfo.operTime || '-',
+    },
+    {
+      label: t('common.operStatus'),
+      value: statusTag(Number(itemInfo.status), t),
+    },
+    {
+      label: t('table.operationURL'),
+      value: itemInfo.operUrl || '-',
+    },
+    {
+      label: t('table.operationMethod'),
+      value: itemInfo.method || '-',
+    },
+    {
+      label: t('table.operationParams'),
+      value: (
+        <div className="border-border w-full overflow-auto rounded border p-2">
+          <pre className="text-sm break-words whitespace-pre-wrap">
+            <code>{itemInfo.operParam}</code>
+          </pre>
+        </div>
+      ),
+    },
+  ];
+  return (
+    <div>
+      <div className="mb-3">
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          {accountInfo.map(item => (
+            <LabelItem key={item.label} label={item.label} ContentDom={<div>{item.value}</div>} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export const AdminOperationsPage = () => {
   const [params, setParams] = useState<AdminOperLogParams['params']>({
@@ -65,6 +144,7 @@ export const AdminOperationsPage = () => {
     setResetKey(k => k + 1);
     setPageNum(0);
   };
+
   const allColumns: CRMColumnDef<AdminOperLogItem, unknown>[] = [
     {
       id: 'No',
@@ -73,7 +153,7 @@ export const AdminOperationsPage = () => {
     },
     {
       id: 'title',
-      header: t('adminOperations.systemModule'),
+      header: t('table.systemModule'),
       cell: ({ row }) => {
         return <div>{row?.original?.title || '-'}</div>;
       },
@@ -107,14 +187,7 @@ export const AdminOperationsPage = () => {
       header: t('common.operStatus'),
       accessorFn: row => row.status,
       cell: ({ row }) => {
-        const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info'> = {
-          1: 'error',
-          0: 'success',
-        };
-        const status = Number(row.original.status);
-        const text =
-          adminOperationsStatusOptions.find(it => Number(it.value) === status)?.label || '';
-        return <RrhTag type={typeMap[status]}>{t(text)}</RrhTag>;
+        return statusTag(Number(row.original.status), t);
       },
     },
     {
@@ -143,23 +216,19 @@ export const AdminOperationsPage = () => {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: () => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.View'), value: 'view' },
-              { label: t('common.Edit'), value: 'edit' },
-            ]}
-            callToAction={action => {
-              if (action === 'edit') {
-                // Handle edit action
-              } else if (action === 'view') {
-                // Handle view action
-              }
-            }}
-          />
-        </div>
+      cell: ({ row }) => (
+        <RrhDialog
+          title={t('common.detail', { field: t('adminOperations.title') })}
+          trigger={
+            <RrhButton variant="ghost" type="button">
+              {t('common.View')}
+            </RrhButton>
+          }
+          confirmShow={false}
+          variant="large"
+        >
+          <DetailInfo itemInfo={row.original} />
+        </RrhDialog>
       ),
       fixed: 'right',
       size: 50,

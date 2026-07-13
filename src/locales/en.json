@@ -1302,7 +1302,6 @@
     "title": "Administrator login log"
   },
   "adminOperations": {
-    "systemModule": "system module",
     "title": "Administrator operation log"
   },
   "crmUserLogin": {
