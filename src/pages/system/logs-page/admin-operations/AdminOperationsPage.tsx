@@ -10,10 +10,10 @@ import {
   useDictType,
   AdminOperLogParams,
   AdminOperLogItem,
+  DictTypeItem,
 } from '@/api/hooks/system';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
-import { adminOperationsStatusOptions } from '@/lib/const';
 import { RrhTag } from '@/components/common/RrhTag';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
@@ -22,78 +22,76 @@ import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { LabelItem } from '@/components/common/LabelItem';
 
-const statusTag = (status: number, t: (key: string) => string) => {
-  const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info'> = {
-    1: 'error',
-    0: 'success',
-  };
-  const text = adminOperationsStatusOptions.find(it => Number(it.value) === status)?.label || '';
-  return <RrhTag type={typeMap[status]}>{text ? t(text) : '-'}</RrhTag>;
-};
-
-const DetailInfo = ({ itemInfo }: { itemInfo: AdminOperLogItem }) => {
+const DetailInfo = ({
+  data,
+  operationsType,
+}: {
+  data: AdminOperLogItem;
+  operationsType: DictTypeItem[];
+}) => {
   const { t } = useTranslation();
+  const statusText = Number(data.status) === 0 ? t('common.success') : t('common.fail');
 
   const accountInfo = [
     {
       label: t('table.systemModule'),
-      value: itemInfo.title || '-',
+      value: data.title || '-',
     },
     {
       label: t('table.operationType'),
-      value: t('common.View'),
+      value:
+        operationsType.find(item => item.dictValue === String(data.operatorType))?.dictLabel ||
+        String(data.operatorType),
     },
     {
       label: t('common.operObject'),
-      value: itemInfo.operObject || '-',
+      value: data.operObject || '-',
     },
     {
       label: t('table.operator'),
-      value: itemInfo.operName || '-',
+      value: data.operName || '-',
     },
     {
       label: t('table.operationIP'),
-      value: itemInfo.operIp || '-',
+      value: data.operIp || '-',
     },
     {
       label: t('common.operLocation'),
-      value: itemInfo.operLocation || '-',
+      value: data.operLocation || '-',
     },
     {
       label: t('common.operTime'),
-      value: itemInfo.operTime || '-',
+      value: data.operTime || '-',
     },
     {
       label: t('common.operStatus'),
-      value: statusTag(Number(itemInfo.status), t),
+      value: <RrhTag type="success">{statusText}</RrhTag>,
     },
     {
       label: t('table.operationURL'),
-      value: itemInfo.operUrl || '-',
+      value: data.operUrl || '-',
     },
     {
       label: t('table.operationMethod'),
-      value: itemInfo.method || '-',
+      value: data.method || '-',
     },
     {
       label: t('table.operationParams'),
       value: (
         <div className="border-border w-full overflow-auto rounded border p-2">
           <pre className="text-sm break-words whitespace-pre-wrap">
-            <code>{itemInfo.operParam}</code>
+            <code>{data.operParam}</code>
           </pre>
         </div>
       ),
     },
   ];
   return (
-    <div>
-      <div className="mb-3">
-        <div className="grid grid-cols-1 md:grid-cols-2">
-          {accountInfo.map(item => (
-            <LabelItem key={item.label} label={item.label} ContentDom={<div>{item.value}</div>} />
-          ))}
-        </div>
+    <div className="mb-3">
+      <div className="grid grid-cols-1">
+        {accountInfo.map(item => (
+          <LabelItem key={item.label} label={item.label} ContentDom={<div>{item.value}</div>} />
+        ))}
       </div>
     </div>
   );
@@ -116,7 +114,7 @@ export const AdminOperationsPage = () => {
   const [pageSize, setPageSize] = useState(10);
   const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
-  const { data: operTypeList } = useDictType('sys_oper_type');
+  const { data: operationTypes } = useDictType('sys_oper_type');
   const { data: walletBalanceList, isLoading: walletBalanceListLoading } = useAdminOperLogList({
     pageSize,
     pageNum: pageNum + 1,
@@ -161,10 +159,10 @@ export const AdminOperationsPage = () => {
       id: 'operatorType',
       header: t('table.operationType'),
       cell: ({ row }) => {
-        const operType = (operTypeList || []).find(
+        const text = (operationTypes || []).find(
           i => i.dictValue === String(row?.original?.operatorType),
         );
-        return <div>{operType ? operType.dictLabel : '-'}</div>;
+        return <div>{text ? text.dictLabel : '-'}</div>;
       },
     },
     {
@@ -186,7 +184,9 @@ export const AdminOperationsPage = () => {
       header: t('common.operStatus'),
       accessorFn: row => row.status,
       cell: ({ row }) => {
-        return statusTag(Number(row.original.status), t);
+        const statusText =
+          Number(row.original.status) === 0 ? t('common.success') : t('common.fail');
+        return <RrhTag type="success">{statusText}</RrhTag>;
       },
     },
     {
@@ -226,7 +226,7 @@ export const AdminOperationsPage = () => {
           confirmShow={false}
           variant="large"
         >
-          <DetailInfo itemInfo={row.original} />
+          <DetailInfo data={row.original} operationsType={operationTypes || []} />
         </RrhDialog>
       ),
       fixed: 'right',
@@ -273,7 +273,7 @@ export const AdminOperationsPage = () => {
                 setParams={setParams}
                 setOtherParams={setOtherParams}
                 loading={walletBalanceListLoading}
-                operTypeList={operTypeList || []}
+                operTypeList={operationTypes || []}
                 reset={reset}
                 params={params}
                 otherParams={otherParams}
