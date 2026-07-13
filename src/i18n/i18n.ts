@@ -19,7 +19,7 @@ i18n
     },
     // When using language detector, we remove the explicit 'lng' setting
     fallbackLng: 'en',
-    debug: process.env.NODE_ENV === 'development',
+    debug: import.meta.env.DEV,
     detection: {
       // Order of detection methods
       order: ['localStorage', 'navigator', 'htmlTag', 'path', 'subdomain'],
