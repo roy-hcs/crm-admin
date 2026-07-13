@@ -948,18 +948,6 @@ export type CrmUserDealListDetailRes = {
   dealAccount: DealAccount;
 };
 
-export type AgencyPreferenceRes = {
-  code: number;
-  msg: string;
-  data: {
-    depositMethods: string;
-    preferenceShowPamm: string;
-    withdrawMethods: string;
-    depositSubTypes: string;
-    withdrawSubTypes: string;
-  };
-};
-
 export type AgencyPreferenceParams = {
   bizType: string;
   depositMethods: string;
@@ -998,3 +986,48 @@ export type DownloadsListItem = BaseEntity & {
 };
 
 export type DownloadsListRes = BasicRes<DownloadsListItem>;
+export type AgencyPreferenceRes = {
+  code: number;
+  msg: string;
+  data: {
+    depositMethods: string;
+    preferenceShowPamm: string;
+    withdrawMethods: string;
+    depositSubTypes: string;
+    withdrawSubTypes: string;
+  };
+};
+
+export type TradingAccountSnapshotParams = BasicParams & {
+  snapshotId?: string;
+  server?: string;
+  account?: string;
+  currency?: string;
+  triggeringEvent?: string;
+  params: {
+    createTimeStart?: string;
+    createTimeEnd?: string;
+  };
+};
+
+export type TradingAccountSnapshotItem = {
+  id: string;
+  serverName: string;
+  account: string;
+  currency: string;
+  triggeringEvent: string | number | null;
+  createTime: string;
+  balance: number | string | null;
+  changeAmount: number | string | null;
+  equity: number | string | null;
+  credit: number | string | null;
+  usedMargin: number | string | null;
+  freeMargin: number | string | null;
+  marginLevel: number | string | null;
+  lever: number | string | null;
+  positionOrders: number | string | null;
+  positionLots: number | string | null;
+  floatingPl: number | string | null;
+};
+
+export type TradingAccountSnapshotRes = BasicRes<TradingAccountSnapshotItem>;

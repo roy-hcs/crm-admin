@@ -2459,5 +2459,38 @@
       "title": "删除确认",
       "content": "系统检测你已下载此文档，请问是否要立即删除文档？若未删除，则系统将在48小时后自动删除文档。"
     }
+  },
+  "transactionAccountSnapshotPage": {
+    "title": "交易账号快照",
+    "snapshotId": "快照ID",
+    "serverName": "服务器",
+    "account": "交易账号",
+    "currency": "账号货币",
+    "event": "事件",
+    "snapshotTime": "快照时间",
+    "balance": "余额",
+    "changeAmount": "变动金额",
+    "equity": "净值",
+    "credit": "信用金",
+    "usedMargin": "已用保证金",
+    "freeMargin": "可用保证金",
+    "marginLevel": "保证金比例",
+    "leverage": "杠杆",
+    "openOrders": "未平仓订单数",
+    "openLots": "未平仓手数",
+    "floatingProfitLoss": "浮动盈亏",
+    "snapshotTips": "设置每日进行交易账号快照的记录时间，可选整点或者半点",
+    "everyDaySnapshot": "每日快照",
+    "accountType": "交易账号类型(多选)",
+    "accountTypeDesc": "设置需要记录快照的交易账号类型",
+    "triggeringEvent": "触发事件(多选)",
+    "triggeringEventOptions": {
+      "1": "每日快照",
+      "2": "入金成功",
+      "3": "出金成功",
+      "4": "信用金发放",
+      "5": "信用金回收"
+    },
+    "triggeringEventDesc": "设置需要记录快照的触发事件"
   }
 }

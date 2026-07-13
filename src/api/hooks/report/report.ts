@@ -45,10 +45,12 @@ import {
   PositionAverageItem,
   PaymentOrderDepositItem,
   CrmUserDealListDetailRes,
-  AgencyPreferenceRes,
-  AgencyPreferenceParams,
   DownloadsListParams,
   DownloadsListRes,
+  AgencyPreferenceRes,
+  AgencyPreferenceParams,
+  TradingAccountSnapshotParams,
+  TradingAccountSnapshotRes,
 } from './types';
 
 /**
@@ -596,5 +598,63 @@ export function useMarkFileAsDownloaded() {
   return useMutation({
     mutationFn: (params: { taskId: string }) =>
       apiFormPost(`/system/export/markDownloaded/${params.taskId}`, {}),
+  });
+}
+
+/**
+ * 交易账号快照列表
+ */
+export function useTradingAccountSnapshotList(
+  params: TradingAccountSnapshotParams,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['tradingAccountSnapshotList', params],
+    queryFn: () =>
+      apiFormPostCustom<TradingAccountSnapshotRes>('/system/crmDealAccountLog/list', params),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+/**
+ *  交易账号快照列表导出
+ */
+export function useTradingAccountSnapshotExport() {
+  return useMutation({
+    mutationFn: (params: TradingAccountSnapshotParams) =>
+      apiFormPost('/system/crmDealAccountLog/export', params),
+  });
+}
+
+/**
+ * 交易账号快照列表-每日快照-设置
+ */
+export function useSaveLogGeneratedTime() {
+  return useMutation({
+    mutationFn: (params: { time: string }) =>
+      apiFormPost(`/system/crmDealAccountLog/saveLogGeneratedTime`, params),
+  });
+}
+
+/**
+ * 交易账号快照列表-获取偏好设置
+ */
+export function useGetPreferenceSetting() {
+  return useMutation({
+    mutationFn: () =>
+      apiGet<{
+        accountType: string;
+        triggeringEvent: string;
+      }>(`/system/crmDealAccountLog/getPreferenceSetting`),
+  });
+}
+
+/**
+ * 交易账号快照列表--设置偏好设置
+ */
+export function useSavePreferenceSetting() {
+  return useMutation({
+    mutationFn: (params: { accountType: string; triggeringEvent: string }) =>
+      apiFormPost(`/system/crmDealAccountLog/savePreferenceSetting`, params),
   });
 }

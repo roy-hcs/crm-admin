@@ -2435,10 +2435,25 @@
     "operateAccountNumber": "Number of operating accounts",
     "title": "Account balance adjustment"
   },
-  "performanceOverview": {
-    "title": "IB Performance Overview",
-    "switchToList": "Switch to List",
-    "switchToTree": "Switch to Tree"
+  "transactionAccountSnapshotPage": {
+    "title": "Trading Account Snapshot",
+    "snapshotId": "Snapshot ID",
+    "serverName": "Server",
+    "account": "Trading Account",
+    "currency": "Account Currency",
+    "event": "Event",
+    "snapshotTime": "Snapshot Time",
+    "balance": "Balance",
+    "changeAmount": "Change Amount",
+    "equity": "Equity",
+    "credit": "Credit",
+    "usedMargin": "Used Margin",
+    "freeMargin": "Free Margin",
+    "marginLevel": "Margin Level",
+    "leverage": "Leverage",
+    "openOrders": "Open Orders",
+    "openLots": "Open Lots",
+    "floatingProfitLoss": "Floating P/L"
   },
   "downloadsPage": {
     "deleteConfirmAlert": {
@@ -2459,5 +2474,10 @@
     },
     "taskName": "Task name",
     "title": "Download management"
+  },
+  "performanceOverview": {
+    "title": "IB Performance Overview",
+    "switchToList": "Switch to List",
+    "switchToTree": "Switch to Tree"
   }
 }

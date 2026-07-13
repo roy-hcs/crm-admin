@@ -69,6 +69,7 @@ export const DepositRebateSettingsPage = () => {
 
   const { data: serverTypes } = useDictType('sys_mt_service_type');
   const { data: rebateModelSetting } = useGetSysConfig(REBATE_MODEL_SETTING);
+  console.log(rebateModelSetting, 'rebateModelSetting');
 
   const { data: serverList } = useServerList();
   const { data: languageList } = useDictType('sys_language');

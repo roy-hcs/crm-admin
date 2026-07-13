@@ -18,8 +18,9 @@ import { DailyRebatePage } from '@/pages/reports/commission/daily-rebate/DailyRe
 import { WeeklyRebatePage } from '@/pages/reports/commission/weekly-rebate/WeeklyRebatePage';
 import { ClientTrackingPage } from '@/pages/reports/ib/client-tracking/ClientTrackingPage';
 import { OverviewPage } from '@/pages/reports/ib/overview/OverviewPage';
-import { PerformanceOverviewPage } from '@/pages/reports/ib/performance-overview/PerformanceOverviewPage';
 import { DownloadsPage } from '@/pages/reports/downloads/DownloadsPage';
+import { PerformanceOverviewPage } from '@/pages/reports/ib/performance-overview/PerformanceOverviewPage';
+import { TransactionAccountSnapshotPage } from '@/pages/reports/financial/transaction-account-snapshot/TransactionAccountSnapshotPage';
 
 /**
  * Report routes - corresponds to "报表" menu item
@@ -150,5 +151,9 @@ export const reportRoutes: RouteObject[] = [
   {
     path: '/reports/downloads',
     element: <DownloadsPage />,
+  },
+  {
+    path: '/reports/financial/transaction-account-snapshot',
+    element: <TransactionAccountSnapshotPage />,
   },
 ];
