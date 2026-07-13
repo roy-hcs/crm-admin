@@ -32,13 +32,12 @@ const statusTag = (status: number, t: (key: string) => string) => {
 };
 
 const DetailInfo = ({ itemInfo }: { itemInfo: AdminOperLogItem }) => {
-  console.log('itemInfo', itemInfo);
   const { t } = useTranslation();
 
   const accountInfo = [
     {
       label: t('table.systemModule'),
-      value: '-',
+      value: itemInfo.title || '-',
     },
     {
       label: t('table.operationType'),
