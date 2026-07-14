@@ -59,8 +59,11 @@ import {
   AgencyPreforOverviewRes,
   AgencyPreforOverviewTreeParams,
   AgencyPreforOverviewItem,
+  IpWhiteListRes,
+  AddWhiteListParams,
 } from './types';
 import { UserAccountOperationRes, UserRebateAccountTabRes } from '../agent/types';
+import { BasicParams } from '@/api/types';
 
 // Note: useWithDrawReport, useFundFlowReport, useSymbolReport, useRegCountReport, useDepositAllReport, useCustomerTransactionsReport, useSumReport moved to @/api/hooks/workbench
 
@@ -814,5 +817,75 @@ export function useAgencyPreforOverviewTreeChildren() {
       apiGetCustom<AgencyPreforOverviewItem[]>(
         `/system/statistics/agencyPreforOverviewTreeChildren?serverId=${params.serverId}&serverType=${params.serverType}&parentId=${params.parentId}`,
       ),
+  });
+}
+
+/**
+ * 系统管理-ip白名单
+ */
+export function useIpWhiteList(params?: BasicParams) {
+  return useQuery({
+    queryKey: ['ipWhiteList', params],
+    queryFn: () => apiFormPostCustom<IpWhiteListRes>(`/system/ip/white/list`, params || {}),
+  });
+}
+
+/**
+ * 修改ip白名单状态
+ */
+export function useChangeIpWhiteStatus() {
+  return useMutation({
+    mutationFn: (params: { id: string; status: number }) =>
+      apiFormPost('/system/ip/white/changeStatus', params),
+  });
+}
+
+/**
+ * 删除ip白名单
+ */
+export function useDeleteIpWhiteList() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) => apiFormPost('/system/ip/white/remove', params),
+  });
+}
+
+/**
+ * 新增白名单
+ */
+export function useAddWhiteList() {
+  return useMutation({
+    mutationFn: (params: AddWhiteListParams) => apiFormPost('/system/ip/white/add', params),
+  });
+}
+
+/**
+ * 编辑白名单
+ */
+export function useEditWhiteList() {
+  return useMutation({
+    mutationFn: (
+      params: AddWhiteListParams & {
+        id: string;
+      },
+    ) => apiFormPost('/system/ip/white/edit', params),
+  });
+}
+
+/**
+ * 系统管理-ip白名单 是否启用
+ */
+export function useChangeWhiteListStatus() {
+  return useMutation({
+    mutationFn: (params: { ipWhiteStatus: boolean }) =>
+      apiFormPost(`/system/ip/white/ipWhiteStatus`, params),
+  });
+}
+
+/**
+ * 系统管理-ip白名单 默认状态
+ */
+export function useIpWhiteListDefaultStatus() {
+  return useMutation({
+    mutationFn: () => apiGet('/system/ip/white/isOpen'),
   });
 }

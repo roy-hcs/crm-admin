@@ -16,8 +16,9 @@ import { PageInfo } from '@/components/common/PageInfo';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Checkbox } from '@/components/ui/checkbox';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { LabelItem } from '@/components/common/LabelItem';
 
-const OperationLogDetails = ({
+const DetailInfo = ({
   data,
   operationsType,
 }: {
@@ -25,7 +26,8 @@ const OperationLogDetails = ({
   operationsType: DictTypeItem[];
 }) => {
   const { t } = useTranslation();
-  const detailsData = [
+
+  const accountInfo = [
     { label: t('table.systemModule'), value: data.title },
     {
       label: t('table.operationType'),
@@ -58,22 +60,26 @@ const OperationLogDetails = ({
     },
     { label: t('table.operationURL'), value: data.operUrl },
     { label: t('table.operationMethod'), value: data.method },
-    { label: t('table.operationParams'), value: <pre>{data.operParam}</pre> },
+    {
+      label: t('table.operationParams'),
+      value: (
+        <div className="border-border w-full overflow-auto rounded border p-2">
+          <pre className="text-sm break-words whitespace-pre-wrap">
+            <code>{data.operParam}</code>
+          </pre>
+        </div>
+      ),
+    },
   ];
   return (
-    <div className="grid grid-cols-1 gap-4 p-4">
-      {detailsData.map((item, index) => {
-        return (
-          <div className="flex items-center gap-2" key={`${item.label}-${index}`}>
-            <span>{item.label}:</span>
-            {typeof item.value === 'string' ? (
-              <span className="text-slate-500">{item.value}:</span>
-            ) : (
-              <>{item.value}</>
-            )}
-          </div>
-        );
-      })}
+    <div>
+      <div className="mb-3">
+        <div className="grid grid-cols-1">
+          {accountInfo.map(item => (
+            <LabelItem key={item.label} label={item.label} ContentDom={<div>{item.value}</div>} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
@@ -200,27 +206,20 @@ export const CRMUserOperationsLogsPage = () => {
       header: () => {
         return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: ({ row }) => {
-        const onClick = (data: OperationsLogsItem) => {
-          console.log('Operate on row:', data);
-        };
-        return (
-          <div>
-            <RrhDialog
-              trigger={
-                <RrhButton variant="ghost" onClick={() => onClick(row.original)}>
-                  {t('common.View')}
-                </RrhButton>
-              }
-              cancelText={t('common.close')}
-              confirmShow={false}
-              title={t('tradingHistoryPage.tradingHistoryDetail')}
-            >
-              <OperationLogDetails operationsType={operationTypes || []} data={row.original} />
-            </RrhDialog>
-          </div>
-        );
-      },
+      cell: ({ row }) => (
+        <RrhDialog
+          title={t('common.detail', { field: t('CRMUserOperationsLogsPage.title') })}
+          trigger={
+            <RrhButton variant="ghost" type="button">
+              {t('common.View')}
+            </RrhButton>
+          }
+          confirmShow={false}
+          variant="large"
+        >
+          <DetailInfo data={row.original} operationsType={operationTypes || []} />
+        </RrhDialog>
+      ),
       fixed: 'right',
       size: 50,
     },

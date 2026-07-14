@@ -8,6 +8,8 @@ import { AdminAccountsPage } from '@/pages/system/admin-accounts/AdminAccountsPa
 import { AdminOperationsPage } from '@/pages/system/logs-page/admin-operations/AdminOperationsPage';
 import { AdminLoginPage } from '@/pages/system/logs-page/admin-login/AdminLoginPage';
 import { CrmUserLoginPage } from '@/pages/system/logs-page/crm-user-login/CrmUserLoginPage';
+import { IpWhiteListPage } from '@/pages/system/ip-white-list/IpWhiteListPage';
+
 // Import other system pages as they are developed
 
 /**
@@ -49,6 +51,10 @@ export const systemRoutes: RouteObject[] = [
   {
     path: '/system/admin-accounts',
     element: <AdminAccountsPage />,
+  },
+  {
+    path: '/system/admin-accounts/ip-whitelist',
+    element: <IpWhiteListPage />,
   },
   {
     path: '/system/logs/admin-operations',
