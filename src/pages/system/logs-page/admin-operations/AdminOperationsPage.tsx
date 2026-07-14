@@ -30,7 +30,6 @@ const DetailInfo = ({
   operationsType: DictTypeItem[];
 }) => {
   const { t } = useTranslation();
-  const statusText = Number(data.status) === 0 ? t('common.success') : t('common.fail');
 
   const accountInfo = [
     {
@@ -65,7 +64,11 @@ const DetailInfo = ({
     },
     {
       label: t('common.operStatus'),
-      value: <RrhTag type="success">{statusText}</RrhTag>,
+      value: Number(data.status) ? (
+        <RrhTag type="success">{t('common.success')}</RrhTag>
+      ) : (
+        <RrhTag type="error">{t('common.fail')}</RrhTag>
+      ),
     },
     {
       label: t('table.operationURL'),
@@ -184,9 +187,11 @@ export const AdminOperationsPage = () => {
       header: t('common.operStatus'),
       accessorFn: row => row.status,
       cell: ({ row }) => {
-        const statusText =
-          Number(row.original.status) === 0 ? t('common.success') : t('common.fail');
-        return <RrhTag type="success">{statusText}</RrhTag>;
+        if (Number(row.original.status) === 0) {
+          return <RrhTag type="success">{t('common.success')}</RrhTag>;
+        } else if (Number(row.original.status) === 1) {
+          return <RrhTag type="error">{t('common.fail')}</RrhTag>;
+        }
       },
     },
     {

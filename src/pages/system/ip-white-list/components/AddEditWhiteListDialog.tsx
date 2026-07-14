@@ -22,11 +22,11 @@ type FormValues = {
   remark: string;
 };
 
-const walletSchema = (t: TFunction<'translation', undefined>) => {
+const whiteListSchema = (t: TFunction<'translation', undefined>) => {
   return {
     ipAddress: z.string().min(1, t('rules.required', { field: t('table.ipAddress') })),
     ipEndAddress: z.string(),
-    ipType: z.string().min(1, t('rules.required', { field: t('table.ipAddress') })),
+    ipType: z.string(),
     remark: z.string(),
   };
 };
@@ -52,7 +52,7 @@ export const AddEditWhiteListDialog = ({
 
   const schema = useMemo(
     () =>
-      z.object(walletSchema(t)).superRefine((data, ctx) => {
+      z.object(whiteListSchema(t)).superRefine((data, ctx) => {
         // 仅在展示结束IP输入框时校验必填
         if (data.ipType === '2' && !data.ipEndAddress.trim()) {
           ctx.addIssue({

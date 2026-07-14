@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { AddEditWhiteListDialog } from './components/AddEditWhiteListDialog';
 import { FaqIpWhiteList } from './components/FaqIpWhiteList';
 import { Switch } from '@/components/ui/switch';
+import { toast } from 'sonner';
 
 export function IpWhiteListPage() {
   const { t } = useTranslation();
@@ -47,21 +48,22 @@ export function IpWhiteListPage() {
 
   const setStatus = useCallback(
     async (flag: boolean) => {
-      const res = await changeStatus({ ipWhiteStatus: flag });
-      if (res?.code === 0) {
-        refetch();
-        initStatus();
+      try {
+        const res = await changeStatus({ ipWhiteStatus: flag });
+        if (res?.code === 0) {
+          refetch();
+          initStatus();
+        }
+      } catch {
+        toast.error(t('common.AnErrorOccurred'));
       }
     },
-    [changeStatus, refetch, initStatus],
+    [changeStatus, refetch, initStatus, t],
   );
 
   useEffect(() => {
-    (async () => {
-      const res = await initDefaultStatus();
-      setIsFlag(res?.code === 0 && res?.msg === 'true');
-    })();
-  }, [initDefaultStatus]);
+    initStatus();
+  }, [initStatus]);
 
   const allColumns: CRMColumnDef<IpWhiteListItem, unknown>[] = [
     {
@@ -152,42 +154,40 @@ export function IpWhiteListPage() {
 
   return (
     <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
-      <div className="flex-1">
-        <RrhCard>
-          <div className="mb-3 flex justify-end gap-2">
-            <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
-              <RefreshCcw className="size-3.5" />
-            </RrhButton>
-            <div className="flex items-center justify-center gap-2">
-              <span>{t('ipWhiteList.ipWhiteListStatus')}</span>
-              <Switch
-                checked={Boolean(isFlag)}
-                onCheckedChange={() => {
-                  setStatus(!isFlag);
-                }}
-              />
-            </div>
-            <ColumnVisibilityButton
-              columnMeta={columnMeta}
-              visibleColumns={visibleColumns}
-              onToggle={toggleColumn}
-              onBatchReorder={batchUpdateColumns}
-              columns={columns}
+      <RrhCard className="flex-1">
+        <div className="mb-3 flex justify-end gap-2">
+          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+            <RefreshCcw className="size-3.5" />
+          </RrhButton>
+          <div className="flex items-center justify-center gap-2">
+            <span>{t('ipWhiteList.ipWhiteListStatus')}</span>
+            <Switch
+              checked={Boolean(isFlag)}
+              onCheckedChange={() => {
+                setStatus(!isFlag);
+              }}
             />
-            <AddEditWhiteListDialog onSuccess={refetch} mode="add" />
           </div>
-          <DataTable
-            columns={tableColumns}
-            data={ipWhiteList?.rows || []}
-            pageCount={Math.ceil(+(ipWhiteList?.total || 0) / pageSize)}
-            pageIndex={pageNum}
-            pageSize={pageSize}
-            onPageChange={setPageNum}
-            onPageSizeChange={setPageSize}
-            loading={ipWhiteListLoading}
+          <ColumnVisibilityButton
+            columnMeta={columnMeta}
+            visibleColumns={visibleColumns}
+            onToggle={toggleColumn}
+            onBatchReorder={batchUpdateColumns}
+            columns={columns}
           />
-        </RrhCard>
-      </div>
+          <AddEditWhiteListDialog onSuccess={refetch} mode="add" />
+        </div>
+        <DataTable
+          columns={tableColumns}
+          data={ipWhiteList?.rows || []}
+          pageCount={Math.ceil(+(ipWhiteList?.total || 0) / pageSize)}
+          pageIndex={pageNum}
+          pageSize={pageSize}
+          onPageChange={setPageNum}
+          onPageSizeChange={setPageSize}
+          loading={ipWhiteListLoading}
+        />
+      </RrhCard>
 
       <div className="relative md:w-93.5">
         <FaqIpWhiteList />
