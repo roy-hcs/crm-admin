@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Ellipsis, Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AdminAccountsForm } from './AdminAccountsForm';
 import { useRoleList, useUserList, UserListParams, UserItem } from '@/api/hooks/system';
@@ -14,6 +14,7 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { useTabActions } from '@/hooks/useTabActions';
 
 export const AdminAccountsPage = () => {
   const [params, setParams] = useState<UserListParams['params']>({
@@ -207,6 +208,17 @@ export const AdminAccountsPage = () => {
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('admin-accounts-table', allColumns);
 
+  const { openTab } = useTabActions();
+
+  const openIpWhiteList = useCallback(() => {
+    const url = `/system/admin-accounts/ip-whitelist`;
+    openTab({
+      key: url,
+      title: t('ipWhiteList.title'),
+      path: url,
+    });
+  }, [openTab, t]);
+
   return (
     <div>
       <PageInfo title={t('adminAccounts.title')} />
@@ -257,6 +269,7 @@ export const AdminAccountsPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <RrhButton onClick={openIpWhiteList}>{t('ipWhiteList.title')}</RrhButton>
           </div>
         </div>
         <DataTable

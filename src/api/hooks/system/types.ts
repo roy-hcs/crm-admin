@@ -915,3 +915,21 @@ export type AgencyPreforOverviewTreeParams = {
   serverType: string;
   parentId?: string;
 };
+
+export type IpWhiteListItem = BaseEntity & {
+  id: string;
+  ipType: number;
+  ipAddress: string;
+  ipEndAddress: string | null;
+  status: number;
+};
+
+export type IpWhiteListRes = BasicRes<IpWhiteListItem>;
+
+export type AddWhiteListParams = {
+  ipType: string;
+  ipAddress: string;
+  ipEndAddress: string;
+  remark: string;
+  status: string;
+};
