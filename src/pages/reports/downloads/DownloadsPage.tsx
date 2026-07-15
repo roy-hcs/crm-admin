@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { DownloadsListParams, DownloadsListItem } from '@/api/hooks/report';
@@ -61,6 +61,55 @@ export function DownloadsPage() {
   const [deleteConfirmAlert, setDeleteConfirmAlert] = useState(false);
   const { mutateAsync: remove } = useRemoveFile();
   const { mutateAsync: markAsDownloaded } = useMarkFileAsDownloaded();
+
+  // 下载文件
+  const handleDownload = useCallback(
+    async (row: DownloadsListItem) => {
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/system/export/download/${encodeURIComponent(row.taskId)}`,
+          {
+            method: 'GET',
+            credentials: 'include',
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error(`下载失败 (${response.status})`);
+        }
+
+        const contentDisposition = response.headers.get('Content-Disposition');
+        let filename = `export_${row.taskId}.csv`; // 默认
+        if (contentDisposition) {
+          const utf8NameMatch = contentDisposition.match(/filename\*=UTF-8''([^;]+)/i);
+          const normalNameMatch = contentDisposition.match(/filename="?([^";]+)"?/i);
+
+          if (utf8NameMatch?.[1]) {
+            filename = decodeURIComponent(utf8NameMatch[1]);
+          } else if (normalNameMatch?.[1]) {
+            filename = normalNameMatch[1];
+          }
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+        await markAsDownloaded({ taskId: row.taskId });
+        setDeleteConfirmAlert(true);
+        setId(row.taskId);
+      } catch (err) {
+        console.error('下载文件失败:', err);
+      }
+    },
+    [markAsDownloaded],
+  );
 
   const allColumns = useMemo<CRMColumnDef<DownloadsListItem, unknown>[]>(
     () => [
@@ -145,52 +194,6 @@ export function DownloadsPage() {
   );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('reports-downloads-table', allColumns);
-
-  // 下载文件
-  const handleDownload = async (row: DownloadsListItem) => {
-    try {
-      const response = await fetch(
-        `${API_BASE_URL}/system/export/download/${encodeURIComponent(row.taskId)}`,
-        {
-          method: 'GET',
-          credentials: 'include',
-        },
-      );
-
-      if (!response.ok) {
-        throw new Error(`下载失败 (${response.status})`);
-      }
-
-      const contentDisposition = response.headers.get('Content-Disposition');
-      let filename = `export_${row.taskId}.csv`; // 默认
-      if (contentDisposition) {
-        const utf8NameMatch = contentDisposition.match(/filename\*=UTF-8''([^;]+)/i);
-        const normalNameMatch = contentDisposition.match(/filename="?([^";]+)"?/i);
-
-        if (utf8NameMatch?.[1]) {
-          filename = decodeURIComponent(utf8NameMatch[1]);
-        } else if (normalNameMatch?.[1]) {
-          filename = normalNameMatch[1];
-        }
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-      await markAsDownloaded({ taskId: row.taskId });
-      setDeleteConfirmAlert(true);
-      setId(row.taskId);
-    } catch (err) {
-      console.error('下载文件失败:', err);
-    }
-  };
 
   const onConfirm = async () => {
     const res = await remove({ ids: id });

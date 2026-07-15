@@ -1,10 +1,12 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
-import { useDictType, useGetGroup } from '@/api/hooks/system/system';
+import { useDictType } from '@/api/hooks/system/system';
+import { useGroupFetcher } from '@/hooks/useGroupFetcher';
+import { useServerIdAutoFill } from '@/hooks/useServerIdAutoFill';
 import { useGetDealAccountGroupList } from '@/api/hooks/account';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 
@@ -54,9 +56,6 @@ export const TradingAccountTransactionsForm = ({
   commonParams: Omit<CrmUserDealListParams, 'params' | keyof BasicParams>;
 }) => {
   const { t } = useTranslation();
-  const [groupList, setGroupList] = useState<Array<{ label: string; value: string }>>([]);
-  const [groupLoading, setGroupLoading] = useState(false);
-  const { mutateAsync: getGroupData } = useGetGroup();
   const { data: dealAccountGroupListData } = useGetDealAccountGroupList();
   const { data: operationTypeRes } = useDictType('crm_wallet_opr_type');
 
@@ -78,12 +77,9 @@ export const TradingAccountTransactionsForm = ({
     },
   });
 
-  if (!form.getValues('serverId') && (initialServerId || serverOptions[0])) {
-    const auto = initialServerId || serverOptions[0]?.id || '';
-    if (auto) form.setValue('serverId', auto, { shouldDirty: false, shouldTouch: false });
-  }
-
   const serverId = form.watch('serverId');
+
+  useServerIdAutoFill(form, initialServerId, serverOptions);
 
   const onSubmit = (data: FormData) => {
     reset();
@@ -127,41 +123,7 @@ export const TradingAccountTransactionsForm = ({
     });
   };
 
-  useEffect(() => {
-    if (!serverId) return;
-    let mounted = true;
-    const fetch = async (serverId?: string) => {
-      if (!serverId) {
-        if (mounted) setGroupList([]);
-        return;
-      }
-      if (mounted) setGroupLoading(true);
-      try {
-        const group = await getGroupData(serverId);
-        if (!mounted) return;
-        if (group?.length > 0) {
-          const leverOptions = group
-            .filter(i => i)
-            .map((item: string) => ({
-              label: item,
-              value: item,
-            }));
-          setGroupList(leverOptions);
-        } else {
-          setGroupList([]);
-        }
-      } catch (error) {
-        console.error(error);
-        if (mounted) setGroupList([]);
-      } finally {
-        if (mounted) setGroupLoading(false);
-      }
-    };
-    fetch(serverId);
-    return () => {
-      mounted = false;
-    };
-  }, [form, getGroupData, serverId]);
+  const { groupList, groupLoading } = useGroupFetcher({ serverId, form });
 
   return (
     <RrhForm

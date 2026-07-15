@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import {
@@ -99,7 +99,7 @@ export const DepositRebateSettingsPage = () => {
 
   const { openTab } = useTabActions();
 
-  const reset = () => {
+  const reset = useCallback(() => {
     setOtherParams({
       rebateType: '3',
       model: rebateModelSetting?.toString() || '',
@@ -111,7 +111,12 @@ export const DepositRebateSettingsPage = () => {
     setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
-  };
+  }, [rebateModelSetting]);
+
+  const onSuccess = useCallback(() => {
+    reset();
+    refetch();
+  }, [refetch, reset]);
 
   const allColumns = useMemo<CRMColumnDef<RebateDepositSettingsItem, unknown>[]>(
     () => [
@@ -308,11 +313,6 @@ export const DepositRebateSettingsPage = () => {
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('deposit-rebate-settings-table', allColumns);
-
-  const onSuccess = () => {
-    reset();
-    refetch();
-  };
 
   return (
     <div>
