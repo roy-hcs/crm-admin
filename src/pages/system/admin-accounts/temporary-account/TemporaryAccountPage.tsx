@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Ellipsis, Funnel, Plus, RefreshCcw, Search, Settings } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRoleList, useUserList, UserListParams, UserItem } from '@/api/hooks/system';
 import { CRMColumnDef, DataTable } from '@/components/table';
@@ -63,52 +63,56 @@ export const TemporaryAccountPage = () => {
     setResetKey(k => k + 1);
     setPageNum(0);
   };
-  const allColumns: CRMColumnDef<UserItem, unknown>[] = [
-    {
-      id: 'No',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'email',
-      header: t('table.email'),
-      cell: ({ row }) => row?.original?.email || '-',
-    },
-    {
-      id: 'roleName',
-      header: t('adminAccounts.roleName'),
-      cell: ({ row }) => row.original?.roles?.[0]?.roleName || '-',
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      cell: ({ row }) =>
-        Number(row.original.status) === 0 ? t('adminAccounts.expired') : t('adminAccounts.valid'),
-    },
-    {
-      id: 'onlineStatus',
-      header: t('adminAccounts.onlineStatus'),
-      cell: ({ row }) =>
-        row.original?.onlineStatus === 1
-          ? t('common.onlineStatus.online')
-          : t('common.onlineStatus.offline'),
-    },
-    {
-      id: 'loginIp',
-      header: t('common.ip'),
-      cell: ({ row }) => row.original?.loginIp || '-',
-    },
-    {
-      id: 'createTime',
-      header: t('common.createTime'),
-      cell: ({ row }) => row?.original?.createTime || '-',
-    },
-    {
-      id: 'expiryTime',
-      header: t('table.expireTime'),
-      cell: ({ row }) => row?.original?.createTime || '-',
-    },
-  ];
+
+  const allColumns = useMemo<CRMColumnDef<UserItem, unknown>[]>(
+    () => [
+      {
+        id: 'No',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'email',
+        header: t('table.email'),
+        cell: ({ row }) => row?.original?.email || '-',
+      },
+      {
+        id: 'roleName',
+        header: t('adminAccounts.roleName'),
+        cell: ({ row }) => row.original?.roles?.[0]?.roleName || '-',
+      },
+      {
+        id: 'status',
+        header: t('table.status'),
+        cell: ({ row }) =>
+          Number(row.original.status) === 0 ? t('adminAccounts.expired') : t('adminAccounts.valid'),
+      },
+      {
+        id: 'onlineStatus',
+        header: t('adminAccounts.onlineStatus'),
+        cell: ({ row }) =>
+          row.original?.onlineStatus === 1
+            ? t('common.onlineStatus.online')
+            : t('common.onlineStatus.offline'),
+      },
+      {
+        id: 'loginIp',
+        header: t('common.ip'),
+        cell: ({ row }) => row.original?.loginIp || '-',
+      },
+      {
+        id: 'createTime',
+        header: t('common.createTime'),
+        cell: ({ row }) => row?.original?.createTime || '-',
+      },
+      {
+        id: 'expiryTime',
+        header: t('table.expireTime'),
+        cell: ({ row }) => row?.original?.expiryTime || '-',
+      },
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('admin-temporary-account-table', allColumns);

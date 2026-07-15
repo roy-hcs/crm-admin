@@ -35,7 +35,7 @@ type FormValues = {
   roleId: string;
 };
 
-const addUserSchema = (t: TFunction<'translation', undefined>) => {
+const addUserSchema = (t: TFunction<'translation', undefined>, mode: 'add' | 'edit' | 'view') => {
   return {
     userLastName: z.string().min(1, t('rules.required', { field: t('rules.lastName') })),
     userName: z.string().min(1, t('rules.required', { field: t('rules.firstName') })),
@@ -45,15 +45,22 @@ const addUserSchema = (t: TFunction<'translation', undefined>) => {
       .string()
       .min(1, t('rules.required', { field: t('rules.email') }))
       .email(t('rules.invalidEmailFormat')),
-    password: z
-      .string()
-      .min(8, t('rules.limitLength', { field: 8 }))
-      .max(20, t('rules.limitLength', { field: 20 }))
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/,
-        t('rules.pattern', { field: t('rules.pwd') }),
-      )
-      .or(z.literal('')),
+    password:
+      mode === 'add'
+        ? z
+            .string()
+            .min(8, t('rules.limitLength', { field: 8 }))
+            .max(20, t('rules.limitLength', { field: 20 }))
+            .regex(
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/,
+              t('rules.pattern', { field: t('rules.pwd') }),
+            )
+        : z
+            .string()
+            .regex(
+              /^$|^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/,
+              t('rules.pattern', { field: t('rules.pwd') }),
+            ),
     chatId: z.string(),
     status: z.string(),
     roleId: z.string().min(1, t('rules.required', { field: t('table.accountRole') })),
@@ -101,7 +108,7 @@ export const AddUserDialog = ({
   const { mutateAsync: getDetail, isPending: isDetailPending } = useGetUserDetail();
   const isSubmitting = isAddPending || isEditPending;
 
-  const schema = useMemo(() => z.object(addUserSchema(t)), [t]);
+  const schema = useMemo(() => z.object(addUserSchema(t, mode)), [t, mode]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),

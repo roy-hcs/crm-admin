@@ -202,6 +202,7 @@ export type Role = BaseEntity & {
 };
 
 export type UserItem = BaseEntity & {
+  expiryTime: string | null;
   userId: string;
   deptId: string | null;
   parentId: string | null;
