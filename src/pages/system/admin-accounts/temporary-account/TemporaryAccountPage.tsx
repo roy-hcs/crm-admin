@@ -197,7 +197,6 @@ export const TemporaryAccountPage = () => {
               },
             ]}
             callToAction={action => {
-              console.log(action, 'action');
               if (action === 'temporaryAdmin') {
                 setOpen(true);
               } else if (action === 'ipWhiteList') {

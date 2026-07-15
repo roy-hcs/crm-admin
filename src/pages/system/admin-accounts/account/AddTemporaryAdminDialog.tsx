@@ -122,7 +122,6 @@ export const AddTemporaryAdminDialog = ({
   };
 
   const onSubmit = async (data: FormValues) => {
-    console.log('data', data);
     try {
       const param = {
         userType: 1,
