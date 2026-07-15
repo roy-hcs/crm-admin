@@ -176,126 +176,129 @@ export const PositionOrderPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<PositionOrderItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('CRMAccountPage.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'userName',
-      header: t('CRMAccountPage.UserName'),
-      accessorFn: row => row.params.accountName,
-    },
-    {
-      id: 'login',
-      header: t('table.tradingAccount'),
-      accessorFn: row => row.login,
-    },
-    {
-      id: 'type',
-      header: t('table.transactionType'), // 0: buy, 1: sell
-      accessorFn: row =>
-        transactionTypeMap[row.type as keyof typeof transactionTypeMap] || row.type,
-    },
-    {
-      id: 'symbol',
-      header: t('table.symbol'),
-      accessorFn: row => row.symbol,
-    },
-    {
-      id: 'tradeCount',
-      header: t('table.volume'),
-      cell: ({ row }) => {
-        const rowData = row.original;
+  const allColumns = useMemo<CRMColumnDef<PositionOrderItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('CRMAccountPage.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'userName',
+        header: t('CRMAccountPage.UserName'),
+        accessorFn: row => row.params.accountName,
+      },
+      {
+        id: 'login',
+        header: t('table.tradingAccount'),
+        accessorFn: row => row.login,
+      },
+      {
+        id: 'type',
+        header: t('table.transactionType'), // 0: buy, 1: sell
+        accessorFn: row =>
+          transactionTypeMap[row.type as keyof typeof transactionTypeMap] || row.type,
+      },
+      {
+        id: 'symbol',
+        header: t('table.symbol'),
+        accessorFn: row => row.symbol,
+      },
+      {
+        id: 'tradeCount',
+        header: t('table.volume'),
+        cell: ({ row }) => {
+          const rowData = row.original;
 
-        return rowData.volume && rowData.lotSize ? (
-          <div>
-            {formatVolume(rowData.volume, selectedServer?.serviceType || 0, rowData.lotSize)}
-          </div>
-        ) : (
-          <div>-</div>
-        );
+          return rowData.volume && rowData.lotSize ? (
+            <div>
+              {formatVolume(rowData.volume, selectedServer?.serviceType || 0, rowData.lotSize)}
+            </div>
+          ) : (
+            <div>-</div>
+          );
+        },
       },
-    },
-    {
-      id: 'openPrice',
-      header: t('table.openPrice'),
-      accessorFn: row => row.price,
-    },
-    {
-      id: 'openTime',
-      header: t('table.openTime'),
-      accessorFn: row => row.time,
-    },
-    {
-      id: 'currentPrice',
-      header: t('table.currentPrice'),
-      accessorFn: row => row.priceCur,
-    },
-    {
-      id: 'profit',
-      header: t('table.profitAndLoss'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        return rowData.profit !== null ? (
-          <div>
-            {rowData.profit.toFixed(2)} {rowData.currency}
-          </div>
-        ) : (
-          <div>-</div>
-        );
+      {
+        id: 'openPrice',
+        header: t('table.openPrice'),
+        accessorFn: row => row.price,
       },
-    },
-    {
-      id: 'swaps',
-      header: t('table.swap'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        return rowData.swaps !== null ? (
-          <div>
-            {rowData.swaps.toFixed(2)} {rowData.currency}
-          </div>
-        ) : (
-          <div>-</div>
-        );
+      {
+        id: 'openTime',
+        header: t('table.openTime'),
+        accessorFn: row => row.time,
       },
-    },
-    {
-      id: 'ticket',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.ticket,
-    },
-    {
-      id: 'comment',
-      header: t('table.comment'),
-      accessorFn: row => row.comment,
-    },
-    {
-      id: 'operate',
-      label: t('common.Operation'),
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'currentPrice',
+        header: t('table.currentPrice'),
+        accessorFn: row => row.priceCur,
       },
-      cell: ({ row }) => {
-        return (
-          <div>
-            <RrhDialog
-              trigger={<RrhButton variant="ghost">{t('common.View')}</RrhButton>}
-              cancelText={t('common.close')}
-              confirmShow={false}
-              title={t('positionOrderPage.positionOrderDetail')}
-              variant="large"
-            >
-              <PositionOrderDetails data={row.original} />
-            </RrhDialog>
-          </div>
-        );
+      {
+        id: 'profit',
+        header: t('table.profitAndLoss'),
+        cell: ({ row }) => {
+          const rowData = row.original;
+          return rowData.profit !== null ? (
+            <div>
+              {rowData.profit.toFixed(2)} {rowData.currency}
+            </div>
+          ) : (
+            <div>-</div>
+          );
+        },
       },
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'swaps',
+        header: t('table.swap'),
+        cell: ({ row }) => {
+          const rowData = row.original;
+          return rowData.swaps !== null ? (
+            <div>
+              {rowData.swaps.toFixed(2)} {rowData.currency}
+            </div>
+          ) : (
+            <div>-</div>
+          );
+        },
+      },
+      {
+        id: 'ticket',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.ticket,
+      },
+      {
+        id: 'comment',
+        header: t('table.comment'),
+        accessorFn: row => row.comment,
+      },
+      {
+        id: 'operate',
+        label: t('common.Operation'),
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => {
+          return (
+            <div>
+              <RrhDialog
+                trigger={<RrhButton variant="ghost">{t('common.View')}</RrhButton>}
+                cancelText={t('common.close')}
+                confirmShow={false}
+                title={t('positionOrderPage.positionOrderDetail')}
+                variant="large"
+              >
+                <PositionOrderDetails data={row.original} />
+              </RrhDialog>
+            </div>
+          );
+        },
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, selectedServer],
+  );
 
   const { mutateAsync: exportPositionOrder, isPending: exportLoading } = usePositionOrderExport();
 

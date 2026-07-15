@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { ReviewDepositForm } from './ReviewDepositForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
@@ -123,296 +123,299 @@ export const ReviewDepositPage = () => {
     [openTab, t],
   );
 
-  const allColumns: CRMColumnDef<DepositListItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('CRMAccountPage.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'orderNumber',
-      header: t('table.orderNumber'),
-      label: t('table.orderNumber'),
-      accessorKey: 'orderNum',
-      cell: ({ row }) => row.original.orderNum || '-',
-    },
-    {
-      id: 'userName',
-      header: t('CRMAccountPage.UserName'),
-      label: t('CRMAccountPage.UserName'),
-      cell: ({ row }) => {
-        if (row?.original?.userLastName || row?.original?.userShowId || row?.original?.userName) {
-          return (
-            <div className="flex flex-col justify-center">
-              <div>
-                {(row?.original?.userLastName || '') + ' ' + (row?.original?.userName || '')}
-              </div>
-              <div>{row?.original?.userShowId}</div>
-            </div>
-          );
-        } else {
-          return <div className="text-center">-</div>;
-        }
+  const allColumns = useMemo<CRMColumnDef<DepositListItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('CRMAccountPage.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'depositMethods',
-      label: t('table.depositMethods'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.depositMethods')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="method"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'orderNumber',
+        header: t('table.orderNumber'),
+        label: t('table.orderNumber'),
+        accessorKey: 'orderNum',
+        cell: ({ row }) => row.original.orderNum || '-',
       },
-      cell: ({ row }) => {
-        const method = row.original.method;
-        return method ? t(`table.${depositMethodsMap[method]}`) : '-';
-      },
-    },
-    {
-      id: 'channel',
-      header: t('table.paymentChannel'),
-      label: t('table.paymentChannel'),
-      cell: ({ row }) => {
-        if (row.original.method === 5) {
-          return (
-            thirdPaymentList?.rows?.find(channel => `${channel.id}` === row.original.channelId)
-              ?.channelName || '-'
-          );
-        }
-        return '-';
-      },
-    },
-    {
-      id: 'depositAccount',
-      header: t('table.depositAccount'),
-      label: t('table.depositAccount'),
-      cell: ({ row }) => {
-        if (row.original.login) {
-          return row.original.aliasName ? (
-            <div className="flex flex-col">
-              <div>{row.original.aliasName}</div>
-              <div>{row.original.login}</div>
-            </div>
-          ) : (
-            <div>{row.original.login}</div>
-          );
-        } else if (row.original.walletId) {
-          return (
-            <div>
-              {t('table.wallet')} ({row.original.walletCurrency})
-            </div>
-          );
-        }
-        return <div>-</div>;
-      },
-    },
-    {
-      id: 'reviewStatus',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.reviewStatus')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="status"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      label: t('table.reviewStatus'),
-      accessorKey: 'status',
-      cell: ({ row }) => {
-        const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info' | 'default'> = {
-          0: 'error',
-          1: 'success',
-          2: 'warning',
-          '-1': 'info',
-          '-2': 'default',
-        };
-        return (
-          <RrhTag type={typeMap[row.original.status]}>
-            {t(`table.${withdrawalReviewStatusMap[row.original.status]}`)}
-          </RrhTag>
-        );
-      },
-    },
-    {
-      id: 'payAmount',
-      header: t('table.payAmount'),
-      label: t('table.payAmount'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.deposit} {row.original.depositCurrency}
-        </div>
-      ),
-    },
-    {
-      id: 'depositAmount',
-      header: t('table.depositAmount'),
-      label: t('table.depositAmount'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.factDeposit} {row.original.feeCurrency}
-        </div>
-      ),
-    },
-    {
-      id: 'commission',
-      header: t('table.commission'),
-      label: t('table.commission'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.fee} {row.original.feeCurrency}
-        </div>
-      ),
-    },
-    {
-      id: 'amountOfReceipt',
-      header: t('table.amountOfReceipt'),
-      label: t('table.amountOfReceipt'),
-      cell: ({ row }) =>
-        row.original.receiptAmount ? (
-          <div>
-            {row.original.receiptAmount} {row.original.receiptCurrency}
-          </div>
-        ) : (
-          <div>-</div>
-        ),
-    },
-    {
-      id: 'exchangeRate',
-      header: t('common.exchangeRate'),
-      label: t('common.exchangeRate'),
-      cell: ({ row }) =>
-        row.original.rate ? (
-          <div>
-            <div>{row.original.rate.toFixed(5)}</div>
-            <div>{row.original.currencyPair}</div>
-          </div>
-        ) : (
-          <div>-</div>
-        ),
-    },
-    {
-      id: 'directAgent',
-      header: t('table.directAgent'),
-      label: t('table.directAgent'),
-      accessorKey: 'directBroker',
-      cell: ({ row }) => row.original.directBroker || '-',
-    },
-    {
-      id: 'role',
-      header: t('table.role'),
-      label: t('table.role'),
-      accessorKey: 'roleName',
-      cell: ({ row }) => row.original.roleName || '-',
-    },
-    {
-      id: 'submitTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.submitTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="subTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      label: t('table.submitTime'),
-      accessorKey: 'subTime',
-      cell: ({ row }) => row.original.subTime || '-',
-    },
-    {
-      id: 'currentAuditor',
-      header: t('table.currentAuditor'),
-      label: t('table.currentAuditor'),
-      cell: ({ row }) => {
-        if (row.original.status !== 2) {
-          if (row.original.vUserLastName) {
+      {
+        id: 'userName',
+        header: t('CRMAccountPage.UserName'),
+        label: t('CRMAccountPage.UserName'),
+        cell: ({ row }) => {
+          if (row?.original?.userLastName || row?.original?.userShowId || row?.original?.userName) {
             return (
-              <div>
-                {row.original.vUserLastName} {row.original.vUserName}
+              <div className="flex flex-col justify-center">
+                <div>
+                  {(row?.original?.userLastName || '') + ' ' + (row?.original?.userName || '')}
+                </div>
+                <div>{row?.original?.userShowId}</div>
               </div>
             );
           } else {
-            return <div>{t('common.system')}</div>;
+            return <div className="text-center">-</div>;
           }
-        } else {
-          return <div>-</div>;
-        }
+        },
       },
-    },
-    {
-      id: 'finishTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.finishTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="verifyTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'depositMethods',
+        label: t('table.depositMethods'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.depositMethods')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="method"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          const method = row.original.method;
+          return method ? t(`table.${depositMethodsMap[method]}`) : '-';
+        },
       },
-      label: t('table.finishTime'),
-      accessorKey: 'verifyTime',
-      cell: ({ row }) => row.original.verifyTime || '-',
-    },
-    {
-      id: 'tradeServerOrderNumber',
-      header: t('table.tradeServerOrderNumber'),
-      label: t('table.tradeServerOrderNumber'),
-      accessorKey: 'dealTicket',
-      cell: ({ row }) => row.original.dealTicket || '-',
-    },
-    {
-      id: 'paymentOrderNumber',
-      header: t('table.paymentOrderNumber'),
-      label: t('table.paymentOrderNumber'),
-      cell: ({ row }) => {
-        if (row.original.method === 5) {
-          return row.original.orderId || '-';
-        } else {
+      {
+        id: 'channel',
+        header: t('table.paymentChannel'),
+        label: t('table.paymentChannel'),
+        cell: ({ row }) => {
+          if (row.original.method === 5) {
+            return (
+              thirdPaymentList?.rows?.find(channel => `${channel.id}` === row.original.channelId)
+                ?.channelName || '-'
+            );
+          }
           return '-';
-        }
+        },
       },
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'depositAccount',
+        header: t('table.depositAccount'),
+        label: t('table.depositAccount'),
+        cell: ({ row }) => {
+          if (row.original.login) {
+            return row.original.aliasName ? (
+              <div className="flex flex-col">
+                <div>{row.original.aliasName}</div>
+                <div>{row.original.login}</div>
+              </div>
+            ) : (
+              <div>{row.original.login}</div>
+            );
+          } else if (row.original.walletId) {
+            return (
+              <div>
+                {t('table.wallet')} ({row.original.walletCurrency})
+              </div>
+            );
+          }
+          return <div>-</div>;
+        },
       },
-      label: t('common.Operation'),
-      cell: ({ row }) => (
-        <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
-          {row.original.status !== 2 ? t('common.View') : t('table.audit')}
-        </RrhButton>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'reviewStatus',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.reviewStatus')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="status"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('table.reviewStatus'),
+        accessorKey: 'status',
+        cell: ({ row }) => {
+          const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info' | 'default'> = {
+            0: 'error',
+            1: 'success',
+            2: 'warning',
+            '-1': 'info',
+            '-2': 'default',
+          };
+          return (
+            <RrhTag type={typeMap[row.original.status]}>
+              {t(`table.${withdrawalReviewStatusMap[row.original.status]}`)}
+            </RrhTag>
+          );
+        },
+      },
+      {
+        id: 'payAmount',
+        header: t('table.payAmount'),
+        label: t('table.payAmount'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.deposit} {row.original.depositCurrency}
+          </div>
+        ),
+      },
+      {
+        id: 'depositAmount',
+        header: t('table.depositAmount'),
+        label: t('table.depositAmount'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.factDeposit} {row.original.feeCurrency}
+          </div>
+        ),
+      },
+      {
+        id: 'commission',
+        header: t('table.commission'),
+        label: t('table.commission'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.fee} {row.original.feeCurrency}
+          </div>
+        ),
+      },
+      {
+        id: 'amountOfReceipt',
+        header: t('table.amountOfReceipt'),
+        label: t('table.amountOfReceipt'),
+        cell: ({ row }) =>
+          row.original.receiptAmount ? (
+            <div>
+              {row.original.receiptAmount} {row.original.receiptCurrency}
+            </div>
+          ) : (
+            <div>-</div>
+          ),
+      },
+      {
+        id: 'exchangeRate',
+        header: t('common.exchangeRate'),
+        label: t('common.exchangeRate'),
+        cell: ({ row }) =>
+          row.original.rate ? (
+            <div>
+              <div>{row.original.rate.toFixed(5)}</div>
+              <div>{row.original.currencyPair}</div>
+            </div>
+          ) : (
+            <div>-</div>
+          ),
+      },
+      {
+        id: 'directAgent',
+        header: t('table.directAgent'),
+        label: t('table.directAgent'),
+        accessorKey: 'directBroker',
+        cell: ({ row }) => row.original.directBroker || '-',
+      },
+      {
+        id: 'role',
+        header: t('table.role'),
+        label: t('table.role'),
+        accessorKey: 'roleName',
+        cell: ({ row }) => row.original.roleName || '-',
+      },
+      {
+        id: 'submitTime',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.submitTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="subTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('table.submitTime'),
+        accessorKey: 'subTime',
+        cell: ({ row }) => row.original.subTime || '-',
+      },
+      {
+        id: 'currentAuditor',
+        header: t('table.currentAuditor'),
+        label: t('table.currentAuditor'),
+        cell: ({ row }) => {
+          if (row.original.status !== 2) {
+            if (row.original.vUserLastName) {
+              return (
+                <div>
+                  {row.original.vUserLastName} {row.original.vUserName}
+                </div>
+              );
+            } else {
+              return <div>{t('common.system')}</div>;
+            }
+          } else {
+            return <div>-</div>;
+          }
+        },
+      },
+      {
+        id: 'finishTime',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.finishTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="verifyTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('table.finishTime'),
+        accessorKey: 'verifyTime',
+        cell: ({ row }) => row.original.verifyTime || '-',
+      },
+      {
+        id: 'tradeServerOrderNumber',
+        header: t('table.tradeServerOrderNumber'),
+        label: t('table.tradeServerOrderNumber'),
+        accessorKey: 'dealTicket',
+        cell: ({ row }) => row.original.dealTicket || '-',
+      },
+      {
+        id: 'paymentOrderNumber',
+        header: t('table.paymentOrderNumber'),
+        label: t('table.paymentOrderNumber'),
+        cell: ({ row }) => {
+          if (row.original.method === 5) {
+            return row.original.orderId || '-';
+          } else {
+            return '-';
+          }
+        },
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        label: t('common.Operation'),
+        cell: ({ row }) => (
+          <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+            {row.original.status !== 2 ? t('common.View') : t('table.audit')}
+          </RrhButton>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, isAsc, orderByColumn, setOrderByColumn, setIsAsc, goToDetail, thirdPaymentList],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('review-deposit-table', allColumns);

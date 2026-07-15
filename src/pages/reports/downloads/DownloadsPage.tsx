@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { DownloadsListParams, DownloadsListItem } from '@/api/hooks/report';
@@ -62,84 +62,87 @@ export function DownloadsPage() {
   const { mutateAsync: remove } = useRemoveFile();
   const { mutateAsync: markAsDownloaded } = useMarkFileAsDownloaded();
 
-  const allColumns: CRMColumnDef<DownloadsListItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'name',
-      header: t('downloadsPage.taskName'),
-      accessorFn: row => `${row.businessName}-${row.createTime}`,
-    },
-    {
-      id: 'businessName',
-      header: t('downloadsPage.moduleName'),
-      accessorFn: row => row.businessName || '-',
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      accessorFn: row => {
-        const text = downloadStatusOptions.find(i => i.value === row.status);
-        return text ? t(text.label) : '-';
+  const allColumns = useMemo<CRMColumnDef<DownloadsListItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'fileSize',
-      header: t('downloadsPage.size'),
-      accessorFn: row => {
-        if (!row.fileSize) return '-';
-        return formatFileSize(row.fileSize);
+      {
+        id: 'name',
+        header: t('downloadsPage.taskName'),
+        accessorFn: row => `${row.businessName}-${row.createTime}`,
       },
-    },
-    {
-      id: 'username',
-      header: t('downloadsPage.initiator'),
-      accessorFn: row => row.username || '-',
-    },
-    {
-      id: 'createTime',
-      header: t('common.createTime'),
-      accessorFn: row => row.createTime || '-',
-    },
-    {
-      id: 'operate',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'businessName',
+        header: t('downloadsPage.moduleName'),
+        accessorFn: row => row.businessName || '-',
       },
-      cell: ({ row }) => {
-        return (
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              {
-                label: t('common.download'),
-                value: 'download',
-                disabled: row.original.status !== 'SUCCESS',
-              },
-              {
-                label: t('common.delete'),
-                value: 'delete',
-                disabled: row.original.status !== 'SUCCESS',
-              },
-            ]}
-            callToAction={action => {
-              if (action === 'download') {
-                handleDownload(row.original);
-              } else if (action === 'delete') {
-                setId(row.original.taskId);
-                setDeleteAlert(true);
-              }
-            }}
-          />
-        );
+      {
+        id: 'status',
+        header: t('table.status'),
+        accessorFn: row => {
+          const text = downloadStatusOptions.find(i => i.value === row.status);
+          return text ? t(text.label) : '-';
+        },
       },
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'fileSize',
+        header: t('downloadsPage.size'),
+        accessorFn: row => {
+          if (!row.fileSize) return '-';
+          return formatFileSize(row.fileSize);
+        },
+      },
+      {
+        id: 'username',
+        header: t('downloadsPage.initiator'),
+        accessorFn: row => row.username || '-',
+      },
+      {
+        id: 'createTime',
+        header: t('common.createTime'),
+        accessorFn: row => row.createTime || '-',
+      },
+      {
+        id: 'operate',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => {
+          return (
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                {
+                  label: t('common.download'),
+                  value: 'download',
+                  disabled: row.original.status !== 'SUCCESS',
+                },
+                {
+                  label: t('common.delete'),
+                  value: 'delete',
+                  disabled: row.original.status !== 'SUCCESS',
+                },
+              ]}
+              callToAction={action => {
+                if (action === 'download') {
+                  handleDownload(row.original);
+                } else if (action === 'delete') {
+                  setId(row.original.taskId);
+                  setDeleteAlert(true);
+                }
+              }}
+            />
+          );
+        },
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, handleDownload, setId, setDeleteAlert],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('reports-downloads-table', allColumns);
 

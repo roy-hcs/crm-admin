@@ -83,243 +83,248 @@ export const OrderManagementPage = () => {
     return data?.totalList?.[0];
   }, [data]);
 
-  const allColumns: CRMColumnDef<MamFollowItem, unknown>[] = [
-    {
-      id: 'orderNo',
-      header: t('table.orderNumber'),
-      cell: ({ row }) => row?.original?.orderNo || '-',
-    },
-    {
-      id: 'signalSourceName',
-      header: t('signals.name'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.signalSourceName}</div>
-            <div>{row?.original?.traderServer}</div>
-            <div>{row?.original?.trader}</div>
-          </div>
-        );
+  const allColumns = useMemo<CRMColumnDef<MamFollowItem, unknown>[]>(
+    () => [
+      {
+        id: 'orderNo',
+        header: t('table.orderNumber'),
+        cell: ({ row }) => row?.original?.orderNo || '-',
       },
-    },
-    {
-      id: 'userName',
-      header: t('table.subscriptionUsers'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.userName}</div>
-            <div>{row?.original?.email}</div>
-          </div>
-        );
+      {
+        id: 'signalSourceName',
+        header: t('signals.name'),
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.signalSourceName}</div>
+              <div>{row?.original?.traderServer}</div>
+              <div>{row?.original?.trader}</div>
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'clientServer',
-      header: t('table.subscriberAccount'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.clientServer}</div>
-            <div>{row?.original?.client}</div>
-          </div>
-        );
+      {
+        id: 'userName',
+        header: t('table.subscriptionUsers'),
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.userName}</div>
+              <div>{row?.original?.email}</div>
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'subscribeFee',
-      header: t('orderManagementTable.subscribeFee'),
-      cell: ({ row }) => row?.original?.subscribeFee || '-',
-    },
-    {
-      id: 'managementFeeRatio',
-      header: t('orderManagementTable.managementFeeRatio'),
-      cell: ({ row }) => row?.original?.estimatedManagementFee || '-',
-    },
-    {
-      id: 'payAccountName',
-      header: t('orderManagementTable.payAccountName'),
-      cell: ({ row }) => row?.original?.payAccountName || '-',
-    },
-    {
-      id: 'createTime',
-      header: t('table.subscriptionTime'),
-      cell: ({ row }) => row?.original?.createTime || '-',
-    },
-    {
-      id: 'renewalStatus',
-      header: t('table.renewalStatus'),
-      cell: ({ row }) => {
-        if ([0, 1].includes(row?.original?.renewalStatus || 0)) {
-          return row?.original?.renewalStatus === 1
-            ? t('table.inSubscription')
-            : t('table.notInEffect');
-        }
-        return '-';
+      {
+        id: 'clientServer',
+        header: t('table.subscriberAccount'),
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.clientServer}</div>
+              <div>{row?.original?.client}</div>
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'renewalType',
-      label: t('common.type'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('common.type')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="renewalType"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'subscribeFee',
+        header: t('orderManagementTable.subscribeFee'),
+        cell: ({ row }) => row?.original?.subscribeFee || '-',
       },
-      cell: ({ row }) => {
-        if ([0, 1].includes(row?.original?.renewalType || 0)) {
-          return row?.original?.renewalType === 0 ? t('table.firstSubscription') : t('table.renew');
-        }
-        return '-';
+      {
+        id: 'managementFeeRatio',
+        header: t('orderManagementTable.managementFeeRatio'),
+        cell: ({ row }) => row?.original?.estimatedManagementFee || '-',
       },
-    },
-    {
-      id: 'reviewStatus',
-      label: t('table.reviewStatus'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.reviewStatus')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="reviewStatus"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'payAccountName',
+        header: t('orderManagementTable.payAccountName'),
+        cell: ({ row }) => row?.original?.payAccountName || '-',
       },
-      cell: ({ row }) => {
-        const typeMap: Record<number | string, 'error' | 'success' | 'warning'> = {
-          0: 'error',
-          1: 'success',
-          2: 'warning',
-        };
-        return (
-          <RrhTag type={typeMap[row?.original?.reviewStatus || 0]}>
-            {t(`table.${reviewStatusMap[row?.original?.reviewStatus || 0]}`)}
-          </RrhTag>
-        );
+      {
+        id: 'createTime',
+        header: t('table.subscriptionTime'),
+        cell: ({ row }) => row?.original?.createTime || '-',
       },
-    },
-    {
-      id: 'reviewTime',
-      label: t('table.verifyTime'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.verifyTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="reviewTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'renewalStatus',
+        header: t('table.renewalStatus'),
+        cell: ({ row }) => {
+          if ([0, 1].includes(row?.original?.renewalStatus || 0)) {
+            return row?.original?.renewalStatus === 1
+              ? t('table.inSubscription')
+              : t('table.notInEffect');
+          }
+          return '-';
+        },
       },
-      cell: ({ row }) => row?.original?.reviewTime || '-',
-    },
-    {
-      id: 'followEndTime',
-      header: t('table.followEndTime'),
-      cell: ({ row }) => row?.original?.followEndTime || '-',
-    },
-    {
-      id: 'reviewRemark',
-      header: t('table.reason'),
-      cell: ({ row }) => row?.original?.reviewRemark || '-',
-    },
-    {
-      id: 'arrivalStatus',
-      label: t('table.arrivalStatus'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.arrivalStatus')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="arrivalStatus"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'renewalType',
+        label: t('common.type'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('common.type')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="renewalType"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          if ([0, 1].includes(row?.original?.renewalType || 0)) {
+            return row?.original?.renewalType === 0
+              ? t('table.firstSubscription')
+              : t('table.renew');
+          }
+          return '-';
+        },
       },
-      cell: ({ row }) => {
-        const text = arrivalStatusOptions.find(
-          i => i.value === String(row?.original?.arrivalStatus || 0),
-        );
-        return text ? t(text.label) : '-';
+      {
+        id: 'reviewStatus',
+        label: t('table.reviewStatus'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.reviewStatus')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="reviewStatus"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          const typeMap: Record<number | string, 'error' | 'success' | 'warning'> = {
+            0: 'error',
+            1: 'success',
+            2: 'warning',
+          };
+          return (
+            <RrhTag type={typeMap[row?.original?.reviewStatus || 0]}>
+              {t(`table.${reviewStatusMap[row?.original?.reviewStatus || 0]}`)}
+            </RrhTag>
+          );
+        },
       },
-    },
-    {
-      id: 'actualSubscribeFee',
-      header: t('table.amountOfReceipt'),
-      cell: ({ row }) => row?.original?.actualSubscribeFee || '-',
-    },
-    {
-      id: 'managementFee',
-      header: t('table.managementFee'),
-      cell: ({ row }) => row?.original?.managementFee || '-',
-    },
-    {
-      id: 'stopTime',
-      label: t('table.arrivalTime'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.arrivalTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="stopTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'reviewTime',
+        label: t('table.verifyTime'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.verifyTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="reviewTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => row?.original?.reviewTime || '-',
       },
-      cell: ({ row }) => row?.original?.stopTime || '-',
-    },
-    {
-      id: 'remark',
-      header: t('table.remarks'),
-      cell: ({ row }) => row?.original?.remark || '-',
-    },
-    {
-      id: 'operation',
-      label: t('common.Operation'),
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'followEndTime',
+        header: t('table.followEndTime'),
+        cell: ({ row }) => row?.original?.followEndTime || '-',
       },
-      cell: ({ row }) => (
-        <RrhButton
-          variant="ghost"
-          onClick={() => {
-            setId(row?.original?.id);
-            setDetailOpen(true);
-          }}
-        >
-          {t('common.View')}
-        </RrhButton>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'reviewRemark',
+        header: t('table.reason'),
+        cell: ({ row }) => row?.original?.reviewRemark || '-',
+      },
+      {
+        id: 'arrivalStatus',
+        label: t('table.arrivalStatus'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.arrivalStatus')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="arrivalStatus"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          const text = arrivalStatusOptions.find(
+            i => i.value === String(row?.original?.arrivalStatus || 0),
+          );
+          return text ? t(text.label) : '-';
+        },
+      },
+      {
+        id: 'actualSubscribeFee',
+        header: t('table.amountOfReceipt'),
+        cell: ({ row }) => row?.original?.actualSubscribeFee || '-',
+      },
+      {
+        id: 'managementFee',
+        header: t('table.managementFee'),
+        cell: ({ row }) => row?.original?.managementFee || '-',
+      },
+      {
+        id: 'stopTime',
+        label: t('table.arrivalTime'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.arrivalTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="stopTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => row?.original?.stopTime || '-',
+      },
+      {
+        id: 'remark',
+        header: t('table.remarks'),
+        cell: ({ row }) => row?.original?.remark || '-',
+      },
+      {
+        id: 'operation',
+        label: t('common.Operation'),
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <RrhButton
+            variant="ghost"
+            onClick={() => {
+              setId(row?.original?.id);
+              setDetailOpen(true);
+            }}
+          >
+            {t('common.View')}
+          </RrhButton>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, orderByColumn, isAsc, setOrderByColumn, setIsAsc, setId, setDetailOpen],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('order-management-table', allColumns);

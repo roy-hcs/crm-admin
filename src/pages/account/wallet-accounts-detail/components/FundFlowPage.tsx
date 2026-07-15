@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FundFlowItem, FundFlowParams, useFundFlowList } from '@/api/hooks/account';
 import { CRMColumnDef, DataTable } from '@/components/table';
@@ -162,82 +162,85 @@ export const FundFlowPage = ({ walletId = '' }: { walletId?: string }) => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<FundFlowItem, unknown>[] = [
-    {
-      id: 'No',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'operationType',
-      header: t('table.operationType'),
-      cell: ({ row }) => {
-        const type = typeRes?.find(item => item.dictValue === String(row.original.operationType));
-        return type ? type.dictLabel : '-';
+  const allColumns = useMemo<CRMColumnDef<FundFlowItem, unknown>[]>(
+    () => [
+      {
+        id: 'No',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'operationMethod',
-      header: t('table.inMethod'),
-      cell: ({ row }) => {
-        return row.original.operationMethod
-          ? t(OperationMethodMap[row.original.operationMethod])
-          : '-';
+      {
+        id: 'operationType',
+        header: t('table.operationType'),
+        cell: ({ row }) => {
+          const type = typeRes?.find(item => item.dictValue === String(row.original.operationType));
+          return type ? type.dictLabel : '-';
+        },
       },
-    },
-    {
-      id: 'preAmount',
-      header: t('walletTransactions.preAmount'),
-      cell: ({ row }) => row?.original?.preAmount || '-',
-    },
-    {
-      id: 'amount',
-      header: t('walletTransactions.amount'),
-      cell: ({ row }) => row?.original?.amount || '-',
-    },
-    {
-      id: 'postAmount',
-      header: t('walletTransactions.postAmount'),
-      cell: ({ row }) => row?.original?.postAmount || '-',
-    },
-    {
-      id: 'operationTime',
-      header: t('walletTransactions.operationTimeTable'),
-      cell: ({ row }) => row?.original?.operationTime || '-',
-    },
-    {
-      id: 'serialNum',
-      header: t('walletTransactions.serialNumTable'),
-      cell: ({ row }) => row?.original?.serialNum || '-',
-    },
-    {
-      id: 'mtOrder',
-      header: t('table.tradingOrderNumber'),
-      cell: ({ row }) => row?.original?.mtOrder || '-',
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'operationMethod',
+        header: t('table.inMethod'),
+        cell: ({ row }) => {
+          return row.original.operationMethod
+            ? t(OperationMethodMap[row.original.operationMethod])
+            : '-';
+        },
       },
-      cell: ({ row }) => (
-        <RrhDialog
-          title={t('common.detail', { field: t('walletTransactions.title') })}
-          trigger={
-            <RrhButton variant="ghost" type="button">
-              {t('common.View')}
-            </RrhButton>
-          }
-          confirmShow={false}
-          variant="large"
-        >
-          <DetailInfo itemInfo={row.original} />
-        </RrhDialog>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'preAmount',
+        header: t('walletTransactions.preAmount'),
+        cell: ({ row }) => row?.original?.preAmount || '-',
+      },
+      {
+        id: 'amount',
+        header: t('walletTransactions.amount'),
+        cell: ({ row }) => row?.original?.amount || '-',
+      },
+      {
+        id: 'postAmount',
+        header: t('walletTransactions.postAmount'),
+        cell: ({ row }) => row?.original?.postAmount || '-',
+      },
+      {
+        id: 'operationTime',
+        header: t('walletTransactions.operationTimeTable'),
+        cell: ({ row }) => row?.original?.operationTime || '-',
+      },
+      {
+        id: 'serialNum',
+        header: t('walletTransactions.serialNumTable'),
+        cell: ({ row }) => row?.original?.serialNum || '-',
+      },
+      {
+        id: 'mtOrder',
+        header: t('table.tradingOrderNumber'),
+        cell: ({ row }) => row?.original?.mtOrder || '-',
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <RrhDialog
+            title={t('common.detail', { field: t('walletTransactions.title') })}
+            trigger={
+              <RrhButton variant="ghost" type="button">
+                {t('common.View')}
+              </RrhButton>
+            }
+            confirmShow={false}
+            variant="large"
+          >
+            <DetailInfo itemInfo={row.original} />
+          </RrhDialog>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, typeRes],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('wallet-accounts-detail-fund-flow-table', allColumns);
 

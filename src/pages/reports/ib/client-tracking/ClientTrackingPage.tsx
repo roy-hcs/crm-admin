@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import {
@@ -56,104 +56,107 @@ export function ClientTrackingPage() {
     setIsAsc('asc');
   };
 
-  const allColumns: CRMColumnDef<AgencyClientTrackingItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('customerTracking.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'userName',
-      header: t('table.userName'),
-      cell: ({ row }) => (
-        <div>
-          <div>{row.original.userName}</div>
-          <div>{row.original.email}</div>
-        </div>
-      ),
-    },
-    {
-      id: 'levelName',
-      header: t('customerTracking.levelName'),
-      cell: ({ row }) => (
-        <div className="max-w-25 whitespace-pre-wrap">
-          <span>{row.original.levelName}</span>
-          <span>{row.original.level}</span>
-        </div>
-      ),
-    },
-    {
-      id: 'statisticMonthStr',
-      header: t('customerTracking.statisticMonthStr'),
-      accessorFn: row => row.statisticMonthStr,
-    },
-    {
-      id: 'allFirstDeposit',
-      accessorKey: 'allFirstDeposit',
-      header: t('customerTracking.allFirstDeposit'),
-      accessorFn: row => row.allFirstDeposit,
-    },
-    {
-      id: 'newClient',
-      accessorKey: 'newClient',
-      header: t('customerTracking.newClient'),
-      accessorFn: row => row.newClient,
-    },
-    {
-      id: 'kycProved',
-      accessorKey: 'kycProved',
-      header: t('customerTracking.kycProved'),
-      accessorFn: row => row.kycProved,
-    },
-    {
-      id: 'taCreateLive',
-      accessorKey: 'taCreateLive',
-      header: t('customerTracking.taCreateLive'),
-      accessorFn: row => row.taCreateLive,
-    },
-    {
-      id: 'newFirstDeposit',
-      accessorKey: 'newFirstDeposit',
-      header: t('customerTracking.newFirstDeposit'),
-      accessorFn: row => row.newFirstDeposit,
-    },
-    {
-      id: 'depositClient',
-      accessorKey: 'depositClient',
-      header: t('customerTracking.depositClient'),
-      accessorFn: row => row.depositClient,
-    },
-    {
-      id: 'tradeClient',
-      accessorKey: 'tradeClient',
-      header: t('customerTracking.tradeClient'),
-      accessorFn: row => row.tradeClient,
-    },
-    {
-      id: 'depositFirstStr',
-      accessorKey: 'depositFirstStr',
-      header: t('customerTracking.depositFirstStr'),
-      accessorFn: row => row.depositFirstStr,
-    },
-    {
-      id: 'depositTotalStr',
-      accessorKey: 'depositTotalStr',
-      header: t('customerTracking.depositTotalStr'),
-      accessorFn: row => row.depositTotalStr,
-    },
-    {
-      id: 'withdrawTotalStr',
-      accessorKey: 'withdrawTotalStr',
-      header: t('customerTracking.withdrawTotalStr'),
-      accessorFn: row => row.withdrawTotalStr,
-    },
-    {
-      id: 'netTotalStr',
-      accessorKey: 'netTotalStr',
-      header: t('customerTracking.netTotalStr'),
-      accessorFn: row => row.netTotalStr,
-    },
-  ];
+  const allColumns = useMemo<CRMColumnDef<AgencyClientTrackingItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('customerTracking.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'userName',
+        header: t('table.userName'),
+        cell: ({ row }) => (
+          <div>
+            <div>{row.original.userName}</div>
+            <div>{row.original.email}</div>
+          </div>
+        ),
+      },
+      {
+        id: 'levelName',
+        header: t('customerTracking.levelName'),
+        cell: ({ row }) => (
+          <div className="max-w-25 whitespace-pre-wrap">
+            <span>{row.original.levelName}</span>
+            <span>{row.original.level}</span>
+          </div>
+        ),
+      },
+      {
+        id: 'statisticMonthStr',
+        header: t('customerTracking.statisticMonthStr'),
+        accessorFn: row => row.statisticMonthStr,
+      },
+      {
+        id: 'allFirstDeposit',
+        accessorKey: 'allFirstDeposit',
+        header: t('customerTracking.allFirstDeposit'),
+        accessorFn: row => row.allFirstDeposit,
+      },
+      {
+        id: 'newClient',
+        accessorKey: 'newClient',
+        header: t('customerTracking.newClient'),
+        accessorFn: row => row.newClient,
+      },
+      {
+        id: 'kycProved',
+        accessorKey: 'kycProved',
+        header: t('customerTracking.kycProved'),
+        accessorFn: row => row.kycProved,
+      },
+      {
+        id: 'taCreateLive',
+        accessorKey: 'taCreateLive',
+        header: t('customerTracking.taCreateLive'),
+        accessorFn: row => row.taCreateLive,
+      },
+      {
+        id: 'newFirstDeposit',
+        accessorKey: 'newFirstDeposit',
+        header: t('customerTracking.newFirstDeposit'),
+        accessorFn: row => row.newFirstDeposit,
+      },
+      {
+        id: 'depositClient',
+        accessorKey: 'depositClient',
+        header: t('customerTracking.depositClient'),
+        accessorFn: row => row.depositClient,
+      },
+      {
+        id: 'tradeClient',
+        accessorKey: 'tradeClient',
+        header: t('customerTracking.tradeClient'),
+        accessorFn: row => row.tradeClient,
+      },
+      {
+        id: 'depositFirstStr',
+        accessorKey: 'depositFirstStr',
+        header: t('customerTracking.depositFirstStr'),
+        accessorFn: row => row.depositFirstStr,
+      },
+      {
+        id: 'depositTotalStr',
+        accessorKey: 'depositTotalStr',
+        header: t('customerTracking.depositTotalStr'),
+        accessorFn: row => row.depositTotalStr,
+      },
+      {
+        id: 'withdrawTotalStr',
+        accessorKey: 'withdrawTotalStr',
+        header: t('customerTracking.withdrawTotalStr'),
+        accessorFn: row => row.withdrawTotalStr,
+      },
+      {
+        id: 'netTotalStr',
+        accessorKey: 'netTotalStr',
+        header: t('customerTracking.netTotalStr'),
+        accessorFn: row => row.netTotalStr,
+      },
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('client-tracking-reports-table', allColumns);

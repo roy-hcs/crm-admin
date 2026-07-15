@@ -7,7 +7,7 @@ import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { RefreshCcw } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 type AccountType = '1' | '2' | '3';
 export const CrmReceiveAccountListPage = ({ userId }: { userId: string }) => {
@@ -70,34 +70,37 @@ export const CrmReceiveAccountListPage = ({ userId }: { userId: string }) => {
     setOtherParams(initOtherParams);
     refetch();
   };
-  const allColumns: CRMColumnDef<ReceiveAccountInfoItem, unknown>[] = [
-    {
-      id: 'No.',
-      size: 50,
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'accountHolderName',
-      header: t('table.accountHolderName'),
-      accessorFn: row => row.accountName || '-',
-    },
-    {
-      id: 'accountHolderBank',
-      header: t('table.accountHolderBank'),
-      accessorFn: row => row.bank || '-',
-    },
-    {
-      id: 'bankCardNumber',
-      header: t('table.bankCardNumber'),
-      accessorFn: row => row.cardNo || '-',
-    },
-    {
-      id: 'branchName',
-      header: t('table.branchName'),
-      accessorFn: row => row.subBranchName || '-',
-    },
-  ];
+  const allColumns = useMemo<CRMColumnDef<ReceiveAccountInfoItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        size: 50,
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'accountHolderName',
+        header: t('table.accountHolderName'),
+        accessorFn: row => row.accountName || '-',
+      },
+      {
+        id: 'accountHolderBank',
+        header: t('table.accountHolderBank'),
+        accessorFn: row => row.bank || '-',
+      },
+      {
+        id: 'bankCardNumber',
+        header: t('table.bankCardNumber'),
+        accessorFn: row => row.cardNo || '-',
+      },
+      {
+        id: 'branchName',
+        header: t('table.branchName'),
+        accessorFn: row => row.subBranchName || '-',
+      },
+    ],
+    [t],
+  );
   const filters: { label: string; value: AccountType }[] = [
     {
       label: t('table.bankAccount'),

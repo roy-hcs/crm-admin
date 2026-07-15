@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { TradingItem, TradingParams, useRebateList } from '@/api/hooks/report';
@@ -78,88 +78,91 @@ export function TradingPage() {
     setPageNum(0);
     setPageSize(10);
   };
-  const allColumns: CRMColumnDef<TradingItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'serverName',
-      header: t('trading.serverName'),
-      accessorFn: row => row.serverName,
-    },
-    {
-      id: 'mtOrder',
-      header: t('trading.mtOrder'),
-      accessorFn: row => row.mtOrder,
-    },
-    {
-      id: 'login',
-      header: t('trading.login'),
-      accessorFn: row => row.login,
-    },
-    {
-      id: 'symbol',
-      accessorKey: 'symbol',
-      header: t('trading.symbol'),
-      accessorFn: row => row.symbol,
-    },
-    {
-      id: 'volume',
-      accessorKey: 'volume',
-      header: t('trading.volume'),
-      accessorFn: row => row.volume,
-    },
-    {
-      id: 'traderTime',
-      accessorKey: 'traderTime',
-      header: t('trading.traderTime'),
-      accessorFn: row => row.traderTime,
-    },
-    {
-      id: 'userName',
-      accessorKey: 'userName',
-      header: t('trading.userName'),
-      cell: ({ row }) => (
-        <div>
-          <div>{row.original.userName}</div>
-          <div>{row.original.showId}</div>
-        </div>
-      ),
-    },
-    {
-      id: 'rebateTotalAmt',
-      accessorKey: 'rebateTotalAmt',
-      header: t('trading.rebateTotalAmt'),
-      cell: ({ row }) => (
-        <div>
-          <div>{(row.original.rebateTotalAmt || '') + (row.original.currency || '')}</div>
+  const allColumns = useMemo<CRMColumnDef<TradingItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'serverName',
+        header: t('trading.serverName'),
+        accessorFn: row => row.serverName,
+      },
+      {
+        id: 'mtOrder',
+        header: t('trading.mtOrder'),
+        accessorFn: row => row.mtOrder,
+      },
+      {
+        id: 'login',
+        header: t('trading.login'),
+        accessorFn: row => row.login,
+      },
+      {
+        id: 'symbol',
+        accessorKey: 'symbol',
+        header: t('trading.symbol'),
+        accessorFn: row => row.symbol,
+      },
+      {
+        id: 'volume',
+        accessorKey: 'volume',
+        header: t('trading.volume'),
+        accessorFn: row => row.volume,
+      },
+      {
+        id: 'traderTime',
+        accessorKey: 'traderTime',
+        header: t('trading.traderTime'),
+        accessorFn: row => row.traderTime,
+      },
+      {
+        id: 'userName',
+        accessorKey: 'userName',
+        header: t('trading.userName'),
+        cell: ({ row }) => (
           <div>
-            {(row.original.rebateFixedAmt || '') + '+' + (row.original.rebatePointsAmt || '')}
+            <div>{row.original.userName}</div>
+            <div>{row.original.showId}</div>
           </div>
-        </div>
-      ),
-    },
-    {
-      id: 'rebateAccountName',
-      accessorKey: 'rebateAccountName',
-      header: t('trading.rebateAccountName'),
-      accessorFn: row => row.rebateAccountName,
-    },
-    {
-      id: 'rebateTime',
-      accessorKey: 'rebateTime',
-      header: t('trading.rebateTime'),
-      accessorFn: row => row.rebateTime,
-    },
-    {
-      id: 'rebateTraderName',
-      accessorKey: 'rebateTraderName',
-      header: t('trading.rebateTraderName'),
-      accessorFn: row => row.rebateTraderName,
-    },
-  ];
+        ),
+      },
+      {
+        id: 'rebateTotalAmt',
+        accessorKey: 'rebateTotalAmt',
+        header: t('trading.rebateTotalAmt'),
+        cell: ({ row }) => (
+          <div>
+            <div>{(row.original.rebateTotalAmt || '') + (row.original.currency || '')}</div>
+            <div>
+              {(row.original.rebateFixedAmt || '') + '+' + (row.original.rebatePointsAmt || '')}
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: 'rebateAccountName',
+        accessorKey: 'rebateAccountName',
+        header: t('trading.rebateAccountName'),
+        accessorFn: row => row.rebateAccountName,
+      },
+      {
+        id: 'rebateTime',
+        accessorKey: 'rebateTime',
+        header: t('trading.rebateTime'),
+        accessorFn: row => row.rebateTime,
+      },
+      {
+        id: 'rebateTraderName',
+        accessorKey: 'rebateTraderName',
+        header: t('trading.rebateTraderName'),
+        accessorFn: row => row.rebateTraderName,
+      },
+    ],
+    [t],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('commission-trading-reports-table', allColumns);
 

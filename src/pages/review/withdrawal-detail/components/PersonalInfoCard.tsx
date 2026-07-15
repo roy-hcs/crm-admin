@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { InfoItem } from '../../../../components/common/InfoItem';
 import { RrhButton } from '@/components/common/RrhButton';
 import { ChevronUp } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useSumWithdrawAmount } from '@/api/hooks/review/review';
@@ -31,29 +31,32 @@ export const PersonalInfoCard = ({
     days: days,
   });
   const daysArr = ['7', '15', '30'];
-  const columns: ColumnDef<SumWithdrawalAmountRes[number]>[] = [
-    {
-      id: 'status',
-      header: t('table.status'),
-      cell: ({ row }) => {
-        return <div>{row.original.status}</div>;
+  const columns = useMemo<ColumnDef<SumWithdrawalAmountRes[number]>[]>(
+    () => [
+      {
+        id: 'status',
+        header: t('table.status'),
+        cell: ({ row }) => {
+          return <div>{row.original.status}</div>;
+        },
       },
-    },
-    {
-      id: 'amountCumulative',
-      header: t('review.amountCumulative'),
-      cell: ({ row }) => {
-        return <div>{row.original.sum}</div>;
+      {
+        id: 'amountCumulative',
+        header: t('review.amountCumulative'),
+        cell: ({ row }) => {
+          return <div>{row.original.sum}</div>;
+        },
       },
-    },
-    {
-      id: 'orderCount',
-      header: t('review.orderCount'),
-      cell: ({ row }) => {
-        return <div>{row.original.size}</div>;
+      {
+        id: 'orderCount',
+        header: t('review.orderCount'),
+        cell: ({ row }) => {
+          return <div>{row.original.size}</div>;
+        },
       },
-    },
-  ];
+    ],
+    [t],
+  );
   return (
     <RrhCard className="mb-3 md:mb-6">
       <div

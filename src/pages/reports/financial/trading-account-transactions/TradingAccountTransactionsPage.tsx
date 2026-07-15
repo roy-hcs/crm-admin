@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { CrmUserDealItem, CrmUserDealListParams, useCrmUserDealList } from '@/api/hooks/report';
@@ -95,118 +95,121 @@ export function TradingAccountTransactionsPage() {
     setDetailDialogOpen(true);
   };
 
-  const allColumns: CRMColumnDef<CrmUserDealItem, unknown>[] = [
-    {
-      id: 'select',
-      label: t('common.select'),
-      header: ({ table }) => (
-        <Checkbox
-          className="data-[state=checked]:border-slate-700"
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
+  const allColumns = useMemo<CRMColumnDef<CrmUserDealItem, unknown>[]>(
+    () => [
+      {
+        id: 'select',
+        label: t('common.select'),
+        header: ({ table }) => (
+          <Checkbox
+            className="data-[state=checked]:border-slate-700"
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            className="data-[state=checked]:border-slate-700"
+            checked={row.getIsSelected()}
+            onCheckedChange={value => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        id: 'No.',
+        size: 50,
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'login',
+        header: t('tradingAccountTransactions.login'),
+        accessorFn: row => row.login,
+      },
+      {
+        id: 'name',
+        header: t('tradingAccountTransactions.name'),
+        accessorFn: row => row.name,
+      },
+      {
+        id: 'crmLastName',
+        header: t('tradingAccountTransactions.crmLastName'),
+        cell: ({ row }) => {
+          if (row?.original?.crmLastName || row?.original?.crmName || row?.original?.crmShowId) {
+            return (
+              <div>
+                <div>{(row?.original?.crmLastName ?? '') + (row?.original?.crmName ?? '')}</div>
+                <div>{row.original.crmShowId ?? '--'}</div>
+              </div>
+            );
           }
-          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          className="data-[state=checked]:border-slate-700"
-          checked={row.getIsSelected()}
-          onCheckedChange={value => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      id: 'No.',
-      size: 50,
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'login',
-      header: t('tradingAccountTransactions.login'),
-      accessorFn: row => row.login,
-    },
-    {
-      id: 'name',
-      header: t('tradingAccountTransactions.name'),
-      accessorFn: row => row.name,
-    },
-    {
-      id: 'crmLastName',
-      header: t('tradingAccountTransactions.crmLastName'),
-      cell: ({ row }) => {
-        if (row?.original?.crmLastName || row?.original?.crmName || row?.original?.crmShowId) {
+          return '--';
+        },
+      },
+      {
+        id: 'type',
+        accessorKey: 'type',
+        header: t('table.operationType'),
+        accessorFn: row => row.type,
+      },
+      {
+        id: 'profit',
+        accessorKey: 'profit',
+        header: t('tradingAccountTransactions.profit'),
+        accessorFn: row => row.profit,
+      },
+      {
+        id: 'time',
+        accessorKey: 'time',
+        header: t('tradingAccountTransactions.time'),
+        accessorFn: row => row.time,
+      },
+      {
+        id: 'ticket',
+        accessorKey: 'ticket',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.ticket,
+      },
+      {
+        id: 'order_num',
+        accessorKey: 'order_num',
+        header: t('tradingAccountTransactions.order_num'),
+        accessorFn: row => row.order_num,
+      },
+      {
+        id: 'comment',
+        accessorKey: 'comment',
+        header: t('tradingAccountTransactions.comment'),
+        accessorFn: row => row.comment,
+      },
+      {
+        id: 'operate',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => {
           return (
             <div>
-              <div>{(row?.original?.crmLastName ?? '') + (row?.original?.crmName ?? '')}</div>
-              <div>{row.original.crmShowId ?? '--'}</div>
+              <RrhButton variant="ghost" onClick={() => openDepositDetail(row.original.id || '')}>
+                {t('common.View')}
+              </RrhButton>
             </div>
           );
-        }
-        return '--';
+        },
+        fixed: 'right',
+        size: 50,
+        label: t('common.Operation'),
       },
-    },
-    {
-      id: 'type',
-      accessorKey: 'type',
-      header: t('table.operationType'),
-      accessorFn: row => row.type,
-    },
-    {
-      id: 'profit',
-      accessorKey: 'profit',
-      header: t('tradingAccountTransactions.profit'),
-      accessorFn: row => row.profit,
-    },
-    {
-      id: 'time',
-      accessorKey: 'time',
-      header: t('tradingAccountTransactions.time'),
-      accessorFn: row => row.time,
-    },
-    {
-      id: 'ticket',
-      accessorKey: 'ticket',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.ticket,
-    },
-    {
-      id: 'order_num',
-      accessorKey: 'order_num',
-      header: t('tradingAccountTransactions.order_num'),
-      accessorFn: row => row.order_num,
-    },
-    {
-      id: 'comment',
-      accessorKey: 'comment',
-      header: t('tradingAccountTransactions.comment'),
-      accessorFn: row => row.comment,
-    },
-    {
-      id: 'operate',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
-      },
-      cell: ({ row }) => {
-        return (
-          <div>
-            <RrhButton variant="ghost" onClick={() => openDepositDetail(row.original.id || '')}>
-              {t('common.View')}
-            </RrhButton>
-          </div>
-        );
-      },
-      fixed: 'right',
-      size: 50,
-      label: t('common.Operation'),
-    },
-  ];
+    ],
+    [t, openDepositDetail],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('trading-account-transactions-table', allColumns);

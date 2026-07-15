@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { ReviewAgentForm } from './ReviewAgentForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
@@ -85,167 +85,170 @@ export const ReviewAgentPage = () => {
     [openTab, t],
   );
 
-  const allColumns: CRMColumnDef<AgentApplyItem, unknown>[] = [
-    {
-      id: 'select',
-      label: t('common.select'),
-      header: ({ table }) => (
-        <Checkbox
-          className="data-[state=checked]:border-slate-700"
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={(value: boolean) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          className="data-[state=checked]:border-slate-700"
-          checked={row.getIsSelected()}
-          onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      id: 'No.',
-      header: t('CRMAccountPage.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'userName',
-      header: t('CRMAccountPage.UserName'),
-      label: t('CRMAccountPage.UserName'),
-      accessorKey: 'userName',
-      cell: ({ row }) => (
-        <div>
-          {row.original.lastName} {row.original.name}
-        </div>
-      ),
-    },
-    {
-      id: 'mobile',
-      header: t('table.mobile'),
-      cell: ({ row }) => `+${row.original.mzone} ${row.original.mobile || ''}`,
-    },
-    {
-      id: 'email',
-      header: t('table.email'),
-      label: t('table.email'),
-      accessorKey: 'email',
-      cell: ({ row }) => row.original.email || '-',
-    },
-    {
-      id: 'applySource',
-      header: t('table.applySource'),
-      label: t('table.applySource'),
-      accessorKey: 'applySource',
-      cell: ({ row }) => {
-        const mapValue = applySourceMap[row.original.applySource as keyof typeof applySourceMap];
+  const allColumns = useMemo<CRMColumnDef<AgentApplyItem, unknown>[]>(
+    () => [
+      {
+        id: 'select',
+        label: t('common.select'),
+        header: ({ table }) => (
+          <Checkbox
+            className="data-[state=checked]:border-slate-700"
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={(value: boolean) => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            className="data-[state=checked]:border-slate-700"
+            checked={row.getIsSelected()}
+            onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        id: 'No.',
+        header: t('CRMAccountPage.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'userName',
+        header: t('CRMAccountPage.UserName'),
+        label: t('CRMAccountPage.UserName'),
+        accessorKey: 'userName',
+        cell: ({ row }) => (
+          <div>
+            {row.original.lastName} {row.original.name}
+          </div>
+        ),
+      },
+      {
+        id: 'mobile',
+        header: t('table.mobile'),
+        cell: ({ row }) => `+${row.original.mzone} ${row.original.mobile || ''}`,
+      },
+      {
+        id: 'email',
+        header: t('table.email'),
+        label: t('table.email'),
+        accessorKey: 'email',
+        cell: ({ row }) => row.original.email || '-',
+      },
+      {
+        id: 'applySource',
+        header: t('table.applySource'),
+        label: t('table.applySource'),
+        accessorKey: 'applySource',
+        cell: ({ row }) => {
+          const mapValue = applySourceMap[row.original.applySource as keyof typeof applySourceMap];
 
-        return mapValue ? t(`table.${mapValue}`) : row.original.applySource || '-';
+          return mapValue ? t(`table.${mapValue}`) : row.original.applySource || '-';
+        },
       },
-    },
-    {
-      id: 'status',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.status')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="verifyStatus"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'status',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.status')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="verifyStatus"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('table.status'),
+        accessorKey: 'verifyStatus',
+        cell: ({ row }) => {
+          const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info'> = {
+            0: 'error',
+            1: 'success',
+            2: 'warning',
+            3: 'info',
+          };
+          return (
+            <RrhTag type={typeMap[row.original.verifyStatus]}>
+              {t(`table.${reviewStatusMap[row.original.verifyStatus]}`)}
+            </RrhTag>
+          );
+        },
       },
-      label: t('table.status'),
-      accessorKey: 'verifyStatus',
-      cell: ({ row }) => {
-        const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info'> = {
-          0: 'error',
-          1: 'success',
-          2: 'warning',
-          3: 'info',
-        };
-        return (
-          <RrhTag type={typeMap[row.original.verifyStatus]}>
-            {t(`table.${reviewStatusMap[row.original.verifyStatus]}`)}
-          </RrhTag>
-        );
+      {
+        id: 'submitTime',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.submitTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="createTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('table.submitTime'),
+        accessorKey: 'createTime',
+        cell: ({ row }) => row.original.createTime || '-',
       },
-    },
-    {
-      id: 'submitTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.submitTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="createTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'currentAuditor',
+        header: t('table.currentAuditor'),
+        label: t('table.currentAuditor'),
+        accessorKey: 'verifyUserName',
+        cell: ({ row }) => row.original.verifyUserName || '-',
       },
-      label: t('table.submitTime'),
-      accessorKey: 'createTime',
-      cell: ({ row }) => row.original.createTime || '-',
-    },
-    {
-      id: 'currentAuditor',
-      header: t('table.currentAuditor'),
-      label: t('table.currentAuditor'),
-      accessorKey: 'verifyUserName',
-      cell: ({ row }) => row.original.verifyUserName || '-',
-    },
-    {
-      id: 'finishTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.finishTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="verifyTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'finishTime',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.finishTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="verifyTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('table.finishTime'),
+        accessorKey: 'verifyTime',
+        cell: ({ row }) => row.original.verifyTime || '-',
       },
-      label: t('table.finishTime'),
-      accessorKey: 'verifyTime',
-      cell: ({ row }) => row.original.verifyTime || '-',
-    },
-    {
-      id: 'operate',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'operate',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        label: t('common.Operation'),
+        cell: ({ row }) => (
+          <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+            {[-1, 2].includes(Number(row?.original?.verifyStatus))
+              ? t('table.audit')
+              : t('common.View')}
+          </RrhButton>
+        ),
+        fixed: 'right',
+        size: 50,
       },
-      label: t('common.Operation'),
-      cell: ({ row }) => (
-        <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
-          {[-1, 2].includes(Number(row?.original?.verifyStatus))
-            ? t('table.audit')
-            : t('common.View')}
-        </RrhButton>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+    ],
+    [t, isAsc, orderByColumn, setOrderByColumn, setIsAsc, goToDetail],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('review-agent-table', allColumns);

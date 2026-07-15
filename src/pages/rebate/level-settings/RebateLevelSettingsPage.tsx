@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useDeleteRebateLevel, useRebateLevelList } from '@/api/hooks/rebate';
 import { useTranslation } from 'react-i18next';
@@ -38,66 +38,69 @@ export const RebateLevelSettingsPage = () => {
   const { mutateAsync: deleteRebateLevel } = useDeleteRebateLevel();
   const { data: rebateModelSetting } = useGetSysConfig(REBATE_MODEL_SETTING);
   const { data: rebateLevelSetting } = useGetSysConfig(REBATE_LEVEL_SETTING);
-  const allColumns: CRMColumnDef<RebateLevelItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'level',
-      header: t('table.level'),
-      accessorFn: row => row.level || '-',
-    },
-    {
-      id: 'levelName',
-      header: t('table.levelName'),
-      accessorFn: row => row.levelName || '-',
-    },
-    // TODO:之后的三项都有点击弹窗的交互
-    {
-      id: 'relatedAccountCount',
-      header: t('table.relatedAccountCount'),
-      accessorFn: row => row.relatedAccountCount || '-',
-    },
-    {
-      id: 'relatedRebateRuleCount',
-      header: t('table.relatedRebateRuleCount'),
-      accessorFn: row => row.relatedRebateRuleCount || '-',
-    },
-    {
-      id: 'relatedRebateTemplateCount',
-      header: t('table.relatedRebateTemplateCount'),
-      accessorFn: row => row.relatedRebateTemplateCount || '-',
-    },
-    {
-      id: 'operation',
-      header: () => <div className="text-center">{t('common.Operation')}</div>,
-      label: t('common.Operation'),
-      fixed: 'right',
-      size: 50,
-      cell: ({ row }) => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[
-            { label: t('common.Edit'), value: 'edit' },
-            { label: t('common.delete'), value: 'delete' },
-          ]}
-          callToAction={action => {
-            setCurrentItem(row.original);
-            switch (action) {
-              case 'edit':
-                setEditDialogOpen(true);
-                break;
-              case 'delete':
-                setDeleteDialogOpen(true);
-                break;
-            }
-          }}
-        />
-      ),
-    },
-  ];
+  const allColumns = useMemo<CRMColumnDef<RebateLevelItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'level',
+        header: t('table.level'),
+        accessorFn: row => row.level || '-',
+      },
+      {
+        id: 'levelName',
+        header: t('table.levelName'),
+        accessorFn: row => row.levelName || '-',
+      },
+      // TODO:之后的三项都有点击弹窗的交互
+      {
+        id: 'relatedAccountCount',
+        header: t('table.relatedAccountCount'),
+        accessorFn: row => row.relatedAccountCount || '-',
+      },
+      {
+        id: 'relatedRebateRuleCount',
+        header: t('table.relatedRebateRuleCount'),
+        accessorFn: row => row.relatedRebateRuleCount || '-',
+      },
+      {
+        id: 'relatedRebateTemplateCount',
+        header: t('table.relatedRebateTemplateCount'),
+        accessorFn: row => row.relatedRebateTemplateCount || '-',
+      },
+      {
+        id: 'operation',
+        header: () => <div className="text-center">{t('common.Operation')}</div>,
+        label: t('common.Operation'),
+        fixed: 'right',
+        size: 50,
+        cell: ({ row }) => (
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.Edit'), value: 'edit' },
+              { label: t('common.delete'), value: 'delete' },
+            ]}
+            callToAction={action => {
+              setCurrentItem(row.original);
+              switch (action) {
+                case 'edit':
+                  setEditDialogOpen(true);
+                  break;
+                case 'delete':
+                  setDeleteDialogOpen(true);
+                  break;
+              }
+            }}
+          />
+        ),
+      },
+    ],
+    [t, setCurrentItem, setEditDialogOpen, setDeleteDialogOpen],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('rebate-level-settings-table', allColumns);

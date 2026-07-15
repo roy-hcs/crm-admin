@@ -9,7 +9,7 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { useTabActions } from '@/hooks/useTabActions';
 import { formatMoneyNumber } from '@/lib/utils';
 import { Ellipsis, Plus, RefreshCcw } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CrmAddWalletDialog } from '../components/CrmAddWalletDialog';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
@@ -29,80 +29,83 @@ export const CrmUserWalletListPage = ({ userId }: { userId: string }) => {
     orderByColumn: '',
     isAsc: 'asc',
   });
-  const allColumns: CRMColumnDef<WalletItem, unknown>[] = [
-    {
-      id: 'No.',
-      size: 50,
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'name',
-      header: t('tradingAccountTransactions.name'),
-      cell: ({ row }) => {
-        const rowInfo = row.original;
-        return <div>{`${rowInfo.crmUserName}(${rowInfo.crmUserShowId})`}</div>;
+  const allColumns = useMemo<CRMColumnDef<WalletItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        size: 50,
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'currency',
-      header: t('table.currency'),
-      accessorFn: row => (row.currency ? formatMoneyNumber(row.currency || 0) : '-'),
-    },
-    {
-      id: 'balance',
-      header: t('table.balance'),
-      accessorFn: row => (row.balance ? formatMoneyNumber(row.balance || 0) : '-'),
-    },
-    {
-      id: 'allIn',
-      header: t('tradingAccountDataStats.positiveBalance'),
-      accessorFn: row => (row.allIn ? formatMoneyNumber(row.allIn || 0) : '-'),
-    },
-    {
-      id: 'allOut',
-      header: t('tradingAccountDataStats.negativeBalance'),
-      accessorFn: row => (row.allOut ? formatMoneyNumber(row.allOut || 0) : '-'),
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'name',
+        header: t('tradingAccountTransactions.name'),
+        cell: ({ row }) => {
+          const rowInfo = row.original;
+          return <div>{`${rowInfo.crmUserName}(${rowInfo.crmUserShowId})`}</div>;
+        },
       },
-      cell: ({ row }) => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.View'), value: 'view' },
-              { label: t('common.delete'), value: 'delete' },
-            ]}
-            callToAction={action => {
-              switch (action) {
-                case 'view': {
-                  const url = `/account/crm-accounts/wallets/detail?id=${row.original.id}`;
-                  openTab({
-                    key: url,
-                    title: `${row.original.crmUserName}(${row.original.currency})`,
-                    path: url,
-                  });
-                  break;
+      {
+        id: 'currency',
+        header: t('table.currency'),
+        accessorFn: row => (row.currency ? formatMoneyNumber(row.currency || 0) : '-'),
+      },
+      {
+        id: 'balance',
+        header: t('table.balance'),
+        accessorFn: row => (row.balance ? formatMoneyNumber(row.balance || 0) : '-'),
+      },
+      {
+        id: 'allIn',
+        header: t('tradingAccountDataStats.positiveBalance'),
+        accessorFn: row => (row.allIn ? formatMoneyNumber(row.allIn || 0) : '-'),
+      },
+      {
+        id: 'allOut',
+        header: t('tradingAccountDataStats.negativeBalance'),
+        accessorFn: row => (row.allOut ? formatMoneyNumber(row.allOut || 0) : '-'),
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.View'), value: 'view' },
+                { label: t('common.delete'), value: 'delete' },
+              ]}
+              callToAction={action => {
+                switch (action) {
+                  case 'view': {
+                    const url = `/account/crm-accounts/wallets/detail?id=${row.original.id}`;
+                    openTab({
+                      key: url,
+                      title: `${row.original.crmUserName}(${row.original.currency})`,
+                      path: url,
+                    });
+                    break;
+                  }
+                  case 'delete':
+                    setInfo(row.original);
+                    setIsDeleteDialogOpen(true);
+                    break;
+                  default:
+                    break;
                 }
-                case 'delete':
-                  setInfo(row.original);
-                  setIsDeleteDialogOpen(true);
-                  break;
-                default:
-                  break;
-              }
-            }}
-          />
-        </div>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+              }}
+            />
+          </div>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, openTab, setInfo, setIsDeleteDialogOpen],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, columnMeta, tableColumns } =
     useColumnVisibility('crm-user-wallet-list', allColumns);
   const reset = () => {

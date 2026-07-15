@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   CrmDealAccountFundHistoryItem,
   CrmDealAccountFundHistoryParams,
@@ -173,110 +173,113 @@ export const HisStoryPage = ({ id }: { id: string }) => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<CrmDealAccountFundHistoryItem, unknown>[] = [
-    {
-      id: 'No',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'name',
-      header: t('table.fullName'),
-      cell: ({ row }) => row?.original?.name || '-',
-    },
-    {
-      id: 'login',
-      header: t('table.tradingAccount'),
-      cell: ({ row }) => row?.original?.login || '-',
-    },
-    {
-      id: 'type',
-      header: t('table.transactionType'),
-      cell: ({ row }) => transactionTypeMap[row?.original?.type || 0] || '-',
-    },
-    {
-      id: 'symbol',
-      header: t('table.symbol'),
-      cell: ({ row }) => row?.original?.symbol || '-',
-    },
-    {
-      id: 'volume',
-      header: t('table.volume'),
-      cell: ({ row }) => formatVolume(row?.original, row?.original?.serverType || 0),
-    },
-    {
-      id: 'tp',
-      header: t('table.price'),
-      cell: ({ row }) => row?.original?.tp || '-',
-    },
-    {
-      id: 'time',
-      header: t('table.tradingTime'),
-      cell: ({ row }) => row?.original?.time || '-',
-    },
-    {
-      id: 'profit',
-      header: t('table.profitAndLoss'),
-      cell: ({ row }) =>
-        `${(row?.original?.profit || 0).toFixed(row?.original?.digits || 2)} ${row?.original?.currency}`,
-    },
-    {
-      id: 'entry',
-      header: t('table.entry'),
-      cell: ({ row }) => entryMap[row?.original?.entry || 0] || '-',
-    },
-    {
-      id: 'commission',
-      header: t('table.commission'),
-      cell: ({ row }) =>
-        row?.original?.commission
-          ? `${row?.original?.commission} ${row?.original?.currency || ''}`
-          : '-',
-    },
-    {
-      id: 'swaps',
-      header: t('table.swap'),
-      cell: ({ row }) =>
-        row?.original?.swaps ? `${row?.original?.swaps} ${row?.original?.currency || ''}` : '-',
-    },
-    {
-      id: 'ticket',
-      header: t('table.orderNumber'),
-      cell: ({ row }) => row?.original?.ticket || '-',
-    },
-    {
-      id: 'positionID',
-      header: t('table.positionID'),
-      cell: ({ row }) => row?.original?.positionID || '-',
-    },
-    {
-      id: 'comment',
-      header: t('table.comment'),
-      cell: ({ row }) => row?.original?.comment || '-',
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+  const allColumns = useMemo<CRMColumnDef<CrmDealAccountFundHistoryItem, unknown>[]>(
+    () => [
+      {
+        id: 'No',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-      cell: ({ row }) => (
-        <RrhDialog
-          title={t('common.detail', { field: t('tradingHistoryPage.tradingHistory') })}
-          trigger={
-            <RrhButton variant="ghost" type="button">
-              {t('common.View')}
-            </RrhButton>
-          }
-          confirmShow={false}
-          variant="large"
-        >
-          <DetailInfo itemInfo={row.original} />
-        </RrhDialog>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'name',
+        header: t('table.fullName'),
+        cell: ({ row }) => row?.original?.name || '-',
+      },
+      {
+        id: 'login',
+        header: t('table.tradingAccount'),
+        cell: ({ row }) => row?.original?.login || '-',
+      },
+      {
+        id: 'type',
+        header: t('table.transactionType'),
+        cell: ({ row }) => transactionTypeMap[row?.original?.type || 0] || '-',
+      },
+      {
+        id: 'symbol',
+        header: t('table.symbol'),
+        cell: ({ row }) => row?.original?.symbol || '-',
+      },
+      {
+        id: 'volume',
+        header: t('table.volume'),
+        cell: ({ row }) => formatVolume(row?.original, row?.original?.serverType || 0),
+      },
+      {
+        id: 'tp',
+        header: t('table.price'),
+        cell: ({ row }) => row?.original?.tp || '-',
+      },
+      {
+        id: 'time',
+        header: t('table.tradingTime'),
+        cell: ({ row }) => row?.original?.time || '-',
+      },
+      {
+        id: 'profit',
+        header: t('table.profitAndLoss'),
+        cell: ({ row }) =>
+          `${(row?.original?.profit || 0).toFixed(row?.original?.digits || 2)} ${row?.original?.currency}`,
+      },
+      {
+        id: 'entry',
+        header: t('table.entry'),
+        cell: ({ row }) => entryMap[row?.original?.entry || 0] || '-',
+      },
+      {
+        id: 'commission',
+        header: t('table.commission'),
+        cell: ({ row }) =>
+          row?.original?.commission
+            ? `${row?.original?.commission} ${row?.original?.currency || ''}`
+            : '-',
+      },
+      {
+        id: 'swaps',
+        header: t('table.swap'),
+        cell: ({ row }) =>
+          row?.original?.swaps ? `${row?.original?.swaps} ${row?.original?.currency || ''}` : '-',
+      },
+      {
+        id: 'ticket',
+        header: t('table.orderNumber'),
+        cell: ({ row }) => row?.original?.ticket || '-',
+      },
+      {
+        id: 'positionID',
+        header: t('table.positionID'),
+        cell: ({ row }) => row?.original?.positionID || '-',
+      },
+      {
+        id: 'comment',
+        header: t('table.comment'),
+        cell: ({ row }) => row?.original?.comment || '-',
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <RrhDialog
+            title={t('common.detail', { field: t('tradingHistoryPage.tradingHistory') })}
+            trigger={
+              <RrhButton variant="ghost" type="button">
+                {t('common.View')}
+              </RrhButton>
+            }
+            confirmShow={false}
+            variant="large"
+          >
+            <DetailInfo itemInfo={row.original} />
+          </RrhDialog>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('his-story-table', allColumns);
 

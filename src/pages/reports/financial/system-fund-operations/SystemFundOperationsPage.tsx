@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SystemFundOperationsForm } from './SystemFundOperationsForm';
 import { TableCell } from '@/components/ui/table';
@@ -103,80 +103,83 @@ export const SystemFundOperationsPage = () => {
     setResetKey(k => k + 1);
     setPageNum(0);
   };
-  const allColumns: CRMColumnDef<SystemFundOperationRecordItem, unknown>[] = [
-    {
-      id: 'orderNumber',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.orderNumber,
-    },
-    {
-      id: 'CRMAccount',
-      header: t('table.CRMAccount'),
-      cell: ({ row }) => {
-        return !row.original.crmName && !row.original.crmShowId ? (
-          <div className="text-center">-</div>
-        ) : (
-          <div>
-            <div>{row.original.crmName}</div>
-            <div>{row.original.crmShowId}</div>
-          </div>
-        );
+  const allColumns = useMemo<CRMColumnDef<SystemFundOperationRecordItem, unknown>[]>(
+    () => [
+      {
+        id: 'orderNumber',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.orderNumber,
       },
-    },
-    {
-      id: 'fundAccount',
-      header: t('table.fundAccount'),
-      cell: ({ row }) => (
-        <div className="flex flex-col items-center">
-          <div>{row.original.server}</div>
-          <div>{row.original.accountId}</div>
-        </div>
-      ),
-    },
-    {
-      id: 'way',
-      header: t('table.way'),
-      accessorFn: row => t(financeTypeMap[row.type as keyof typeof financeTypeMap] || ''),
-    },
-    {
-      id: 'amount',
-      header: t('table.amount'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.amount} {row.original.currency}
-        </div>
-      ),
-    },
-    {
-      id: 'remarks',
-      header: t('table.remarks'),
-      accessorFn: row => row.comment,
-    },
-    {
-      id: 'operationPerson',
-      header: t('table.operationPerson'),
-      accessorFn: row => row.operName,
-    },
-    {
-      id: 'operationIP',
-      header: t('table.operationIP'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.operIp} ({row.original.operAddress})
-        </div>
-      ),
-    },
-    {
-      id: 'operationTime',
-      header: t('table.operationTime'),
-      accessorFn: row => row.operTime,
-    },
-    {
-      id: 'tradingServerOrderNumber',
-      header: t('table.tradingServerOrderNumber'),
-      accessorFn: row => row.serverOrder || '-',
-    },
-  ];
+      {
+        id: 'CRMAccount',
+        header: t('table.CRMAccount'),
+        cell: ({ row }) => {
+          return !row.original.crmName && !row.original.crmShowId ? (
+            <div className="text-center">-</div>
+          ) : (
+            <div>
+              <div>{row.original.crmName}</div>
+              <div>{row.original.crmShowId}</div>
+            </div>
+          );
+        },
+      },
+      {
+        id: 'fundAccount',
+        header: t('table.fundAccount'),
+        cell: ({ row }) => (
+          <div className="flex flex-col items-center">
+            <div>{row.original.server}</div>
+            <div>{row.original.accountId}</div>
+          </div>
+        ),
+      },
+      {
+        id: 'way',
+        header: t('table.way'),
+        accessorFn: row => t(financeTypeMap[row.type as keyof typeof financeTypeMap] || ''),
+      },
+      {
+        id: 'amount',
+        header: t('table.amount'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.amount} {row.original.currency}
+          </div>
+        ),
+      },
+      {
+        id: 'remarks',
+        header: t('table.remarks'),
+        accessorFn: row => row.comment,
+      },
+      {
+        id: 'operationPerson',
+        header: t('table.operationPerson'),
+        accessorFn: row => row.operName,
+      },
+      {
+        id: 'operationIP',
+        header: t('table.operationIP'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.operIp} ({row.original.operAddress})
+          </div>
+        ),
+      },
+      {
+        id: 'operationTime',
+        header: t('table.operationTime'),
+        accessorFn: row => row.operTime,
+      },
+      {
+        id: 'tradingServerOrderNumber',
+        header: t('table.tradingServerOrderNumber'),
+        accessorFn: row => row.serverOrder || '-',
+      },
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility<SystemFundOperationRecordItem>('system-fund-operations-table', allColumns);

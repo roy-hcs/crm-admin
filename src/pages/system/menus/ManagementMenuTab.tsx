@@ -53,88 +53,91 @@ export const ManagementMenuTab = () => {
     setExpanded(!expanded);
   };
 
-  const allColumns: CRMColumnDef<MenuListItem, unknown>[] = [
-    {
-      id: 'menuName',
-      header: t('menuManagement.menuName'),
-      cell: ({ row }) => <div>{row.original.menuName}</div>,
-    },
-    {
-      id: 'sort',
-      header: t('table.sort'),
-      accessorFn: row => row.orderNum,
-    },
-    {
-      id: 'requestUrl',
-      header: t('table.requestUrl'),
-      accessorFn: (row: MenuListItem) => row.url,
-      cell: ({ row }) => {
-        const exceedLength = row.original.url && row.original.url.length > 30;
-        const urlText = exceedLength ? row.original.url.slice(0, 30) + '...' : row.original.url;
-        return exceedLength ? (
-          <div title={row.original.url}>
+  const allColumns = useMemo<CRMColumnDef<MenuListItem, unknown>[]>(
+    () => [
+      {
+        id: 'menuName',
+        header: t('menuManagement.menuName'),
+        cell: ({ row }) => <div>{row.original.menuName}</div>,
+      },
+      {
+        id: 'sort',
+        header: t('table.sort'),
+        accessorFn: row => row.orderNum,
+      },
+      {
+        id: 'requestUrl',
+        header: t('table.requestUrl'),
+        accessorFn: (row: MenuListItem) => row.url,
+        cell: ({ row }) => {
+          const exceedLength = row.original.url && row.original.url.length > 30;
+          const urlText = exceedLength ? row.original.url.slice(0, 30) + '...' : row.original.url;
+          return exceedLength ? (
+            <div title={row.original.url}>
+              <div>{urlText}</div>
+            </div>
+          ) : (
             <div>{urlText}</div>
-          </div>
-        ) : (
-          <div>{urlText}</div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'type',
-      header: t('common.type'),
-      cell: ({ row }) => {
-        switch (row.original.menuType) {
-          case 'I':
-            return <div className="text-green-600">{t('table.interLink')}</div>;
-          case 'O':
-            return <div className="text-blue-600">{t('table.outerLink')}</div>;
-          case 'M':
-            return <div className="text-green-600">{t('table.category')}</div>;
-          case 'C':
-            return <div className="text-blue-600">{t('table.menu')}</div>;
-          default:
-            return <div className="text-gray-600">{t('table.button')}</div>;
-        }
+      {
+        id: 'type',
+        header: t('common.type'),
+        cell: ({ row }) => {
+          switch (row.original.menuType) {
+            case 'I':
+              return <div className="text-green-600">{t('table.interLink')}</div>;
+            case 'O':
+              return <div className="text-blue-600">{t('table.outerLink')}</div>;
+            case 'M':
+              return <div className="text-green-600">{t('table.category')}</div>;
+            case 'C':
+              return <div className="text-blue-600">{t('table.menu')}</div>;
+            default:
+              return <div className="text-gray-600">{t('table.button')}</div>;
+          }
+        },
       },
-    },
-    {
-      id: 'visible',
-      header: t('table.visible'),
-      cell: ({ row }) => {
-        return row.original.visible === '0' ? (
-          <div className="text-green-600">{t('table.show')}</div>
-        ) : (
-          <div className="text-red-600">{t('table.hide')}</div>
-        );
+      {
+        id: 'visible',
+        header: t('table.visible'),
+        cell: ({ row }) => {
+          return row.original.visible === '0' ? (
+            <div className="text-green-600">{t('table.show')}</div>
+          ) : (
+            <div className="text-red-600">{t('table.hide')}</div>
+          );
+        },
       },
-    },
-    {
-      id: 'scope',
-      header: t('table.scope'),
-      accessorFn: row => row.perms,
-    },
-    {
-      id: 'operation',
-      label: t('common.Operation'),
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'scope',
+        header: t('table.scope'),
+        accessorFn: row => row.perms,
       },
-      cell: () => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[
-            { label: t('common.Edit'), value: 'edit' },
-            { label: t('common.add'), value: 'add' },
-            { label: t('common.delete'), value: 'delete' },
-          ]}
-          callToAction={() => {}}
-        />
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'operation',
+        label: t('common.Operation'),
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: () => (
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.Edit'), value: 'edit' },
+              { label: t('common.add'), value: 'add' },
+              { label: t('common.delete'), value: 'delete' },
+            ]}
+            callToAction={() => {}}
+          />
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('management-menu-table', allColumns);

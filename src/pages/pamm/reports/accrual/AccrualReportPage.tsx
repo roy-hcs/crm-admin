@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { PammReportSettlementItem, PammReportSettlementListParams } from '@/api/hooks/pamm/type';
@@ -80,143 +80,146 @@ export const AccrualReportPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<PammReportSettlementItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'serverName',
-      header: t('table.serverName'),
-      cell: ({ row }) => {
-        const serverTypeName = getServerTypeName(Number(row.original.serverType));
-        return row.original.serverName + (serverTypeName ? ` | (${serverTypeName})` : '');
+  const allColumns = useMemo<CRMColumnDef<PammReportSettlementItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'projectName',
-      header: t('table.projectName'),
-      accessorFn: row => row.projectName || '-',
-    },
-    {
-      id: 'managerName',
-      header: t('productReview.investmentManager'),
-      accessorFn: row => row.managerName || '-',
-    },
-    {
-      id: 'investor',
-      header: t('table.customerName'),
-      cell: ({ row }) => {
-        const rowInfo = row.original;
-        let userName = '';
-        if (rowInfo.lastName) {
-          userName += rowInfo.lastName;
-        }
-        if (rowInfo.name) {
-          userName += ' ' + rowInfo.name;
-        }
-        const showId = rowInfo.showId || '';
-        if (!userName) {
-          return '-';
-        }
-        return (
-          <div>
-            <div>{userName}</div>
-            {showId && <div>{showId}</div>}
-          </div>
-        );
+      {
+        id: 'serverName',
+        header: t('table.serverName'),
+        cell: ({ row }) => {
+          const serverTypeName = getServerTypeName(Number(row.original.serverType));
+          return row.original.serverName + (serverTypeName ? ` | (${serverTypeName})` : '');
+        },
       },
-    },
-    {
-      id: 'role',
-      header: t('table.investRole'),
-      accessorFn: row => row.role || '-',
-    },
-    {
-      id: 'investUpper',
-      header: t('table.investorUpper'),
-      cell: ({ row }) => {
-        return <div dangerouslySetInnerHTML={{ __html: row.original.inviter || '-' }}></div>;
+      {
+        id: 'projectName',
+        header: t('table.projectName'),
+        accessorFn: row => row.projectName || '-',
       },
-    },
-    {
-      id: 'orderNo',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.orderNo || '-',
-    },
-    {
-      id: 'amount',
-      header: t('profitSharingReview.businessAmount'),
-      cell: ({ row }) => {
-        const currency = row.original.currency || '';
-        return row.original.businessAmount ? (
-          <div>
-            {(row.original.businessAmount || 0).toFixed(2)} {currency}
-          </div>
-        ) : (
-          <div>-</div>
-        );
+      {
+        id: 'managerName',
+        header: t('productReview.investmentManager'),
+        accessorFn: row => row.managerName || '-',
       },
-    },
-    {
-      id: 'rewardAmount',
-      header: t('profitSharingReview.rewardAmount'),
-      cell: ({ row }) => {
-        const currency = row.original.currency || '';
-        return row.original.rewardAmount ? (
-          <div>
-            {(row.original.rewardAmount || 0).toFixed(2)} {currency}
-          </div>
-        ) : (
-          <div>-</div>
-        );
+      {
+        id: 'investor',
+        header: t('table.customerName'),
+        cell: ({ row }) => {
+          const rowInfo = row.original;
+          let userName = '';
+          if (rowInfo.lastName) {
+            userName += rowInfo.lastName;
+          }
+          if (rowInfo.name) {
+            userName += ' ' + rowInfo.name;
+          }
+          const showId = rowInfo.showId || '';
+          if (!userName) {
+            return '-';
+          }
+          return (
+            <div>
+              <div>{userName}</div>
+              {showId && <div>{showId}</div>}
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'commission',
-      header: t('profitSharingReview.commission'),
-      cell: ({ row }) => {
-        const currency = row.original.currency || '';
-        return row.original.commission ? (
-          <div>
-            {(row.original.commission || 0).toFixed(2)} {currency}
-          </div>
-        ) : (
-          <div>-</div>
-        );
+      {
+        id: 'role',
+        header: t('table.investRole'),
+        accessorFn: row => row.role || '-',
       },
-    },
-    {
-      id: 'settlementTime',
-      label: t('table.settlementTime'),
-      header: () => {
-        return (
-          <div className="flex items-center gap-2">
-            <div>{t('table.settlementTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="businessTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'investUpper',
+        header: t('table.investorUpper'),
+        cell: ({ row }) => {
+          return <div dangerouslySetInnerHTML={{ __html: row.original.inviter || '-' }}></div>;
+        },
       },
-      accessorFn: row => row.businessTime ?? '-',
-    },
-    {
-      id: 'operation',
-      label: t('common.Operation'),
-      fixed: 'right',
-      size: 50,
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'orderNo',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.orderNo || '-',
       },
-      cell: () => <RrhButton variant="ghost">{t('common.View')}</RrhButton>,
-    },
-  ];
+      {
+        id: 'amount',
+        header: t('profitSharingReview.businessAmount'),
+        cell: ({ row }) => {
+          const currency = row.original.currency || '';
+          return row.original.businessAmount ? (
+            <div>
+              {(row.original.businessAmount || 0).toFixed(2)} {currency}
+            </div>
+          ) : (
+            <div>-</div>
+          );
+        },
+      },
+      {
+        id: 'rewardAmount',
+        header: t('profitSharingReview.rewardAmount'),
+        cell: ({ row }) => {
+          const currency = row.original.currency || '';
+          return row.original.rewardAmount ? (
+            <div>
+              {(row.original.rewardAmount || 0).toFixed(2)} {currency}
+            </div>
+          ) : (
+            <div>-</div>
+          );
+        },
+      },
+      {
+        id: 'commission',
+        header: t('profitSharingReview.commission'),
+        cell: ({ row }) => {
+          const currency = row.original.currency || '';
+          return row.original.commission ? (
+            <div>
+              {(row.original.commission || 0).toFixed(2)} {currency}
+            </div>
+          ) : (
+            <div>-</div>
+          );
+        },
+      },
+      {
+        id: 'settlementTime',
+        label: t('table.settlementTime'),
+        header: () => {
+          return (
+            <div className="flex items-center gap-2">
+              <div>{t('table.settlementTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="businessTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        accessorFn: row => row.businessTime ?? '-',
+      },
+      {
+        id: 'operation',
+        label: t('common.Operation'),
+        fixed: 'right',
+        size: 50,
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: () => <RrhButton variant="ghost">{t('common.View')}</RrhButton>,
+      },
+    ],
+    [t, orderByColumn, isAsc, setOrderByColumn, setIsAsc],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('accrual-report-table', allColumns);

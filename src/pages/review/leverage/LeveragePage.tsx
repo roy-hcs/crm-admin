@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { LeverageForm } from './LeverageForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
@@ -71,165 +71,168 @@ export function LeveragePage() {
     [openTab, t],
   );
 
-  const allColumns: CRMColumnDef<LeverageVerifyListItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'name',
-      header: t('table.fullName'),
-      cell: ({ row }) => {
-        if (row?.original?.userLastName || row?.original?.userShowId || row?.original?.userName) {
-          return (
-            <div>
+  const allColumns = useMemo<CRMColumnDef<LeverageVerifyListItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'name',
+        header: t('table.fullName'),
+        cell: ({ row }) => {
+          if (row?.original?.userLastName || row?.original?.userShowId || row?.original?.userName) {
+            return (
               <div>
-                {(row?.original?.userLastName || '') + ' ' + (row?.original?.userName || '')}
+                <div>
+                  {(row?.original?.userLastName || '') + ' ' + (row?.original?.userName || '')}
+                </div>
+                <div>{row?.original?.userShowId}</div>
               </div>
-              <div>{row?.original?.userShowId}</div>
+            );
+          } else {
+            return <div className="text-center">-</div>;
+          }
+        },
+      },
+      {
+        id: 'aliasName',
+        header: t('common.server'),
+        accessorKey: 'aliasName',
+        cell: ({ row }) => row.original.aliasName || '-',
+      },
+      {
+        id: 'login',
+        header: t('table.tradingAccount'),
+        accessorKey: 'login',
+        cell: ({ row }) => row.original.login || '-',
+      },
+      {
+        id: 'currentLever',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('leverage.currentLever')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="currentLever"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
             </div>
           );
-        } else {
-          return <div className="text-center">-</div>;
-        }
+        },
+        label: t('leverage.currentLever'),
+        accessorKey: 'currentLever',
+        cell: ({ row }) => (row.original.currentLever ? `1:${row.original.currentLever}` : '-'),
       },
-    },
-    {
-      id: 'aliasName',
-      header: t('common.server'),
-      accessorKey: 'aliasName',
-      cell: ({ row }) => row.original.aliasName || '-',
-    },
-    {
-      id: 'login',
-      header: t('table.tradingAccount'),
-      accessorKey: 'login',
-      cell: ({ row }) => row.original.login || '-',
-    },
-    {
-      id: 'currentLever',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('leverage.currentLever')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="currentLever"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'targetLever',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('leverage.targetLever')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="targetLever"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('leverage.targetLever'),
+        accessorKey: 'targetLever',
+        cell: ({ row }) => (row.original.targetLever ? `1:${row.original.targetLever}` : '-'),
       },
-      label: t('leverage.currentLever'),
-      accessorKey: 'currentLever',
-      cell: ({ row }) => (row.original.currentLever ? `1:${row.original.currentLever}` : '-'),
-    },
-    {
-      id: 'targetLever',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('leverage.targetLever')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="targetLever"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'status',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.status')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="status"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('table.status'),
+        accessorKey: 'status',
+        cell: ({ row }) => (
+          <RrhOrderStatusTag status={String(row.original.status)} options={VerifyStatusOptions} />
+        ),
       },
-      label: t('leverage.targetLever'),
-      accessorKey: 'targetLever',
-      cell: ({ row }) => (row.original.targetLever ? `1:${row.original.targetLever}` : '-'),
-    },
-    {
-      id: 'status',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.status')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="status"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'subTime',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('common.subTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="subTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('common.subTime'),
+        accessorKey: 'subTime',
+        cell: ({ row }) => row.original.subTime || '-',
       },
-      label: t('table.status'),
-      accessorKey: 'status',
-      cell: ({ row }) => (
-        <RrhOrderStatusTag status={String(row.original.status)} options={VerifyStatusOptions} />
-      ),
-    },
-    {
-      id: 'subTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('common.subTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="subTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'verifyUserName',
+        header: t('information.verifyUserName'),
+        accessorKey: 'verifyUserName',
+        cell: ({ row }) => row.original.verifyUserName || '-',
       },
-      label: t('common.subTime'),
-      accessorKey: 'subTime',
-      cell: ({ row }) => row.original.subTime || '-',
-    },
-    {
-      id: 'verifyUserName',
-      header: t('information.verifyUserName'),
-      accessorKey: 'verifyUserName',
-      cell: ({ row }) => row.original.verifyUserName || '-',
-    },
-    {
-      id: 'verifyTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('common.verifyTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="verifyTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'verifyTime',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('common.verifyTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="verifyTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('common.verifyTime'),
+        accessorKey: 'verifyTime',
+        cell: ({ row }) => row.original.verifyTime || '-',
       },
-      label: t('common.verifyTime'),
-      accessorKey: 'verifyTime',
-      cell: ({ row }) => row.original.verifyTime || '-',
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        label: t('common.Operation'),
+        cell: ({ row }) => (
+          <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+            {String(row?.original?.status) !== '2' ? t('common.View') : t('table.audit')}
+          </RrhButton>
+        ),
+        fixed: 'right',
+        size: 50,
       },
-      label: t('common.Operation'),
-      cell: ({ row }) => (
-        <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
-          {String(row?.original?.status) !== '2' ? t('common.View') : t('table.audit')}
-        </RrhButton>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+    ],
+    [t, isAsc, orderByColumn, setOrderByColumn, setIsAsc, goToDetail],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('review-leverage-table', allColumns);

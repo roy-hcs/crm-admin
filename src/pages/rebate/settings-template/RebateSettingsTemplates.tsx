@@ -11,7 +11,7 @@ import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { Ellipsis, RefreshCcw } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AddRebateSettingsTemplateButton } from './components/AddRebateSettingsTemplateButton';
 import { EditRebateSettingsTemplateDialog } from './components/EditRebateSettingsTemplateDialog';
@@ -43,77 +43,80 @@ export const RebateSettingsTemplates = ({ type }: { type: 1 | 2 | 3 }) => {
     setPageSize(10);
     refetch();
   };
-  const allColumns: CRMColumnDef<RebateSettingsTemplate, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'templateName',
-      header: t('RebateTemplate.templateName'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        return (
-          <div className="flex items-center gap-2">
-            <div>{rowData.templateName}</div>
-            {rowData.templateDefault === 'Y' && (
-              <div className="text-primary border-primary rounded-sm border p-1 text-xs">
-                {t('common.default')}
-              </div>
-            )}
-          </div>
-        );
+  const allColumns = useMemo<CRMColumnDef<RebateSettingsTemplate, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'rebateLevel',
-      header: t('table.rebateLevel'),
-      accessorFn: row => row.rebateLevel,
-    },
-    {
-      id: 'relatedSpreadLink',
-      header: t('RebateTemplate.relatedSpreadLink'),
-      accessorFn: row => row.relatedSpreadLink,
-    },
-    {
-      id: 'operation',
-      header: () => <div className="text-center">{t('common.Operation')}</div>,
-      label: t('common.Operation'),
-      fixed: 'right',
-      size: 50,
-      cell: ({ row }) => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={
-            [
-              { label: t('common.Edit'), value: 'edit' },
-              { label: t('common.delete'), value: 'delete' },
-              ...[
-                row.original.templateDefault === 'Y'
-                  ? { label: t('RebateTemplate.cancelDefault'), value: 'cancelDefault' }
-                  : undefined,
-              ],
-            ].filter(Boolean) as { label: string; value: string }[]
-          }
-          callToAction={action => {
-            setCurrentItem(row.original);
-            switch (action) {
-              case 'edit':
-                setEditDialogOpen(true);
-                break;
-              case 'cancelDefault':
-                setCancelDefaultDialogOpen(true);
-                break;
-              case 'delete':
-                setDeleteDialogOpen(true);
-                break;
+      {
+        id: 'templateName',
+        header: t('RebateTemplate.templateName'),
+        cell: ({ row }) => {
+          const rowData = row.original;
+          return (
+            <div className="flex items-center gap-2">
+              <div>{rowData.templateName}</div>
+              {rowData.templateDefault === 'Y' && (
+                <div className="text-primary border-primary rounded-sm border p-1 text-xs">
+                  {t('common.default')}
+                </div>
+              )}
+            </div>
+          );
+        },
+      },
+      {
+        id: 'rebateLevel',
+        header: t('table.rebateLevel'),
+        accessorFn: row => row.rebateLevel,
+      },
+      {
+        id: 'relatedSpreadLink',
+        header: t('RebateTemplate.relatedSpreadLink'),
+        accessorFn: row => row.relatedSpreadLink,
+      },
+      {
+        id: 'operation',
+        header: () => <div className="text-center">{t('common.Operation')}</div>,
+        label: t('common.Operation'),
+        fixed: 'right',
+        size: 50,
+        cell: ({ row }) => (
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={
+              [
+                { label: t('common.Edit'), value: 'edit' },
+                { label: t('common.delete'), value: 'delete' },
+                ...[
+                  row.original.templateDefault === 'Y'
+                    ? { label: t('RebateTemplate.cancelDefault'), value: 'cancelDefault' }
+                    : undefined,
+                ],
+              ].filter(Boolean) as { label: string; value: string }[]
             }
-          }}
-        />
-      ),
-    },
-  ];
+            callToAction={action => {
+              setCurrentItem(row.original);
+              switch (action) {
+                case 'edit':
+                  setEditDialogOpen(true);
+                  break;
+                case 'cancelDefault':
+                  setCancelDefaultDialogOpen(true);
+                  break;
+                case 'delete':
+                  setDeleteDialogOpen(true);
+                  break;
+              }
+            }}
+          />
+        ),
+      },
+    ],
+    [t, setCurrentItem, setEditDialogOpen, setCancelDefaultDialogOpen, setDeleteDialogOpen],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility(`rebate-settings-template-${type}`, allColumns);
   const titleMap = {

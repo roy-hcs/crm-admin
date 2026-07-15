@@ -6,7 +6,7 @@ import {
 } from '@/api/hooks/review';
 import { Button } from '@/components/ui/button';
 import { RefreshCcw, Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SumItems } from './SumItems';
 import { RrhSelect } from '@/components/common/RrhSelect';
@@ -99,101 +99,104 @@ export const DepositRecordPage = ({ userId }: { userId: string }) => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<DepositListItem, unknown>[] = [
-    {
-      id: 'orderNumber',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.orderNum,
-    },
-    {
-      id: 'depositMethods',
-      header: t('table.depositMethods'),
-      cell: ({ row }) => {
-        const method = row.original.method;
-        return method ? t(`table.${depositMethodsMap[method]}`) : '-';
+  const allColumns = useMemo<CRMColumnDef<DepositListItem, unknown>[]>(
+    () => [
+      {
+        id: 'orderNumber',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.orderNum,
       },
-    },
-    {
-      id: 'depositAccount',
-      header: t('table.depositAccount'),
-      cell: ({ row }) => {
-        if (row.original.login) {
-          return row.original.aliasName ? (
-            <div className="flex flex-col">
-              <div>{row.original.aliasName}</div>
+      {
+        id: 'depositMethods',
+        header: t('table.depositMethods'),
+        cell: ({ row }) => {
+          const method = row.original.method;
+          return method ? t(`table.${depositMethodsMap[method]}`) : '-';
+        },
+      },
+      {
+        id: 'depositAccount',
+        header: t('table.depositAccount'),
+        cell: ({ row }) => {
+          if (row.original.login) {
+            return row.original.aliasName ? (
+              <div className="flex flex-col">
+                <div>{row.original.aliasName}</div>
+                <div>{row.original.login}</div>
+              </div>
+            ) : (
               <div>{row.original.login}</div>
+            );
+          } else if (row.original.walletId) {
+            return (
+              <div>
+                {t('table.wallet')} ({row.original.walletCurrency})
+              </div>
+            );
+          }
+        },
+      },
+      {
+        id: 'payAmount',
+        header: t('table.payAmount'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.deposit} {row.original.depositCurrency}
+          </div>
+        ),
+      },
+      {
+        id: 'depositAmount',
+        header: t('table.depositAmount'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.factDeposit} {row.original.feeCurrency}
+          </div>
+        ),
+      },
+      {
+        id: 'commission',
+        header: t('table.commission'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.fee} {row.original.feeCurrency}
+          </div>
+        ),
+      },
+      {
+        id: 'amountOfReceipt',
+        header: t('table.amountOfReceipt'),
+        cell: ({ row }) =>
+          row.original.receiptAmount ? (
+            <div>
+              {row.original.receiptAmount} {row.original.receiptCurrency}
             </div>
           ) : (
-            <div>{row.original.login}</div>
-          );
-        } else if (row.original.walletId) {
-          return (
-            <div>
-              {t('table.wallet')} ({row.original.walletCurrency})
-            </div>
-          );
-        }
+            <div>-</div>
+          ),
       },
-    },
-    {
-      id: 'payAmount',
-      header: t('table.payAmount'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.deposit} {row.original.depositCurrency}
-        </div>
-      ),
-    },
-    {
-      id: 'depositAmount',
-      header: t('table.depositAmount'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.factDeposit} {row.original.feeCurrency}
-        </div>
-      ),
-    },
-    {
-      id: 'commission',
-      header: t('table.commission'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.fee} {row.original.feeCurrency}
-        </div>
-      ),
-    },
-    {
-      id: 'amountOfReceipt',
-      header: t('table.amountOfReceipt'),
-      cell: ({ row }) =>
-        row.original.receiptAmount ? (
-          <div>
-            {row.original.receiptAmount} {row.original.receiptCurrency}
-          </div>
-        ) : (
-          <div>-</div>
-        ),
-    },
-    {
-      id: 'exchangeRate',
-      header: t('common.exchangeRate'),
-      cell: ({ row }) =>
-        row.original.rate ? (
-          <div>
-            <div>{row.original.rate.toFixed(5)}</div>
-            <div>{row.original.currencyPair}</div>
-          </div>
-        ) : (
-          <div>-</div>
-        ),
-    },
-    {
-      id: 'finishTime',
-      header: t('table.finishTime'),
-      accessorFn: row => row.verifyTime,
-      cell: ({ row }) => <div>{row.original.verifyTime || '-'}</div>,
-    },
-  ];
+      {
+        id: 'exchangeRate',
+        header: t('common.exchangeRate'),
+        cell: ({ row }) =>
+          row.original.rate ? (
+            <div>
+              <div>{row.original.rate.toFixed(5)}</div>
+              <div>{row.original.currencyPair}</div>
+            </div>
+          ) : (
+            <div>-</div>
+          ),
+      },
+      {
+        id: 'finishTime',
+        header: t('table.finishTime'),
+        accessorFn: row => row.verifyTime,
+        cell: ({ row }) => <div>{row.original.verifyTime || '-'}</div>,
+      },
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('deposit-record-table', allColumns);

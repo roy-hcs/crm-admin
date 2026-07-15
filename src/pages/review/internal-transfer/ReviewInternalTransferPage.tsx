@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { ReviewInternalTransferForm } from './ReviewInternalTransferForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
@@ -84,186 +84,189 @@ export const ReviewInternalTransferPage = () => {
     [openTab, t],
   );
 
-  const allColumns: CRMColumnDef<InternalTransferItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('CRMAccountPage.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'userName',
-      header: t('CRMAccountPage.UserName'),
-      cell: ({ row }) => {
-        if (row?.original?.userLastName || row?.original?.userShowId || row?.original?.userName) {
-          return (
-            <div className="flex flex-col justify-center">
-              <div>
-                {(row?.original?.userLastName || '') + ' ' + (row?.original?.userName || '')}
+  const allColumns = useMemo<CRMColumnDef<InternalTransferItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('CRMAccountPage.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'userName',
+        header: t('CRMAccountPage.UserName'),
+        cell: ({ row }) => {
+          if (row?.original?.userLastName || row?.original?.userShowId || row?.original?.userName) {
+            return (
+              <div className="flex flex-col justify-center">
+                <div>
+                  {(row?.original?.userLastName || '') + ' ' + (row?.original?.userName || '')}
+                </div>
+                <div>{row?.original?.userShowId}</div>
               </div>
-              <div>{row?.original?.userShowId}</div>
-            </div>
-          );
-        } else {
-          return <div className="text-center">-</div>;
-        }
+            );
+          } else {
+            return <div className="text-center">-</div>;
+          }
+        },
       },
-    },
-    {
-      id: 'outAccount',
-      header: t('table.transferOutAccount'),
-      label: t('table.transferOutAccount'),
-      cell: ({ row }) => {
-        const type = row.original.type;
-        if ([1, 2].includes(type)) {
-          return `${t('table.myWallet')} (${row.original.outUnit})`;
-        }
-        if ([3, 4].includes(type)) {
+      {
+        id: 'outAccount',
+        header: t('table.transferOutAccount'),
+        label: t('table.transferOutAccount'),
+        cell: ({ row }) => {
+          const type = row.original.type;
+          if ([1, 2].includes(type)) {
+            return `${t('table.myWallet')} (${row.original.outUnit})`;
+          }
+          if ([3, 4].includes(type)) {
+            return (
+              <div>
+                <div>{row.original.outAliasName}</div>
+                <div>{row.original.outAccount}</div>
+              </div>
+            );
+          }
+          return '-';
+        },
+      },
+      {
+        id: 'transferInAccount',
+        header: t('table.transferInAccount'),
+        cell: ({ row }) => {
+          const type = row.original.type;
+          if ([1, 3].includes(type)) {
+            return `${t('table.myWallet')} (${row.original.inUnit})`;
+          }
+          if ([2, 4].includes(type)) {
+            return (
+              <div>
+                <div>{row.original.inAliasName}</div>
+                <div>{row.original.inAccount}</div>
+              </div>
+            );
+          }
+          return '-';
+        },
+      },
+      {
+        id: 'status',
+        header: () => {
           return (
-            <div>
-              <div>{row.original.outAliasName}</div>
-              <div>{row.original.outAccount}</div>
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.status')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="status"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
             </div>
           );
-        }
-        return '-';
-      },
-    },
-    {
-      id: 'transferInAccount',
-      header: t('table.transferInAccount'),
-      cell: ({ row }) => {
-        const type = row.original.type;
-        if ([1, 3].includes(type)) {
-          return `${t('table.myWallet')} (${row.original.inUnit})`;
-        }
-        if ([2, 4].includes(type)) {
+        },
+        label: t('table.status'),
+        accessorKey: 'status',
+        cell: ({ row }) => {
+          const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info'> = {
+            0: 'error',
+            1: 'success',
+            2: 'warning',
+            '-1': 'info',
+          };
           return (
-            <div>
-              <div>{row.original.inAliasName}</div>
-              <div>{row.original.inAccount}</div>
-            </div>
+            <RrhTag type={typeMap[row.original.status]}>
+              {t(`table.${internalTransferReviewStatusMap[row.original.status]}`)}
+            </RrhTag>
           );
-        }
-        return '-';
+        },
       },
-    },
-    {
-      id: 'status',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.status')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="status"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
+      {
+        id: 'transferAmount',
+        header: t('table.transferAmount'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.outMoney} {row.original.outUnit}
           </div>
-        );
+        ),
       },
-      label: t('table.status'),
-      accessorKey: 'status',
-      cell: ({ row }) => {
-        const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info'> = {
-          0: 'error',
-          1: 'success',
-          2: 'warning',
-          '-1': 'info',
-        };
-        return (
-          <RrhTag type={typeMap[row.original.status]}>
-            {t(`table.${internalTransferReviewStatusMap[row.original.status]}`)}
-          </RrhTag>
-        );
-      },
-    },
-    {
-      id: 'transferAmount',
-      header: t('table.transferAmount'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.outMoney} {row.original.outUnit}
-        </div>
-      ),
-    },
-    {
-      id: 'submitAuditTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.submitAuditTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="subTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      label: t('table.submitAuditTime'),
-      accessorKey: 'subTime',
-      cell: ({ row }) => row.original.subTime || '-',
-    },
-    {
-      id: 'currentAuditor',
-      header: t('table.currentAuditor'),
-      cell: ({ row }) => {
-        if (row.original.vUserLastName) {
+      {
+        id: 'submitAuditTime',
+        header: () => {
           return (
-            <div>
-              {row.original.vUserLastName} {row.original.vUserName}
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.submitAuditTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="subTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
             </div>
           );
-        } else {
-          return <div>-</div>;
-        }
+        },
+        label: t('table.submitAuditTime'),
+        accessorKey: 'subTime',
+        cell: ({ row }) => row.original.subTime || '-',
       },
-    },
-    {
-      id: 'finishTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.finishTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="verifyTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'currentAuditor',
+        header: t('table.currentAuditor'),
+        cell: ({ row }) => {
+          if (row.original.vUserLastName) {
+            return (
+              <div>
+                {row.original.vUserLastName} {row.original.vUserName}
+              </div>
+            );
+          } else {
+            return <div>-</div>;
+          }
+        },
       },
-      label: t('table.finishTime'),
-      accessorKey: 'verifyTime',
-      cell: ({ row }) => row.original.verifyTime || '-',
-    },
-    {
-      id: 'tradeServerOrderNumber',
-      header: t('table.tradeServerOrderNumber'),
-      accessorKey: 'dealTicket',
-      cell: ({ row }) => row.original.dealTicket || '-',
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'finishTime',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.finishTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="verifyTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('table.finishTime'),
+        accessorKey: 'verifyTime',
+        cell: ({ row }) => row.original.verifyTime || '-',
       },
-      label: t('common.Operation'),
-      cell: ({ row }) => (
-        <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
-          {row.original.status !== 2 ? t('common.View') : t('table.audit')}
-        </RrhButton>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'tradeServerOrderNumber',
+        header: t('table.tradeServerOrderNumber'),
+        accessorKey: 'dealTicket',
+        cell: ({ row }) => row.original.dealTicket || '-',
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        label: t('common.Operation'),
+        cell: ({ row }) => (
+          <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+            {row.original.status !== 2 ? t('common.View') : t('table.audit')}
+          </RrhButton>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, isAsc, orderByColumn, setOrderByColumn, setIsAsc, goToDetail],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('review-internal-transfer-table', allColumns);

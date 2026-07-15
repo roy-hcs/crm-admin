@@ -1,7 +1,7 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Ellipsis, Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BasicParams } from '@/api/hooks/review/types';
 import { useDictType } from '@/api/hooks/system/system';
@@ -66,72 +66,75 @@ export const AgreementsPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<PammProtocolItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'name',
-      header: t('table.protocolName'),
-      accessorFn: row => row.name,
-    },
-    {
-      id: 'projectName',
-      header: t('table.relatedProduct'),
-      accessorFn: row => row.projectName,
-    },
-    {
-      id: 'applicableScenarios',
-      header: t('table.applicableScenario'),
-      cell: ({ row }) => {
-        const currentScenario = scenariosType?.find(
-          item => item.dictValue === row.original.applicableScenarios.toString(),
-        );
-        return currentScenario?.dictLabel || '-';
+  const allColumns = useMemo<CRMColumnDef<PammProtocolItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'sort',
-      header: t('table.sort'),
-      accessorFn: row => row.sort,
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      cell: ({ row }) => {
-        return <Switch checked={row.original.status === 1} />;
+      {
+        id: 'name',
+        header: t('table.protocolName'),
+        accessorFn: row => row.name,
       },
-    },
-    {
-      id: 'createBy',
-      header: t('table.operator'),
-      accessorFn: row => row.createBy,
-    },
-    {
-      id: 'updateTime',
-      header: t('table.updateTime'),
-      accessorFn: row => row.updateTime,
-    },
-    {
-      id: 'operation',
-      header: () => <div className="text-center">{t('common.Operation')}</div>,
-      label: t('common.Operation'),
-      fixed: 'right',
-      size: 50,
-      cell: () => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[
-            { label: t('common.Edit'), value: 'edit' },
-            { label: t('common.delete'), value: 'delete' },
-          ]}
-          callToAction={() => {}}
-        />
-      ),
-    },
-  ];
+      {
+        id: 'projectName',
+        header: t('table.relatedProduct'),
+        accessorFn: row => row.projectName,
+      },
+      {
+        id: 'applicableScenarios',
+        header: t('table.applicableScenario'),
+        cell: ({ row }) => {
+          const currentScenario = scenariosType?.find(
+            item => item.dictValue === row.original.applicableScenarios.toString(),
+          );
+          return currentScenario?.dictLabel || '-';
+        },
+      },
+      {
+        id: 'sort',
+        header: t('table.sort'),
+        accessorFn: row => row.sort,
+      },
+      {
+        id: 'status',
+        header: t('table.status'),
+        cell: ({ row }) => {
+          return <Switch checked={row.original.status === 1} />;
+        },
+      },
+      {
+        id: 'createBy',
+        header: t('table.operator'),
+        accessorFn: row => row.createBy,
+      },
+      {
+        id: 'updateTime',
+        header: t('table.updateTime'),
+        accessorFn: row => row.updateTime,
+      },
+      {
+        id: 'operation',
+        header: () => <div className="text-center">{t('common.Operation')}</div>,
+        label: t('common.Operation'),
+        fixed: 'right',
+        size: 50,
+        cell: () => (
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.Edit'), value: 'edit' },
+              { label: t('common.delete'), value: 'delete' },
+            ]}
+            callToAction={() => {}}
+          />
+        ),
+      },
+    ],
+    [t, scenariosType],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('pamm-agreements-table', allColumns);

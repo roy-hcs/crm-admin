@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
@@ -71,145 +71,149 @@ export const NetBonusStatisticsPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<NetBonusRewardRow, unknown>[] = [
-    {
-      id: 'userName',
-      header: t('common.account.type.user'),
-      cell: ({ row }) => (
-        <div>
-          <div>{row.original?.userName || '-'}</div>
-          <div>({row.original?.showId || '-'})</div>
-        </div>
-      ),
-    },
-    {
-      id: 'accountType',
-      header: t('CRMAccountPage.CRMAccountType'),
-      cell: ({ row }) => {
-        const typeName =
-          crmAccountTypeOptions.find(item => item.value === row.original.accountType)?.label || '';
-        return <div>{t(typeName)}</div>;
-      },
-    },
-    {
-      id: 'month',
-      header: t('customerTracking.statisticMonthStr'),
-      cell: ({ row }) => <div>{row.original.bonusMonth}</div>,
-    },
-    {
-      id: 'statisticsTimeRange',
-      header: t('table.timeRangeOfStatistics'),
-      cell: ({ row }) => {
-        return <div>{row.original?.statisticsTimeRange || '-'}USD</div>;
-      },
-    },
-    {
-      id: 'tierAvgNet',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.tieredAverageNetDeposit')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="tierAvgNet"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => {
-        return (
-          <div>{row.original?.tierAvgNet ? `${row.original.tierAvgNet.toFixed(2)}USD` : '-'}</div>
-        );
-      },
-    },
-    {
-      id: 'rewardParam',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.rewardParams')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="rewardParam"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => {
-        return <div>{row.original?.rewardParam ? `${row.original.rewardParam}%` : '-'}</div>;
-      },
-    },
-    {
-      id: 'fixedParams',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.fixedParams')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="fixedParam"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => {
-        return <div>{row.original?.fixedParam ? `${row.original.fixedParam}%` : '-'}</div>;
-      },
-    },
-    {
-      id: 'expectedBonus',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.tieredAccrualReward')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="expectedBonus"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => {
-        return (
+  const allColumns = useMemo<CRMColumnDef<NetBonusRewardRow, unknown>[]>(
+    () => [
+      {
+        id: 'userName',
+        header: t('common.account.type.user'),
+        cell: ({ row }) => (
           <div>
-            {row.original?.expectedBonus ? `${row.original.expectedBonus.toFixed(2)}USD` : '-'}
+            <div>{row.original?.userName || '-'}</div>
+            <div>({row.original?.showId || '-'})</div>
           </div>
-        );
+        ),
       },
-    },
-    {
-      id: 'statisticTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('common.statisticTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="statisticsTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'accountType',
+        header: t('CRMAccountPage.CRMAccountType'),
+        cell: ({ row }) => {
+          const typeName =
+            crmAccountTypeOptions.find(item => item.value === row.original.accountType)?.label ||
+            '';
+          return <div>{t(typeName)}</div>;
+        },
       },
-      cell: ({ row }) => {
-        return <div>{row.original?.statisticsTime || '-'}</div>;
+      {
+        id: 'month',
+        header: t('customerTracking.statisticMonthStr'),
+        cell: ({ row }) => <div>{row.original.bonusMonth}</div>,
       },
-    },
-  ];
+      {
+        id: 'statisticsTimeRange',
+        header: t('table.timeRangeOfStatistics'),
+        cell: ({ row }) => {
+          return <div>{row.original?.statisticsTimeRange || '-'}USD</div>;
+        },
+      },
+      {
+        id: 'tierAvgNet',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.tieredAverageNetDeposit')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="tierAvgNet"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          return (
+            <div>{row.original?.tierAvgNet ? `${row.original.tierAvgNet.toFixed(2)}USD` : '-'}</div>
+          );
+        },
+      },
+      {
+        id: 'rewardParam',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.rewardParams')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="rewardParam"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          return <div>{row.original?.rewardParam ? `${row.original.rewardParam}%` : '-'}</div>;
+        },
+      },
+      {
+        id: 'fixedParams',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.fixedParams')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="fixedParam"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          return <div>{row.original?.fixedParam ? `${row.original.fixedParam}%` : '-'}</div>;
+        },
+      },
+      {
+        id: 'expectedBonus',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.tieredAccrualReward')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="expectedBonus"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          return (
+            <div>
+              {row.original?.expectedBonus ? `${row.original.expectedBonus.toFixed(2)}USD` : '-'}
+            </div>
+          );
+        },
+      },
+      {
+        id: 'statisticTime',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('common.statisticTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="statisticsTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          return <div>{row.original?.statisticsTime || '-'}</div>;
+        },
+      },
+    ],
+    [t, orderByColumn, isAsc, setOrderByColumn, setIsAsc],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('marketing-reward-records-table', allColumns);

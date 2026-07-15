@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import {
@@ -113,187 +113,198 @@ export const DepositRebateSettingsPage = () => {
     setPageSize(10);
   };
 
-  const allColumns: CRMColumnDef<RebateDepositSettingsItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'serialNumber',
-      header: t('table.sort'),
-      accessorFn: row => row.serialNumber,
-    },
-    {
-      id: 'ruleName',
-      header: t('table.ruleName'),
-      accessorFn: row => row.ruleName || '-',
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      cell: ({ row }) => {
-        return (
-          <RrhStatusAlert<{
-            id: string;
-            hasUsed: string;
-          }>
-            params={{
-              id: String(row.original.id),
-              hasUsed: row.original.hasUsed === '1' ? '0' : '1',
-            }}
-            tipsText={
-              row.original.hasUsed === '1'
-                ? t('TradingRebateSettings.disableRuleTip')
-                : t('TradingRebateSettings.enableRuleTip')
-            }
-            checked={row.original.hasUsed === '1'}
-            confirmFunction={changeStatusMutation}
-            onSuccess={onSuccess}
-          />
-        );
+  const allColumns = useMemo<CRMColumnDef<RebateDepositSettingsItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'suitType',
-      header: t('DepositRebateSettings.depositAccount'),
-      accessorFn: row => (row.suitType === 1 ? t('table.wallet') : t('table.tradingAccount')),
-    },
-    {
-      id: 'typeGroup',
-      header: t('table.typeGroup'),
-      accessorFn: row => row.rebateGroupType || '-',
-    },
-    {
-      id: 'serverName',
-      header: t('table.server'),
-      cell: ({ row }) => {
-        if (!row.original.serverName) return '-';
-        const exceedLength = row.original.serverName.length > 32;
-        const content = exceedLength
-          ? row.original.serverName.slice(0, 32) + '...'
-          : row.original.serverName;
-        return exceedLength ? (
-          <ToolTip
-            maxWidth="800px"
-            content={<div className="break-all">{row.original.serverName}</div>}
-          >
-            <div>{content}</div>
-          </ToolTip>
-        ) : (
-          <div>{content}</div>
-        );
+      {
+        id: 'serialNumber',
+        header: t('table.sort'),
+        accessorFn: row => row.serialNumber,
       },
-    },
-    {
-      id: 'accountGroup',
-      header: t('table.accountGroup'),
-      accessorFn: row => row.accountGroupNames || '-',
-    },
-    {
-      id: 'groups',
-      header: t('table.groups'),
-      cell: ({ row }) => {
-        const traderServers = row.original.traderServers;
-        if (!traderServers) return <div>{t('table.allGroups')}</div>;
-        const plainTextArr: string[] = [];
-        const serversInfo: { serverName: string; mtGroup: string }[] = [];
-        traderServers.forEach(server => {
-          const plainText = server.mtGroup
-            ? server.mtGroup.replace(/\\\\/g, '\\').replace(/\|/g, ',')
-            : t('table.allGroups');
-          if (plainText !== t('table.allGroups')) {
-            plainTextArr.push(plainText);
-          }
-          serversInfo.push({
-            serverName: getServerTypeName(server.serverType) + ' | ' + server.serverName,
-            mtGroup: plainText,
-          });
-        });
-        const serversText = plainTextArr.join(',');
-        const content =
-          serversText.length === 0
-            ? t('table.allGroups')
-            : serversText.length > 32
-              ? serversText.slice(0, 32) + '...'
-              : serversText;
-        const ToolContent = (
-          <div>
-            {serversInfo.map((info, index) => (
-              <div key={info.serverName + index}>
-                <div>{info.serverName}</div>
-                <div className="text-sm">{info.mtGroup}</div>
-              </div>
-            ))}
-          </div>
-        );
-        return (
-          <ToolTip maxWidth="800px" content={ToolContent}>
-            <div>{content}</div>
-          </ToolTip>
-        );
+      {
+        id: 'ruleName',
+        header: t('table.ruleName'),
+        accessorFn: row => row.ruleName || '-',
       },
-    },
-    {
-      id: 'topRebateLevel',
-      header: t('table.topRebateLevel'),
-      accessorFn: row => row.highestRebateLevel || '-',
-    },
-    // TODO: 之后的两项有点击跳转交互
-    {
-      id: 'relatedAccountCount',
-      header: t('table.relatedAccountCount'),
-      accessorFn: row => row.relatedAccountCount || '-',
-    },
-    {
-      id: 'relatedRebateTemplateCount',
-      header: t('table.relatedRebateTemplateCount'),
-      accessorFn: row => row.relatedRebateTemplateCount || '-',
-    },
-    {
-      id: 'remark',
-      header: t('table.remarks'),
-      accessorFn: row => row.remark || '-',
-    },
-    {
-      id: 'operation',
-      header: () => <div className="text-center">{t('common.Operation')}</div>,
-      label: t('common.Operation'),
-      fixed: 'right',
-      size: 50,
-      cell: ({ row }) => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[
-            { label: t('common.Edit'), value: 'edit' },
-            { label: t('table.commissionSettings'), value: 'commissionSettings' },
-            { label: t('common.delete'), value: 'delete' },
-          ]}
-          callToAction={action => {
-            setCurrentItem(row.original);
-            switch (action) {
-              case 'edit':
-                setEditDialogOpen(true);
-                break;
-              case 'delete':
-                setDeleteDialogOpen(true);
-                break;
-              case 'commissionSettings': {
-                const type = 'deposit';
-                const url = `/rebate/commission-settings?id=${row?.original.id}&type=${type}`;
-                openTab({
-                  key: url,
-                  title: t('table.commissionSettings'),
-                  path: url,
-                });
-                break;
+      {
+        id: 'status',
+        header: t('table.status'),
+        cell: ({ row }) => {
+          return (
+            <RrhStatusAlert<{
+              id: string;
+              hasUsed: string;
+            }>
+              params={{
+                id: String(row.original.id),
+                hasUsed: row.original.hasUsed === '1' ? '0' : '1',
+              }}
+              tipsText={
+                row.original.hasUsed === '1'
+                  ? t('TradingRebateSettings.disableRuleTip')
+                  : t('TradingRebateSettings.enableRuleTip')
               }
+              checked={row.original.hasUsed === '1'}
+              confirmFunction={changeStatusMutation}
+              onSuccess={onSuccess}
+            />
+          );
+        },
+      },
+      {
+        id: 'suitType',
+        header: t('DepositRebateSettings.depositAccount'),
+        accessorFn: row => (row.suitType === 1 ? t('table.wallet') : t('table.tradingAccount')),
+      },
+      {
+        id: 'typeGroup',
+        header: t('table.typeGroup'),
+        accessorFn: row => row.rebateGroupType || '-',
+      },
+      {
+        id: 'serverName',
+        header: t('table.server'),
+        cell: ({ row }) => {
+          if (!row.original.serverName) return '-';
+          const exceedLength = row.original.serverName.length > 32;
+          const content = exceedLength
+            ? row.original.serverName.slice(0, 32) + '...'
+            : row.original.serverName;
+          return exceedLength ? (
+            <ToolTip
+              maxWidth="800px"
+              content={<div className="break-all">{row.original.serverName}</div>}
+            >
+              <div>{content}</div>
+            </ToolTip>
+          ) : (
+            <div>{content}</div>
+          );
+        },
+      },
+      {
+        id: 'accountGroup',
+        header: t('table.accountGroup'),
+        accessorFn: row => row.accountGroupNames || '-',
+      },
+      {
+        id: 'groups',
+        header: t('table.groups'),
+        cell: ({ row }) => {
+          const traderServers = row.original.traderServers;
+          if (!traderServers) return <div>{t('table.allGroups')}</div>;
+          const plainTextArr: string[] = [];
+          const serversInfo: { serverName: string; mtGroup: string }[] = [];
+          traderServers.forEach(server => {
+            const plainText = server.mtGroup
+              ? server.mtGroup.replace(/\\\\/g, '\\').replace(/\|/g, ',')
+              : t('table.allGroups');
+            if (plainText !== t('table.allGroups')) {
+              plainTextArr.push(plainText);
             }
-          }}
-        />
-      ),
-    },
-  ];
+            serversInfo.push({
+              serverName: getServerTypeName(server.serverType) + ' | ' + server.serverName,
+              mtGroup: plainText,
+            });
+          });
+          const serversText = plainTextArr.join(',');
+          const content =
+            serversText.length === 0
+              ? t('table.allGroups')
+              : serversText.length > 32
+                ? serversText.slice(0, 32) + '...'
+                : serversText;
+          const ToolContent = (
+            <div>
+              {serversInfo.map((info, index) => (
+                <div key={info.serverName + index}>
+                  <div>{info.serverName}</div>
+                  <div className="text-sm">{info.mtGroup}</div>
+                </div>
+              ))}
+            </div>
+          );
+          return (
+            <ToolTip maxWidth="800px" content={ToolContent}>
+              <div>{content}</div>
+            </ToolTip>
+          );
+        },
+      },
+      {
+        id: 'topRebateLevel',
+        header: t('table.topRebateLevel'),
+        accessorFn: row => row.highestRebateLevel || '-',
+      },
+      // TODO: 之后的两项有点击跳转交互
+      {
+        id: 'relatedAccountCount',
+        header: t('table.relatedAccountCount'),
+        accessorFn: row => row.relatedAccountCount || '-',
+      },
+      {
+        id: 'relatedRebateTemplateCount',
+        header: t('table.relatedRebateTemplateCount'),
+        accessorFn: row => row.relatedRebateTemplateCount || '-',
+      },
+      {
+        id: 'remark',
+        header: t('table.remarks'),
+        accessorFn: row => row.remark || '-',
+      },
+      {
+        id: 'operation',
+        header: () => <div className="text-center">{t('common.Operation')}</div>,
+        label: t('common.Operation'),
+        fixed: 'right',
+        size: 50,
+        cell: ({ row }) => (
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.Edit'), value: 'edit' },
+              { label: t('table.commissionSettings'), value: 'commissionSettings' },
+              { label: t('common.delete'), value: 'delete' },
+            ]}
+            callToAction={action => {
+              setCurrentItem(row.original);
+              switch (action) {
+                case 'edit':
+                  setEditDialogOpen(true);
+                  break;
+                case 'delete':
+                  setDeleteDialogOpen(true);
+                  break;
+                case 'commissionSettings': {
+                  const type = 'deposit';
+                  const url = `/rebate/commission-settings?id=${row?.original.id}&type=${type}`;
+                  openTab({
+                    key: url,
+                    title: t('table.commissionSettings'),
+                    path: url,
+                  });
+                  break;
+                }
+              }
+            }}
+          />
+        ),
+      },
+    ],
+    [
+      t,
+      changeStatusMutation,
+      onSuccess,
+      openTab,
+      setCurrentItem,
+      setEditDialogOpen,
+      setDeleteDialogOpen,
+    ],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('deposit-rebate-settings-table', allColumns);
