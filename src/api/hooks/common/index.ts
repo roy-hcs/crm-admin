@@ -27,7 +27,7 @@ export function useCheckPhoneUnique() {
 
 export function useCheckUserPhone() {
   return useMutation({
-    mutationFn: (params: { phonenumber: string; mzone: string }) =>
+    mutationFn: (params: { phonenumber: string; mzone: string; userId?: string }) =>
       apiFormPostCustom<number>('/system/user/checkPhoneUnique', params),
   });
 }

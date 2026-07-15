@@ -93,6 +93,7 @@
     "RememberMe": "记住我"
   },
   "common": {
+    "users": "用户",
     "download": "下载",
     "points": "分",
     "hour": "时",
@@ -592,6 +593,7 @@
     "rebateDepositAmount": "入金返佣"
   },
   "rules": {
+    "invalidEmailFormat": "邮箱格式不正确",
     "required": "{{field}}不能为空",
     "pattern": "请输入有效的{{field}}",
     "firstName": "名",
@@ -707,7 +709,6 @@
   "rolesManagement": {
     "title": "角色管理",
     "administrator": "管理员",
-    "users": "用户",
     "roleName": "角色名称"
   },
   "menuManagement": {
@@ -1306,6 +1307,7 @@
     }
   },
   "table": {
+    "expireTime": "失效时间",
     "price": "交易价格",
     "inMethod": "操作方式",
     "select": "选择",
@@ -1757,7 +1759,34 @@
   },
   "adminAccounts": {
     "title": "管理员账户",
-    "roleName": "账户角色"
+    "roleName": "账户角色",
+    "tabs": {
+      "1": "普通账户",
+      "2": "临时账户"
+    },
+    "onlineStatus": "登录状态",
+    "unBindGoogle": "解绑谷歌令牌",
+    "forceLogout": "强制登出",
+    "account": "普通账号",
+    "temporaryAdmin": "临时管理员",
+    "chatId": "Telegram Chatid",
+    "temporaryAdminabout": {
+      "0": "创建临时账户前，请谨慎阅读并确认下方信息",
+      "1": "临时管理员账户仅用于短期协助排查或支持。",
+      "2": "该账户将在有效时长(1–3 小时)后自动失效，无需手动删除。",
+      "3": "授权临时管理员权限时，请尽量不要提供“修改客户信息”、“资金审核”相关权限。",
+      "4": "登录凭证/密码(随机生成的密码或激活链接)将通过邮件发送至被授权邮箱。",
+      "5": "请仅授权可信任对象，并确认邮箱地址准确无误。"
+    },
+    "confirmEmail": "确认邮箱",
+    "duration": "有效时长",
+    "durationDesc": "临时管理员账户将在有效时长后自动失效",
+    "confirmEmailMustMatch": "确认邮箱必须与邮箱一致",
+    "expired": "失效",
+    "valid": "有效",
+    "deleteUserTips": "确定删除该 用户？",
+    "forceLogoutTips": "是否确认将管理员登录状态强制登出？",
+    "unbindGoogleTips": "是否确认要解绑Google令牌？"
   },
   "ipWhiteList": {
     "title": "IP白名单",
@@ -1855,7 +1884,6 @@
     },
     "inputTitle": "标题({{field}})",
     "inputContent": "内容({{field}})",
-    "expireTime": "失效时间",
     "addMsg": "新增消息",
     "resend": "再次发送消息",
     "deleteMsg": "确定删除该 消息？",

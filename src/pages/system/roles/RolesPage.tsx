@@ -9,7 +9,7 @@ export const RolesPage = () => {
     <Tabs defaultValue="administrator">
       <TabsList className="dark:bg-accent bg-slate-100">
         <TabsTrigger value="administrator">{t('rolesManagement.administrator')}</TabsTrigger>
-        <TabsTrigger value="user">{t('rolesManagement.users')}</TabsTrigger>
+        <TabsTrigger value="user">{t('common.users')}</TabsTrigger>
       </TabsList>
       <TabsContent value="administrator">
         <AdministratorTab />
