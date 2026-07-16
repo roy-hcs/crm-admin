@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { UserItem } from '@/api/hooks/system';
 import { TFunction } from 'i18next';
 import z from 'zod';
+import { passwordSchema } from '@/lib/validators';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Eye, EyeClosed } from 'lucide-react';
@@ -25,15 +26,7 @@ const resetPasswordSchema = (t: TFunction<'translation', undefined>) => {
   return z
     .object({
       wholeName: z.string(),
-      newPassword: z
-        .string()
-        .min(1, t('rules.required', { field: t('common.newPassword') }))
-        .min(8, t('rules.passwordComplexity', { min: 8, max: 20 }))
-        .max(20, t('rules.passwordComplexity', { min: 8, max: 20 }))
-        .regex(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,20}$/,
-          t('rules.passwordComplexity', { min: 8, max: 20 }),
-        ),
+      newPassword: passwordSchema(t, { field: t('common.newPassword') }),
       againPassword: z.string().min(1, t('rules.required', { field: t('common.confirmPassword') })),
     })
     .refine(data => data.newPassword === data.againPassword, {

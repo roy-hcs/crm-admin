@@ -3,6 +3,7 @@ import { Plus } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { passwordSchema } from '@/lib/validators';
 import { FormSelect } from '@/components/form/FormSelect';
 import { useTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
@@ -45,22 +46,7 @@ const addUserSchema = (t: TFunction<'translation', undefined>, mode: 'add' | 'ed
       .string()
       .min(1, t('rules.required', { field: t('rules.email') }))
       .email(t('rules.invalidEmailFormat')),
-    password:
-      mode === 'add'
-        ? z
-            .string()
-            .min(8, t('rules.limitLength', { field: 8 }))
-            .max(20, t('rules.limitLength', { field: 20 }))
-            .regex(
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/,
-              t('rules.pattern', { field: t('rules.pwd') }),
-            )
-        : z
-            .string()
-            .regex(
-              /^$|^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/,
-              t('rules.pattern', { field: t('rules.pwd') }),
-            ),
+    password: passwordSchema(t, { optional: mode !== 'add' }),
     chatId: z.string(),
     status: z.string(),
     roleId: z.string().min(1, t('rules.required', { field: t('table.accountRole') })),

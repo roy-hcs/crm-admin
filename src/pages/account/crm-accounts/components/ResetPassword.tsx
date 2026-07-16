@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { useForm, type Control } from 'react-hook-form';
 import { TFunction } from 'i18next';
 import * as z from 'zod';
+import { passwordSchema } from '@/lib/validators';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,15 +22,7 @@ type resetPasswordFormValues = {
 const resetPasswordSchema = (t: TFunction<'translation', undefined>) => {
   return z
     .object({
-      newPassword: z
-        .string()
-        .min(1, t('rules.required', { field: t('common.newPassword') }))
-        .min(8, t('rules.passwordComplexity', { min: 8, max: 20 }))
-        .max(20, t('rules.passwordComplexity', { min: 8, max: 20 }))
-        .regex(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,20}$/,
-          t('rules.passwordComplexity', { min: 8, max: 20 }),
-        ),
+      newPassword: passwordSchema(t, { field: t('common.newPassword') }),
       againPassword: z.string().min(1, t('rules.required', { field: t('common.confirmPassword') })),
     })
     .refine(data => data.newPassword === data.againPassword, {

@@ -10,6 +10,7 @@ import { useRestPwd } from '@/api/hooks/system/system';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TFunction } from 'i18next';
 import z from 'zod';
+import { passwordSchema } from '@/lib/validators';
 import { Eye, EyeClosed } from 'lucide-react';
 import { toast } from 'sonner';
 import { encryptWithPublicKey } from '@/lib/utils';
@@ -22,15 +23,7 @@ type FormValues = {
 
 const schemaConfig = (t: TFunction<'translation', undefined>) => {
   return {
-    newPassword: z
-      .string()
-      .min(1, t('rules.required', { field: t('common.newPassword') }))
-      .min(8, t('rules.userPwdTips', { min: 8, max: 20 }))
-      .max(20, t('rules.userPwdTips', { min: 8, max: 20 }))
-      .regex(
-        new RegExp(`^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,20}$`),
-        t('rules.userPwdTips', { min: 8, max: 20 }),
-      ),
+    newPassword: passwordSchema(t, { field: t('common.newPassword') }),
     confirmPassword: z.string().min(1, t('rules.required', { field: t('common.confirmPassword') })),
   };
 };
@@ -169,22 +162,22 @@ export const ChangePasswordDialog = ({ onSuccess }: { onSuccess: () => void }) =
       formLoading={isSubmitting}
     >
       <RrhForm form={form}>
-            <PasswordField
-              control={form.control}
-              name="newPassword"
-              label={t('common.newPassword')}
-              show={showNewPWD}
-              setShow={setShowNewPWD}
-            />
+        <PasswordField
+          control={form.control}
+          name="newPassword"
+          label={t('common.newPassword')}
+          show={showNewPWD}
+          setShow={setShowNewPWD}
+        />
 
-            <PasswordField
-              control={form.control}
-              name="confirmPassword"
-              label={t('common.confirmPassword')}
-              show={showAgainPWD}
-              setShow={setShowAgainPWD}
-            />
-          </RrhForm>
+        <PasswordField
+          control={form.control}
+          name="confirmPassword"
+          label={t('common.confirmPassword')}
+          show={showAgainPWD}
+          setShow={setShowAgainPWD}
+        />
+      </RrhForm>
     </RrhDialog>
   );
 };
