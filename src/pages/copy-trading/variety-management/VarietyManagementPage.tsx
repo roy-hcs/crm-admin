@@ -70,73 +70,76 @@ export const VarietyManagementPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<MamSymbolItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'symbolCategory',
-      header: t('varietyManagement.symbolCategory'),
-      cell: ({ row }) => row?.original?.symbolCategory || '-',
-    },
-    {
-      id: 'symbol',
-      header: t('varietyManagement.symbol'),
-      cell: ({ row }) => row?.original?.symbol || '-',
-    },
-    {
-      id: 'cname',
-      header: t('varietyManagement.cname'),
-      cell: ({ row }) => row?.original?.cname || '-',
-    },
-    {
-      id: 'enname',
-      header: t('varietyManagement.enname'),
-      cell: ({ row }) => row?.original?.enname || '-',
-    },
-    {
-      id: 'name',
-      header: t('varietyManagement.name'),
-      cell: ({ row }) => row?.original?.name || '-',
-    },
-    {
-      id: 'sort',
-      header: t('table.sort'),
-      cell: ({ row }) => row?.original?.sort || '-',
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+  const allColumns = useMemo<CRMColumnDef<MamSymbolItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-      cell: ({ row }) => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[
-            { label: t('common.Edit'), value: 'edit' },
-            { label: t('common.View'), value: 'view' },
-            { label: t('common.delete'), value: 'delete' },
-          ]}
-          callToAction={action => {
-            const id = row.original.id || '';
-            if (action === 'edit') {
-              setDialogState({ type: 'edit', id });
-            }
-            if (action === 'view') {
-              setDialogState({ type: 'view', id });
-            }
-            if (action === 'delete') {
-              setDialogState({ type: 'delete', id });
-            }
-          }}
-        />
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'symbolCategory',
+        header: t('varietyManagement.symbolCategory'),
+        cell: ({ row }) => row?.original?.symbolCategory || '-',
+      },
+      {
+        id: 'symbol',
+        header: t('varietyManagement.symbol'),
+        cell: ({ row }) => row?.original?.symbol || '-',
+      },
+      {
+        id: 'cname',
+        header: t('varietyManagement.cname'),
+        cell: ({ row }) => row?.original?.cname || '-',
+      },
+      {
+        id: 'enname',
+        header: t('varietyManagement.enname'),
+        cell: ({ row }) => row?.original?.enname || '-',
+      },
+      {
+        id: 'name',
+        header: t('varietyManagement.name'),
+        cell: ({ row }) => row?.original?.name || '-',
+      },
+      {
+        id: 'sort',
+        header: t('table.sort'),
+        cell: ({ row }) => row?.original?.sort || '-',
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.Edit'), value: 'edit' },
+              { label: t('common.View'), value: 'view' },
+              { label: t('common.delete'), value: 'delete' },
+            ]}
+            callToAction={action => {
+              const id = row.original.id || '';
+              if (action === 'edit') {
+                setDialogState({ type: 'edit', id });
+              }
+              if (action === 'view') {
+                setDialogState({ type: 'view', id });
+              }
+              if (action === 'delete') {
+                setDialogState({ type: 'delete', id });
+              }
+            }}
+          />
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, setDialogState],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('variety-management-table', allColumns);

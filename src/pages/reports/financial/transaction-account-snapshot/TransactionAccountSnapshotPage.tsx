@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { TradingAccountSnapshotItem, TradingAccountSnapshotParams } from '@/api/hooks/report';
@@ -74,119 +74,122 @@ export function TransactionAccountSnapshotPage() {
     setPageSize(10);
   };
 
-  const allColumns: CRMColumnDef<TradingAccountSnapshotItem, unknown>[] = [
-    {
-      fixed: true,
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-      size: 50,
-    },
-    {
-      id: 'snapshotId',
-      header: t('transactionAccountSnapshotPage.snapshotId'),
-      accessorFn: row => row.id,
-    },
-    {
-      id: 'serverName',
-      header: t('transactionAccountSnapshotPage.serverName'),
-      accessorFn: row => row.serverName || '--',
-    },
-    {
-      id: 'account',
-      header: t('transactionAccountSnapshotPage.account'),
-      accessorFn: row => row.account || '--',
-    },
-    {
-      id: 'currency',
-      accessorKey: 'currency',
-      header: t('transactionAccountSnapshotPage.currency'),
-      accessorFn: row => row.currency || '--',
-    },
-    {
-      id: 'triggeringEvent',
-      accessorKey: 'triggeringEvent',
-      header: t('transactionAccountSnapshotPage.event'),
-      accessorFn: row => {
-        const dictItem = (triggeringEventRes || []).find(
-          i => i.dictValue === String(row.triggeringEvent),
-        );
-        return dictItem?.dictLabel || '--';
+  const allColumns = useMemo<CRMColumnDef<TradingAccountSnapshotItem, unknown>[]>(
+    () => [
+      {
+        fixed: true,
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+        size: 50,
       },
-    },
-    {
-      id: 'createTime',
-      accessorKey: 'createTime',
-      header: t('transactionAccountSnapshotPage.snapshotTime'),
-      accessorFn: row => row.createTime || '--',
-    },
-    {
-      id: 'balance',
-      accessorKey: 'balance',
-      header: t('transactionAccountSnapshotPage.balance'),
-      accessorFn: row => row.balance ?? '--',
-    },
-    {
-      id: 'changeAmount',
-      accessorKey: 'changeAmount',
-      header: t('transactionAccountSnapshotPage.changeAmount'),
-      accessorFn: row => row.changeAmount ?? '--',
-    },
-    {
-      id: 'equity',
-      accessorKey: 'equity',
-      header: t('transactionAccountSnapshotPage.equity'),
-      accessorFn: row => row.equity ?? '--',
-    },
-    {
-      id: 'credit',
-      accessorKey: 'credit',
-      header: t('transactionAccountSnapshotPage.credit'),
-      accessorFn: row => row.credit ?? '--',
-    },
-    {
-      id: 'usedMargin',
-      accessorKey: 'usedMargin',
-      header: t('transactionAccountSnapshotPage.usedMargin'),
-      accessorFn: row => row.usedMargin ?? '--',
-    },
-    {
-      id: 'freeMargin',
-      accessorKey: 'freeMargin',
-      header: t('transactionAccountSnapshotPage.freeMargin'),
-      accessorFn: row => row.freeMargin ?? '--',
-    },
-    {
-      id: 'marginLevel',
-      accessorKey: 'marginLevel',
-      header: t('transactionAccountSnapshotPage.marginLevel'),
-      accessorFn: row => row.marginLevel ?? '--',
-    },
-    {
-      id: 'lever',
-      accessorKey: 'lever',
-      header: t('transactionAccountSnapshotPage.leverage'),
-      accessorFn: row => row.lever ?? '--',
-    },
-    {
-      id: 'positionOrders',
-      accessorKey: 'positionOrders',
-      header: t('transactionAccountSnapshotPage.openOrders'),
-      accessorFn: row => row.positionOrders ?? '--',
-    },
-    {
-      id: 'positionLots',
-      accessorKey: 'positionLots',
-      header: t('transactionAccountSnapshotPage.openLots'),
-      accessorFn: row => row.positionLots ?? '--',
-    },
-    {
-      id: 'floatingPl',
-      accessorKey: 'floatingPl',
-      header: t('transactionAccountSnapshotPage.floatingProfitLoss'),
-      accessorFn: row => row.floatingPl ?? '--',
-    },
-  ];
+      {
+        id: 'snapshotId',
+        header: t('transactionAccountSnapshotPage.snapshotId'),
+        accessorFn: row => row.id,
+      },
+      {
+        id: 'serverName',
+        header: t('transactionAccountSnapshotPage.serverName'),
+        accessorFn: row => row.serverName || '--',
+      },
+      {
+        id: 'account',
+        header: t('transactionAccountSnapshotPage.account'),
+        accessorFn: row => row.account || '--',
+      },
+      {
+        id: 'currency',
+        accessorKey: 'currency',
+        header: t('transactionAccountSnapshotPage.currency'),
+        accessorFn: row => row.currency || '--',
+      },
+      {
+        id: 'triggeringEvent',
+        accessorKey: 'triggeringEvent',
+        header: t('transactionAccountSnapshotPage.event'),
+        accessorFn: row => {
+          const dictItem = (triggeringEventRes || []).find(
+            i => i.dictValue === String(row.triggeringEvent),
+          );
+          return dictItem?.dictLabel || '--';
+        },
+      },
+      {
+        id: 'createTime',
+        accessorKey: 'createTime',
+        header: t('transactionAccountSnapshotPage.snapshotTime'),
+        accessorFn: row => row.createTime || '--',
+      },
+      {
+        id: 'balance',
+        accessorKey: 'balance',
+        header: t('transactionAccountSnapshotPage.balance'),
+        accessorFn: row => row.balance ?? '--',
+      },
+      {
+        id: 'changeAmount',
+        accessorKey: 'changeAmount',
+        header: t('transactionAccountSnapshotPage.changeAmount'),
+        accessorFn: row => row.changeAmount ?? '--',
+      },
+      {
+        id: 'equity',
+        accessorKey: 'equity',
+        header: t('transactionAccountSnapshotPage.equity'),
+        accessorFn: row => row.equity ?? '--',
+      },
+      {
+        id: 'credit',
+        accessorKey: 'credit',
+        header: t('transactionAccountSnapshotPage.credit'),
+        accessorFn: row => row.credit ?? '--',
+      },
+      {
+        id: 'usedMargin',
+        accessorKey: 'usedMargin',
+        header: t('transactionAccountSnapshotPage.usedMargin'),
+        accessorFn: row => row.usedMargin ?? '--',
+      },
+      {
+        id: 'freeMargin',
+        accessorKey: 'freeMargin',
+        header: t('transactionAccountSnapshotPage.freeMargin'),
+        accessorFn: row => row.freeMargin ?? '--',
+      },
+      {
+        id: 'marginLevel',
+        accessorKey: 'marginLevel',
+        header: t('transactionAccountSnapshotPage.marginLevel'),
+        accessorFn: row => row.marginLevel ?? '--',
+      },
+      {
+        id: 'lever',
+        accessorKey: 'lever',
+        header: t('transactionAccountSnapshotPage.leverage'),
+        accessorFn: row => row.lever ?? '--',
+      },
+      {
+        id: 'positionOrders',
+        accessorKey: 'positionOrders',
+        header: t('transactionAccountSnapshotPage.openOrders'),
+        accessorFn: row => row.positionOrders ?? '--',
+      },
+      {
+        id: 'positionLots',
+        accessorKey: 'positionLots',
+        header: t('transactionAccountSnapshotPage.openLots'),
+        accessorFn: row => row.positionLots ?? '--',
+      },
+      {
+        id: 'floatingPl',
+        accessorKey: 'floatingPl',
+        header: t('transactionAccountSnapshotPage.floatingProfitLoss'),
+        accessorFn: row => row.floatingPl ?? '--',
+      },
+    ],
+    [t, triggeringEventRes],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('transaction-account-snapshot-table', allColumns);
 

@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   CrmDealAccountLimitOrderItem,
   CrmDealAccountLimitOrderParams,
@@ -155,85 +155,88 @@ export const LimitPage = ({ id }: { id: string }) => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<CrmDealAccountLimitOrderItem, unknown>[] = [
-    {
-      id: 'No',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'accountName',
-      header: t('table.fullName'),
-      cell: ({ row }) => row?.original?.params?.accountName || '-',
-    },
-    {
-      id: 'login',
-      header: t('table.tradingAccount'),
-      cell: ({ row }) => row?.original?.login || '-',
-    },
-    {
-      id: 'type',
-      header: t('table.transactionType'),
-      cell: ({ row }) => transactionTypeMap[row?.original?.type || 0] || '-',
-    },
-    {
-      id: 'symbol',
-      header: t('table.symbol'),
-      cell: ({ row }) => row?.original?.symbol || '-',
-    },
-    {
-      id: 'volume',
-      header: t('table.volume'),
-      cell: ({ row }) => formatVolume(row?.original, row?.original?.serverType || 0),
-    },
-    {
-      id: 'price',
-      header: t('table.orderPlacementPrice'),
-      cell: ({ row }) => row?.original?.price || '-',
-    },
-    {
-      id: 'time',
-      header: t('table.orderPlacementTime'),
-      cell: ({ row }) => row?.original?.time || '-',
-    },
-    {
-      id: 'priceCur',
-      header: t('table.currentPrice'),
-      cell: ({ row }) => row?.original?.priceCur || '-',
-    },
-    {
-      id: 'ticket',
-      header: t('table.orderNumber'),
-      cell: ({ row }) => row?.original?.ticket || '-',
-    },
-    {
-      id: 'comment',
-      header: t('table.comment'),
-      cell: ({ row }) => row?.original?.comment || '-',
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+  const allColumns = useMemo<CRMColumnDef<CrmDealAccountLimitOrderItem, unknown>[]>(
+    () => [
+      {
+        id: 'No',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-      cell: ({ row }) => (
-        <RrhDialog
-          title={t('common.detail', { field: t('limitOrderPage.limitOrder') })}
-          trigger={
-            <RrhButton variant="ghost" type="button">
-              {t('common.View')}
-            </RrhButton>
-          }
-          confirmShow={false}
-          variant="large"
-        >
-          <DetailInfo itemInfo={row.original} />
-        </RrhDialog>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'accountName',
+        header: t('table.fullName'),
+        cell: ({ row }) => row?.original?.params?.accountName || '-',
+      },
+      {
+        id: 'login',
+        header: t('table.tradingAccount'),
+        cell: ({ row }) => row?.original?.login || '-',
+      },
+      {
+        id: 'type',
+        header: t('table.transactionType'),
+        cell: ({ row }) => transactionTypeMap[row?.original?.type || 0] || '-',
+      },
+      {
+        id: 'symbol',
+        header: t('table.symbol'),
+        cell: ({ row }) => row?.original?.symbol || '-',
+      },
+      {
+        id: 'volume',
+        header: t('table.volume'),
+        cell: ({ row }) => formatVolume(row?.original, row?.original?.serverType || 0),
+      },
+      {
+        id: 'price',
+        header: t('table.orderPlacementPrice'),
+        cell: ({ row }) => row?.original?.price || '-',
+      },
+      {
+        id: 'time',
+        header: t('table.orderPlacementTime'),
+        cell: ({ row }) => row?.original?.time || '-',
+      },
+      {
+        id: 'priceCur',
+        header: t('table.currentPrice'),
+        cell: ({ row }) => row?.original?.priceCur || '-',
+      },
+      {
+        id: 'ticket',
+        header: t('table.orderNumber'),
+        cell: ({ row }) => row?.original?.ticket || '-',
+      },
+      {
+        id: 'comment',
+        header: t('table.comment'),
+        cell: ({ row }) => row?.original?.comment || '-',
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <RrhDialog
+            title={t('common.detail', { field: t('limitOrderPage.limitOrder') })}
+            trigger={
+              <RrhButton variant="ghost" type="button">
+                {t('common.View')}
+              </RrhButton>
+            }
+            confirmShow={false}
+            variant="large"
+          >
+            <DetailInfo itemInfo={row.original} />
+          </RrhDialog>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('limit-table', allColumns);
 

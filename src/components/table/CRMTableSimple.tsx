@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from './DataTable';
 import { CrmUserItem } from '@/api/hooks/account';
@@ -21,60 +22,63 @@ export const CRMTableSimple = ({
   onPageSizeChange: (pageSize: number) => void;
   onRowSelect?: (rowData: CrmUserItem) => void;
 }) => {
-  const crmColumns: ColumnDef<CrmUserItem>[] = [
-    {
-      id: 'select',
-      header: () => <div></div>,
-      cell: ({ row, table }) => (
-        <input
-          type="radio"
-          name="tableRowSelection"
-          checked={row.getIsSelected()}
-          onChange={() => {
-            table.getRowModel().rows.forEach(r => {
-              r.toggleSelected(false);
-            });
-            row.toggleSelected(true);
-            onRowSelect?.(row.original);
-          }}
-          className="h-4 w-4 cursor-pointer accent-[#1E1E1E]"
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      id: 'userName',
-      header: 'userName',
-      accessorFn: row => row.userName,
-      cell: ({ row }) => (
-        <div>
-          <div>{row.original.userName}</div>
-          <div>{row.original.showId}</div>
-        </div>
-      ),
-    },
-    {
-      id: 'mobile',
-      header: 'Mobile',
-      cell: ({ row }) => (
-        <div className="whitespace-pre-wrap">
-          <span>{row.original.mzone ? `+${row.original.mzone} ` : ''}</span>
-          <span>{row.original.mobile}</span>
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'crmRebateLevel',
-      header: 'Level',
-      cell: ({ row }) => (
-        <div className="max-w-25 whitespace-pre-wrap">
-          <span>{row.original.crmRebateLevel?.levelName || '-'}</span>
-        </div>
-      ),
-    },
-  ];
+  const crmColumns = useMemo<ColumnDef<CrmUserItem>[]>(
+    () => [
+      {
+        id: 'select',
+        header: () => <div></div>,
+        cell: ({ row, table }) => (
+          <input
+            type="radio"
+            name="tableRowSelection"
+            checked={row.getIsSelected()}
+            onChange={() => {
+              table.getRowModel().rows.forEach(r => {
+                r.toggleSelected(false);
+              });
+              row.toggleSelected(true);
+              onRowSelect?.(row.original);
+            }}
+            className="h-4 w-4 cursor-pointer accent-[#1E1E1E]"
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        id: 'userName',
+        header: 'userName',
+        accessorFn: row => row.userName,
+        cell: ({ row }) => (
+          <div>
+            <div>{row.original.userName}</div>
+            <div>{row.original.showId}</div>
+          </div>
+        ),
+      },
+      {
+        id: 'mobile',
+        header: 'Mobile',
+        cell: ({ row }) => (
+          <div className="whitespace-pre-wrap">
+            <span>{row.original.mzone ? `+${row.original.mzone} ` : ''}</span>
+            <span>{row.original.mobile}</span>
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'crmRebateLevel',
+        header: 'Level',
+        cell: ({ row }) => (
+          <div className="max-w-25 whitespace-pre-wrap">
+            <span>{row.original.crmRebateLevel?.levelName || '-'}</span>
+          </div>
+        ),
+      },
+    ],
+    [onRowSelect],
+  );
   return data ? (
     <DataTable
       columns={crmColumns}

@@ -6,6 +6,7 @@ import { Plus, TrendingUp } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { passwordSchema } from '@/lib/validators';
 import { FormSelect } from '@/components/form/FormSelect';
 import { colorPreferenceOptions, crmAccountTypeOptions, roleOptions } from '@/lib/const';
 import { FormPhoneInput } from '@/components/form/FormPhoneInput';
@@ -38,15 +39,7 @@ const addUserSchema = (t: TFunction<'translation', undefined>) => {
       .min(1, t('rules.required', { field: t('rules.email') }))
       .email(t('rules.pattern', { field: t('rules.email') })),
     inviter: z.string().optional(),
-    pwd: z
-      .string()
-      .min(8, t('rules.limitLength', { field: 8 }))
-      .max(20, t('rules.limitLength', { field: 20 }))
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/,
-        t('rules.pattern', { field: t('rules.pwd') }),
-      )
-      .or(z.literal('')),
+    pwd: passwordSchema(t, { optional: true }),
     preferenceLanguage: z
       .string()
       .min(1, t('rules.required', { field: t('rules.preferenceLanguage') })),

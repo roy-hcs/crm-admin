@@ -141,98 +141,101 @@ export const LimitOrderPage = () => {
     });
     setPageNum(0);
   };
-  const allColumns: CRMColumnDef<LimitOrderListItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('CRMAccountPage.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'userName',
-      header: t('CRMAccountPage.UserName'),
-      accessorFn: row => row.params.accountName,
-    },
-    {
-      id: 'login',
-      header: t('table.tradingAccount'),
-      accessorFn: row => row.login,
-    },
-    {
-      id: 'type',
-      header: t('table.transactionType'), // 0: buy, 1: sell
-      accessorFn: row =>
-        transactionTypeMap[row.type as keyof typeof transactionTypeMap] || row.type,
-    },
-    {
-      id: 'symbol',
-      header: t('table.symbol'),
-      accessorFn: row => row.symbol,
-    },
-    {
-      id: 'tradeCount',
-      header: t('table.volume'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        return rowData.volume && rowData.lotSize ? (
-          <div>
-            {formatVolume(rowData.volume, selectedServer?.serviceType || 0, rowData.lotSize)}{' '}
-          </div>
-        ) : (
-          <div>-</div>
-        );
+  const allColumns = useMemo<CRMColumnDef<LimitOrderListItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('CRMAccountPage.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'openPrice',
-      header: t('table.orderPlacementPrice'),
-      cell: ({ row }) => {
-        return <div>{(row.original.price || 0).toFixed(row.original.digits || 2)}</div>;
+      {
+        id: 'userName',
+        header: t('CRMAccountPage.UserName'),
+        accessorFn: row => row.params.accountName,
       },
-    },
-    {
-      id: 'openTime',
-      header: t('table.orderPlacementTime'),
-      accessorFn: row => row.time,
-    },
-    {
-      id: 'currentPrice',
-      header: t('table.currentPrice'),
-      cell: ({ row }) => {
-        return <div>{(row.original.priceCur || 0).toFixed(row.original.digits || 2)}</div>;
+      {
+        id: 'login',
+        header: t('table.tradingAccount'),
+        accessorFn: row => row.login,
       },
-    },
-    {
-      id: 'ticket',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.ticket,
-    },
-    {
-      id: 'comment',
-      header: t('table.comment'),
-      accessorFn: row => row.comment,
-    },
-    {
-      id: 'operate',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'type',
+        header: t('table.transactionType'), // 0: buy, 1: sell
+        accessorFn: row =>
+          transactionTypeMap[row.type as keyof typeof transactionTypeMap] || row.type,
       },
-      cell: ({ row }) => {
-        return (
-          <div>
-            <RrhDialog
-              trigger={<RrhButton variant="ghost">{t('common.View')}</RrhButton>}
-              cancelText={t('common.close')}
-              confirmShow={false}
-              title={t('limitOrderPage.limitOrderDetail')}
-              variant="large"
-            >
-              <LimitOrderDetails data={row.original} />
-            </RrhDialog>
-          </div>
-        );
+      {
+        id: 'symbol',
+        header: t('table.symbol'),
+        accessorFn: row => row.symbol,
       },
-    },
-  ];
+      {
+        id: 'tradeCount',
+        header: t('table.volume'),
+        cell: ({ row }) => {
+          const rowData = row.original;
+          return rowData.volume && rowData.lotSize ? (
+            <div>
+              {formatVolume(rowData.volume, selectedServer?.serviceType || 0, rowData.lotSize)}{' '}
+            </div>
+          ) : (
+            <div>-</div>
+          );
+        },
+      },
+      {
+        id: 'openPrice',
+        header: t('table.orderPlacementPrice'),
+        cell: ({ row }) => {
+          return <div>{(row.original.price || 0).toFixed(row.original.digits || 2)}</div>;
+        },
+      },
+      {
+        id: 'openTime',
+        header: t('table.orderPlacementTime'),
+        accessorFn: row => row.time,
+      },
+      {
+        id: 'currentPrice',
+        header: t('table.currentPrice'),
+        cell: ({ row }) => {
+          return <div>{(row.original.priceCur || 0).toFixed(row.original.digits || 2)}</div>;
+        },
+      },
+      {
+        id: 'ticket',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.ticket,
+      },
+      {
+        id: 'comment',
+        header: t('table.comment'),
+        accessorFn: row => row.comment,
+      },
+      {
+        id: 'operate',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => {
+          return (
+            <div>
+              <RrhDialog
+                trigger={<RrhButton variant="ghost">{t('common.View')}</RrhButton>}
+                cancelText={t('common.close')}
+                confirmShow={false}
+                title={t('limitOrderPage.limitOrderDetail')}
+                variant="large"
+              >
+                <LimitOrderDetails data={row.original} />
+              </RrhDialog>
+            </div>
+          );
+        },
+      },
+    ],
+    [t, selectedServer],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility<LimitOrderListItem>('limit-orders-table', allColumns);
 

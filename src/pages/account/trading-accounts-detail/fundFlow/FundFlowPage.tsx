@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   CrmDealAccountFundFlowItem,
   CrmDealAccountFundFlowParams,
@@ -62,52 +62,55 @@ export const FundFlowPage = ({ id }: { id: string }) => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<CrmDealAccountFundFlowItem, unknown>[] = [
-    {
-      id: 'No',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'login',
-      header: t('table.tradingAccount'),
-      cell: ({ row }) => row?.original?.login || '-',
-    },
-    {
-      id: 'name',
-      header: t('table.fullName'),
-      cell: ({ row }) => row?.original?.name || '-',
-    },
-    {
-      id: 'flowType',
-      header: t('table.operationType'),
-      cell: ({ row }) => {
-        const type = oprType(row.original);
-        return type ? t(type) : '-';
+  const allColumns = useMemo<CRMColumnDef<CrmDealAccountFundFlowItem, unknown>[]>(
+    () => [
+      {
+        id: 'No',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'profit',
-      header: t('tradingAccountTransactions.profit'),
-      cell: ({ row }) =>
-        `${row?.original?.profit && row?.original?.profit > 0 ? '+' : ''}${(row?.original?.profit || 0).toFixed(row?.original?.digits || 2)} ${row?.original?.currency}`,
-    },
-    {
-      id: 'timeStr',
-      header: t('table.time'),
-      cell: ({ row }) => row?.original?.timeStr || '-',
-    },
-    {
-      id: 'ticket',
-      header: t('table.orderNumber'),
-      cell: ({ row }) => row?.original?.ticket || '-',
-    },
-    {
-      id: 'comment',
-      header: t('table.comment'),
-      cell: ({ row }) => row?.original?.comment || '-',
-    },
-  ];
+      {
+        id: 'login',
+        header: t('table.tradingAccount'),
+        cell: ({ row }) => row?.original?.login || '-',
+      },
+      {
+        id: 'name',
+        header: t('table.fullName'),
+        cell: ({ row }) => row?.original?.name || '-',
+      },
+      {
+        id: 'flowType',
+        header: t('table.operationType'),
+        cell: ({ row }) => {
+          const type = oprType(row.original);
+          return type ? t(type) : '-';
+        },
+      },
+      {
+        id: 'profit',
+        header: t('tradingAccountTransactions.profit'),
+        cell: ({ row }) =>
+          `${row?.original?.profit && row?.original?.profit > 0 ? '+' : ''}${(row?.original?.profit || 0).toFixed(row?.original?.digits || 2)} ${row?.original?.currency}`,
+      },
+      {
+        id: 'timeStr',
+        header: t('table.time'),
+        cell: ({ row }) => row?.original?.timeStr || '-',
+      },
+      {
+        id: 'ticket',
+        header: t('table.orderNumber'),
+        cell: ({ row }) => row?.original?.ticket || '-',
+      },
+      {
+        id: 'comment',
+        header: t('table.comment'),
+        cell: ({ row }) => row?.original?.comment || '-',
+      },
+    ],
+    [t],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('fund-flow-table', allColumns);
 

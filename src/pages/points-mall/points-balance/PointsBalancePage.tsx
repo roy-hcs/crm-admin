@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { PointsBalanceItem, PointsBalanceParams, usePointsBalance } from '@/api/hooks/pointsMall';
@@ -51,111 +51,114 @@ export function PointsBalancePage() {
     setPageSize(10);
   };
 
-  const allColumns: CRMColumnDef<PointsBalanceItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'lastName',
-      header: t('table.fullName'),
-      cell: ({ row }) => {
-        if (row.original?.lastName && row.original?.name) {
-          return <div>{row.original.lastName + ' ' + row.original.name}</div>;
-        } else {
-          return '-';
-        }
+  const allColumns = useMemo<CRMColumnDef<PointsBalanceItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'showId',
-      header: t('pointspBalance.CRMID'),
-      accessorFn: row => row.showId,
-      cell: ({ row }) => row?.original?.showId || '-',
-    },
-    {
-      id: 'email',
-      header: t('table.email'),
-      accessorFn: row => row.email,
-      cell: ({ row }) => row?.original?.email || '-',
-    },
-    {
-      id: 'pointsBalance',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('PointsHistory.pointsBalance')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="pointsBalance"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
+      {
+        id: 'lastName',
+        header: t('table.fullName'),
+        cell: ({ row }) => {
+          if (row.original?.lastName && row.original?.name) {
+            return <div>{row.original.lastName + ' ' + row.original.name}</div>;
+          } else {
+            return '-';
+          }
+        },
+      },
+      {
+        id: 'showId',
+        header: t('pointspBalance.CRMID'),
+        accessorFn: row => row.showId,
+        cell: ({ row }) => row?.original?.showId || '-',
+      },
+      {
+        id: 'email',
+        header: t('table.email'),
+        accessorFn: row => row.email,
+        cell: ({ row }) => row?.original?.email || '-',
+      },
+      {
+        id: 'pointsBalance',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('PointsHistory.pointsBalance')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="pointsBalance"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        accessorFn: row => row.pointsBalance,
+        cell: ({ row }) => row?.original?.pointsBalance || '-',
+      },
+      {
+        id: 'earnPoints',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('pointspBalance.earnPoints')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="earnPoints"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        accessorFn: row => row.earnPoints,
+        cell: ({ row }) => row?.original?.earnPoints || '-',
+      },
+      {
+        id: 'usedPoints',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('pointspBalance.usedPoints')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="usedPoints"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        accessorFn: row => row.usedPoints,
+        cell: ({ row }) => row?.original?.usedPoints || '-',
+      },
+      {
+        id: 'operate',
+        header: t('common.Operation'),
+        cell: ({ row }) => (
+          <div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[{ label: t('common.View'), value: 'view' }]}
+              callToAction={() => {
+                // 跳转到积分变动记录页面，带上showId参数
+                navigate(`/points-mall/points-history?showId=${row?.original?.showId || ''}`);
+              }}
             />
           </div>
-        );
+        ),
+        fixed: 'right',
+        size: 50,
       },
-      accessorFn: row => row.pointsBalance,
-      cell: ({ row }) => row?.original?.pointsBalance || '-',
-    },
-    {
-      id: 'earnPoints',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('pointspBalance.earnPoints')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="earnPoints"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      accessorFn: row => row.earnPoints,
-      cell: ({ row }) => row?.original?.earnPoints || '-',
-    },
-    {
-      id: 'usedPoints',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('pointspBalance.usedPoints')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="usedPoints"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      accessorFn: row => row.usedPoints,
-      cell: ({ row }) => row?.original?.usedPoints || '-',
-    },
-    {
-      id: 'operate',
-      header: t('common.Operation'),
-      cell: ({ row }) => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[{ label: t('common.View'), value: 'view' }]}
-            callToAction={() => {
-              // 跳转到积分变动记录页面，带上showId参数
-              navigate(`/points-mall/points-history?showId=${row?.original?.showId || ''}`);
-            }}
-          />
-        </div>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+    ],
+    [t, orderByColumn, isAsc, navigate],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('points-mall-points-balance-table', allColumns);

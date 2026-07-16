@@ -7,7 +7,7 @@ import {
 } from '@/api/hooks/review';
 import { Button } from '@/components/ui/button';
 import { RefreshCcw, Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatDate } from '@/lib/utils';
 import { RrhSelect } from '@/components/common/RrhSelect';
@@ -99,90 +99,93 @@ export const WithdrawalRecordPage = ({ userId }: { userId: string }) => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<WithdrawItem, unknown>[] = [
-    {
-      id: 'orderNumber',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.orderNum,
-    },
-    {
-      id: 'withdrawalMethods',
-      header: t('table.withdrawMethods'),
-      cell: ({ row }) => {
-        const method = row.original.method;
-        return method
-          ? outMoneyMethodList?.data?.find(item => item.id === method.toString())?.name || '-'
-          : '-';
+  const allColumns = useMemo<CRMColumnDef<WithdrawItem, unknown>[]>(
+    () => [
+      {
+        id: 'orderNumber',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.orderNum,
       },
-    },
-    {
-      id: 'withdrawalAccount',
-      header: t('table.withdrawAccount'),
-      cell: ({ row }) => {
-        if (row.original.login) {
-          return row.original.aliasName ? (
-            <div className="flex flex-col">
-              <div>{row.original.aliasName}</div>
+      {
+        id: 'withdrawalMethods',
+        header: t('table.withdrawMethods'),
+        cell: ({ row }) => {
+          const method = row.original.method;
+          return method
+            ? outMoneyMethodList?.data?.find(item => item.id === method.toString())?.name || '-'
+            : '-';
+        },
+      },
+      {
+        id: 'withdrawalAccount',
+        header: t('table.withdrawAccount'),
+        cell: ({ row }) => {
+          if (row.original.login) {
+            return row.original.aliasName ? (
+              <div className="flex flex-col">
+                <div>{row.original.aliasName}</div>
+                <div>{row.original.login}</div>
+              </div>
+            ) : (
               <div>{row.original.login}</div>
+            );
+          } else if (row.original.walletId) {
+            return (
+              <div>
+                {t('table.wallet')} ({row.original.walletCurrency})
+              </div>
+            );
+          }
+        },
+      },
+      {
+        id: 'balance',
+        header: t('table.balance'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.balance} {row.original.withdrawCurrency}
+          </div>
+        ),
+      },
+      {
+        id: 'withdrawAmount',
+        header: t('table.withdrawAmount'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.withdraw} {row.original.withdrawCurrency}
+          </div>
+        ),
+      },
+      {
+        id: 'commission',
+        header: t('table.commission'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.fee} {row.original.feeCurrency}
+          </div>
+        ),
+      },
+      {
+        id: 'amountOfReceipt',
+        header: t('table.amountOfReceipt'),
+        cell: ({ row }) =>
+          row.original.factWithdraw ? (
+            <div>
+              {row.original.factWithdraw} {row.original.targetCurrency}
             </div>
           ) : (
-            <div>{row.original.login}</div>
-          );
-        } else if (row.original.walletId) {
-          return (
-            <div>
-              {t('table.wallet')} ({row.original.walletCurrency})
-            </div>
-          );
-        }
+            <div>-</div>
+          ),
       },
-    },
-    {
-      id: 'balance',
-      header: t('table.balance'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.balance} {row.original.withdrawCurrency}
-        </div>
-      ),
-    },
-    {
-      id: 'withdrawAmount',
-      header: t('table.withdrawAmount'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.withdraw} {row.original.withdrawCurrency}
-        </div>
-      ),
-    },
-    {
-      id: 'commission',
-      header: t('table.commission'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.fee} {row.original.feeCurrency}
-        </div>
-      ),
-    },
-    {
-      id: 'amountOfReceipt',
-      header: t('table.amountOfReceipt'),
-      cell: ({ row }) =>
-        row.original.factWithdraw ? (
-          <div>
-            {row.original.factWithdraw} {row.original.targetCurrency}
-          </div>
-        ) : (
-          <div>-</div>
-        ),
-    },
-    {
-      id: 'finishTime',
-      header: t('table.finishTime'),
-      accessorFn: row => row.verifyTime,
-      cell: ({ row }) => <div>{row.original.verifyTime || '-'}</div>,
-    },
-  ];
+      {
+        id: 'finishTime',
+        header: t('table.finishTime'),
+        accessorFn: row => row.verifyTime,
+        cell: ({ row }) => <div>{row.original.verifyTime || '-'}</div>,
+      },
+    ],
+    [t, outMoneyMethodList],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('withdrawal-record-table', allColumns);

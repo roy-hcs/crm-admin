@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import {
@@ -81,190 +81,193 @@ export const SignalReviewPage = () => {
   const [id, setId] = useState('');
   const [open, setOpen] = useState(false);
 
-  const allColumns: CRMColumnDef<MamSignalSourceItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'name',
-      header: t('signals.name'),
-      cell: ({ row }) => row?.original?.name || '-',
-    },
-    {
-      id: 'userName',
-      header: t('signals.signalSourceAuthor'),
-      cell: ({ row }) => {
-        return (
-          <div>
+  const allColumns = useMemo<CRMColumnDef<MamSignalSourceItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'name',
+        header: t('signals.name'),
+        cell: ({ row }) => row?.original?.name || '-',
+      },
+      {
+        id: 'userName',
+        header: t('signals.signalSourceAuthor'),
+        cell: ({ row }) => {
+          return (
             <div>
-              <span>{row?.original?.userLastName}</span>
-              <span>{row?.original?.userName}</span>
+              <div>
+                <span>{row?.original?.userLastName}</span>
+                <span>{row?.original?.userName}</span>
+              </div>
+              <span> {row?.original?.email}</span>
             </div>
-            <span> {row?.original?.email}</span>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'tradingAccount',
-      header: t('table.tradingAccount'),
-      cell: ({ row }) => {
-        return (
-          <div>
+      {
+        id: 'tradingAccount',
+        header: t('table.tradingAccount'),
+        cell: ({ row }) => {
+          return (
             <div>
-              <span>{row?.original?.account}</span>
+              <div>
+                <span>{row?.original?.account}</span>
+              </div>
+              <span> {row?.original?.server}</span>
             </div>
-            <span> {row?.original?.server}</span>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'subscribeFee',
-      label: t('signals.subscribeFee'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('signals.subscribeFee')}</div>
-            <RrhSorter
-              isAsc={isAsc}
-              setIsAsc={setIsAsc}
-              setOrderByColumn={setOrderByColumn}
-              orderByColumn={orderByColumn}
-              column="subscribeFee"
-            />
-          </div>
-        );
+      {
+        id: 'subscribeFee',
+        label: t('signals.subscribeFee'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('signals.subscribeFee')}</div>
+              <RrhSorter
+                isAsc={isAsc}
+                setIsAsc={setIsAsc}
+                setOrderByColumn={setOrderByColumn}
+                orderByColumn={orderByColumn}
+                column="subscribeFee"
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => row?.original?.subscribeFee || '-',
       },
-      cell: ({ row }) => row?.original?.subscribeFee || '-',
-    },
-    {
-      id: 'performanceFeeRatio',
-      header: t('signalReview.performanceFeeRatio'),
-      cell: ({ row }) => row?.original?.performanceFeeRatio || '-',
-    },
-    {
-      id: 'publicShow',
-      header: t('signals.publicShow'),
-      cell: ({ row }) => {
-        if (row?.original?.publicShow === 1) {
-          return t('signalReview.show');
-        } else {
-          return t('signalReview.hide');
-        }
+      {
+        id: 'performanceFeeRatio',
+        header: t('signalReview.performanceFeeRatio'),
+        cell: ({ row }) => row?.original?.performanceFeeRatio || '-',
       },
-    },
-    {
-      id: 'minBalanceForSubscription',
-      header: t('signalReview.minBalanceForSubscription'),
-      cell: ({ row }) => row?.original?.minBalanceForSubscription || '-',
-    },
-    {
-      id: 'upperLimit',
-      label: t('signalReview.upperLimit'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('signalReview.upperLimit')}</div>
-            <RrhSorter
-              isAsc={isAsc}
-              setIsAsc={setIsAsc}
-              setOrderByColumn={setOrderByColumn}
-              orderByColumn={orderByColumn}
-              column="upperLimit"
-            />
-          </div>
-        );
+      {
+        id: 'publicShow',
+        header: t('signals.publicShow'),
+        cell: ({ row }) => {
+          if (row?.original?.publicShow === 1) {
+            return t('signalReview.show');
+          } else {
+            return t('signalReview.hide');
+          }
+        },
       },
-      cell: ({ row }) => row?.original?.upperLimit || '-',
-    },
-    {
-      id: 'verifyStatus',
-      label: t('table.status'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.status')}</div>
-            <RrhSorter
-              isAsc={isAsc}
-              setIsAsc={setIsAsc}
-              setOrderByColumn={setOrderByColumn}
-              orderByColumn={orderByColumn}
-              column="verifyStatus"
-            />
-          </div>
-        );
+      {
+        id: 'minBalanceForSubscription',
+        header: t('signalReview.minBalanceForSubscription'),
+        cell: ({ row }) => row?.original?.minBalanceForSubscription || '-',
       },
-      cell: ({ row }) => {
-        const text = SignalReviewVerifyStatusOptions.find(
-          i => Number(i.value) === row.original.verifyStatus,
-        );
-        return text ? t(text?.label) : '-';
+      {
+        id: 'upperLimit',
+        label: t('signalReview.upperLimit'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('signalReview.upperLimit')}</div>
+              <RrhSorter
+                isAsc={isAsc}
+                setIsAsc={setIsAsc}
+                setOrderByColumn={setOrderByColumn}
+                orderByColumn={orderByColumn}
+                column="upperLimit"
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => row?.original?.upperLimit || '-',
       },
-    },
-    {
-      id: 'createTime',
-      label: t('table.applicationTime'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.applicationTime')}</div>
-            <RrhSorter
-              isAsc={isAsc}
-              setIsAsc={setIsAsc}
-              setOrderByColumn={setOrderByColumn}
-              orderByColumn={orderByColumn}
-              column="createTime"
-            />
-          </div>
-        );
+      {
+        id: 'verifyStatus',
+        label: t('table.status'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.status')}</div>
+              <RrhSorter
+                isAsc={isAsc}
+                setIsAsc={setIsAsc}
+                setOrderByColumn={setOrderByColumn}
+                orderByColumn={orderByColumn}
+                column="verifyStatus"
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          const text = SignalReviewVerifyStatusOptions.find(
+            i => Number(i.value) === row.original.verifyStatus,
+          );
+          return text ? t(text?.label) : '-';
+        },
       },
-      cell: ({ row }) => row?.original?.createTime || '-',
-    },
-    {
-      id: 'verifyTime',
-      label: t('table.verifyTime'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.verifyTime')}</div>
-            <RrhSorter
-              isAsc={isAsc}
-              setIsAsc={setIsAsc}
-              setOrderByColumn={setOrderByColumn}
-              orderByColumn={orderByColumn}
-              column="verifyTime"
-            />
-          </div>
-        );
+      {
+        id: 'createTime',
+        label: t('table.applicationTime'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.applicationTime')}</div>
+              <RrhSorter
+                isAsc={isAsc}
+                setIsAsc={setIsAsc}
+                setOrderByColumn={setOrderByColumn}
+                orderByColumn={orderByColumn}
+                column="createTime"
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => row?.original?.createTime || '-',
       },
-      cell: ({ row }) => row?.original?.verifyTime || '-',
-    },
-    {
-      id: 'operation',
-      label: t('common.Operation'),
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'verifyTime',
+        label: t('table.verifyTime'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.verifyTime')}</div>
+              <RrhSorter
+                isAsc={isAsc}
+                setIsAsc={setIsAsc}
+                setOrderByColumn={setOrderByColumn}
+                orderByColumn={orderByColumn}
+                column="verifyTime"
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => row?.original?.verifyTime || '-',
       },
-      cell: ({ row }) => (
-        <RrhButton
-          variant="ghost"
-          onClick={() => {
-            setId(row?.original?.id || '');
-            setOpen(true);
-          }}
-        >
-          {[-1, 2].includes(Number(row?.original?.verifyStatus))
-            ? t('table.audit')
-            : t('common.View')}
-        </RrhButton>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'operation',
+        label: t('common.Operation'),
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <RrhButton
+            variant="ghost"
+            onClick={() => {
+              setId(row?.original?.id || '');
+              setOpen(true);
+            }}
+          >
+            {[-1, 2].includes(Number(row?.original?.verifyStatus))
+              ? t('table.audit')
+              : t('common.View')}
+          </RrhButton>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, isAsc, setIsAsc, setOrderByColumn, orderByColumn, setId, setOpen],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('signal-review-table', allColumns);

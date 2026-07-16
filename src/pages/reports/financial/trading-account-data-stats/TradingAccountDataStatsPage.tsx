@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { DataStatisticsItem, DataStatisticsParams, useDataStatistics } from '@/api/hooks/report';
@@ -76,340 +76,343 @@ export function TradingAccountDataStatsPage() {
     setPageSize(10);
     setServerId(server?.rows?.[0]?.id || '');
   };
-  const allColumns: CRMColumnDef<DataStatisticsItem, unknown>[] = [
-    {
-      id: 'No.',
-      size: 50,
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'name',
-      header: t('tradingAccountTransactions.name'),
-      accessorFn: row => row.name,
-    },
-    {
-      id: 'login',
-
-      header: t('tradingAccountTransactions.login'),
-      accessorFn: row => row.login,
-    },
-    {
-      id: 'username',
-
-      header: t('tradingAccountDataStats.username'),
-
-      cell: ({ row }) => {
-        if (row?.original?.username) {
-          return row.original.username;
-        }
-        return '--';
+  const allColumns = useMemo<CRMColumnDef<DataStatisticsItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        size: 50,
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'userLevel',
-
-      header: t('tradingAccountDataStats.userLevel'),
-
-      cell: ({ row }) => {
-        if (row?.original?.userLevel) {
-          return row.original.userLevel;
-        }
-        return '--';
+      {
+        id: 'name',
+        header: t('tradingAccountTransactions.name'),
+        accessorFn: row => row.name,
       },
-    },
-    {
-      id: 'directBrokerName',
+      {
+        id: 'login',
 
-      header: t('tradingAccountDataStats.directBrokerName'),
-
-      cell: ({ row }) => {
-        if (row?.original?.directBrokerName) {
-          return row.original.directBrokerName;
-        }
-        return '--';
+        header: t('tradingAccountTransactions.login'),
+        accessorFn: row => row.login,
       },
-    },
-    {
-      id: 'positiveBalance',
+      {
+        id: 'username',
 
-      header: t('tradingAccountDataStats.positiveBalance'),
+        header: t('tradingAccountDataStats.username'),
 
-      cell: ({ row }) => {
-        if (row?.original?.positiveBalanceCount || row?.original?.positiveBalance) {
+        cell: ({ row }) => {
+          if (row?.original?.username) {
+            return row.original.username;
+          }
+          return '--';
+        },
+      },
+      {
+        id: 'userLevel',
+
+        header: t('tradingAccountDataStats.userLevel'),
+
+        cell: ({ row }) => {
+          if (row?.original?.userLevel) {
+            return row.original.userLevel;
+          }
+          return '--';
+        },
+      },
+      {
+        id: 'directBrokerName',
+
+        header: t('tradingAccountDataStats.directBrokerName'),
+
+        cell: ({ row }) => {
+          if (row?.original?.directBrokerName) {
+            return row.original.directBrokerName;
+          }
+          return '--';
+        },
+      },
+      {
+        id: 'positiveBalance',
+
+        header: t('tradingAccountDataStats.positiveBalance'),
+
+        cell: ({ row }) => {
+          if (row?.original?.positiveBalanceCount || row?.original?.positiveBalance) {
+            return (
+              <div>
+                <div>{row?.original?.positiveBalanceCount || '0'}</div>
+                <div>{row?.original?.positiveBalance || '0'}</div>
+                <div>{row?.original?.currency}</div>
+              </div>
+            );
+          }
+          return '--';
+        },
+      },
+      {
+        id: 'negativeBalance',
+
+        header: t('tradingAccountDataStats.negativeBalance'),
+
+        cell: ({ row }) => {
+          if (row?.original?.negativeBalanceCount || row?.original?.negativeBalance) {
+            return (
+              <div>
+                <div>{row?.original?.negativeBalanceCount || '0'}</div>
+                <div>{row?.original?.negativeBalance || '0'}</div>
+                <div>{row?.original?.currency}</div>
+              </div>
+            );
+          }
+          return '--';
+        },
+      },
+      {
+        id: 'netDeposit',
+
+        header: t('tradingAccountDataStats.netDeposit'),
+
+        cell: ({ row }) => {
+          if (row?.original?.positiveBalance || row?.original?.negativeBalance) {
+            return (
+              <div>
+                <div>{row?.original?.positiveBalance || '0'}</div>
+                <div>{row?.original?.negativeBalance || '0'}</div>
+                <div>{row?.original?.currency}</div>
+              </div>
+            );
+          }
+          return '--';
+        },
+      },
+      {
+        id: 'balance',
+
+        header: t('tradingAccountDataStats.balance'),
+
+        cell: ({ row }) => {
           return (
             <div>
-              <div>{row?.original?.positiveBalanceCount || '0'}</div>
-              <div>{row?.original?.positiveBalance || '0'}</div>
+              <div>{row?.original?.balance || '0'}</div>
               <div>{row?.original?.currency}</div>
             </div>
           );
-        }
-        return '--';
+        },
       },
-    },
-    {
-      id: 'negativeBalance',
+      {
+        id: 'netWorth',
 
-      header: t('tradingAccountDataStats.negativeBalance'),
+        header: t('tradingAccountDataStats.netWorth'),
 
-      cell: ({ row }) => {
-        if (row?.original?.negativeBalanceCount || row?.original?.negativeBalance) {
+        cell: ({ row }) => {
           return (
             <div>
-              <div>{row?.original?.negativeBalanceCount || '0'}</div>
-              <div>{row?.original?.negativeBalance || '0'}</div>
+              <div>{row?.original?.netWorth || '0'}</div>
               <div>{row?.original?.currency}</div>
             </div>
           );
-        }
-        return '--';
+        },
       },
-    },
-    {
-      id: 'netDeposit',
+      {
+        id: 'credit',
 
-      header: t('tradingAccountDataStats.netDeposit'),
+        header: t('tradingAccountDataStats.credit'),
 
-      cell: ({ row }) => {
-        if (row?.original?.positiveBalance || row?.original?.negativeBalance) {
+        cell: ({ row }) => {
           return (
             <div>
-              <div>{row?.original?.positiveBalance || '0'}</div>
-              <div>{row?.original?.negativeBalance || '0'}</div>
+              <div>{row?.original?.credit || '0'}</div>
               <div>{row?.original?.currency}</div>
             </div>
           );
-        }
-        return '--';
+        },
       },
-    },
-    {
-      id: 'balance',
+      {
+        id: 'usedAdvance',
 
-      header: t('tradingAccountDataStats.balance'),
+        header: t('tradingAccountDataStats.usedAdvance'),
 
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.balance || '0'}</div>
-            <div>{row?.original?.currency}</div>
-          </div>
-        );
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.usedAdvance || '0'}</div>
+              <div>{row?.original?.currency}</div>
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'netWorth',
+      {
+        id: 'usableAdvance',
 
-      header: t('tradingAccountDataStats.netWorth'),
+        header: t('tradingAccountDataStats.usableAdvance'),
 
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.netWorth || '0'}</div>
-            <div>{row?.original?.currency}</div>
-          </div>
-        );
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.usableAdvance || '0'}</div>
+              <div>{row?.original?.currency}</div>
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'credit',
+      {
+        id: 'advanceScale',
 
-      header: t('tradingAccountDataStats.credit'),
+        header: t('tradingAccountDataStats.advanceScale'),
 
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.credit || '0'}</div>
-            <div>{row?.original?.currency}</div>
-          </div>
-        );
+        cell: ({ row }) => {
+          if (row?.original?.advanceScale) {
+            return `${row?.original?.advanceScale}%`;
+          }
+          return '--';
+        },
       },
-    },
-    {
-      id: 'usedAdvance',
+      {
+        id: 'riskScale',
 
-      header: t('tradingAccountDataStats.usedAdvance'),
+        header: t('tradingAccountDataStats.riskScale'),
 
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.usedAdvance || '0'}</div>
-            <div>{row?.original?.currency}</div>
-          </div>
-        );
+        cell: ({ row }) => {
+          if (row?.original?.riskScale) {
+            return `${row?.original?.riskScale}%`;
+          }
+          return '--';
+        },
       },
-    },
-    {
-      id: 'usableAdvance',
+      {
+        id: 'profitPosition',
 
-      header: t('tradingAccountDataStats.usableAdvance'),
+        header: t('tradingAccountDataStats.profitPosition'),
 
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.usableAdvance || '0'}</div>
-            <div>{row?.original?.currency}</div>
-          </div>
-        );
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.profitPosition || '0'}</div>
+              <div>{row?.original?.currency}</div>
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'advanceScale',
+      {
+        id: 'volumePosition',
 
-      header: t('tradingAccountDataStats.advanceScale'),
+        header: t('tradingAccountDataStats.volumePosition'),
 
-      cell: ({ row }) => {
-        if (row?.original?.advanceScale) {
-          return `${row?.original?.advanceScale}%`;
-        }
-        return '--';
+        accessorFn: row => row.volumePosition || 0,
       },
-    },
-    {
-      id: 'riskScale',
+      {
+        id: 'swapsPosition',
 
-      header: t('tradingAccountDataStats.riskScale'),
+        header: t('tradingAccountDataStats.swapsPosition'),
 
-      cell: ({ row }) => {
-        if (row?.original?.riskScale) {
-          return `${row?.original?.riskScale}%`;
-        }
-        return '--';
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.swapsPosition || '0'}</div>
+              <div>{row?.original?.currency}</div>
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'profitPosition',
+      {
+        id: 'profitLoss',
 
-      header: t('tradingAccountDataStats.profitPosition'),
+        header: t('tradingAccountDataStats.profitLoss'),
 
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.profitPosition || '0'}</div>
-            <div>{row?.original?.currency}</div>
-          </div>
-        );
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.profitLoss || '0'}</div>
+              <div>{row?.original?.currency}</div>
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'volumePosition',
+      {
+        id: 'volumeLoss',
 
-      header: t('tradingAccountDataStats.volumePosition'),
+        header: t('tradingAccountDataStats.volumeLoss'),
 
-      accessorFn: row => row.volumePosition || 0,
-    },
-    {
-      id: 'swapsPosition',
-
-      header: t('tradingAccountDataStats.swapsPosition'),
-
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.swapsPosition || '0'}</div>
-            <div>{row?.original?.currency}</div>
-          </div>
-        );
+        accessorFn: row => row.volumeLoss || 0,
       },
-    },
-    {
-      id: 'profitLoss',
+      {
+        id: 'commission',
 
-      header: t('tradingAccountDataStats.profitLoss'),
+        header: t('tradingAccountDataStats.commission'),
 
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.profitLoss || '0'}</div>
-            <div>{row?.original?.currency}</div>
-          </div>
-        );
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.commission || '0'}</div>
+              <div>{row?.original?.currency}</div>
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'volumeLoss',
+      {
+        id: 'swaps',
 
-      header: t('tradingAccountDataStats.volumeLoss'),
+        header: t('tradingAccountDataStats.swaps'),
 
-      accessorFn: row => row.volumeLoss || 0,
-    },
-    {
-      id: 'commission',
-
-      header: t('tradingAccountDataStats.commission'),
-
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.commission || '0'}</div>
-            <div>{row?.original?.currency}</div>
-          </div>
-        );
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.swaps || '0'}</div>
+              <div>{row?.original?.currency}</div>
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'swaps',
+      {
+        id: 'netProfit',
 
-      header: t('tradingAccountDataStats.swaps'),
+        header: t('tradingAccountDataStats.netProfit'),
 
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.swaps || '0'}</div>
-            <div>{row?.original?.currency}</div>
-          </div>
-        );
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.netProfit || '0'}</div>
+              <div>{row?.original?.currency}</div>
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'netProfit',
+      {
+        id: 'netProfitRatio',
 
-      header: t('tradingAccountDataStats.netProfit'),
+        header: t('tradingAccountDataStats.netProfitRatio'),
 
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.netProfit || '0'}</div>
-            <div>{row?.original?.currency}</div>
-          </div>
-        );
+        cell: ({ row }) => {
+          if (row?.original?.netProfitRatio) {
+            return `${row?.original?.netProfitRatio}%`;
+          }
+          return '--';
+        },
       },
-    },
-    {
-      id: 'netProfitRatio',
+      {
+        id: 'rebateTraderAmount',
 
-      header: t('tradingAccountDataStats.netProfitRatio'),
+        header: t('tradingAccountDataStats.rebateTraderAmount'),
 
-      cell: ({ row }) => {
-        if (row?.original?.netProfitRatio) {
-          return `${row?.original?.netProfitRatio}%`;
-        }
-        return '--';
+        accessorFn: row => row.rebateTraderAmount || 0,
       },
-    },
-    {
-      id: 'rebateTraderAmount',
+      {
+        id: 'rebateCommissionAmount',
 
-      header: t('tradingAccountDataStats.rebateTraderAmount'),
+        header: t('tradingAccountDataStats.rebateCommissionAmount'),
 
-      accessorFn: row => row.rebateTraderAmount || 0,
-    },
-    {
-      id: 'rebateCommissionAmount',
+        accessorFn: row => row.rebateCommissionAmount || 0,
+      },
+      {
+        id: 'rebateDepositAmount',
 
-      header: t('tradingAccountDataStats.rebateCommissionAmount'),
+        header: t('tradingAccountDataStats.rebateDepositAmount'),
 
-      accessorFn: row => row.rebateCommissionAmount || 0,
-    },
-    {
-      id: 'rebateDepositAmount',
-
-      header: t('tradingAccountDataStats.rebateDepositAmount'),
-
-      accessorFn: row => row.rebateDepositAmount || 0,
-    },
-  ];
+        accessorFn: row => row.rebateDepositAmount || 0,
+      },
+    ],
+    [t],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('trading-account-data-stats-table', allColumns);
 

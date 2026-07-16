@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
@@ -52,108 +52,111 @@ export const AccountOverviewPage = ({ id }: { id: string }) => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<CrmUserDealAccountItem, unknown>[] = [
-    {
-      id: 'No',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'account',
-      header: t('table.tradingAccount'),
-      cell: ({ row }) => row?.original?.account || '-',
-    },
-    {
-      id: 'serverName',
-      header: t('table.server'),
-      cell: ({ row }) => row?.original?.serverName || '-',
-    },
-    {
-      id: 'serverGroup',
-      header: t('table.groups'),
-      cell: ({ row }) => row?.original?.serverGroup || '-',
-    },
-    {
-      id: 'typeName',
-      header: t('common.accountType'),
-      cell: ({ row }) => row?.original?.params?.typeName || '-',
-    },
-    {
-      id: 'lever',
-      header: t('common.level'),
-      cell: ({ row }) => (row?.original?.lever ? `1:${row.original.lever}` : '-'),
-    },
-    {
-      id: 'balance',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.balance')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="balance"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+  const allColumns = useMemo<CRMColumnDef<CrmUserDealAccountItem, unknown>[]>(
+    () => [
+      {
+        id: 'No',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-      cell: ({ row }) =>
-        `${(row?.original?.balance || 0).toFixed(2)} ${row?.original?.currency || ''}`,
-    },
-    {
-      id: 'netWorth',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.netWorth')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="netWorth"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'account',
+        header: t('table.tradingAccount'),
+        cell: ({ row }) => row?.original?.account || '-',
       },
-      cell: ({ row }) =>
-        `${(row?.original?.netWorth || 0).toFixed(2)} ${row?.original?.currency || ''}`,
-    },
-    {
-      id: 'creditAmount',
-      header: t('table.creditAmount'),
-      cell: ({ row }) =>
-        `${(row?.original?.creditAmount || 0).toFixed(2)} ${row?.original?.currency || ''}`,
-    },
-    {
-      id: 'registerTime',
-      header: t('CRMAccountPage.registerTime'),
-      cell: ({ row }) => row?.original?.registerTime || '-',
-    },
-    {
-      id: 'operation',
-      header: t('common.Operation'),
-      cell: ({ row }) => (
-        <RrhButton
-          onClick={() => {
-            const url = `/account/trading-accounts/detail?id=${row.original.id}&serviceType=${row.original.serviceType}`;
-            openTab({
-              key: url,
-              title: t('trading.tradingAccountDetail'),
-              path: url,
-            });
-          }}
-          variant="ghost"
-        >
-          {t('common.View')}
-        </RrhButton>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'serverName',
+        header: t('table.server'),
+        cell: ({ row }) => row?.original?.serverName || '-',
+      },
+      {
+        id: 'serverGroup',
+        header: t('table.groups'),
+        cell: ({ row }) => row?.original?.serverGroup || '-',
+      },
+      {
+        id: 'typeName',
+        header: t('common.accountType'),
+        cell: ({ row }) => row?.original?.params?.typeName || '-',
+      },
+      {
+        id: 'lever',
+        header: t('common.level'),
+        cell: ({ row }) => (row?.original?.lever ? `1:${row.original.lever}` : '-'),
+      },
+      {
+        id: 'balance',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.balance')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="balance"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) =>
+          `${(row?.original?.balance || 0).toFixed(2)} ${row?.original?.currency || ''}`,
+      },
+      {
+        id: 'netWorth',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.netWorth')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="netWorth"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) =>
+          `${(row?.original?.netWorth || 0).toFixed(2)} ${row?.original?.currency || ''}`,
+      },
+      {
+        id: 'creditAmount',
+        header: t('table.creditAmount'),
+        cell: ({ row }) =>
+          `${(row?.original?.creditAmount || 0).toFixed(2)} ${row?.original?.currency || ''}`,
+      },
+      {
+        id: 'registerTime',
+        header: t('CRMAccountPage.registerTime'),
+        cell: ({ row }) => row?.original?.registerTime || '-',
+      },
+      {
+        id: 'operation',
+        header: t('common.Operation'),
+        cell: ({ row }) => (
+          <RrhButton
+            onClick={() => {
+              const url = `/account/trading-accounts/detail?id=${row.original.id}&serviceType=${row.original.serviceType}`;
+              openTab({
+                key: url,
+                title: t('trading.tradingAccountDetail'),
+                path: url,
+              });
+            }}
+            variant="ghost"
+          >
+            {t('common.View')}
+          </RrhButton>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, orderByColumn, isAsc, setOrderByColumn, setIsAsc, openTab],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('accounts-overview-table', allColumns);
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import {
@@ -211,109 +211,112 @@ export function PerformanceOverviewPage() {
     );
   };
 
-  const allColumns: CRMColumnDef<TreeAgencyPreforOverviewItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'agentInfo',
-      header: t('overview.agentInfo'),
-      cell: ({ row }) => (
-        <div>
-          <div className="max-w-40 truncate">{row.original.username || '-'}</div>
-          <div className="text-muted-foreground text-xs">{row.original.showId || '-'}</div>
-        </div>
-      ),
-    },
-    {
-      id: 'rebateLevel',
-      header: t('overview.rebateLevelId'),
-      accessorFn: row => row.rebateLevel,
-    },
-    {
-      id: 'country',
-      header: t('overview.countryRegion'),
-      accessorFn: row => row.country || '-',
-    },
-    {
-      id: 'balanceWallet',
-      header: t('overview.balanceWallet'),
-      accessorFn: row => row.balanceWallet,
-    },
-    {
-      id: 'balanceTa',
-      header: t('overview.balanceTa'),
-      accessorFn: row => formatCurrencyAmount(row.balanceTa),
-    },
-    {
-      id: 'depositAmount',
-      accessorKey: 'depositAmount',
-      header: t('overview.depositAmount'),
-      accessorFn: row => formatCurrencyAmount(row.depositAmount),
-    },
-    {
-      id: 'withdrawAmount',
-      accessorKey: 'withdrawAmount',
-      header: t('overview.withdrawAmount'),
-      accessorFn: row => formatCurrencyAmount(row.withdrawAmount),
-    },
-    {
-      id: 'netDeposit',
-      accessorKey: 'netDeposit',
-      header: t('overview.netDeposit'),
-      accessorFn: row => formatCurrencyAmount(row.netDeposit),
-    },
-    {
-      id: 'clients',
-      header: t('overview.clients'),
-      accessorFn: row => row.clients,
-    },
-    {
-      id: 'directClients',
-      header: t('overview.directClients'),
-      accessorFn: row => row.directClients,
-    },
-    {
-      id: 'referClients',
-      header: t('overview.referClients'),
-      accessorFn: row => row.referClients,
-    },
-    {
-      id: 'referDirectClients',
-      header: t('overview.referDirectClients'),
-      accessorFn: row => row.referDirectClients,
-    },
-    {
-      id: 'accountNumber',
-      accessorKey: 'accountNumber',
-      header: t('overview.accountNumber'),
-      accessorFn: row => row.accountNumber,
-    },
-    {
-      id: 'volume',
-      accessorKey: 'volume',
-      header: t('overview.volume'),
-      accessorFn: row => row.volume,
-    },
-    {
-      id: 'profitAndLoss',
-      accessorKey: 'profitAndLoss',
-      header: t('overview.profitAndLoss'),
-      accessorFn: row => formatCurrencyAmount(row.profitAndLoss),
-    },
-    {
-      id: 'personalRebate',
-      header: t('overview.personalRebate'),
-      accessorFn: row => formatCurrencyAmount(row.personalRebate),
-    },
-    {
-      id: 'overallRebate',
-      header: t('overview.overallRebate'),
-      accessorFn: row => formatCurrencyAmount(row.overallRebate),
-    },
-  ];
+  const allColumns = useMemo<CRMColumnDef<TreeAgencyPreforOverviewItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'agentInfo',
+        header: t('overview.agentInfo'),
+        cell: ({ row }) => (
+          <div>
+            <div className="max-w-40 truncate">{row.original.username || '-'}</div>
+            <div className="text-muted-foreground text-xs">{row.original.showId || '-'}</div>
+          </div>
+        ),
+      },
+      {
+        id: 'rebateLevel',
+        header: t('overview.rebateLevelId'),
+        accessorFn: row => row.rebateLevel,
+      },
+      {
+        id: 'country',
+        header: t('overview.countryRegion'),
+        accessorFn: row => row.country || '-',
+      },
+      {
+        id: 'balanceWallet',
+        header: t('overview.balanceWallet'),
+        accessorFn: row => row.balanceWallet,
+      },
+      {
+        id: 'balanceTa',
+        header: t('overview.balanceTa'),
+        accessorFn: row => formatCurrencyAmount(row.balanceTa),
+      },
+      {
+        id: 'depositAmount',
+        accessorKey: 'depositAmount',
+        header: t('overview.depositAmount'),
+        accessorFn: row => formatCurrencyAmount(row.depositAmount),
+      },
+      {
+        id: 'withdrawAmount',
+        accessorKey: 'withdrawAmount',
+        header: t('overview.withdrawAmount'),
+        accessorFn: row => formatCurrencyAmount(row.withdrawAmount),
+      },
+      {
+        id: 'netDeposit',
+        accessorKey: 'netDeposit',
+        header: t('overview.netDeposit'),
+        accessorFn: row => formatCurrencyAmount(row.netDeposit),
+      },
+      {
+        id: 'clients',
+        header: t('overview.clients'),
+        accessorFn: row => row.clients,
+      },
+      {
+        id: 'directClients',
+        header: t('overview.directClients'),
+        accessorFn: row => row.directClients,
+      },
+      {
+        id: 'referClients',
+        header: t('overview.referClients'),
+        accessorFn: row => row.referClients,
+      },
+      {
+        id: 'referDirectClients',
+        header: t('overview.referDirectClients'),
+        accessorFn: row => row.referDirectClients,
+      },
+      {
+        id: 'accountNumber',
+        accessorKey: 'accountNumber',
+        header: t('overview.accountNumber'),
+        accessorFn: row => row.accountNumber,
+      },
+      {
+        id: 'volume',
+        accessorKey: 'volume',
+        header: t('overview.volume'),
+        accessorFn: row => row.volume,
+      },
+      {
+        id: 'profitAndLoss',
+        accessorKey: 'profitAndLoss',
+        header: t('overview.profitAndLoss'),
+        accessorFn: row => formatCurrencyAmount(row.profitAndLoss),
+      },
+      {
+        id: 'personalRebate',
+        header: t('overview.personalRebate'),
+        accessorFn: row => formatCurrencyAmount(row.personalRebate),
+      },
+      {
+        id: 'overallRebate',
+        header: t('overview.overallRebate'),
+        accessorFn: row => formatCurrencyAmount(row.overallRebate),
+      },
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('ib-overview-reports-table', allColumns);

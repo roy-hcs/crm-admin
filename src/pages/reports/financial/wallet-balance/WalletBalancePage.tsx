@@ -11,7 +11,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TableCell } from '@/components/ui/table';
 import { WalletBalanceForm } from './WalletBalanceForm';
@@ -108,39 +108,42 @@ export const WalletBalancePage = () => {
     setSumShow(false);
   };
 
-  const baseColumns: CRMColumnDef<WalletBalanceItem, unknown>[] = [
-    {
-      id: 'No',
-      header: t('table.index'),
-      accessorFn: row => row.index,
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'name',
-      header: t('table.fullName'),
-      accessorFn: row => `${row.name} ${row.lastName}`,
-      cell: ({ row }) => {
-        return !row.original.lastName && !row.original.showId ? (
-          <div className="text-center">-</div>
-        ) : (
-          <div>
-            <div>{row.original.lastName}</div>
-            <div>{row.original.showId}</div>
-          </div>
-        );
+  const baseColumns = useMemo<CRMColumnDef<WalletBalanceItem, unknown>[]>(
+    () => [
+      {
+        id: 'No',
+        header: t('table.index'),
+        accessorFn: row => row.index,
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'email',
-      header: t('table.email'),
-      accessorFn: row => row.email,
-      cell: ({ row }) => (
-        <div className="flex justify-center">
-          <div>{row.original.email}</div>
-        </div>
-      ),
-    },
-  ];
+      {
+        id: 'name',
+        header: t('table.fullName'),
+        accessorFn: row => `${row.name} ${row.lastName}`,
+        cell: ({ row }) => {
+          return !row.original.lastName && !row.original.showId ? (
+            <div className="text-center">-</div>
+          ) : (
+            <div>
+              <div>{row.original.lastName}</div>
+              <div>{row.original.showId}</div>
+            </div>
+          );
+        },
+      },
+      {
+        id: 'email',
+        header: t('table.email'),
+        accessorFn: row => row.email,
+        cell: ({ row }) => (
+          <div className="flex justify-center">
+            <div>{row.original.email}</div>
+          </div>
+        ),
+      },
+    ],
+    [t],
+  );
   const knownFields = ['email', 'lastName', 'name', 'showId'];
   const currencyKeys = new Set<string>();
   (walletBalanceList?.rows || []).forEach(item => {
@@ -152,20 +155,25 @@ export const WalletBalancePage = () => {
   });
 
   // Create currency columns
-  const currencyColumns: CRMColumnDef<WalletBalanceItem, unknown>[] = Array.from(currencyKeys).map(
-    key => ({
-      id: key,
-      header: `Wallet(${key})`,
-      accessorFn: row => row[key],
-      cell: ({ row }) => {
-        const value = row.original[key] as number;
-        return (
-          <div className="text-center">{optPrecision(value, key, currencyList?.rows || [])}</div>
-        );
-      },
-    }),
+  const currencyColumns = useMemo<CRMColumnDef<WalletBalanceItem, unknown>[]>(
+    () =>
+      Array.from(currencyKeys).map(key => ({
+        id: key,
+        header: `Wallet(${key})`,
+        accessorFn: row => row[key],
+        cell: ({ row }) => {
+          const value = row.original[key] as number;
+          return (
+            <div className="text-center">{optPrecision(value, key, currencyList?.rows || [])}</div>
+          );
+        },
+      })),
+    [currencyKeys, currencyList],
   );
-  const allColumns = [...baseColumns, ...currencyColumns];
+  const allColumns = useMemo(
+    () => [...baseColumns, ...currencyColumns],
+    [baseColumns, currencyColumns],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('wallet-balance-table', allColumns);
 

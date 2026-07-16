@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { TableCell } from '@/components/ui/table';
@@ -189,105 +189,108 @@ export function WalletTransactionsPage() {
     setPageSize(10);
   };
 
-  const allColumns: CRMColumnDef<WalletTransactionItem, unknown>[] = [
-    {
-      fixed: true,
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-      size: 50,
-    },
-    {
-      id: 'lastName',
-      header: t('walletTransactions.lastName'),
-      cell: ({ row }) => (
-        <div>
-          <div>{(row.original.lastName ?? '') + (row.original.name ?? '')}</div>
-          <div>{row.original.showId}</div>
-        </div>
-      ),
-    },
-    {
-      id: 'operationType',
-      header: t('table.operationType'),
-      accessorFn: row => (row.operationType ? t(OperationTypeMap[row.operationType]) : ''),
-    },
-    {
-      id: 'operationMethod',
-      header: t('table.inMethod'),
-      accessorFn: row => (row.operationMethod ? t(OperationMethodMap[row.operationMethod]) : ''),
-    },
-    {
-      id: 'currency',
-      accessorKey: 'currency',
-      header: t('walletTransactions.wallet'),
-      accessorFn: row => row.currency,
-    },
-    {
-      id: 'preAmount',
-      accessorKey: 'preAmount',
-      header: t('walletTransactions.preAmount'),
-      accessorFn: row => row.preAmount,
-    },
-    {
-      id: 'amount',
-      accessorKey: 'amount',
-      header: t('walletTransactions.amount'),
-      accessorFn: row => row.amount,
-    },
-    {
-      id: 'postAmount',
-      accessorKey: 'postAmount',
-      header: t('walletTransactions.postAmount'),
-      accessorFn: row => row.postAmount,
-    },
-    {
-      id: 'operationTime',
-      accessorKey: 'operationTime',
-      header: t('walletTransactions.operationTimeTable'),
-      accessorFn: row => row.operationTime,
-    },
-    {
-      id: 'serialNum',
-      accessorKey: 'serialNum',
-      header: t('walletTransactions.serialNumTable'),
-      accessorFn: row => row.serialNum,
-    },
-    {
-      id: 'mtOrder',
-      accessorKey: 'mtOrder',
-      header: t('walletTransactions.mtOrder'),
-      accessorFn: row => row.mtOrder || '--',
-    },
-    {
-      id: 'remark',
-      accessorKey: 'remark',
-      header: t('table.remarks'),
-      accessorFn: row => row.remark || '--',
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+  const allColumns = useMemo<CRMColumnDef<WalletTransactionItem, unknown>[]>(
+    () => [
+      {
+        fixed: true,
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+        size: 50,
       },
-      cell: ({ row }) => (
-        <RrhDialog
-          title={t('common.detail', { field: t('walletTransactions.title') })}
-          trigger={
-            <RrhButton variant="ghost" type="button">
-              {t('common.View')}
-            </RrhButton>
-          }
-          confirmShow={false}
-          variant="large"
-        >
-          <DetailInfo itemInfo={row.original} />
-        </RrhDialog>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'lastName',
+        header: t('walletTransactions.lastName'),
+        cell: ({ row }) => (
+          <div>
+            <div>{(row.original.lastName ?? '') + (row.original.name ?? '')}</div>
+            <div>{row.original.showId}</div>
+          </div>
+        ),
+      },
+      {
+        id: 'operationType',
+        header: t('table.operationType'),
+        accessorFn: row => (row.operationType ? t(OperationTypeMap[row.operationType]) : ''),
+      },
+      {
+        id: 'operationMethod',
+        header: t('table.inMethod'),
+        accessorFn: row => (row.operationMethod ? t(OperationMethodMap[row.operationMethod]) : ''),
+      },
+      {
+        id: 'currency',
+        accessorKey: 'currency',
+        header: t('walletTransactions.wallet'),
+        accessorFn: row => row.currency,
+      },
+      {
+        id: 'preAmount',
+        accessorKey: 'preAmount',
+        header: t('walletTransactions.preAmount'),
+        accessorFn: row => row.preAmount,
+      },
+      {
+        id: 'amount',
+        accessorKey: 'amount',
+        header: t('walletTransactions.amount'),
+        accessorFn: row => row.amount,
+      },
+      {
+        id: 'postAmount',
+        accessorKey: 'postAmount',
+        header: t('walletTransactions.postAmount'),
+        accessorFn: row => row.postAmount,
+      },
+      {
+        id: 'operationTime',
+        accessorKey: 'operationTime',
+        header: t('walletTransactions.operationTimeTable'),
+        accessorFn: row => row.operationTime,
+      },
+      {
+        id: 'serialNum',
+        accessorKey: 'serialNum',
+        header: t('walletTransactions.serialNumTable'),
+        accessorFn: row => row.serialNum,
+      },
+      {
+        id: 'mtOrder',
+        accessorKey: 'mtOrder',
+        header: t('walletTransactions.mtOrder'),
+        accessorFn: row => row.mtOrder || '--',
+      },
+      {
+        id: 'remark',
+        accessorKey: 'remark',
+        header: t('table.remarks'),
+        accessorFn: row => row.remark || '--',
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <RrhDialog
+            title={t('common.detail', { field: t('walletTransactions.title') })}
+            trigger={
+              <RrhButton variant="ghost" type="button">
+                {t('common.View')}
+              </RrhButton>
+            }
+            confirmShow={false}
+            variant="large"
+          >
+            <DetailInfo itemInfo={row.original} />
+          </RrhDialog>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('wallet-transactions-table', allColumns);
   const { mutateAsync: exportWalletTransactions, isPending: exportLoading } =

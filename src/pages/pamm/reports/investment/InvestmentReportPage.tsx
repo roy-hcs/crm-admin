@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { PammReportInvestItem, PammReportInvestListParams } from '@/api/hooks/pamm/type';
@@ -85,142 +85,147 @@ export const InvestmentReportPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<PammReportInvestItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'serverName',
-      header: t('table.serverName'),
-      cell: ({ row }) => {
-        const serverTypeName = getServerTypeName(row.original.serverType);
-        return row.original.serverName + (serverTypeName ? ` | (${serverTypeName})` : '');
+  const allColumns = useMemo<CRMColumnDef<PammReportInvestItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'projectName',
-      header: t('table.projectName'),
-      accessorFn: row => row.projectName || '-',
-    },
-    {
-      id: 'investor',
-      header: t('table.customerName'),
-      cell: ({ row }) => {
-        const rowInfo = row.original;
-        let userName = '';
-        if (rowInfo.lastName) {
-          userName += rowInfo.lastName;
-        }
-        if (rowInfo.name) {
-          userName += ' ' + rowInfo.name;
-        }
-        const showId = rowInfo.showId || '';
-        if (!userName) {
-          return '-';
-        }
-        return (
-          <div>
-            <div>{userName}</div>
-            {showId && <div>{showId}</div>}
-          </div>
-        );
+      {
+        id: 'serverName',
+        header: t('table.serverName'),
+        cell: ({ row }) => {
+          const serverTypeName = getServerTypeName(row.original.serverType);
+          return row.original.serverName + (serverTypeName ? ` | (${serverTypeName})` : '');
+        },
       },
-    },
-    {
-      id: 'role',
-      header: t('table.investRole'),
-      accessorFn: row => row.role || '-',
-    },
-    {
-      id: 'investUpper',
-      header: t('table.investorUpper'),
-      cell: ({ row }) => {
-        return <div dangerouslySetInnerHTML={{ __html: row.original.inviter || '-' }}></div>;
+      {
+        id: 'projectName',
+        header: t('table.projectName'),
+        accessorFn: row => row.projectName || '-',
       },
-    },
-    {
-      id: 'orderNo',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.orderNo || '-',
-    },
-    {
-      id: 'type',
-      header: t('investmentReview.operType'),
-      cell: ({ row }) => {
-        return row.original.type === 1 ? t('table.buy') : t('table.redemption');
+      {
+        id: 'investor',
+        header: t('table.customerName'),
+        cell: ({ row }) => {
+          const rowInfo = row.original;
+          let userName = '';
+          if (rowInfo.lastName) {
+            userName += rowInfo.lastName;
+          }
+          if (rowInfo.name) {
+            userName += ' ' + rowInfo.name;
+          }
+          const showId = rowInfo.showId || '';
+          if (!userName) {
+            return '-';
+          }
+          return (
+            <div>
+              <div>{userName}</div>
+              {showId && <div>{showId}</div>}
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'amount',
-      header: t('table.investAmount'),
-      cell: ({ row }) => {
-        const currency = row.original.currency || '';
-        return (
-          <div>
-            <div>{(row.original.amount || 0).toFixed(2)}</div>
-            <div>{currency}</div>
-          </div>
-        );
+      {
+        id: 'role',
+        header: t('table.investRole'),
+        accessorFn: row => row.role || '-',
       },
-    },
-    {
-      id: 'revenueSettlementMethods',
-      header: t('table.revenueSettlementMethods'),
-      accessorFn: row =>
-        row.settlementType === 1 ? t('table.periodicSettlement') : t('table.redemptionSettlement'),
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      cell: ({ row }) => {
-        const status = row.original.status;
-        if (!status) return '-';
-        return pammReportStatusMap[status]
-          ? t(`PammInvestReport.${pammReportStatusMap[status]}`)
-          : '-';
+      {
+        id: 'investUpper',
+        header: t('table.investorUpper'),
+        cell: ({ row }) => {
+          return <div dangerouslySetInnerHTML={{ __html: row.original.inviter || '-' }}></div>;
+        },
       },
-    },
-    {
-      id: 'investTime',
-      label: t('table.investTime'),
-      header: () => {
-        return (
-          <div className="flex items-center gap-2">
-            <div>{t('table.investTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="operTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'orderNo',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.orderNo || '-',
       },
-      accessorFn: row => row.operTime ?? '-',
-    },
-    {
-      id: 'confirmTime',
-      label: t('table.confirmTime'),
-      header: () => {
-        return (
-          <div className="flex items-center gap-2">
-            <div>{t('table.confirmTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="confirmTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'type',
+        header: t('investmentReview.operType'),
+        cell: ({ row }) => {
+          return row.original.type === 1 ? t('table.buy') : t('table.redemption');
+        },
       },
-      accessorFn: row => row.confirmTime ?? '-',
-    },
-  ];
+      {
+        id: 'amount',
+        header: t('table.investAmount'),
+        cell: ({ row }) => {
+          const currency = row.original.currency || '';
+          return (
+            <div>
+              <div>{(row.original.amount || 0).toFixed(2)}</div>
+              <div>{currency}</div>
+            </div>
+          );
+        },
+      },
+      {
+        id: 'revenueSettlementMethods',
+        header: t('table.revenueSettlementMethods'),
+        accessorFn: row =>
+          row.settlementType === 1
+            ? t('table.periodicSettlement')
+            : t('table.redemptionSettlement'),
+      },
+      {
+        id: 'status',
+        header: t('table.status'),
+        cell: ({ row }) => {
+          const status = row.original.status;
+          if (!status) return '-';
+          return pammReportStatusMap[status]
+            ? t(`PammInvestReport.${pammReportStatusMap[status]}`)
+            : '-';
+        },
+      },
+      {
+        id: 'investTime',
+        label: t('table.investTime'),
+        header: () => {
+          return (
+            <div className="flex items-center gap-2">
+              <div>{t('table.investTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="operTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        accessorFn: row => row.operTime ?? '-',
+      },
+      {
+        id: 'confirmTime',
+        label: t('table.confirmTime'),
+        header: () => {
+          return (
+            <div className="flex items-center gap-2">
+              <div>{t('table.confirmTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="confirmTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        accessorFn: row => row.confirmTime ?? '-',
+      },
+    ],
+    [t, orderByColumn, isAsc, setOrderByColumn, setIsAsc],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('investment-report-table', allColumns);

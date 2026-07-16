@@ -2,7 +2,7 @@ import { RrhDialog } from '@/components/common/RrhDialog';
 import { RrhButton } from '@/components/common/RrhButton';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInternalTransferDealTicketList } from '@/api/hooks/review/review';
 import { DataTable } from '@/components/table/DataTable';
@@ -52,30 +52,33 @@ export const OrderDialog = ({
     });
   };
 
-  const crmColumns: ColumnDef<InternalTransferDealTicketItem>[] = [
-    {
-      id: 'select',
-      header: () => <div></div>,
-      cell: ({ row, table }) => (
-        <input
-          type="radio"
-          name="tableRowSelection"
-          checked={row.getIsSelected()}
-          onChange={() => {
-            table.getRowModel().rows.forEach(r => {
-              r.toggleSelected(false);
-            });
-            row.toggleSelected(true);
-            handleRowSelect?.(row.original);
-          }}
-          className="h-4 w-4 cursor-pointer accent-[#1E1E1E]"
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-  ];
+  const crmColumns = useMemo<ColumnDef<InternalTransferDealTicketItem>[]>(
+    () => [
+      {
+        id: 'select',
+        header: () => <div></div>,
+        cell: ({ row, table }) => (
+          <input
+            type="radio"
+            name="tableRowSelection"
+            checked={row.getIsSelected()}
+            onChange={() => {
+              table.getRowModel().rows.forEach(r => {
+                r.toggleSelected(false);
+              });
+              row.toggleSelected(true);
+              handleRowSelect?.(row.original);
+            }}
+            className="h-4 w-4 cursor-pointer accent-[#1E1E1E]"
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+    ],
+    [handleRowSelect],
+  );
 
   return (
     <RrhDialog

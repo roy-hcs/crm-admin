@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AdminOperationsForm } from './AdminOperationsForm';
 import {
@@ -145,99 +145,102 @@ export const AdminOperationsPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<AdminOperLogItem, unknown>[] = [
-    {
-      id: 'No',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row?.original?.operId}</div>,
-    },
-    {
-      id: 'title',
-      header: t('table.systemModule'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.title || '-'}</div>;
+  const allColumns = useMemo<CRMColumnDef<AdminOperLogItem, unknown>[]>(
+    () => [
+      {
+        id: 'No',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row?.original?.operId}</div>,
       },
-    },
-    {
-      id: 'operatorType',
-      header: t('table.operationType'),
-      cell: ({ row }) => {
-        const text = (operationTypes || []).find(
-          i => i.dictValue === String(row?.original?.operatorType),
-        );
-        return <div>{text ? text.dictLabel : '-'}</div>;
+      {
+        id: 'title',
+        header: t('table.systemModule'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.title || '-'}</div>;
+        },
       },
-    },
-    {
-      id: 'operObject',
-      header: t('common.operObject'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.operObject || '-'}</div>;
+      {
+        id: 'operatorType',
+        header: t('table.operationType'),
+        cell: ({ row }) => {
+          const text = (operationTypes || []).find(
+            i => i.dictValue === String(row?.original?.operatorType),
+          );
+          return <div>{text ? text.dictLabel : '-'}</div>;
+        },
       },
-    },
-    {
-      id: 'operName',
-      header: t('common.operName'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.operName || '-'}</div>;
+      {
+        id: 'operObject',
+        header: t('common.operObject'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.operObject || '-'}</div>;
+        },
       },
-    },
-    {
-      id: 'status',
-      header: t('common.operStatus'),
-      accessorFn: row => row.status,
-      cell: ({ row }) => {
-        if (Number(row.original.status) === 0) {
-          return <RrhTag type="success">{t('common.success')}</RrhTag>;
-        } else if (Number(row.original.status) === 1) {
-          return <RrhTag type="error">{t('common.fail')}</RrhTag>;
-        }
+      {
+        id: 'operName',
+        header: t('common.operName'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.operName || '-'}</div>;
+        },
       },
-    },
-    {
-      id: 'operIp',
-      header: t('common.operIp'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.operIp || '-'}</div>;
-      },
-    },
-    {
-      id: 'operLocation',
-      header: t('common.operLocation'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.operLocation || '-'}</div>;
-      },
-    },
-    {
-      id: 'operTime',
-      header: t('common.operTime'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.operTime || '-'}</div>;
-      },
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
-      },
-      cell: ({ row }) => (
-        <RrhDialog
-          title={t('common.detail', { field: t('adminOperations.title') })}
-          trigger={
-            <RrhButton variant="ghost" type="button">
-              {t('common.View')}
-            </RrhButton>
+      {
+        id: 'status',
+        header: t('common.operStatus'),
+        accessorFn: row => row.status,
+        cell: ({ row }) => {
+          if (Number(row.original.status) === 0) {
+            return <RrhTag type="success">{t('common.success')}</RrhTag>;
+          } else if (Number(row.original.status) === 1) {
+            return <RrhTag type="error">{t('common.fail')}</RrhTag>;
           }
-          confirmShow={false}
-          variant="large"
-        >
-          <DetailInfo data={row.original} operationsType={operationTypes || []} />
-        </RrhDialog>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+        },
+      },
+      {
+        id: 'operIp',
+        header: t('common.operIp'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.operIp || '-'}</div>;
+        },
+      },
+      {
+        id: 'operLocation',
+        header: t('common.operLocation'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.operLocation || '-'}</div>;
+        },
+      },
+      {
+        id: 'operTime',
+        header: t('common.operTime'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.operTime || '-'}</div>;
+        },
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <RrhDialog
+            title={t('common.detail', { field: t('adminOperations.title') })}
+            trigger={
+              <RrhButton variant="ghost" type="button">
+                {t('common.View')}
+              </RrhButton>
+            }
+            confirmShow={false}
+            variant="large"
+          >
+            <DetailInfo data={row.original} operationsType={operationTypes || []} />
+          </RrhDialog>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, operationTypes],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('admin-operation-logs-table', allColumns);
 

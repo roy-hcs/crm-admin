@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   usePointsHistoryList,
@@ -85,187 +85,190 @@ export const RedemptionRecordsPage = () => {
     setOrderByColumn('');
   };
 
-  const allColumns: CRMColumnDef<PointsHistoryItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'orderNo',
-      header: t('redemptionRecords.orderNo'),
-      accessorFn: row => row.orderNo,
-      cell: ({ row }) => <div>{row?.original?.orderNo}</div>,
-    },
-    {
-      id: 'userName',
-      header: t('table.CRMAccount'),
-      accessorFn: row => row.userName,
-      cell: ({ row }) => {
-        return (
+  const allColumns = useMemo<CRMColumnDef<PointsHistoryItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'orderNo',
+        header: t('redemptionRecords.orderNo'),
+        accessorFn: row => row.orderNo,
+        cell: ({ row }) => <div>{row?.original?.orderNo}</div>,
+      },
+      {
+        id: 'userName',
+        header: t('table.CRMAccount'),
+        accessorFn: row => row.userName,
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.userName || '-'}</div>
+              <div>({row?.original?.showId})</div>
+            </div>
+          );
+        },
+      },
+      {
+        id: 'goodsId',
+        header: t('redemptionRecords.goodsId'),
+        accessorFn: row => row.goodsId,
+        cell: ({ row }) => <div>{row?.original?.goodsId || '-'}</div>,
+      },
+      {
+        id: 'goodsName',
+        header: t('redemptionRecords.goodsName'),
+        accessorFn: row => row.goodsName || '-',
+        // cell: ({ row }) => <div>{row?.original?.goodsId || '-'}</div>,
+      },
+      {
+        id: 'payType',
+        header: t('redemptionRecords.payType'),
+        accessorFn: row => row.payType,
+        cell: ({ row }) => (
           <div>
-            <div>{row?.original?.userName || '-'}</div>
-            <div>({row?.original?.showId})</div>
+            {String(row?.original?.payType) === '1'
+              ? t('redemptionRecords.pointsPayment')
+              : t('redemptionRecords.combinedPayment')}
           </div>
-        );
+        ),
       },
-    },
-    {
-      id: 'goodsId',
-      header: t('redemptionRecords.goodsId'),
-      accessorFn: row => row.goodsId,
-      cell: ({ row }) => <div>{row?.original?.goodsId || '-'}</div>,
-    },
-    {
-      id: 'goodsName',
-      header: t('redemptionRecords.goodsName'),
-      accessorFn: row => row.goodsName || '-',
-      // cell: ({ row }) => <div>{row?.original?.goodsId || '-'}</div>,
-    },
-    {
-      id: 'payType',
-      header: t('redemptionRecords.payType'),
-      accessorFn: row => row.payType,
-      cell: ({ row }) => (
-        <div>
-          {String(row?.original?.payType) === '1'
-            ? t('redemptionRecords.pointsPayment')
-            : t('redemptionRecords.combinedPayment')}
-        </div>
-      ),
-    },
-    {
-      id: 'exchangePoints',
-      label: t('redemptionRecords.exchangePoints'),
-      header: () => (
-        <div className="flex items-center gap-1">
-          {t('redemptionRecords.exchangePoints')}
-          <RrhSorter
-            setIsAsc={setIsAsc}
-            isAsc={isAsc}
-            orderByColumn={orderByColumn}
-            setOrderByColumn={setOrderByColumn}
-            column="exchangePoints"
-          />
-        </div>
-      ),
-      accessorFn: row => row.exchangePoints,
-      cell: ({ row }) => <div>-{row?.original?.exchangePoints}</div>,
-    },
-    {
-      id: 'paymentAmount',
-      label: t('redemptionRecords.paymentAmount'),
-      header: () => (
-        <div className="flex items-center gap-1">
-          {t('redemptionRecords.paymentAmount')}
-          <RrhSorter
-            setIsAsc={setIsAsc}
-            isAsc={isAsc}
-            orderByColumn={orderByColumn}
-            setOrderByColumn={setOrderByColumn}
-            column="paymentAmount"
-          />
-        </div>
-      ),
-      accessorFn: row => row.paymentAmount,
-      cell: ({ row }) => {
-        if (row?.original?.paymentAmount) {
-          return <div>{row?.original?.paymentAmount}USD</div>;
-        }
-        return '-';
+      {
+        id: 'exchangePoints',
+        label: t('redemptionRecords.exchangePoints'),
+        header: () => (
+          <div className="flex items-center gap-1">
+            {t('redemptionRecords.exchangePoints')}
+            <RrhSorter
+              setIsAsc={setIsAsc}
+              isAsc={isAsc}
+              orderByColumn={orderByColumn}
+              setOrderByColumn={setOrderByColumn}
+              column="exchangePoints"
+            />
+          </div>
+        ),
+        accessorFn: row => row.exchangePoints,
+        cell: ({ row }) => <div>-{row?.original?.exchangePoints}</div>,
       },
-    },
-    {
-      id: 'exchangeTime',
-      label: t('redemptionRecords.exchangeTime'),
-      header: () => (
-        <div className="flex items-center gap-1">
-          {t('redemptionRecords.exchangeTime')}
-          <RrhSorter
-            setIsAsc={setIsAsc}
-            isAsc={isAsc}
-            orderByColumn={orderByColumn}
-            setOrderByColumn={setOrderByColumn}
-            column="exchangeTime"
-          />
-        </div>
-      ),
-      accessorFn: row => row.exchangeTime,
-      cell: ({ row }) => <div>{row?.original?.exchangeTime || '-'}</div>,
-    },
-    {
-      id: 'verifyStatus',
-      header: t('table.status'),
-      accessorFn: row => row.verifyStatus,
-      cell: ({ row }) => {
-        const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info' | 'default'> = {
-          0: 'error',
-          1: 'success',
-          2: 'warning',
-          '-1': 'info',
-          '-2': 'default',
-        };
-        return (
-          <RrhTag type={typeMap[row.original.verifyStatus]}>
-            {t(`table.${withdrawalReviewStatusMap[row.original.verifyStatus]}`)}
-          </RrhTag>
-        );
+      {
+        id: 'paymentAmount',
+        label: t('redemptionRecords.paymentAmount'),
+        header: () => (
+          <div className="flex items-center gap-1">
+            {t('redemptionRecords.paymentAmount')}
+            <RrhSorter
+              setIsAsc={setIsAsc}
+              isAsc={isAsc}
+              orderByColumn={orderByColumn}
+              setOrderByColumn={setOrderByColumn}
+              column="paymentAmount"
+            />
+          </div>
+        ),
+        accessorFn: row => row.paymentAmount,
+        cell: ({ row }) => {
+          if (row?.original?.paymentAmount) {
+            return <div>{row?.original?.paymentAmount}USD</div>;
+          }
+          return '-';
+        },
       },
-    },
-    {
-      id: 'updateBy',
-      header: t('products.updateBy'),
-      accessorFn: row => row.updateBy,
-      cell: ({ row }) => <div>{row?.original?.updateBy || '-'}</div>,
-    },
-    {
-      id: 'updateTime',
-      label: t('table.updateTime'),
-      header: () => (
-        <div className="flex items-center gap-1">
-          {t('table.updateTime')}
-          <RrhSorter
-            setIsAsc={setIsAsc}
-            isAsc={isAsc}
-            orderByColumn={orderByColumn}
-            setOrderByColumn={setOrderByColumn}
-            column="updateTime"
-          />
-        </div>
-      ),
-      accessorFn: row => row.updateTime,
-      cell: ({ row }) => <div>{row?.original?.updateTime || '-'}</div>,
-    },
-    {
-      id: 'operation',
-      label: t('common.Operation'),
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'exchangeTime',
+        label: t('redemptionRecords.exchangeTime'),
+        header: () => (
+          <div className="flex items-center gap-1">
+            {t('redemptionRecords.exchangeTime')}
+            <RrhSorter
+              setIsAsc={setIsAsc}
+              isAsc={isAsc}
+              orderByColumn={orderByColumn}
+              setOrderByColumn={setOrderByColumn}
+              column="exchangeTime"
+            />
+          </div>
+        ),
+        accessorFn: row => row.exchangeTime,
+        cell: ({ row }) => <div>{row?.original?.exchangeTime || '-'}</div>,
       },
-      cell: ({ row }) => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('table.audit'), value: 'edit' },
-              { label: t('common.View'), value: 'view' },
-            ]}
-            callToAction={action => {
-              if (action === 'edit') {
-                setRow(row.original);
-                setIsCheckDialogOpen(true);
-              } else if (action === 'view') {
-                setRow(row.original);
-                setIsViewDialogOpen(true);
-              }
-            }}
-          />
-        </div>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'verifyStatus',
+        header: t('table.status'),
+        accessorFn: row => row.verifyStatus,
+        cell: ({ row }) => {
+          const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info' | 'default'> = {
+            0: 'error',
+            1: 'success',
+            2: 'warning',
+            '-1': 'info',
+            '-2': 'default',
+          };
+          return (
+            <RrhTag type={typeMap[row.original.verifyStatus]}>
+              {t(`table.${withdrawalReviewStatusMap[row.original.verifyStatus]}`)}
+            </RrhTag>
+          );
+        },
+      },
+      {
+        id: 'updateBy',
+        header: t('products.updateBy'),
+        accessorFn: row => row.updateBy,
+        cell: ({ row }) => <div>{row?.original?.updateBy || '-'}</div>,
+      },
+      {
+        id: 'updateTime',
+        label: t('table.updateTime'),
+        header: () => (
+          <div className="flex items-center gap-1">
+            {t('table.updateTime')}
+            <RrhSorter
+              setIsAsc={setIsAsc}
+              isAsc={isAsc}
+              orderByColumn={orderByColumn}
+              setOrderByColumn={setOrderByColumn}
+              column="updateTime"
+            />
+          </div>
+        ),
+        accessorFn: row => row.updateTime,
+        cell: ({ row }) => <div>{row?.original?.updateTime || '-'}</div>,
+      },
+      {
+        id: 'operation',
+        label: t('common.Operation'),
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('table.audit'), value: 'edit' },
+                { label: t('common.View'), value: 'view' },
+              ]}
+              callToAction={action => {
+                if (action === 'edit') {
+                  setRow(row.original);
+                  setIsCheckDialogOpen(true);
+                } else if (action === 'view') {
+                  setRow(row.original);
+                  setIsViewDialogOpen(true);
+                }
+              }}
+            />
+          </div>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, isAsc, orderByColumn, setRow, setIsCheckDialogOpen, setIsViewDialogOpen],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('points-mall-redemption-records-table', allColumns);

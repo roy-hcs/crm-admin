@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { PammReportCommissionItem, PammReportCommissionListParams } from '@/api/hooks/pamm/type';
@@ -84,126 +84,129 @@ export const CommissionReportPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<PammReportCommissionItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'serverName',
-      header: t('table.serverName'),
-      cell: ({ row }) => {
-        const serverTypeName = getServerTypeName(row.original.serverType);
-        return row.original.serverName + (serverTypeName ? ` | (${serverTypeName})` : '');
+  const allColumns = useMemo<CRMColumnDef<PammReportCommissionItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'projectName',
-      header: t('table.projectName'),
-      accessorFn: row => row.projectName || '-',
-    },
-    {
-      id: 'investor',
-      header: t('table.customerName'),
-      cell: ({ row }) => {
-        const rowInfo = row.original;
-        let userName = '';
-        if (rowInfo.lastName) {
-          userName += rowInfo.lastName;
-        }
-        if (rowInfo.name) {
-          userName += ' ' + rowInfo.name;
-        }
-        const showId = rowInfo.showId || '';
-        if (!userName) {
-          return '-';
-        }
-        return (
-          <div>
-            <div>{userName}</div>
-            {showId && <div>{showId}</div>}
-          </div>
-        );
+      {
+        id: 'serverName',
+        header: t('table.serverName'),
+        cell: ({ row }) => {
+          const serverTypeName = getServerTypeName(row.original.serverType);
+          return row.original.serverName + (serverTypeName ? ` | (${serverTypeName})` : '');
+        },
       },
-    },
-    {
-      id: 'role',
-      header: t('table.investRole'),
-      accessorFn: row => row.role || '-',
-    },
-    {
-      id: 'investUpper',
-      header: t('table.investorUpper'),
-      cell: ({ row }) => {
-        return <div dangerouslySetInnerHTML={{ __html: row.original.inviter || '-' }}></div>;
+      {
+        id: 'projectName',
+        header: t('table.projectName'),
+        accessorFn: row => row.projectName || '-',
       },
-    },
-    {
-      id: 'orderNo',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.orderNo || '-',
-    },
-    {
-      id: 'amount',
-      header: t('table.investAmount'),
-      cell: ({ row }) => {
-        const currency = row.original.currency || '';
-        return (
-          <div>
-            <div>{(row.original.businessAmount || 0).toFixed(2)}</div>
-            <div>{currency}</div>
-          </div>
-        );
+      {
+        id: 'investor',
+        header: t('table.customerName'),
+        cell: ({ row }) => {
+          const rowInfo = row.original;
+          let userName = '';
+          if (rowInfo.lastName) {
+            userName += rowInfo.lastName;
+          }
+          if (rowInfo.name) {
+            userName += ' ' + rowInfo.name;
+          }
+          const showId = rowInfo.showId || '';
+          if (!userName) {
+            return '-';
+          }
+          return (
+            <div>
+              <div>{userName}</div>
+              {showId && <div>{showId}</div>}
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'agentName',
-      header: t('common.account.type.agent'),
-      cell: ({ row }) => {
-        return row.original.agentName || row.original.agentLastName
-          ? row.original.agentLastName + row.original.agentName
-          : '-';
+      {
+        id: 'role',
+        header: t('table.investRole'),
+        accessorFn: row => row.role || '-',
       },
-    },
-    {
-      id: 'tierRatio',
-      header: t('table.tierRatio'),
-      accessorFn: row => (row.proportion ? `${row.proportion}%` : '-'),
-    },
-    {
-      id: 'commission',
-      header: t('commissionReview.commission'),
-      cell: ({ row }) => {
-        const currency = row.original.currency || '';
-        return (
-          <div>
-            <div>{(row.original.commission || 0).toFixed(2)}</div>
-            <div>{currency}</div>
-          </div>
-        );
+      {
+        id: 'investUpper',
+        header: t('table.investorUpper'),
+        cell: ({ row }) => {
+          return <div dangerouslySetInnerHTML={{ __html: row.original.inviter || '-' }}></div>;
+        },
       },
-    },
-    {
-      id: 'investTime',
-      label: t('table.investTime'),
-      header: () => {
-        return (
-          <div className="flex items-center gap-2">
-            <div>{t('table.investTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="businessTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'orderNo',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.orderNo || '-',
       },
-      accessorFn: row => row.businessTime ?? '-',
-    },
-  ];
+      {
+        id: 'amount',
+        header: t('table.investAmount'),
+        cell: ({ row }) => {
+          const currency = row.original.currency || '';
+          return (
+            <div>
+              <div>{(row.original.businessAmount || 0).toFixed(2)}</div>
+              <div>{currency}</div>
+            </div>
+          );
+        },
+      },
+      {
+        id: 'agentName',
+        header: t('common.account.type.agent'),
+        cell: ({ row }) => {
+          return row.original.agentName || row.original.agentLastName
+            ? row.original.agentLastName + row.original.agentName
+            : '-';
+        },
+      },
+      {
+        id: 'tierRatio',
+        header: t('table.tierRatio'),
+        accessorFn: row => (row.proportion ? `${row.proportion}%` : '-'),
+      },
+      {
+        id: 'commission',
+        header: t('commissionReview.commission'),
+        cell: ({ row }) => {
+          const currency = row.original.currency || '';
+          return (
+            <div>
+              <div>{(row.original.commission || 0).toFixed(2)}</div>
+              <div>{currency}</div>
+            </div>
+          );
+        },
+      },
+      {
+        id: 'investTime',
+        label: t('table.investTime'),
+        header: () => {
+          return (
+            <div className="flex items-center gap-2">
+              <div>{t('table.investTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="businessTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        accessorFn: row => row.businessTime ?? '-',
+      },
+    ],
+    [t, orderByColumn, isAsc, setOrderByColumn, setIsAsc],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('commission-report-table', allColumns);

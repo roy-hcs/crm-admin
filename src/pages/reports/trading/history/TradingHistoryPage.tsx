@@ -6,7 +6,7 @@ import {
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { BasicParams } from '@/api/types';
@@ -194,173 +194,176 @@ export const TradingHistoryPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<TradingHistoryItem, unknown>[] = [
-    {
-      id: 'select',
-      label: t('common.select'),
-      header: ({ table }) => (
-        <Checkbox
-          className="data-[state=checked]:border-slate-700"
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          className="data-[state=checked]:border-slate-700"
-          checked={row.getIsSelected()}
-          onCheckedChange={value => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      id: 'No.',
-      header: t('CRMAccountPage.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'userName',
-      header: t('CRMAccountPage.UserName'),
-      accessorFn: row => row.name,
-    },
-    {
-      id: 'login',
-      header: t('table.tradingAccount'),
-      accessorFn: row => row.login,
-    },
-    {
-      id: 'ticket',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.ticket,
-    },
-    {
-      id: 'type',
-      header: t('table.transactionType'), // 0: buy, 1: sell
-      accessorFn: row =>
-        transactionTypeMap[row.type as keyof typeof transactionTypeMap] || row.type,
-    },
-    {
-      id: 'symbol',
-      header: t('table.symbol'),
-      accessorFn: row => row.symbol,
-    },
-    {
-      id: 'tradeCount',
-      header: t('table.volume'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        return rowData.traderCount && rowData.lotSize ? (
-          <div>{(rowData.traderCount / rowData.lotSize).toFixed(2)}</div>
-        ) : (
-          <div>-</div>
-        );
+  const allColumns = useMemo<CRMColumnDef<TradingHistoryItem, unknown>[]>(
+    () => [
+      {
+        id: 'select',
+        label: t('common.select'),
+        header: ({ table }) => (
+          <Checkbox
+            className="data-[state=checked]:border-slate-700"
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            className="data-[state=checked]:border-slate-700"
+            checked={row.getIsSelected()}
+            onCheckedChange={value => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
       },
-    },
-    {
-      id: 'openPrice',
-      header: t('table.openPrice'),
-      accessorFn: row => row.openPrice,
-    },
-    {
-      id: 'openTime',
-      header: t('table.openTime'),
-      accessorFn: row => row.openTime,
-    },
-    {
-      id: 'closePrice',
-      header: t('table.closePrice'),
-      accessorFn: row => row.closePrice,
-    },
-    {
-      id: 'closeTime',
-      header: t('table.closeTime'),
-      accessorFn: row => row.closeTime,
-    },
-    {
-      id: 'profit',
-      header: t('table.profitAndLoss'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        return rowData.profit !== null ? (
-          <div>
-            {rowData.profit.toFixed(2)} {rowData.currency}
-          </div>
-        ) : (
-          <div>-</div>
-        );
+      {
+        id: 'No.',
+        header: t('CRMAccountPage.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'commission',
-      header: t('table.commission'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        return rowData.commission !== null ? (
-          <div>
-            {rowData.commission.toFixed(2)} {rowData.currency}
-          </div>
-        ) : (
-          <div>-</div>
-        );
+      {
+        id: 'userName',
+        header: t('CRMAccountPage.UserName'),
+        accessorFn: row => row.name,
       },
-    },
-    {
-      id: 'swaps',
-      header: t('table.swap'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        return rowData.swaps !== null ? (
-          <div>
-            {rowData.swaps.toFixed(2)} {rowData.currency}
-          </div>
-        ) : (
-          <div>-</div>
-        );
+      {
+        id: 'login',
+        header: t('table.tradingAccount'),
+        accessorFn: row => row.login,
       },
-    },
-    {
-      id: 'comment',
-      header: t('table.comment'),
-      accessorFn: row => row.comment,
-    },
-    {
-      id: 'operate',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'ticket',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.ticket,
       },
-      cell: ({ row }) => {
-        const onClick = (data: TradingHistoryItem) => {
-          console.log('Operate on row:', data);
-        };
-        return (
-          <div>
-            <RrhDialog
-              trigger={
-                <RrhButton variant="ghost" onClick={() => onClick(row.original)}>
-                  {t('common.View')}
-                </RrhButton>
-              }
-              cancelText={t('common.close')}
-              confirmShow={false}
-              title={t('tradingHistoryPage.tradingHistoryDetail')}
-              variant="large"
-            >
-              <TradingHistoryDetails data={row.original} />
-            </RrhDialog>
-          </div>
-        );
+      {
+        id: 'type',
+        header: t('table.transactionType'), // 0: buy, 1: sell
+        accessorFn: row =>
+          transactionTypeMap[row.type as keyof typeof transactionTypeMap] || row.type,
       },
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'symbol',
+        header: t('table.symbol'),
+        accessorFn: row => row.symbol,
+      },
+      {
+        id: 'tradeCount',
+        header: t('table.volume'),
+        cell: ({ row }) => {
+          const rowData = row.original;
+          return rowData.traderCount && rowData.lotSize ? (
+            <div>{(rowData.traderCount / rowData.lotSize).toFixed(2)}</div>
+          ) : (
+            <div>-</div>
+          );
+        },
+      },
+      {
+        id: 'openPrice',
+        header: t('table.openPrice'),
+        accessorFn: row => row.openPrice,
+      },
+      {
+        id: 'openTime',
+        header: t('table.openTime'),
+        accessorFn: row => row.openTime,
+      },
+      {
+        id: 'closePrice',
+        header: t('table.closePrice'),
+        accessorFn: row => row.closePrice,
+      },
+      {
+        id: 'closeTime',
+        header: t('table.closeTime'),
+        accessorFn: row => row.closeTime,
+      },
+      {
+        id: 'profit',
+        header: t('table.profitAndLoss'),
+        cell: ({ row }) => {
+          const rowData = row.original;
+          return rowData.profit !== null ? (
+            <div>
+              {rowData.profit.toFixed(2)} {rowData.currency}
+            </div>
+          ) : (
+            <div>-</div>
+          );
+        },
+      },
+      {
+        id: 'commission',
+        header: t('table.commission'),
+        cell: ({ row }) => {
+          const rowData = row.original;
+          return rowData.commission !== null ? (
+            <div>
+              {rowData.commission.toFixed(2)} {rowData.currency}
+            </div>
+          ) : (
+            <div>-</div>
+          );
+        },
+      },
+      {
+        id: 'swaps',
+        header: t('table.swap'),
+        cell: ({ row }) => {
+          const rowData = row.original;
+          return rowData.swaps !== null ? (
+            <div>
+              {rowData.swaps.toFixed(2)} {rowData.currency}
+            </div>
+          ) : (
+            <div>-</div>
+          );
+        },
+      },
+      {
+        id: 'comment',
+        header: t('table.comment'),
+        accessorFn: row => row.comment,
+      },
+      {
+        id: 'operate',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => {
+          const onClick = (data: TradingHistoryItem) => {
+            console.log('Operate on row:', data);
+          };
+          return (
+            <div>
+              <RrhDialog
+                trigger={
+                  <RrhButton variant="ghost" onClick={() => onClick(row.original)}>
+                    {t('common.View')}
+                  </RrhButton>
+                }
+                cancelText={t('common.close')}
+                confirmShow={false}
+                title={t('tradingHistoryPage.tradingHistoryDetail')}
+                variant="large"
+              >
+                <TradingHistoryDetails data={row.original} />
+              </RrhDialog>
+            </div>
+          );
+        },
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility<TradingHistoryItem>('trading-history-table', allColumns);

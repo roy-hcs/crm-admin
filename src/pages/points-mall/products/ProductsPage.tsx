@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   useCrmDealGoodsList,
@@ -79,208 +79,211 @@ export const ProductsPage = () => {
     [openTab, t],
   );
 
-  const allColumns: CRMColumnDef<GoodsListItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'id',
-      header: t('products.goodId'),
-      accessorFn: row => row.id,
-      cell: ({ row }) => <div>{row?.original?.id}</div>,
-    },
-    {
-      id: 'goodsName',
-      header: t('products.name'),
-      accessorFn: row => row.goodsName,
-      cell: ({ row }) => {
-        return <div>{row?.original?.goodsName || '-'}</div>;
+  const allColumns = useMemo<CRMColumnDef<GoodsListItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'exchangePoints',
-      label: t('products.exchangePoints'),
-      header: () => (
-        <div className="flex items-center gap-1">
-          {t('products.exchangePoints')}
-          <RrhSorter
-            setIsAsc={setIsAsc}
-            isAsc={isAsc}
-            orderByColumn={orderByColumn}
-            setOrderByColumn={setOrderByColumn}
-            column="exchangePoints"
-          />
-        </div>
-      ),
-      accessorFn: row => row.exchangePoints,
-      cell: ({ row }) => {
-        return <div>{row?.original?.exchangePoints || '-'}</div>;
+      {
+        id: 'id',
+        header: t('products.goodId'),
+        accessorFn: row => row.id,
+        cell: ({ row }) => <div>{row?.original?.id}</div>,
       },
-    },
-    {
-      id: 'combinationPaymentList',
-      header: t('products.exchangeAmount'),
-      accessorFn: row => row.combinationPaymentList,
-      cell: ({ row }) => {
-        if (
-          row?.original?.combinationPaymentList?.[0]?.exchangeAmount &&
-          row?.original?.combinationPaymentList?.[0]?.exchangePoint
-        ) {
-          return (
-            <Tooltip>
-              <TooltipTrigger>
-                {row?.original?.combinationPaymentList?.[0]?.exchangeAmount}USD
-              </TooltipTrigger>
-              <TooltipContent>
-                {row?.original?.combinationPaymentList?.[0]?.exchangePoint +
-                  `+${row?.original?.combinationPaymentList?.[0]?.exchangeAmount}USD`}
-              </TooltipContent>
-            </Tooltip>
-          );
-        }
-        return '-';
+      {
+        id: 'goodsName',
+        header: t('products.name'),
+        accessorFn: row => row.goodsName,
+        cell: ({ row }) => {
+          return <div>{row?.original?.goodsName || '-'}</div>;
+        },
       },
-    },
-    {
-      id: 'goodsType',
-      header: t('products.goodsType'),
-      accessorFn: row => row.goodsType,
-      cell: ({ row }) => {
-        return (
-          <div>
-            {String(row?.original?.goodsType) === '2'
-              ? t('products.physicalGoods')
-              : t('products.virtualGoods')}
+      {
+        id: 'exchangePoints',
+        label: t('products.exchangePoints'),
+        header: () => (
+          <div className="flex items-center gap-1">
+            {t('products.exchangePoints')}
+            <RrhSorter
+              setIsAsc={setIsAsc}
+              isAsc={isAsc}
+              orderByColumn={orderByColumn}
+              setOrderByColumn={setOrderByColumn}
+              column="exchangePoints"
+            />
           </div>
-        );
+        ),
+        accessorFn: row => row.exchangePoints,
+        cell: ({ row }) => {
+          return <div>{row?.original?.exchangePoints || '-'}</div>;
+        },
       },
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      accessorFn: row => row.status,
-      cell: ({ row }) => {
-        return (
-          <RrhStatusAlert<{
-            id: string;
-            status: number;
-          }>
-            params={{
-              id: String(row.original.id),
-              status: row.original.status === 1 ? 0 : 1,
-            }}
-            tipsText={
-              row.original.status === 1 ? t('products.confirm.stop') : t('products.confirm.open')
-            }
-            checked={row.original.status === 1}
-            confirmFunction={changeGoodsStatus}
-            onSuccess={refetch}
-          />
-        );
+      {
+        id: 'combinationPaymentList',
+        header: t('products.exchangeAmount'),
+        accessorFn: row => row.combinationPaymentList,
+        cell: ({ row }) => {
+          if (
+            row?.original?.combinationPaymentList?.[0]?.exchangeAmount &&
+            row?.original?.combinationPaymentList?.[0]?.exchangePoint
+          ) {
+            return (
+              <Tooltip>
+                <TooltipTrigger>
+                  {row?.original?.combinationPaymentList?.[0]?.exchangeAmount}USD
+                </TooltipTrigger>
+                <TooltipContent>
+                  {row?.original?.combinationPaymentList?.[0]?.exchangePoint +
+                    `+${row?.original?.combinationPaymentList?.[0]?.exchangeAmount}USD`}
+                </TooltipContent>
+              </Tooltip>
+            );
+          }
+          return '-';
+        },
       },
-    },
-    {
-      id: 'viewCount',
-      label: t('products.viewCount'),
-      header: () => (
-        <div className="flex items-center gap-1">
-          {t('products.viewCount')}
-          <RrhSorter
-            setIsAsc={setIsAsc}
-            isAsc={isAsc}
-            orderByColumn={orderByColumn}
-            setOrderByColumn={setOrderByColumn}
-            column="viewCount"
-          />
-        </div>
-      ),
-      accessorFn: row => row.viewCount,
-      cell: ({ row }) => {
-        return <div>{row?.original?.viewCount || '-'}</div>;
+      {
+        id: 'goodsType',
+        header: t('products.goodsType'),
+        accessorFn: row => row.goodsType,
+        cell: ({ row }) => {
+          return (
+            <div>
+              {String(row?.original?.goodsType) === '2'
+                ? t('products.physicalGoods')
+                : t('products.virtualGoods')}
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'exchangeCount',
-      label: t('products.exchangeCount'),
-      header: () => (
-        <div className="flex items-center gap-1">
-          {t('products.exchangeCount')}
-          <RrhSorter
-            setIsAsc={setIsAsc}
-            isAsc={isAsc}
-            orderByColumn={orderByColumn}
-            setOrderByColumn={setOrderByColumn}
-            column="exchangeCount"
-          />
-        </div>
-      ),
-      accessorFn: row => row.exchangeCount,
-      cell: ({ row }) => {
-        return <div>{row?.original?.exchangeCount}</div>;
-      },
-    },
-    {
-      id: 'updateBy',
-      header: t('products.updateBy'),
-      accessorFn: row => row.updateBy,
-      cell: ({ row }) => {
-        return <div>{row?.original?.updateBy || '-'}</div>;
-      },
-    },
-    {
-      id: 'updateTime',
-      label: t('table.updateTime'),
-      header: () => (
-        <div className="flex items-center gap-1">
-          {t('table.updateTime')}
-          <RrhSorter
-            setIsAsc={setIsAsc}
-            isAsc={isAsc}
-            orderByColumn={orderByColumn}
-            setOrderByColumn={setOrderByColumn}
-            column="updateTime"
-          />
-        </div>
-      ),
-      accessorFn: row => row.updateTime,
-      cell: ({ row }) => {
-        return <div>{row?.original?.updateTime || '-'}</div>;
-      },
-    },
-    {
-      id: 'operation',
-      label: t('common.Operation'),
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
-      },
-      cell: ({ row }) => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.Edit'), value: 'edit' },
-              { label: t('common.delete'), value: 'delete' },
-            ]}
-            callToAction={action => {
-              switch (action) {
-                case 'edit':
-                  goToDetail('edit', row.original);
-                  break;
-                case 'delete':
-                  setIds(String(row?.original.id));
-                  setDeleteAlert(true);
-                  break;
+      {
+        id: 'status',
+        header: t('table.status'),
+        accessorFn: row => row.status,
+        cell: ({ row }) => {
+          return (
+            <RrhStatusAlert<{
+              id: string;
+              status: number;
+            }>
+              params={{
+                id: String(row.original.id),
+                status: row.original.status === 1 ? 0 : 1,
+              }}
+              tipsText={
+                row.original.status === 1 ? t('products.confirm.stop') : t('products.confirm.open')
               }
-            }}
-          />
-        </div>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+              checked={row.original.status === 1}
+              confirmFunction={changeGoodsStatus}
+              onSuccess={refetch}
+            />
+          );
+        },
+      },
+      {
+        id: 'viewCount',
+        label: t('products.viewCount'),
+        header: () => (
+          <div className="flex items-center gap-1">
+            {t('products.viewCount')}
+            <RrhSorter
+              setIsAsc={setIsAsc}
+              isAsc={isAsc}
+              orderByColumn={orderByColumn}
+              setOrderByColumn={setOrderByColumn}
+              column="viewCount"
+            />
+          </div>
+        ),
+        accessorFn: row => row.viewCount,
+        cell: ({ row }) => {
+          return <div>{row?.original?.viewCount || '-'}</div>;
+        },
+      },
+      {
+        id: 'exchangeCount',
+        label: t('products.exchangeCount'),
+        header: () => (
+          <div className="flex items-center gap-1">
+            {t('products.exchangeCount')}
+            <RrhSorter
+              setIsAsc={setIsAsc}
+              isAsc={isAsc}
+              orderByColumn={orderByColumn}
+              setOrderByColumn={setOrderByColumn}
+              column="exchangeCount"
+            />
+          </div>
+        ),
+        accessorFn: row => row.exchangeCount,
+        cell: ({ row }) => {
+          return <div>{row?.original?.exchangeCount}</div>;
+        },
+      },
+      {
+        id: 'updateBy',
+        header: t('products.updateBy'),
+        accessorFn: row => row.updateBy,
+        cell: ({ row }) => {
+          return <div>{row?.original?.updateBy || '-'}</div>;
+        },
+      },
+      {
+        id: 'updateTime',
+        label: t('table.updateTime'),
+        header: () => (
+          <div className="flex items-center gap-1">
+            {t('table.updateTime')}
+            <RrhSorter
+              setIsAsc={setIsAsc}
+              isAsc={isAsc}
+              orderByColumn={orderByColumn}
+              setOrderByColumn={setOrderByColumn}
+              column="updateTime"
+            />
+          </div>
+        ),
+        accessorFn: row => row.updateTime,
+        cell: ({ row }) => {
+          return <div>{row?.original?.updateTime || '-'}</div>;
+        },
+      },
+      {
+        id: 'operation',
+        label: t('common.Operation'),
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.Edit'), value: 'edit' },
+                { label: t('common.delete'), value: 'delete' },
+              ]}
+              callToAction={action => {
+                switch (action) {
+                  case 'edit':
+                    goToDetail('edit', row.original);
+                    break;
+                  case 'delete':
+                    setIds(String(row?.original.id));
+                    setDeleteAlert(true);
+                    break;
+                }
+              }}
+            />
+          </div>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, isAsc, orderByColumn, changeGoodsStatus, refetch, goToDetail, setIds, setDeleteAlert],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('points-mall-products-table', allColumns);

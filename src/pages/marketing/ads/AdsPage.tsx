@@ -51,147 +51,161 @@ export const AdsPage = () => {
     setOrderByColumn('');
   };
 
-  const allColumns: CRMColumnDef<AdsListItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'name',
-      header: t('ads.name'),
-      accessorFn: row => row.name,
-      cell: ({ row }) => {
-        return <div>{row?.original?.name || '-'}</div>;
+  const allColumns = useMemo<CRMColumnDef<AdsListItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'position',
-      header: t('ads.position'),
-      accessorFn: row => row.position,
-      cell: ({ row }) => {
-        return <div>{t(`ads.positionType.${row?.original?.position}`) || '-'}</div>;
+      {
+        id: 'name',
+        header: t('ads.name'),
+        accessorFn: row => row.name,
+        cell: ({ row }) => {
+          return <div>{row?.original?.name || '-'}</div>;
+        },
       },
-    },
-    {
-      id: 'sort',
-      label: t('table.sort'),
-      header: () => (
-        <div className="flex items-center gap-1">
-          {t('table.sort')}
-          <RrhSorter
-            setIsAsc={setIsAsc}
-            isAsc={isAsc}
-            orderByColumn={orderByColumn}
-            setOrderByColumn={setOrderByColumn}
-            column="sort"
-          />
-        </div>
-      ),
-      accessorFn: row => row.sort,
-      cell: ({ row }) => {
-        return <div>{row?.original?.sort || '-'}</div>;
+      {
+        id: 'position',
+        header: t('ads.position'),
+        accessorFn: row => row.position,
+        cell: ({ row }) => {
+          return <div>{t(`ads.positionType.${row?.original?.position}`) || '-'}</div>;
+        },
       },
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      accessorFn: row => row.status,
-      cell: ({ row }) => {
-        return (
-          <RrhStatusAlert<{
-            id: string;
-            status: number;
-          }>
-            params={{
-              id: String(row.original.id),
-              status: row.original.status === 1 ? 0 : 1,
-            }}
-            tipsText={row.original.status === 1 ? t('ads.confirm.stop') : t('ads.confirm.open')}
-            checked={row.original.status === 1}
-            confirmFunction={modifyStatus}
-            onSuccess={refetch}
-          />
-        );
+      {
+        id: 'sort',
+        label: t('table.sort'),
+        header: () => (
+          <div className="flex items-center gap-1">
+            {t('table.sort')}
+            <RrhSorter
+              setIsAsc={setIsAsc}
+              isAsc={isAsc}
+              orderByColumn={orderByColumn}
+              setOrderByColumn={setOrderByColumn}
+              column="sort"
+            />
+          </div>
+        ),
+        accessorFn: row => row.sort,
+        cell: ({ row }) => {
+          return <div>{row?.original?.sort || '-'}</div>;
+        },
       },
-    },
-    {
-      id: 'clickCount',
-      label: t('ads.clickCount'),
-      header: () => (
-        <div className="flex items-center gap-1">
-          {t('ads.clickCount')}
-          <RrhSorter
-            setIsAsc={setIsAsc}
-            isAsc={isAsc}
-            orderByColumn={orderByColumn}
-            setOrderByColumn={setOrderByColumn}
-            column="clickCount"
-          />
-        </div>
-      ),
-      accessorFn: row => row.clickCount,
-      cell: ({ row }) => {
-        return <div>{row?.original?.clickCount || '-'}</div>;
+      {
+        id: 'status',
+        header: t('table.status'),
+        accessorFn: row => row.status,
+        cell: ({ row }) => {
+          return (
+            <RrhStatusAlert<{
+              id: string;
+              status: number;
+            }>
+              params={{
+                id: String(row.original.id),
+                status: row.original.status === 1 ? 0 : 1,
+              }}
+              tipsText={row.original.status === 1 ? t('ads.confirm.stop') : t('ads.confirm.open')}
+              checked={row.original.status === 1}
+              confirmFunction={modifyStatus}
+              onSuccess={refetch}
+            />
+          );
+        },
       },
-    },
-    {
-      id: 'updateBy',
-      header: t('table.operator'),
-      accessorFn: row => row.updateBy,
-      cell: ({ row }) => {
-        return <div>{row?.original?.updateBy || '-'}</div>;
+      {
+        id: 'clickCount',
+        label: t('ads.clickCount'),
+        header: () => (
+          <div className="flex items-center gap-1">
+            {t('ads.clickCount')}
+            <RrhSorter
+              setIsAsc={setIsAsc}
+              isAsc={isAsc}
+              orderByColumn={orderByColumn}
+              setOrderByColumn={setOrderByColumn}
+              column="clickCount"
+            />
+          </div>
+        ),
+        accessorFn: row => row.clickCount,
+        cell: ({ row }) => {
+          return <div>{row?.original?.clickCount || '-'}</div>;
+        },
       },
-    },
-    {
-      id: 'updateTime',
-      label: t('table.updateTime'),
-      header: () => (
-        <div className="flex items-center gap-1">
-          {t('table.updateTime')}
-          <RrhSorter
-            setIsAsc={setIsAsc}
-            isAsc={isAsc}
-            orderByColumn={orderByColumn}
-            setOrderByColumn={setOrderByColumn}
-            column="updateTime"
-          />
-        </div>
-      ),
-      accessorFn: row => row.updateTime,
-      cell: ({ row }) => {
-        return <div>{row?.original?.updateTime || '-'}</div>;
+      {
+        id: 'updateBy',
+        header: t('table.operator'),
+        accessorFn: row => row.updateBy,
+        cell: ({ row }) => {
+          return <div>{row?.original?.updateBy || '-'}</div>;
+        },
       },
-    },
-    {
-      id: 'operation',
-      label: t('common.Operation'),
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'updateTime',
+        label: t('table.updateTime'),
+        header: () => (
+          <div className="flex items-center gap-1">
+            {t('table.updateTime')}
+            <RrhSorter
+              setIsAsc={setIsAsc}
+              isAsc={isAsc}
+              orderByColumn={orderByColumn}
+              setOrderByColumn={setOrderByColumn}
+              column="updateTime"
+            />
+          </div>
+        ),
+        accessorFn: row => row.updateTime,
+        cell: ({ row }) => {
+          return <div>{row?.original?.updateTime || '-'}</div>;
+        },
       },
-      cell: ({ row }) => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.Edit'), value: 'edit' },
-              { label: t('common.delete'), value: 'delete' },
-            ]}
-            callToAction={action => {
-              setId(row.original.id || '');
-              if (action === 'edit') {
-                setEditOpen(true);
-              } else if (action === 'delete') {
-                setDeleteAlert(true);
-              }
-            }}
-          />
-        </div>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'operation',
+        label: t('common.Operation'),
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.Edit'), value: 'edit' },
+                { label: t('common.delete'), value: 'delete' },
+              ]}
+              callToAction={action => {
+                setId(row.original.id || '');
+                if (action === 'edit') {
+                  setEditOpen(true);
+                } else if (action === 'delete') {
+                  setDeleteAlert(true);
+                }
+              }}
+            />
+          </div>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [
+      t,
+      isAsc,
+      setIsAsc,
+      orderByColumn,
+      setOrderByColumn,
+      modifyStatus,
+      refetch,
+      setId,
+      setEditOpen,
+      setDeleteAlert,
+    ],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('marketing-ads-table', allColumns);

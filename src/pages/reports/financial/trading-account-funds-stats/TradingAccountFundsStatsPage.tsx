@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import {
@@ -75,188 +75,193 @@ export function TradingAccountFundsStatsPage() {
     setPageSize(10);
   };
 
-  const allColumns: CRMColumnDef<TradingAccountFundsStatsItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'name',
-      header: t('tradingAccountTransactions.name'),
-      accessorFn: row => row.name,
-    },
-    {
-      id: 'login',
-      header: t('tradingAccountTransactions.login'),
-      accessorFn: row => row.login,
-    },
-    {
-      id: 'balance',
-      header: t('tradingAccountFundsStats.balance') + ' (+)',
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.positiveBalanceCount ?? '0'}</div>
+  const allColumns = useMemo<CRMColumnDef<TradingAccountFundsStatsItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'name',
+        header: t('tradingAccountTransactions.name'),
+        accessorFn: row => row.name,
+      },
+      {
+        id: 'login',
+        header: t('tradingAccountTransactions.login'),
+        accessorFn: row => row.login,
+      },
+      {
+        id: 'balance',
+        header: t('tradingAccountFundsStats.balance') + ' (+)',
+        cell: ({ row }) => {
+          return (
             <div>
-              {Number(row?.original?.positiveBalance ?? 0).toFixed(2) + row?.original?.currency}
+              <div>{row?.original?.positiveBalanceCount ?? '0'}</div>
+              <div>
+                {Number(row?.original?.positiveBalance ?? 0).toFixed(2) + row?.original?.currency}
+              </div>
             </div>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'inputAmountCount',
-      header: t('tradingAccountFundsStats.inputAmountCount'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.inputAmountCount ?? '0'}</div>
+      {
+        id: 'inputAmountCount',
+        header: t('tradingAccountFundsStats.inputAmountCount'),
+        cell: ({ row }) => {
+          return (
             <div>
-              {Number(row?.original?.inputAmount ?? 0).toFixed(2) + row?.original?.currency}
+              <div>{row?.original?.inputAmountCount ?? '0'}</div>
+              <div>
+                {Number(row?.original?.inputAmount ?? 0).toFixed(2) + row?.original?.currency}
+              </div>
             </div>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'sysInputAmountCount',
-      header: t('tradingAccountFundsStats.sysInputAmountCount'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.sysInputAmountCount ?? '0'}</div>
+      {
+        id: 'sysInputAmountCount',
+        header: t('tradingAccountFundsStats.sysInputAmountCount'),
+        cell: ({ row }) => {
+          return (
             <div>
-              {Number(row?.original?.sysInputAmount ?? 0).toFixed(2) + row?.original?.currency}
+              <div>{row?.original?.sysInputAmountCount ?? '0'}</div>
+              <div>
+                {Number(row?.original?.sysInputAmount ?? 0).toFixed(2) + row?.original?.currency}
+              </div>
             </div>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'commissionInputAmountCount',
-      header: t('tradingAccountFundsStats.commissionInputAmountCount'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.commissionInputAmountCount ?? '0'}</div>
+      {
+        id: 'commissionInputAmountCount',
+        header: t('tradingAccountFundsStats.commissionInputAmountCount'),
+        cell: ({ row }) => {
+          return (
             <div>
-              {Number(row?.original?.commissionInputAmount ?? 0).toFixed(2) +
-                row?.original?.currency}
+              <div>{row?.original?.commissionInputAmountCount ?? '0'}</div>
+              <div>
+                {Number(row?.original?.commissionInputAmount ?? 0).toFixed(2) +
+                  row?.original?.currency}
+              </div>
             </div>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'insideTransferInputAmountCount',
-      header: t('tradingAccountFundsStats.insideTransferInputAmountCount'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.insideTransferInputAmountCount ?? '0'}</div>
+      {
+        id: 'insideTransferInputAmountCount',
+        header: t('tradingAccountFundsStats.insideTransferInputAmountCount'),
+        cell: ({ row }) => {
+          return (
             <div>
-              {Number(row?.original?.insideTransferInputAmount ?? 0).toFixed(2) +
-                row?.original?.currency}
+              <div>{row?.original?.insideTransferInputAmountCount ?? '0'}</div>
+              <div>
+                {Number(row?.original?.insideTransferInputAmount ?? 0).toFixed(2) +
+                  row?.original?.currency}
+              </div>
             </div>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'negativeBalanceCount',
-      header: t('tradingAccountFundsStats.negativeBalanceCount') + ' (-)',
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.negativeBalanceCount ?? '0'}</div>
+      {
+        id: 'negativeBalanceCount',
+        header: t('tradingAccountFundsStats.negativeBalanceCount') + ' (-)',
+        cell: ({ row }) => {
+          return (
             <div>
-              {Number(row?.original?.negativeBalance ?? 0).toFixed(2) + row?.original?.currency}
+              <div>{row?.original?.negativeBalanceCount ?? '0'}</div>
+              <div>
+                {Number(row?.original?.negativeBalance ?? 0).toFixed(2) + row?.original?.currency}
+              </div>
             </div>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'outAmountCount',
-      header: t('tradingAccountFundsStats.outAmountCount'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.outAmountCount ?? '0'}</div>
-            <div>{Number(row?.original?.outAmount ?? 0).toFixed(2) + row?.original?.currency}</div>
-          </div>
-        );
-      },
-    },
-    {
-      id: 'sysOutAmountCount',
-      header: t('tradingAccountFundsStats.sysOutAmountCount'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.sysOutAmountCount ?? '0'}</div>
+      {
+        id: 'outAmountCount',
+        header: t('tradingAccountFundsStats.outAmountCount'),
+        cell: ({ row }) => {
+          return (
             <div>
-              {Number(row?.original?.sysOutAmount ?? 0).toFixed(2) + row?.original?.currency}
+              <div>{row?.original?.outAmountCount ?? '0'}</div>
+              <div>
+                {Number(row?.original?.outAmount ?? 0).toFixed(2) + row?.original?.currency}
+              </div>
             </div>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'insideTransferOutAmountCount',
-      header: t('tradingAccountFundsStats.insideTransferOutAmountCount'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.insideTransferOutAmountCount ?? '0'}</div>
+      {
+        id: 'sysOutAmountCount',
+        header: t('tradingAccountFundsStats.sysOutAmountCount'),
+        cell: ({ row }) => {
+          return (
             <div>
-              {Number(row?.original?.insideTransferOutAmount ?? 0).toFixed(2) +
-                row?.original?.currency}
+              <div>{row?.original?.sysOutAmountCount ?? '0'}</div>
+              <div>
+                {Number(row?.original?.sysOutAmount ?? 0).toFixed(2) + row?.original?.currency}
+              </div>
             </div>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'creditInputAmountCount',
-      header: t('tradingAccountFundsStats.creditInputAmountCount'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.creditInputAmountCount ?? '0'}</div>
+      {
+        id: 'insideTransferOutAmountCount',
+        header: t('tradingAccountFundsStats.insideTransferOutAmountCount'),
+        cell: ({ row }) => {
+          return (
             <div>
-              {Number(row?.original?.creditInputAmount ?? 0).toFixed(2) + row?.original?.currency}
+              <div>{row?.original?.insideTransferOutAmountCount ?? '0'}</div>
+              <div>
+                {Number(row?.original?.insideTransferOutAmount ?? 0).toFixed(2) +
+                  row?.original?.currency}
+              </div>
             </div>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'creditOutAmountCount',
-      header: t('tradingAccountFundsStats.creditOutAmountCount'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.creditOutAmountCount ?? '0'}</div>
+      {
+        id: 'creditInputAmountCount',
+        header: t('tradingAccountFundsStats.creditInputAmountCount'),
+        cell: ({ row }) => {
+          return (
             <div>
-              {Number(row?.original?.creditOutAmount ?? 0).toFixed(2) + row?.original?.currency}
+              <div>{row?.original?.creditInputAmountCount ?? '0'}</div>
+              <div>
+                {Number(row?.original?.creditInputAmount ?? 0).toFixed(2) + row?.original?.currency}
+              </div>
             </div>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'profitLoss',
-      header: t('tradingAccountFundsStats.profitLoss'),
-      accessorFn: row => row.profitLoss || `0${row.currency}`,
-    },
-    {
-      id: 'currentBalance',
-      header: t('tradingAccountFundsStats.currentbalance'),
-      accessorFn: row => row.balance || `0${row.currency}`,
-    },
-  ];
+      {
+        id: 'creditOutAmountCount',
+        header: t('tradingAccountFundsStats.creditOutAmountCount'),
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.creditOutAmountCount ?? '0'}</div>
+              <div>
+                {Number(row?.original?.creditOutAmount ?? 0).toFixed(2) + row?.original?.currency}
+              </div>
+            </div>
+          );
+        },
+      },
+      {
+        id: 'profitLoss',
+        header: t('tradingAccountFundsStats.profitLoss'),
+        accessorFn: row => row.profitLoss || `0${row.currency}`,
+      },
+      {
+        id: 'currentBalance',
+        header: t('tradingAccountFundsStats.currentbalance'),
+        accessorFn: row => row.balance || `0${row.currency}`,
+      },
+    ],
+    [t],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('trading-account-funds-stats-table', allColumns);
 

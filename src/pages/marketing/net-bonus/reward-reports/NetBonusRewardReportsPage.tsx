@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
@@ -83,79 +83,82 @@ export const NetBonusRewardReportsPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<NetBonusRewardItem, unknown>[] = [
-    {
-      id: 'orderNo',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.orderNo,
-    },
-    {
-      id: 'rewardTarget',
-      header: t('rewardRecords.rewardTarget'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.bonusUserName || '-'}</div>
-            <div>({row?.original?.bonusUserShowId || '-'})</div>
-          </div>
-        );
+  const allColumns = useMemo<CRMColumnDef<NetBonusRewardItem, unknown>[]>(
+    () => [
+      {
+        id: 'orderNo',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.orderNo,
       },
-    },
-    {
-      id: 'month',
-      header: t('customerTracking.statisticMonthStr'),
-      cell: ({ row }) => <div>{row.original.bonusMonthStr}</div>,
-    },
-    {
-      id: 'rewardAmount',
-      header: t('table.rewardAmount'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.bonusAmount.toFixed(2) || '-'}USD</div>;
+      {
+        id: 'rewardTarget',
+        header: t('rewardRecords.rewardTarget'),
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.bonusUserName || '-'}</div>
+              <div>({row?.original?.bonusUserShowId || '-'})</div>
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'actualAmount',
-      header: t('table.actualDisbursedAmount'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.actualAmount.toFixed(2) || '-'}USD</div>;
+      {
+        id: 'month',
+        header: t('customerTracking.statisticMonthStr'),
+        cell: ({ row }) => <div>{row.original.bonusMonthStr}</div>,
       },
-    },
-    {
-      id: 'paymentAccount',
-      header: t('table.paymentAccount'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.accountName || '-'}</div>;
+      {
+        id: 'rewardAmount',
+        header: t('table.rewardAmount'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.bonusAmount.toFixed(2) || '-'}USD</div>;
+        },
       },
-    },
-    {
-      id: 'createTime',
-      header: t('common.createTime'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.createTime || '-'}</div>;
+      {
+        id: 'actualAmount',
+        header: t('table.actualDisbursedAmount'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.actualAmount.toFixed(2) || '-'}USD</div>;
+        },
       },
-    },
-    {
-      id: 'operator',
-      header: t('table.operator'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.createBy || '-'}</div>;
+      {
+        id: 'paymentAccount',
+        header: t('table.paymentAccount'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.accountName || '-'}</div>;
+        },
       },
-    },
-    {
-      id: 'updateTime',
-      header: t('table.verifyTime'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.updateTime || '-'}</div>;
+      {
+        id: 'createTime',
+        header: t('common.createTime'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.createTime || '-'}</div>;
+        },
       },
-    },
-    {
-      id: 'disbursedTime',
-      header: t('table.disbursedTime'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.distributionTime || '-'}</div>;
+      {
+        id: 'operator',
+        header: t('table.operator'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.createBy || '-'}</div>;
+        },
       },
-    },
-  ];
+      {
+        id: 'updateTime',
+        header: t('table.verifyTime'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.updateTime || '-'}</div>;
+        },
+      },
+      {
+        id: 'disbursedTime',
+        header: t('table.disbursedTime'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.distributionTime || '-'}</div>;
+        },
+      },
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('marketing-reward-records-table', allColumns);

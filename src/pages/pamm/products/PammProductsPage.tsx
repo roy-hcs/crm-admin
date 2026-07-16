@@ -1,7 +1,7 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Ellipsis, Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BasicParams } from '@/api/hooks/review/types';
 import { useDictType } from '@/api/hooks/system/system';
@@ -52,108 +52,111 @@ export const PammProductsPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<PammProductItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'projectName',
-      header: t('table.projectName'),
-      accessorFn: row => row.projectName,
-    },
-    {
-      id: 'model',
-      header: t('table.productModel'),
-      cell: ({ row }) => {
-        switch (row.original.model) {
-          case 1:
-            return t('PammProduct.typeOne');
-          case 2:
-            return t('PammProduct.typeTwo');
-          default:
-            return '-';
-        }
+  const allColumns = useMemo<CRMColumnDef<PammProductItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'serverName',
-      header: t('table.serverName'),
-      cell: ({ row }) => {
-        const getServerTypeName = (serverType: number) => {
-          switch (serverType) {
+      {
+        id: 'projectName',
+        header: t('table.projectName'),
+        accessorFn: row => row.projectName,
+      },
+      {
+        id: 'model',
+        header: t('table.productModel'),
+        cell: ({ row }) => {
+          switch (row.original.model) {
             case 1:
-              return 'MT5';
+              return t('PammProduct.typeOne');
             case 2:
-              return 'MT4';
-            case 3:
-              return 'Sirix';
-            case 4:
-              return 'XForce';
-            case 5:
-              return 'XOH';
+              return t('PammProduct.typeTwo');
             default:
               return '-';
           }
-        };
-        const serverTypeName = getServerTypeName(row.original.serverType);
-        return row.original.serverName + (serverTypeName ? ` | (${serverTypeName})` : '');
+        },
       },
-    },
-    {
-      id: 'login',
-      header: t('table.login'),
-      accessorFn: row => row.login || '-',
-    },
-    {
-      id: 'belongedUserName',
-      header: t('table.belongedUserName'),
-      cell: ({ row }) => {
-        return <div dangerouslySetInnerHTML={{ __html: row.original.belongedUserName }}></div>;
+      {
+        id: 'serverName',
+        header: t('table.serverName'),
+        cell: ({ row }) => {
+          const getServerTypeName = (serverType: number) => {
+            switch (serverType) {
+              case 1:
+                return 'MT5';
+              case 2:
+                return 'MT4';
+              case 3:
+                return 'Sirix';
+              case 4:
+                return 'XForce';
+              case 5:
+                return 'XOH';
+              default:
+                return '-';
+            }
+          };
+          const serverTypeName = getServerTypeName(row.original.serverType);
+          return row.original.serverName + (serverTypeName ? ` | (${serverTypeName})` : '');
+        },
       },
-    },
-    {
-      id: 'netWorth',
-      header: t('table.netWorth'),
-      accessorFn: row => row.netWorth || '-',
-    },
-    {
-      id: 'totalYield',
-      header: t('table.totalReturn'),
-      accessorFn: row => (row.totalYield ? `${row.totalYield}%` : '-'),
-    },
-    {
-      id: 'followCount',
-      header: t('table.numberOfFollowers'),
-      accessorFn: row => row.followCount ?? '-',
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      cell: ({ row }) => {
-        return <Switch checked={row.original.status === 1} />;
+      {
+        id: 'login',
+        header: t('table.login'),
+        accessorFn: row => row.login || '-',
       },
-    },
-    {
-      id: 'operation',
-      header: () => <div className="text-center">{t('common.Operation')}</div>,
-      label: t('common.Operation'),
-      fixed: 'right',
-      size: 50,
-      cell: () => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[
-            { label: t('common.View'), value: 'view' },
-            { label: t('PammProduct.liquidationProducts'), value: 'liquidation' },
-            { label: t('common.delete'), value: 'delete' },
-          ]}
-          callToAction={() => {}}
-        />
-      ),
-    },
-  ];
+      {
+        id: 'belongedUserName',
+        header: t('table.belongedUserName'),
+        cell: ({ row }) => {
+          return <div dangerouslySetInnerHTML={{ __html: row.original.belongedUserName }}></div>;
+        },
+      },
+      {
+        id: 'netWorth',
+        header: t('table.netWorth'),
+        accessorFn: row => row.netWorth || '-',
+      },
+      {
+        id: 'totalYield',
+        header: t('table.totalReturn'),
+        accessorFn: row => (row.totalYield ? `${row.totalYield}%` : '-'),
+      },
+      {
+        id: 'followCount',
+        header: t('table.numberOfFollowers'),
+        accessorFn: row => row.followCount ?? '-',
+      },
+      {
+        id: 'status',
+        header: t('table.status'),
+        cell: ({ row }) => {
+          return <Switch checked={row.original.status === 1} />;
+        },
+      },
+      {
+        id: 'operation',
+        header: () => <div className="text-center">{t('common.Operation')}</div>,
+        label: t('common.Operation'),
+        fixed: 'right',
+        size: 50,
+        cell: () => (
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.View'), value: 'view' },
+              { label: t('PammProduct.liquidationProducts'), value: 'liquidation' },
+              { label: t('common.delete'), value: 'delete' },
+            ]}
+            callToAction={() => {}}
+          />
+        ),
+      },
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('pamm-products-table', allColumns);

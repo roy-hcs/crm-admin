@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import {
@@ -67,117 +67,120 @@ export const PipValuePage = () => {
     setPageSize(10);
   };
 
-  const allColumns: CRMColumnDef<RebateBasePointItem, unknown>[] = [
-    {
-      id: 'serialNumber',
-      header: t('table.sort'),
-      accessorFn: row => row.serialNumber,
-    },
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'pointValueName',
-      header: t('table.pointValueName'),
-      accessorFn: row => row.pointValueName || '-',
-    },
-    {
-      id: 'serverType',
-      header: t('table.transactionPlatform'),
-      cell: ({ row }) => {
-        return row.original.serverType ? serverMap[row.original.serverType] : '-';
+  const allColumns = useMemo<CRMColumnDef<RebateBasePointItem, unknown>[]>(
+    () => [
+      {
+        id: 'serialNumber',
+        header: t('table.sort'),
+        accessorFn: row => row.serialNumber,
       },
-    },
-    {
-      id: 'serverName',
-      header: t('table.serverName'),
-      accessorFn: row => row.serverName || '-',
-    },
-    {
-      id: 'rebateType',
-      header: t('table.rebateType'),
-      cell: ({ row }) => {
-        const exceedLength = row.original.rebateType.length > 20;
-        const content = exceedLength
-          ? row.original.rebateType.slice(0, 20) + '...'
-          : row.original.rebateType;
-        return exceedLength ? (
-          <ToolTip
-            maxWidth="800px"
-            content={<div className="break-all">{row.original.rebateType}</div>}
-          >
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'pointValueName',
+        header: t('table.pointValueName'),
+        accessorFn: row => row.pointValueName || '-',
+      },
+      {
+        id: 'serverType',
+        header: t('table.transactionPlatform'),
+        cell: ({ row }) => {
+          return row.original.serverType ? serverMap[row.original.serverType] : '-';
+        },
+      },
+      {
+        id: 'serverName',
+        header: t('table.serverName'),
+        accessorFn: row => row.serverName || '-',
+      },
+      {
+        id: 'rebateType',
+        header: t('table.rebateType'),
+        cell: ({ row }) => {
+          const exceedLength = row.original.rebateType.length > 20;
+          const content = exceedLength
+            ? row.original.rebateType.slice(0, 20) + '...'
+            : row.original.rebateType;
+          return exceedLength ? (
+            <ToolTip
+              maxWidth="800px"
+              content={<div className="break-all">{row.original.rebateType}</div>}
+            >
+              <div>{content}</div>
+            </ToolTip>
+          ) : (
             <div>{content}</div>
-          </ToolTip>
-        ) : (
-          <div>{content}</div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'pointValueType',
-      header: t('table.pointValueType'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            {row.original.pointValueType === 1
-              ? t('table.fixedPipValue')
-              : t('table.floatingPipValue')}
-          </div>
-        );
-      },
-    },
-    {
-      id: 'pointValue',
-      header: t('table.pointValue'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        if (rowData.pointValueType === 1) {
-          return <div>{rowData.pointValue}</div>;
-        } else if (rowData.pointValueType === 2) {
+      {
+        id: 'pointValueType',
+        header: t('table.pointValueType'),
+        cell: ({ row }) => {
           return (
             <div>
-              <span>{rowData.pointValueLots}</span>
-              <span>*</span>
-              <span>
-                {rowData.pointValueRules === 2
-                  ? t('common.contractSize')
-                  : t('common.contractNumber')}
-              </span>
+              {row.original.pointValueType === 1
+                ? t('table.fixedPipValue')
+                : t('table.floatingPipValue')}
             </div>
           );
-        }
+        },
       },
-    },
-    {
-      id: 'operation',
-      header: () => <div className="text-center">{t('common.Operation')}</div>,
-      label: t('common.Operation'),
-      fixed: 'right',
-      size: 50,
-      cell: ({ row }) => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[
-            { label: t('common.Edit'), value: 'edit' },
-            { label: t('common.delete'), value: 'delete' },
-          ]}
-          callToAction={action => {
-            setCurrentItem(row.original);
-            switch (action) {
-              case 'edit':
-                setEditDialogOpen(true);
-                break;
-              case 'delete':
-                setDeleteDialogOpen(true);
-                break;
-            }
-          }}
-        />
-      ),
-    },
-  ];
+      {
+        id: 'pointValue',
+        header: t('table.pointValue'),
+        cell: ({ row }) => {
+          const rowData = row.original;
+          if (rowData.pointValueType === 1) {
+            return <div>{rowData.pointValue}</div>;
+          } else if (rowData.pointValueType === 2) {
+            return (
+              <div>
+                <span>{rowData.pointValueLots}</span>
+                <span>*</span>
+                <span>
+                  {rowData.pointValueRules === 2
+                    ? t('common.contractSize')
+                    : t('common.contractNumber')}
+                </span>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        id: 'operation',
+        header: () => <div className="text-center">{t('common.Operation')}</div>,
+        label: t('common.Operation'),
+        fixed: 'right',
+        size: 50,
+        cell: ({ row }) => (
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.Edit'), value: 'edit' },
+              { label: t('common.delete'), value: 'delete' },
+            ]}
+            callToAction={action => {
+              setCurrentItem(row.original);
+              switch (action) {
+                case 'edit':
+                  setEditDialogOpen(true);
+                  break;
+                case 'delete':
+                  setDeleteDialogOpen(true);
+                  break;
+              }
+            }}
+          />
+        ),
+      },
+    ],
+    [t, setCurrentItem, setEditDialogOpen, setDeleteDialogOpen],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('pip-value-reports-table', allColumns);

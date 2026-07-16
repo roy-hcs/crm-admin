@@ -3,7 +3,7 @@ import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { CRMColumnDef, DataTable } from '@/components/table/DataTable';
 import { Ellipsis } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AccountGroupDialog } from './AccountGroupDialog';
 // import { DeleteGroupDialog } from './DeleteGroupDialog';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
@@ -34,61 +34,64 @@ export const AccountGroupsTable = ({
   const [deleteAlert, setDeleteAlert] = useState(false);
   const { mutateAsync: removeAccountGroup } = useRemoveAccountGroup();
 
-  const columns: CRMColumnDef<CrmDealAccountItem, unknown>[] = [
-    {
-      id: 'No',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'sort',
-      header: t('table.sort'),
-      cell: ({ row }) => row?.original?.sort || '-',
-    },
-    {
-      id: 'name',
-      header: t('accountGroups.name'),
-      cell: ({ row }) => row?.original?.name || '-',
-    },
-    {
-      id: 'num',
-      header: t('accountGroups.num'),
-      cell: ({ row }) => row?.original?.num || '-',
-    },
-    {
-      id: 'relatedRebateRuleCount',
-      header: t('accountGroups.relatedRebateRuleCount'),
-      cell: ({ row }) => row?.original?.relatedRebateRuleCount || '-',
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+  const columns = useMemo<CRMColumnDef<CrmDealAccountItem, unknown>[]>(
+    () => [
+      {
+        id: 'No',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-      cell: ({ row }) => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.Edit'), value: 'edit' },
-              { label: t('common.delete'), value: 'delete' },
-            ]}
-            callToAction={action => {
-              if (action === 'edit') {
-                setEditingItem(row.original);
-                setOpen(true);
-              } else if (action === 'delete') {
-                setEditingItem(row.original);
-                setDeleteAlert(true);
-              }
-            }}
-          />
-        </div>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'sort',
+        header: t('table.sort'),
+        cell: ({ row }) => row?.original?.sort || '-',
+      },
+      {
+        id: 'name',
+        header: t('accountGroups.name'),
+        cell: ({ row }) => row?.original?.name || '-',
+      },
+      {
+        id: 'num',
+        header: t('accountGroups.num'),
+        cell: ({ row }) => row?.original?.num || '-',
+      },
+      {
+        id: 'relatedRebateRuleCount',
+        header: t('accountGroups.relatedRebateRuleCount'),
+        cell: ({ row }) => row?.original?.relatedRebateRuleCount || '-',
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.Edit'), value: 'edit' },
+                { label: t('common.delete'), value: 'delete' },
+              ]}
+              callToAction={action => {
+                if (action === 'edit') {
+                  setEditingItem(row.original);
+                  setOpen(true);
+                } else if (action === 'delete') {
+                  setEditingItem(row.original);
+                  setDeleteAlert(true);
+                }
+              }}
+            />
+          </div>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, setEditingItem, setOpen, setDeleteAlert],
+  );
 
   return (
     <>

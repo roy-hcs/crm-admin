@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import {
@@ -68,97 +68,100 @@ export function ProductCategoriesPage() {
   const [editingItem, setEditingItem] = useState<GoodsClassificationItem | null>(null);
   const [editOpen, setEditOpen] = useState(false);
 
-  const allColumns: CRMColumnDef<GoodsClassificationItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'classificationName',
-      header: t('productCategories.classificationName'),
-      accessorFn: row => row.classificationName,
-      cell: ({ row }) => row?.original?.classificationName || '-',
-    },
-    {
-      id: 'parentClassificationName',
-      header: t('productCategories.parentClassificationName'),
-      accessorFn: row => row.parentClassificationName,
-      cell: ({ row }) => row?.original?.parentClassificationName || '-',
-    },
-    {
-      id: 'sort',
-      header: t('table.sort'),
-      accessorFn: row => row.sort,
-      cell: ({ row }) => row?.original?.sort || '-',
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      cell: ({ row }) => {
-        return (
-          <RrhStatusAlert<{
-            id: string;
-            status: number;
-          }>
-            params={{
-              id: String(row.original.id),
-              status: row.original.status === 1 ? 0 : 1,
-            }}
-            tipsText={
-              row.original.status === 1
-                ? t('productCategories.confirm.stop')
-                : t('productCategories.confirm.open')
-            }
-            checked={row.original.status === 1}
-            confirmFunction={changeStatusMutation}
-            onSuccess={refetch}
-          />
-        );
+  const allColumns = useMemo<CRMColumnDef<GoodsClassificationItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'updateBy',
-      header: t('table.operator'),
-      accessorFn: row => row.updateBy,
-      cell: ({ row }) => row?.original?.updateBy || '-',
-    },
-    {
-      id: 'updateTime',
-      header: t('table.updateTime'),
-      accessorFn: row => row.updateTime,
-      cell: ({ row }) => row?.original?.updateTime || '-',
-    },
-    {
-      id: 'operate',
-      header: t('common.Operation'),
-      cell: ({ row }) => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.Edit'), value: 'edit' },
-              { label: t('common.delete'), value: 'delete' },
-            ]}
-            callToAction={action => {
-              switch (action) {
-                case 'edit':
-                  setEditingItem(row.original);
-                  setEditOpen(true);
-                  break;
-                case 'delete':
-                  setIds(String(row?.original.id));
-                  setDeleteAlert(true);
-                  break;
+      {
+        id: 'classificationName',
+        header: t('productCategories.classificationName'),
+        accessorFn: row => row.classificationName,
+        cell: ({ row }) => row?.original?.classificationName || '-',
+      },
+      {
+        id: 'parentClassificationName',
+        header: t('productCategories.parentClassificationName'),
+        accessorFn: row => row.parentClassificationName,
+        cell: ({ row }) => row?.original?.parentClassificationName || '-',
+      },
+      {
+        id: 'sort',
+        header: t('table.sort'),
+        accessorFn: row => row.sort,
+        cell: ({ row }) => row?.original?.sort || '-',
+      },
+      {
+        id: 'status',
+        header: t('table.status'),
+        cell: ({ row }) => {
+          return (
+            <RrhStatusAlert<{
+              id: string;
+              status: number;
+            }>
+              params={{
+                id: String(row.original.id),
+                status: row.original.status === 1 ? 0 : 1,
+              }}
+              tipsText={
+                row.original.status === 1
+                  ? t('productCategories.confirm.stop')
+                  : t('productCategories.confirm.open')
               }
-            }}
-          />
-        </div>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+              checked={row.original.status === 1}
+              confirmFunction={changeStatusMutation}
+              onSuccess={refetch}
+            />
+          );
+        },
+      },
+      {
+        id: 'updateBy',
+        header: t('table.operator'),
+        accessorFn: row => row.updateBy,
+        cell: ({ row }) => row?.original?.updateBy || '-',
+      },
+      {
+        id: 'updateTime',
+        header: t('table.updateTime'),
+        accessorFn: row => row.updateTime,
+        cell: ({ row }) => row?.original?.updateTime || '-',
+      },
+      {
+        id: 'operate',
+        header: t('common.Operation'),
+        cell: ({ row }) => (
+          <div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.Edit'), value: 'edit' },
+                { label: t('common.delete'), value: 'delete' },
+              ]}
+              callToAction={action => {
+                switch (action) {
+                  case 'edit':
+                    setEditingItem(row.original);
+                    setEditOpen(true);
+                    break;
+                  case 'delete':
+                    setIds(String(row?.original.id));
+                    setDeleteAlert(true);
+                    break;
+                }
+              }}
+            />
+          </div>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, changeStatusMutation, refetch, setEditingItem, setEditOpen, setIds, setDeleteAlert],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('points-mall-product-categories-table', allColumns);

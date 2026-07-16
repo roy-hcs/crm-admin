@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import {
@@ -56,91 +56,94 @@ export function RefundFailureLogsPage() {
     setPageNum(0);
     setPageSize(10);
   };
-  const allColumns: CRMColumnDef<RefundFailLogItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'userName',
-      header: t('paymentOrders.userName'),
-      cell: ({ row }) => {
-        if (row.original.lastName || row.original.name || row.original.showId) {
+  const allColumns = useMemo<CRMColumnDef<RefundFailLogItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'userName',
+        header: t('paymentOrders.userName'),
+        cell: ({ row }) => {
+          if (row.original.lastName || row.original.name || row.original.showId) {
+            return (
+              <div>
+                <div>{(row.original.lastName ?? '') + (row.original.name ?? '')}</div>
+                <div>{row.original.showId ?? ''}</div>
+              </div>
+            );
+          }
+          return '--';
+        },
+      },
+      {
+        id: 'operType',
+        header: t('table.operationType'),
+        accessorFn: row => row.operType,
+      },
+      {
+        id: 'operTime',
+        header: t('common.operationTime'),
+        accessorFn: row => row.operTime,
+      },
+      {
+        id: 'refundAmount',
+        header: t('refundFailLog.refundAmount'),
+        accessorFn: row => row.refundAmount,
+      },
+      {
+        id: 'refundAccount',
+        header: t('refundFailLog.refundAccount'),
+        cell: ({ row }) => {
+          const name = row?.original?.refundAccount?.split('</br>') ?? [];
+          if (name.length === 0) {
+            return '--';
+          }
           return (
             <div>
-              <div>{(row.original.lastName ?? '') + (row.original.name ?? '')}</div>
-              <div>{row.original.showId ?? ''}</div>
+              <div>{name[0]}</div>
+              <div>{name[1]}</div>
             </div>
           );
-        }
-        return '--';
+        },
       },
-    },
-    {
-      id: 'operType',
-      header: t('table.operationType'),
-      accessorFn: row => row.operType,
-    },
-    {
-      id: 'operTime',
-      header: t('common.operationTime'),
-      accessorFn: row => row.operTime,
-    },
-    {
-      id: 'refundAmount',
-      header: t('refundFailLog.refundAmount'),
-      accessorFn: row => row.refundAmount,
-    },
-    {
-      id: 'refundAccount',
-      header: t('refundFailLog.refundAccount'),
-      cell: ({ row }) => {
-        const name = row?.original?.refundAccount?.split('</br>') ?? [];
-        if (name.length === 0) {
-          return '--';
-        }
-        return (
+      {
+        id: 'status',
+        header: t('table.status'),
+        cell: ({ row }) => <RrhOrderStatusTag status={String(row.original.status)} />,
+      },
+      {
+        id: 'operation',
+        label: t('common.Operation'),
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: () => (
           <div>
-            <div>{name[0]}</div>
-            <div>{name[1]}</div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.View'), value: 'view' },
+                { label: t('common.Edit'), value: 'edit' },
+              ]}
+              callToAction={action => {
+                if (action === 'edit') {
+                  // Handle edit action
+                } else if (action === 'view') {
+                  // Handle view action
+                }
+              }}
+            />
           </div>
-        );
+        ),
+        fixed: 'right',
+        size: 50,
       },
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      cell: ({ row }) => <RrhOrderStatusTag status={String(row.original.status)} />,
-    },
-    {
-      id: 'operation',
-      label: t('common.Operation'),
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
-      },
-      cell: () => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.View'), value: 'view' },
-              { label: t('common.Edit'), value: 'edit' },
-            ]}
-            callToAction={action => {
-              if (action === 'edit') {
-                // Handle edit action
-              } else if (action === 'view') {
-                // Handle view action
-              }
-            }}
-          />
-        </div>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('refund-failure-logs-table', allColumns);

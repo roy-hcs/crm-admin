@@ -65,8 +65,13 @@ export function IpWhiteListPage() {
     initStatus();
   }, [initStatus]);
 
-  const allColumns: CRMColumnDef<IpWhiteListItem, unknown>[] = useMemo(() => {
-    return [
+  const [currentItem, setCurrentItem] = useState<IpWhiteListItem | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const { mutateAsync: deleteIpWhiteList } = useDeleteIpWhiteList();
+
+  const allColumns = useMemo<CRMColumnDef<IpWhiteListItem, unknown>[]>(
+    () => [
       {
         id: 'No',
         header: t('table.index'),
@@ -139,16 +144,12 @@ export function IpWhiteListPage() {
         fixed: 'right',
         size: 50,
       },
-    ];
-  }, [changeStatusMutation, refetch, t]);
+    ],
+    [t, changeStatusMutation, refetch, setCurrentItem, setEditDialogOpen, setDeleteDialogOpen],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('ip-white-list-table', allColumns);
-
-  const [currentItem, setCurrentItem] = useState<IpWhiteListItem | null>(null);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const { mutateAsync: deleteIpWhiteList } = useDeleteIpWhiteList();
 
   const reset = () => {
     setPageNum(0);

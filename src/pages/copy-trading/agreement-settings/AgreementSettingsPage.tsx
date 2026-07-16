@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { MamProtocolItem, MamProtocolListParams } from '@/api/hooks/copyTrading/type';
@@ -72,110 +72,123 @@ export const AgreementSettingsPage = () => {
   };
   const { mutateAsync: deleteAgreement } = useDeleteMamProtocol();
 
-  const allColumns: CRMColumnDef<MamProtocolItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'protocolName',
-      header: t('table.protocolName'),
-      accessorFn: row => row.name,
-    },
-    {
-      id: 'applicableScenario',
-      header: t('table.applicableScenario'),
-      cell: ({ row }) => {
-        const selectedScenario = scenarioTypes?.find(
-          item => item.dictValue === String(row.original.applicableScenarios),
-        );
-        return selectedScenario ? <div>{selectedScenario.dictLabel}</div> : '-';
+  const allColumns = useMemo<CRMColumnDef<MamProtocolItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'sort',
-      header: t('table.sort'),
-      cell: ({ row }) => row?.original?.sort || '-',
-    },
-    {
-      id: 'verifyStatus',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.status')}</div>
-            <RrhSorter
-              isAsc={isAsc}
-              setIsAsc={setIsAsc}
-              setOrderByColumn={setOrderByColumn}
-              orderByColumn={orderByColumn}
-              column="status"
-            />
-          </div>
-        );
+      {
+        id: 'protocolName',
+        header: t('table.protocolName'),
+        accessorFn: row => row.name,
       },
-      label: t('table.status'),
-      cell: ({ row }) => {
-        return <Switch checked={row?.original?.status === 1} />;
+      {
+        id: 'applicableScenario',
+        header: t('table.applicableScenario'),
+        cell: ({ row }) => {
+          const selectedScenario = scenarioTypes?.find(
+            item => item.dictValue === String(row.original.applicableScenarios),
+          );
+          return selectedScenario ? <div>{selectedScenario.dictLabel}</div> : '-';
+        },
       },
-    },
-    {
-      id: 'operator',
-      header: t('table.operator'),
-      cell: ({ row }) => row?.original?.createBy || '-',
-    },
-    {
-      id: 'updateTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.updateTime')}</div>
-            <RrhSorter
-              isAsc={isAsc}
-              setIsAsc={setIsAsc}
-              setOrderByColumn={setOrderByColumn}
-              orderByColumn={orderByColumn}
-              column="updateTime"
-            />
-          </div>
-        );
+      {
+        id: 'sort',
+        header: t('table.sort'),
+        cell: ({ row }) => row?.original?.sort || '-',
       },
-      label: t('table.updateTime'),
-      cell: ({ row }) => row?.original?.updateTime || '-',
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'verifyStatus',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.status')}</div>
+              <RrhSorter
+                isAsc={isAsc}
+                setIsAsc={setIsAsc}
+                setOrderByColumn={setOrderByColumn}
+                orderByColumn={orderByColumn}
+                column="status"
+              />
+            </div>
+          );
+        },
+        label: t('table.status'),
+        cell: ({ row }) => {
+          return <Switch checked={row?.original?.status === 1} />;
+        },
       },
-      cell: ({ row }) => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[
-            {
-              label: t('common.Edit'),
-              value: 'edit',
-            },
-            {
-              label: t('common.delete'),
-              value: 'delete',
-            },
-          ]}
-          callToAction={action => {
-            setId(row?.original.id);
-            if (action === 'edit') {
-              setOpen(true);
-            } else if (action === 'delete') {
-              // Delete functionality
-              setDeleteDialogOpen(true);
-            }
-          }}
-        />
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'operator',
+        header: t('table.operator'),
+        cell: ({ row }) => row?.original?.createBy || '-',
+      },
+      {
+        id: 'updateTime',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.updateTime')}</div>
+              <RrhSorter
+                isAsc={isAsc}
+                setIsAsc={setIsAsc}
+                setOrderByColumn={setOrderByColumn}
+                orderByColumn={orderByColumn}
+                column="updateTime"
+              />
+            </div>
+          );
+        },
+        label: t('table.updateTime'),
+        cell: ({ row }) => row?.original?.updateTime || '-',
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              {
+                label: t('common.Edit'),
+                value: 'edit',
+              },
+              {
+                label: t('common.delete'),
+                value: 'delete',
+              },
+            ]}
+            callToAction={action => {
+              setId(row?.original.id);
+              if (action === 'edit') {
+                setOpen(true);
+              } else if (action === 'delete') {
+                // Delete functionality
+                setDeleteDialogOpen(true);
+              }
+            }}
+          />
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [
+      t,
+      scenarioTypes,
+      isAsc,
+      setIsAsc,
+      orderByColumn,
+      setOrderByColumn,
+      setId,
+      setOpen,
+      setDeleteDialogOpen,
+    ],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('copy-trading-settings-table', allColumns);

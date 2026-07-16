@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { PaymentOrderItem, PaymentOrderListParams, usePaymentOrderList } from '@/api/hooks/report';
@@ -84,94 +84,97 @@ export function PaymentOrdersPage() {
     setPageNum(0);
     setPageSize(10);
   };
-  const allColumns: CRMColumnDef<PaymentOrderItem, unknown>[] = [
-    {
-      fixed: true,
-      size: 50,
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'userName',
-      header: t('paymentOrders.userName'),
-      cell: ({ row }) => {
-        const name = row?.original?.userName?.split('<br/>') ?? [];
-        if (name.length === 0) {
-          return '--';
-        }
-        return (
+  const allColumns = useMemo<CRMColumnDef<PaymentOrderItem, unknown>[]>(
+    () => [
+      {
+        fixed: true,
+        size: 50,
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'userName',
+        header: t('paymentOrders.userName'),
+        cell: ({ row }) => {
+          const name = row?.original?.userName?.split('<br/>') ?? [];
+          if (name.length === 0) {
+            return '--';
+          }
+          return (
+            <div>
+              <div>{name[0]}</div>
+              <div>{name[1]}</div>
+            </div>
+          );
+        },
+      },
+      {
+        id: 'account',
+        header: t('paymentOrders.account'),
+        accessorFn: row => row.account,
+      },
+      {
+        id: 'payAmount',
+        header: t('paymentOrders.payAmount'),
+        accessorFn: row => row.payAmount,
+      },
+      {
+        id: 'receiptAmount',
+        header: t('paymentOrders.receiptAmount'),
+        accessorFn: row => row.receiptAmount || '--',
+      },
+      {
+        id: 'orderStatus',
+        header: t('paymentOrders.orderStatus'),
+        cell: ({ row }) => <RrhOrderStatusTag status={String(row.original.orderStatus)} />,
+      },
+      {
+        id: 'channelName',
+        header: t('paymentOrders.channelName'),
+        accessorFn: row => row.channelName || '--',
+      },
+      {
+        id: 'createTime',
+        header: t('paymentOrders.createTime'),
+        accessorFn: row => row.createTime || '--',
+      },
+      {
+        id: 'orderId',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.orderId || '--',
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
           <div>
-            <div>{name[0]}</div>
-            <div>{name[1]}</div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.View'), value: 'view' },
+                { label: t('common.Edit'), value: 'edit' },
+              ]}
+              callToAction={async action => {
+                if (action === 'edit') {
+                  if (row.original.id) {
+                    await openDepositEdit(row.original.id);
+                  }
+                } else if (action === 'view') {
+                  if (row.original.id) {
+                    await openDepositDetail(row.original.id);
+                  }
+                }
+              }}
+            />
           </div>
-        );
+        ),
       },
-    },
-    {
-      id: 'account',
-      header: t('paymentOrders.account'),
-      accessorFn: row => row.account,
-    },
-    {
-      id: 'payAmount',
-      header: t('paymentOrders.payAmount'),
-      accessorFn: row => row.payAmount,
-    },
-    {
-      id: 'receiptAmount',
-      header: t('paymentOrders.receiptAmount'),
-      accessorFn: row => row.receiptAmount || '--',
-    },
-    {
-      id: 'orderStatus',
-      header: t('paymentOrders.orderStatus'),
-      cell: ({ row }) => <RrhOrderStatusTag status={String(row.original.orderStatus)} />,
-    },
-    {
-      id: 'channelName',
-      header: t('paymentOrders.channelName'),
-      accessorFn: row => row.channelName || '--',
-    },
-    {
-      id: 'createTime',
-      header: t('paymentOrders.createTime'),
-      accessorFn: row => row.createTime || '--',
-    },
-    {
-      id: 'orderId',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.orderId || '--',
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
-      },
-      cell: ({ row }) => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.View'), value: 'view' },
-              { label: t('common.Edit'), value: 'edit' },
-            ]}
-            callToAction={async action => {
-              if (action === 'edit') {
-                if (row.original.id) {
-                  await openDepositEdit(row.original.id);
-                }
-              } else if (action === 'view') {
-                if (row.original.id) {
-                  await openDepositDetail(row.original.id);
-                }
-              }
-            }}
-          />
-        </div>
-      ),
-    },
-  ];
+    ],
+    [t, openDepositEdit, openDepositDetail],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('payment-orders-table', allColumns);
 

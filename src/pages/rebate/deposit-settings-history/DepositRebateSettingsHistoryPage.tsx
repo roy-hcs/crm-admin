@@ -1,7 +1,7 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { BasicParams } from '@/api/types';
@@ -112,49 +112,52 @@ export const DepositRebateSettingsHistoryPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<RebateDepositSettingsHistoryItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('CRMAccountPage.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'login',
-      header: t('table.tradingAccount'),
-      accessorFn: row => row.login,
-    },
-    {
-      id: 'userName',
-      header: t('CRMAccountPage.UserName'),
-      accessorFn: row => row.name,
-    },
-    {
-      id: 'operationType',
-      header: t('table.operationType'),
-      cell: ({ row }) => {
-        const type = oprType(row.original);
-        return type ? t(type) : '-';
+  const allColumns = useMemo<CRMColumnDef<RebateDepositSettingsHistoryItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('CRMAccountPage.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'profit',
-      header: t('tradingAccountTransactions.profit'),
-      cell: ({ row }) => {
-        const rowData = row.original;
-        return rowData.profit + ' ' + rowData.currency;
+      {
+        id: 'login',
+        header: t('table.tradingAccount'),
+        accessorFn: row => row.login,
       },
-    },
-    {
-      id: 'time',
-      header: t('table.time'),
-      accessorFn: row => row.timeStr,
-    },
-    {
-      id: 'ticket',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.ticket,
-    },
-  ];
+      {
+        id: 'userName',
+        header: t('CRMAccountPage.UserName'),
+        accessorFn: row => row.name,
+      },
+      {
+        id: 'operationType',
+        header: t('table.operationType'),
+        cell: ({ row }) => {
+          const type = oprType(row.original);
+          return type ? t(type) : '-';
+        },
+      },
+      {
+        id: 'profit',
+        header: t('tradingAccountTransactions.profit'),
+        cell: ({ row }) => {
+          const rowData = row.original;
+          return rowData.profit + ' ' + rowData.currency;
+        },
+      },
+      {
+        id: 'time',
+        header: t('table.time'),
+        accessorFn: row => row.timeStr,
+      },
+      {
+        id: 'ticket',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.ticket,
+      },
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility<RebateDepositSettingsHistoryItem>(

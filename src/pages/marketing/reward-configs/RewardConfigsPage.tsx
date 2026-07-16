@@ -92,7 +92,7 @@ export const RewardConfigPage = () => {
 
   const { openTab } = useTabActions();
 
-  const allColumns: CRMColumnDef<BonusSettingListItem, unknown>[] = useMemo(
+  const allColumns = useMemo<CRMColumnDef<BonusSettingListItem, unknown>[]>(
     () => [
       {
         id: 'No.',
