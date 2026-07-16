@@ -1125,7 +1125,19 @@
   "rolesManagement": {
     "administrator": "administrator",
     "roleName": "Character name",
-    "title": "role management"
+    "title": "role management",
+    "radioOptions": {
+      "1": "All users",
+      "2": "Designated account-subordinate"
+    },
+    "roleDescribe": "role description",
+    "roleId": "reference role",
+    "roleNameAlreadyUsed": "The role name already exists",
+    "userScopeOptions": {
+      "1": "Operation permission",
+      "2": "User permissions"
+    },
+    "roleIdDesc": "Select a reference role to directly reuse the role's permissions to create"
   },
   "workBench": {
     "title": "Data overview"

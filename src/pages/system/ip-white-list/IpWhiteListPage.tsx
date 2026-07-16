@@ -15,7 +15,7 @@ import { RrhStatusAlert } from '@/components/common/RrhStatusAlert';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { Ellipsis, RefreshCcw } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AddEditWhiteListDialog } from './components/AddEditWhiteListDialog';
 import { FaqIpWhiteList } from './components/FaqIpWhiteList';
@@ -65,80 +65,82 @@ export function IpWhiteListPage() {
     initStatus();
   }, [initStatus]);
 
-  const allColumns: CRMColumnDef<IpWhiteListItem, unknown>[] = [
-    {
-      id: 'No',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'ipAddress',
-      header: t('table.ipAddress'),
-      cell: ({ row }) => row.original.ipAddress || '-',
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      cell: ({ row }) => {
-        return (
-          <RrhStatusAlert<{
-            id: string;
-            status: number;
-          }>
-            params={{
-              id: String(row.original.id),
-              status: row.original.status === 1 ? 0 : 1,
-            }}
-            tipsText={
-              row.original.status === 1
-                ? t('CRMAccountPage.ConfirmDisableAccount')
-                : t('CRMAccountPage.ConfirmEnableAccount')
-            }
-            checked={row.original.status === 1}
-            confirmFunction={changeStatusMutation}
-            onSuccess={refetch}
-          />
-        );
+  const allColumns: CRMColumnDef<IpWhiteListItem, unknown>[] = useMemo(() => {
+    return [
+      {
+        id: 'No',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'remark',
-      header: t('table.remarks'),
-      cell: ({ row }) => row.original.remark || '-',
-    },
-    {
-      id: 'updateTime',
-      header: t('table.operationTime'),
-      cell: ({ row }) => row.original.updateTime || '-',
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'ipAddress',
+        header: t('table.ipAddress'),
+        cell: ({ row }) => row.original.ipAddress || '-',
       },
-      cell: ({ row }) => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.Edit'), value: 'edit' },
-              { label: t('common.delete'), value: 'delete' },
-            ]}
-            callToAction={action => {
-              setCurrentItem(row.original);
-              if (action === 'edit') {
-                setEditDialogOpen(true);
-              } else if (action === 'delete') {
-                setDeleteDialogOpen(true);
+      {
+        id: 'status',
+        header: t('table.status'),
+        cell: ({ row }) => {
+          return (
+            <RrhStatusAlert<{
+              id: string;
+              status: number;
+            }>
+              params={{
+                id: String(row.original.id),
+                status: row.original.status === 1 ? 0 : 1,
+              }}
+              tipsText={
+                row.original.status === 1
+                  ? t('CRMAccountPage.ConfirmDisableAccount')
+                  : t('CRMAccountPage.ConfirmEnableAccount')
               }
-            }}
-          />
-        </div>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+              checked={row.original.status === 1}
+              confirmFunction={changeStatusMutation}
+              onSuccess={refetch}
+            />
+          );
+        },
+      },
+      {
+        id: 'remark',
+        header: t('table.remarks'),
+        cell: ({ row }) => row.original.remark || '-',
+      },
+      {
+        id: 'updateTime',
+        header: t('table.operationTime'),
+        cell: ({ row }) => row.original.updateTime || '-',
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.Edit'), value: 'edit' },
+                { label: t('common.delete'), value: 'delete' },
+              ]}
+              callToAction={action => {
+                setCurrentItem(row.original);
+                if (action === 'edit') {
+                  setEditDialogOpen(true);
+                } else if (action === 'delete') {
+                  setDeleteDialogOpen(true);
+                }
+              }}
+            />
+          </div>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ];
+  }, [changeStatusMutation, refetch, t]);
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('ip-white-list-table', allColumns);
