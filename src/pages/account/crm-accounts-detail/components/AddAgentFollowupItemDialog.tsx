@@ -176,7 +176,7 @@ export const AddAgentFollowupItemDialog = ({
             />
             <SelectUpperDropdown
               name="remindUsers"
-              rawLabel={`${t('CRMAccountPage.reminder')} (${t('rolesManagement.users')})`}
+              rawLabel={`${t('CRMAccountPage.reminder')} (${t('common.users')})`}
               customMapOptions={item => {
                 return {
                   value: item.id,

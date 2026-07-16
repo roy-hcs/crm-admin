@@ -4,11 +4,11 @@ import { MenusPage } from '@/pages/system/menus/MenusPage';
 import { CRMUserOperationsLogsPage } from '@/pages/system/logs-page/user-operation/CRMUserOperationsLogsPage';
 import { EmailLogsPage } from '@/pages/system/logs-page/email/EmailLogsPage';
 import { PaymentLogsPage } from '@/pages/system/logs-page/payment/PaymentLogsPage';
-import { AdminAccountsPage } from '@/pages/system/admin-accounts/AdminAccountsPage';
 import { AdminOperationsPage } from '@/pages/system/logs-page/admin-operations/AdminOperationsPage';
 import { AdminLoginPage } from '@/pages/system/logs-page/admin-login/AdminLoginPage';
 import { CrmUserLoginPage } from '@/pages/system/logs-page/crm-user-login/CrmUserLoginPage';
 import { IpWhiteListPage } from '@/pages/system/ip-white-list/IpWhiteListPage';
+import { AdminAccountsPage } from '@/pages/system/admin-accounts/AdminAccountsPage';
 
 // Import other system pages as they are developed
 

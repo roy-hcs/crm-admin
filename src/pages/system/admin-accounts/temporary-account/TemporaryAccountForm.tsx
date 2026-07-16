@@ -7,23 +7,18 @@ import { useTranslation } from 'react-i18next';
 
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
-import { RoleItem, UserListParams } from '@/api/hooks/system';
+import { UserListParams } from '@/api/hooks/system';
 import { FormSelect } from '@/components/form/FormSelect';
-import { onlineStatusOptions, statusOptions } from '@/lib/const';
-import { BasicParams } from '@/api/types';
+import { BasicParams, SelectOption } from '@/api/types';
 import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
-  userName: string;
   roleId: string;
-  status: string;
-  phonenumber: string;
   email: string;
-  onlineStatus: string;
   time: { from: string; to: string };
 };
 
-export const AdminAccountsForm = ({
+export const TemporaryAccountForm = ({
   setOtherParams,
   setParams,
   loading,
@@ -35,7 +30,7 @@ export const AdminAccountsForm = ({
   setParams: Dispatch<SetStateAction<UserListParams['params']>>;
   setOtherParams: Dispatch<SetStateAction<Omit<UserListParams, 'params' | keyof BasicParams>>>;
   loading: boolean;
-  roleList: RoleItem[];
+  roleList: SelectOption[];
   reset: () => void;
   params: UserListParams['params'];
   otherParams: Omit<UserListParams, 'params' | keyof BasicParams>;
@@ -43,12 +38,8 @@ export const AdminAccountsForm = ({
   const { t } = useTranslation();
   const form = useForm({
     defaultValues: {
-      userName: otherParams?.userName || '',
       roleId: otherParams?.roleId || '',
-      status: otherParams?.status || '',
-      phonenumber: otherParams?.phonenumber || '',
       email: otherParams?.email || '',
-      onlineStatus: otherParams?.onlineStatus || '',
       time: { from: params?.beginTime || '', to: params?.endTime || '' },
     },
   });
@@ -56,12 +47,8 @@ export const AdminAccountsForm = ({
   const onSubmit = (data: FormData) => {
     reset();
     setOtherParams({
-      userName: data.userName,
       roleId: data.roleId,
-      status: data.status,
-      phonenumber: data.phonenumber,
       email: data.email,
-      onlineStatus: data.onlineStatus,
     });
     setParams(pre => ({
       ...pre,
@@ -72,12 +59,8 @@ export const AdminAccountsForm = ({
   const onReset = () => {
     reset();
     form.reset({
-      userName: '',
       roleId: '',
-      status: '',
-      phonenumber: '',
       email: '',
-      onlineStatus: '',
       time: { from: '', to: '' },
     });
   };
@@ -97,40 +80,16 @@ export const AdminAccountsForm = ({
       className="flex flex-col gap-4 overflow-auto px-4 pt-4 pb-20 md:px-12 md:pt-12"
     >
       <FormInput
-        name="userName"
-        label={t('table.fullName')}
-        placeholder={t('common.pleaseInput', { field: t('table.fullName') })}
+        name="email"
+        label={t('table.email')}
+        placeholder={t('common.pleaseInput', { field: t('table.email') })}
       />
       <FormSelect
         name="roleId"
         label={t('adminAccounts.roleName')}
         placeholder={t('common.pleaseSelect')}
         showRowValue={false}
-        options={roleList.map(i => ({ label: i.roleName, value: i.roleId }))}
-      />
-      <FormSelect
-        name="status"
-        label={t('table.status')}
-        placeholder={t('common.pleaseSelect')}
-        showRowValue={false}
-        options={statusOptions.map(i => ({ label: t(i.label), value: i.value }))}
-      />
-      <FormInput
-        name="phonenumber"
-        label={t('table.mobile')}
-        placeholder={t('common.pleaseInput', { field: t('table.mobile') })}
-      />
-      <FormInput
-        name="email"
-        label={t('table.email')}
-        placeholder={t('common.pleaseInput', { field: t('table.email') })}
-      />
-      <FormSelect
-        name="onlineStatus"
-        label={t('loginPage.login')}
-        placeholder={t('common.pleaseSelect')}
-        showRowValue={false}
-        options={onlineStatusOptions.map(i => ({ label: t(i.label), value: i.value }))}
+        options={roleList}
       />
       <FormField
         name="time"

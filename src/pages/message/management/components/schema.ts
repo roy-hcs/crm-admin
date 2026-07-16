@@ -30,7 +30,7 @@ export const buildSchema = (t: TFunction<'translation', undefined>) => {
       .date()
       .nullable()
       .refine(date => date !== null, {
-        message: t('rules.required', { field: t('messageManagement.expireTime') }),
+        message: t('rules.required', { field: t('table.expireTime') }),
       }),
     sendTime: z
       .date()

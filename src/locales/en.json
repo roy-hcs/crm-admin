@@ -74,6 +74,7 @@
     "rebateToExistAccount": "Return commission to existing account"
   },
   "common": {
+    "users": "user",
     "download": "download",
     "AnErrorOccurred": "An error occurred",
     "Cancel": "Cancel",
@@ -477,6 +478,7 @@
     "comment": "Comments",
     "commission": "Processing fee",
     "export": "Export",
+    "expireTime": "Expiration time",
     "firstNameOrLastName": "Name",
     "fullName": "Name",
     "groups": "Group",
@@ -1123,8 +1125,7 @@
   "rolesManagement": {
     "administrator": "administrator",
     "roleName": "Character name",
-    "title": "role management",
-    "users": "user"
+    "title": "role management"
   },
   "workBench": {
     "title": "Data overview"
@@ -1293,7 +1294,34 @@
   },
   "adminAccounts": {
     "roleName": "Account role",
-    "title": "Administrator account"
+    "title": "Administrator account",
+    "account": "Ordinary account",
+    "chatId": "Telegram Chatid",
+    "confirmEmail": "Confirm email",
+    "confirmEmailMustMatch": "The confirmation email must be consistent with the email address",
+    "deleteUserTips": "Are you sure you want to delete this user?",
+    "duration": "Valid time",
+    "durationDesc": "The temporary administrator account will automatically expire after the validity period.",
+    "expired": "Invalid",
+    "forceLogout": "Force logout",
+    "forceLogoutTips": "Are you sure you want to force the administrator to log out?",
+    "onlineStatus": "Login status",
+    "tabs": {
+      "1": "Ordinary account",
+      "2": "temporary account"
+    },
+    "temporaryAdmin": "temporary administrator",
+    "temporaryAdminabout": {
+      "0": "Before creating a temporary account, please carefully read and confirm the following information",
+      "1": "Temporary administrator accounts are only used for short-term assistance with troubleshooting or support.",
+      "2": "The account will automatically expire after the validity period (1–3 hours) and there is no need to delete it manually.",
+      "3": "When granting temporary administrator permissions, please try not to provide permissions related to \"modify customer information\" and \"fund review\".",
+      "4": "Login credentials/password (randomly generated password or activation link) will be sent to the authorized email address via email.",
+      "5": "Please authorize only trusted objects and confirm that the email address is accurate."
+    },
+    "unBindGoogle": "Unbind Google Token",
+    "unbindGoogleTips": "Are you sure you want to unbind your Google token?",
+    "valid": "efficient"
   },
   "adminLogin": {
     "browser": "Operate the browser",
@@ -1541,7 +1569,6 @@
     "addMsg": "Add new message",
     "deleteMsg": "Are you sure you want to delete this message?",
     "detail": "Details",
-    "expireTime": "Expiration time",
     "immediate": "Instant delivery",
     "inputContent": "Content({{field}})",
     "inputTitle": "Title({{field}})",
@@ -1950,7 +1977,8 @@
     "nameAlreadyUsed": "The name already exists",
     "timeShouldBeFuture": "{{field}} needs to be greater than the current time",
     "enterAmount": "Please enter the amount",
-    "enterPositiveInteger": "Please enter a positive integer"
+    "enterPositiveInteger": "Please enter a positive integer",
+    "invalidEmailFormat": "Email format is incorrect"
   },
   "messageTemplate": {
     "add": "Add message template",

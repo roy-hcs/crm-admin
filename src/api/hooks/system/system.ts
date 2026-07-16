@@ -61,6 +61,10 @@ import {
   AgencyPreforOverviewItem,
   IpWhiteListRes,
   AddWhiteListParams,
+  AddUser,
+  AddTempUser,
+  UserDetail,
+  UserPwdParams,
 } from './types';
 import { UserAccountOperationRes, UserRebateAccountTabRes } from '../agent/types';
 import { BasicParams } from '@/api/types';
@@ -887,5 +891,89 @@ export function useChangeWhiteListStatus() {
 export function useIpWhiteListDefaultStatus() {
   return useMutation({
     mutationFn: () => apiGet('/system/ip/white/isOpen'),
+  });
+}
+
+/**
+ * 管理员账户-普通账户-修改状态
+ */
+export function useChangeUserStatus() {
+  return useMutation({
+    mutationFn: (params: { userId: string; status: number }) =>
+      apiFormPost('/system/user/changeStatus', params),
+  });
+}
+
+/**
+ * 管理员账户-普通账户-新增普通用户
+ */
+export function useAddUser() {
+  return useMutation({
+    mutationFn: (params: AddUser) => apiFormPost('/system/user/add', params),
+  });
+}
+
+/**
+ * 管理员账户-普通账户-编辑普通用户
+ */
+export function useEditUser() {
+  return useMutation({
+    mutationFn: (
+      params: AddUser & {
+        userId: string;
+      },
+    ) => apiFormPost('/system/user/edit', params),
+  });
+}
+
+/**
+ * 管理员账户-普通账户-新增临时管理员
+ */
+export function useAddTempUser() {
+  return useMutation({
+    mutationFn: (params: AddTempUser) => apiFormPost('/system/user/add/temp', params),
+  });
+}
+
+export function useCheckUserEmailUnique() {
+  return useMutation({
+    mutationFn: (params: { email: string; name: string; userId?: string }) =>
+      apiFormPostCustom<number>('/system/user/checkEmailUnique', params),
+  });
+}
+
+/**
+ * 管理员账户-普通账户-获取用户详情
+ */
+export function useGetUserDetail() {
+  return useMutation({
+    mutationFn: (params: { userId: string }) =>
+      apiGetCustom<UserDetail>(`/system/user/detail/${params.userId}`),
+  });
+}
+
+export function useResetUserPwd() {
+  return useMutation({
+    mutationFn: (params: UserPwdParams) => apiFormPost('/system/user/resetPwd', params),
+  });
+}
+
+export function useDeleteUser() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) => apiFormPost('/system/user/remove', params),
+  });
+}
+
+export function useForceLogoutUser() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost(`/system/user/forceLogout/${params.ids}`, {}),
+  });
+}
+
+export function useUnbindGoogleUser() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost(`/system/user/google/unbind/${params.ids}`, {}),
   });
 }

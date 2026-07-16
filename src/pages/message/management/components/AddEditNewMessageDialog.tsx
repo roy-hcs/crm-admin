@@ -56,7 +56,7 @@ const mySchema = (t: TFunction<'translation', undefined>) => {
       .date()
       .nullable()
       .refine(date => date !== null, {
-        message: t('rules.required', { field: t('messageManagement.expireTime') }),
+        message: t('rules.required', { field: t('table.expireTime') }),
       }),
     sendTime: z
       .date()
@@ -552,7 +552,7 @@ export const AddEditNewMessageDialog = ({
 
             {/* 弹窗通知专属 */}
             {type === '0' ? (
-              <FormDateInput label={t('messageManagement.expireTime')} name="expireTime" showTime />
+              <FormDateInput label={t('table.expireTime')} name="expireTime" showTime />
             ) : null}
             {/* 在消息管理 新增修改消息来源 才使用选择接受对象 在customer来源中 默认接受对象就是当前用户 */}
             {source === 'MessageManagementPage' && (
