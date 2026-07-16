@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import {
@@ -87,141 +87,144 @@ export const ProfitSharingReportPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<PammReportProfitSharingItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'serverName',
-      header: t('table.serverName'),
-      cell: ({ row }) => {
-        const serverTypeName = getServerTypeName(row.original.serverType);
-        return row.original.serverName + (serverTypeName ? ` | (${serverTypeName})` : '');
+  const allColumns = useMemo<CRMColumnDef<PammReportProfitSharingItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'projectName',
-      header: t('table.projectName'),
-      accessorFn: row => row.projectName || '-',
-    },
-    {
-      id: 'investor',
-      header: t('table.customerName'),
-      cell: ({ row }) => {
-        const rowInfo = row.original;
-        let userName = '';
-        if (rowInfo.lastName) {
-          userName += rowInfo.lastName;
-        }
-        if (rowInfo.name) {
-          userName += ' ' + rowInfo.name;
-        }
-        const showId = rowInfo.showId || '';
-        if (!userName) {
-          return '-';
-        }
-        return (
-          <div>
-            <div>{userName}</div>
-            {showId && <div>{showId}</div>}
-          </div>
-        );
+      {
+        id: 'serverName',
+        header: t('table.serverName'),
+        cell: ({ row }) => {
+          const serverTypeName = getServerTypeName(row.original.serverType);
+          return row.original.serverName + (serverTypeName ? ` | (${serverTypeName})` : '');
+        },
       },
-    },
-    {
-      id: 'role',
-      header: t('table.investRole'),
-      accessorFn: row => row.role || '-',
-    },
-    {
-      id: 'investUpper',
-      header: t('table.investorUpper'),
-      cell: ({ row }) => {
-        return <div dangerouslySetInnerHTML={{ __html: row.original.inviter || '-' }}></div>;
+      {
+        id: 'projectName',
+        header: t('table.projectName'),
+        accessorFn: row => row.projectName || '-',
       },
-    },
-    {
-      id: 'orderNo',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.orderNo || '-',
-    },
-    {
-      id: 'profit',
-      header: t('profitSharingReview.businessAmount'),
-      cell: ({ row }) => {
-        const currency = row.original.currency || '';
-        return (
-          <div>
-            <div>{(row.original.businessAmount || 0).toFixed(2)}</div>
-            <div>{currency}</div>
-          </div>
-        );
+      {
+        id: 'investor',
+        header: t('table.customerName'),
+        cell: ({ row }) => {
+          const rowInfo = row.original;
+          let userName = '';
+          if (rowInfo.lastName) {
+            userName += rowInfo.lastName;
+          }
+          if (rowInfo.name) {
+            userName += ' ' + rowInfo.name;
+          }
+          const showId = rowInfo.showId || '';
+          if (!userName) {
+            return '-';
+          }
+          return (
+            <div>
+              <div>{userName}</div>
+              {showId && <div>{showId}</div>}
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'rewardAmount',
-      header: t('profitSharingReview.rewardAmount'),
-      cell: ({ row }) => {
-        const currency = row.original.currency || '';
-        return (
-          <div>
-            <div>{(row.original.rewardAmount || 0).toFixed(2)}</div>
-            <div>{currency}</div>
-          </div>
-        );
+      {
+        id: 'role',
+        header: t('table.investRole'),
+        accessorFn: row => row.role || '-',
       },
-    },
-    {
-      id: 'agentName',
-      header: t('common.account.type.agent'),
-      cell: ({ row }) => {
-        return row.original.agentName || row.original.agentLastName
-          ? row.original.agentLastName + row.original.agentName
-          : '-';
+      {
+        id: 'investUpper',
+        header: t('table.investorUpper'),
+        cell: ({ row }) => {
+          return <div dangerouslySetInnerHTML={{ __html: row.original.inviter || '-' }}></div>;
+        },
       },
-    },
-    {
-      id: 'tierRatio',
-      header: t('table.tierRatio'),
-      accessorFn: row => (row.proportion ? `${row.proportion}%` : '-'),
-    },
-    {
-      id: 'commission',
-      header: t('PammProfitSharingReport.profitSharing'),
-      cell: ({ row }) => {
-        const currency = row.original.currency || '';
-        return row.original.commission ? (
-          <div>
-            <div>{(row.original.commission || 0).toFixed(2)}</div>
-            <div>{currency}</div>
-          </div>
-        ) : (
-          <div>-</div>
-        );
+      {
+        id: 'orderNo',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.orderNo || '-',
       },
-    },
-    {
-      id: 'businessTime',
-      label: t('table.settlementTime'),
-      header: () => {
-        return (
-          <div className="flex items-center gap-2">
-            <div>{t('table.settlementTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="businessTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'profit',
+        header: t('profitSharingReview.businessAmount'),
+        cell: ({ row }) => {
+          const currency = row.original.currency || '';
+          return (
+            <div>
+              <div>{(row.original.businessAmount || 0).toFixed(2)}</div>
+              <div>{currency}</div>
+            </div>
+          );
+        },
       },
-      accessorFn: row => row.businessTime ?? '-',
-    },
-  ];
+      {
+        id: 'rewardAmount',
+        header: t('profitSharingReview.rewardAmount'),
+        cell: ({ row }) => {
+          const currency = row.original.currency || '';
+          return (
+            <div>
+              <div>{(row.original.rewardAmount || 0).toFixed(2)}</div>
+              <div>{currency}</div>
+            </div>
+          );
+        },
+      },
+      {
+        id: 'agentName',
+        header: t('common.account.type.agent'),
+        cell: ({ row }) => {
+          return row.original.agentName || row.original.agentLastName
+            ? row.original.agentLastName + row.original.agentName
+            : '-';
+        },
+      },
+      {
+        id: 'tierRatio',
+        header: t('table.tierRatio'),
+        accessorFn: row => (row.proportion ? `${row.proportion}%` : '-'),
+      },
+      {
+        id: 'commission',
+        header: t('PammProfitSharingReport.profitSharing'),
+        cell: ({ row }) => {
+          const currency = row.original.currency || '';
+          return row.original.commission ? (
+            <div>
+              <div>{(row.original.commission || 0).toFixed(2)}</div>
+              <div>{currency}</div>
+            </div>
+          ) : (
+            <div>-</div>
+          );
+        },
+      },
+      {
+        id: 'businessTime',
+        label: t('table.settlementTime'),
+        header: () => {
+          return (
+            <div className="flex items-center gap-2">
+              <div>{t('table.settlementTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="businessTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        accessorFn: row => row.businessTime ?? '-',
+      },
+    ],
+    [t, orderByColumn, isAsc, setOrderByColumn, setIsAsc],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('profit-sharing-report-table', allColumns);

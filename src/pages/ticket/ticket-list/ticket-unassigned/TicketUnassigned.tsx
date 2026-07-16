@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useMemo } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { useTicketList, useTicketRemove } from '@/api/hooks/ticket/ticket';
@@ -103,148 +103,151 @@ export const TicketUnassigned = () => {
     [openTab, t],
   );
 
-  const allColumns: CRMColumnDef<CrmTicketItem, unknown>[] = [
-    {
-      id: 'select',
-      label: t('table.select'),
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={value => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      id: 'No.',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'isFollow',
-      header: t('ticketList.isFollow'),
-      cell: ({ row }) => {
-        return (
-          <RrhFollowAlert<{
-            id: string;
-            follow: number;
-          }>
-            params={{
-              id: String(row.original.id),
-              follow: row.original.isFollow === 1 ? 0 : 1,
-            }}
-            tipsText={row.original.isFollow === 1 ? t('ticketList.confirm.stop') : ''}
-            checked={row.original.isFollow === 1}
-            confirmFunction={modifyStatus}
-            onSuccess={refetch}
+  const allColumns = useMemo<CRMColumnDef<CrmTicketItem, unknown>[]>(
+    () => [
+      {
+        id: 'select',
+        label: t('table.select'),
+        header: ({ table }) => (
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
           />
-        );
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={value => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
       },
-    },
-    {
-      id: 'orderId',
-      header: t('ticketList.orderId'),
-      accessorFn: row => row.orderId || '-',
-    },
-    {
-      id: 'content',
-      header: t('ticketList.content'),
-      cell: ({ row }) => {
-        if (row.original.content) {
+      {
+        id: 'No.',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'isFollow',
+        header: t('ticketList.isFollow'),
+        cell: ({ row }) => {
           return (
-            <ToolTip
-              maxWidth="800px"
-              content={<div className="break-all">{row.original.content}</div>}
-            >
-              <div className="w-30 truncate text-left">{row.original.content}</div>
-            </ToolTip>
+            <RrhFollowAlert<{
+              id: string;
+              follow: number;
+            }>
+              params={{
+                id: String(row.original.id),
+                follow: row.original.isFollow === 1 ? 0 : 1,
+              }}
+              tipsText={row.original.isFollow === 1 ? t('ticketList.confirm.stop') : ''}
+              checked={row.original.isFollow === 1}
+              confirmFunction={modifyStatus}
+              onSuccess={refetch}
+            />
           );
-        }
-        return '-';
+        },
       },
-    },
-    {
-      id: 'belongUser',
-      header: t('ticketList.belongUser'),
-      cell: ({ row }) => {
-        if (row.original.belongUser) {
-          const textArr = row.original.belongUser.split('</br>');
-          if (textArr.length === 2) {
+      {
+        id: 'orderId',
+        header: t('ticketList.orderId'),
+        accessorFn: row => row.orderId || '-',
+      },
+      {
+        id: 'content',
+        header: t('ticketList.content'),
+        cell: ({ row }) => {
+          if (row.original.content) {
             return (
-              <div>
-                <div>{textArr[0]}</div>
-                <div>{textArr[1]}</div>
-              </div>
+              <ToolTip
+                maxWidth="800px"
+                content={<div className="break-all">{row.original.content}</div>}
+              >
+                <div className="w-30 truncate text-left">{row.original.content}</div>
+              </ToolTip>
             );
           }
-          return <div>{textArr[0]}</div>;
-        }
-        return '-';
+          return '-';
+        },
       },
-    },
-    {
-      id: 'priority',
-      header: t('ticketList.priority'),
-      cell: ({ row }) => {
-        if ([0, 1, 2].includes(row.original.priority)) {
-          return <div>{t(`ticketList.priorityOptions.${row.original.priority}`)}</div>;
-        }
-        return '-';
-      },
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      cell: ({ row }) => {
-        if ([0, 1, 2].includes(row.original.status)) {
-          return <div>{t(`ticketList.statusOptions.${row.original.status}`)}</div>;
-        }
-        return '-';
-      },
-    },
-    {
-      id: 'createTime',
-      header: t('common.createTime'),
-      accessorFn: row => row.createTime || '-',
-    },
-    {
-      id: 'operation',
-      header: () => <div className="text-center">{t('common.Operation')}</div>,
-      label: t('common.Operation'),
-      fixed: 'right',
-      size: 50,
-      cell: ({ row }) => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[
-            { label: t('common.View'), value: 'view' },
-            { label: t('common.delete'), value: 'delete' },
-          ]}
-          callToAction={action => {
-            if (action === 'view') {
-              goToDetail(row.original);
-            } else if (action === 'delete') {
-              setParams({ ids: row.original.id ? String(row.original.id) : '' });
-              setTipsText(t('ticketList.deleteTips'));
-              setDeleteAlert(true);
+      {
+        id: 'belongUser',
+        header: t('ticketList.belongUser'),
+        cell: ({ row }) => {
+          if (row.original.belongUser) {
+            const textArr = row.original.belongUser.split('</br>');
+            if (textArr.length === 2) {
+              return (
+                <div>
+                  <div>{textArr[0]}</div>
+                  <div>{textArr[1]}</div>
+                </div>
+              );
             }
-          }}
-        />
-      ),
-    },
-  ];
+            return <div>{textArr[0]}</div>;
+          }
+          return '-';
+        },
+      },
+      {
+        id: 'priority',
+        header: t('ticketList.priority'),
+        cell: ({ row }) => {
+          if ([0, 1, 2].includes(row.original.priority)) {
+            return <div>{t(`ticketList.priorityOptions.${row.original.priority}`)}</div>;
+          }
+          return '-';
+        },
+      },
+      {
+        id: 'status',
+        header: t('table.status'),
+        cell: ({ row }) => {
+          if ([0, 1, 2].includes(row.original.status)) {
+            return <div>{t(`ticketList.statusOptions.${row.original.status}`)}</div>;
+          }
+          return '-';
+        },
+      },
+      {
+        id: 'createTime',
+        header: t('common.createTime'),
+        accessorFn: row => row.createTime || '-',
+      },
+      {
+        id: 'operation',
+        header: () => <div className="text-center">{t('common.Operation')}</div>,
+        label: t('common.Operation'),
+        fixed: 'right',
+        size: 50,
+        cell: ({ row }) => (
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.View'), value: 'view' },
+              { label: t('common.delete'), value: 'delete' },
+            ]}
+            callToAction={action => {
+              if (action === 'view') {
+                goToDetail(row.original);
+              } else if (action === 'delete') {
+                setParams({ ids: row.original.id ? String(row.original.id) : '' });
+                setTipsText(t('ticketList.deleteTips'));
+                setDeleteAlert(true);
+              }
+            }}
+          />
+        ),
+      },
+    ],
+    [t, modifyStatus, refetch, goToDetail, setParams, setTipsText, setDeleteAlert],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('ticket-unassigned-list-table', allColumns);

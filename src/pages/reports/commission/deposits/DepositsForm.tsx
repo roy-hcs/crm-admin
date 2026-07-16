@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
 import { useForm } from 'react-hook-form';
@@ -13,7 +13,8 @@ import { RrhServerSelector } from '@/components/common/RrhServerSelector';
 import { formatDate } from '@/lib/utils';
 import { TradingParams } from '@/api/hooks/report';
 import { BasicParams } from '@/api/types';
-import { useGetGroup } from '@/api/hooks/system/system';
+import { useGroupFetcher } from '@/hooks/useGroupFetcher';
+import { useServerIdAutoFill } from '@/hooks/useServerIdAutoFill';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 import { RrhForm } from '@/components/form/RrhForm';
@@ -53,9 +54,6 @@ export const DepositsForm = ({
   initialServerId?: string;
 }) => {
   const { t } = useTranslation();
-  const [groupList, setGroupList] = useState<Array<{ label: string; value: string }>>([]);
-  const [groupLoading, setGroupLoading] = useState(false);
-  const { mutateAsync: getGroupData } = useGetGroup();
   const form = useForm({
     defaultValues: {
       serverId: initialServerId || '',
@@ -71,12 +69,9 @@ export const DepositsForm = ({
     },
   });
 
-  if (!form.getValues('serverId') && (initialServerId || serverOptions[0])) {
-    const auto = initialServerId || serverOptions[0]?.id || '';
-    if (auto) form.setValue('serverId', auto, { shouldDirty: false, shouldTouch: false });
-  }
-
   const serverId = form.watch('serverId');
+
+  useServerIdAutoFill(form, initialServerId, serverOptions);
 
   const onSubmit = (data: FormData) => {
     reset();
@@ -104,42 +99,11 @@ export const DepositsForm = ({
     form.reset();
   };
 
-  useEffect(() => {
-    if (!serverId) return;
-    let mounted = true;
-    const fetch = async (serverId?: string) => {
-      if (!serverId) {
-        if (mounted) setGroupList([]);
-        return;
-      }
-      if (mounted) setGroupLoading(true);
-      try {
-        const gruop = await getGroupData(serverId);
-        if (!mounted) return;
-        if (gruop?.length > 0) {
-          const leverOptions = gruop
-            .filter(i => i)
-            .map((item: string) => ({
-              label: item,
-              value: item,
-            }));
-          setGroupList(leverOptions);
-        } else {
-          setGroupList([]);
-        }
-      } catch (error) {
-        console.error(error);
-        if (mounted) setGroupList([]);
-      } finally {
-        if (mounted) setGroupLoading(false);
-      }
-    };
-    fetch(serverId);
-    form.setValue('serverGroup', '');
-    return () => {
-      mounted = false;
-    };
-  }, [form, getGroupData, serverId]);
+  const { groupList, groupLoading } = useGroupFetcher({
+    serverId,
+    form,
+    fieldToClear: 'serverGroup',
+  });
 
   return (
     <RrhForm

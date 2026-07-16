@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useMsgTemplateList, MsgTemplateItem, useRemoveMsgTemplate } from '@/api/hooks/message';
 import { RefreshCcw, Ellipsis } from 'lucide-react';
@@ -32,54 +32,57 @@ export function MessageTemplatePage() {
   const [deleteAlert, setDeleteAlert] = useState(false);
   const { mutateAsync: removeMsgTemplate } = useRemoveMsgTemplate();
 
-  const allColumns: CRMColumnDef<MsgTemplateItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('CRMAccountPage.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'title',
-      header: t('table.title'),
-      accessorFn: row => row.title,
-      cell: ({ row }) => {
-        return <div className="max-w-100 text-wrap">{row?.original?.title || '-'}</div>;
+  const allColumns = useMemo<CRMColumnDef<MsgTemplateItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('CRMAccountPage.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'type',
-      header: t('table.updateTime'),
-      cell: ({ row }) => row?.original?.modifyTime || '-',
-    },
-    {
-      id: 'operate',
-      header: t('common.Operation'),
-      cell: ({ row }) => {
-        return (
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.Edit'), value: 'edit' },
-              { label: t('common.delete'), value: 'delete' },
-            ]}
-            callToAction={action => {
-              setDetail(row.original);
-              switch (action) {
-                case 'edit':
-                  setEditOpen(true);
-                  break;
-                case 'delete':
-                  setDeleteAlert(true);
-                  break;
-              }
-            }}
-          />
-        );
+      {
+        id: 'title',
+        header: t('table.title'),
+        accessorFn: row => row.title,
+        cell: ({ row }) => {
+          return <div className="max-w-100 text-wrap">{row?.original?.title || '-'}</div>;
+        },
       },
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'type',
+        header: t('table.updateTime'),
+        cell: ({ row }) => row?.original?.modifyTime || '-',
+      },
+      {
+        id: 'operate',
+        header: t('common.Operation'),
+        cell: ({ row }) => {
+          return (
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.Edit'), value: 'edit' },
+                { label: t('common.delete'), value: 'delete' },
+              ]}
+              callToAction={action => {
+                setDetail(row.original);
+                switch (action) {
+                  case 'edit':
+                    setEditOpen(true);
+                    break;
+                  case 'delete':
+                    setDeleteAlert(true);
+                    break;
+                }
+              }}
+            />
+          );
+        },
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, setDetail, setEditOpen, setDeleteAlert],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('message-management-table', allColumns);

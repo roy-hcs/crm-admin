@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import {
@@ -64,79 +64,84 @@ export const ProductGroupPage = () => {
     setPageSize(10);
   };
 
-  const allColumns: CRMColumnDef<RebateBaseTypeItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'typeGroupName',
-      header: t('table.typeGroup'),
-      accessorFn: row => row.typeGroupName || '-',
-    },
-    {
-      id: 'serverType',
-      header: t('table.transactionPlatform'),
-      cell: ({ row }) => {
-        return row.original.serverType ? serverMap[row.original.serverType] : '-';
+  const allColumns = useMemo<CRMColumnDef<RebateBaseTypeItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'serverName',
-      header: t('table.server'),
-      accessorFn: row => row.serverName || '-',
-    },
-    {
-      id: 'typeName',
-      header: t('table.rebateType'),
-      cell: ({ row }) => {
-        const exceedLength = row.original.typeName.length > 50;
-        const content = exceedLength
-          ? row.original.typeName.slice(0, 50) + '...'
-          : row.original.typeName;
-        return exceedLength ? (
-          <ToolTip
-            maxWidth="800px"
-            content={
-              <div className="max-h-[50vh] overflow-y-auto break-all">{row.original.typeName}</div>
-            }
-          >
+      {
+        id: 'typeGroupName',
+        header: t('table.typeGroup'),
+        accessorFn: row => row.typeGroupName || '-',
+      },
+      {
+        id: 'serverType',
+        header: t('table.transactionPlatform'),
+        cell: ({ row }) => {
+          return row.original.serverType ? serverMap[row.original.serverType] : '-';
+        },
+      },
+      {
+        id: 'serverName',
+        header: t('table.server'),
+        accessorFn: row => row.serverName || '-',
+      },
+      {
+        id: 'typeName',
+        header: t('table.rebateType'),
+        cell: ({ row }) => {
+          const exceedLength = row.original.typeName.length > 50;
+          const content = exceedLength
+            ? row.original.typeName.slice(0, 50) + '...'
+            : row.original.typeName;
+          return exceedLength ? (
+            <ToolTip
+              maxWidth="800px"
+              content={
+                <div className="max-h-[50vh] overflow-y-auto break-all">
+                  {row.original.typeName}
+                </div>
+              }
+            >
+              <div>{content}</div>
+            </ToolTip>
+          ) : (
             <div>{content}</div>
-          </ToolTip>
-        ) : (
-          <div>{content}</div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'operation',
-      header: () => <div className="text-center">{t('common.Operation')}</div>,
-      label: t('common.Operation'),
-      fixed: 'right',
-      size: 50,
-      cell: ({ row }) => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[
-            { label: t('common.Edit'), value: 'edit' },
-            { label: t('common.delete'), value: 'delete' },
-          ]}
-          callToAction={action => {
-            setCurrentItem(row.original);
-            switch (action) {
-              case 'edit':
-                setEditDialogOpen(true);
-                break;
-              case 'delete':
-                setDeleteDialogOpen(true);
-                break;
-            }
-          }}
-        />
-      ),
-    },
-  ];
+      {
+        id: 'operation',
+        header: () => <div className="text-center">{t('common.Operation')}</div>,
+        label: t('common.Operation'),
+        fixed: 'right',
+        size: 50,
+        cell: ({ row }) => (
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.Edit'), value: 'edit' },
+              { label: t('common.delete'), value: 'delete' },
+            ]}
+            callToAction={action => {
+              setCurrentItem(row.original);
+              switch (action) {
+                case 'edit':
+                  setEditDialogOpen(true);
+                  break;
+                case 'delete':
+                  setDeleteDialogOpen(true);
+                  break;
+              }
+            }}
+          />
+        ),
+      },
+    ],
+    [t, setCurrentItem, setEditDialogOpen, setDeleteDialogOpen],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('product-group-reports-table', allColumns);

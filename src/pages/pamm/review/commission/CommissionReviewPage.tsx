@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { PammCommissionItem, PammCommissionListParams } from '@/api/hooks/pamm/type';
@@ -75,97 +75,100 @@ export const CommissionReviewPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<PammCommissionItem, unknown>[] = [
-    {
-      id: 'No',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'serverName',
-      header: t('table.server'),
-      cell: ({ row }) => {
-        return (
+  const allColumns = useMemo<CRMColumnDef<PammCommissionItem, unknown>[]>(
+    () => [
+      {
+        id: 'No',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'serverName',
+        header: t('table.server'),
+        cell: ({ row }) => {
+          return (
+            <div>
+              {row?.original?.serverName}
+              <span> {serverMap[row?.original?.serverType] || ''}</span>
+            </div>
+          );
+        },
+      },
+      {
+        id: 'projectName',
+        header: t('table.projectName'),
+        accessorFn: row => row.projectName || '-',
+      },
+      {
+        id: 'customerName',
+        header: t('table.customerName'),
+        accessorFn: row => row.customerName || '-',
+      },
+      {
+        id: 'businessAmount',
+        header: t('table.amount'),
+        cell: ({ row }) => {
+          return (row?.original?.businessAmount || '0') + row?.original?.currency || '';
+        },
+      },
+      {
+        id: 'orderNo',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.orderNo || '-',
+      },
+      {
+        id: 'commission',
+        header: t('commissionReview.commission'),
+        cell: ({ row }) => {
+          return (row?.original?.commission || '0') + row?.original?.currency || '';
+        },
+      },
+      {
+        id: 'verifyStatus',
+        header: t('table.status'),
+        cell: ({ row }) => {
+          const text = commissionReviewOptions.find(
+            res => res.value === String(row?.original?.verifyStatus),
+          );
+          return text?.label ? t(text.label) : '-';
+        },
+      },
+      {
+        id: 'submitTime',
+        header: t('table.submitTime'),
+        accessorFn: row => row.submitTime || '-',
+      },
+      {
+        id: 'verifyUser',
+        header: t('table.verifyUser'),
+        accessorFn: row => row.verifyUser || '-',
+      },
+      {
+        id: 'verifyTime',
+        header: t('table.verifyTime'),
+        accessorFn: row => row.verifyTime || '-',
+      },
+      {
+        id: 'operation',
+        label: t('common.Operation'),
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: () => (
           <div>
-            {row?.original?.serverName}
-            <span> {serverMap[row?.original?.serverType] || ''}</span>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[{ label: t('table.audit'), value: 'edit' }]}
+              callToAction={() => {}}
+            />
           </div>
-        );
+        ),
+        fixed: 'right',
+        size: 50,
       },
-    },
-    {
-      id: 'projectName',
-      header: t('table.projectName'),
-      accessorFn: row => row.projectName || '-',
-    },
-    {
-      id: 'customerName',
-      header: t('table.customerName'),
-      accessorFn: row => row.customerName || '-',
-    },
-    {
-      id: 'businessAmount',
-      header: t('table.amount'),
-      cell: ({ row }) => {
-        return (row?.original?.businessAmount || '0') + row?.original?.currency || '';
-      },
-    },
-    {
-      id: 'orderNo',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.orderNo || '-',
-    },
-    {
-      id: 'commission',
-      header: t('commissionReview.commission'),
-      cell: ({ row }) => {
-        return (row?.original?.commission || '0') + row?.original?.currency || '';
-      },
-    },
-    {
-      id: 'verifyStatus',
-      header: t('table.status'),
-      cell: ({ row }) => {
-        const text = commissionReviewOptions.find(
-          res => res.value === String(row?.original?.verifyStatus),
-        );
-        return text?.label ? t(text.label) : '-';
-      },
-    },
-    {
-      id: 'submitTime',
-      header: t('table.submitTime'),
-      accessorFn: row => row.submitTime || '-',
-    },
-    {
-      id: 'verifyUser',
-      header: t('table.verifyUser'),
-      accessorFn: row => row.verifyUser || '-',
-    },
-    {
-      id: 'verifyTime',
-      header: t('table.verifyTime'),
-      accessorFn: row => row.verifyTime || '-',
-    },
-    {
-      id: 'operation',
-      label: t('common.Operation'),
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
-      },
-      cell: () => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[{ label: t('table.audit'), value: 'edit' }]}
-            callToAction={() => {}}
-          />
-        </div>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('commission-review-table', allColumns);

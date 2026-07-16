@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Ellipsis, Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable, DataTableRef } from '@/components/table';
@@ -137,236 +137,240 @@ export const NetBonusRewardRecordsPage = () => {
     refetch();
   };
 
-  const allColumns: CRMColumnDef<RewardRecordsItem, unknown>[] = [
-    {
-      id: 'select',
-      label: t('table.select'),
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={value => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      id: 'orderNo',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.orderNo,
-    },
-    {
-      id: 'bonusUserName',
-      header: t('rewardRecords.rewardTarget'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.bonusUserName || '-'}</div>
-            <div>({row?.original?.bonusUserShowId || '-'})</div>
-          </div>
-        );
-      },
-    },
-    {
-      id: 'month',
-      header: t('customerTracking.statisticMonthStr'),
-      cell: ({ row }) => <div>{row.original.bonusMonthStr}</div>,
-    },
-    {
-      id: 'rewardAmount',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.rewardAmount')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="bonusAmount"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => {
-        return <div>{row?.original?.bonusAmount.toFixed(2) || '-'}USD</div>;
-      },
-    },
-    {
-      id: 'actualAmount',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.actualDisbursedAmount')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="actualAmount"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => {
-        return <div>{row?.original?.actualAmount.toFixed(2) || '-'}USD</div>;
-      },
-    },
-    {
-      id: 'paymentAccount',
-      header: t('table.paymentAccount'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.accountName || '-'}</div>;
-      },
-    },
-    {
-      id: 'status',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.status')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="status"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      label: t('table.status'),
-      cell: ({ row }) => {
-        const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info'> = {
-          0: 'error',
-          1: 'success',
-          2: 'warning',
-          3: 'info',
-        };
-        return (
-          <RrhTag type={typeMap[row.original.status]}>
-            {t(`table.${reviewStatusMap[row.original.status]}`)}
-          </RrhTag>
-        );
-      },
-    },
-    {
-      id: 'createTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('common.createTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="createTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => {
-        return <div>{row?.original?.createTime || '-'}</div>;
-      },
-    },
-    {
-      id: 'operator',
-      header: t('table.operator'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.createBy || '-'}</div>;
-      },
-    },
-    {
-      id: 'updateTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.verifyTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="createTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => {
-        return <div>{row?.original?.updateTime || '-'}</div>;
-      },
-    },
-    {
-      id: 'distributionTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.disbursedTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="distributionTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => {
-        return <div>{row?.original?.distributionTime || '-'}</div>;
-      },
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
-      },
-      label: t('common.Operation'),
-      cell: ({ row }) => (
-        <RrhDropdown
-          Trigger={<Ellipsis className="size-4" />}
-          dropdownList={[
-            {
-              label: Number(row?.original?.status) === 2 ? t('table.audit') : t('common.View'),
-              value: 'review',
-            },
-            { label: t('common.delete'), value: 'delete' },
-          ]}
-          callToAction={action => {
-            if (action === 'review') {
-              goToDetail(row.original);
-            } else {
-              setId(row.original.id);
-              setDeleteAlert(true);
-            }
-          }}
-        />
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
-
   const [deleteAlert, setDeleteAlert] = useState(false);
+  const [id, setId] = useState('');
+
+  const allColumns = useMemo<CRMColumnDef<RewardRecordsItem, unknown>[]>(
+    () => [
+      {
+        id: 'select',
+        label: t('table.select'),
+        header: ({ table }) => (
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={value => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        id: 'orderNo',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.orderNo,
+      },
+      {
+        id: 'bonusUserName',
+        header: t('rewardRecords.rewardTarget'),
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.bonusUserName || '-'}</div>
+              <div>({row?.original?.bonusUserShowId || '-'})</div>
+            </div>
+          );
+        },
+      },
+      {
+        id: 'month',
+        header: t('customerTracking.statisticMonthStr'),
+        cell: ({ row }) => <div>{row.original.bonusMonthStr}</div>,
+      },
+      {
+        id: 'rewardAmount',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.rewardAmount')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="bonusAmount"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          return <div>{row?.original?.bonusAmount.toFixed(2) || '-'}USD</div>;
+        },
+      },
+      {
+        id: 'actualAmount',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.actualDisbursedAmount')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="actualAmount"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          return <div>{row?.original?.actualAmount.toFixed(2) || '-'}USD</div>;
+        },
+      },
+      {
+        id: 'paymentAccount',
+        header: t('table.paymentAccount'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.accountName || '-'}</div>;
+        },
+      },
+      {
+        id: 'status',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.status')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="status"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('table.status'),
+        cell: ({ row }) => {
+          const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info'> = {
+            0: 'error',
+            1: 'success',
+            2: 'warning',
+            3: 'info',
+          };
+          return (
+            <RrhTag type={typeMap[row.original.status]}>
+              {t(`table.${reviewStatusMap[row.original.status]}`)}
+            </RrhTag>
+          );
+        },
+      },
+      {
+        id: 'createTime',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('common.createTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="createTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          return <div>{row?.original?.createTime || '-'}</div>;
+        },
+      },
+      {
+        id: 'operator',
+        header: t('table.operator'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.createBy || '-'}</div>;
+        },
+      },
+      {
+        id: 'updateTime',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.verifyTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="createTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          return <div>{row?.original?.updateTime || '-'}</div>;
+        },
+      },
+      {
+        id: 'distributionTime',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.disbursedTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="distributionTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          return <div>{row?.original?.distributionTime || '-'}</div>;
+        },
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        label: t('common.Operation'),
+        cell: ({ row }) => (
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              {
+                label: Number(row?.original?.status) === 2 ? t('table.audit') : t('common.View'),
+                value: 'review',
+              },
+              { label: t('common.delete'), value: 'delete' },
+            ]}
+            callToAction={action => {
+              if (action === 'review') {
+                goToDetail(row.original);
+              } else {
+                setId(row.original.id);
+                setDeleteAlert(true);
+              }
+            }}
+          />
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, orderByColumn, isAsc, setOrderByColumn, setIsAsc, goToDetail, setId, setDeleteAlert],
+  );
+
   const { mutateAsync: removeRecord } = useRemoveRecord();
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('marketing-net-bonus-reward-records-table', allColumns);
   const { mutateAsync: exportNetBonusRewardRecords, isPending: exportLoading } =
     useExportNetBonusRewardRecords();
-  const [id, setId] = useState('');
   const [ids, setIds] = useState<string[]>([]);
 
   const onSelectionChange = (its: RewardRecordsItem[]) => {

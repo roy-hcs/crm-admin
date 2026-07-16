@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
+import { useServerIdAutoFill } from '@/hooks/useServerIdAutoFill';
 
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
@@ -66,10 +67,7 @@ export const OverviewForm = ({
     },
   });
 
-  if (!form.getValues('serverId') && (initialServerId || serverOptions[0])) {
-    const auto = initialServerId || serverOptions[0]?.id || '';
-    if (auto) form.setValue('serverId', auto, { shouldDirty: false, shouldTouch: false });
-  }
+  useServerIdAutoFill(form, initialServerId, serverOptions);
 
   const onSubmit = (data: FormData) => {
     reset();

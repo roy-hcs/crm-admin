@@ -108,81 +108,82 @@ export function TradingAccountsPage() {
     setPageNum(0);
     setPageSize(10);
   };
-  const allColumns: CRMColumnDef<CrmDealAccountListItem, unknown>[] = [
-    {
-      id: 'select',
-      label: t('table.select'),
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
+  const allColumns = useMemo<CRMColumnDef<CrmDealAccountListItem, unknown>[]>(
+    () => [
+      {
+        id: 'select',
+        label: t('table.select'),
+        header: ({ table }) => (
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={value => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        id: 'No.',
+        size: 50,
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'name',
+        header: t('tradingAccountTransactions.name'),
+        accessorFn: row => row.name || '-',
+      },
+      {
+        id: 'account',
+        header: t('tradingAccountTransactions.login'),
+        cell: ({ row }) => {
+          return (
+            <div>
+              {row.original.account +
+                ' ' +
+                (row.original.serviceProperty === 1 ? t('common.live') : t('common.demo'))}
+            </div>
+          );
+        },
+      },
+      {
+        id: 'accountTypeName',
+        header: t('common.accountType'),
+        accessorFn: row => row.accountTypeName || '-',
+      },
+      {
+        id: 'server',
+        header: t('common.server'),
+        accessorFn: row => row.serverName || '-',
+      },
+      {
+        id: 'userName',
+        header: t('tradingAccountDataStats.username'),
+        cell: ({ row }) => {
+          if (row.original.userId == null || row.original.params?.aspShowId == null) {
+            return '-';
           }
-          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={value => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      id: 'No.',
-      size: 50,
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'name',
-      header: t('tradingAccountTransactions.name'),
-      accessorFn: row => row.name || '-',
-    },
-    {
-      id: 'account',
-      header: t('tradingAccountTransactions.login'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            {row.original.account +
-              ' ' +
-              (row.original.serviceProperty === 1 ? t('common.live') : t('common.demo'))}
-          </div>
-        );
-      },
-    },
-    {
-      id: 'accountTypeName',
-      header: t('common.accountType'),
-      accessorFn: row => row.accountTypeName || '-',
-    },
-    {
-      id: 'server',
-      header: t('common.server'),
-      accessorFn: row => row.serverName || '-',
-    },
-    {
-      id: 'userName',
-      header: t('tradingAccountDataStats.username'),
-      cell: ({ row }) => {
-        if (row.original.userId == null || row.original.params?.aspShowId == null) {
-          return '-';
-        }
-        const aspName = String(row.original.params['aspName'] || '');
-        const aspShowId = String(row.original.params['aspShowId'] || '');
-        return (
-          <div>
-            <div>{aspName}</div>
-            <div>{aspShowId}</div>
-          </div>
-        );
-      },
-      /** 缺少弹窗功能
+          const aspName = String(row.original.params['aspName'] || '');
+          const aspShowId = String(row.original.params['aspShowId'] || '');
+          return (
+            <div>
+              <div>{aspName}</div>
+              <div>{aspShowId}</div>
+            </div>
+          );
+        },
+        /** 缺少弹窗功能
        *  if (null == row.userId || undefined == row.userId || undefined == row.params["aspShowId"] || null == row.params["aspShowId"]) {
                             return '-';
                         } else {
@@ -191,29 +192,29 @@ export function TradingAccountsPage() {
                             return actions.join('');
                         }
        */
-    },
-    {
-      id: 'roleName',
-      header: t('table.role'),
-      accessorFn: row => row.roleName || '-',
-    },
-    {
-      id: 'serverName',
-      header: t('table.directAgent'),
-      cell: ({ row }) => {
-        if (row.original.directBroker == null || row.original.params?.brokerShowId == null) {
-          return '-';
-        }
-        const brokerName = String(row.original.params['brokerName'] || '');
-        const brokerShowId = String(row.original.params['brokerShowId'] || '');
-        return (
-          <div>
-            <div>{brokerName}</div>
-            <div>{brokerShowId}</div>
-          </div>
-        );
       },
-      /** 缺少弹窗功能
+      {
+        id: 'roleName',
+        header: t('table.role'),
+        accessorFn: row => row.roleName || '-',
+      },
+      {
+        id: 'serverName',
+        header: t('table.directAgent'),
+        cell: ({ row }) => {
+          if (row.original.directBroker == null || row.original.params?.brokerShowId == null) {
+            return '-';
+          }
+          const brokerName = String(row.original.params['brokerName'] || '');
+          const brokerShowId = String(row.original.params['brokerShowId'] || '');
+          return (
+            <div>
+              <div>{brokerName}</div>
+              <div>{brokerShowId}</div>
+            </div>
+          );
+        },
+        /** 缺少弹窗功能
        *  if (null == row.directBroker || undefined == row.directBroker || undefined == row.params["brokerShowId"] || null == row.params["brokerShowId"]) {
                             return '-';
                         } else {
@@ -222,89 +223,91 @@ export function TradingAccountsPage() {
                             return actions.join('');
                         }
        */
-    },
-    {
-      id: 'accountGroupName',
-      header: t('table.accountGroup'),
-      accessorFn: row => row.accountGroupName || '-',
-    },
-    {
-      id: 'serverGroup',
-      header: t('table.groups'),
-      accessorFn: row => row.serverGroup || '-',
-    },
-    {
-      id: 'lever',
-      header: t('common.level'),
-      accessorFn: row => row.lever || '-',
-    },
-    {
-      id: 'balance',
-      header: t('table.balance'),
-      accessorFn: row => row.balance || '-',
-    },
-    {
-      id: 'netWorth',
-      header: t('home.Net'),
-      accessorFn: row => row.netWorth || '-',
-    },
-    {
-      id: 'creditAmount',
-      header: t('table.creditAmount'),
-      accessorFn: row => row.creditAmount || '-',
-    },
-    {
-      id: 'registerTimeStr',
-      header: t('CRMAccountPage.registerTime'),
-      accessorFn: row => row.registerTimeStr || '-',
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
       },
-      cell: ({ row }) => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.View'), value: 'view' },
-              {
-                label: t('common.resetPassword'),
-                value: 'resetPassword',
-              },
-              { label: t('common.delete'), value: 'delete' },
-            ]}
-            callToAction={action => {
-              switch (action) {
-                case 'view': {
-                  const url = `/account/trading-accounts/detail?id=${row.original.id}&serviceType=${row.original.serviceType}`;
-                  openTab({
-                    key: url,
-                    title: t('trading.tradingAccountDetail'),
-                    path: url,
-                  });
-                  break;
+      {
+        id: 'accountGroupName',
+        header: t('table.accountGroup'),
+        accessorFn: row => row.accountGroupName || '-',
+      },
+      {
+        id: 'serverGroup',
+        header: t('table.groups'),
+        accessorFn: row => row.serverGroup || '-',
+      },
+      {
+        id: 'lever',
+        header: t('common.level'),
+        accessorFn: row => row.lever || '-',
+      },
+      {
+        id: 'balance',
+        header: t('table.balance'),
+        accessorFn: row => row.balance || '-',
+      },
+      {
+        id: 'netWorth',
+        header: t('home.Net'),
+        accessorFn: row => row.netWorth || '-',
+      },
+      {
+        id: 'creditAmount',
+        header: t('table.creditAmount'),
+        accessorFn: row => row.creditAmount || '-',
+      },
+      {
+        id: 'registerTimeStr',
+        header: t('CRMAccountPage.registerTime'),
+        accessorFn: row => row.registerTimeStr || '-',
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.View'), value: 'view' },
+                {
+                  label: t('common.resetPassword'),
+                  value: 'resetPassword',
+                },
+                { label: t('common.delete'), value: 'delete' },
+              ]}
+              callToAction={action => {
+                switch (action) {
+                  case 'view': {
+                    const url = `/account/trading-accounts/detail?id=${row.original.id}&serviceType=${row.original.serviceType}`;
+                    openTab({
+                      key: url,
+                      title: t('trading.tradingAccountDetail'),
+                      path: url,
+                    });
+                    break;
+                  }
+                  case 'resetPassword':
+                    setInfo(row.original);
+                    setIsResetPasswordDialogOpen(true);
+                    break;
+                  case 'delete':
+                    setInfo(row.original);
+                    setIsDeleteDialogOpen(true);
+                    break;
+                  default:
+                    break;
                 }
-                case 'resetPassword':
-                  setInfo(row.original);
-                  setIsResetPasswordDialogOpen(true);
-                  break;
-                case 'delete':
-                  setInfo(row.original);
-                  setIsDeleteDialogOpen(true);
-                  break;
-                default:
-                  break;
-              }
-            }}
-          />
-        </div>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+              }}
+            />
+          </div>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, openTab, setInfo, setIsResetPasswordDialogOpen, setIsDeleteDialogOpen],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('trading-accounts-table', allColumns);
 

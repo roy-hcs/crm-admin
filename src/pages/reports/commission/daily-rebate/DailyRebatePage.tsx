@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { DailyRebateItem, DailyRebateParams, useDailyRebateList } from '@/api/hooks/report';
@@ -55,99 +55,102 @@ export function DailyRebatePage() {
     setPageSize(10);
   };
 
-  const allColumns: CRMColumnDef<DailyRebateItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'settleTime',
-      header: t('daily-rebate.settleTime'),
-      accessorFn: row => row.settleTime,
-    },
-    {
-      id: 'lastName',
-      header: t('daily-rebate.userName'),
-      cell: ({ row }) => (
-        <div>
-          <div>{(row.original.lastName || '') + (row.original.name || '')}</div>
-          <div>{row.original.showId || ''}</div>
-        </div>
-      ),
-    },
-    {
-      id: 'rebateType',
-      header: t('daily-rebate.rebateType'),
-      accessorFn: row => row.rebateType,
-      cell: ({ row }) => {
-        const find = RebateTypeOptions.find(item => item.value === row.original.rebateType);
-        if (find) {
-          return t(find.label);
-        }
-        return '--';
+  const allColumns = useMemo<CRMColumnDef<DailyRebateItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'account',
-      accessorKey: 'account',
-      header: t('daily-rebate.account'),
-      cell: ({ row }) => {
-        if (row.original.account) {
-          return row.original.account;
-        }
-        return '--';
+      {
+        id: 'settleTime',
+        header: t('daily-rebate.settleTime'),
+        accessorFn: row => row.settleTime,
       },
-    },
-    {
-      id: 'volume',
-      accessorKey: 'volume',
-      header: t('daily-rebate.volume'),
-      accessorFn: row => row.volume,
-    },
-    {
-      id: 'rebateTotalAmt',
-      accessorKey: 'rebateTotalAmt',
-      header: t('daily-rebate.rebateTotalAmt'),
-    },
-    {
-      id: 'rebateStatus',
-      accessorKey: 'rebateStatus',
-      header: t('daily-rebate.rebateStatus'),
-      cell: ({ row }) => {
-        const find = RebateStatusOptions.find(
-          item => String(item.value) === String(row.original.rebateStatus),
-        );
-        if (find) {
-          return t(find.label);
-        }
-        return '--';
+      {
+        id: 'lastName',
+        header: t('daily-rebate.userName'),
+        cell: ({ row }) => (
+          <div>
+            <div>{(row.original.lastName || '') + (row.original.name || '')}</div>
+            <div>{row.original.showId || ''}</div>
+          </div>
+        ),
       },
-    },
-    {
-      id: 'updateTime',
-      accessorKey: 'updateTime',
-      header: t('daily-rebate.updateTime'),
-      cell: ({ row }) => {
-        if (row.original.updateTime) {
-          return row.original.updateTime;
-        }
-        return '--';
+      {
+        id: 'rebateType',
+        header: t('daily-rebate.rebateType'),
+        accessorFn: row => row.rebateType,
+        cell: ({ row }) => {
+          const find = RebateTypeOptions.find(item => item.value === row.original.rebateType);
+          if (find) {
+            return t(find.label);
+          }
+          return '--';
+        },
       },
-    },
-    {
-      id: 'relatedCount',
-      accessorKey: 'relatedCount',
-      header: t('daily-rebate.relatedCount'),
-      accessorFn: row => row.relatedCount,
-    },
-    {
-      id: 'id',
-      accessorKey: 'id',
-      header: t('daily-rebate.id'),
-      accessorFn: row => row.id,
-    },
-  ];
+      {
+        id: 'account',
+        accessorKey: 'account',
+        header: t('daily-rebate.account'),
+        cell: ({ row }) => {
+          if (row.original.account) {
+            return row.original.account;
+          }
+          return '--';
+        },
+      },
+      {
+        id: 'volume',
+        accessorKey: 'volume',
+        header: t('daily-rebate.volume'),
+        accessorFn: row => row.volume,
+      },
+      {
+        id: 'rebateTotalAmt',
+        accessorKey: 'rebateTotalAmt',
+        header: t('daily-rebate.rebateTotalAmt'),
+      },
+      {
+        id: 'rebateStatus',
+        accessorKey: 'rebateStatus',
+        header: t('daily-rebate.rebateStatus'),
+        cell: ({ row }) => {
+          const find = RebateStatusOptions.find(
+            item => String(item.value) === String(row.original.rebateStatus),
+          );
+          if (find) {
+            return t(find.label);
+          }
+          return '--';
+        },
+      },
+      {
+        id: 'updateTime',
+        accessorKey: 'updateTime',
+        header: t('daily-rebate.updateTime'),
+        cell: ({ row }) => {
+          if (row.original.updateTime) {
+            return row.original.updateTime;
+          }
+          return '--';
+        },
+      },
+      {
+        id: 'relatedCount',
+        accessorKey: 'relatedCount',
+        header: t('daily-rebate.relatedCount'),
+        accessorFn: row => row.relatedCount,
+      },
+      {
+        id: 'id',
+        accessorKey: 'id',
+        header: t('daily-rebate.id'),
+        accessorFn: row => row.id,
+      },
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('commission-daily-rebate-reports-table', allColumns);

@@ -84,114 +84,117 @@ export function MessageManagementPage() {
   const [deleteAlert, setDeleteAlert] = useState(false);
   const { mutateAsync: removeMsg } = useRemoveMsg();
 
-  const allColumns: CRMColumnDef<MsgListItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('CRMAccountPage.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'title',
-      header: t('table.title'),
-      accessorFn: row => row.title,
-      cell: ({ row }) => {
-        return <div className="max-w-100 text-wrap">{row?.original?.title || '-'}</div>;
+  const allColumns = useMemo<CRMColumnDef<MsgListItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('CRMAccountPage.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'type',
-      header: t('table.infoType'),
-      cell: ({ row }) => {
-        const key = infoTypesMap[row.original.type as keyof typeof infoTypesMap];
-        return <div>{t(`messageManagement.${key}`)}</div>;
+      {
+        id: 'title',
+        header: t('table.title'),
+        accessorFn: row => row.title,
+        cell: ({ row }) => {
+          return <div className="max-w-100 text-wrap">{row?.original?.title || '-'}</div>;
+        },
       },
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      cell: ({ row }) => {
-        switch (row.original.status) {
-          case -1:
-            return <RrhTag type="error">{t('common.failedToSend')}</RrhTag>;
-          case 0:
-            return <RrhTag type="warning">{t('common.toBeSent')}</RrhTag>;
-          case 1:
-            return <RrhTag type="success">{t('common.hasBeenSent')}</RrhTag>;
-          case 2:
-            return <RrhTag type="info">{t('common.sending')}</RrhTag>;
-        }
+      {
+        id: 'type',
+        header: t('table.infoType'),
+        cell: ({ row }) => {
+          const key = infoTypesMap[row.original.type as keyof typeof infoTypesMap];
+          return <div>{t(`messageManagement.${key}`)}</div>;
+        },
       },
-    },
-    {
-      id: 'receiver',
-      header: t('table.receiver'),
-      cell: ({ row }) => {
-        if (row.original.receive_type === 1) {
-          return <div>{t('common.allCRMUsers')}</div>;
-        } else {
-          if (!row.original.allUser) {
-            return <div>-</div>;
+      {
+        id: 'status',
+        header: t('table.status'),
+        cell: ({ row }) => {
+          switch (row.original.status) {
+            case -1:
+              return <RrhTag type="error">{t('common.failedToSend')}</RrhTag>;
+            case 0:
+              return <RrhTag type="warning">{t('common.toBeSent')}</RrhTag>;
+            case 1:
+              return <RrhTag type="success">{t('common.hasBeenSent')}</RrhTag>;
+            case 2:
+              return <RrhTag type="info">{t('common.sending')}</RrhTag>;
           }
-          const isTooLong = row.original.allUser.length > 19;
-          const content = isTooLong
-            ? row.original.allUser.slice(0, 19) + '...'
-            : row.original.allUser;
-          return isTooLong ? (
-            <ToolTip content={row.original.allUser}>
+        },
+      },
+      {
+        id: 'receiver',
+        header: t('table.receiver'),
+        cell: ({ row }) => {
+          if (row.original.receive_type === 1) {
+            return <div>{t('common.allCRMUsers')}</div>;
+          } else {
+            if (!row.original.allUser) {
+              return <div>-</div>;
+            }
+            const isTooLong = row.original.allUser.length > 19;
+            const content = isTooLong
+              ? row.original.allUser.slice(0, 19) + '...'
+              : row.original.allUser;
+            return isTooLong ? (
+              <ToolTip content={row.original.allUser}>
+                <div>{content}</div>
+              </ToolTip>
+            ) : (
               <div>{content}</div>
-            </ToolTip>
-          ) : (
-            <div>{content}</div>
+            );
+          }
+        },
+      },
+      {
+        id: 'sendTime',
+        header: t('table.sendTime'),
+        accessorFn: row => row.send_time,
+        cell: ({ row }) => row?.original?.send_time || '-',
+      },
+      {
+        id: 'submitter',
+        header: t('table.submitter'),
+        cell: ({ row }) => {
+          return <div>{row.original.user_last_name + ' ' + row.original.user_name}</div>;
+        },
+      },
+      {
+        id: 'operate',
+        header: t('common.Operation'),
+        cell: ({ row }) => {
+          return (
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.View'), value: 'view' },
+                { label: t('table.sendAgain'), value: 'sendAgain' },
+                { label: t('common.delete'), value: 'delete' },
+              ]}
+              callToAction={action => {
+                setId(row.original.id || '');
+                switch (action) {
+                  case 'view':
+                    setDetailOpen(true);
+                    break;
+                  case 'sendAgain':
+                    setEditOpen(true);
+                    break;
+                  case 'delete':
+                    setDeleteAlert(true);
+                    break;
+                }
+              }}
+            />
           );
-        }
+        },
+        fixed: 'right',
+        size: 50,
       },
-    },
-    {
-      id: 'sendTime',
-      header: t('table.sendTime'),
-      accessorFn: row => row.send_time,
-      cell: ({ row }) => row?.original?.send_time || '-',
-    },
-    {
-      id: 'submitter',
-      header: t('table.submitter'),
-      cell: ({ row }) => {
-        return <div>{row.original.user_last_name + ' ' + row.original.user_name}</div>;
-      },
-    },
-    {
-      id: 'operate',
-      header: t('common.Operation'),
-      cell: ({ row }) => {
-        return (
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.View'), value: 'view' },
-              { label: t('table.sendAgain'), value: 'sendAgain' },
-              { label: t('common.delete'), value: 'delete' },
-            ]}
-            callToAction={action => {
-              setId(row.original.id || '');
-              switch (action) {
-                case 'view':
-                  setDetailOpen(true);
-                  break;
-                case 'sendAgain':
-                  setEditOpen(true);
-                  break;
-                case 'delete':
-                  setDeleteAlert(true);
-                  break;
-              }
-            }}
-          />
-        );
-      },
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+    ],
+    [t, setId, setDetailOpen, setEditOpen, setDeleteAlert],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('message-management-table', allColumns);

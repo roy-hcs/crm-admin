@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { DownloadsListParams, DownloadsListItem } from '@/api/hooks/report';
@@ -62,132 +62,138 @@ export function DownloadsPage() {
   const { mutateAsync: remove } = useRemoveFile();
   const { mutateAsync: markAsDownloaded } = useMarkFileAsDownloaded();
 
-  const allColumns: CRMColumnDef<DownloadsListItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'name',
-      header: t('downloadsPage.taskName'),
-      accessorFn: row => `${row.businessName}-${row.createTime}`,
-    },
-    {
-      id: 'businessName',
-      header: t('downloadsPage.moduleName'),
-      accessorFn: row => row.businessName || '-',
-    },
-    {
-      id: 'status',
-      header: t('table.status'),
-      accessorFn: row => {
-        const text = downloadStatusOptions.find(i => i.value === row.status);
-        return text ? t(text.label) : '-';
-      },
-    },
-    {
-      id: 'fileSize',
-      header: t('downloadsPage.size'),
-      accessorFn: row => {
-        if (!row.fileSize) return '-';
-        return formatFileSize(row.fileSize);
-      },
-    },
-    {
-      id: 'username',
-      header: t('downloadsPage.initiator'),
-      accessorFn: row => row.username || '-',
-    },
-    {
-      id: 'createTime',
-      header: t('common.createTime'),
-      accessorFn: row => row.createTime || '-',
-    },
-    {
-      id: 'operate',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
-      },
-      cell: ({ row }) => {
-        return (
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              {
-                label: t('common.download'),
-                value: 'download',
-                disabled: row.original.status !== 'SUCCESS',
-              },
-              {
-                label: t('common.delete'),
-                value: 'delete',
-                disabled: row.original.status !== 'SUCCESS',
-              },
-            ]}
-            callToAction={action => {
-              if (action === 'download') {
-                handleDownload(row.original);
-              } else if (action === 'delete') {
-                setId(row.original.taskId);
-                setDeleteAlert(true);
-              }
-            }}
-          />
+  // 下载文件
+  const handleDownload = useCallback(
+    async (row: DownloadsListItem) => {
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/system/export/download/${encodeURIComponent(row.taskId)}`,
+          {
+            method: 'GET',
+            credentials: 'include',
+          },
         );
-      },
-      fixed: 'right',
-      size: 50,
+
+        if (!response.ok) {
+          throw new Error(`下载失败 (${response.status})`);
+        }
+
+        const contentDisposition = response.headers.get('Content-Disposition');
+        let filename = `export_${row.taskId}.csv`; // 默认
+        if (contentDisposition) {
+          const utf8NameMatch = contentDisposition.match(/filename\*=UTF-8''([^;]+)/i);
+          const normalNameMatch = contentDisposition.match(/filename="?([^";]+)"?/i);
+
+          if (utf8NameMatch?.[1]) {
+            filename = decodeURIComponent(utf8NameMatch[1]);
+          } else if (normalNameMatch?.[1]) {
+            filename = normalNameMatch[1];
+          }
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+        await markAsDownloaded({ taskId: row.taskId });
+        setDeleteConfirmAlert(true);
+        setId(row.taskId);
+      } catch (err) {
+        console.error('下载文件失败:', err);
+      }
     },
-  ];
+    [markAsDownloaded],
+  );
+
+  const allColumns = useMemo<CRMColumnDef<DownloadsListItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'name',
+        header: t('downloadsPage.taskName'),
+        accessorFn: row => `${row.businessName}-${row.createTime}`,
+      },
+      {
+        id: 'businessName',
+        header: t('downloadsPage.moduleName'),
+        accessorFn: row => row.businessName || '-',
+      },
+      {
+        id: 'status',
+        header: t('table.status'),
+        accessorFn: row => {
+          const text = downloadStatusOptions.find(i => i.value === row.status);
+          return text ? t(text.label) : '-';
+        },
+      },
+      {
+        id: 'fileSize',
+        header: t('downloadsPage.size'),
+        accessorFn: row => {
+          if (!row.fileSize) return '-';
+          return formatFileSize(row.fileSize);
+        },
+      },
+      {
+        id: 'username',
+        header: t('downloadsPage.initiator'),
+        accessorFn: row => row.username || '-',
+      },
+      {
+        id: 'createTime',
+        header: t('common.createTime'),
+        accessorFn: row => row.createTime || '-',
+      },
+      {
+        id: 'operate',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => {
+          return (
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                {
+                  label: t('common.download'),
+                  value: 'download',
+                  disabled: row.original.status !== 'SUCCESS',
+                },
+                {
+                  label: t('common.delete'),
+                  value: 'delete',
+                  disabled: row.original.status !== 'SUCCESS',
+                },
+              ]}
+              callToAction={action => {
+                if (action === 'download') {
+                  handleDownload(row.original);
+                } else if (action === 'delete') {
+                  setId(row.original.taskId);
+                  setDeleteAlert(true);
+                }
+              }}
+            />
+          );
+        },
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, handleDownload, setId, setDeleteAlert],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('reports-downloads-table', allColumns);
-
-  // 下载文件
-  const handleDownload = async (row: DownloadsListItem) => {
-    try {
-      const response = await fetch(
-        `${API_BASE_URL}/system/export/download/${encodeURIComponent(row.taskId)}`,
-        {
-          method: 'GET',
-          credentials: 'include',
-        },
-      );
-
-      if (!response.ok) {
-        throw new Error(`下载失败 (${response.status})`);
-      }
-
-      const contentDisposition = response.headers.get('Content-Disposition');
-      let filename = `export_${row.taskId}.csv`; // 默认
-      if (contentDisposition) {
-        const utf8NameMatch = contentDisposition.match(/filename\*=UTF-8''([^;]+)/i);
-        const normalNameMatch = contentDisposition.match(/filename="?([^";]+)"?/i);
-
-        if (utf8NameMatch?.[1]) {
-          filename = decodeURIComponent(utf8NameMatch[1]);
-        } else if (normalNameMatch?.[1]) {
-          filename = normalNameMatch[1];
-        }
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-      await markAsDownloaded({ taskId: row.taskId });
-      setDeleteConfirmAlert(true);
-      setId(row.taskId);
-    } catch (err) {
-      console.error('下载文件失败:', err);
-    }
-  };
 
   const onConfirm = async () => {
     const res = await remove({ ids: id });

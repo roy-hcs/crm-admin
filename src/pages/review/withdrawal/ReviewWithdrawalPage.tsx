@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { ReviewWithdrawalForm } from './ReviewWithdrawalForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
@@ -124,287 +124,290 @@ export const ReviewWithdrawalPage = () => {
   );
 
   // 创建表格列定义
-  const allColumns: CRMColumnDef<WithdrawItem, unknown>[] = [
-    {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          className="data-[state=checked]:border-slate-700"
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={(value: boolean) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          className="data-[state=checked]:border-slate-700"
-          checked={row.getIsSelected()}
-          onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      id: 'No.',
-      header: t('CRMAccountPage.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'orderNumber',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.orderNum,
-    },
-    {
-      id: 'status',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.status')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="exceptionFlag"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
+  const allColumns = useMemo<CRMColumnDef<WithdrawItem, unknown>[]>(
+    () => [
+      {
+        id: 'select',
+        header: ({ table }) => (
+          <Checkbox
+            className="data-[state=checked]:border-slate-700"
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={(value: boolean) => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            className="data-[state=checked]:border-slate-700"
+            checked={row.getIsSelected()}
+            onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        id: 'No.',
+        header: t('CRMAccountPage.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'orderNumber',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.orderNum,
+      },
+      {
+        id: 'status',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.status')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="exceptionFlag"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('table.status'),
+        accessorFn: row => row.status,
+        cell: ({ row }) => {
+          const status = row.original.exceptionFlag;
+          return (
+            <RrhTag type={Number(status) === 1 ? 'error' : 'success'}>
+              {Number(status) === 1 ? t('common.abnormal') : t('common.normal')}
+            </RrhTag>
+          );
+        },
+      },
+      {
+        id: 'userName',
+        header: t('CRMAccountPage.UserName'),
+        cell: ({ row }) => (
+          <div className="flex flex-col justify-center">
+            <div>
+              {row.original.userLastName} {row.original.userName}
+            </div>
+            <div>{row.original.userShowId}</div>
           </div>
-        );
+        ),
       },
-      label: t('table.status'),
-      accessorFn: row => row.status,
-      cell: ({ row }) => {
-        const status = row.original.exceptionFlag;
-        return (
-          <RrhTag type={Number(status) === 1 ? 'error' : 'success'}>
-            {Number(status) === 1 ? t('common.abnormal') : t('common.normal')}
-          </RrhTag>
-        );
+      {
+        id: 'email',
+        header: t('table.email'),
+        accessorFn: row => row.userEmail,
       },
-    },
-    {
-      id: 'userName',
-      header: t('CRMAccountPage.UserName'),
-      cell: ({ row }) => (
-        <div className="flex flex-col justify-center">
-          <div>
-            {row.original.userLastName} {row.original.userName}
-          </div>
-          <div>{row.original.userShowId}</div>
-        </div>
-      ),
-    },
-    {
-      id: 'email',
-      header: t('table.email'),
-      accessorFn: row => row.userEmail,
-    },
-    {
-      id: 'withdrawMethods',
-      label: t('table.withdrawMethods'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.withdrawMethods')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="method"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'withdrawMethods',
+        label: t('table.withdrawMethods'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.withdrawMethods')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="method"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          const method = row.original.method;
+          return method
+            ? outMoneyMethodList?.data?.find(item => item.id === method.toString())?.name
+            : '-';
+        },
       },
-      cell: ({ row }) => {
-        const method = row.original.method;
-        return method
-          ? outMoneyMethodList?.data?.find(item => item.id === method.toString())?.name
-          : '-';
-      },
-    },
-    {
-      id: 'withdrawAccount',
-      header: t('table.withdrawAccount'),
-      cell: ({ row }) => {
-        if (row.original.login) {
-          return row.original.aliasName ? (
-            <div className="flex flex-col">
-              <div>{row.original.aliasName}</div>
+      {
+        id: 'withdrawAccount',
+        header: t('table.withdrawAccount'),
+        cell: ({ row }) => {
+          if (row.original.login) {
+            return row.original.aliasName ? (
+              <div className="flex flex-col">
+                <div>{row.original.aliasName}</div>
+                <div>{row.original.login}</div>
+              </div>
+            ) : (
               <div>{row.original.login}</div>
+            );
+          } else if (row.original.walletId) {
+            return (
+              <div>
+                {t('table.wallet')} ({row.original.walletCurrency})
+              </div>
+            );
+          }
+        },
+      },
+      {
+        id: 'balance',
+        header: t('table.balance'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.balance} {row.original.withdrawCurrency}
+          </div>
+        ),
+      },
+      {
+        id: 'reviewStatus',
+        label: t('table.reviewStatus'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.reviewStatus')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="status"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        accessorFn: row => row.status,
+        cell: ({ row }) => {
+          const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info' | 'default'> = {
+            0: 'error',
+            1: 'success',
+            2: 'warning',
+            '-1': 'info',
+            '-2': 'default',
+          };
+          return (
+            <RrhTag type={typeMap[row.original.status]}>
+              {t(`table.${withdrawalReviewStatusMap[row.original.status]}`)}
+            </RrhTag>
+          );
+        },
+      },
+      {
+        id: 'withdrawAmount',
+        header: t('table.withdrawAmount'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.withdraw} {row.original.withdrawCurrency}
+          </div>
+        ),
+      },
+      {
+        id: 'commission',
+        header: t('table.commission'),
+        cell: ({ row }) => (
+          <div>
+            {row.original.fee} {row.original.feeCurrency}
+          </div>
+        ),
+      },
+      {
+        id: 'amountOfReceipt',
+        header: t('table.amountOfReceipt'),
+        cell: ({ row }) =>
+          row.original.factWithdraw ? (
+            <div>
+              {row.original.factWithdraw} {row.original.targetCurrency}
             </div>
           ) : (
-            <div>{row.original.login}</div>
-          );
-        } else if (row.original.walletId) {
+            <div>-</div>
+          ),
+      },
+      {
+        id: 'role',
+        header: t('table.role'),
+        accessorFn: row => row.roleName,
+      },
+      {
+        id: 'submitAuditTime',
+        label: t('table.submitAuditTime'),
+        header: () => {
           return (
-            <div>
-              {t('table.wallet')} ({row.original.walletCurrency})
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.submitAuditTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="subTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
             </div>
           );
-        }
+        },
+        accessorFn: row => row.subTime,
       },
-    },
-    {
-      id: 'balance',
-      header: t('table.balance'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.balance} {row.original.withdrawCurrency}
-        </div>
-      ),
-    },
-    {
-      id: 'reviewStatus',
-      label: t('table.reviewStatus'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.reviewStatus')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="status"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'currentAuditor',
+        header: t('table.currentAuditor'),
+        cell: ({ row }) => {
+          if (row.original.vUserLastName && row.original.status !== 2) {
+            return (
+              <div>
+                {row.original.vUserLastName} {row.original.vUserName}
+              </div>
+            );
+          } else {
+            return <div>-</div>;
+          }
+        },
       },
-      accessorFn: row => row.status,
-      cell: ({ row }) => {
-        const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info' | 'default'> = {
-          0: 'error',
-          1: 'success',
-          2: 'warning',
-          '-1': 'info',
-          '-2': 'default',
-        };
-        return (
-          <RrhTag type={typeMap[row.original.status]}>
-            {t(`table.${withdrawalReviewStatusMap[row.original.status]}`)}
-          </RrhTag>
-        );
+      {
+        id: 'finishTime',
+        label: t('table.finishTime'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.finishTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="verifyTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        accessorFn: row => row.verifyTime,
+        cell: ({ row }) => <div>{row.original.verifyTime || '-'}</div>,
       },
-    },
-    {
-      id: 'withdrawAmount',
-      header: t('table.withdrawAmount'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.withdraw} {row.original.withdrawCurrency}
-        </div>
-      ),
-    },
-    {
-      id: 'commission',
-      header: t('table.commission'),
-      cell: ({ row }) => (
-        <div>
-          {row.original.fee} {row.original.feeCurrency}
-        </div>
-      ),
-    },
-    {
-      id: 'amountOfReceipt',
-      header: t('table.amountOfReceipt'),
-      cell: ({ row }) =>
-        row.original.factWithdraw ? (
-          <div>
-            {row.original.factWithdraw} {row.original.targetCurrency}
-          </div>
-        ) : (
-          <div>-</div>
+      {
+        id: 'tradeServerOrderNumber',
+        header: t('table.tradeServerOrderNumber'),
+        accessorFn: row => row.dealTicket,
+      },
+      {
+        fixed: 'right',
+        id: 'operate',
+        size: 50,
+        label: t('common.Operation'),
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <>
+            <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+              {row.original.status !== 2 ? t('common.View') : t('table.audit')}
+            </RrhButton>
+            {row.original.status === 1 && (
+              <RrhButton variant="ghost">{t('table.cancelWithdrawal')}</RrhButton>
+            )}
+          </>
         ),
-    },
-    {
-      id: 'role',
-      header: t('table.role'),
-      accessorFn: row => row.roleName,
-    },
-    {
-      id: 'submitAuditTime',
-      label: t('table.submitAuditTime'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.submitAuditTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="subTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
       },
-      accessorFn: row => row.subTime,
-    },
-    {
-      id: 'currentAuditor',
-      header: t('table.currentAuditor'),
-      cell: ({ row }) => {
-        if (row.original.vUserLastName && row.original.status !== 2) {
-          return (
-            <div>
-              {row.original.vUserLastName} {row.original.vUserName}
-            </div>
-          );
-        } else {
-          return <div>-</div>;
-        }
-      },
-    },
-    {
-      id: 'finishTime',
-      label: t('table.finishTime'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.finishTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="verifyTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      accessorFn: row => row.verifyTime,
-      cell: ({ row }) => <div>{row.original.verifyTime || '-'}</div>,
-    },
-    {
-      id: 'tradeServerOrderNumber',
-      header: t('table.tradeServerOrderNumber'),
-      accessorFn: row => row.dealTicket,
-    },
-    {
-      fixed: 'right',
-      id: 'operate',
-      size: 50,
-      label: t('common.Operation'),
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
-      },
-      cell: ({ row }) => (
-        <>
-          <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
-            {row.original.status !== 2 ? t('common.View') : t('table.audit')}
-          </RrhButton>
-          {row.original.status === 1 && (
-            <RrhButton variant="ghost">{t('table.cancelWithdrawal')}</RrhButton>
-          )}
-        </>
-      ),
-    },
-  ];
+    ],
+    [t, orderByColumn, isAsc, setOrderByColumn, setIsAsc, outMoneyMethodList, goToDetail],
+  );
 
   // 列可见性管理
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =

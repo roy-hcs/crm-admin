@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { useAgencyOverviewList, OverviewItem, OverviewParams } from '@/api/hooks/report';
@@ -65,112 +65,115 @@ export function OverviewPage() {
     setPageSize(10);
     setIsAsc('asc');
   };
-  const allColumns: CRMColumnDef<OverviewItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('overview.Index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'userName',
-      header: t('table.userName'),
-      accessorFn: row => row.username,
-    },
-    {
-      id: 'email',
-      header: t('overview.email'),
-      accessorFn: row => row.email,
-    },
-    {
-      id: 'rebateLevel',
-      header: t('overview.rebateLevelId'),
-      accessorFn: row => row.rebateLevel,
-    },
-    {
-      id: 'userNumber',
-      accessorKey: 'userNumber',
-      header: t('overview.userNumber'),
-      accessorFn: row => row.userNumber,
-    },
-    {
-      id: 'depositUserNumber',
-      accessorKey: 'depositUserNumber',
-      header: t('overview.depositUserNumber'),
-      accessorFn: row => row.depositUserNumber,
-    },
-    {
-      id: 'accountNumber',
-      accessorKey: 'accountNumber',
-      header: t('overview.accountNumber'),
-      accessorFn: row => row.accountNumber,
-    },
-    {
-      id: 'balance',
-      accessorKey: 'balance',
-      header: t('overview.balance'),
-      accessorFn: row => row.balance,
-    },
-    {
-      id: 'depositAmount',
-      accessorKey: 'depositAmount',
-      header: t('overview.depositAmount'),
-      accessorFn: row => row.depositAmount,
-    },
-    {
-      id: 'withdrawAmount',
-      accessorKey: 'withdrawAmount',
-      header: t('overview.withdrawAmount'),
-      accessorFn: row => row.withdrawAmount,
-    },
-    {
-      id: 'netDeposit',
-      accessorKey: 'netDeposit',
-      header: t('overview.netDeposit'),
-      accessorFn: row => row.netDeposit,
-    },
-    {
-      id: 'volume',
-      accessorKey: 'volume',
-      header: t('overview.volume'),
-      accessorFn: row => row.volume,
-    },
-    {
-      id: 'profitAndLoss',
-      accessorKey: 'profitAndLoss',
-      header: t('overview.profitAndLoss'),
-      accessorFn: row => row.profitAndLoss,
-    },
-    {
-      id: 'commission',
-      accessorKey: 'commission',
-      header: t('overview.commission'),
-      accessorFn: row => row.commission,
-    },
-    {
-      id: 'swaps',
-      accessorKey: 'swaps',
-      header: t('overview.swaps'),
-      accessorFn: row => row.swaps,
-    },
-    {
-      id: 'rebateOnTrade',
-      accessorKey: 'rebateOnTrade',
-      header: t('overview.rebateOnTrade'),
-      accessorFn: row => row.rebateOnTrade,
-    },
-    {
-      id: 'rebateOnCommission',
-      accessorKey: 'rebateOnCommission',
-      header: t('overview.rebateOnCommission'),
-      accessorFn: row => row.rebateOnCommission,
-    },
-    {
-      id: 'rebateOnDeposit',
-      accessorKey: 'rebateOnDeposit',
-      header: t('overview.rebateOnDeposit'),
-      accessorFn: row => row.rebateOnDeposit,
-    },
-  ];
+  const allColumns = useMemo<CRMColumnDef<OverviewItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('overview.Index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'userName',
+        header: t('table.userName'),
+        accessorFn: row => row.username,
+      },
+      {
+        id: 'email',
+        header: t('overview.email'),
+        accessorFn: row => row.email,
+      },
+      {
+        id: 'rebateLevel',
+        header: t('overview.rebateLevelId'),
+        accessorFn: row => row.rebateLevel,
+      },
+      {
+        id: 'userNumber',
+        accessorKey: 'userNumber',
+        header: t('overview.userNumber'),
+        accessorFn: row => row.userNumber,
+      },
+      {
+        id: 'depositUserNumber',
+        accessorKey: 'depositUserNumber',
+        header: t('overview.depositUserNumber'),
+        accessorFn: row => row.depositUserNumber,
+      },
+      {
+        id: 'accountNumber',
+        accessorKey: 'accountNumber',
+        header: t('overview.accountNumber'),
+        accessorFn: row => row.accountNumber,
+      },
+      {
+        id: 'balance',
+        accessorKey: 'balance',
+        header: t('overview.balance'),
+        accessorFn: row => row.balance,
+      },
+      {
+        id: 'depositAmount',
+        accessorKey: 'depositAmount',
+        header: t('overview.depositAmount'),
+        accessorFn: row => row.depositAmount,
+      },
+      {
+        id: 'withdrawAmount',
+        accessorKey: 'withdrawAmount',
+        header: t('overview.withdrawAmount'),
+        accessorFn: row => row.withdrawAmount,
+      },
+      {
+        id: 'netDeposit',
+        accessorKey: 'netDeposit',
+        header: t('overview.netDeposit'),
+        accessorFn: row => row.netDeposit,
+      },
+      {
+        id: 'volume',
+        accessorKey: 'volume',
+        header: t('overview.volume'),
+        accessorFn: row => row.volume,
+      },
+      {
+        id: 'profitAndLoss',
+        accessorKey: 'profitAndLoss',
+        header: t('overview.profitAndLoss'),
+        accessorFn: row => row.profitAndLoss,
+      },
+      {
+        id: 'commission',
+        accessorKey: 'commission',
+        header: t('overview.commission'),
+        accessorFn: row => row.commission,
+      },
+      {
+        id: 'swaps',
+        accessorKey: 'swaps',
+        header: t('overview.swaps'),
+        accessorFn: row => row.swaps,
+      },
+      {
+        id: 'rebateOnTrade',
+        accessorKey: 'rebateOnTrade',
+        header: t('overview.rebateOnTrade'),
+        accessorFn: row => row.rebateOnTrade,
+      },
+      {
+        id: 'rebateOnCommission',
+        accessorKey: 'rebateOnCommission',
+        header: t('overview.rebateOnCommission'),
+        accessorFn: row => row.rebateOnCommission,
+      },
+      {
+        id: 'rebateOnDeposit',
+        accessorKey: 'rebateOnDeposit',
+        header: t('overview.rebateOnDeposit'),
+        accessorFn: row => row.rebateOnDeposit,
+      },
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('ib-overview-reports-table', allColumns);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   usePointsChangeList,
@@ -98,126 +98,129 @@ export const PointsHistoryPage = () => {
     setOrderByColumn('');
   };
 
-  const allColumns: CRMColumnDef<PointsChangeItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'serialNo',
-      header: t('redemptionRecords.orderNo'),
-      accessorFn: row => row.serialNo,
-      cell: ({ row }) => <div>{row?.original?.serialNo}</div>,
-    },
-    {
-      id: 'userName',
-      header: t('table.CRMAccount'),
-      accessorFn: row => row.userName,
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div>{row?.original?.userName || '-'}</div>
-            <div>({row?.original?.showId})</div>
+  const allColumns = useMemo<CRMColumnDef<PointsChangeItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'serialNo',
+        header: t('redemptionRecords.orderNo'),
+        accessorFn: row => row.serialNo,
+        cell: ({ row }) => <div>{row?.original?.serialNo}</div>,
+      },
+      {
+        id: 'userName',
+        header: t('table.CRMAccount'),
+        accessorFn: row => row.userName,
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div>{row?.original?.userName || '-'}</div>
+              <div>({row?.original?.showId})</div>
+            </div>
+          );
+        },
+      },
+      {
+        id: 'businessType',
+        header: t('table.triggerBusiness'),
+        accessorFn: row => row.businessType,
+        cell: ({ row }) => {
+          const type = operationTypeList?.find(
+            item => item.dictValue === String(row?.original?.businessType),
+          );
+          return <div>{type ? type.dictLabel : '-'}</div>;
+        },
+      },
+      {
+        id: 'bonusPoints',
+        header: () => (
+          <div className="flex items-center gap-1">
+            {t('PointsHistory.bonusPoints')}
+            <RrhSorter
+              setIsAsc={setIsAsc}
+              isAsc={isAsc}
+              orderByColumn={orderByColumn}
+              setOrderByColumn={setOrderByColumn}
+              column="bonusPoints"
+            />
           </div>
-        );
+        ),
+        accessorFn: row => row.bonusPoints,
+        cell: ({ row }) => <div>+{row?.original?.bonusPoints || '-'}</div>,
       },
-    },
-    {
-      id: 'businessType',
-      header: t('table.triggerBusiness'),
-      accessorFn: row => row.businessType,
-      cell: ({ row }) => {
-        const type = operationTypeList?.find(
-          item => item.dictValue === String(row?.original?.businessType),
-        );
-        return <div>{type ? type.dictLabel : '-'}</div>;
+      {
+        id: 'pointsBalance',
+        header: () => (
+          <div className="flex items-center gap-1">
+            {t('PointsHistory.pointsBalance')}
+            <RrhSorter
+              setIsAsc={setIsAsc}
+              isAsc={isAsc}
+              orderByColumn={orderByColumn}
+              setOrderByColumn={setOrderByColumn}
+              column="pointsBalance"
+            />
+          </div>
+        ),
+        accessorFn: row => row.pointsBalance,
+        cell: ({ row }) => <div>{row?.original?.pointsBalance || '-'}</div>,
       },
-    },
-    {
-      id: 'bonusPoints',
-      header: () => (
-        <div className="flex items-center gap-1">
-          {t('PointsHistory.bonusPoints')}
-          <RrhSorter
-            setIsAsc={setIsAsc}
-            isAsc={isAsc}
-            orderByColumn={orderByColumn}
-            setOrderByColumn={setOrderByColumn}
-            column="bonusPoints"
-          />
-        </div>
-      ),
-      accessorFn: row => row.bonusPoints,
-      cell: ({ row }) => <div>+{row?.original?.bonusPoints || '-'}</div>,
-    },
-    {
-      id: 'pointsBalance',
-      header: () => (
-        <div className="flex items-center gap-1">
-          {t('PointsHistory.pointsBalance')}
-          <RrhSorter
-            setIsAsc={setIsAsc}
-            isAsc={isAsc}
-            orderByColumn={orderByColumn}
-            setOrderByColumn={setOrderByColumn}
-            column="pointsBalance"
-          />
-        </div>
-      ),
-      accessorFn: row => row.pointsBalance,
-      cell: ({ row }) => <div>{row?.original?.pointsBalance || '-'}</div>,
-    },
-    {
-      id: 'createBy',
-      header: t('products.updateBy'),
-      accessorFn: row => row.createBy,
-      cell: ({ row }) => <div>{row?.original?.createBy || '-'}</div>,
-    },
-    {
-      id: 'createTime',
-      header: () => (
-        <div className="flex items-center gap-1">
-          {t('table.operationTime')}
-          <RrhSorter
-            setIsAsc={setIsAsc}
-            isAsc={isAsc}
-            orderByColumn={orderByColumn}
-            setOrderByColumn={setOrderByColumn}
-            column="createTime"
-          />
-        </div>
-      ),
-      accessorFn: row => row.createTime,
-      cell: ({ row }) => <div>{row?.original?.createTime || '-'}</div>,
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'createBy',
+        header: t('products.updateBy'),
+        accessorFn: row => row.createBy,
+        cell: ({ row }) => <div>{row?.original?.createBy || '-'}</div>,
       },
-      cell: () => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.View'), value: 'view' },
-              { label: t('common.Edit'), value: 'edit' },
-            ]}
-            callToAction={action => {
-              if (action === 'edit') {
-                // Handle edit action
-              } else if (action === 'view') {
-                // Handle view action
-              }
-            }}
-          />
-        </div>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'createTime',
+        header: () => (
+          <div className="flex items-center gap-1">
+            {t('table.operationTime')}
+            <RrhSorter
+              setIsAsc={setIsAsc}
+              isAsc={isAsc}
+              orderByColumn={orderByColumn}
+              setOrderByColumn={setOrderByColumn}
+              column="createTime"
+            />
+          </div>
+        ),
+        accessorFn: row => row.createTime,
+        cell: ({ row }) => <div>{row?.original?.createTime || '-'}</div>,
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: () => (
+          <div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.View'), value: 'view' },
+                { label: t('common.Edit'), value: 'edit' },
+              ]}
+              callToAction={action => {
+                if (action === 'edit') {
+                  // Handle edit action
+                } else if (action === 'view') {
+                  // Handle view action
+                }
+              }}
+            />
+          </div>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, isAsc, orderByColumn, operationTypeList],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('points-mall-points-history-table', allColumns);

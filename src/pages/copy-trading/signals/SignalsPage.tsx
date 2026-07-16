@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { MamSignalSourceItem, MamSignalSourceListParams } from '@/api/hooks/copyTrading/type';
@@ -17,7 +17,6 @@ import { Switch } from '@/components/ui/switch';
 import { RrhAlert } from '@/components/common/RrhAlert';
 import { useChangeMamSignalSource } from '@/api/hooks/copyTrading';
 import { useQueryClient } from '@tanstack/react-query';
-import { useCallback } from 'react';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { Ellipsis } from 'lucide-react';
 import { SignalStatusOptions } from '@/lib/const';
@@ -124,226 +123,229 @@ export const SignalsPage = () => {
 
   const { openTab } = useTabActions();
 
-  const allColumns: CRMColumnDef<MamSignalSourceItem, unknown>[] = [
-    {
-      id: 'No',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'name',
-      header: t('signals.name'),
-      cell: ({ row }) => row?.original?.name || '-',
-    },
-    {
-      id: 'userName',
-      header: t('signals.signalSourceAuthor'),
-      cell: ({ row }) => {
-        return (
-          <div>
+  const allColumns = useMemo<CRMColumnDef<MamSignalSourceItem, unknown>[]>(
+    () => [
+      {
+        id: 'No',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'name',
+        header: t('signals.name'),
+        cell: ({ row }) => row?.original?.name || '-',
+      },
+      {
+        id: 'userName',
+        header: t('signals.signalSourceAuthor'),
+        cell: ({ row }) => {
+          return (
             <div>
-              <span>{row?.original?.userLastName}</span>
-              <span>{row?.original?.userName}</span>
+              <div>
+                <span>{row?.original?.userLastName}</span>
+                <span>{row?.original?.userName}</span>
+              </div>
+              <span> {row?.original?.email}</span>
             </div>
-            <span> {row?.original?.email}</span>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'account',
-      header: t('table.tradingAccount'),
-      cell: ({ row }) => {
-        return (
-          <div>
+      {
+        id: 'account',
+        header: t('table.tradingAccount'),
+        cell: ({ row }) => {
+          return (
             <div>
-              <span>{row?.original?.account}</span>
+              <div>
+                <span>{row?.original?.account}</span>
+              </div>
+              <span> {row?.original?.server}</span>
             </div>
-            <span> {row?.original?.server}</span>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      id: 'totalProfit',
-      label: t('signals.totalProfit'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('signals.totalProfit')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="totalProfit"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
+      {
+        id: 'totalProfit',
+        label: t('signals.totalProfit'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('signals.totalProfit')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="totalProfit"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => row?.original?.totalProfit || '-',
+      },
+      {
+        id: 'totalProfitRate',
+        label: t('signals.totalProfitRate'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('signals.totalProfitRate')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="totalProfitRate"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => row?.original?.totalProfitRate || '-',
+      },
+      {
+        id: 'subscribeFee',
+        label: t('signals.subscribeFee'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('signals.subscribeFee')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="subscribeFee"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => row?.original?.subscribeFee || '-',
+      },
+      {
+        id: 'subscribeNum',
+        label: t('signals.subscribeNum'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('signals.subscribeNum')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="subscribeNum"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => row?.original?.subscribeNum || '-',
+      },
+      {
+        id: 'publicShow',
+        header: t('signals.publicShow'),
+        cell: ({ row }) => <StatusCell row={row} />,
+      },
+      {
+        id: 'status',
+        label: t('table.status'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.status')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="status"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          const text = SignalStatusOptions.find(i => Number(i.value) === row.original.status);
+          return text ? t(text?.label) : '-';
+        },
+      },
+      {
+        id: 'createBy',
+        header: t('common.operName'),
+        cell: ({ row }) => row?.original?.createBy || '-',
+      },
+      {
+        id: 'createTime',
+        label: t('common.createTime'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('common.createTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="createTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => row?.original?.createTime || '-',
+      },
+      {
+        id: 'updateTime',
+        label: t('table.updateTime'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.updateTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="updateTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => row?.original?.updateTime || '-',
+      },
+      {
+        id: 'operation',
+        label: t('common.Operation'),
+        fixed: 'right',
+        size: 50,
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.Edit'), value: 'edit' },
+                { label: t('common.View'), value: 'view' },
+              ]}
+              callToAction={action => {
+                if (action === 'edit') {
+                  setId(row.original.id);
+                  setOpen(true);
+                } else if (action === 'view') {
+                  const url = `/copy-trading/signals/detail?id=${row?.original?.id}`;
+                  openTab({
+                    key: url,
+                    title: t('dashboard.signalSourceCount'),
+                    path: url,
+                  });
+                }
+              }}
             />
           </div>
-        );
+        ),
       },
-      cell: ({ row }) => row?.original?.totalProfit || '-',
-    },
-    {
-      id: 'totalProfitRate',
-      label: t('signals.totalProfitRate'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('signals.totalProfitRate')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="totalProfitRate"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => row?.original?.totalProfitRate || '-',
-    },
-    {
-      id: 'subscribeFee',
-      label: t('signals.subscribeFee'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('signals.subscribeFee')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="subscribeFee"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => row?.original?.subscribeFee || '-',
-    },
-    {
-      id: 'subscribeNum',
-      label: t('signals.subscribeNum'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('signals.subscribeNum')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="subscribeNum"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => row?.original?.subscribeNum || '-',
-    },
-    {
-      id: 'publicShow',
-      header: t('signals.publicShow'),
-      cell: ({ row }) => <StatusCell row={row} />,
-    },
-    {
-      id: 'status',
-      label: t('table.status'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.status')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="status"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => {
-        const text = SignalStatusOptions.find(i => Number(i.value) === row.original.status);
-        return text ? t(text?.label) : '-';
-      },
-    },
-    {
-      id: 'createBy',
-      header: t('common.operName'),
-      cell: ({ row }) => row?.original?.createBy || '-',
-    },
-    {
-      id: 'createTime',
-      label: t('common.createTime'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('common.createTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="createTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => row?.original?.createTime || '-',
-    },
-    {
-      id: 'updateTime',
-      label: t('table.updateTime'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.updateTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="updateTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
-      },
-      cell: ({ row }) => row?.original?.updateTime || '-',
-    },
-    {
-      id: 'operation',
-      label: t('common.Operation'),
-      fixed: 'right',
-      size: 50,
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
-      },
-      cell: ({ row }) => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.Edit'), value: 'edit' },
-              { label: t('common.View'), value: 'view' },
-            ]}
-            callToAction={action => {
-              if (action === 'edit') {
-                setId(row.original.id);
-                setOpen(true);
-              } else if (action === 'view') {
-                const url = `/copy-trading/signals/detail?id=${row?.original?.id}`;
-                openTab({
-                  key: url,
-                  title: t('dashboard.signalSourceCount'),
-                  path: url,
-                });
-              }
-            }}
-          />
-        </div>
-      ),
-    },
-  ];
+    ],
+    [t, isAsc, setIsAsc, orderByColumn, setOrderByColumn, setId, setOpen, openTab],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('signals-reports-table', allColumns);

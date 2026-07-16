@@ -1,7 +1,7 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { OperationsLogsItem, UserOperationsLogsParams } from '@/api/hooks/monitor/type';
 import { useUserOperationLogs } from '@/api/hooks/monitor/monitor';
@@ -126,104 +126,107 @@ export const CRMUserOperationsLogsPage = () => {
     setResetKey(k => k + 1);
     setPageNum(0);
   };
-  const allColumns: CRMColumnDef<OperationsLogsItem, unknown>[] = [
-    {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          className="data-[state=checked]:border-slate-700"
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
+  const allColumns = useMemo<CRMColumnDef<OperationsLogsItem, unknown>[]>(
+    () => [
+      {
+        id: 'select',
+        header: ({ table }) => (
+          <Checkbox
+            className="data-[state=checked]:border-slate-700"
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            className="data-[state=checked]:border-slate-700"
+            checked={row.getIsSelected()}
+            onCheckedChange={value => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        id: 'No.',
+        header: t('CRMAccountPage.Index'),
+        accessorFn: row => row.operId,
+      },
+      {
+        id: 'systemModule',
+        header: t('table.systemModule'),
+        accessorFn: row => row.title,
+      },
+      {
+        id: 'operationType',
+        header: t('table.operationType'),
+        cell: ({ row }) => {
+          const type = row.original.businessType.toString();
+          return (operationTypes || []).find(item => item.dictValue === type)?.dictLabel || type;
+        },
+      },
+      {
+        id: 'operator',
+        header: t('table.operator'),
+        accessorFn: row => row.operName,
+      },
+      {
+        id: 'status',
+        header: t('table.operationStatus'), // 0: buy, 1: sell
+        cell: ({ row }) => {
+          const status = row.original.status;
+          if (status === 0) {
+            return <RrhTag type="success">{t('common.success')}</RrhTag>;
+          } else if (status === 1) {
+            return <RrhTag type="error">{t('common.fail')}</RrhTag>;
           }
-          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          className="data-[state=checked]:border-slate-700"
-          checked={row.getIsSelected()}
-          onCheckedChange={value => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      id: 'No.',
-      header: t('CRMAccountPage.Index'),
-      accessorFn: row => row.operId,
-    },
-    {
-      id: 'systemModule',
-      header: t('table.systemModule'),
-      accessorFn: row => row.title,
-    },
-    {
-      id: 'operationType',
-      header: t('table.operationType'),
-      cell: ({ row }) => {
-        const type = row.original.businessType.toString();
-        return (operationTypes || []).find(item => item.dictValue === type)?.dictLabel || type;
+        },
       },
-    },
-    {
-      id: 'operator',
-      header: t('table.operator'),
-      accessorFn: row => row.operName,
-    },
-    {
-      id: 'status',
-      header: t('table.operationStatus'), // 0: buy, 1: sell
-      cell: ({ row }) => {
-        const status = row.original.status;
-        if (status === 0) {
-          return <RrhTag type="success">{t('common.success')}</RrhTag>;
-        } else if (status === 1) {
-          return <RrhTag type="error">{t('common.fail')}</RrhTag>;
-        }
+      {
+        id: 'operationIP',
+        header: t('table.operationIP'),
+        accessorFn: row => row.operIp,
       },
-    },
-    {
-      id: 'operationIP',
-      header: t('table.operationIP'),
-      accessorFn: row => row.operIp,
-    },
-    {
-      id: 'operationLocation',
-      header: t('table.operationAddress'),
-      accessorFn: row => row.operLocation,
-    },
-    {
-      id: 'operationTime',
-      header: t('table.operationTime'),
-      accessorFn: row => row.operTime,
-    },
-    {
-      id: 'operate',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'operationLocation',
+        header: t('table.operationAddress'),
+        accessorFn: row => row.operLocation,
       },
-      cell: ({ row }) => (
-        <RrhDialog
-          title={t('common.detail', { field: t('CRMUserOperationsLogsPage.title') })}
-          trigger={
-            <RrhButton variant="ghost" type="button">
-              {t('common.View')}
-            </RrhButton>
-          }
-          confirmShow={false}
-          variant="large"
-        >
-          <DetailInfo data={row.original} operationsType={operationTypes || []} />
-        </RrhDialog>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'operationTime',
+        header: t('table.operationTime'),
+        accessorFn: row => row.operTime,
+      },
+      {
+        id: 'operate',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <RrhDialog
+            title={t('common.detail', { field: t('CRMUserOperationsLogsPage.title') })}
+            trigger={
+              <RrhButton variant="ghost" type="button">
+                {t('common.View')}
+              </RrhButton>
+            }
+            confirmShow={false}
+            variant="large"
+          >
+            <DetailInfo data={row.original} operationsType={operationTypes || []} />
+          </RrhDialog>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, operationTypes],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('crm-user-operation-table', allColumns);
 

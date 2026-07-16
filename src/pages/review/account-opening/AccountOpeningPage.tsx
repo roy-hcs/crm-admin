@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { AccountOpeningForm } from './AccountOpeningForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
@@ -75,168 +75,171 @@ export function AccountOpeningPage() {
     [openTab, t],
   );
 
-  const allColumns: CRMColumnDef<CrmNewLoginVerifyItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'name',
-      header: t('table.fullName'),
-      cell: ({ row }) => {
-        if (row?.original?.userLastName || row?.original?.userShowId || row?.original?.userName) {
-          return (
-            <div>
+  const allColumns = useMemo<CRMColumnDef<CrmNewLoginVerifyItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'name',
+        header: t('table.fullName'),
+        cell: ({ row }) => {
+          if (row?.original?.userLastName || row?.original?.userShowId || row?.original?.userName) {
+            return (
               <div>
-                {(row?.original?.userLastName || '') + ' ' + (row?.original?.userName || '')}
+                <div>
+                  {(row?.original?.userLastName || '') + ' ' + (row?.original?.userName || '')}
+                </div>
+                <div>{row?.original?.userShowId}</div>
               </div>
-              <div>{row?.original?.userShowId}</div>
-            </div>
-          );
-        } else {
-          return <div className="text-center">-</div>;
-        }
+            );
+          } else {
+            return <div className="text-center">-</div>;
+          }
+        },
       },
-    },
-    {
-      id: 'serverProperty',
-      header: t('common.serverType'),
-      accessorKey: 'serverProperty',
-      cell: ({ row }) => {
-        if (row?.original?.serverProperty || row?.original?.serverType) {
+      {
+        id: 'serverProperty',
+        header: t('common.serverType'),
+        accessorKey: 'serverProperty',
+        cell: ({ row }) => {
+          if (row?.original?.serverProperty || row?.original?.serverType) {
+            return (
+              <div>
+                {row?.original?.serverType && serverMap[Number(row?.original?.serverType)]}
+                {row?.original?.serverProperty === 1 ? t('common.live') : t('common.demo')}
+              </div>
+            );
+          } else {
+            return <div className="text-center">-</div>;
+          }
+        },
+      },
+      {
+        id: 'aliasName',
+        header: t('common.server'),
+        accessorKey: 'aliasName',
+        cell: ({ row }) => row.original.aliasName || '-',
+      },
+      {
+        id: 'staName',
+        header: t('common.accountType'),
+        accessorKey: 'staName',
+        cell: ({ row }) => row.original.staName || '-',
+      },
+      {
+        id: 'lever',
+        header: () => {
           return (
-            <div>
-              {row?.original?.serverType && serverMap[Number(row?.original?.serverType)]}
-              {row?.original?.serverProperty === 1 ? t('common.live') : t('common.demo')}
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('common.level')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="lever"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
             </div>
           );
-        } else {
-          return <div className="text-center">-</div>;
-        }
+        },
+        label: t('common.level'),
+        accessorKey: 'lever',
+        cell: ({ row }) => (row.original.lever ? `1:${row.original.lever}` : '-'),
       },
-    },
-    {
-      id: 'aliasName',
-      header: t('common.server'),
-      accessorKey: 'aliasName',
-      cell: ({ row }) => row.original.aliasName || '-',
-    },
-    {
-      id: 'staName',
-      header: t('common.accountType'),
-      accessorKey: 'staName',
-      cell: ({ row }) => row.original.staName || '-',
-    },
-    {
-      id: 'lever',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('common.level')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="lever"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'source',
+        header: t('accountOpening.source'),
+        accessorKey: 'source',
+        cell: ({ row }) => row.original.source || '-',
       },
-      label: t('common.level'),
-      accessorKey: 'lever',
-      cell: ({ row }) => (row.original.lever ? `1:${row.original.lever}` : '-'),
-    },
-    {
-      id: 'source',
-      header: t('accountOpening.source'),
-      accessorKey: 'source',
-      cell: ({ row }) => row.original.source || '-',
-    },
-    {
-      id: 'status',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('table.status')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="status"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'status',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.status')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="status"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('table.status'),
+        accessorKey: 'status',
+        cell: ({ row }) => (
+          <RrhOrderStatusTag status={String(row.original.status)} options={VerifyStatusOptions} />
+        ),
       },
-      label: t('table.status'),
-      accessorKey: 'status',
-      cell: ({ row }) => (
-        <RrhOrderStatusTag status={String(row.original.status)} options={VerifyStatusOptions} />
-      ),
-    },
-    {
-      id: 'subTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('common.subTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="subTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'subTime',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('common.subTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="subTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('common.subTime'),
+        accessorKey: 'subTime',
+        cell: ({ row }) => row.original.subTime || '-',
       },
-      label: t('common.subTime'),
-      accessorKey: 'subTime',
-      cell: ({ row }) => row.original.subTime || '-',
-    },
-    {
-      id: 'verifyUserName',
-      header: t('information.verifyUserName'),
-      accessorKey: 'verifyUserName',
-      cell: ({ row }) => row.original.verifyUserName || '-',
-    },
-    {
-      id: 'verifyTime',
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('common.verifyTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="verifyTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'verifyUserName',
+        header: t('information.verifyUserName'),
+        accessorKey: 'verifyUserName',
+        cell: ({ row }) => row.original.verifyUserName || '-',
       },
-      label: t('common.verifyTime'),
-      accessorKey: 'verifyTime',
-      cell: ({ row }) => row.original.verifyTime || '-',
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'verifyTime',
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('common.verifyTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="verifyTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        label: t('common.verifyTime'),
+        accessorKey: 'verifyTime',
+        cell: ({ row }) => row.original.verifyTime || '-',
       },
-      label: t('common.Operation'),
-      cell: ({ row }) => (
-        <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
-          {[-1, 2].includes(Number(row?.original?.status)) ? t('table.audit') : t('common.View')}
-        </RrhButton>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        label: t('common.Operation'),
+        cell: ({ row }) => (
+          <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+            {[-1, 2].includes(Number(row?.original?.status)) ? t('table.audit') : t('common.View')}
+          </RrhButton>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, isAsc, orderByColumn, setOrderByColumn, setIsAsc, goToDetail],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('review-account-opening-table', allColumns);

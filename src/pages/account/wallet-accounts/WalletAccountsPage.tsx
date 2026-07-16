@@ -2,7 +2,7 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { Ellipsis, Funnel, RefreshCcw, Search } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   useWalletAccountsList,
@@ -118,105 +118,110 @@ export const WalletAccountsPage = () => {
     },
     [openTab, t],
   );
-  const allColumns: CRMColumnDef<WalletAccountsItem, unknown>[] = [
-    {
-      id: 'select',
-      label: t('table.select'),
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={value => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      id: 'No',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'crmUserName',
-      header: t('table.fullName'),
-      cell: ({ row }) => {
-        if (row.original?.crmUserName || row.original?.crmUserShowId) {
-          return (
-            <div>{(row.original.crmUserName || '') + `(${row.original.crmUserShowId || ''})`}</div>
-          );
-        } else {
-          return <div className="text-center">-</div>;
-        }
-      },
-    },
-    {
-      id: 'currency',
-      header: t('table.currency'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.currency || '-'}</div>;
-      },
-    },
-    {
-      id: 'balance',
-      header: t('table.balance'),
-      cell: ({ row }) => {
-        if (String(row?.original?.balance).length) {
-          return <div>{row?.original?.balance + ' ' + row?.original?.currency}</div>;
-        }
-        return '-';
-      },
-    },
-    {
-      id: 'createTime',
-      header: t('common.createTime'),
-      cell: ({ row }) => {
-        return <div>{row?.original?.createTime || '-'}</div>;
-      },
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
-      },
-      cell: ({ row }) => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[
-              { label: t('common.View'), value: 'view' },
-              { label: t('common.delete'), value: 'delete' },
-            ]}
-            callToAction={action => {
-              switch (action) {
-                case 'view':
-                  goToDetail(row.original);
-                  break;
-                case 'delete':
-                  setId(String(row?.original.id));
-                  setDeleteAlert(true);
-                  break;
-                default:
-                  break;
-              }
-            }}
+  const allColumns = useMemo<CRMColumnDef<WalletAccountsItem, unknown>[]>(
+    () => [
+      {
+        id: 'select',
+        label: t('table.select'),
+        header: ({ table }) => (
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
           />
-        </div>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={value => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        id: 'No',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+      },
+      {
+        id: 'crmUserName',
+        header: t('table.fullName'),
+        cell: ({ row }) => {
+          if (row.original?.crmUserName || row.original?.crmUserShowId) {
+            return (
+              <div>
+                {(row.original.crmUserName || '') + `(${row.original.crmUserShowId || ''})`}
+              </div>
+            );
+          } else {
+            return <div className="text-center">-</div>;
+          }
+        },
+      },
+      {
+        id: 'currency',
+        header: t('table.currency'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.currency || '-'}</div>;
+        },
+      },
+      {
+        id: 'balance',
+        header: t('table.balance'),
+        cell: ({ row }) => {
+          if (String(row?.original?.balance).length) {
+            return <div>{row?.original?.balance + ' ' + row?.original?.currency}</div>;
+          }
+          return '-';
+        },
+      },
+      {
+        id: 'createTime',
+        header: t('common.createTime'),
+        cell: ({ row }) => {
+          return <div>{row?.original?.createTime || '-'}</div>;
+        },
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[
+                { label: t('common.View'), value: 'view' },
+                { label: t('common.delete'), value: 'delete' },
+              ]}
+              callToAction={action => {
+                switch (action) {
+                  case 'view':
+                    goToDetail(row.original);
+                    break;
+                  case 'delete':
+                    setId(String(row?.original.id));
+                    setDeleteAlert(true);
+                    break;
+                  default:
+                    break;
+                }
+              }}
+            />
+          </div>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, goToDetail, setId, setDeleteAlert],
+  );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('wallet-accounts-table', allColumns);
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { PammAuditLogItem, PammAuditLogListParams } from '@/api/hooks/pamm/type';
@@ -58,88 +58,91 @@ export const InvestmentReviewPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<PammAuditLogItem, unknown>[] = [
-    {
-      id: 'No',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'projectName',
-      header: t('table.projectName'),
-      accessorFn: row => row.projectName || '-',
-    },
-    {
-      id: 'investor',
-      header: t('table.customerName'),
-      accessorFn: row => row.investor || '-',
-    },
-    {
-      id: 'operType',
-      header: t('investmentReview.operType'),
-      cell: ({ row }) => {
-        const text = InvestmentReviewOperTypeOptions.find(
-          res => res.value === String(row?.original?.operType),
-        );
-        return text?.label ? t(text.label) : '-';
+  const allColumns = useMemo<CRMColumnDef<PammAuditLogItem, unknown>[]>(
+    () => [
+      {
+        id: 'No',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'auditStatus',
-      header: t('table.status'),
-      cell: ({ row }) => {
-        const text = InvestmentReviewStatusOptions.find(
-          res => res.value === String(row?.original?.auditStatus),
-        );
-        return text?.label ? t(text.label) : '-';
+      {
+        id: 'projectName',
+        header: t('table.projectName'),
+        accessorFn: row => row.projectName || '-',
       },
-    },
-    {
-      id: 'amount',
-      header: t('table.amount'),
-      cell: ({ row }) => {
-        return (row?.original?.amount || '0') + (row?.original?.currency || '');
+      {
+        id: 'investor',
+        header: t('table.customerName'),
+        accessorFn: row => row.investor || '-',
       },
-    },
-    {
-      id: 'createTime',
-      header: t('table.submitTime'),
-      accessorFn: row => row.createTime || '-',
-    },
-    {
-      id: 'auditor',
-      header: t('table.verifyUser'),
-      accessorFn: row => row.auditor || '-',
-    },
-    {
-      id: 'auditTime',
-      header: t('table.verifyTime'),
-      accessorFn: row => row.auditTime || '-',
-    },
-    {
-      id: 'orderNo',
-      header: t('table.orderNumber'),
-      accessorFn: row => row.orderNo || '-',
-    },
-    {
-      id: 'operation',
-      label: t('common.Operation'),
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'operType',
+        header: t('investmentReview.operType'),
+        cell: ({ row }) => {
+          const text = InvestmentReviewOperTypeOptions.find(
+            res => res.value === String(row?.original?.operType),
+          );
+          return text?.label ? t(text.label) : '-';
+        },
       },
-      cell: () => (
-        <div>
-          <RrhDropdown
-            Trigger={<Ellipsis className="size-4" />}
-            dropdownList={[{ label: t('table.audit'), value: 'edit' }]}
-            callToAction={() => {}}
-          />
-        </div>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'auditStatus',
+        header: t('table.status'),
+        cell: ({ row }) => {
+          const text = InvestmentReviewStatusOptions.find(
+            res => res.value === String(row?.original?.auditStatus),
+          );
+          return text?.label ? t(text.label) : '-';
+        },
+      },
+      {
+        id: 'amount',
+        header: t('table.amount'),
+        cell: ({ row }) => {
+          return (row?.original?.amount || '0') + (row?.original?.currency || '');
+        },
+      },
+      {
+        id: 'createTime',
+        header: t('table.submitTime'),
+        accessorFn: row => row.createTime || '-',
+      },
+      {
+        id: 'auditor',
+        header: t('table.verifyUser'),
+        accessorFn: row => row.auditor || '-',
+      },
+      {
+        id: 'auditTime',
+        header: t('table.verifyTime'),
+        accessorFn: row => row.auditTime || '-',
+      },
+      {
+        id: 'orderNo',
+        header: t('table.orderNumber'),
+        accessorFn: row => row.orderNo || '-',
+      },
+      {
+        id: 'operation',
+        label: t('common.Operation'),
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: () => (
+          <div>
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={[{ label: t('table.audit'), value: 'edit' }]}
+              callToAction={() => {}}
+            />
+          </div>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('investment-review-table', allColumns);

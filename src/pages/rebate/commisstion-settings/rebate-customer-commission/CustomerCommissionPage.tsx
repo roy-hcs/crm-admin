@@ -7,7 +7,7 @@ import { CRMColumnDef, DataTable } from '@/components/table';
 import { Button } from '@/components/ui/button';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { Funnel, RefreshCcw } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { CustomerCommissioForm } from './components/CustomerCommissioForm';
@@ -48,65 +48,68 @@ export function CustomerCommissionPage() {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<CustomerCommissionItem, unknown>[] = [
-    {
-      id: 'No.',
-      header: t('table.index'),
-      cell: ({ row }) => <div>{row.index + 1}</div>,
-    },
-    {
-      id: 'aliasName',
-      header: t('table.userName'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <div className="max-w-40 truncate">{row.original.fullName || '-'}</div>
-            <div>{row.original.showId || '-'}</div>
-          </div>
-        );
+  const allColumns = useMemo<CRMColumnDef<CustomerCommissionItem, unknown>[]>(
+    () => [
+      {
+        id: 'No.',
+        header: t('table.index'),
+        cell: ({ row }) => <div>{row.index + 1}</div>,
       },
-    },
-    {
-      id: 'email',
-      header: t('table.email'),
-      cell: ({ row }) => row?.original.email || '-',
-    },
-    {
-      id: 'totalRebate',
-      header: t('commissionRebateSettings.totalRebate'),
-      cell: ({ row }) => row?.original.totalRebate || '-',
-    },
-    {
-      id: 'rebateValue',
-      header: t('commissionRebateSettings.rebateValue'),
-      cell: ({ row }) => row?.original.rebateValue || '-',
-    },
-    {
-      id: 'rebateLevel',
-      header: t('table.rebateLevel'),
-      cell: ({ row }) => row?.original.rebateLevel || '-',
-    },
-    {
-      id: 'operation',
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'aliasName',
+        header: t('table.userName'),
+        cell: ({ row }) => {
+          return (
+            <div>
+              <div className="max-w-40 truncate">{row.original.fullName || '-'}</div>
+              <div>{row.original.showId || '-'}</div>
+            </div>
+          );
+        },
       },
-      label: t('common.Operation'),
-      cell: ({ row }) => (
-        <RrhButton
-          variant="ghost"
-          onClick={() => {
-            setCurrentItem(row.original);
-            setOpen(true);
-          }}
-        >
-          {t('common.Edit')}
-        </RrhButton>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'email',
+        header: t('table.email'),
+        cell: ({ row }) => row?.original.email || '-',
+      },
+      {
+        id: 'totalRebate',
+        header: t('commissionRebateSettings.totalRebate'),
+        cell: ({ row }) => row?.original.totalRebate || '-',
+      },
+      {
+        id: 'rebateValue',
+        header: t('commissionRebateSettings.rebateValue'),
+        cell: ({ row }) => row?.original.rebateValue || '-',
+      },
+      {
+        id: 'rebateLevel',
+        header: t('table.rebateLevel'),
+        cell: ({ row }) => row?.original.rebateLevel || '-',
+      },
+      {
+        id: 'operation',
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        label: t('common.Operation'),
+        cell: ({ row }) => (
+          <RrhButton
+            variant="ghost"
+            onClick={() => {
+              setCurrentItem(row.original);
+              setOpen(true);
+            }}
+          >
+            {t('common.Edit')}
+          </RrhButton>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, setCurrentItem, setOpen],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('rebate-customer-commission-table', allColumns);

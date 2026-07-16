@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { PerformanceFeeItem, PerformanceFeeListParams } from '@/api/hooks/copyTrading/type';
@@ -77,106 +77,109 @@ export const PerformanceFeeRecordPage = () => {
     setPageNum(0);
   };
 
-  const allColumns: CRMColumnDef<PerformanceFeeItem, unknown>[] = [
-    {
-      id: 'orderNo',
-      header: t('table.orderNumber'),
-      cell: ({ row }) => row?.original?.orderNo || '-',
-    },
-    {
-      id: 'signalSourceName',
-      header: t('signals.name'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <span>{row?.original?.signalSourceName}</span>
-            <span>{row?.original?.traderServer}</span>
-          </div>
-        );
+  const allColumns = useMemo<CRMColumnDef<PerformanceFeeItem, unknown>[]>(
+    () => [
+      {
+        id: 'orderNo',
+        header: t('table.orderNumber'),
+        cell: ({ row }) => row?.original?.orderNo || '-',
       },
-    },
-    {
-      id: 'clientName',
-      header: t('performanceFeeRecord.clientName'),
-      cell: ({ row }) => {
-        return (
-          <div>
-            <span>{row?.original?.clientName}</span>
-            <span>{row?.original?.clientEmail}</span>
-          </div>
-        );
+      {
+        id: 'signalSourceName',
+        header: t('signals.name'),
+        cell: ({ row }) => {
+          return (
+            <div>
+              <span>{row?.original?.signalSourceName}</span>
+              <span>{row?.original?.traderServer}</span>
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'payAccountName',
-      header: t('table.subscriberAccount'),
-      cell: ({ row }) => row?.original?.payAccountName || '-',
-    },
-    {
-      id: 'performanceFee',
-      header: t('performanceFeeRecord.performanceFee'),
-      cell: ({ row }) => row?.original?.performanceFee || '-',
-    },
-    {
-      id: 'managementFee',
-      header: t('performanceFeeRecord.managementFee'),
-      cell: ({ row }) => row?.original?.managementFee || '-',
-    },
-    {
-      id: 'createTime',
-      header: t('common.createTime'),
-      cell: ({ row }) => row?.original?.createTime || '-',
-    },
-    {
-      id: 'payStatus',
-      header: t('table.payResult'),
-      cell: ({ row }) => {
-        const text = PerformanceFeePayStatusOptions.find(
-          i => i.value === String(row?.original?.payStatus),
-        );
-        return <span>{text ? t(text.label) : '-'}</span>;
+      {
+        id: 'clientName',
+        header: t('performanceFeeRecord.clientName'),
+        cell: ({ row }) => {
+          return (
+            <div>
+              <span>{row?.original?.clientName}</span>
+              <span>{row?.original?.clientEmail}</span>
+            </div>
+          );
+        },
       },
-    },
-    {
-      id: 'payTime',
-      label: t('performanceFeeRecord.payTime'),
-      header: () => {
-        return (
-          <div className="flex items-center justify-between gap-2">
-            <div>{t('performanceFeeRecord.payTime')}</div>
-            <RrhSorter
-              orderByColumn={orderByColumn}
-              isAsc={isAsc}
-              column="payTime"
-              setOrderByColumn={setOrderByColumn}
-              setIsAsc={setIsAsc}
-            />
-          </div>
-        );
+      {
+        id: 'payAccountName',
+        header: t('table.subscriberAccount'),
+        cell: ({ row }) => row?.original?.payAccountName || '-',
       },
-      cell: ({ row }) => row?.original?.payTime || '-',
-    },
-    {
-      id: 'operation',
-      label: t('common.Operation'),
-      header: () => {
-        return <div className="flex justify-center">{t('common.Operation')}</div>;
+      {
+        id: 'performanceFee',
+        header: t('performanceFeeRecord.performanceFee'),
+        cell: ({ row }) => row?.original?.performanceFee || '-',
       },
-      cell: ({ row }) => (
-        <RrhButton
-          variant="ghost"
-          onClick={() => {
-            setId(row?.original?.id || '');
-            setDetailOpen(true);
-          }}
-        >
-          {t('common.View')}
-        </RrhButton>
-      ),
-      fixed: 'right',
-      size: 50,
-    },
-  ];
+      {
+        id: 'managementFee',
+        header: t('performanceFeeRecord.managementFee'),
+        cell: ({ row }) => row?.original?.managementFee || '-',
+      },
+      {
+        id: 'createTime',
+        header: t('common.createTime'),
+        cell: ({ row }) => row?.original?.createTime || '-',
+      },
+      {
+        id: 'payStatus',
+        header: t('table.payResult'),
+        cell: ({ row }) => {
+          const text = PerformanceFeePayStatusOptions.find(
+            i => i.value === String(row?.original?.payStatus),
+          );
+          return <span>{text ? t(text.label) : '-'}</span>;
+        },
+      },
+      {
+        id: 'payTime',
+        label: t('performanceFeeRecord.payTime'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('performanceFeeRecord.payTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="payTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        cell: ({ row }) => row?.original?.payTime || '-',
+      },
+      {
+        id: 'operation',
+        label: t('common.Operation'),
+        header: () => {
+          return <div className="flex justify-center">{t('common.Operation')}</div>;
+        },
+        cell: ({ row }) => (
+          <RrhButton
+            variant="ghost"
+            onClick={() => {
+              setId(row?.original?.id || '');
+              setDetailOpen(true);
+            }}
+          >
+            {t('common.View')}
+          </RrhButton>
+        ),
+        fixed: 'right',
+        size: 50,
+      },
+    ],
+    [t, orderByColumn, isAsc, setOrderByColumn, setIsAsc, setId, setDetailOpen],
+  );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('performance-fee-record-table', allColumns);
