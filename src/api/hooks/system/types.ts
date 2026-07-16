@@ -202,6 +202,7 @@ export type Role = BaseEntity & {
 };
 
 export type UserItem = BaseEntity & {
+  expiryTime: string | null;
   userId: string;
   deptId: string | null;
   parentId: string | null;
@@ -263,6 +264,7 @@ export type UserListParams = BasicParams & {
     beginTime?: string;
     endTime?: string;
   };
+  userType?: string;
 };
 
 // Note: BonusSettingList types moved to @/api/hooks/marketing
@@ -932,4 +934,54 @@ export type AddWhiteListParams = {
   ipEndAddress: string;
   remark: string;
   status: string;
+};
+
+export type AddUser = {
+  userType: number;
+  userLastName: string;
+  userName: string;
+  mzone: string;
+  phonenumber: string;
+  email: string;
+  roleType: string;
+  password: string;
+  chatId: string;
+  status: number;
+  roleIds: string;
+  postIds: string;
+  roleId: string;
+};
+
+export type AddTempUser = {
+  userType: number;
+  email: string;
+  confirmEmail: string;
+  roleType: string;
+  duration: string;
+  roleIds: string;
+  roleId: string;
+};
+
+export type AdminUserDetailUser = UserItem & {
+  userType: number | null;
+  expiryTime: string | null;
+  duration: string | null;
+  roleIds: string[] | null;
+  postIds: string[] | null;
+  roles: Role[];
+};
+
+export type UserDetail = {
+  code: number;
+  msg: string;
+  data: {
+    user: AdminUserDetailUser;
+  };
+};
+
+export type UserPwdParams = {
+  userId: string;
+  wholeName: string;
+  password: string;
+  confirmPassword: string;
 };
