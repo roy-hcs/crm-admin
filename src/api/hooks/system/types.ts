@@ -1004,6 +1004,41 @@ export type AddUserRole = {
   roleSource: string;
 };
 
+export type AddManagementMenu = {
+  parentId: string;
+  menuType: string;
+  menuName: string;
+  url: string;
+  target: string;
+  perms: string;
+  orderNum: string;
+  icon: string;
+  visible: string;
+};
+
+export type AddUserMenu = {
+  parentId: string;
+  menuType: string;
+  menuName: string;
+  url: string;
+  target: string;
+  orderNum: string;
+  visible: string;
+};
+
+export type EditManagementMenu = AddManagementMenu & {
+  menuId: string;
+};
+
+export type EditUserMenu = AddUserMenu & {
+  menuId: string;
+};
+
+export type DeleteMenuParams = {
+  menuId?: string;
+  ids?: string;
+};
+
 export type RoleMenuTreeDataItem = {
   id: string;
   pId: string;

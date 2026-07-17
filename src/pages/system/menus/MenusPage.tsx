@@ -1,27 +1,37 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from 'react-i18next';
-import { PageInfo } from '@/components/common/PageInfo';
-import { ManagementMenuTab } from './ManagementMenuTab';
-import { UserMenuTab } from './UserMenuTab';
+import { ManagementMenuTab } from './management/ManagementMenuTab';
+import { UserMenuTab } from './user/UserMenuTab';
 
 export const MenusPage = () => {
   const { t } = useTranslation();
+  const tabs = [
+    {
+      value: 'management',
+      label: t('menuManagement.managementBackend'),
+      content: <ManagementMenuTab />,
+    },
+    {
+      value: 'user',
+      label: t('menuManagement.userFrontend'),
+      content: <UserMenuTab />,
+    },
+  ];
 
   return (
-    <div>
-      <PageInfo title={t('menuManagement.title')} />
-      <Tabs defaultValue="management" className="mt-3.5">
-        <TabsList className="dark:bg-accent bg-slate-100">
-          <TabsTrigger value="management">{t('menuManagement.managementBackend')}</TabsTrigger>
-          <TabsTrigger value="user">{t('menuManagement.userFrontend')}</TabsTrigger>
-        </TabsList>
-        <TabsContent value="management">
-          <ManagementMenuTab />
+    <Tabs defaultValue="management" className="mt-3.5">
+      <TabsList className="dark:bg-accent bg-slate-100">
+        {tabs.map(tab => (
+          <TabsTrigger key={tab.value} value={tab.value}>
+            {tab.label}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      {tabs.map(tab => (
+        <TabsContent key={tab.value} value={tab.value}>
+          {tab.content}
         </TabsContent>
-        <TabsContent value="user">
-          <UserMenuTab />
-        </TabsContent>
-      </Tabs>
-    </div>
+      ))}
+    </Tabs>
   );
 };

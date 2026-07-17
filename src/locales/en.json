@@ -1154,7 +1154,18 @@
     "menuName": "Menu name",
     "menuStatus": "Menu status",
     "title": "Menu management",
-    "userFrontend": "User front desk"
+    "userFrontend": "User front desk",
+    "parentMenu": "Parent menu",
+    "rootMenu": "Root menu",
+    "menuType": "Menu type",
+    "target": "Target",
+    "orderNum": "Order",
+    "icon": "Icon",
+    "permission": "Permission identifier defined in the controller, such as: @RequiresPermissions(\"\")",
+    "targetOptions": {
+      "1": "tab",
+      "2": "new window"
+    }
   },
   "paymentLogsPage": {
     "title": "Payment log"
