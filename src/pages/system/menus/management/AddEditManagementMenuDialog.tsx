@@ -88,12 +88,12 @@ export const AddEditManagementMenuDialog = ({
     if (isEditMode && menuItem) {
       form.reset({
         parentId: menuItem.parentId || '0',
-        menuType: menuItem.menuType || 'C',
+        menuType: menuItem.menuType || '',
         menuName: menuItem.menuName || '',
         url: menuItem.url || '',
         target: menuItem.target || 'menuItem',
         perms: menuItem.perms || '',
-        orderNum: menuItem.orderNum || '0',
+        orderNum: menuItem.orderNum || '',
         icon: '',
         visible: menuItem.visible || '0',
       });

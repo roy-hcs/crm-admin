@@ -84,7 +84,7 @@ export const AddEditUserMenuDialog = ({
     if (isEditMode && menuItem) {
       form.reset({
         parentId: menuItem.parentId || '0',
-        menuType: menuItem.menuType || 'O',
+        menuType: menuItem.menuType || 'I',
         menuName: menuItem.menuName || '',
         url: menuItem.url || '',
         target: menuItem.target || 'menuItem',
