@@ -31,7 +31,7 @@ type FormValues = {
   userAccount: string;
 };
 
-const addUserSchema = (t: TFunction<'translation', undefined>) => {
+const addRoleSchema = (t: TFunction<'translation', undefined>) => {
   return {
     roleName: z.string().min(1, t('rules.required', { field: t('rolesManagement.roleName') })),
     roleDescribe: z
@@ -82,7 +82,20 @@ export const AddEditRoleDialog = ({
   const { mutateAsync: edit, isPending: isEditPending } = useEditRole();
   const isSubmitting = isAddPending || isEditPending;
 
-  const schema = useMemo(() => z.object(addUserSchema(t)), [t]);
+  const schema = useMemo(
+    () =>
+      z.object(addRoleSchema(t)).superRefine((data, ctx) => {
+        // 仅在展示结束IP输入框时校验必填
+        if (radioValue === '2' && type === '2' && !data.userAccount.trim()) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['userAccount'],
+            message: t('rules.required', { field: t('CRMAccountPage.NameOrAccountId') }),
+          });
+        }
+      }),
+    [radioValue, t, type],
+  );
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -122,7 +135,7 @@ export const AddEditRoleDialog = ({
       if (res.code === 0) {
         toast.success(t('common.success'));
         form.reset();
-        setOpen(false);
+        onCancel();
         onSuccess?.();
       } else {
         toast.error(res.msg);
@@ -133,14 +146,15 @@ export const AddEditRoleDialog = ({
   };
 
   const onCancel = () => {
-    form.reset();
-    setOpen(false);
+    onClose(false);
   };
 
   const onClose = (open: boolean) => {
     setOpen(open);
     if (!open) {
       form.reset(defaultValues);
+      setType('1');
+      setRadioValue('1');
     }
   };
 
