@@ -709,7 +709,19 @@
   "rolesManagement": {
     "title": "角色管理",
     "administrator": "管理员",
-    "roleName": "角色名称"
+    "roleName": "角色名称",
+    "roleDescribe": "角色描述",
+    "roleId": "参考角色",
+    "roleIdDesc": "选择参考角色可以直接复用该角色的权限来创建",
+    "userScopeOptions": {
+      "1": "操作权限",
+      "2": "用户权限"
+    },
+    "roleNameAlreadyUsed": "该角色名称已存在",
+    "radioOptions": {
+      "1": "全部用户",
+      "2": "指定账户-下级"
+    }
   },
   "menuManagement": {
     "title": "菜单管理",

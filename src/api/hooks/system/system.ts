@@ -65,6 +65,9 @@ import {
   AddTempUser,
   UserDetail,
   UserPwdParams,
+  AddRole,
+  RoleMenuTreeDataItem,
+  AddUserRole,
 } from './types';
 import { UserAccountOperationRes, UserRebateAccountTabRes } from '../agent/types';
 import { BasicParams } from '@/api/types';
@@ -165,7 +168,9 @@ export function useInfoTypeList() {
     queryFn: () => apiGetCustom<InfoTypeItem[]>(`/system/crmInfoVerify/getInfoVerifyType`, {}),
   });
 }
-
+/***
+ * 管理员角色列表
+ */
 export function useRolesList(params: RoleListParams) {
   return useQuery({
     queryKey: ['getRolesList', params],
@@ -173,12 +178,127 @@ export function useRolesList(params: RoleListParams) {
   });
 }
 
+/**
+ * 获取角色权限树
+ */
+export function useRoleMenuTreeData(roleId: string) {
+  return useQuery({
+    queryKey: ['roleMenuTreeData', roleId],
+    queryFn: () =>
+      apiGetCustom<RoleMenuTreeDataItem[]>(
+        `/system/menu/roleMenuTreeData${roleId ? `?roleId=${roleId}` : ''}`,
+      ),
+  });
+}
+
+/**
+ * 获取前台用户角色权限树
+ */
+export function useUserRoleMenuTreeData(roleId: string) {
+  return useQuery({
+    queryKey: ['userRoleMenuTreeData', roleId],
+    queryFn: () =>
+      apiGetCustom<RoleMenuTreeDataItem[]>(
+        `/system/user/menu/roleMenuTreeData${roleId ? `?roleId=${roleId}&roleSource=1` : ''}`,
+      ),
+  });
+}
+
+/***
+ * 验证管理员角色名称是否唯一
+ */
+export function useCheckRoleNameUnique() {
+  return useMutation({
+    mutationFn: (params: { roleName: string; roleId?: string }) =>
+      apiFormPostCustom<number>('/system/role/checkRoleNameUnique', params),
+  });
+}
+
+/***
+ * 验证前台用户角色名称是否唯一
+ */
+export function useCheckUserRoleNameUnique() {
+  return useMutation({
+    mutationFn: (params: { roleName: string; roleId?: string }) =>
+      apiFormPostCustom<number>('/system/user/role/checkRoleNameUnique', params),
+  });
+}
+
+/***
+ * 管理员新增角色
+ */
+export function useAddRole() {
+  return useMutation({
+    mutationFn: (params: AddRole) => apiFormPost('/system/role/add', params),
+  });
+}
+
+/***
+ * 前台用户新增角色
+ */
+export function useAddUserRole() {
+  return useMutation({
+    mutationFn: (params: AddUserRole) => apiFormPost('/system/user/role/add', params),
+  });
+}
+
+/***
+ * 前台用户编辑角色
+ */
+export function useEditUserRole() {
+  return useMutation({
+    mutationFn: (params: AddUserRole & { roleId: string }) =>
+      apiFormPost('/system/user/role/edit', params),
+  });
+}
+
+/***
+ * 管理员编辑角色
+ */
+export function useEditRole() {
+  return useMutation({
+    mutationFn: (params: AddRole & { roleId: string }) => apiFormPost('/system/role/edit', params),
+  });
+}
+
+/***
+ * 管理员删除角色
+ */
+export function useDeleteRole() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) => apiFormPost('/system/role/remove', params),
+  });
+}
+
+/***
+ * 前台用户删除角色
+ */
+export function useDeleteUserRole() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) => apiFormPost('/system/user/role/remove', params),
+  });
+}
+
+/***
+ * 管理员前台角色列表
+ */
 export function useUserRoleList(params: RoleListParams) {
   return useQuery({
     queryKey: ['getUserRoleList', params],
     queryFn: () => apiFormPostCustom<RoleListRes>('/system/user/role/list', params),
   });
 }
+
+/***
+ * 管理员前台角色列表All
+ */
+export function useUserRoleListAll() {
+  return useQuery({
+    queryKey: ['getUserRoleListAll'],
+    queryFn: () => apiFormPostCustom<RoleListRes>('/system/user/role/list', {}),
+  });
+}
+
 // Note: useMtServiceUpdate, useServerExceptionNotice, useGetPreferences moved to @/api/hooks/workbench
 
 export function useMenuList(menuName?: string, visible?: string) {

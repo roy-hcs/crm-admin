@@ -9,6 +9,7 @@ export const RrhSwitchGroup: FC<{
   }[];
   switchItemClassName?: string;
   labelClassName?: string;
+  className?: string;
   value?: string;
   values?: string[];
   multiple?: boolean;
@@ -23,6 +24,7 @@ export const RrhSwitchGroup: FC<{
   labelClassName,
   onValueChange,
   onValuesChange,
+  className,
 }) => {
   const selectedValues = multiple ? (values ?? []) : [value ?? ''];
 
@@ -40,7 +42,7 @@ export const RrhSwitchGroup: FC<{
   };
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className={cn('flex flex-wrap gap-4', className)}>
       {switchItems.map(i => (
         <button
           type="button"

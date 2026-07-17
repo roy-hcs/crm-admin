@@ -985,3 +985,31 @@ export type UserPwdParams = {
   password: string;
   confirmPassword: string;
 };
+
+export type AddRole = {
+  roleName: string;
+  roleDescribe: string;
+  status: string;
+  menuIds: string;
+  roleSource: string;
+  userScope: string;
+  userAccount: string;
+};
+
+export type AddUserRole = {
+  roleName: string;
+  roleDescribe: string;
+  status: string;
+  menuIds: string;
+  roleSource: string;
+};
+
+export type RoleMenuTreeDataItem = {
+  id: string;
+  pId: string;
+  name: string;
+  title: string;
+  checked: boolean;
+  open: boolean;
+  nocheck: boolean;
+};

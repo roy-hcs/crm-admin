@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AdministratorTab } from './AdministratorTab';
-import { UserTab } from './UserTab';
+import { UserTab } from './user/UserTab';
 import { useTranslation } from 'react-i18next';
+import { AdministratorTab } from './admin-istrator/AdministratorTab';
 
 export const RolesPage = () => {
   const { t } = useTranslation();
