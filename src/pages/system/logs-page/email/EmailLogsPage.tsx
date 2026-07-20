@@ -1,6 +1,6 @@
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { Funnel, RefreshCcw, Search } from 'lucide-react';
+import { Ellipsis, Funnel, RefreshCcw, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useEmailList, EmailListParams, EmailListItem } from '@/api/hooks/system';
@@ -15,6 +15,11 @@ import { ToolTip } from '@/components/common/ToolTip';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { FailEmailConfigDialog } from './components/FailEmailConfigDialog';
+import { RrhDropdown } from '@/components/common/RrhDropdown';
+import { ViewEmailDetailDialog } from './components/ViewEmailDetailDialog';
+import { FailedRecordDialog } from './components/FailedRecordDialog';
+import { ResendEmailDialog } from './components/ResendEmailDialog';
 
 export const EmailLogsPage = () => {
   const [params, setParams] = useState<EmailListParams['params']>({
@@ -33,8 +38,12 @@ export const EmailLogsPage = () => {
   const [pageSize, setPageSize] = useState(10);
   const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
-
-  const { data, isLoading } = useEmailList({
+  const [id, setId] = useState('');
+  const [userMsgId, setUserMsgId] = useState('');
+  const [viewEmailDetailOpen, setViewEmailDetailOpen] = useState(false);
+  const [failEmailConfigOpen, setFailEmailConfigOpen] = useState(false);
+  const [reSendEmailOpen, setReSendEmailOpen] = useState(false);
+  const { data, isLoading, refetch } = useEmailList({
     orderByColumn: '',
     isAsc: 'asc',
     pageNum: pageNum + 1,
@@ -57,6 +66,7 @@ export const EmailLogsPage = () => {
     setResetKey(k => k + 1);
     setPageNum(0);
   };
+
   const allColumns = useMemo<CRMColumnDef<EmailListItem, unknown>[]>(
     () => [
       {
@@ -117,27 +127,32 @@ export const EmailLogsPage = () => {
       },
       {
         id: 'operate',
-        header: () => {
-          return <div className="flex justify-center">{t('common.Operation')}</div>;
-        },
-        cell: ({ row }) => {
-          const onClick = (data: EmailListItem) => {
-            console.log('Operate on row:', data);
-          };
-          return (
-            <div className="flex items-center gap-2">
-              <RrhButton variant="ghost" onClick={() => onClick(row.original)}>
-                {t('common.View')}
-              </RrhButton>
-              <RrhButton variant="ghost" onClick={() => onClick(row.original)}>
-                {t('table.failedRecord')}
-              </RrhButton>
-              <RrhButton variant="ghost" onClick={() => onClick(row.original)}>
-                {t('table.reSend')}
-              </RrhButton>
-            </div>
-          );
-        },
+        header: () => t('common.Operation'),
+        cell: ({ row }) => (
+          <RrhDropdown
+            Trigger={<Ellipsis className="size-4" />}
+            dropdownList={[
+              { label: t('common.View'), value: 'view' },
+              { label: t('table.failedRecord'), value: 'failedRecord' },
+              { label: t('table.reSend'), value: 'reSend' },
+            ]}
+            callToAction={action => {
+              setUserMsgId(row.original.userMsgId);
+              switch (action) {
+                case 'view':
+                  setViewEmailDetailOpen(true);
+                  break;
+                case 'failedRecord':
+                  setFailEmailConfigOpen(true);
+                  break;
+                case 'reSend':
+                  setId(row.original.id);
+                  setReSendEmailOpen(true);
+                  break;
+              }
+            }}
+          />
+        ),
         fixed: 'right',
       },
     ],
@@ -163,7 +178,6 @@ export const EmailLogsPage = () => {
             }}
           />
           <div className="flex items-center gap-2">
-            <RrhButton type="button">{t('emailLogsPage.reSendFailedEmailConfig')}</RrhButton>
             <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </RrhButton>
@@ -197,6 +211,7 @@ export const EmailLogsPage = () => {
               onBatchReorder={batchUpdateColumns}
               columns={columns}
             />
+            <FailEmailConfigDialog onSuccess={refetch} />
           </div>
         </div>
 
@@ -209,6 +224,22 @@ export const EmailLogsPage = () => {
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
           loading={isLoading}
+        />
+        <ViewEmailDetailDialog
+          open={viewEmailDetailOpen}
+          setOpen={setViewEmailDetailOpen}
+          userMsgId={userMsgId}
+        />
+        <FailedRecordDialog
+          open={failEmailConfigOpen}
+          setOpen={setFailEmailConfigOpen}
+          userMsgId={userMsgId}
+        />
+        <ResendEmailDialog
+          open={reSendEmailOpen}
+          setOpen={setReSendEmailOpen}
+          userMsgId={userMsgId}
+          id={id}
         />
       </TableContentWrapper>
     </div>

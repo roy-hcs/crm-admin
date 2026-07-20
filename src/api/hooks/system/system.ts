@@ -20,6 +20,7 @@ import {
   MenuListItem,
   EmailListParams,
   EmailListRes,
+  EmailFailListRes,
   UserOrderLogListParams,
   UserOrderLogListRes,
   UserListParams,
@@ -332,11 +333,90 @@ export function useUserMenuList(menuName?: string, visible?: string) {
     },
   });
 }
-
+// 邮件列表
 export function useEmailList(params: EmailListParams) {
   return useQuery({
     queryKey: ['emailList', params],
     queryFn: () => apiFormPostCustom<EmailListRes>('/system/msg/emailList', params),
+  });
+}
+
+// 邮件失败记录
+export function useEmailFailList(
+  msgUserId: string,
+  open: boolean,
+  params: Pick<BasicParams, 'pageNum' | 'orderByColumn' | 'isAsc'>,
+) {
+  return useQuery({
+    queryKey: ['emailFailList', msgUserId, params],
+    queryFn: () =>
+      apiFormPostCustom<EmailFailListRes>(
+        `/system/msgResendLog/emailFailList?msgUserId=${msgUserId}`,
+        params,
+      ),
+    enabled: !!msgUserId && open,
+  });
+}
+// 失败邮件重发配置详情
+export function useGetFailEmailConfig() {
+  return useMutation({
+    mutationFn: () =>
+      apiGetCustom<{
+        code: number;
+        data: {
+          resendStatus: string;
+          resendTimes: string;
+        };
+        msg: string;
+      }>(`/system/msg/getFailEmailConfig`),
+  });
+}
+// 失败邮件重发配置编辑
+export function useSetFailEmailConfig() {
+  return useMutation({
+    mutationFn: (params: { resendStatus: string; resendTimes: string }) =>
+      apiPost(
+        `system/msg/editEmailAutoResendConfig?resendStatus=${params.resendStatus}&resendTimes=${params.resendTimes}`,
+        {},
+      ),
+  });
+}
+// 邮箱详情
+export function useGetEmailMsgDetail() {
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiGetCustom<{
+        code: number;
+        data: {
+          content: string;
+        };
+        msg: string;
+      }>(`/system/msg/getEmailMsgDetail/${id}`),
+  });
+}
+
+// 重发邮箱详情
+export function useGetResendEmailMsgDetail() {
+  return useMutation({
+    mutationFn: (params: { id: string; userMsgId: string }) =>
+      apiGetCustom<{
+        code: number;
+        data: {
+          allEmailConfig: Array<{
+            id: string;
+            email: string;
+          }>;
+        };
+        msg: string;
+      }>(`/system/msg/getResendInfo/${params.id}?userMsgId=${params.userMsgId}`),
+  });
+}
+
+// 重发邮箱发送
+export function useResendEmail() {
+  return useMutation({
+    mutationFn: (params: { id: string; userMsgId: string; sendEmail: string }) =>
+      apiFormPost(`/system/msg/resend`, params),
   });
 }
 

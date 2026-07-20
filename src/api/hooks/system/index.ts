@@ -14,6 +14,7 @@ export {
   useMenuList,
   useUserMenuList,
   useEmailList,
+  useEmailFailList,
   useUserOrderLogList,
   useUserList,
   useRoleList,

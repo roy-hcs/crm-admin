@@ -42,12 +42,13 @@ interface DialogProps {
   footerShow?: boolean;
   confirmShow?: boolean;
   cancelShow?: boolean;
-  variant?: 'default' | 'small' | 'middle' | 'large';
+  variant?: 'default' | 'small' | 'middle' | 'large' | 'adaptive';
   titleCls?: string;
   formLoading?: boolean;
   type?: 'view' | 'submit';
   leftDom?: React.ReactNode;
   modal?: boolean;
+  contentClassName?: string;
 }
 
 export const RrhDialog: React.FC<DialogProps> = ({
@@ -72,6 +73,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
   type = 'view',
   leftDom,
   modal = true,
+  contentClassName = '',
 }) => {
   const handleCancel = () => {
     if (onCancel) {
@@ -89,6 +91,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
   };
   const { t } = useTranslation();
   const isDesktop = useMediaQuery('(min-width: 768px)');
+  const isAdaptive = variant === 'adaptive';
 
   // Desktop mode: use Dialog
   if (isDesktop) {
@@ -102,6 +105,8 @@ export const RrhDialog: React.FC<DialogProps> = ({
               'w-xl': variant === 'middle',
               //  768 / 1440 = 0.5333
               'flex max-h-[53vh] w-3xl flex-col sm:max-w-full': variant === 'large',
+              'flex max-h-[90vh] !w-fit !max-w-[92vw] min-w-[320px] flex-col overflow-hidden sm:!max-w-[92vw]':
+                isAdaptive,
             },
             '!px-0',
             className,
@@ -152,7 +157,9 @@ export const RrhDialog: React.FC<DialogProps> = ({
               )}
             </DialogHeader>
           )}
-          <div className="flex flex-1 flex-col overflow-y-auto px-6">{children}</div>
+          <div className={cn('flex flex-1 flex-col overflow-y-auto px-6', contentClassName)}>
+            {children}
+          </div>
           {footerShow && (
             <DialogFooter
               className={cn(
@@ -224,7 +231,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
             e.preventDefault(); // Also prevent Escape key
           }
         }}
-        className={className}
+        className={cn('w-full max-w-none', className)}
       >
         {formLoading && (
           <div className="bg-accent-foreground/8 absolute inset-0 flex items-center justify-center">
@@ -247,7 +254,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
             )}
           </DrawerHeader>
         )}
-        <div className="overflow-y-auto px-6">{children}</div>
+        <div className={cn('overflow-auto px-6', contentClassName)}>{children}</div>
         {footerShow && (
           <DrawerFooter className="flex flex-row justify-end gap-2 px-6">
             {leftDom && <div className="mr-auto">{leftDom}</div>}
