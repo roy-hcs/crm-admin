@@ -68,6 +68,11 @@ import {
   AddRole,
   RoleMenuTreeDataItem,
   AddUserRole,
+  AddManagementMenu,
+  AddUserMenu,
+  EditManagementMenu,
+  EditUserMenu,
+  DeleteMenuParams,
 } from './types';
 import { UserAccountOperationRes, UserRebateAccountTabRes } from '../agent/types';
 import { BasicParams } from '@/api/types';
@@ -330,6 +335,60 @@ export function useUserMenuList(menuName?: string, visible?: string) {
 
       return apiGetCustom<MenuListItem[]>(url);
     },
+  });
+}
+
+/***
+ * 管理后台新增菜单
+ */
+export function useAddManagementMenu() {
+  return useMutation({
+    mutationFn: (params: AddManagementMenu) => apiFormPost('/system/menu/add', params),
+  });
+}
+
+/***
+ * 用户前台新增菜单
+ */
+export function useAddUserMenu() {
+  return useMutation({
+    mutationFn: (params: AddUserMenu) => apiFormPost('/system/user/menu/add', params),
+  });
+}
+
+/***
+ * 管理后台编辑菜单
+ */
+export function useEditManagementMenu() {
+  return useMutation({
+    mutationFn: (params: EditManagementMenu) => apiFormPost('/system/menu/edit', params),
+  });
+}
+
+/***
+ * 用户前台编辑菜单
+ */
+export function useEditUserMenu() {
+  return useMutation({
+    mutationFn: (params: EditUserMenu) => apiFormPost('/system/user/menu/edit', params),
+  });
+}
+
+/***
+ * 管理后台删除菜单
+ */
+export function useDeleteManagementMenu() {
+  return useMutation({
+    mutationFn: (params: DeleteMenuParams) => apiGet(`/system/menu/remove/${params.menuId}`),
+  });
+}
+
+/***
+ * 用户前台删除菜单
+ */
+export function useDeleteUserMenu() {
+  return useMutation({
+    mutationFn: (params: DeleteMenuParams) => apiGet(`/system/user/menu/remove/${params.menuId}`),
   });
 }
 
