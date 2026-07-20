@@ -728,7 +728,18 @@
     "managementBackend": "管理后台",
     "userFrontend": "用户前台",
     "menuName": "菜单名称",
-    "menuStatus": "菜单状态"
+    "menuStatus": "菜单状态",
+    "parentMenu": "上级菜单",
+    "rootMenu": "主菜单",
+    "menuType": "菜单类型",
+    "orderNum": "显示排序",
+    "icon": "菜单图标",
+    "target": "打开方式",
+    "targetOptions": {
+      "1": "页签",
+      "2": "新窗口"
+    },
+    "permission": "控制器中定义的权限标识，如：@RequiresPermissions(\"\")"
   },
   "CRMUserOperationsLogsPage": {
     "title": "CRM用户操作日志"

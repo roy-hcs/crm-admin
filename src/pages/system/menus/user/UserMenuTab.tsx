@@ -3,15 +3,17 @@ import {
   Funnel,
   LucideChevronsDownUp,
   LucideChevronsUpDown,
+  Plus,
   RefreshCcw,
   Search,
   Ellipsis,
 } from 'lucide-react';
 import { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMenuList } from '@/api/hooks/system';
+import { useUserMenuList } from '@/api/hooks/system';
+import { useDeleteUserMenu } from '@/api/hooks/system/system';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
-import { MenuForm } from './MenuForm';
+import { MenuForm } from '../common/MenuForm';
 import { DataTableRef, DataTable, CRMColumnDef } from '@/components/table';
 import { useDataTableTreeControl } from '@/components/table/useDataTableTreeControl';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
@@ -19,25 +21,38 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { MenuListItem } from '@/api/hooks/system';
+import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { AddEditUserMenuDialog } from './AddEditUserMenuDialog';
+import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 
-export const ManagementMenuTab = () => {
+export const UserMenuTab = () => {
   const [menuName, setMenuName] = useState('');
   const [menuState, setMenuState] = useState('');
   const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
 
-  const { data: menuList, isLoading: menuListLoading } = useMenuList(menuName, menuState);
+  const {
+    data: userMenuList,
+    isLoading: userMenuListLoading,
+    refetch,
+  } = useUserMenuList(menuName, menuState);
+  const { mutateAsync: deleteMenu } = useDeleteUserMenu();
+  const [actionDialogOpen, setActionDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [actionMode, setActionMode] = useState<'add' | 'edit'>('add');
+  const [actionMenuItem, setActionMenuItem] = useState<MenuListItem>();
+  const [actionParentId, setActionParentId] = useState('0');
 
   const treeMenuData = useMemo(() => {
-    if (!menuList || menuList.length === 0) return [];
-    return menuList?.map(item => {
+    if (!userMenuList || userMenuList.length === 0) return [];
+    return userMenuList.map(item => {
       return {
         ...item,
         id: item.menuId,
         parentId: item.parentId === '0' ? null : item.parentId,
       };
     });
-  }, [menuList]);
+  }, [userMenuList]);
 
   const reset = () => {
     setMenuName('');
@@ -45,12 +60,48 @@ export const ManagementMenuTab = () => {
     setResetKey(k => k + 1);
   };
 
+  const parentOptions = useMemo(() => {
+    const optionMap = new Map<string, { label: string; value: string }>();
+    optionMap.set('0', { label: t('menuManagement.rootMenu'), value: '0' });
+    treeMenuData.forEach(item => {
+      optionMap.set(item.menuId, { label: item.menuName, value: item.menuId });
+    });
+
+    return Array.from(optionMap.values());
+  }, [treeMenuData, t]);
+
+  const handleAdd = (parentId?: string) => {
+    setActionMode('add');
+    setActionMenuItem(undefined);
+    setActionParentId(parentId ?? '0');
+    setActionDialogOpen(true);
+  };
+
+  const handleEdit = (menuItem: MenuListItem) => {
+    setActionMode('edit');
+    setActionParentId(menuItem.parentId || '0');
+    setActionMenuItem(menuItem);
+    setActionDialogOpen(true);
+  };
+
+  const handleDelete = (menuItem: MenuListItem) => {
+    setActionMenuItem(menuItem);
+    setDeleteDialogOpen(true);
+  };
+
   const tableRef = useRef<DataTableRef>(null);
   const treeControl = useDataTableTreeControl(tableRef);
   const [expanded, setExpanded] = useState(false);
   const toggleExpand = () => {
-    treeControl.toggleExpandAll();
-    setExpanded(!expanded);
+    const nextExpanded = !treeControl.isAllExpanded();
+    if (!nextExpanded) {
+      treeControl.collapseAll();
+      setExpanded(false);
+      return;
+    }
+
+    treeControl.expandAll();
+    setExpanded(true);
   };
 
   const allColumns = useMemo<CRMColumnDef<MenuListItem, unknown>[]>(
@@ -111,17 +162,12 @@ export const ManagementMenuTab = () => {
         },
       },
       {
-        id: 'scope',
-        header: t('table.scope'),
-        accessorFn: row => row.perms,
-      },
-      {
         id: 'operation',
         label: t('common.Operation'),
         header: () => {
           return <div className="flex justify-center">{t('common.Operation')}</div>;
         },
-        cell: () => (
+        cell: ({ row }) => (
           <RrhDropdown
             Trigger={<Ellipsis className="size-4" />}
             dropdownList={[
@@ -129,7 +175,19 @@ export const ManagementMenuTab = () => {
               { label: t('common.add'), value: 'add' },
               { label: t('common.delete'), value: 'delete' },
             ]}
-            callToAction={() => {}}
+            callToAction={action => {
+              if (action === 'edit') {
+                handleEdit(row.original);
+                return;
+              }
+
+              if (action === 'add') {
+                handleAdd(row.original.menuId);
+                return;
+              }
+
+              handleDelete(row.original);
+            }}
           />
         ),
         fixed: 'right',
@@ -140,11 +198,11 @@ export const ManagementMenuTab = () => {
   );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility('management-menu-table', allColumns);
+    useColumnVisibility('user-menu-table', allColumns);
 
   return (
-    <div>
-      <div className="mb-3 flex justify-between">
+    <TableContentWrapper>
+      <div className="mb-3 flex items-center justify-between">
         <RrhInputWithIcon
           key={resetKey}
           placeholder={t('common.pleaseInput', { field: t('menuManagement.menuName') })}
@@ -157,6 +215,9 @@ export const ManagementMenuTab = () => {
         <div className="flex items-center gap-2">
           <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
+          </RrhButton>
+          <RrhButton type="button" onClick={() => handleAdd()} Icon={<Plus className="size-3.5" />}>
+            {t('common.add')}
           </RrhButton>
           <RrhDrawer
             headerShow={false}
@@ -173,9 +234,9 @@ export const ManagementMenuTab = () => {
             }
           >
             <MenuForm
-              reset={reset}
               setMenuName={setMenuName}
               setMenuState={setMenuState}
+              reset={reset}
               menuName={menuName}
               menuState={menuState}
             />
@@ -187,8 +248,13 @@ export const ManagementMenuTab = () => {
             onBatchReorder={batchUpdateColumns}
             columns={columns}
           />
-          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={toggleExpand}>
-            {!expanded ? <LucideChevronsUpDown /> : <LucideChevronsDownUp />}
+          <RrhButton variant="outline" className="h-9" onClick={toggleExpand}>
+            {!expanded ? (
+              <LucideChevronsUpDown className="size-4" />
+            ) : (
+              <LucideChevronsDownUp className="size-4" />
+            )}
+            <span>{expanded ? t('common.collapse') : t('common.expand')}</span>
           </RrhButton>
         </div>
       </div>
@@ -196,13 +262,39 @@ export const ManagementMenuTab = () => {
         ref={tableRef}
         columns={tableColumns}
         data={treeMenuData}
-        loading={menuListLoading}
+        loading={userMenuListLoading}
         treeConfig={{
           enabled: true,
           getRowId: row => row.menuId,
           getParentId: row => row.parentId || null,
+          getRowCanExpand: row => {
+            const treeRow = row as MenuListItem & { children?: MenuListItem[] };
+            return !!treeRow.children?.length;
+          },
+          defaultExpandedRows: {},
         }}
       />
-    </div>
+
+      <AddEditUserMenuDialog
+        mode={actionMode}
+        open={actionDialogOpen}
+        setOpen={setActionDialogOpen}
+        menuItem={actionMenuItem}
+        initialParentId={actionParentId}
+        parentOptions={parentOptions}
+        onSuccess={refetch}
+      />
+
+      <RrhDeleteAlert<{ menuId?: string }>
+        open={deleteDialogOpen}
+        setOpen={setDeleteDialogOpen}
+        onSuccess={refetch}
+        confirmFunction={deleteMenu}
+        params={{ menuId: actionMenuItem?.menuId || '' }}
+        tipsText={t('common.deleteFieldConfirm', {
+          field: actionMenuItem?.menuName || '',
+        })}
+      />
+    </TableContentWrapper>
   );
 };
