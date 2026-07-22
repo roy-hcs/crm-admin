@@ -80,12 +80,14 @@ const DetailInfo = ({
     },
     {
       label: t('table.operationParams'),
-      value: (
+      value: data.operParam ? (
         <div className="border-border w-full overflow-auto rounded border p-2">
           <pre className="text-sm break-words whitespace-pre-wrap">
             <code>{data.operParam}</code>
           </pre>
         </div>
+      ) : (
+        '-'
       ),
     },
   ];

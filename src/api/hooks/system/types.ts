@@ -154,6 +154,18 @@ export type EmailListItem = BaseEntity & {
 };
 export type EmailListRes = BasicRes<EmailListItem>;
 
+export type EmailFailListItem = BaseEntity & {
+  id: string;
+  msgUserId: string;
+  sendEmail: string;
+  result: string;
+  status: number;
+  remark: string | null;
+  createTime: string;
+};
+
+export type EmailFailListRes = BasicRes<EmailFailListItem>;
+
 export type UserOrderLogListParams = BasicParams & {
   orderId?: string;
   channelName?: string;

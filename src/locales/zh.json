@@ -746,7 +746,10 @@
   },
   "emailLogsPage": {
     "title": "邮件发送日志",
-    "reSendFailedEmailConfig": "失败邮件重发配置"
+    "reSendFailedEmailConfig": "失败邮件重发配置",
+    "resendStatus": "失败邮件自动重发",
+    "resendTimes": "累计自动重发限额",
+    "emailPreview": "邮件预览"
   },
   "paymentLogsPage": {
     "title": "支付日志"

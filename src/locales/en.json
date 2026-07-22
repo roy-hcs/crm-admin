@@ -1147,7 +1147,10 @@
   },
   "emailLogsPage": {
     "title": "Email sending log",
-    "reSendFailedEmailConfig": "Failed email resending configuration"
+    "reSendFailedEmailConfig": "Failed email resending configuration",
+    "emailPreview": "Email preview",
+    "resendStatus": "Automatically resend failed emails",
+    "resendTimes": "Cumulative automatic resend limit"
   },
   "menuManagement": {
     "managementBackend": "Management background",
