@@ -10,7 +10,6 @@ import { useGetFailEmailConfig, useSetFailEmailConfig } from '@/api/hooks/system
 import { FormSwitch } from '@/components/form/FormSwitch';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
 
 type FormValues = {
   resendStatus: string;
@@ -123,7 +122,7 @@ export const FailEmailConfigDialog = ({ onSuccess }: { onSuccess?: () => void })
                   <Input
                     value={field.value}
                     type="text"
-                    className={cn('h-10 w-full border px-2')}
+                    className="h-10 w-full border px-2"
                     placeholder=""
                     onBlur={() => {
                       field.onBlur();

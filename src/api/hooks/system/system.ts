@@ -442,9 +442,10 @@ export function useSetFailEmailConfig() {
   });
 }
 // 邮箱详情
-export function useGetEmailMsgDetail() {
-  return useMutation({
-    mutationFn: (id: string) =>
+export function useGetEmailMsgDetail(id: string, options?: { disabled?: boolean }) {
+  return useQuery({
+    queryKey: ['emailMsgDetail', id],
+    queryFn: () =>
       apiGetCustom<{
         code: number;
         data: {
@@ -452,13 +453,18 @@ export function useGetEmailMsgDetail() {
         };
         msg: string;
       }>(`/system/msg/getEmailMsgDetail/${id}`),
+    enabled: !!id && !options?.disabled,
   });
 }
 
 // 重发邮箱详情
-export function useGetResendEmailMsgDetail() {
-  return useMutation({
-    mutationFn: (params: { id: string; userMsgId: string }) =>
+export function useGetResendEmailMsgDetail(
+  params: { id: string; userMsgId: string },
+  options?: { disabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['resendEmailMsgDetail', params.id, params.userMsgId],
+    queryFn: () =>
       apiGetCustom<{
         code: number;
         data: {
@@ -469,6 +475,7 @@ export function useGetResendEmailMsgDetail() {
         };
         msg: string;
       }>(`/system/msg/getResendInfo/${params.id}?userMsgId=${params.userMsgId}`),
+    enabled: !!params.id && !!params.userMsgId && !options?.disabled,
   });
 }
 

@@ -105,7 +105,7 @@ export const RrhDialog: React.FC<DialogProps> = ({
               'w-xl': variant === 'middle',
               //  768 / 1440 = 0.5333
               'flex max-h-[53vh] w-3xl flex-col sm:max-w-full': variant === 'large',
-              'flex max-h-[90vh] !w-fit !max-w-[92vw] min-w-[320px] flex-col overflow-hidden sm:!max-w-[92vw]':
+              'flex max-h-[90vh] !w-fit min-w-[320px] flex-col overflow-hidden sm:!max-w-[92vw]':
                 isAdaptive,
             },
             '!px-0',

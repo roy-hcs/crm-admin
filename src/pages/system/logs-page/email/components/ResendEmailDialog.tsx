@@ -28,7 +28,19 @@ export const ResendEmailDialog = ({
   const open = openProp ?? openLocal;
   const setOpen = onOpenChange ?? setOpenLocal;
   const [emailOptions, setEmailOptions] = useState<SelectOption[]>([]);
-  const { mutateAsync: getDetail, isPending } = useGetResendEmailMsgDetail();
+  const {
+    data: resendEmailMsgDetail,
+    isLoading: getDetailLoading,
+    isError,
+  } = useGetResendEmailMsgDetail(
+    {
+      id: id,
+      userMsgId: userMsgId,
+    },
+    {
+      disabled: !open,
+    },
+  );
   const { mutateAsync: send, isPending: sendPending } = useResendEmail();
 
   const form = useForm<FormValues>({
@@ -40,24 +52,22 @@ export const ResendEmailDialog = ({
   useEffect(() => {
     if (!open || !userMsgId) return;
 
-    (async () => {
-      const res = await getDetail({
-        id,
-        userMsgId,
-      });
-      if (res.code === 0 && res?.data?.allEmailConfig.length) {
-        setEmailOptions(
-          res.data.allEmailConfig.map(i => ({
-            label: i.email,
-            value: i.id,
-          })),
-        );
-        form.setValue('sendEmail', res.data.allEmailConfig[0].id);
-      } else {
-        setEmailOptions([]);
-      }
-    })();
-  }, [open, getDetail, userMsgId, form, id]);
+    if (resendEmailMsgDetail?.data?.allEmailConfig.length) {
+      setEmailOptions(
+        resendEmailMsgDetail.data.allEmailConfig.map(i => ({
+          label: i.email,
+          value: i.id,
+        })),
+      );
+      form.setValue('sendEmail', resendEmailMsgDetail.data.allEmailConfig[0].id);
+    } else {
+      setEmailOptions([]);
+    }
+  }, [open, resendEmailMsgDetail, userMsgId, form, id]);
+
+  useEffect(() => {
+    if (isError) toast.error(t('common.AnErrorOccurred'));
+  }, [isError, t]);
 
   const onCancel = () => {
     setOpen(false);
@@ -88,15 +98,15 @@ export const ResendEmailDialog = ({
 
   return (
     <RrhDialog
-      title={t('emailLogsPage.emailPreview')}
-      isConfirmDisabled={isPending || sendPending}
+      title={t('table.reSend')}
+      isConfirmDisabled={getDetailLoading || sendPending}
       open={open}
       onOpenChange={onClose}
       onCancel={onCancel}
       onConfirm={form.handleSubmit(onSubmit)}
       variant="small"
       type="submit"
-      formLoading={isPending || sendPending}
+      formLoading={getDetailLoading || sendPending}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-6">
         <FormSelect

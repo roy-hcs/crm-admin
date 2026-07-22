@@ -21,6 +21,8 @@ import { ViewEmailDetailDialog } from './components/ViewEmailDetailDialog';
 import { FailedRecordDialog } from './components/FailedRecordDialog';
 import { ResendEmailDialog } from './components/ResendEmailDialog';
 
+type EmailDialogKey = 'view' | 'failedRecord' | 'reSend' | null;
+
 export const EmailLogsPage = () => {
   const [params, setParams] = useState<EmailListParams['params']>({
     sendEndTime: '',
@@ -40,9 +42,7 @@ export const EmailLogsPage = () => {
   const { t } = useTranslation();
   const [id, setId] = useState('');
   const [userMsgId, setUserMsgId] = useState('');
-  const [viewEmailDetailOpen, setViewEmailDetailOpen] = useState(false);
-  const [failEmailConfigOpen, setFailEmailConfigOpen] = useState(false);
-  const [reSendEmailOpen, setReSendEmailOpen] = useState(false);
+  const [activeDialog, setActiveDialog] = useState<EmailDialogKey>(null);
   const { data, isLoading, refetch } = useEmailList({
     orderByColumn: '',
     isAsc: 'asc',
@@ -140,14 +140,14 @@ export const EmailLogsPage = () => {
               setUserMsgId(row.original.userMsgId);
               switch (action) {
                 case 'view':
-                  setViewEmailDetailOpen(true);
+                  setActiveDialog('view');
                   break;
                 case 'failedRecord':
-                  setFailEmailConfigOpen(true);
+                  setActiveDialog('failedRecord');
                   break;
                 case 'reSend':
                   setId(row.original.id);
-                  setReSendEmailOpen(true);
+                  setActiveDialog('reSend');
                   break;
               }
             }}
@@ -161,6 +161,10 @@ export const EmailLogsPage = () => {
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('crm-user-login-table', allColumns);
+
+  const handleDialogOpenChange = (dialogKey: Exclude<EmailDialogKey, null>) => (open: boolean) => {
+    setActiveDialog(open ? dialogKey : null);
+  };
 
   return (
     <div>
@@ -226,18 +230,18 @@ export const EmailLogsPage = () => {
           loading={isLoading}
         />
         <ViewEmailDetailDialog
-          open={viewEmailDetailOpen}
-          setOpen={setViewEmailDetailOpen}
+          open={activeDialog === 'view'}
+          setOpen={handleDialogOpenChange('view')}
           userMsgId={userMsgId}
         />
         <FailedRecordDialog
-          open={failEmailConfigOpen}
-          setOpen={setFailEmailConfigOpen}
+          open={activeDialog === 'failedRecord'}
+          setOpen={handleDialogOpenChange('failedRecord')}
           userMsgId={userMsgId}
         />
         <ResendEmailDialog
-          open={reSendEmailOpen}
-          setOpen={setReSendEmailOpen}
+          open={activeDialog === 'reSend'}
+          setOpen={handleDialogOpenChange('reSend')}
           userMsgId={userMsgId}
           id={id}
         />
