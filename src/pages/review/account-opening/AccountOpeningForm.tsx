@@ -142,7 +142,7 @@ export const AccountOpeningForm = ({
       />
       <FormSelect
         name="serverType"
-        label={t('common.serverType')}
+        label={t('table.transactionPlatform')}
         placeholder={t('common.pleaseSelect')}
         showRowValue={false}
         options={Object.keys(serverMap).map(key => ({

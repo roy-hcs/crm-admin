@@ -1,5 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import { SettingPage } from '@/pages/SettingPage';
+import { ServersSettingPage } from '@/pages/setting/trading-platform/servers/ServersSettingPage';
+import { QuickCreatePage } from '@/pages/setting/trading-platform/quick-create/QuickCreatePage';
 
 /**
  * Settings routes - corresponds to "设置" menu item
@@ -46,6 +48,15 @@ export const settingsRoutes: RouteObject[] = [
   {
     path: '/settings',
     element: <SettingPage />,
+  },
+  {
+    path: '/settings/trading-platform/servers',
+    element: <ServersSettingPage />,
+  },
+
+  {
+    path: '/settings/trading-platform/quickCreate',
+    element: <QuickCreatePage />,
   },
 
   // TODO: Add more routes as pages are developed

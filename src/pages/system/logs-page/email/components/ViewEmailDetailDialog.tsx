@@ -22,7 +22,7 @@ export const ViewEmailDetailDialog = ({
     isLoading: getDetailLoading,
     isError,
   } = useGetEmailMsgDetail(userMsgId, {
-    disabled: !open,
+    enabled: !!userMsgId && open,
   });
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [iframeElement, setIframeElement] = useState<HTMLIFrameElement | null>(null);

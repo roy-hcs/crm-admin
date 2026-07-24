@@ -404,7 +404,7 @@ export function useEmailList(params: EmailListParams) {
 // 邮件失败记录
 export function useEmailFailList(
   msgUserId: string,
-  open: boolean,
+  { enabled }: { enabled?: boolean } = {},
   params: Pick<BasicParams, 'pageNum' | 'orderByColumn' | 'isAsc'>,
 ) {
   return useQuery({
@@ -414,7 +414,7 @@ export function useEmailFailList(
         `/system/msgResendLog/emailFailList?msgUserId=${msgUserId}`,
         params,
       ),
-    enabled: !!msgUserId && open,
+    enabled,
   });
 }
 // 失败邮件重发配置详情
@@ -442,7 +442,7 @@ export function useSetFailEmailConfig() {
   });
 }
 // 邮箱详情
-export function useGetEmailMsgDetail(id: string, options?: { disabled?: boolean }) {
+export function useGetEmailMsgDetail(id: string, { enabled }: { enabled?: boolean } = {}) {
   return useQuery({
     queryKey: ['emailMsgDetail', id],
     queryFn: () =>
@@ -453,7 +453,7 @@ export function useGetEmailMsgDetail(id: string, options?: { disabled?: boolean 
         };
         msg: string;
       }>(`/system/msg/getEmailMsgDetail/${id}`),
-    enabled: !!id && !options?.disabled,
+    enabled,
   });
 }
 

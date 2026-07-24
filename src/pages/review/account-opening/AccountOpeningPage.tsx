@@ -102,7 +102,7 @@ export function AccountOpeningPage() {
       },
       {
         id: 'serverProperty',
-        header: t('common.serverType'),
+        header: t('table.transactionPlatform'),
         accessorKey: 'serverProperty',
         cell: ({ row }) => {
           if (row?.original?.serverProperty || row?.original?.serverType) {

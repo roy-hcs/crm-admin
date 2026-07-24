@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { FormInput } from '@/components/form/FormInput';
+import { FormPwdInput } from '@/components/form/FormPwdInput';
 import { useResetUserPwd } from '@/api/hooks/system/system';
-import { Control, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RrhForm } from '@/components/form/RrhForm';
 import { toast } from 'sonner';
@@ -11,9 +12,6 @@ import { UserItem } from '@/api/hooks/system';
 import { TFunction } from 'i18next';
 import z from 'zod';
 import { passwordSchema } from '@/lib/validators';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Eye, EyeClosed } from 'lucide-react';
 import md5 from 'blueimp-md5';
 
 type FormValues = {
@@ -35,51 +33,6 @@ const resetPasswordSchema = (t: TFunction<'translation', undefined>) => {
     });
 };
 
-const PasswordField = ({
-  control,
-  name,
-  label,
-  show,
-  setShow,
-}: {
-  control: Control<FormValues>;
-  name: 'newPassword' | 'againPassword';
-  label: string;
-  show: boolean;
-  setShow: (v: boolean) => void;
-}) => {
-  const autoComplete = name === 'newPassword' ? 'new-password' : 'new-password';
-  return (
-    <FormField
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <FormItem className="mb-4">
-          <FormLabel className="capitalize">{label}</FormLabel>
-          <FormControl>
-            <div className="relative">
-              <Input
-                type={show ? 'text' : 'password'}
-                placeholder={label}
-                {...field}
-                autoComplete={autoComplete}
-              />
-              <button
-                type="button"
-                className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
-                onClick={() => setShow(!show)}
-              >
-                {show ? <Eye className="size-4" /> : <EyeClosed className="size-4" />}
-              </button>
-            </div>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
-};
-
 export const ResetPwdDialog = ({
   onSuccess,
   open: openProp,
@@ -95,8 +48,6 @@ export const ResetPwdDialog = ({
   const [openLocal, setOpenLocal] = useState(false);
   const open = openProp ?? openLocal;
   const setOpen = onOpenChange ?? setOpenLocal;
-  const [showNewPWD, setShowNewPWD] = useState(false);
-  const [showAgainPWD, setShowAgainPWD] = useState(false);
   const { mutateAsync: resetPwd, isPending } = useResetUserPwd();
 
   const form = useForm<FormValues>({
@@ -175,20 +126,20 @@ export const ResetPwdDialog = ({
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
         <FormInput name="wholeName" label={t('table.fullName')} placeholder="" disabled={true} />
 
-        <PasswordField
-          control={form.control}
+        <FormPwdInput
           name="newPassword"
           label={t('common.newPassword')}
-          show={showNewPWD}
-          setShow={setShowNewPWD}
+          placeholder={t('common.newPassword')}
+          className="mb-4"
+          autoComplete="new-password"
         />
 
-        <PasswordField
-          control={form.control}
+        <FormPwdInput
           name="againPassword"
           label={t('common.confirmPassword')}
-          show={showAgainPWD}
-          setShow={setShowAgainPWD}
+          placeholder={t('common.confirmPassword')}
+          className="mb-4"
+          autoComplete="new-password"
         />
       </RrhForm>
     </RrhDialog>

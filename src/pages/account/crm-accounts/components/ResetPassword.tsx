@@ -1,7 +1,5 @@
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RrhDialog } from '@/components/common/RrhDialog';
-import { Input } from '@/components/ui/input';
-import { useForm, type Control } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { TFunction } from 'i18next';
 import * as z from 'zod';
 import { passwordSchema } from '@/lib/validators';
@@ -9,11 +7,11 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect, useState } from 'react';
-import { Eye, EyeClosed } from 'lucide-react';
 import { useCrmUserResetPwd, useCrmUserResetFundsPwd } from '@/api/hooks/system/system';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
 import { cn, encryptWithPublicKey } from '@/lib/utils';
 import { RrhForm } from '@/components/form/RrhForm';
+import { FormPwdInput } from '@/components/form/FormPwdInput';
 type resetPasswordFormValues = {
   newPassword: string;
   againPassword: string;
@@ -29,51 +27,6 @@ const resetPasswordSchema = (t: TFunction<'translation', undefined>) => {
       message: t('common.passwordsNotMatch') || 'Passwords do not match',
       path: ['againPassword'],
     });
-};
-
-const PasswordField = ({
-  control,
-  name,
-  label,
-  show,
-  setShow,
-}: {
-  control: Control<resetPasswordFormValues>;
-  name: 'newPassword' | 'againPassword';
-  label: string;
-  show: boolean;
-  setShow: (v: boolean) => void;
-}) => {
-  const autoComplete = name === 'newPassword' ? 'new-password' : 'new-password';
-  return (
-    <FormField
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <FormItem className="mb-4">
-          <FormLabel className="capitalize">{label}</FormLabel>
-          <FormControl>
-            <div className="relative">
-              <Input
-                type={show ? 'text' : 'password'}
-                placeholder={label}
-                {...field}
-                autoComplete={autoComplete}
-              />
-              <button
-                type="button"
-                className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
-                onClick={() => setShow(!show)}
-              >
-                {show ? <Eye className="size-4" /> : <EyeClosed className="size-4" />}
-              </button>
-            </div>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
 };
 
 export const ResetPassword = ({
@@ -93,8 +46,6 @@ export const ResetPassword = ({
   const changePwdMutation = useCrmUserResetPwd();
   const changeFundsPwdMutation = useCrmUserResetFundsPwd();
 
-  const [showNewPWD, setShowNewPWD] = useState(false);
-  const [showAgainPWD, setShowAgainPWD] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<resetPasswordFormValues>({
@@ -145,8 +96,6 @@ export const ResetPassword = ({
 
   const closeCallback = useCallback(() => {
     form.reset();
-    setShowNewPWD(false);
-    setShowAgainPWD(false);
   }, [form]);
 
   useEffect(() => {
@@ -166,20 +115,20 @@ export const ResetPassword = ({
     >
       <div className="w-full sm:w-100">
         <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
-          <PasswordField
-            control={form.control}
+          <FormPwdInput
             name="newPassword"
             label={t('common.newPassword')}
-            show={showNewPWD}
-            setShow={setShowNewPWD}
+            placeholder={t('common.newPassword')}
+            className="mb-4"
+            autoComplete="new-password"
           />
 
-          <PasswordField
-            control={form.control}
+          <FormPwdInput
             name="againPassword"
             label={t('common.confirmPassword')}
-            show={showAgainPWD}
-            setShow={setShowAgainPWD}
+            placeholder={t('common.confirmPassword')}
+            className="mb-4"
+            autoComplete="new-password"
           />
         </RrhForm>
       </div>
