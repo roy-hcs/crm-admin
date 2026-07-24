@@ -156,7 +156,6 @@
     "accountType": "Account Type",
     "level": "lever",
     "server": "server",
-    "serverType": "Trading platform",
     "subTime": "Submission time",
     "type": "type",
     "verifyStatus": {
@@ -447,7 +446,6 @@
     "rebateTotalAmt": "Rebate amount",
     "rebateTraderId": "Hit Rules",
     "rebateTraderName": "Rebate rules",
-    "serverGroup": "Group",
     "serverName": "server",
     "symbol": "Trading Types",
     "taderType": "Trading Types",
@@ -834,7 +832,8 @@
     "baseRebateRatio": "Basic commission parameters",
     "extraRebateRatio": "Additional reward parameters",
     "netPerformanceFee": "net performance fee",
-    "sell": "sell"
+    "sell": "sell",
+    "serviceHost": "Server address"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -2566,5 +2565,48 @@
     "ipWhiteListStatus": "Whitelist enabled",
     "startIP": "Starting IP",
     "title": "IP whitelist"
+  },
+  "serversSettingPage": {
+    "title": "Server settings",
+    "managerAccount": "Manager account",
+    "managerSecret": "Manager password",
+    "accountStart": "Account start number",
+    "accountEnd": "Account end number",
+    "quickCreate": "Quick create",
+    "statusConfirm": {
+      "stop": "Are you sure you want to disable this server?",
+      "open": "Are you sure you want to enable this server?"
+    },
+    "processStatus": "Process status",
+    "processStatusConfirm": {
+      "stop": "Are you sure you want to stop this process?",
+      "open": "Are you sure you want to start this process?"
+    },
+    "deleteConfirm": "Are you sure you want to delete this server setting?",
+    "addServer": "Add server"
+  },
+  "quickCreatePage": {
+    "back": "Back to Server Management",
+    "title": "Quick Create Server",
+    "desc": "Complete server, DC pool, account, and health check settings step by step.",
+    "finish": "Finish",
+    "steps": {
+      "base": {
+        "title": "Add Server",
+        "desc": "Platform and basic info"
+      },
+      "dcPool": {
+        "title": "Connection and DC Pool",
+        "desc": "Main link, weight, and nodes"
+      },
+      "account": {
+        "title": "Account Settings",
+        "desc": "Range, sort, and generation"
+      },
+      "health": {
+        "title": "Health Check",
+        "desc": "Check mode and alerting"
+      }
+    }
   }
 }

@@ -17,11 +17,17 @@ export const FailedRecordDialog = ({
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
 
-  const { data, isLoading } = useEmailFailList(userMsgId, open, {
-    pageNum: pageNum + 1,
-    orderByColumn: '',
-    isAsc: 'asc',
-  });
+  const { data, isLoading } = useEmailFailList(
+    userMsgId,
+    {
+      enabled: !!userMsgId && open,
+    },
+    {
+      pageNum: pageNum + 1,
+      orderByColumn: '',
+      isAsc: 'asc',
+    },
+  );
 
   const columns = useMemo<CRMColumnDef<EmailFailListItem, unknown>[]>(
     () => [

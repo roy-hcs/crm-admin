@@ -190,7 +190,6 @@
       "approved": "通过",
       "rejected": "拒绝"
     },
-    "serverType": "交易平台",
     "type": "类型",
     "server": "服务器",
     "accountType": "账号类型",
@@ -436,7 +435,6 @@
     "rebateAccountName": "返佣账户",
     "rebateTime": "返佣时间",
     "rebateTraderName": "返佣规则",
-    "serverGroup": "组别",
     "trderAccount": "交易账号",
     "taderType": "交易品种",
     "rebateTraderId": "命中规则",
@@ -1547,6 +1545,7 @@
     "fixedPipValue": "固定点值",
     "floatingPipValue": "浮动点值",
     "serverName": "服务器名称",
+    "serviceHost": "服务器地址",
     "rebateType": "品种",
     "typeGroup": "品种组",
     "level": "层级",
@@ -2566,5 +2565,49 @@
       "5": "信用金回收"
     },
     "triggeringEventDesc": "设置需要记录快照的触发事件"
+  },
+  "serversSettingPage": {
+    "title": "服务器设置",
+    "managerAccount": "Manager账号",
+    "managerSecret": "Manager账号密码",
+    "accountStart": "账号起始编号",
+    "accountEnd": "账号结束编号",
+    "quickCreate": "快速创建",
+
+    "statusConfirm": {
+      "stop": "确认要停用该服务器吗？",
+      "open": "确认要启用该服务器吗？"
+    },
+    "processStatus": "进程状态",
+    "processStatusConfirm": {
+      "stop": "确认要停用该进程吗？",
+      "open": "确认要启用该进程吗？"
+    },
+    "deleteConfirm": "确定删除该 服务器设置？",
+    "addServer": "添加服务器"
+  },
+  "quickCreatePage": {
+    "back": "返回服务器管理",
+    "title": "快速创建服务器",
+    "desc": "按步骤完成服务器、DC 池、账号与健康检查配置。",
+    "finish": "完成创建",
+    "steps": {
+      "base": {
+        "title": "添加服务器",
+        "desc": "平台与基础信息"
+      },
+      "dcPool": {
+        "title": "连接与 DC 池",
+        "desc": "主连接、权重和节点"
+      },
+      "account": {
+        "title": "账户设置",
+        "desc": "编号、排序和生成方式"
+      },
+      "health": {
+        "title": "健康检查",
+        "desc": "检查方式和异常通知"
+      }
+    }
   }
 }
