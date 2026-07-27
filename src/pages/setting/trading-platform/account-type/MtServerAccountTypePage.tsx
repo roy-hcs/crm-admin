@@ -1,5 +1,5 @@
 import { RrhButton } from '@/components/common/RrhButton';
-import { Ellipsis, RefreshCcw, RefreshCw } from 'lucide-react';
+import { Ellipsis, RefreshCcw } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PageInfo } from '@/components/common/PageInfo';
@@ -8,23 +8,23 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import {
-  useCrmMtServerGroupList,
-  useRemoveServerGroupSetting,
-  useSynchronizeServerGroupSetting,
+  useCrmMtServerTypeAssociationList,
+  useModifyServerTypeAssociationStatus,
+  useRemoveServerTypeAssociation,
 } from '@/api/hooks/setting/setting';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 import { useSearchParams } from 'react-router-dom';
-import { MtServerGroupRes } from '@/api/hooks/agent/types';
-import { EditGroupDialog } from './EditGroupDialog';
 import { serverMap } from '@/lib/constant';
+import { CrmMtServerTypeAssociationItem } from '@/api/hooks/setting/types';
+import { RrhStatusAlert } from '@/components/common/RrhStatusAlert';
+import { AddEditAccountTypeDialog } from './AddEditAccountTypeDialog';
 
-export const MtServerGroupPage = () => {
+export const MtServerAccountTypePage = () => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get('id');
   const name = searchParams.get('name');
   const serviceType = searchParams.get('serviceType');
-  const accountAll = searchParams.get('accountAll');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
@@ -32,7 +32,7 @@ export const MtServerGroupPage = () => {
     data: serversList,
     isLoading: serversListLoading,
     refetch,
-  } = useCrmMtServerGroupList(
+  } = useCrmMtServerTypeAssociationList(
     {
       pageSize,
       pageNum: pageNum + 1,
@@ -45,15 +45,14 @@ export const MtServerGroupPage = () => {
     },
   );
 
-  const { mutateAsync: removeServerGroupSetting } = useRemoveServerGroupSetting();
-  const { mutateAsync: synchronizeFunction } = useSynchronizeServerGroupSetting();
+  const { mutateAsync: modifyStatus } = useModifyServerTypeAssociationStatus();
+  const { mutateAsync: removeServerGroupSetting } = useRemoveServerTypeAssociation();
 
-  const [item, setItem] = useState<MtServerGroupRes | undefined>(undefined);
+  const [item, setItem] = useState<CrmMtServerTypeAssociationItem | undefined>(undefined);
   const [deleteAlert, setDeleteAlert] = useState(false);
-  const [synchronize, setSynchronize] = useState(false);
   const [editGroupDialogOpen, setEditGroupDialogOpen] = useState(false);
 
-  const allColumns = useMemo<CRMColumnDef<MtServerGroupRes, unknown>[]>(
+  const allColumns = useMemo<CRMColumnDef<CrmMtServerTypeAssociationItem, unknown>[]>(
     () => [
       {
         id: 'No',
@@ -61,24 +60,41 @@ export const MtServerGroupPage = () => {
         cell: ({ row }) => row?.index + 1,
       },
       {
-        id: 'serverId',
-        header: t('common.server'),
-        cell: () => name || '-',
+        id: 'typeName',
+        header: t('common.accountType'),
+        cell: ({ row }) => row?.original?.typeName || '-',
       },
       {
-        id: 'groupName',
-        header: t('table.groups'),
-        cell: ({ row }) => row?.original.groupName || '-',
+        id: 'defaultMtGroup',
+        header: t('serversSettingPage.defaultMtGroup'),
+        cell: ({ row }) => row?.original.defaultMtGroup || '-',
       },
       {
-        id: 'accountStart',
-        header: t('serversSettingPage.accountStart'),
-        cell: ({ row }) => row?.original.accountStart || '-',
+        id: 'openCreditBalance',
+        header: t('table.openCreditBalance'),
+        cell: ({ row }) => row?.original.openCreditBalance || '-',
       },
       {
-        id: 'accountEnd',
-        header: t('serversSettingPage.accountEnd'),
-        cell: ({ row }) => row?.original.accountEnd || '-',
+        id: 'status',
+        header: t('table.status'),
+        accessorFn: row => row.status,
+        cell: ({ row }) => {
+          return (
+            <RrhStatusAlert<{
+              id: string;
+              status: number;
+            }>
+              params={{
+                id: String(row.original.id),
+                status: row.original.status === 1 ? 0 : 1,
+              }}
+              tipsText={row.original.status === 1 ? t('ads.confirm.stop') : t('ads.confirm.open')}
+              checked={row.original.status === 1}
+              confirmFunction={modifyStatus}
+              onSuccess={refetch}
+            />
+          );
+        },
       },
       {
         id: 'operate',
@@ -108,25 +124,27 @@ export const MtServerGroupPage = () => {
         fixed: 'right',
       },
     ],
-    [name, t],
+    [modifyStatus, refetch, t],
   );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility('mt-server-group-table', allColumns);
+    useColumnVisibility('mt-server-account-type-table', allColumns);
 
   const reset = () => {
     setPageNum(0);
     setPageSize(10);
   };
 
-  const synchronization = () => {
-    setSynchronize(true);
-  };
-
   return (
     <div>
-      <PageInfo title={t('table.groups')} desc={t('serversSettingPage.groupDesc')} />
+      <PageInfo title={t('common.accountType')} />
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-end gap-2">
+          <AddEditAccountTypeDialog
+            mode="add"
+            name={`${name} ${serverMap[serviceType || 0]}`}
+            serverId={id || ''}
+            onSuccess={refetch}
+          />
           <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
             <RefreshCcw className="size-3.5" />
           </RrhButton>
@@ -137,10 +155,6 @@ export const MtServerGroupPage = () => {
             onBatchReorder={batchUpdateColumns}
             columns={columns}
           />
-          <RrhButton onClick={synchronization} type="button" className="flex items-center gap-2">
-            <RefreshCw className="size-4" />
-            {t('serversSettingPage.synchronize')}
-          </RrhButton>
         </div>
         <DataTable
           columns={tableColumns}
@@ -152,7 +166,6 @@ export const MtServerGroupPage = () => {
           onPageSizeChange={setPageSize}
           loading={serversListLoading}
         />
-        {/* 删除 */}
         <RrhDeleteAlert<{
           ids: string;
         }>
@@ -161,22 +174,12 @@ export const MtServerGroupPage = () => {
           onSuccess={refetch}
           confirmFunction={removeServerGroupSetting}
           params={{ ids: item?.id || '' }}
-          tipsText={t('serversSettingPage.deleteGroupConfirm')}
+          tipsText={t('serversSettingPage.deleteAccountTypeConfirm')}
         />
-        {/* 同步 可复用ui 接口和提示词不同 */}
-        <RrhDeleteAlert<{
-          serverId: string;
-        }>
-          open={synchronize}
-          setOpen={setSynchronize}
-          onSuccess={refetch}
-          confirmFunction={synchronizeFunction}
-          params={{ serverId: id || '' }}
-          tipsText={t('serversSettingPage.synchronizeConfirm')}
-        />
-        <EditGroupDialog
+        <AddEditAccountTypeDialog
+          mode="edit"
           name={`${name} ${serverMap[serviceType || 0]}`}
-          accountAll={accountAll || ''}
+          serverId={id || ''}
           open={editGroupDialogOpen}
           setOpen={setEditGroupDialogOpen}
           item={item}

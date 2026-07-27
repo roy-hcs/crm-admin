@@ -1,11 +1,14 @@
-import { apiFormPost, apiFormPostCustom } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGetCustom } from '@/api/client';
 import { BasicParams } from '@/api/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AddServerSetting,
   CrmMtServerGroupListRes,
+  CrmMtServerTypeAssociationAddInfoRes,
+  CrmMtServerTypeAssociationRes,
   CrmMtServiceListRes,
   EditServerSetting,
+  SaveServerTypeAssociationParams,
 } from './types';
 
 // 服务器设置列表
@@ -92,5 +95,58 @@ export function useEditServerGroupSetting() {
       accountStart: string;
       accountEnd: string;
     }) => apiFormPost(`/system/mtServerGroup/edit`, params),
+  });
+}
+
+// 服务器账号类型列表
+export function useCrmMtServerTypeAssociationList(
+  params: BasicParams,
+  id: string,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['crmMtServerTypeAssociationList', params, id],
+    queryFn: () =>
+      apiFormPostCustom<CrmMtServerTypeAssociationRes>(
+        `/system/mtServerTypeAssociation/list?serverId=${id}`,
+        params,
+      ),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+// 服务器账号类型列表删除服务器账号类型
+export function useRemoveServerTypeAssociation() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) =>
+      apiFormPost('/system/mtServerTypeAssociation/remove', params),
+  });
+}
+
+// 服务器账号类型列表修改服务器账号类型状态
+export function useModifyServerTypeAssociationStatus() {
+  return useMutation({
+    mutationFn: (params: { id: string; status: number }) =>
+      apiFormPost('/system/mtServerTypeAssociation/changeStatus', params),
+  });
+}
+
+// 服务器账号类型列表获取添加信息
+export function useCrmMtServerTypeAssociationAddInfo(id: string, options?: { enabled?: boolean }) {
+  return useQuery({
+    queryKey: ['crmMtServerTypeAssociationAddInfo', id],
+    queryFn: () =>
+      apiGetCustom<CrmMtServerTypeAssociationAddInfoRes>(
+        `/system/mtServerTypeAssociation/getAddInfo?serverId=${id}`,
+      ),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+// 服务器账号类型新增编辑
+export function useAddServerTypeAssociation() {
+  return useMutation({
+    mutationFn: (params: SaveServerTypeAssociationParams) =>
+      apiFormPost(`/system/mtServerTypeAssociation/${params.id ? 'edit' : 'add'}`, params),
   });
 }

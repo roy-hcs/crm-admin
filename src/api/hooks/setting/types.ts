@@ -55,3 +55,50 @@ export type EditServerSetting = AddServerSetting & {
 };
 
 export type CrmMtServerGroupListRes = BasicRes<MtServerGroupRes>;
+
+export type CrmMtServerTypeAssociationItem = BaseEntity & {
+  id: string;
+  serverId: string;
+  typeId: string;
+  defaultMtGroup: string;
+  lever: string;
+  openCreditBalance: number | null;
+  status: number;
+  typeName: string;
+  defaultLever: string | null;
+  roleIds: string[] | null;
+  useableRange: number | null;
+  accounts: string[] | null;
+  accountNames: string[] | null;
+  userIds: string[] | null;
+  userNames: string[] | null;
+};
+
+export type CrmMtServerTypeAssociationRes = BasicRes<CrmMtServerTypeAssociationItem>;
+
+export type CrmMtServerTypeAssociationAddInfoRes = {
+  code: number;
+  msg: string;
+  data: {
+    serverTypes: Array<{
+      id: string;
+      accountType: string;
+    }>;
+    serverGroup: string[];
+    allLever: string[];
+  };
+};
+
+export type SaveServerTypeAssociationParams = {
+  id?: string;
+  serverId: string;
+  typeId: string;
+  defaultMtGroup: string;
+  lever: string[];
+  openCreditBalance: string;
+  useableRange: string;
+  roleIds: string[];
+  userIds: string[];
+  accounts: string[];
+  status: number;
+};

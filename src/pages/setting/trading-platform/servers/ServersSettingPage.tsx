@@ -68,6 +68,19 @@ export const ServersSettingPage = () => {
     [openTab, t],
   );
 
+  const goAccountType = useCallback(
+    (item: CrmMtServiceListItem) => {
+      const accountAll = `${item.accountStart || ''} - ${item.accountEnd || ''}`;
+      const url = `/settings/trading-platform/mt-server-account-type?id=${item.id}&name=${item.serverName}&serviceType=${item.serviceType}&accountAll=${accountAll}`;
+      openTab({
+        key: url,
+        title: t('common.accountType'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
+
   const allColumns = useMemo<CRMColumnDef<CrmMtServiceListItem, unknown>[]>(
     () => [
       {
@@ -192,7 +205,7 @@ export const ServersSettingPage = () => {
                   goGroup(row.original);
                   break;
                 case 'accountType':
-                  // TODO: Navigate to account type page
+                  goAccountType(row.original);
                   break;
                 default:
                   break;

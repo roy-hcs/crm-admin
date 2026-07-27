@@ -3,10 +3,16 @@ import { SettingPage } from '@/pages/SettingPage';
 import { ServersSettingPage } from '@/pages/setting/trading-platform/servers/ServersSettingPage';
 import { QuickCreatePage } from '@/pages/setting/trading-platform/quick-create/QuickCreatePage';
 import { MtServerGroupPage } from '@/pages/setting/trading-platform/mt-server-group/MtServerGroupPage';
+import { MtServerAccountTypePage } from '@/pages/setting/trading-platform/account-type/MtServerAccountTypePage';
 
 const MtServerGroupWrapperPage = () => {
   const [searchParams] = useSearchParams();
   return <MtServerGroupPage key={searchParams.get('id')} />;
+};
+
+const MtServerAccountTypeWrapperPage = () => {
+  const [searchParams] = useSearchParams();
+  return <MtServerAccountTypePage key={searchParams.get('id')} />;
 };
 
 /**
@@ -66,6 +72,10 @@ export const settingsRoutes: RouteObject[] = [
   {
     path: '/settings/trading-platform/mt-server-group',
     element: <MtServerGroupWrapperPage />,
+  },
+  {
+    path: '/settings/trading-platform/mt-server-account-type',
+    element: <MtServerAccountTypeWrapperPage />,
   },
 
   // TODO: Add more routes as pages are developed

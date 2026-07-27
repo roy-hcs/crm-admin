@@ -833,7 +833,8 @@
     "extraRebateRatio": "Additional reward parameters",
     "netPerformanceFee": "net performance fee",
     "sell": "sell",
-    "serviceHost": "Server address"
+    "serviceHost": "Server address",
+    "openCreditBalance": "Account opening credit limit"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -2583,7 +2584,15 @@
       "open": "Are you sure you want to start this process?"
     },
     "deleteConfirm": "Are you sure you want to delete this server setting?",
-    "addServer": "Add server"
+    "addServer": "Add server",
+    "accountAll": "Server start and end numbers",
+    "defaultMtGroup": "default group",
+    "deleteAccountTypeConfirm": "Are you sure you want to delete the account type?\n \nThis deletion only deletes the account type options under this server.",
+    "deleteGroupConfirm": "Are you sure you want to delete this group?\n \nThis deletion will not affect the group information on the MT server.\n\nOnly delete group data on CRM.",
+    "groupDesc": "Please refer to the group on the trading server. \nThe group settings on this page do not affect the group data of the trading server.",
+    "openCreditBalancePlaceholder": "If it is empty or enter 0, it means there is no bonus for opening an account.",
+    "synchronize": "synchronous",
+    "synchronizeConfirm": "Are you sure you want to synchronize group information?\n \nThe latest group information will be obtained from the transaction server and synchronized to CRM.\n \nThis synchronization will not modify the group information on the trading server."
   },
   "quickCreatePage": {
     "back": "Back to Server Management",

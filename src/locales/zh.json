@@ -1331,6 +1331,7 @@
     }
   },
   "table": {
+    "openCreditBalance": "开户信用额",
     "expireTime": "失效时间",
     "price": "交易价格",
     "inMethod": "操作方式",
@@ -2589,7 +2590,10 @@
     "deleteGroupConfirm": "确定删除该 组别？\n 本次删除不影响MT服务器上的组别信息。\n只删除CRM上的组别数据。",
     "synchronize": "同步",
     "synchronizeConfirm": "确定同步组别信息？\n 将从交易服务器上获取最新的组别信息并同步到CRM，\n 本次同步不会对交易服务器上的组别信息修改。",
-    "accountAll": "服务器起止编号"
+    "accountAll": "服务器起止编号",
+    "defaultMtGroup": "默认组",
+    "deleteAccountTypeConfirm": "确定删除账号类型？\n 本次删除只删本服务器下账号类型选项",
+    "openCreditBalancePlaceholder": "为空或输入0，表示开户没有赠金"
   },
   "quickCreatePage": {
     "back": "返回服务器管理",

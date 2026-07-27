@@ -28,12 +28,14 @@ export const EditGroupDialog = ({
   item,
   name,
   accountAll,
+  onSuccess,
 }: {
   open?: boolean;
   setOpen?: (open: boolean) => void;
   item?: MtServerGroupRes;
   name: string;
   accountAll: string;
+  onSuccess?: () => void;
 }) => {
   const { t } = useTranslation();
   const [openLocal, setOpenLocal] = useState(false);
@@ -105,6 +107,7 @@ export const EditGroupDialog = ({
       if (res.code === 0) {
         toast.success(t('common.success'));
         onClose(false);
+        onSuccess?.();
       } else {
         toast.error(res.msg);
       }
