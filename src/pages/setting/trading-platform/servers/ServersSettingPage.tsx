@@ -44,6 +44,30 @@ export const ServersSettingPage = () => {
   const [open, setOpen] = useState(false);
   const [deleteAlert, setDeleteAlert] = useState(false);
 
+  const { openTab } = useTabActions();
+
+  const goCreate = useCallback(() => {
+    const url = '/settings/trading-platform/quickCreate';
+    openTab({
+      key: url,
+      title: t('serversSettingPage.addServer'),
+      path: url,
+    });
+  }, [openTab, t]);
+
+  const goGroup = useCallback(
+    (item: CrmMtServiceListItem) => {
+      const accountAll = `${item.accountStart || ''} - ${item.accountEnd || ''}`;
+      const url = `/settings/trading-platform/mt-server-group?id=${item.id}&name=${item.serverName}&serviceType=${item.serviceType}&accountAll=${accountAll}`;
+      openTab({
+        key: url,
+        title: t('table.groups'),
+        path: url,
+      });
+    },
+    [openTab, t],
+  );
+
   const allColumns = useMemo<CRMColumnDef<CrmMtServiceListItem, unknown>[]>(
     () => [
       {
@@ -165,7 +189,7 @@ export const ServersSettingPage = () => {
                   setDeleteAlert(true);
                   break;
                 case 'groups':
-                  // TODO: Navigate to groups page
+                  goGroup(row.original);
                   break;
                 case 'accountType':
                   // TODO: Navigate to account type page
@@ -179,21 +203,10 @@ export const ServersSettingPage = () => {
         fixed: 'right',
       },
     ],
-    [modifyProcessStatus, modifyStatus, refetch, t],
+    [goGroup, modifyProcessStatus, modifyStatus, refetch, t],
   );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('setting-servers-table', allColumns);
-
-  const { openTab } = useTabActions();
-
-  const goCreate = useCallback(() => {
-    const url = '/settings/trading-platform/quickCreate';
-    openTab({
-      key: url,
-      title: t('serversSettingPage.addServer'),
-      path: url,
-    });
-  }, [openTab, t]);
 
   const reset = () => {
     setPageNum(0);

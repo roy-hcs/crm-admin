@@ -1,4 +1,5 @@
 import { BasicRes, BaseEntity } from '@/api/types';
+import { MtServerGroupRes } from '../agent/types';
 
 export type CrmMtServiceListItem = BaseEntity & {
   id: string;
@@ -52,3 +53,5 @@ export type AddServerSetting = {
 export type EditServerSetting = AddServerSetting & {
   id: string;
 };
+
+export type CrmMtServerGroupListRes = BasicRes<MtServerGroupRes>;

@@ -1,7 +1,12 @@
 import { apiFormPost, apiFormPostCustom } from '@/api/client';
 import { BasicParams } from '@/api/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { AddServerSetting, CrmMtServiceListRes, EditServerSetting } from './types';
+import {
+  AddServerSetting,
+  CrmMtServerGroupListRes,
+  CrmMtServiceListRes,
+  EditServerSetting,
+} from './types';
 
 // 服务器设置列表
 export function useCrmMtServiceList(params: BasicParams, options?: { enabled?: boolean }) {
@@ -43,5 +48,49 @@ export function useEditServerSetting() {
 export function useRemoveServerSetting() {
   return useMutation({
     mutationFn: (params: { ids: string }) => apiFormPost('/system/mtService/remove', params),
+  });
+}
+
+// 服务器组别列表
+export function useCrmMtServerGroupList(
+  params: BasicParams,
+  id: string,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['crmMtServerGroupList', params, id],
+    queryFn: () =>
+      apiFormPostCustom<CrmMtServerGroupListRes>(
+        `/system/mtServerGroup/list?serverId=${id}`,
+        params,
+      ),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+// 服务器设置列表删除服务器组别
+export function useRemoveServerGroupSetting() {
+  return useMutation({
+    mutationFn: (params: { ids: string }) => apiFormPost('/system/mtServerGroup/remove', params),
+  });
+}
+
+// 服务器设置列表同步服务器组别
+export function useSynchronizeServerGroupSetting() {
+  return useMutation({
+    mutationFn: (params: { serverId: string }) =>
+      apiFormPost(`/system/mtServerGroup/synch?serverId=${params.serverId}`, {}),
+  });
+}
+
+// 服务器设置列表编辑服务器组别
+export function useEditServerGroupSetting() {
+  return useMutation({
+    mutationFn: (params: {
+      id: string;
+      serverId: string;
+      accountStart: string;
+      accountEnd: string;
+    }) => apiFormPost(`/system/mtServerGroup/edit`, params),
   });
 }
