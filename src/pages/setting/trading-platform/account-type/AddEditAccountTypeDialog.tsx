@@ -94,16 +94,8 @@ export const AddEditAccountTypeDialog = ({
 
   const parseMultiValue = (value?: string | string[] | null): string[] => {
     if (!value) return [];
-    if (Array.isArray(value)) {
-      return value
-        .map(String)
-        .map(v => v.trim())
-        .filter(Boolean);
-    }
-    return String(value)
-      .split(',')
-      .map(v => v.trim())
-      .filter(Boolean);
+    const items = Array.isArray(value) ? value : value.split(',');
+    return items.map(item => String(item).trim()).filter(item => item.length > 0);
   };
 
   const schema = useMemo(
@@ -115,13 +107,9 @@ export const AddEditAccountTypeDialog = ({
           defaultMtGroup: z
             .string()
             .min(1, t('rules.required', { field: t('serversSettingPage.defaultMtGroup') })),
-          lever: z
-            .array(z.string())
-            .min(1, t('rules.required', { field: t('table.leverage') || 'Leverage' })),
+          lever: z.array(z.string()).min(1, t('rules.required', { field: t('common.level') })),
           openCreditBalance: z.string(),
-          useableRange: z
-            .string()
-            .min(1, t('rules.required', { field: t('rewardConfigPage.title') })),
+          useableRange: z.string(),
           roleIds: z.array(z.string()),
           userIds: z.array(z.string()),
           accounts: z.array(z.string()),

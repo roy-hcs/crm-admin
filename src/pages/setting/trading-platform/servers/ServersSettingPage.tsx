@@ -58,7 +58,7 @@ export const ServersSettingPage = () => {
   const goGroup = useCallback(
     (item: CrmMtServiceListItem) => {
       const accountAll = `${item.accountStart || ''} - ${item.accountEnd || ''}`;
-      const url = `/settings/trading-platform/mt-server-group?id=${item.id}&name=${item.serverName}&serviceType=${item.serviceType}&accountAll=${accountAll}`;
+      const url = `/settings/trading-platform/mt-server-group?id=${item.id}&name=${encodeURIComponent(item.serverName)}&serviceType=${item.serviceType}&accountAll=${encodeURIComponent(accountAll)}`;
       openTab({
         key: url,
         title: t('table.groups'),
@@ -71,7 +71,7 @@ export const ServersSettingPage = () => {
   const goAccountType = useCallback(
     (item: CrmMtServiceListItem) => {
       const accountAll = `${item.accountStart || ''} - ${item.accountEnd || ''}`;
-      const url = `/settings/trading-platform/mt-server-account-type?id=${item.id}&name=${item.serverName}&serviceType=${item.serviceType}&accountAll=${accountAll}`;
+      const url = `/settings/trading-platform/mt-server-account-type?id=${item.id}&name=${encodeURIComponent(item.serverName)}&serviceType=${item.serviceType}&accountAll=${encodeURIComponent(accountAll)}`;
       openTab({
         key: url,
         title: t('common.accountType'),
