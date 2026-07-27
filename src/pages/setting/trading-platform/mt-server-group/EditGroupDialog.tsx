@@ -80,8 +80,8 @@ export const EditGroupDialog = ({
       name: name || '',
       group: groupName || '',
       accountAll: accountAll || '',
-      accountStart: accountStart || '',
-      accountEnd: accountEnd || '',
+      accountStart: `${accountStart || ''}`,
+      accountEnd: `${accountEnd || ''}`,
     });
   }, [open, form, name, groupName, accountStart, accountEnd, accountAll]);
 
