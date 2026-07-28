@@ -2538,8 +2538,7 @@
       "queued": "Queuing",
       "success": "Completed"
     },
-    "taskName": "Task name",
-    "title": "Download management"
+    "taskName": "Task name"
   },
   "performanceOverview": {
     "title": "IB Performance Overview",

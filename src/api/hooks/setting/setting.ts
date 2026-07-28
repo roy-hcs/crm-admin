@@ -1,13 +1,15 @@
-import { apiFormPost, apiFormPostCustom, apiGetCustom } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGetCustom, apiPost } from '@/api/client';
 import { BasicParams } from '@/api/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AddServerSetting,
+  AppDownloadRes,
   CrmMtServerGroupListRes,
   CrmMtServerTypeAssociationAddInfoRes,
   CrmMtServerTypeAssociationRes,
   CrmMtServiceListRes,
   EditServerSetting,
+  SaveAppDownloadParams,
   SaveServerTypeAssociationParams,
 } from './types';
 
@@ -148,5 +150,30 @@ export function useAddServerTypeAssociation() {
   return useMutation({
     mutationFn: (params: SaveServerTypeAssociationParams) =>
       apiFormPost(`/system/mtServerTypeAssociation/${params.id ? 'edit' : 'add'}`, params),
+  });
+}
+
+// 下载管理列表
+export function useDownLoadsList(params: BasicParams, options?: { enabled?: boolean }) {
+  return useQuery({
+    queryKey: ['downLoadsList', params],
+    queryFn: () => apiFormPostCustom<AppDownloadRes>('/system/appDownload/list', params),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+// 设置-交易平台设置-下载管理修改状态
+export function useModifyAppDownloadStatus() {
+  return useMutation({
+    mutationFn: (params: { id: string; status?: number; qrCodeActive?: number }) =>
+      apiPost('/system/appDownload/edit', params),
+  });
+}
+
+// 设置-交易平台设置-下载管理新增编辑app
+export function useAddAppDownload() {
+  return useMutation({
+    mutationFn: (params: SaveAppDownloadParams) =>
+      apiPost(`/system/appDownload/${params.id ? 'edit' : 'add'}`, params),
   });
 }

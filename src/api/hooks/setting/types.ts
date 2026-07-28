@@ -102,3 +102,33 @@ export type SaveServerTypeAssociationParams = {
   accounts: string[];
   status: number;
 };
+
+export type AppDownloadItem = BaseEntity & {
+  id: string;
+  appName: string;
+  downloadLink: string;
+  qrCodeActive: number;
+  qrCodeLink: string | null;
+  status: number;
+  icon: string;
+  nameLanguageList: string | AppDownloadLanguageItem[] | null;
+  applicableRoles: string;
+};
+
+export type AppDownloadRes = BasicRes<AppDownloadItem>;
+
+export type AppDownloadLanguageItem = {
+  id?: string;
+  language: string;
+  appName: string;
+};
+
+export type SaveAppDownloadParams = {
+  id?: string;
+  downloadLink: string;
+  icon: string;
+  status: number;
+  qrCodeActive: number;
+  nameLanguageList: AppDownloadLanguageItem[];
+  applicableRoles: string;
+};

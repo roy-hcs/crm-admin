@@ -4,6 +4,7 @@ import { ServersSettingPage } from '@/pages/setting/trading-platform/servers/Ser
 import { QuickCreatePage } from '@/pages/setting/trading-platform/quick-create/QuickCreatePage';
 import { MtServerGroupPage } from '@/pages/setting/trading-platform/mt-server-group/MtServerGroupPage';
 import { MtServerAccountTypePage } from '@/pages/setting/trading-platform/account-type/MtServerAccountTypePage';
+import { DownLoadsPage } from '@/pages/setting/trading-platform/downloads/DownLoadsPage';
 
 const MtServerGroupWrapperPage = () => {
   const [searchParams] = useSearchParams();
@@ -76,6 +77,10 @@ export const settingsRoutes: RouteObject[] = [
   {
     path: '/settings/trading-platform/mt-server-account-type',
     element: <MtServerAccountTypeWrapperPage />,
+  },
+  {
+    path: '/settings/trading-platform/downloads',
+    element: <DownLoadsPage />,
   },
 
   // TODO: Add more routes as pages are developed

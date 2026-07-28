@@ -93,6 +93,9 @@
     "RememberMe": "记住我"
   },
   "common": {
+    "icon": "图标",
+    "downloadManagement": "下载管理",
+    "downloadLink": "下载链接",
     "users": "用户",
     "download": "下载",
     "points": "分",
@@ -2515,7 +2518,6 @@
     "switchToTree": "切换为树状"
   },
   "downloadsPage": {
-    "title": "下载管理",
     "moduleName": "模块名称",
     "taskName": "任务名称",
     "size": "大小",
@@ -2618,5 +2620,9 @@
         "desc": "检查方式和异常通知"
       }
     }
+  },
+  "settingsTradingPlatformDownloads": {
+    "iconDesc": "40*40，JPG/JPEG/PNG，100K以内",
+    "appDownload": "app下载"
   }
 }

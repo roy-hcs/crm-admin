@@ -8,7 +8,7 @@ import { useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import type { FormValues, ReferralBonusLanguageOption } from '../types';
 import { FormInput } from '@/components/form/FormInput';
-import { UploadFile } from '../../ads/components/components/UploadFile';
+import { UploadFile } from '@/components/common/UploadFile';
 
 export function StepTwo({ languageOptions }: { languageOptions: ReferralBonusLanguageOption[] }) {
   const { t } = useTranslation();
