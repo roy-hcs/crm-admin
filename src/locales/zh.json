@@ -1331,6 +1331,7 @@
     }
   },
   "table": {
+    "openCreditBalance": "开户信用额",
     "expireTime": "失效时间",
     "price": "交易价格",
     "inMethod": "操作方式",
@@ -2584,7 +2585,15 @@
       "open": "确认要启用该进程吗？"
     },
     "deleteConfirm": "确定删除该 服务器设置？",
-    "addServer": "添加服务器"
+    "addServer": "添加服务器",
+    "groupDesc": "请以交易服务器上的组别为准。本页面的组别设置不影响交易服务器的组别数据。",
+    "deleteGroupConfirm": "确定删除该 组别？\n 本次删除不影响MT服务器上的组别信息。\n只删除CRM上的组别数据。",
+    "synchronize": "同步",
+    "synchronizeConfirm": "确定同步组别信息？\n 将从交易服务器上获取最新的组别信息并同步到CRM，\n 本次同步不会对交易服务器上的组别信息修改。",
+    "accountAll": "服务器起止编号",
+    "defaultMtGroup": "默认组",
+    "deleteAccountTypeConfirm": "确定删除账号类型？\n 本次删除只删本服务器下账号类型选项",
+    "openCreditBalancePlaceholder": "为空或输入0，表示开户没有赠金"
   },
   "quickCreatePage": {
     "back": "返回服务器管理",

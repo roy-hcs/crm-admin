@@ -21,6 +21,10 @@ import Pkcs7 from 'crypto-js/pad-pkcs7';
 import ECB from 'crypto-js/mode-ecb';
 import Hex from 'crypto-js/enc-hex';
 import { FormPwdInput } from '@/components/form/FormPwdInput';
+import {
+  applyInputNormalizer,
+  normalizePositiveIntegerInput,
+} from '@/pages/marketing/shared/formValueUtils';
 
 type FormValues = {
   serviceType: string;
@@ -277,18 +281,27 @@ export const AddEditServerSettingDialog = ({
           name="accountStart"
           label={t('serversSettingPage.accountStart')}
           placeholder={t('common.pleaseInput', { field: t('serversSettingPage.accountStart') })}
+          onInput={event =>
+            applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+          }
         />
 
         <FormInput
           name="accountEnd"
           label={t('serversSettingPage.accountEnd')}
           placeholder={t('common.pleaseInput', { field: t('serversSettingPage.accountEnd') })}
+          onInput={event =>
+            applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+          }
         />
 
         <FormInput
           name="sort"
           label={t('table.sort')}
           placeholder={t('common.pleaseInput', { field: t('table.sort') })}
+          onInput={event =>
+            applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+          }
         />
       </RrhForm>
     </RrhDialog>
