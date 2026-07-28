@@ -2621,8 +2621,14 @@
       }
     }
   },
-  "settingsTradingPlatformDownloads": {
+  "tradingPlatformDownloadsPage": {
     "iconDesc": "40*40，JPG/JPEG/PNG，100K以内",
-    "appDownload": "app下载"
+    "appDownload": "app下载",
+    "deleteConfirm": "确定删除该 下载链接？"
+  },
+  "tradingAccountPage": {
+    "title": "交易账号类型",
+    "associateServerCount": "已关联服务器",
+    "deleteConfirm": "确定删除该 交易账号类型?"
   }
 }

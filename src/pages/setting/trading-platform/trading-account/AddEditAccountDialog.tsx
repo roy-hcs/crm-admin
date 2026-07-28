@@ -5,60 +5,24 @@ import { useForm } from 'react-hook-form';
 import { RrhForm } from '@/components/form/RrhForm';
 import { RrhButton } from '@/components/common/RrhButton';
 import { Plus } from 'lucide-react';
-import { AppDownloadItem, AppDownloadLanguageItem } from '@/api/hooks/setting/types';
-import { useAddAppDownload, useDownLoadsDetail } from '@/api/hooks/setting/setting';
+import { TradingAccountItem } from '@/api/hooks/setting/types';
+import { useAddTradingAccount, useMtServerTypeDetail } from '@/api/hooks/setting/setting';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { RrhSwitchGroup } from '@/components/common/RrhSwitchGroup';
 import { SelectOption } from '@/api/types';
-import { FormField } from '@/components/ui/form';
 import { cn } from '@/lib/utils';
-import { UploadFile } from '@/components/common/UploadFile';
-import { FormCrmRoleMultiSelect } from '@/components/form/FormCrmRoleMultiSelect';
 import { FormInput } from '@/components/form/FormInput';
-import { FormSwitch } from '@/components/form/FormSwitch';
-import { useUploadFile } from '@/api/hooks/system/system';
 import { toast } from 'sonner';
+import { FormSelect } from '@/components/form/FormSelect';
+import { serverMap } from '@/lib/constant';
 
 type FormValues = {
   nameLanguageMap: Record<string, string>;
-  downloadLink: string;
-  icon: File | string;
-  status: string;
-  qrCodeActive: string;
-  applicableRoles: string[];
+  serverType: string;
 };
 
-function parseNameLanguageList(
-  input: AppDownloadItem['nameLanguageList'],
-): Array<AppDownloadLanguageItem> {
-  if (!input) return [];
-
-  if (Array.isArray(input)) {
-    return input;
-  }
-
-  if (typeof input !== 'string') {
-    return [];
-  }
-
-  try {
-    const parsed = JSON.parse(input);
-    if (!Array.isArray(parsed)) return [];
-
-    return parsed
-      .map(item => ({
-        id: typeof item?.id === 'string' ? item.id : '',
-        language: typeof item?.language === 'string' ? item.language : '',
-        appName: typeof item?.appName === 'string' ? item.appName : '',
-      }))
-      .filter(item => item.language);
-  } catch {
-    return [];
-  }
-}
-
-export const AddEditAppDialog = ({
+export const AddEditAccountDialog = ({
   open: openProp,
   setOpen: onOpenChange,
   mode,
@@ -69,7 +33,7 @@ export const AddEditAppDialog = ({
   open?: boolean;
   setOpen?: (open: boolean) => void;
   mode: 'add' | 'edit';
-  item?: AppDownloadItem;
+  item?: TradingAccountItem;
   languageOptions: SelectOption[];
   onSuccess?: () => void;
 }) => {
@@ -80,28 +44,21 @@ export const AddEditAppDialog = ({
   const [activeLang, setActiveLang] = useState('zh-CN');
   const [languageIdMap, setLanguageIdMap] = useState<Record<string, string>>({});
 
-  const { data: detail, isLoading: detailLoading } = useDownLoadsDetail(
+  const { data: detail, isLoading: detailLoading } = useMtServerTypeDetail(
     { id: item?.id || '' },
     { enabled: mode === 'edit' && open && Boolean(item?.id) },
   );
 
-  const { mutateAsync: save, isPending: isSavePending } = useAddAppDownload();
-  const { mutateAsync: uploadFile, isPending: isUploadPending } = useUploadFile();
+  const { mutateAsync: save, isPending: isSavePending } = useAddTradingAccount();
 
   const schema = useMemo(
     () =>
       z
         .object({
           nameLanguageMap: z.record(z.string(), z.string()),
-          downloadLink: z.string().min(1, t('rules.required', { field: t('common.downloadLink') })),
-          icon: z
-            .union([z.string(), z.instanceof(File)])
-            .refine(value => (typeof value === 'string' ? Boolean(value.trim()) : true), {
-              message: t('rules.required', { field: t('common.icon') }),
-            }),
-          status: z.string().min(1, t('rules.required', { field: t('table.status') })),
-          qrCodeActive: z.string().min(1, t('rules.required', { field: t('common.qrcode') })),
-          applicableRoles: z.array(z.string()),
+          serverType: z
+            .string()
+            .min(1, t('rules.required', { field: t('table.transactionPlatform') })),
         })
         .superRefine((values, ctx) => {
           // 切换到哪个 哪个就要必填 但是中文必须必填
@@ -121,13 +78,17 @@ export const AddEditAppDialog = ({
     resolver: zodResolver(schema),
     defaultValues: {
       nameLanguageMap: {},
-      downloadLink: '',
-      icon: '',
-      status: '1',
-      qrCodeActive: '0',
-      applicableRoles: [],
+      serverType: '',
     },
   });
+
+  const serviceType = useMemo(() => {
+    const arr = Object.entries(serverMap).map(([value, label]) => ({
+      value,
+      label,
+    }));
+    return arr;
+  }, []);
 
   useEffect(() => {
     if (languageOptions.length === 0) return;
@@ -145,31 +106,25 @@ export const AddEditAppDialog = ({
       acc[String(option.value)] = '';
       return acc;
     }, {});
-
     const nameIdMap: Record<string, string> = {};
 
     if (mode === 'edit' && item?.id) {
       const detailData = detail?.data;
       if (!detailData) return;
 
-      const parsedNameLanguageList = parseNameLanguageList(detailData.nameLanguageList);
-      parsedNameLanguageList.forEach(entry => {
-        languageMap[entry.language] = entry.appName || '';
+      (detailData.nameLanguageList || []).forEach(entry => {
+        const language = entry.language || '';
+        if (!language) return;
+        languageMap[language] = entry.accountTypeName || '';
         if (entry.id) {
-          nameIdMap[entry.language] = entry.id;
+          nameIdMap[language] = entry.id;
         }
       });
+
       setLanguageIdMap(nameIdMap);
       form.reset({
         nameLanguageMap: languageMap,
-        downloadLink: detailData.downloadLink || '',
-        icon: detailData.icon || '',
-        status: String(detailData.status ?? 1),
-        qrCodeActive: String(detailData.qrCodeActive ?? 0),
-        applicableRoles: (detailData.applicableRoles || '')
-          .split(',')
-          .map(i => i.trim())
-          .filter(Boolean),
+        serverType: String(detailData.serverType ?? ''),
       });
       return;
     }
@@ -178,11 +133,7 @@ export const AddEditAppDialog = ({
 
     form.reset({
       nameLanguageMap: languageMap,
-      downloadLink: '',
-      icon: '',
-      status: '1',
-      qrCodeActive: '0',
-      applicableRoles: [],
+      serverType: '',
     });
   }, [open, mode, item?.id, detail?.data, form, languageOptions]);
 
@@ -209,35 +160,19 @@ export const AddEditAppDialog = ({
       return;
     }
     try {
-      let iconUrl = '';
-      if (typeof data.icon === 'string') {
-        iconUrl = data.icon;
-      } else if (data.icon instanceof File) {
-        const uploadRes = await uploadFile(data.icon);
-        if (uploadRes?.code !== 0 || !uploadRes?.url) {
-          toast.error(uploadRes?.msg || t('common.fail'));
-          return;
-        }
-        iconUrl = uploadRes.url;
-      }
-
       const nameLanguageList = languageOptions.map(option => {
         const language = String(option.value);
         return {
           id: languageIdMap[language] || '',
           language,
-          appName: (data.nameLanguageMap?.[language] || '').trim(),
+          accountTypeName: (data.nameLanguageMap?.[language] || '').trim(),
         };
       });
 
       const res = await save({
         ...(mode === 'edit' && item?.id ? { id: item.id } : {}),
-        downloadLink: data.downloadLink.trim(),
-        icon: iconUrl,
-        status: Number(data.status),
-        qrCodeActive: Number(data.qrCodeActive),
         nameLanguageList,
-        applicableRoles: (data.applicableRoles || []).join(','),
+        serverType: data.serverType,
       });
 
       if (res.code === 0) {
@@ -257,10 +192,10 @@ export const AddEditAppDialog = ({
       title={
         mode === 'add'
           ? t('common.addField', {
-              field: t('tradingPlatformDownloadsPage.appDownload'),
+              field: t('tradingAccountPage.title'),
             })
           : t('common.modify', {
-              field: t('tradingPlatformDownloadsPage.appDownload'),
+              field: t('tradingAccountPage.title'),
             })
       }
       trigger={
@@ -270,14 +205,14 @@ export const AddEditAppDialog = ({
           </RrhButton>
         ) : null
       }
-      isConfirmDisabled={isSavePending || isUploadPending || detailLoading}
+      isConfirmDisabled={isSavePending || detailLoading}
       open={open}
       onOpenChange={onClose}
       onCancel={onCancel}
       onConfirm={form.handleSubmit(onSubmit)}
       variant="large"
       type="submit"
-      formLoading={isSavePending || isUploadPending || detailLoading}
+      formLoading={isSavePending || detailLoading}
     >
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
         <RrhSwitchGroup
@@ -295,46 +230,21 @@ export const AddEditAppDialog = ({
                   name={`nameLanguageMap.${String(lang.value)}`}
                   label={`${t('products.goodsName')} (${lang.label})`}
                   placeholder={t('rules.limitLength', {
-                    field: 32,
+                    field: 24,
                   })}
-                  maxLength={32}
+                  maxLength={24}
                 />
               </div>
             );
           })}
         </div>
 
-        <FormInput
-          name="downloadLink"
-          label={t('common.downloadLink')}
-          placeholder={t('common.pleaseInput', {
-            field: t('common.downloadLink'),
-          })}
-        />
-
-        <FormField
-          name="icon"
-          render={({ field }) => {
-            return (
-              <UploadFile
-                label={t('common.icon')}
-                field={field}
-                description={t('tradingPlatformDownloadsPage.iconDesc')}
-                maxSizeMB={0.1}
-                accept=".jpg,.jpeg,.png"
-                allowedExtensions={['jpg', 'jpeg', 'png']}
-              />
-            );
-          }}
-        />
-
-        <FormSwitch name="status" label={t('table.status')} />
-        <FormSwitch name="qrCodeActive" label={t('common.qrcode')} />
-
-        <FormCrmRoleMultiSelect<FormValues>
-          verticalLabel
-          name="applicableRoles"
-          label={t('products.applicableRoles')}
+        <FormSelect
+          name="serverType"
+          label={t('table.transactionPlatform')}
+          placeholder={t('common.pleaseSelect')}
+          showRowValue={false}
+          options={serviceType}
         />
       </RrhForm>
     </RrhDialog>

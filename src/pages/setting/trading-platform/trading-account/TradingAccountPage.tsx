@@ -7,40 +7,34 @@ import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
-import {
-  useDownLoadsList,
-  useModifyAppDownloadStatus,
-  useRemoveAppDownload,
-} from '@/api/hooks/setting/setting';
-import { AppDownloadItem } from '@/api/hooks/setting/types';
+import { useTradingAccountList, useRemoveTradingAccount } from '@/api/hooks/setting/setting';
+import { TradingAccountItem } from '@/api/hooks/setting/types';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
-import { RrhStatusAlert } from '@/components/common/RrhStatusAlert';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 import { useDictType } from '@/api/hooks/system';
-import { AddEditAppDialog } from './AddEditAppDialog';
+import { AddEditAccountDialog } from './AddEditAccountDialog';
 
-export const DownLoadsPage = () => {
+export const TradingAccountPage = () => {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
 
   const { data: languageList } = useDictType('sys_language');
 
-  const { data, isLoading, refetch } = useDownLoadsList({
+  const { data, isLoading, refetch } = useTradingAccountList({
     pageSize,
     pageNum: pageNum + 1,
     orderByColumn: '',
     isAsc: 'asc',
   });
 
-  const { mutateAsync: modifyStatus } = useModifyAppDownloadStatus();
-  const { mutateAsync: removeAppDownload } = useRemoveAppDownload();
+  const { mutateAsync: removeTradingAccount } = useRemoveTradingAccount();
 
-  const [item, setItem] = useState<AppDownloadItem | undefined>(undefined);
+  const [item, setItem] = useState<TradingAccountItem | undefined>(undefined);
   const [open, setOpen] = useState(false);
   const [deleteAlert, setDeleteAlert] = useState(false);
 
-  const allColumns = useMemo<CRMColumnDef<AppDownloadItem, unknown>[]>(
+  const allColumns = useMemo<CRMColumnDef<TradingAccountItem, unknown>[]>(
     () => [
       {
         id: 'No',
@@ -48,60 +42,19 @@ export const DownLoadsPage = () => {
         cell: ({ row }) => row?.index + 1,
       },
       {
-        id: 'appName',
-        header: t('products.goodsName'),
-        cell: ({ row }) => row?.original?.appName || '-',
+        id: 'serverType',
+        header: t('table.transactionPlatform'),
+        cell: ({ row }) => row?.original?.serverType || '-',
       },
       {
-        id: 'downloadLink',
-        header: t('common.downloadLink'),
-        cell: ({ row }) => row?.original?.downloadLink || '-',
+        id: 'accountType',
+        header: t('common.accountType'),
+        cell: ({ row }) => row?.original?.accountType || '-',
       },
       {
-        id: 'status',
-        header: t('table.status'),
-        accessorFn: row => row.status,
-        cell: ({ row }) => {
-          return (
-            <RrhStatusAlert<{
-              id: string;
-              status: number;
-            }>
-              params={{
-                id: String(row.original.id),
-                status: row.original.status === 1 ? 0 : 1,
-              }}
-              tipsText={row.original.status === 1 ? t('ads.confirm.stop') : t('ads.confirm.open')}
-              checked={row.original.status === 1}
-              confirmFunction={modifyStatus}
-              onSuccess={refetch}
-            />
-          );
-        },
-      },
-      {
-        id: 'qrCodeActive',
-        header: t('common.qrcode'),
-        accessorFn: row => row.qrCodeActive,
-        cell: ({ row }) => {
-          return (
-            <RrhStatusAlert<{
-              id: string;
-              qrCodeActive: number;
-            }>
-              params={{
-                id: String(row.original.id),
-                qrCodeActive: row.original.qrCodeActive === 1 ? 0 : 1,
-              }}
-              tipsText={
-                row.original.qrCodeActive === 1 ? t('ads.confirm.stop') : t('ads.confirm.open')
-              }
-              checked={row.original.qrCodeActive === 1}
-              confirmFunction={modifyStatus}
-              onSuccess={refetch}
-            />
-          );
-        },
+        id: 'associateServerCount',
+        header: t('tradingAccountPage.associateServerCount'),
+        cell: ({ row }) => row?.original?.associateServerCount || '0',
       },
       {
         id: 'operate',
@@ -131,10 +84,10 @@ export const DownLoadsPage = () => {
         fixed: 'right',
       },
     ],
-    [modifyStatus, refetch, t],
+    [t],
   );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility('setting-downLoads-table', allColumns);
+    useColumnVisibility('setting-trading-account-table', allColumns);
 
   const languageOptions = useMemo(
     () =>
@@ -152,7 +105,7 @@ export const DownLoadsPage = () => {
 
   return (
     <div>
-      <PageInfo title={t('common.downloadManagement')} />
+      <PageInfo title={t('tradingAccountPage.title')} />
       <TableContentWrapper>
         <div className="mb-3 flex items-center justify-end gap-2">
           <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
@@ -165,7 +118,7 @@ export const DownLoadsPage = () => {
             onBatchReorder={batchUpdateColumns}
             columns={columns}
           />
-          <AddEditAppDialog mode="add" languageOptions={languageOptions} onSuccess={refetch} />
+          <AddEditAccountDialog mode="add" languageOptions={languageOptions} onSuccess={refetch} />
         </div>
         <DataTable
           columns={tableColumns}
@@ -177,7 +130,7 @@ export const DownLoadsPage = () => {
           onPageSizeChange={setPageSize}
           loading={isLoading}
         />
-        <AddEditAppDialog
+        <AddEditAccountDialog
           open={open}
           setOpen={setOpen}
           mode="edit"
@@ -192,9 +145,9 @@ export const DownLoadsPage = () => {
           open={deleteAlert}
           setOpen={setDeleteAlert}
           onSuccess={refetch}
-          confirmFunction={removeAppDownload}
+          confirmFunction={removeTradingAccount}
           params={{ ids: item?.id || '' }}
-          tipsText={t('tradingPlatformDownloadsPage.deleteConfirm')}
+          tipsText={t('tradingAccountPage.deleteConfirm')}
         />
       </TableContentWrapper>
     </div>

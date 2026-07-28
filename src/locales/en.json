@@ -294,7 +294,10 @@
     "unsettled": "Pending settlement",
     "invalidAmountRange": "Invalid amount range",
     "amountRange": "Amount range",
-    "hour": "hour"
+    "hour": "hour",
+    "downloadLink": "Download link",
+    "downloadManagement": "Download management",
+    "icon": "icon"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -2616,5 +2619,15 @@
         "desc": "Check mode and alerting"
       }
     }
+  },
+  "tradingAccountPage": {
+    "associateServerCount": "Server associated",
+    "deleteConfirm": "Are you sure you want to delete this trading account type?",
+    "title": "Trading account type"
+  },
+  "tradingPlatformDownloadsPage": {
+    "appDownload": "app download",
+    "deleteConfirm": "Are you sure you want to delete this download link?",
+    "iconDesc": "40*40, JPG/JPEG/PNG, within 100K"
   }
 }
