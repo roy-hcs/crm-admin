@@ -297,7 +297,8 @@
     "hour": "hour",
     "downloadLink": "Download link",
     "downloadManagement": "Download management",
-    "icon": "icon"
+    "icon": "icon",
+    "deleteConfirm": "Are you sure you want to delete this {{field}}?"
   },
   "home": {
     "AccountOverview": "Account opening overview",
