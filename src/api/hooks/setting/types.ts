@@ -34,20 +34,20 @@ export type CrmMtServiceListItem = BaseEntity & {
 export type CrmMtServiceListRes = BasicRes<CrmMtServiceListItem>;
 
 export type AddServerSetting = {
-  serviceType: string; // 1
-  serviceProperty: string; // 1
-  aliasName: string; // "test-add-sever"
-  serviceHost: string; // "154.48.231.170:443"
-  managerAccount: string; // "121212"
-  managerSecret: string; // "ae21fa2add2b94d96615011f48217273"
-  accountStart: number; // 900000
-  accountEnd: number; // 999999
+  serviceType: string;
+  serviceProperty: string;
+  aliasName: string;
+  serviceHost: string;
+  managerAccount: string;
+  managerSecret: string;
+  accountStart: number;
+  accountEnd: number;
   reportingHost: string;
   reportingDbName: string;
   reportingAccount: string;
   reportingSecret: string;
-  generateType: number; // 1
-  sort: number; // 111
+  generateType: number;
+  sort: number;
 };
 
 export type EditServerSetting = AddServerSetting & {
@@ -101,4 +101,118 @@ export type SaveServerTypeAssociationParams = {
   userIds: string[];
   accounts: string[];
   status: number;
+};
+
+export type AppDownloadItem = BaseEntity & {
+  id: string;
+  appName: string;
+  downloadLink: string;
+  qrCodeActive: number;
+  qrCodeLink: string | null;
+  status: number;
+  icon: string;
+  nameLanguageList: string | AppDownloadLanguageItem[] | null;
+  applicableRoles: string;
+};
+
+export type AppDownloadDetailLanguageItem = {
+  id: string;
+  appId: string;
+  appName: string;
+  language: string;
+  languageName: string;
+};
+
+export type AppDownloadDetailItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string;
+  appName: string;
+  downloadLink: string;
+  qrCodeActive: number;
+  qrCodeLink: string | null;
+  status: number;
+  icon: string;
+  nameLanguageList: AppDownloadDetailLanguageItem[];
+  applicableRoles: string;
+};
+
+export type AppDownloadDetailRes = {
+  code: number;
+  msg: string;
+  data: AppDownloadDetailItem;
+};
+
+export type AppDownloadRes = BasicRes<AppDownloadItem>;
+
+export type AppDownloadLanguageItem = {
+  id?: string;
+  language: string;
+  appName: string;
+};
+
+export type SaveAppDownloadParams = {
+  id?: string;
+  downloadLink: string;
+  icon: string;
+  status: number;
+  qrCodeActive: number;
+  nameLanguageList: AppDownloadLanguageItem[];
+  applicableRoles: string;
+};
+
+export type TradingAccountItem = BaseEntity & {
+  id: string;
+  serverType: number;
+  accountType: string;
+  associateServerCount: number;
+  lever: string | null;
+  nameLanguageList: string[] | null;
+};
+
+export type TradingAccountRes = BasicRes<TradingAccountItem>;
+
+export type TradingAccountLanguageItem = {
+  id?: string;
+  language: string;
+  accountTypeName: string;
+};
+
+export type SaveTradingAccountParams = {
+  id?: string;
+  serverType: string;
+  nameLanguageList: TradingAccountLanguageItem[];
+};
+
+export type MtServerTypeDetailLanguageItem = {
+  id: string;
+  serverTypeId: string;
+  accountTypeName: string | null;
+  language: string;
+  languageName: string;
+};
+
+export type MtServerTypeDetailItem = {
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+  remark: string | null;
+  params: Record<string, unknown>;
+  id: string;
+  serverType: number;
+  accountType: string;
+  associateServerCount: number;
+  lever: string | null;
+  nameLanguageList: MtServerTypeDetailLanguageItem[];
+};
+
+export type MtServerTypeDetailRes = {
+  code: number;
+  msg: string;
+  data: MtServerTypeDetailItem;
 };

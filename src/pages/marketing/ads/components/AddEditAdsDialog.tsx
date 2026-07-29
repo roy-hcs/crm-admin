@@ -17,7 +17,8 @@ import { useAddAds, useAdsDetail, useEditAds } from '@/api/hooks/marketing';
 import { FormSelect } from '@/components/form/FormSelect';
 import { FormSwitch } from '@/components/form/FormSwitch';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
-import { UploadFile } from './components/UploadFile';
+import { UploadFile } from '@/components/common/UploadFile';
+
 import { useUploadFile } from '@/api/hooks/system/system';
 import { cloneDeep } from 'es-toolkit';
 import { RrhForm } from '@/components/form/RrhForm';

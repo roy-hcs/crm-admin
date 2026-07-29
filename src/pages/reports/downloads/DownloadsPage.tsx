@@ -208,7 +208,7 @@ export function DownloadsPage() {
 
   return (
     <div>
-      <PageInfo title={t('downloadsPage.title')} />
+      <PageInfo title={t('common.downloadManagement')} />
       <TableContentWrapper>
         <div className="mb-3 flex justify-end">
           <div className="flex items-center gap-2">

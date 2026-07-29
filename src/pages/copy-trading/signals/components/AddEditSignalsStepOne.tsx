@@ -3,12 +3,12 @@ import { FormInput } from '@/components/form/FormInput';
 import { FormSwitch } from '@/components/form/FormSwitch';
 import { FormCrmUserSelect } from '@/components/form/FormCrmUserSelect';
 import { FormField } from '@/components/ui/form';
-import { UploadFile } from '@/pages/marketing/ads/components/components/UploadFile';
 import { FormInputWithUnit } from '@/components/form/FormInputWithUnit';
 import { FormRadio } from '@/components/form/FormRadio';
 import { FormSelect } from '@/components/form/FormSelect';
 import { FormTextarea } from '@/components/form/FormTextarea';
 import { FormSelectCountries } from '@/pages/points-mall/add-edit-good/components/FormSelectCountries';
+import { UploadFile } from '@/components/common/UploadFile';
 
 type SelectOption = {
   label: string;

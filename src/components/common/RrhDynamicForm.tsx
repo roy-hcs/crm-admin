@@ -11,11 +11,11 @@ import { FormSelect } from '@/components/form/FormSelect';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { FormDateInput } from '@/components/form/FormDateInput';
 import { FormField } from '@/components/ui/form';
-import { UploadFile } from '@/pages/marketing/ads/components/components/UploadFile';
 import { BaseOption } from '@/components/common/RrhSelect';
 import { useTranslation } from 'react-i18next';
 import { RrhButton } from './RrhButton';
 import { RrhCircleLoading } from './RrhCircleLoading';
+import { UploadFile } from './UploadFile';
 
 type FieldValue = string | string[] | Date | null;
 type DynamicFormValues = Record<string, FieldValue>;

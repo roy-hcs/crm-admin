@@ -5,22 +5,43 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { ImageUp, Trash2, ZoomIn } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ControllerRenderProps, FieldValues } from 'react-hook-form';
-import { useRef, useState, useEffect } from 'react';
-import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 
-interface UploadFileProps {
+type UploadValue = File | string | null | undefined;
+
+type UploadFileProps = {
   field: ControllerRenderProps<FieldValues, string>;
   label: string;
   description?: string;
+  accept?: string;
+  maxSizeMB?: number;
+  allowedExtensions?: string[];
+};
+
+function getFileExtension(fileName: string) {
+  const lastDot = fileName.lastIndexOf('.');
+  if (lastDot < 0) return '';
+  return fileName.slice(lastDot + 1).toLowerCase();
 }
 
-export const UploadFile = ({ field, label, description }: UploadFileProps) => {
+export const UploadFile = ({
+  field,
+  label,
+  description,
+  accept = '.jpg,.jpeg,.png',
+  maxSizeMB = 10,
+  allowedExtensions = ['jpg', 'jpeg', 'png'],
+}: UploadFileProps) => {
+  const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [preview, setPreview] = useState<string | null>(() => {
-    if (typeof field.value === 'string') return field.value;
+    if (typeof field.value === 'string' && field.value) return field.value;
     if (field.value instanceof File) return URL.createObjectURL(field.value);
     return null;
   });
@@ -30,24 +51,56 @@ export const UploadFile = ({ field, label, description }: UploadFileProps) => {
       setPreview(null);
       return;
     }
+
     if (typeof field.value === 'string') {
       setPreview(field.value);
-    } else if (field.value instanceof File) {
+      return;
+    }
+
+    if (field.value instanceof File) {
       const url = URL.createObjectURL(field.value);
       setPreview(url);
       return () => URL.revokeObjectURL(url);
     }
   }, [field.value]);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const normalizedExtensions = useMemo(
+    () => allowedExtensions.map(ext => ext.replace('.', '').toLowerCase()),
+    [allowedExtensions],
+  );
+
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      field.onChange(file);
+    if (!file) return;
+
+    if (file.size > maxSizeMB * 1024 * 1024) {
+      toast.error(
+        t('rules.maxSize', {
+          maxSize: maxSizeMB,
+        }),
+      );
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
     }
+
+    const extension = getFileExtension(file.name);
+    if (normalizedExtensions.length > 0 && !normalizedExtensions.includes(extension)) {
+      toast.error(
+        t('ticketList.attachmentDescription', {
+          fileTypes: normalizedExtensions.map(ext => ext.toUpperCase()).join('/'),
+          maxSize: maxSizeMB,
+        }),
+      );
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+
+    field.onChange(file as UploadValue);
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
-  const handleImageDelete = () => {
-    field.onChange('');
+  const handleDelete = () => {
+    field.onChange('' as UploadValue);
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -59,9 +112,9 @@ export const UploadFile = ({ field, label, description }: UploadFileProps) => {
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            accept={accept}
             className="hidden"
-            onChange={handleImageUpload}
+            onChange={handleUpload}
           />
           {preview ? (
             <div className="group relative size-12">
@@ -71,11 +124,10 @@ export const UploadFile = ({ field, label, description }: UploadFileProps) => {
                 loading="lazy"
                 className="size-12 rounded-sm object-cover"
               />
-              {/* 黑色遮罩和图标 */}
               <div className="absolute inset-0 flex items-center justify-center gap-2 rounded-sm bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
                 <button
                   type="button"
-                  onClick={handleImageDelete}
+                  onClick={handleDelete}
                   className="flex size-6 items-center justify-center rounded-sm bg-white/20 transition-colors hover:bg-white/30"
                 >
                   <Trash2 className="size-3.5 text-white" />

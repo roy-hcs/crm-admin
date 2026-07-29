@@ -294,7 +294,11 @@
     "unsettled": "Pending settlement",
     "invalidAmountRange": "Invalid amount range",
     "amountRange": "Amount range",
-    "hour": "hour"
+    "hour": "hour",
+    "downloadLink": "Download link",
+    "downloadManagement": "Download management",
+    "icon": "icon",
+    "deleteConfirm": "Are you sure you want to delete this {{field}}?"
   },
   "home": {
     "AccountOverview": "Account opening overview",
@@ -2538,8 +2542,7 @@
       "queued": "Queuing",
       "success": "Completed"
     },
-    "taskName": "Task name",
-    "title": "Download management"
+    "taskName": "Task name"
   },
   "performanceOverview": {
     "title": "IB Performance Overview",
@@ -2617,5 +2620,13 @@
         "desc": "Check mode and alerting"
       }
     }
+  },
+  "tradingAccountPage": {
+    "associateServerCount": "Server associated",
+    "title": "Trading account type"
+  },
+  "tradingPlatformDownloadsPage": {
+    "appDownload": "app download",
+    "iconDesc": "40*40, JPG/JPEG/PNG, within 100K"
   }
 }
