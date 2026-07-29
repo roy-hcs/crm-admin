@@ -93,6 +93,7 @@
     "RememberMe": "记住我"
   },
   "common": {
+    "deleteConfirm": "确定删除该 {{field}}？",
     "icon": "图标",
     "downloadManagement": "下载管理",
     "downloadLink": "下载链接",
@@ -2623,12 +2624,10 @@
   },
   "tradingPlatformDownloadsPage": {
     "iconDesc": "40*40，JPG/JPEG/PNG，100K以内",
-    "appDownload": "app下载",
-    "deleteConfirm": "确定删除该 下载链接？"
+    "appDownload": "app下载"
   },
   "tradingAccountPage": {
     "title": "交易账号类型",
-    "associateServerCount": "已关联服务器",
-    "deleteConfirm": "确定删除该 交易账号类型?"
+    "associateServerCount": "已关联服务器"
   }
 }

@@ -76,7 +76,7 @@ export const UploadFile = ({
     if (file.size > maxSizeMB * 1024 * 1024) {
       toast.error(
         t('rules.maxSize', {
-          maxSize: `${maxSizeMB}MB`,
+          maxSize: maxSizeMB,
         }),
       );
       if (fileInputRef.current) fileInputRef.current.value = '';
@@ -86,7 +86,7 @@ export const UploadFile = ({
     const extension = getFileExtension(file.name);
     if (normalizedExtensions.length > 0 && !normalizedExtensions.includes(extension)) {
       toast.error(
-        t('rules.attachmentDescription', {
+        t('ticketList.attachmentDescription', {
           fileTypes: normalizedExtensions.map(ext => ext.toUpperCase()).join('/'),
           maxSize: maxSizeMB,
         }),

@@ -194,7 +194,9 @@ export const DownLoadsPage = () => {
           onSuccess={refetch}
           confirmFunction={removeAppDownload}
           params={{ ids: item?.id || '' }}
-          tipsText={t('tradingPlatformDownloadsPage.deleteConfirm')}
+          tipsText={t('common.deleteConfirm', {
+            field: t('common.downloadLink'),
+          })}
         />
       </TableContentWrapper>
     </div>

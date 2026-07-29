@@ -13,6 +13,7 @@ import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 import { useDictType } from '@/api/hooks/system';
 import { AddEditAccountDialog } from './AddEditAccountDialog';
+import { serverMap } from '@/lib/constant';
 
 export const TradingAccountPage = () => {
   const [pageNum, setPageNum] = useState(0);
@@ -44,7 +45,7 @@ export const TradingAccountPage = () => {
       {
         id: 'serverType',
         header: t('table.transactionPlatform'),
-        cell: ({ row }) => row?.original?.serverType || '-',
+        cell: ({ row }) => serverMap[Number(row?.original?.serverType)] ?? '-',
       },
       {
         id: 'accountType',
@@ -147,7 +148,7 @@ export const TradingAccountPage = () => {
           onSuccess={refetch}
           confirmFunction={removeTradingAccount}
           params={{ ids: item?.id || '' }}
-          tipsText={t('tradingAccountPage.deleteConfirm')}
+          tipsText={t('common.deleteConfirm', { field: t('tradingAccountPage.title') })}
         />
       </TableContentWrapper>
     </div>

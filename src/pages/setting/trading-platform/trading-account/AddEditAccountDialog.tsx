@@ -37,11 +37,13 @@ export const AddEditAccountDialog = ({
   languageOptions: SelectOption[];
   onSuccess?: () => void;
 }) => {
+  const defaultLanguage = String(languageOptions?.[0]?.value || 'zh-CN');
+
   const { t } = useTranslation();
   const [openLocal, setOpenLocal] = useState(false);
   const open = openProp ?? openLocal;
   const setOpen = onOpenChange ?? setOpenLocal;
-  const [activeLang, setActiveLang] = useState('zh-CN');
+  const [activeLang, setActiveLang] = useState(defaultLanguage);
   const [languageIdMap, setLanguageIdMap] = useState<Record<string, string>>({});
 
   const { data: detail, isLoading: detailLoading } = useMtServerTypeDetail(
@@ -91,17 +93,8 @@ export const AddEditAccountDialog = ({
   }, []);
 
   useEffect(() => {
-    if (languageOptions.length === 0) return;
-    const firstLanguage = String(languageOptions[0]?.value || '');
-    if (!firstLanguage) return;
-    if (!languageOptions.some(option => String(option.value) === activeLang)) {
-      setActiveLang(firstLanguage);
-    }
-  }, [languageOptions, activeLang]);
-
-  useEffect(() => {
     if (!open) return;
-
+    setActiveLang(defaultLanguage);
     const languageMap = languageOptions.reduce<Record<string, string>>((acc, option) => {
       acc[String(option.value)] = '';
       return acc;
@@ -135,10 +128,11 @@ export const AddEditAccountDialog = ({
       nameLanguageMap: languageMap,
       serverType: '',
     });
-  }, [open, mode, item?.id, detail?.data, form, languageOptions]);
+  }, [open, mode, item?.id, detail?.data, form, languageOptions, defaultLanguage]);
 
   const onCancel = () => {
     onClose(false);
+    setActiveLang(defaultLanguage);
   };
 
   const onClose = (open: boolean) => {
@@ -150,10 +144,10 @@ export const AddEditAccountDialog = ({
   };
 
   const onSubmit = async (data: FormValues) => {
-    // 中文没有 需要跳转到中文输入框
-    if (!data.nameLanguageMap?.['zh-CN']?.trim()) {
-      setActiveLang('zh-CN');
-      form.setError('nameLanguageMap.zh-CN', {
+    // 默认语言没有填写 需要跳转到默认语言的输入框
+    if (!data.nameLanguageMap?.[defaultLanguage]?.trim()) {
+      setActiveLang(defaultLanguage);
+      form.setError(`nameLanguageMap.${defaultLanguage}`, {
         type: 'manual',
         message: t('rules.required', { field: t('products.goodsName') }),
       });
