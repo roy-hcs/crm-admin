@@ -473,6 +473,7 @@
     "title": "Weekly commission rebate statement"
   },
   "table": {
+    "payTime": "payment time",
     "accountGroup": "Account Group",
     "batchDelete": "Batch Delete",
     "closePrice": "Close position price",
@@ -838,7 +839,13 @@
     "netPerformanceFee": "net performance fee",
     "sell": "sell",
     "serviceHost": "Server address",
-    "openCreditBalance": "Account opening credit limit"
+    "openCreditBalance": "Account opening credit limit",
+    "Channel": "Channel name",
+    "canceled": "Canceled",
+    "completed": "Finish",
+    "customizedChannels": "Custom channels",
+    "paying": "Paying",
+    "pendingPayment": "To be paid"
   },
   "tradingHistoryPage": {
     "tradingHistory": "Transaction history",
@@ -1948,7 +1955,6 @@
       "0": "Not paid",
       "1": "paid"
     },
-    "payTime": "payment time",
     "performanceFee": "performance fee",
     "title": "Performance fee record"
   },

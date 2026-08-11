@@ -15,6 +15,7 @@ import { FormRadio } from '@/components/form/FormRadio';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { PageInfo } from '@/components/common/PageInfo';
 import { FormStepper } from '@/components/form/FormStepper';
+import { accountTypeOptions } from '@/lib/const';
 
 type FormValues = {
   allowedSignalSelfRebateSet: string;
@@ -204,12 +205,10 @@ export function PerformanceFeeRebate() {
         name="rebateTarget"
         label={t('copyTradingSettings.rebateTarget')}
         placeholder={t('common.pleaseSelect')}
-        options={[
-          { value: '1', label: t('copyTradingSettings.rebateTargetOptions.1') },
-          { value: '2', label: t('copyTradingSettings.rebateTargetOptions.2') },
-          { value: '3', label: t('copyTradingSettings.rebateTargetOptions.3') },
-          { value: '4', label: t('copyTradingSettings.rebateTargetOptions.4') },
-        ]}
+        options={accountTypeOptions.map(i => ({
+          label: t(i.label),
+          value: i.value,
+        }))}
         labeTipsDom={
           <div className="text-muted-foreground text-xs leading-4">
             {t('copyTradingSettings.rebateTargetDesc')}

@@ -87,7 +87,7 @@ export const PaymentOrderDetailDialog = ({
       value: orderInfo.payOrder || '',
     },
     {
-      label: t('performanceFeeRecord.payTime'),
+      label: t('table.payTime'),
       value: orderInfo.payTime || '',
     },
     {

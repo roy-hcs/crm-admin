@@ -140,11 +140,11 @@ export const PerformanceFeeRecordPage = () => {
       },
       {
         id: 'payTime',
-        label: t('performanceFeeRecord.payTime'),
+        label: t('table.payTime'),
         header: () => {
           return (
             <div className="flex items-center justify-between gap-2">
-              <div>{t('performanceFeeRecord.payTime')}</div>
+              <div>{t('table.payTime')}</div>
               <RrhSorter
                 orderByColumn={orderByColumn}
                 isAsc={isAsc}

@@ -178,7 +178,7 @@ export const PerformanceFeeRecordForm = ({
         name="PayTime"
         render={() => (
           <FormItem className="flex flex-col gap-2 text-sm">
-            <FormLabel className="basis-3/12">{t('performanceFeeRecord.payTime')}</FormLabel>
+            <FormLabel className="basis-3/12">{t('table.payTime')}</FormLabel>
             <FormControl className="basis-9/12">
               <FormDateRangeInput name="PayTime" control={form.control} />
             </FormControl>

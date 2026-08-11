@@ -66,6 +66,7 @@ export const internalTransferReviewStatusMap: Record<number | string, string> = 
   '-1': 'reviewing',
 };
 
+// 出金审核状态映射
 export const withdrawalReviewStatusMap: Record<number | string, string> = {
   2: 'pending',
   1: 'pass',

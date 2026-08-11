@@ -64,6 +64,24 @@ export type PaymentChannelItem = {
 };
 export type ChannelListResponse = PaymentChannelItem[];
 
+export type ThirdPaymentSettingListParams = {
+  pageSize?: number;
+  pageNum?: number;
+  orderByColumn?: string;
+  isAsc?: 'asc' | 'desc' | '';
+  params?: {
+    channelName?: string;
+  };
+};
+
+export type ThirdPaymentSettingItem = BaseEntity & {
+  id: number;
+  channelName: string;
+  channelType?: number;
+};
+
+export type ThirdPaymentSettingListRes = BasicRes<ThirdPaymentSettingItem>;
+
 // 信息类型
 export type InfoTypeItem = {
   createBy: string | null;

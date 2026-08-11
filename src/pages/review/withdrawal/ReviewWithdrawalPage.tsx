@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { ReviewWithdrawalForm } from './ReviewWithdrawalForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
@@ -13,17 +13,21 @@ import {
 import { TableCell } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { PageInfo } from '@/components/common/PageInfo';
-import { CRMColumnDef, DataTable } from '@/components/table';
+import { CRMColumnDef, DataTable, DataTableRef } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { WithdrawItem } from '@/api/hooks/review';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RrhTag } from '@/components/common/RrhTag';
-import { withdrawalReviewStatusMap } from '@/lib/constant';
 import { useTabActions } from '@/hooks/useTabActions';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { RrhButton } from '@/components/common/RrhButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { BatchReviewDialog } from './components/BatchReviewDialog';
+import { toast } from 'sonner';
+import { ExportButton } from '@/components/common/ExportButton';
+import { useExportWithdraw } from '@/api/hooks/review/review';
+import { withDrawStatusOptions } from '@/lib/const';
 
 export const ReviewWithdrawalPage = () => {
   const { t } = useTranslation();
@@ -39,6 +43,10 @@ export const ReviewWithdrawalPage = () => {
     accounts: '',
     finishBeginTime: '',
     finishEndTime: '',
+    verifyBeginTime: '',
+    verifyEndTime: '',
+    payBeginTime: '',
+    payEndTime: '',
   });
   const [otherParams, setOtherParams] = useState<Omit<WithdrawListParams, 'params'>>({
     userId: '',
@@ -50,11 +58,20 @@ export const ReviewWithdrawalPage = () => {
     orderNum: '',
     exceptionFlag: '',
     accounts: '',
+    orderId: '',
+    inviters: '',
+    accountTypes: '',
+    channelIds: '',
+    roleId: '',
   });
 
-  const { data: outMoneyMethodList } = useOutMoneyMethodList();
+  const { data: outMoneyMethodListRes } = useOutMoneyMethodList();
 
-  const { data: withdrawList, isLoading: withdrawListLoading } = useWithdrawList(
+  const {
+    data: withdrawList,
+    isLoading: withdrawListLoading,
+    refetch,
+  } = useWithdrawList(
     {
       pageSize,
       pageNum: pageNum + 1,
@@ -68,6 +85,8 @@ export const ReviewWithdrawalPage = () => {
     { enabled: true },
   );
 
+  const { mutateAsync: exportWithdraw, isPending: exportLoading } = useExportWithdraw();
+
   const { mutate: getWithdrawSum, data: sumData, isPending } = useWithdrawListSum();
   const [sumShow, setSumShow] = useState(false);
   const getSumData = () => {
@@ -79,9 +98,28 @@ export const ReviewWithdrawalPage = () => {
       },
     });
   };
+
   useEffect(() => {
     setSumShow(false);
   }, [withdrawList]);
+
+  const outMoneyMethodList = useMemo(() => {
+    // 将不在 [1, 2, 4, 5, 6, 13, 15] 范围内的 id 加上 100
+    if (outMoneyMethodListRes?.data) {
+      const newArr = outMoneyMethodListRes.data.map(i => {
+        if (![1, 2, 4, 5, 6, 13, 15].includes(Number(i.id))) {
+          return {
+            ...i,
+            id: String(Number(i.id) + 100),
+          };
+        }
+        return i;
+      });
+      return newArr;
+    }
+    return [];
+  }, [outMoneyMethodListRes]);
+
   const reset = () => {
     setParams({
       beginTime: '',
@@ -90,6 +128,10 @@ export const ReviewWithdrawalPage = () => {
       accounts: '',
       finishBeginTime: '',
       finishEndTime: '',
+      verifyBeginTime: '',
+      verifyEndTime: '',
+      payBeginTime: '',
+      payEndTime: '',
     });
     setOtherParams({
       userId: '',
@@ -101,6 +143,11 @@ export const ReviewWithdrawalPage = () => {
       orderNum: '',
       exceptionFlag: '',
       accounts: '',
+      orderId: '',
+      inviters: '',
+      accountTypes: '',
+      channelIds: '',
+      roleId: '',
     });
     setResetKey(k => k + 1);
     setPageNum(0);
@@ -222,11 +269,23 @@ export const ReviewWithdrawalPage = () => {
           );
         },
         cell: ({ row }) => {
-          const method = row.original.method;
-          return method
-            ? outMoneyMethodList?.data?.find(item => item.id === method.toString())?.name
-            : '-';
+          const method = String(row.original.method);
+          const channelId = row.original.channelId;
+          if (method === '17') {
+            // 自定义渠道 需要 -100 才能匹配到对应的渠道名称
+            return (
+              outMoneyMethodList?.find(item => Number(item.id) - 100 === Number(channelId || 0))
+                ?.name || '-'
+            );
+          } else {
+            return outMoneyMethodList?.find(item => item.id === method)?.name || '-';
+          }
         },
+      },
+      {
+        id: 'channelName',
+        header: t('table.Channel'),
+        cell: ({ row }) => row.original?.channelName || '-',
       },
       {
         id: 'withdrawAccount',
@@ -253,11 +312,7 @@ export const ReviewWithdrawalPage = () => {
       {
         id: 'balance',
         header: t('table.balance'),
-        cell: ({ row }) => (
-          <div>
-            {row.original.balance} {row.original.withdrawCurrency}
-          </div>
-        ),
+        cell: ({ row }) => (row.original.balance || 0) + row.original.withdrawCurrency,
       },
       {
         id: 'reviewStatus',
@@ -276,20 +331,22 @@ export const ReviewWithdrawalPage = () => {
             </div>
           );
         },
-        accessorFn: row => row.status,
         cell: ({ row }) => {
+          // 2 待审 -1审核中 1待支付 4支付中 5完成 3失败 0拒绝 -2 已取消
           const typeMap: Record<number, 'error' | 'success' | 'warning' | 'info' | 'default'> = {
             0: 'error',
             1: 'success',
             2: 'warning',
             '-1': 'info',
             '-2': 'default',
+            3: 'error',
+            4: 'info',
+            5: 'success',
           };
-          return (
-            <RrhTag type={typeMap[row.original.status]}>
-              {t(`table.${withdrawalReviewStatusMap[row.original.status]}`)}
-            </RrhTag>
-          );
+
+          const text =
+            withDrawStatusOptions.find(i => i.value === String(row.original.status))?.label || '';
+          return <RrhTag type={typeMap[row.original.status]}>{text ? t(text) : '-'}</RrhTag>;
         },
       },
       {
@@ -325,15 +382,15 @@ export const ReviewWithdrawalPage = () => {
       {
         id: 'role',
         header: t('table.role'),
-        accessorFn: row => row.roleName,
+        accessorFn: row => row.roleName || '-',
       },
       {
         id: 'submitAuditTime',
-        label: t('table.submitAuditTime'),
+        label: t('table.submitTime'),
         header: () => {
           return (
             <div className="flex items-center justify-between gap-2">
-              <div>{t('table.submitAuditTime')}</div>
+              <div>{t('table.submitTime')}</div>
               <RrhSorter
                 orderByColumn={orderByColumn}
                 isAsc={isAsc}
@@ -344,7 +401,7 @@ export const ReviewWithdrawalPage = () => {
             </div>
           );
         },
-        accessorFn: row => row.subTime,
+        accessorFn: row => row.subTime || '-',
       },
       {
         id: 'currentAuditor',
@@ -362,12 +419,12 @@ export const ReviewWithdrawalPage = () => {
         },
       },
       {
-        id: 'finishTime',
-        label: t('table.finishTime'),
+        id: 'verifyTime',
+        label: t('table.verifyTime'),
         header: () => {
           return (
             <div className="flex items-center justify-between gap-2">
-              <div>{t('table.finishTime')}</div>
+              <div>{t('table.verifyTime')}</div>
               <RrhSorter
                 orderByColumn={orderByColumn}
                 isAsc={isAsc}
@@ -378,14 +435,58 @@ export const ReviewWithdrawalPage = () => {
             </div>
           );
         },
-        accessorFn: row => row.verifyTime,
-        cell: ({ row }) => <div>{row.original.verifyTime || '-'}</div>,
+        accessorFn: row => row.verifyTime || '-',
+      },
+      {
+        id: 'payTime',
+        label: t('table.payTime'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.payTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="payTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        accessorFn: row => row.payTime || '-',
+      },
+      {
+        id: 'completeTime',
+        label: t('table.finishTime'),
+        header: () => {
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <div>{t('table.finishTime')}</div>
+              <RrhSorter
+                orderByColumn={orderByColumn}
+                isAsc={isAsc}
+                column="completeTime"
+                setOrderByColumn={setOrderByColumn}
+                setIsAsc={setIsAsc}
+              />
+            </div>
+          );
+        },
+        accessorFn: row => row.completeTime || '-',
       },
       {
         id: 'tradeServerOrderNumber',
         header: t('table.tradeServerOrderNumber'),
-        accessorFn: row => row.dealTicket,
+        accessorFn: row => row.dealTicket || '-',
       },
+
+      {
+        id: 'orderId',
+        header: t('table.paymentOrderNumber'),
+        accessorFn: row => row.orderId || '-',
+      },
+
       {
         fixed: 'right',
         id: 'operate',
@@ -411,7 +512,35 @@ export const ReviewWithdrawalPage = () => {
 
   // 列可见性管理
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility('withdrawal-review-table', allColumns, ['select']);
+    useColumnVisibility('withdrawal-review-table', allColumns);
+
+  const tableRef = useRef<DataTableRef>(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [ids, setIds] = useState<string[]>([]);
+
+  const onSelectionChange = (its: WithdrawItem[]) => {
+    const ids = its.filter(i => i.id).map(j => j.id || '');
+    setIds(ids);
+  };
+
+  const handleBatchReview = () => {
+    if (ids.length === 0) {
+      toast.error(t('tradingAccountTransactions.atLeastOneAccount'));
+      return;
+    }
+    // 只能批量审核未审核的记录
+    if (withdrawList?.rows.filter(i => ids.includes(i.id) && i.status !== 2).length) {
+      toast.error(t('netBonusRewardRecords.containsReviewedRecords'));
+      return;
+    }
+    setOpenDialog(true);
+  };
+
+  const onSuccess = () => {
+    setIds([]);
+    tableRef.current?.selectionClear?.();
+    refetch();
+  };
 
   return (
     <div>
@@ -431,8 +560,16 @@ export const ReviewWithdrawalPage = () => {
             />
           </div>
           <div className="flex items-center gap-2">
-            <RrhButton onClick={reset}>{t('table.batchAudit')}</RrhButton>
-            <RrhButton variant="outline">{t('table.export')}</RrhButton>
+            <RrhButton onClick={handleBatchReview}>{t('table.batchAudit')}</RrhButton>
+            <ExportButton<WithdrawListParams>
+              exportFunction={exportWithdraw}
+              params={{
+                params,
+                ...otherParams,
+              }}
+              exportLoading={exportLoading}
+              title={t('withdrawalReview.title')}
+            />
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </Button>
@@ -457,7 +594,7 @@ export const ReviewWithdrawalPage = () => {
                 setParams={setParams}
                 setOtherParams={setOtherParams}
                 loading={withdrawListLoading}
-                withdrawMethodList={outMoneyMethodList?.data || []}
+                withdrawMethodList={outMoneyMethodList || []}
               />
             </RrhDrawer>
             <ColumnVisibilityButton
@@ -470,6 +607,7 @@ export const ReviewWithdrawalPage = () => {
           </div>
         </div>
         <DataTable
+          ref={tableRef}
           columns={tableColumns}
           data={withdrawList?.rows || []}
           pageCount={Math.ceil(+(withdrawList?.total || 0) / pageSize)}
@@ -478,6 +616,7 @@ export const ReviewWithdrawalPage = () => {
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
           loading={withdrawListLoading}
+          onSelectionChange={onSelectionChange}
           CustomRow={
             <>
               <TableCell colSpan={5} className="text-center">
@@ -528,6 +667,13 @@ export const ReviewWithdrawalPage = () => {
               ) : null}
             </>
           }
+        />
+
+        <BatchReviewDialog
+          open={openDialog}
+          ids={ids}
+          setOpen={setOpenDialog}
+          onSuccess={onSuccess}
         />
       </TableContentWrapper>
     </div>

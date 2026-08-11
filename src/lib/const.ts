@@ -387,3 +387,47 @@ export const downloadStatusOptions = [
     value: 'EXPIRED',
   },
 ];
+
+// 出金审核状态映射 2 待审 -1审核中 1待支付 4支付中 5完成 3失败 0拒绝 -2 已取消
+export const withDrawStatusOptions = [
+  {
+    label: 'table.pending',
+    value: '2',
+  },
+  {
+    label: 'table.reviewing',
+    value: '-1',
+  },
+  {
+    label: 'table.pendingPayment',
+    value: '1',
+  },
+  {
+    label: 'table.paying',
+    value: '4',
+  },
+  {
+    label: 'table.completed',
+    value: '5',
+  },
+  {
+    label: 'common.fail',
+    value: '3',
+  },
+  {
+    label: 'table.refuse',
+    value: '0',
+  },
+  {
+    label: 'table.canceled',
+    value: '-2',
+  },
+];
+
+// 账户类型
+export const accountTypeOptions = [
+  { value: '1', label: 'copyTradingSettings.rebateTargetOptions.1' },
+  { value: '2', label: 'copyTradingSettings.rebateTargetOptions.2' },
+  { value: '3', label: 'copyTradingSettings.rebateTargetOptions.3' },
+  { value: '4', label: 'copyTradingSettings.rebateTargetOptions.4' },
+];
