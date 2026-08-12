@@ -75,6 +75,12 @@ export function useSearchOptions({
         } else {
           setHasMore(list.length >= params.pageSize);
         }
+      } catch (error) {
+        console.error('useSearchOptions loadOptions error:', error);
+        if (!append) {
+          setOptions([]);
+        }
+        setHasMore(false);
       } finally {
         setLoading(false);
         setLoadingMore(false);

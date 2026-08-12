@@ -63,9 +63,11 @@ export const BatchReviewDialog = ({
         remark: data.remark,
       }));
 
-      const responses = await Promise.all(params.map(param => batchVerifyAsync(param)));
-      const successCount = responses.filter(res => res.code === 0).length;
-      const failedCount = responses.length - successCount;
+      const settledResults = await Promise.allSettled(params.map(param => batchVerifyAsync(param)));
+      const successCount = settledResults.filter(
+        item => item.status === 'fulfilled' && item.value?.code === 0,
+      ).length;
+      const failedCount = settledResults.length - successCount;
 
       if (failedCount === 0) {
         form.reset();
