@@ -89,7 +89,7 @@ export const ReviewWithdrawalPage = () => {
 
   const { mutate: getWithdrawSum, data: sumData, isPending } = useWithdrawListSum();
   const [sumShow, setSumShow] = useState(false);
-  const getSumData = () => {
+  const getSumData = useCallback(() => {
     setSumShow(true);
     getWithdrawSum({
       ...otherParams,
@@ -97,7 +97,7 @@ export const ReviewWithdrawalPage = () => {
         ...params,
       },
     });
-  };
+  }, [getWithdrawSum, otherParams, params]);
 
   useEffect(() => {
     setSumShow(false);
@@ -121,6 +121,8 @@ export const ReviewWithdrawalPage = () => {
   }, [outMoneyMethodListRes]);
 
   const reset = () => {
+    setIds([]);
+    tableRef.current?.selectionClear?.();
     setParams({
       beginTime: '',
       endTime: '',
@@ -518,6 +520,11 @@ export const ReviewWithdrawalPage = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [ids, setIds] = useState<string[]>([]);
 
+  const clearSelection = useCallback(() => {
+    setIds([]);
+    tableRef.current?.selectionClear?.();
+  }, []);
+
   const onSelectionChange = (its: WithdrawItem[]) => {
     const ids = its.filter(i => i.id).map(j => j.id || '');
     setIds(ids);
@@ -537,10 +544,97 @@ export const ReviewWithdrawalPage = () => {
   };
 
   const onSuccess = () => {
-    setIds([]);
-    tableRef.current?.selectionClear?.();
+    clearSelection();
     refetch();
   };
+
+  const renderSumContent = useCallback(
+    (columnId: string) => {
+      if (columnId === 'select') {
+        return <div className="text-center">{t('table.total')}</div>;
+      }
+
+      if (!sumShow) {
+        if (columnId === 'orderNumber') {
+          return (
+            <RrhButton variant="ghost" onClick={getSumData}>
+              {t('table.clickToGetSum')}
+            </RrhButton>
+          );
+        }
+        return null;
+      }
+
+      if (isPending) {
+        if (columnId === 'select') {
+          return <div className="text-center">{t('common.loading')}</div>;
+        }
+        return null;
+      }
+
+      if (columnId === 'withdrawAmount') {
+        return (
+          <div className="text-center">
+            {sumData?.data.map(item => {
+              return item.sumWithdraw ? (
+                <div key={item.currency}>
+                  {item.sumWithdraw} {item.currency}
+                </div>
+              ) : null;
+            })}
+          </div>
+        );
+      }
+
+      if (columnId === 'commission') {
+        return (
+          <div className="text-center">
+            {sumData?.data.map(item => {
+              return item.sumFee ? (
+                <div key={item.currency}>
+                  {item.sumFee} {item.currency}
+                </div>
+              ) : null;
+            })}
+          </div>
+        );
+      }
+
+      if (columnId === 'amountOfReceipt') {
+        return (
+          <div className="text-center">
+            {sumData?.data.map(item => {
+              return item.sumFactWithdraw ? (
+                <div key={item.currency}>
+                  {item.sumFactWithdraw} {item.currency}
+                </div>
+              ) : null;
+            })}
+          </div>
+        );
+      }
+
+      return null;
+    },
+    [getSumData, isPending, sumData?.data, sumShow, t],
+  );
+
+  const handlePageChange = useCallback(
+    (nextPageNum: number) => {
+      clearSelection();
+      setPageNum(nextPageNum);
+    },
+    [clearSelection],
+  );
+
+  const handlePageSizeChange = useCallback(
+    (nextPageSize: number) => {
+      clearSelection();
+      setPageNum(0);
+      setPageSize(nextPageSize);
+    },
+    [clearSelection],
+  );
 
   return (
     <div>
@@ -554,6 +648,7 @@ export const ReviewWithdrawalPage = () => {
               className="h-9"
               leftIcon={<Search className="size-4" />}
               onLeftIconClick={value => {
+                clearSelection();
                 setOtherParams(prev => ({ ...prev, userId: value }));
                 setPageNum(0);
               }}
@@ -613,58 +708,18 @@ export const ReviewWithdrawalPage = () => {
           pageCount={Math.ceil(+(withdrawList?.total || 0) / pageSize)}
           pageIndex={pageNum}
           pageSize={pageSize}
-          onPageChange={setPageNum}
-          onPageSizeChange={setPageSize}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
           loading={withdrawListLoading}
           onSelectionChange={onSelectionChange}
           CustomRow={
             <>
-              <TableCell colSpan={5} className="text-center">
-                {t('table.total')}
-              </TableCell>
-              {!sumShow && (
-                <TableCell colSpan={5}>
-                  <RrhButton variant="ghost" onClick={getSumData}>
-                    {t('table.clickToGetSum')}
-                  </RrhButton>
-                </TableCell>
-              )}
-              {sumShow ? (
-                isPending ? (
-                  <TableCell>{t('common.loading')}</TableCell>
-                ) : (
-                  <>
-                    <TableCell colSpan={5}></TableCell>
-                    <TableCell colSpan={1} className="text-center">
-                      {sumData?.data.map(item => {
-                        return item.sumWithdraw ? (
-                          <div key={item.currency}>
-                            {item.sumWithdraw} {item.currency}
-                          </div>
-                        ) : null;
-                      })}
-                    </TableCell>
-                    <TableCell colSpan={1} className="text-center">
-                      {sumData?.data.map(item => {
-                        return item.sumFee ? (
-                          <div key={item.currency}>
-                            {item.sumFee} {item.currency}
-                          </div>
-                        ) : null;
-                      })}
-                    </TableCell>
-                    <TableCell colSpan={1} className="text-center">
-                      {sumData?.data.map(item => {
-                        return item.sumFactWithdraw ? (
-                          <div key={item.currency}>
-                            {item.sumFactWithdraw} {item.currency}
-                          </div>
-                        ) : null;
-                      })}
-                    </TableCell>
-                  </>
-                )
-              ) : null}
+              {tableColumns.map(column => {
+                const columnId = String(column.id || '');
+                return (
+                  <TableCell key={`summary-${columnId}`}>{renderSumContent(columnId)}</TableCell>
+                );
+              })}
             </>
           }
         />

@@ -1045,6 +1045,7 @@
     "reviewInfo": "Review information"
   },
   "withdrawalReview": {
+    "batchReviewResult": "Batch review result: {{success}} succeeded, {{failed}} failed",
     "title": "Withdrawal review",
     "withdrawalReviewDetail": "Withdrawal review details"
   },

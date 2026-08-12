@@ -140,6 +140,7 @@ export const ReviewWithdrawalForm = ({
       accountTypes: [],
       channelIds: [],
       roleId: '',
+      orderId: '',
     });
   };
   return (

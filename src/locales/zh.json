@@ -697,6 +697,7 @@
     "selectWithOrder": "选择关联订单"
   },
   "withdrawalReview": {
+    "batchReviewResult": "批量审核结果：成功 {{success}} 条，失败 {{failed}} 条",
     "title": "出金审核",
     "withdrawalReviewDetail": "出金审核详情"
   },

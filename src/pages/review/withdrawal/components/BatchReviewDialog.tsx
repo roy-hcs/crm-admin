@@ -1,7 +1,10 @@
-import { FormField } from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import * as z from 'zod';
 import { RrhButton } from '@/components/common/RrhButton';
 import { RrhDialog } from '@/components/common/RrhDialog';
 import { toast } from 'sonner';
@@ -29,7 +32,22 @@ export const BatchReviewDialog = ({
 }) => {
   const { t } = useTranslation();
 
+  const schema = useMemo(
+    () =>
+      z
+        .object({
+          status: z.string(),
+          remark: z.string().optional(),
+        })
+        .refine(data => data.status !== '0' || !!data.remark?.trim(), {
+          message: t('rules.required', { field: t('table.remarks') }),
+          path: ['remark'],
+        }),
+    [t],
+  );
+
   const form = useForm<FormValues>({
+    resolver: zodResolver(schema),
     defaultValues: {
       status: '1',
       remark: '',
@@ -46,16 +64,28 @@ export const BatchReviewDialog = ({
       }));
 
       const responses = await Promise.all(params.map(param => batchVerifyAsync(param)));
-      const failedResponse = responses.find(res => res.code !== 0);
+      const successCount = responses.filter(res => res.code === 0).length;
+      const failedCount = responses.length - successCount;
 
-      if (!failedResponse) {
+      if (failedCount === 0) {
         form.reset();
         toast.success(t('common.success'));
         onCancel();
         onSuccess?.();
-      } else {
-        toast.error(failedResponse.msg);
+        return;
       }
+
+      if (successCount > 0) {
+        onCancel();
+        onSuccess?.();
+      }
+
+      toast.error(
+        t('withdrawalReview.batchReviewResult', {
+          success: successCount,
+          failed: failedCount,
+        }),
+      );
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -116,9 +146,9 @@ export const BatchReviewDialog = ({
           <FormField
             name="remark"
             render={({ field }) => (
-              <LabelItem
-                label={t('table.remarks')}
-                ContentDom={
+              <FormItem>
+                <FormLabel>{t('table.remarks')}</FormLabel>
+                <FormControl className="shrink-0 basis-9/12">
                   <RrhTextarea
                     value={field.value}
                     onChange={field.onChange}
@@ -126,8 +156,9 @@ export const BatchReviewDialog = ({
                     placeholder={t('review.reviewRemarksPlaceholder')}
                     maxLength={500}
                   />
-                }
-              />
+                </FormControl>
+                <FormMessage className="text-end" />
+              </FormItem>
             )}
           />
         </div>
