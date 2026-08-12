@@ -12,6 +12,11 @@ import { Dispatch, SetStateAction } from 'react';
 import { formatDate } from '@/lib/utils';
 import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 import { RrhForm } from '@/components/form/RrhForm';
+import { accountTypeOptions, withDrawStatusOptions } from '@/lib/const';
+import { FormCrmUserMultiSelect } from '@/components/form/FormCrmUserMultiSelect';
+import { FormMultiSelect } from '@/components/form/FormMultiSelect';
+import { FormThirdPaymentChannelMultiSelect } from '@/components/form/FormThirdPaymentChannelMultiSelect';
+import { FormCrmRoleSelect } from '@/components/form/FormCrmRoleSelect';
 
 type FormData = {
   name: string;
@@ -21,11 +26,18 @@ type FormData = {
   verifyStatus: string | number;
   submitTime: { from: string; to: string };
   verifyUserName: string;
+  orderId: string;
   status: string;
   tradeServerOrderNumber: string;
   outAccountType: string;
   accounts: string;
   finishTime: { from: string; to: string };
+  verifyTime: { from: string; to: string };
+  payTime: { from: string; to: string };
+  inviters: string[];
+  accountTypes: string[];
+  channelIds: string[];
+  roleId: string;
 };
 
 export const ReviewWithdrawalForm = ({
@@ -46,7 +58,9 @@ export const ReviewWithdrawalForm = ({
   otherParams: Omit<WithdrawListParams, 'params'>;
 }) => {
   const { t } = useTranslation();
-  const form = useForm({
+  const toStringArray = (value?: string) => (value ? value.split(',').filter(Boolean) : []);
+
+  const form = useForm<FormData>({
     defaultValues: {
       name: otherParams.userId || '',
       withdrawWay: otherParams.method || '',
@@ -60,6 +74,13 @@ export const ReviewWithdrawalForm = ({
       outAccountType: params.outMoneyAccount || '',
       accounts: params.accounts || '',
       finishTime: { from: params.finishBeginTime || '', to: params.finishEndTime || '' },
+      verifyTime: { from: params.verifyBeginTime || '', to: params.verifyEndTime || '' },
+      payTime: { from: params.payBeginTime || '', to: params.payEndTime || '' },
+      inviters: toStringArray(otherParams.inviters),
+      accountTypes: toStringArray(otherParams.accountTypes),
+      channelIds: toStringArray(otherParams.channelIds),
+      orderId: otherParams.orderId || '',
+      roleId: otherParams.roleId || '',
     },
   });
 
@@ -79,6 +100,11 @@ export const ReviewWithdrawalForm = ({
       orderNum: data.orderNumber,
       exceptionFlag: data.status,
       accounts: selectedAccounts.id,
+      inviters: data.inviters ? data.inviters.join(',') : '',
+      accountTypes: data.accountTypes ? data.accountTypes.join(',') : '',
+      channelIds: data.channelIds ? data.channelIds.join(',') : '',
+      orderId: data.orderId,
+      roleId: data.roleId,
     });
     setParams({
       beginTime: formatDate(data.submitTime.from),
@@ -87,6 +113,10 @@ export const ReviewWithdrawalForm = ({
       accounts: selectedAccounts.label,
       finishBeginTime: formatDate(data.finishTime.from),
       finishEndTime: formatDate(data.finishTime.to),
+      verifyBeginTime: formatDate(data.verifyTime.from),
+      verifyEndTime: formatDate(data.verifyTime.to),
+      payBeginTime: formatDate(data.payTime.from),
+      payEndTime: formatDate(data.payTime.to),
     });
   };
   const onReset = () => {
@@ -97,13 +127,20 @@ export const ReviewWithdrawalForm = ({
       tradeAccount: '',
       orderNumber: '',
       verifyStatus: '',
-      submitTime: { from: '', to: '' },
       verifyUserName: '',
       status: '',
       tradeServerOrderNumber: '',
       outAccountType: '',
       accounts: '',
+      submitTime: { from: '', to: '' },
       finishTime: { from: '', to: '' },
+      verifyTime: { from: '', to: '' },
+      payTime: { from: '', to: '' },
+      inviters: [],
+      accountTypes: [],
+      channelIds: [],
+      roleId: '',
+      orderId: '',
     });
   };
   return (
@@ -151,25 +188,10 @@ export const ReviewWithdrawalForm = ({
         label={t('table.reviewStatus')}
         placeholder={t('common.pleaseSelect')}
         showRowValue={false}
-        options={[
-          { label: t('table.pending'), value: '2' },
-          { label: t('table.reviewing'), value: '-1' },
-          { label: t('table.pass'), value: '1' },
-          { label: t('table.refuse'), value: '0' },
-          { label: t('common.Cancel'), value: '-2' },
-        ]}
-      />
-      <FormField
-        name="submitTime"
-        render={() => (
-          <FormItem className="flex flex-col gap-2 text-sm">
-            <FormLabel className="text-foreground basis-3/12">{t('table.submitTime')}</FormLabel>
-            <FormControl className="basis-9/12">
-              <FormDateRangeInput name="submitTime" control={form.control} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+        options={withDrawStatusOptions.map(i => ({
+          label: t(i.label),
+          value: i.value,
+        }))}
       />
       <FormInput
         name="verifyUserName"
@@ -187,11 +209,63 @@ export const ReviewWithdrawalForm = ({
         ]}
       />
 
-      <FormInput
-        name="tradeServerOrderNumber"
-        label={t('table.tradeServerOrderNumber')}
-        placeholder={t('common.pleaseInput', { field: t('table.tradeServerOrderNumber') })}
+      <FormCrmUserMultiSelect<FormData> verticalLabel name="inviters" label={t('table.inviters')} />
+
+      <FormField
+        name="submitTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="text-foreground basis-3/12">{t('table.submitTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="submitTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
       />
+      <FormField
+        name="verifyTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="text-foreground basis-3/12">{t('table.verifyTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="verifyTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="payTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="text-foreground basis-3/12">{t('table.payTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="payTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="finishTime"
+        render={() => (
+          <FormItem className="flex flex-col gap-2 text-sm">
+            <FormLabel className="text-foreground basis-3/12">{t('table.finishTime')}</FormLabel>
+            <FormControl className="basis-9/12">
+              <FormDateRangeInput name="finishTime" control={form.control} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormInput
+        name="orderId"
+        label={t('table.paymentOrderNumber')}
+        placeholder={t('common.pleaseInput', { field: t('table.paymentOrderNumber') })}
+      />
+
       <FormSelect
         name="outAccountType"
         label={t('table.withdrawAccount')}
@@ -202,18 +276,37 @@ export const ReviewWithdrawalForm = ({
           { label: t('table.wallet'), value: '2' },
         ]}
       />
+
       <SelectUpperDropdown />
-      <FormField
-        name="finishTime"
-        render={() => (
-          <FormItem className="flex flex-col gap-2 text-sm">
-            <FormLabel className="text-foreground basis-3/12">{t('table.submitTime')}</FormLabel>
-            <FormControl className="basis-9/12">
-              <FormDateRangeInput name="finishTime" control={form.control} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+
+      <FormCrmRoleSelect<FormData>
+        verticalLabel
+        name="roleId"
+        label={t('rewardConfigPage.accountLimitTypeOptions.1')}
+      />
+
+      <FormInput
+        name="tradeServerOrderNumber"
+        label={t('table.tradeServerOrderNumber')}
+        placeholder={t('common.pleaseInput', { field: t('table.tradeServerOrderNumber') })}
+      />
+
+      <FormMultiSelect
+        name="accountTypes"
+        label={t('CRMAccountPage.CRMAccountType')}
+        placeholder={t('common.pleaseSelect')}
+        options={accountTypeOptions.map(i => ({
+          label: t(i.label),
+          value: i.value,
+        }))}
+      />
+
+      <FormThirdPaymentChannelMultiSelect<FormData>
+        name="channelIds"
+        label={t('table.paymentChannel')}
+        placeholder={t('common.pleaseSelect')}
+        searchPlaceholder={t('common.pleaseInput', { field: t('table.paymentChannel') })}
+        verticalLabel
       />
 
       <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">

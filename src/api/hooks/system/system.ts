@@ -74,6 +74,8 @@ import {
   EditManagementMenu,
   EditUserMenu,
   DeleteMenuParams,
+  ThirdPaymentSettingListParams,
+  ThirdPaymentSettingListRes,
 } from './types';
 import { UserAccountOperationRes, UserRebateAccountTabRes } from '../agent/types';
 import { BasicParams } from '@/api/types';
@@ -753,6 +755,24 @@ export function useCrmUsers() {
   return useMutation({
     mutationFn: (params: CrmUsersParams) =>
       apiFormPostCustom<CrmUsers>('/system/crmUser/listBase', params),
+  });
+}
+
+/**
+ * 获取三方支付通道（channelType=2）
+ */
+export function useThirdPaymentSettingList() {
+  return useMutation({
+    mutationFn: (params: ThirdPaymentSettingListParams) =>
+      apiFormPostCustom<ThirdPaymentSettingListRes>(
+        `/system/thirdPaymentSetting/list?channelType=2&channelName=${params?.params?.channelName || ''}`,
+        {
+          pageNum: params?.pageNum,
+          pageSize: params?.pageSize,
+          orderByColumn: params?.orderByColumn || '',
+          isAsc: params?.isAsc || '',
+        },
+      ),
   });
 }
 

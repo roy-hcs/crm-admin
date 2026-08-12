@@ -125,11 +125,28 @@ export function useInternalTransferList(
   });
 }
 
+// 出金审核列表
 export function useWithdrawList(params: WithdrawListParams, options: { enabled: boolean }) {
   return useQuery({
     queryKey: ['withdrawList', params],
     queryFn: () => apiFormPostCustom<WithdrawListRes>(`/system/crmWithdrawVerify/list`, params),
     enabled: options.enabled,
+  });
+}
+
+// 出金审核列表批量审核
+export function useBatchVerifyWithdraw() {
+  return useMutation({
+    mutationFn: (params: { id: string; status: string; remark?: string }) =>
+      apiFormPost('/system/crmWithdrawVerify/verify', params),
+  });
+}
+
+// 导出出金审核列表
+export function useExportWithdraw() {
+  return useMutation({
+    mutationFn: (params: WithdrawListParams) =>
+      apiFormPost('/system/crmWithdrawVerify/export', params),
   });
 }
 

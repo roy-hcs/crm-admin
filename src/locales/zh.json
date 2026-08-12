@@ -697,6 +697,7 @@
     "selectWithOrder": "选择关联订单"
   },
   "withdrawalReview": {
+    "batchReviewResult": "批量审核结果：成功 {{success}} 条，失败 {{failed}} 条",
     "title": "出金审核",
     "withdrawalReviewDetail": "出金审核详情"
   },
@@ -1315,7 +1316,6 @@
     "clientName": "订阅用户",
     "performanceFee": "表现费",
     "managementFee": "管理费",
-    "payTime": "支付时间",
     "payAccount": "支付账号",
     "arrivalStatus": "到账情况",
     "payStatusOptions": {
@@ -1335,6 +1335,9 @@
     }
   },
   "table": {
+    "payTime": "支付时间",
+    "customizedChannels": "自定义渠道",
+    "Channel": "通道名称",
     "openCreditBalance": "开户信用额",
     "expireTime": "失效时间",
     "price": "交易价格",
@@ -1431,6 +1434,10 @@
     "pass": "通过",
     "pending": "待审",
     "reviewing": "审核中",
+    "pendingPayment": "待支付",
+    "paying": "支付中",
+    "completed": "完成",
+    "canceled": "已取消",
     "submitTime": "提交时间",
     "currentAuditor": "当前审核人",
     "finishTime": "完结时间",

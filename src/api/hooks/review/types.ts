@@ -229,6 +229,9 @@ export type InternalTransferItem = {
 export type InternalTransferListRes = BasicRes<InternalTransferItem>;
 
 export type WithdrawItem = {
+  payTime?: string | null;
+  completeTime?: string | null;
+  channelName?: string;
   orderComment: string;
   accountMobile: string | null;
   orderId: string | null;
@@ -305,6 +308,11 @@ export type WithdrawListParams = BasicParams & {
   orderNum?: string;
   exceptionFlag?: string;
   accounts?: string;
+  inviters?: string;
+  orderId?: string;
+  accountTypes?: string;
+  channelIds?: string;
+  roleId?: string;
   params: {
     beginTime?: string;
     endTime?: string;
@@ -313,6 +321,10 @@ export type WithdrawListParams = BasicParams & {
     finishBeginTime?: string;
     finishEndTime?: string;
     userId?: string;
+    verifyBeginTime?: string;
+    verifyEndTime?: string;
+    payBeginTime?: string;
+    payEndTime?: string;
   };
 };
 

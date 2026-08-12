@@ -4,6 +4,7 @@ import { RrhDialog } from '@/components/common/RrhDialog';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { FormRadio } from '@/components/form/FormRadio';
 import { RrhForm } from '@/components/form/RrhForm';
+import { accountTypeOptions } from '@/lib/const';
 
 import { Settings } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -97,12 +98,10 @@ export const PreferencesDialog = ({ onSuccess }: { onSuccess?: () => void }) => 
           name="targetAccount"
           label={t('customerLoyaltyPlan.targetAccount')}
           placeholder={t('common.pleaseSelect')}
-          options={[
-            { value: '1', label: t('copyTradingSettings.rebateTargetOptions.1') },
-            { value: '2', label: t('copyTradingSettings.rebateTargetOptions.2') },
-            { value: '3', label: t('copyTradingSettings.rebateTargetOptions.3') },
-            { value: '4', label: t('copyTradingSettings.rebateTargetOptions.4') },
-          ]}
+          options={accountTypeOptions.map(i => ({
+            label: t(i.label),
+            value: i.value,
+          }))}
           labeTipsDom={
             <div className="text-muted-foreground text-xs leading-4">
               {t('customerLoyaltyPlan.targetAccountDesc')}
