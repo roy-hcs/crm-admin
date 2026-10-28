@@ -953,6 +953,8 @@ export type LeverageDetail = {
   targetLever: string | null;
   userLastName: string | null;
   userShowId: string | null;
+  mtGroup: string | null;
+  staName: string | null;
   id: string | null;
   status: number | null;
 };

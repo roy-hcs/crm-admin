@@ -36,6 +36,14 @@ export const LeverageInfoCard: FC<{
         value: depositInfo.login,
       },
       {
+        label: 'table.groups',
+        value: depositInfo.mtGroup,
+      },
+      {
+        label: 'common.accountType',
+        value: depositInfo.staName,
+      },
+      {
         label: 'leverage.currentLever',
         value: depositInfo.currentLever ? `1:${depositInfo.currentLever}` : '-',
       },
