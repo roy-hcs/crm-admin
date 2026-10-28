@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import dayjs from 'dayjs';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { TradingItem, TradingParams, useRebateList } from '@/api/hooks/report';
+import { TradingItem, TradingParams, useRebateList, useRebateSum } from '@/api/hooks/report';
 import { TradingForm } from './TradingForm';
+import { RebateSummaryRow } from '../components/RebateSummaryRow';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +18,12 @@ import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useInitServerId } from '@/hooks/useInitServerId';
 import { useRebateExport } from '@/api/hooks/report/report';
 import { ExportButton } from '@/components/common/ExportButton';
+
+const defaultVerifyTime = () => ({
+  beginVerifyTime: dayjs().subtract(5, 'day').startOf('day').format('YYYY-MM-DD HH:mm'),
+  endVerifyTime: dayjs().endOf('day').format('YYYY-MM-DD HH:mm'),
+});
+
 export function TradingPage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
@@ -24,8 +32,7 @@ export function TradingPage() {
   const [params, setParams] = useState<TradingParams['params']>({
     startTraderTime: '',
     endTraderTime: '',
-    beginVerifyTime: '',
-    endVerifyTime: '',
+    ...defaultVerifyTime(),
     accounts: '',
   });
   const [commonParams, setCommonParams] = useState<
@@ -38,6 +45,7 @@ export function TradingPage() {
     rebateTraderId: '',
     serverGroup: '',
     rebateType: '1',
+    name: '',
   });
   const { serverId, setServerId, server, serverLoading } = useInitServerId();
   const { data: RebateTraders, isLoading: RebateTradersLoading } = useGetCrmRebateTraders('1');
@@ -61,8 +69,7 @@ export function TradingPage() {
     setParams({
       startTraderTime: '',
       endTraderTime: '',
-      beginVerifyTime: '',
-      endVerifyTime: '',
+      ...defaultVerifyTime(),
       accounts: '',
     });
     setCommonParams({
@@ -73,11 +80,29 @@ export function TradingPage() {
       rebateTraderId: '',
       serverGroup: '',
       rebateType: '1',
+      name: '',
     });
     setResetKey(k => k + 1);
     setPageNum(0);
     setPageSize(10);
   };
+
+  const { mutate: getRebateSum, data: sumData, isPending: sumLoading } = useRebateSum();
+  const [sumShow, setSumShow] = useState(false);
+  const getSumData = () => {
+    setSumShow(true);
+    getRebateSum({
+      params,
+      ...commonParams,
+      serverId,
+      serverGroupList: commonParams.serverGroup,
+      rebateTraderIdList: commonParams.rebateTraderId,
+    });
+  };
+  useEffect(() => {
+    setSumShow(false);
+  }, [AgencyClientTracking]);
+
   const allColumns = useMemo<CRMColumnDef<TradingItem, unknown>[]>(
     () => [
       {
@@ -99,6 +124,11 @@ export function TradingPage() {
         id: 'login',
         header: t('trading.login'),
         accessorFn: row => row.login,
+      },
+      {
+        id: 'name',
+        header: t('trading.name'),
+        accessorFn: row => row.name,
       },
       {
         id: 'symbol',
@@ -248,6 +278,17 @@ export function TradingPage() {
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
           loading={AgencyClientTrackingLoading || serverLoading || RebateTradersLoading}
+          CustomRow={
+            <RebateSummaryRow
+              show={sumShow}
+              loading={sumLoading}
+              sumData={sumData}
+              onGetSum={getSumData}
+              volumeIndex={6}
+              rebateIndex={9}
+              columnCount={tableColumns.length}
+            />
+          }
         />
       </TableContentWrapper>
     </div>

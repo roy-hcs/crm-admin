@@ -2,6 +2,7 @@ export {
   useAgencyClientTrackingList,
   useAgencyOverviewList,
   useRebateList,
+  useRebateSum,
   useDailyRebateList,
   useTradingHistoryList,
   useWalletTransactionList,

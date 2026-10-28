@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import dayjs from 'dayjs';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
 import { TableCell } from '@/components/ui/table';
@@ -122,6 +123,11 @@ const DetailInfo = ({ itemInfo }: { itemInfo: WalletTransactionItem }) => {
     </div>
   );
 };
+const defaultOperationTime = () => ({
+  operationStart: dayjs().subtract(5, 'day').startOf('day').format('YYYY-MM-DD HH:mm'),
+  operationEnd: dayjs().endOf('day').format('YYYY-MM-DD HH:mm'),
+});
+
 export function WalletTransactionsPage() {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
@@ -132,8 +138,7 @@ export function WalletTransactionsPage() {
     selectOther: '',
     inMethod: '',
     currencyId: '',
-    operationStart: '',
-    operationEnd: '',
+    ...defaultOperationTime(),
     accounts: '',
   });
   const [commonParams, setCommonParams] = useState<
@@ -174,8 +179,7 @@ export function WalletTransactionsPage() {
       selectOther: '',
       inMethod: '',
       currencyId: '',
-      operationStart: '',
-      operationEnd: '',
+      ...defaultOperationTime(),
       accounts: '',
     });
     setCommonParams({

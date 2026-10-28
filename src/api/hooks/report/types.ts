@@ -78,6 +78,7 @@ export type TradingParams = BasicParams & {
   conditionName?: string;
   rebateTraderIdList?: string;
   accounts?: string;
+  name?: string;
   params: {
     startTraderTime?: string;
     endTraderTime?: string;
@@ -90,6 +91,7 @@ export type TradingItem = {
   serverName: string | null;
   mtOrder: string | null;
   login: string | null;
+  name: string | null;
   symbol: string | null;
   volume: string | null;
   traderTime: string | null;
@@ -105,6 +107,27 @@ export type TradingItem = {
 };
 
 export type TradingResponse = BasicRes<TradingItem>;
+
+// 佣金报表-交易佣金/手续费/入金合计
+export type RebateSumResponse = {
+  code: number;
+  msg: string | null;
+  data:
+    | {
+        totalList?: {
+          amtUnit: string | null;
+          rebateTotalAmt: number | null;
+          trderTotalCount: number | null;
+          commissionBase: number | null;
+          rebateFixedAmt: number | null;
+        }[];
+        totalVolumeList?: {
+          trderTotalCount: number | null;
+          currency: string | null;
+        }[];
+      }[]
+    | null;
+};
 
 // 日结返佣报表
 export type DailyRebateParams = BasicParams & {
@@ -160,6 +183,8 @@ export type TradingHistoryParams = BasicParams & {
     historyDealBJEndTime?: string;
     historyCloseStartTime?: string;
     historyCloseEndTime?: string;
+    holdDurationBucket?: string;
+    dealEntry?: string;
   };
 };
 
@@ -187,6 +212,7 @@ export type TradingHistoryItem = BaseEntity & {
   accounts: string | null;
   accountIds: string | null;
   breedGroup: string | null;
+  holdDurationSeconds: number | null;
   id: string | null;
   uuid: string | null;
   name: string | null;
@@ -634,6 +660,7 @@ export type SystemFundOperationRecordListParams = BasicParams & {
     accountTypes?: string;
     accounts?: string;
     inviters?: string;
+    comment?: string;
   };
 };
 export type TradingAccountFundsStatsItem = {

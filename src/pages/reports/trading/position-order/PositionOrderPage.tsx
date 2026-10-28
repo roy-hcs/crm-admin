@@ -39,6 +39,18 @@ const formatVolume = (volume: number | null, serverType: number, lotSize: number
       return volume.toString();
   }
 };
+
+const formatTotalVolume = (totalVolume: number, serverType: number) => {
+  switch (serverType) {
+    case 1:
+      return (totalVolume / 10000.0).toFixed(2);
+    case 4:
+    case 5:
+      return totalVolume.toFixed(2);
+    default:
+      return (totalVolume / 100.0).toFixed(2);
+  }
+};
 const PositionOrderDetails = ({ data }: { data: PositionOrderItem }) => {
   const { t } = useTranslation();
   const detailsData = [
@@ -153,6 +165,12 @@ export const PositionOrderPage = () => {
     },
     { enabled: otherParams.server !== '' },
   );
+
+  const totalVolume = useMemo(() => {
+    const total =
+      positionOrderList?.totalList?.reduce((pre, cur) => pre + (cur.totalVolume || 0), 0) || 0;
+    return formatTotalVolume(total, selectedServer?.serviceType || 0);
+  }, [positionOrderList?.totalList, selectedServer?.serviceType]);
 
   const reset = () => {
     setParams({
@@ -384,11 +402,7 @@ export const PositionOrderPage = () => {
           CustomRow={
             <>
               <TableCell colSpan={5}>{t('table.total')}</TableCell>
-              <TableCell colSpan={4}>
-                {(
-                  positionOrderList?.totalList.reduce((pre, cur) => pre + cur.totalVolume, 0) || 0
-                ).toFixed(2)}
-              </TableCell>
+              <TableCell colSpan={4}>{totalVolume}</TableCell>
               <TableCell colSpan={1}>
                 {positionOrderList?.totalList.map(item => {
                   return (

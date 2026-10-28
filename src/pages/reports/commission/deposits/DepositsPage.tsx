@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { TradingItem, TradingParams, useRebateList } from '@/api/hooks/report';
+import { TradingItem, TradingParams, useRebateList, useRebateSum } from '@/api/hooks/report';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +12,7 @@ import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { BasicParams } from '@/api/types';
 import { DepositsForm } from './DepositsForm';
+import { RebateSummaryRow } from '../components/RebateSummaryRow';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useInitServerId } from '@/hooks/useInitServerId';
 import { useDepositExport } from '@/api/hooks/report/report';
@@ -70,6 +71,22 @@ export function DepositsPage() {
     setPageNum(0);
     setPageSize(10);
   };
+
+  const { mutate: getRebateSum, data: sumData, isPending: sumLoading } = useRebateSum();
+  const [sumShow, setSumShow] = useState(false);
+  const getSumData = () => {
+    setSumShow(true);
+    getRebateSum({
+      params,
+      ...commonParams,
+      serverId,
+      serverGroupList: commonParams.serverGroup,
+      rebateTraderIdList: commonParams.rebateTraderId,
+    });
+  };
+  useEffect(() => {
+    setSumShow(false);
+  }, [AgencyClientTracking]);
 
   const allColumns = useMemo<CRMColumnDef<TradingItem, unknown>[]>(
     () => [
@@ -242,6 +259,17 @@ export function DepositsPage() {
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
           loading={AgencyClientTrackingLoading || serverLoading || RebateTradersLoading}
+          CustomRow={
+            <RebateSummaryRow
+              show={sumShow}
+              loading={sumLoading}
+              sumData={sumData}
+              onGetSum={getSumData}
+              volumeIndex={5}
+              rebateIndex={8}
+              columnCount={tableColumns.length}
+            />
+          }
         />
       </TableContentWrapper>
     </div>

@@ -42,6 +42,36 @@ const formatVolume = (volume: number | null, serverType: number) => {
   }
 };
 
+const formatHoldDuration = (
+  seconds: number | null,
+  units: { day: string; hour: string; minute: string; second: string },
+) => {
+  if (seconds === null || seconds === undefined) {
+    return '-';
+  }
+  const total = Number(seconds);
+  if (Number.isNaN(total) || total < 0) {
+    return '-';
+  }
+  const { day, hour, minute, second } = units;
+  if (total < 60) {
+    return `${total}${second}`;
+  }
+  if (total < 3600) {
+    const min = Math.floor(total / 60);
+    const sec = total % 60;
+    return sec === 0 ? `${min}${minute}` : `${min}${minute}${sec}${second}`;
+  }
+  if (total < 86400) {
+    const hours = Math.floor(total / 3600);
+    const restMin = Math.floor((total % 3600) / 60);
+    return restMin === 0 ? `${hours}${hour}` : `${hours}${hour}${restMin}${minute}`;
+  }
+  const days = Math.floor(total / 86400);
+  const restHour = Math.floor((total % 86400) / 3600);
+  return restHour === 0 ? `${days}${day}` : `${days}${day}${restHour}${hour}`;
+};
+
 const TradingHistoryDetails = ({ data }: { data: TradingHistoryItem }) => {
   const { t } = useTranslation();
   const detailsData = [
@@ -283,6 +313,17 @@ export const TradingHistoryPage = () => {
         id: 'closeTime',
         header: t('table.closeTime'),
         accessorFn: row => row.closeTime,
+      },
+      {
+        id: 'holdDurationSeconds',
+        header: t('tradingHistoryPage.holdDuration'),
+        cell: ({ row }) =>
+          formatHoldDuration(row.original.holdDurationSeconds, {
+            day: t('tradingHistoryPage.durationUnitDay'),
+            hour: t('tradingHistoryPage.durationUnitHour'),
+            minute: t('tradingHistoryPage.durationUnitMinute'),
+            second: t('tradingHistoryPage.durationUnitSecond'),
+          }),
       },
       {
         id: 'profit',

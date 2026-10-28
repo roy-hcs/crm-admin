@@ -442,6 +442,7 @@
     "serverName": "服务器",
     "mtOrder": "交易订单号",
     "login": "交易账号",
+    "name": "姓名",
     "symbol": "交易品种",
     "volume": "交易量",
     "traderTime": "交易时间",
@@ -647,7 +648,18 @@
     "monthlyAgencyFee": "月度代理手续费",
     "deleteOrderConfirm": "确定删除订单?",
     "selectedOrders": "已选择 {{count}} 条订单",
-    "atLeastOneOrder": "至少选择一笔订单"
+    "atLeastOneOrder": "至少选择一笔订单",
+    "holdDuration": "持仓时长",
+    "holdDurationUnder10s": "10s以内",
+    "holdDuration10to30s": "10-30s",
+    "holdDuration30to60s": "30-60s",
+    "holdDuration60to120s": "60-120s",
+    "holdDuration120to180s": "120-180s",
+    "holdDurationOver180s": "180s以上",
+    "durationUnitDay": "天",
+    "durationUnitHour": "小时",
+    "durationUnitMinute": "分",
+    "durationUnitSecond": "秒"
   },
   "positionOrderPage": {
     "positionOrderDetail": "持仓订单详情",

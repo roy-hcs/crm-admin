@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { Button } from '@/components/ui/button';
-import { TradingItem, TradingParams, useRebateList } from '@/api/hooks/report';
+import { TradingItem, TradingParams, useRebateList, useRebateSum } from '@/api/hooks/report';
 import { FeesForm } from './FeesForm';
+import { RebateSummaryRow } from '../components/RebateSummaryRow';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
@@ -71,6 +72,23 @@ export function FeesPage() {
     setPageNum(0);
     setPageSize(10);
   };
+
+  const { mutate: getRebateSum, data: sumData, isPending: sumLoading } = useRebateSum();
+  const [sumShow, setSumShow] = useState(false);
+  const getSumData = () => {
+    setSumShow(true);
+    getRebateSum({
+      params,
+      ...commonParams,
+      serverId,
+      serverGroupList: commonParams.serverGroup,
+      rebateTraderIdList: commonParams.rebateTraderId,
+    });
+  };
+  useEffect(() => {
+    setSumShow(false);
+  }, [AgencyClientTracking]);
+
   const allColumns = useMemo<CRMColumnDef<TradingItem, unknown>[]>(
     () => [
       {
@@ -242,6 +260,17 @@ export function FeesPage() {
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
           loading={AgencyClientTrackingLoading || serverLoading || RebateTradersLoading}
+          CustomRow={
+            <RebateSummaryRow
+              show={sumShow}
+              loading={sumLoading}
+              sumData={sumData}
+              onGetSum={getSumData}
+              volumeIndex={5}
+              rebateIndex={8}
+              columnCount={tableColumns.length}
+            />
+          }
         />
       </TableContentWrapper>
     </div>

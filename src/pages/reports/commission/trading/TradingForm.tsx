@@ -27,6 +27,7 @@ type FormData = {
   mtOrder: string;
   trderAccount: string;
   taderType: string;
+  name: string;
   conditionName: string;
   rebateTraderId: string;
 };
@@ -62,6 +63,7 @@ export const TradingForm = ({
       mtOrder: commonParams.mtOrder || '',
       trderAccount: commonParams.trderAccount || '',
       taderType: commonParams.taderType || '',
+      name: commonParams.name || '',
       conditionName: commonParams.conditionName || '',
       rebateTraderId: commonParams.rebateTraderId || '',
     },
@@ -76,8 +78,8 @@ export const TradingForm = ({
     setParams({
       startTraderTime: formatDate(data.tradingTime.from),
       endTraderTime: formatDate(data.tradingTime.to),
-      beginVerifyTime: formatDate(data.rebateTime.from),
-      endVerifyTime: formatDate(data.rebateTime.to),
+      beginVerifyTime: formatDate(data.rebateTime.from, 'YYYY-MM-DD HH:mm'),
+      endVerifyTime: formatDate(data.rebateTime.to, 'YYYY-MM-DD HH:mm'),
       accounts: JSON.parse(data.accounts || '{"id": "", "label": ""}').id || '',
     });
     setCommonParams({
@@ -87,6 +89,7 @@ export const TradingForm = ({
       conditionName: data.conditionName,
       rebateTraderId: data.rebateTraderId,
       serverGroup: data.serverGroup,
+      name: data.name,
     });
     setServerId(data.serverId);
   };
@@ -131,6 +134,11 @@ export const TradingForm = ({
         name="taderType"
         label={t('trading.taderType')}
         placeholder={t('common.pleaseInput', { field: t('trading.taderType') })}
+      />
+      <FormInput
+        name="name"
+        label={t('trading.name')}
+        placeholder={t('common.pleaseInput', { field: t('trading.name') })}
       />
       <FormField
         name="tradingTime"

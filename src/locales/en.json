@@ -457,6 +457,7 @@
     "conditionName": "Rebate object",
     "login": "Trading account",
     "mtOrder": "Transaction order number",
+    "name": "Name",
     "rebateAccountName": "Rebate Account",
     "rebateTime": "Rebate time",
     "rebateTotalAmt": "Rebate amount",
@@ -869,7 +870,18 @@
     "monthlyHandlingFee": "monthly handling fee",
     "atLeastOneOrder": "Select at least one order",
     "deleteOrderConfirm": "Are you sure you want to delete the order?",
-    "selectedOrders": "{{count}} orders selected"
+    "selectedOrders": "{{count}} orders selected",
+    "holdDuration": "Holding duration",
+    "holdDurationUnder10s": "Within 10s",
+    "holdDuration10to30s": "10-30s",
+    "holdDuration30to60s": "30-60s",
+    "holdDuration60to120s": "60-120s",
+    "holdDuration120to180s": "120-180s",
+    "holdDurationOver180s": "Over 180s",
+    "durationUnitDay": "d",
+    "durationUnitHour": "h",
+    "durationUnitMinute": "m",
+    "durationUnitSecond": "s"
   },
   "walletTransactions": {
     "account": "Name/Account ID",

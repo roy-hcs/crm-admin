@@ -30,6 +30,7 @@ type FormData = {
   accountTypes: string[];
   accounts: string;
   inviters: string[];
+  comment: string;
 };
 
 export const SystemFundOperationsForm = ({
@@ -94,6 +95,7 @@ export const SystemFundOperationsForm = ({
       accountTypes: params.accountTypes?.split(','),
       accounts: params.accounts,
       inviters: params.inviters?.split(','),
+      comment: params.comment || '',
     },
   });
   const currentType = form.watch('type');
@@ -132,6 +134,7 @@ export const SystemFundOperationsForm = ({
       accountTypes: data.accountTypes?.join(','),
       accounts: selectedAccounts.id,
       inviters: data.inviters?.join(','),
+      comment: data.comment,
     });
   };
   const onReset = () => {
@@ -147,6 +150,7 @@ export const SystemFundOperationsForm = ({
       accountTypes: undefined,
       accounts: undefined,
       inviters: undefined,
+      comment: '',
     });
   };
   return (
@@ -224,6 +228,11 @@ export const SystemFundOperationsForm = ({
         placeholder={t('common.pleaseSelect')}
         showRowValue={true}
         fetchOptions={fetchCrmUserOptions}
+      />
+      <FormInput
+        name="comment"
+        label={t('table.remarks')}
+        placeholder={t('common.pleaseInput', { field: t('table.remarks') })}
       />
 
       <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">

@@ -7,6 +7,7 @@ import {
   OverviewResponse,
   TradingParams,
   TradingResponse,
+  RebateSumResponse,
   DailyRebateParams,
   DailyRebateResponse,
   TradingHistoryParams,
@@ -114,6 +115,16 @@ export function useRebateList(params: TradingParams, options?: { enabled?: boole
     queryFn: () =>
       apiFormPostCustom<TradingResponse>('/system/statistics/rebateList', params || {}),
     enabled: options?.enabled ?? true,
+  });
+}
+
+/**
+ * 获取佣金报表-交易佣金/手续费/入金合计
+ */
+export function useRebateSum() {
+  return useMutation({
+    mutationFn: (params: TradingParams) =>
+      apiFormPostCustom<RebateSumResponse>('/system/statistics/rebateListSum', params),
   });
 }
 

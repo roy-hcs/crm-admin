@@ -97,8 +97,8 @@ export const WalletTransactionsForm = ({
       selectOther: data.selectOther,
       inMethod: data.inMethod,
       currencyId: data.currencyId,
-      operationStart: formatDate(data.operationTime.from),
-      operationEnd: formatDate(data.operationTime.to),
+      operationStart: formatDate(data.operationTime.from, 'YYYY-MM-DD HH:mm'),
+      operationEnd: formatDate(data.operationTime.to, 'YYYY-MM-DD HH:mm'),
       accounts: selectedAccounts.label,
     });
     setCommonParams({

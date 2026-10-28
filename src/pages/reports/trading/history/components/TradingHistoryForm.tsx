@@ -11,7 +11,7 @@ import { ServerItem } from '@/api/hooks/system/types';
 import { BaseOption } from '@/components/common/RrhSelect';
 import { useGetDealAccountGroupList, useGetGroupByServer } from '@/api/hooks/account';
 import { FormMultiSelect } from '@/components/form/FormMultiSelect';
-import { serverMap } from '@/lib/constant';
+import { serverMap, entryMap } from '@/lib/constant';
 import { formatDate } from '@/lib/utils';
 import { Dispatch, SetStateAction } from 'react';
 import { BasicParams } from '@/api/types';
@@ -30,7 +30,8 @@ type FormData = {
   accountGroupList: string[];
   accounts: string;
   positionID: string;
-  entry: string;
+  entryList: string[];
+  holdDurationBucketList: string[];
   openTime: { from: string; to: string };
   closeTime: { from: string; to: string };
 };
@@ -68,7 +69,8 @@ export const TradingHistoryForm = ({
       login: otherParams.login || '',
       accounts: otherParams.accounts || '',
       positionID: otherParams.positionID || '',
-      entry: otherParams.entry || '',
+      entryList: otherParams.entry ? otherParams.entry.split(',') : [],
+      holdDurationBucketList: params.holdDurationBucket ? params.holdDurationBucket.split(',') : [],
       accountGroupList: otherParams.accountGroupList ? otherParams.accountGroupList.split(',') : [],
       openTime: {
         from: params.historyDealBJStartTime || '',
@@ -101,7 +103,12 @@ export const TradingHistoryForm = ({
     };
     setParams({
       selectOther: Object.keys(data).some(key => {
-        if (key === 'accountGroupList' || key === 'serverGroupList') {
+        if (
+          key === 'accountGroupList' ||
+          key === 'serverGroupList' ||
+          key === 'entryList' ||
+          key === 'holdDurationBucketList'
+        ) {
           return data[key] && data[key].length > 0;
         }
         if (key === 'openTime' || key === 'closeTime') {
@@ -120,6 +127,8 @@ export const TradingHistoryForm = ({
       historyCloseEndTime: formatDate(data.closeTime.to),
       accounts: selectedAccounts.label,
       historyFuzzyName: data.name,
+      holdDurationBucket: data.holdDurationBucketList.join(','),
+      dealEntry: data.entryList.join(','),
     });
     setOtherParams({
       serverType: selectedServer.serviceType.toString(),
@@ -136,7 +145,7 @@ export const TradingHistoryForm = ({
       accountGroupList: data.accountGroupList.join(','),
       accounts: selectedAccounts.id,
       positionID: data.positionID || '',
-      entry: data.entry || '',
+      entry: '',
     });
   };
   const onReset = () => {
@@ -273,19 +282,26 @@ export const TradingHistoryForm = ({
         />
       )}
       {selectedServer?.serviceType === 1 && (
-        <FormSelect
-          name="entry"
+        <FormMultiSelect
+          name="entryList"
           label={t('table.entry')}
           placeholder={t('common.pleaseSelect')}
-          showRowValue={false}
-          options={[
-            { label: 'in', value: 0 },
-            { label: 'out', value: 1 },
-            { label: 'in/out', value: 2 },
-            { label: 'out by', value: 3 },
-          ]}
+          options={Object.entries(entryMap).map(([value, label]) => ({ label, value }))}
         />
       )}
+      <FormMultiSelect
+        name="holdDurationBucketList"
+        label={t('tradingHistoryPage.holdDuration')}
+        placeholder={t('common.pleaseSelect')}
+        options={[
+          { label: t('tradingHistoryPage.holdDurationUnder10s'), value: '1' },
+          { label: t('tradingHistoryPage.holdDuration10to30s'), value: '2' },
+          { label: t('tradingHistoryPage.holdDuration30to60s'), value: '3' },
+          { label: t('tradingHistoryPage.holdDuration60to120s'), value: '4' },
+          { label: t('tradingHistoryPage.holdDuration120to180s'), value: '5' },
+          { label: t('tradingHistoryPage.holdDurationOver180s'), value: '6' },
+        ]}
+      />
 
       <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
         <RrhButton type="reset" variant="outline" onClick={onReset}>
