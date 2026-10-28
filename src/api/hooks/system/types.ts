@@ -40,6 +40,16 @@ export type CurrencyItem = {
 };
 export type CurrencyListResponse = BasicRes<CurrencyItem>;
 
+// 国家/地区
+export type CountryItem = {
+  id: number;
+  countryName: string;
+  countryCode: string | null;
+  status: boolean;
+  sort: number;
+};
+export type CountryListResponse = BasicRes<CountryItem>;
+
 // 操作类型 / 操作方式 - 单条字典项
 export type DictTypeItem = BaseEntity & {
   dictCode: string; // 接口返回为字符串

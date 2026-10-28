@@ -268,6 +268,7 @@ export type AddCrmUserParams = {
   accountType: string;
   roleId: string;
   colorPreference: string;
+  country?: string;
   source: string;
   status: string;
 };

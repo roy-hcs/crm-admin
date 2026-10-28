@@ -12,6 +12,7 @@ import {
   RebateLevelListResponse,
   ServerListResponse,
   CurrencyListResponse,
+  CountryListResponse,
   DictTypeResponse,
   ChannelListResponse,
   InfoTypeItem,
@@ -154,6 +155,20 @@ export function useCurrencyList() {
   return useQuery({
     queryKey: ['CurrencyList'],
     queryFn: () => apiFormPostCustom<CurrencyListResponse>(`/system/currency/list`, {}),
+  });
+}
+
+/**
+ * 国家/地区列表（支持按名称搜索与分页）
+ */
+export function useCountryList() {
+  return useMutation({
+    mutationFn: (params: {
+      countryName?: string;
+      status?: number;
+      pageNum: number;
+      pageSize: number;
+    }) => apiFormPostCustom<CountryListResponse>('/system/country/list', params),
   });
 }
 

@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { passwordSchema } from '@/lib/validators';
 import { FormSelect } from '@/components/form/FormSelect';
+import { FormCountrySelect } from '@/components/form/FormCountrySelect';
 import { colorPreferenceOptions, crmAccountTypeOptions, roleOptions } from '@/lib/const';
 import { FormPhoneInput } from '@/components/form/FormPhoneInput';
 import { useTranslation } from 'react-i18next';
@@ -47,6 +48,7 @@ const addUserSchema = (t: TFunction<'translation', undefined>) => {
     roleId: z.string().min(1, t('rules.required', { field: t('rules.roleId') })),
     colorPreference: z.string().min(1, t('rules.required', { field: t('rules.colorPreference') })),
     status: z.string().min(1, t('rules.required', { field: t('table.status') })),
+    country: z.string().optional(),
   };
 };
 
@@ -72,6 +74,7 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
       roleId: '',
       colorPreference: '',
       status: '1',
+      country: '',
     },
   });
   const { mutateAsync: checkEmailUnique, data: checkEmailRes } = useCheckEmailUnique();
@@ -154,6 +157,7 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
         colorPreference: data.colorPreference,
         source: '3',
         status: data.status,
+        country: data.country,
       });
       if (res.code === 0) {
         form.reset();
@@ -261,6 +265,13 @@ export const AddUserDialog = ({ onSuccess }: { onSuccess?: () => void }) => {
           placeholder={t('common.pleaseSelect')}
           showRowValue={false}
           options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
+        />
+        <FormCountrySelect
+          name="country"
+          label={`${t('table.countryOrRegion')} (${t('common.optional')})`}
+          placeholder={t('common.pleaseSelect')}
+          searchPlaceholder={t('common.pleaseInput', { field: t('table.countryOrRegion') })}
+          verticalLabel
         />
         <FormSelect
           name="roleId"
