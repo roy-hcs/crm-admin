@@ -5,15 +5,16 @@ import { CrmUserParams, TagUserItem } from '@/api/hooks/account';
 import { RefreshCcw, Search } from 'lucide-react';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
+import { FormMultiSelect } from '@/components/form/FormMultiSelect';
 import { crmAccountTypeOptions, statusOptions } from '@/lib/const';
 import { RrhButton } from '@/components/common/RrhButton';
 import { useTranslation } from 'react-i18next';
 import { formatDate } from '@/lib/utils';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { BasicParams } from '@/api/types';
 import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
 import { RrhForm } from '@/components/form/RrhForm';
-import { useGetUserRoles } from '@/api/hooks/system/system';
+import { useCurrencyList, useGetUserRoles } from '@/api/hooks/system/system';
 
 type FormData = {
   accountType: string;
@@ -27,6 +28,7 @@ type FormData = {
   accounts: string;
   certiricateNo: string;
   tags: string;
+  walletCurrency: string[];
 };
 
 export interface CRMFormRef {
@@ -63,10 +65,27 @@ export const CRMAccountsForm = ({
       certiricateNo: otherParams.certiricateNo || '',
       tags: '',
       accountType: otherParams.accountType || '',
+      walletCurrency: params.walletCurrency || [],
     },
   });
   const { data: userRoles } = useGetUserRoles();
-  console.log('userRoles', userRoles);
+  const { data: currencyList } = useCurrencyList();
+  const [currencyKeyword, setCurrencyKeyword] = useState('');
+
+  const currencyOptions = useMemo(() => {
+    const term = currencyKeyword.trim().toLowerCase();
+    return (currencyList?.rows || [])
+      .filter(
+        item =>
+          !term ||
+          item.currencyAbbr.toLowerCase().includes(term) ||
+          (item.currencyNameChn || '').includes(term),
+      )
+      .map(item => ({
+        label: `${item.currencyAbbr} ${item.currencyNameChn || ''}`.trim(),
+        value: item.currencyAbbr,
+      }));
+  }, [currencyList, currencyKeyword]);
 
   const { t } = useTranslation();
 
@@ -84,6 +103,7 @@ export const CRMAccountsForm = ({
       fuzzyEmail: data.email,
       inviter: data.inviter,
       accounts: selectedAccounts.label,
+      walletCurrency: data.walletCurrency,
     });
     setOtherParams({
       status: data.status,
@@ -97,6 +117,7 @@ export const CRMAccountsForm = ({
   const onReset = () => {
     reset();
     setTags('');
+    setCurrencyKeyword('');
     form.reset({
       regStartTime: { from: '', to: '' },
       name: '',
@@ -109,6 +130,7 @@ export const CRMAccountsForm = ({
       certiricateNo: '',
       tags: '',
       accountType: '',
+      walletCurrency: [],
     });
   };
 
@@ -181,6 +203,18 @@ export const CRMAccountsForm = ({
         label={t('CRMAccountPage.CRMAccountType')}
         placeholder={t('common.pleaseSelect')}
         options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
+      />
+      <FormMultiSelect<FormData>
+        name="walletCurrency"
+        label={t('CRMAccountPage.WalletCurrency')}
+        options={currencyOptions}
+        placeholder={t('common.pleaseSelect')}
+        searchSupport
+        searchValue={currencyKeyword}
+        searchPlaceholder={t('common.pleaseInput', {
+          field: t('CRMAccountPage.WalletCurrency'),
+        })}
+        onSearchChange={setCurrencyKeyword}
       />
       <FormSelect
         name="tags"

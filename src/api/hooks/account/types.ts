@@ -12,6 +12,7 @@ export type CrmUserParams = {
     fuzzyEmail?: string;
     inviter?: string;
     accounts?: string;
+    walletCurrency?: string[];
   };
   status?: string;
   role?: string;

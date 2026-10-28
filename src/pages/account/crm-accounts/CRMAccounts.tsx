@@ -53,6 +53,7 @@ export const CRMAccounts = () => {
     fuzzyEmail: '',
     inviter: '',
     accounts: '',
+    walletCurrency: [],
   });
 
   const { t } = useTranslation();
@@ -93,6 +94,7 @@ export const CRMAccounts = () => {
       fuzzyEmail: '',
       inviter: '',
       accounts: '',
+      walletCurrency: [],
     });
     setOtherParams({
       status: '',
