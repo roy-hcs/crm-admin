@@ -601,6 +601,7 @@ export type AddAccountParams = {
   lever: string | null;
   accountGroupId: string | null;
   directBroker: string | null;
+  initialAmount?: string | null;
   buildRebateAccount?: boolean;
 };
 

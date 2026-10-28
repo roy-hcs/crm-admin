@@ -18,6 +18,7 @@ import {
   useGetServer,
   useGetGroup,
   useGetAccountInfo,
+  useGetGroupCurrency,
   useAddAccount,
 } from '@/api/hooks/system/system';
 import { MtServerItem } from '@/api/hooks/system';
@@ -25,6 +26,12 @@ import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { RrhForm } from '@/components/form/RrhForm';
+import { RrhSelect } from '@/components/common/RrhSelect';
+
+const initialAmountOptions = ['0', '1000', '5000', '100000', '1000000'].map(value => ({
+  label: value,
+  value,
+}));
 
 type FormValues = {
   userId: string;
@@ -36,6 +43,7 @@ type FormValues = {
   lever: string;
   accountGroupId?: string;
   directBroker?: string;
+  initialAmount?: string;
 };
 
 const addUserSchema = (t: TFunction<'translation', undefined>) => {
@@ -51,6 +59,7 @@ const addUserSchema = (t: TFunction<'translation', undefined>) => {
     lever: z.string().min(1, t('rules.required', { field: t('common.level') })),
     accountGroupId: z.string().optional(),
     directBroker: z.string().optional(),
+    initialAmount: z.string().optional(),
   };
 };
 
@@ -75,7 +84,16 @@ export const AddAccountDialog = ({
     maxAccount: number;
   }>();
 
-  const schema = useMemo(() => z.object(addUserSchema(t)), [t]);
+  const schema = useMemo(
+    () =>
+      z
+        .object(addUserSchema(t))
+        .refine(data => data.serviceProperty !== '2' || !!data.initialAmount, {
+          path: ['initialAmount'],
+          message: t('rules.required', { field: t('table.initialAmount') }),
+        }),
+    [t],
+  );
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -89,14 +107,19 @@ export const AddAccountDialog = ({
       lever: '',
       accountGroupId: '',
       directBroker: '',
+      initialAmount: '',
     },
   });
   const { mutateAsync: getServerData } = useGetServer();
   const { mutateAsync: getLeverData } = useGetLever();
   const { mutateAsync: getGroupData } = useGetGroup();
   const { mutateAsync: getAccountInfoData } = useGetAccountInfo();
+  const { mutateAsync: getGroupCurrency } = useGetGroupCurrency();
   const { mutateAsync: addAccountData } = useAddAccount();
 
+  const [currency, setCurrency] = useState('USD');
+
+  const serviceProperty = form.watch('serviceProperty');
   const serviceType = form.watch('serviceType');
   const serverId = form.watch('server');
   const serverGroup = form.watch('serverGroup');
@@ -195,6 +218,7 @@ export const AddAccountDialog = ({
     let mounted = true;
     const fetch = async (serverGroup?: string, serverId?: string) => {
       if (!serverGroup || !serverId) {
+        if (mounted) setCurrency('USD');
         return;
       }
       try {
@@ -212,9 +236,24 @@ export const AddAccountDialog = ({
         } else {
           setAccountInfo(undefined);
         }
+
+        const currencyRes = await getGroupCurrency({
+          serverId: serverId,
+          groupName: serverGroup,
+        });
+        if (!mounted) return;
+        if (currencyRes.resultCode === 0) {
+          setCurrency(currencyRes.currency || '');
+        } else {
+          setCurrency('');
+          toast.error(currencyRes.resultMsg);
+        }
       } catch (error) {
         console.error(error);
-        if (mounted) setAccountInfo(undefined);
+        if (mounted) {
+          setAccountInfo(undefined);
+          setCurrency('');
+        }
       }
     };
 
@@ -222,7 +261,7 @@ export const AddAccountDialog = ({
     return () => {
       mounted = false;
     };
-  }, [serverGroup, form, getAccountInfoData, serverId]);
+  }, [serverGroup, form, getAccountInfoData, getGroupCurrency, serverId]);
 
   const onSubmit = async (data: FormValues) => {
     try {
@@ -237,6 +276,7 @@ export const AddAccountDialog = ({
       if (res.code === 0) {
         toast.success(t('common.success'));
         form.reset();
+        setCurrency('USD');
         setOpen(false);
         onSuccess?.();
       } else {
@@ -251,12 +291,14 @@ export const AddAccountDialog = ({
 
   const onCancel = () => {
     form.reset();
+    setCurrency('USD');
     setOpen(false);
   };
 
   const onClose = (open: boolean) => {
     setOpen(open);
     form.reset();
+    setCurrency('USD');
   };
 
   const serverTypeList = useMemo(() => {
@@ -371,6 +413,35 @@ export const AddAccountDialog = ({
           showRowValue={false}
           options={leverList}
         />
+
+        {serviceProperty === '2' && (
+          <FormField
+            control={form.control}
+            name="initialAmount"
+            render={({ field }) => (
+              <FormItem>
+                <div className="text-foreground text-sm">
+                  <FormLabel className={'mb-2'}>{t('table.initialAmount')}</FormLabel>
+                  <FormControl>
+                    <div className="flex items-stretch gap-2">
+                      <div className="border-input bg-muted text-muted-foreground flex h-9 w-16 shrink-0 items-center justify-center rounded-md border text-sm font-medium">
+                        {currency || '-'}
+                      </div>
+                      <RrhSelect
+                        options={initialAmountOptions}
+                        value={field.value || undefined}
+                        onValueChange={field.onChange}
+                        className="w-full"
+                        placeholder={t('common.pleaseSelect')}
+                      />
+                    </div>
+                  </FormControl>
+                </div>
+                <FormMessage className="text-end" />
+              </FormItem>
+            )}
+          />
+        )}
 
         <FormSelect
           name="accountGroupId"

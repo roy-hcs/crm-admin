@@ -714,6 +714,19 @@ export function useGetAccountInfo() {
   });
 }
 /**
+ * crm账户-新增交易账号-选择组别后 获取组别货币单位
+ */
+export function useGetGroupCurrency() {
+  return useMutation({
+    mutationFn: (params: { serverId: string; groupName: string }) =>
+      apiFormPostCustom<{
+        resultCode: number;
+        resultMsg: string;
+        currency?: string;
+      }>('/system/crmDealAccount/currencyByGroup', params),
+  });
+}
+/**
  * crm账户-新增交易账号-提交
  */
 export function useAddAccount() {
