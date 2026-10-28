@@ -35,6 +35,7 @@ interface MenuItem {
   path?: string;
   icon?: React.ReactNode;
   children?: MenuItem[];
+  disabled?: boolean;
 }
 
 interface SidebarProps {
@@ -65,6 +66,7 @@ function AccordionMenuItem({ item, level }: AccordionMenuItemProps) {
   const [popoverOpen, setPopoverOpen] = useState(false);
 
   const handleClick = (item: MenuItem) => {
+    if (item.disabled) return;
     if (item.path) {
       addTab({ key: item.path, title: item.title, path: item.path, closable: true });
       navigate(item.path);
@@ -76,13 +78,20 @@ function AccordionMenuItem({ item, level }: AccordionMenuItemProps) {
       <div className="my-1">
         <button
           onClick={() => handleClick(item)}
+          disabled={item.disabled}
+          title={item.disabled ? `${item.title}（开发中）` : undefined}
           className={cn(
-            'flex w-full cursor-pointer items-center rounded-md py-1.5 pr-2 pl-10 text-sm',
-            isActive ? 'text-sidebar-accent-foreground bg-accent' : 'hover:bg-accent',
+            'flex w-full items-center rounded-md py-1.5 pr-2 pl-10 text-sm',
+            item.disabled
+              ? 'text-muted-foreground cursor-not-allowed opacity-60'
+              : isActive
+                ? 'text-sidebar-accent-foreground bg-accent'
+                : 'hover:bg-accent cursor-pointer',
           )}
         >
           {item.icon && <span className="mr-2">{item.icon}</span>}
           <span>{item.title}</span>
+          {item.disabled && <span className="ml-2 text-[10px]">开发中</span>}
         </button>
       </div>
     );
@@ -130,17 +139,24 @@ function AccordionMenuItem({ item, level }: AccordionMenuItemProps) {
                   return (
                     <li
                       key={index}
+                      title={child.disabled ? `${child.title}（开发中）` : undefined}
                       className={cn(
-                        'mb-1 cursor-pointer rounded-md py-1.5 pr-2 pl-4 last:mb-0',
-                        isChildActive ? 'bg-accent' : 'hover:bg-accent',
+                        'mb-1 rounded-md py-1.5 pr-2 pl-4 last:mb-0',
+                        child.disabled
+                          ? 'text-muted-foreground cursor-not-allowed opacity-60'
+                          : isChildActive
+                            ? 'bg-accent cursor-pointer'
+                            : 'hover:bg-accent cursor-pointer',
                       )}
                       onClick={() => {
+                        if (child.disabled) return;
                         handleClick(child);
                         setPopoverOpen(false);
                       }}
                     >
                       {child.icon && <span className="mr-2">{child.icon}</span>}
                       <span>{child.title}</span>
+                      {child.disabled && <span className="ml-2 text-[10px]">开发中</span>}
                     </li>
                   );
                 })}
@@ -159,13 +175,17 @@ function CollapsedMenuItem({ item }: { item: MenuItem }) {
 
   return (
     <div
-      title={item.title}
+      title={item.disabled ? `${item.title}（开发中）` : item.title}
       className={cn(
         'flex justify-center rounded-md py-1.5 pr-2 pl-4',
-        isActive ? 'bg-card text-sidebar-accent-foreground' : 'hover:bg-accent',
+        item.disabled
+          ? 'text-muted-foreground cursor-not-allowed opacity-60'
+          : isActive
+            ? 'bg-card text-sidebar-accent-foreground'
+            : 'hover:bg-accent',
       )}
     >
-      {item.path ? (
+      {item.path && !item.disabled ? (
         <Link to={item.path}>{<span>{item.title.charAt(0)}</span>}</Link>
       ) : (
         <div>{item.icon || <span>{item.title.charAt(0)}</span>}</div>
@@ -248,6 +268,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
             {
               title: '账号设置',
               path: '/settings/trading-platform/account',
+              disabled: true,
             },
             {
               title: '账号类型',
@@ -269,22 +290,27 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
             {
               title: '平台设置',
               path: '/settings/crm/platform',
+              disabled: true,
             },
             {
               title: 'NPS配置',
               path: '/settings/crm/nps',
+              disabled: true,
             },
             {
               title: '登录注册设置',
               path: '/settings/crm/login-register',
+              disabled: true,
             },
             {
               title: '代理设置',
               path: '/settings/crm/agent',
+              disabled: true,
             },
             {
               title: 'KYC设置',
               path: '/settings/crm/kyc',
+              disabled: true,
             },
           ],
         },
@@ -294,6 +320,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
             {
               title: '基础设置',
               path: '/settings/payment/basic',
+              disabled: true,
             },
             {
               title: '货币设置',
@@ -318,6 +345,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
             {
               title: '第三方支付设置',
               path: '/settings/payment/third-party',
+              disabled: true,
             },
           ],
         },
@@ -327,34 +355,41 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
             {
               title: '发件箱设置',
               path: '/settings/message/outbox',
+              disabled: true,
             },
             {
               title: '邮件提醒',
               path: '/settings/message/email-alerts',
+              disabled: true,
             },
             {
               title: '邮件样式设置',
               path: '/settings/message/email-styles',
+              disabled: true,
             },
             {
               title: '邮件模板',
               path: '/settings/message/email-templates',
+              disabled: true,
             },
             {
               title: '站内信模板',
-              path: '/settings/message/internal-templates',
+              path: '/message/msgTemplate',
             },
             {
               title: '短信设置',
               path: '/settings/message/sms',
+              disabled: true,
             },
             {
               title: 'Telegram机器人设置',
               path: '/settings/message/telegram-bot',
+              disabled: true,
             },
             {
               title: 'Telegram模板',
               path: '/settings/message/telegram-templates',
+              disabled: true,
             },
           ],
         },
@@ -364,6 +399,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
             {
               title: '推广链接',
               path: '/settings/promotion/links',
+              disabled: true,
             },
           ],
         },
@@ -373,6 +409,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
             {
               title: '三方集成配置',
               path: '/settings/integration/third-party',
+              disabled: true,
             },
           ],
         },
@@ -728,6 +765,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
         {
           title: 'PAMM设置',
           path: '/pamm/settings',
+          disabled: true,
         },
         {
           title: 'PAMM产品',
@@ -812,6 +850,7 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
         {
           title: 'Copy Trade',
           path: '/copy-trading/copy-trade',
+          disabled: true,
         },
         {
           title: '品种管理',

@@ -62,7 +62,7 @@ export const accountRoutes: RouteObject[] = [
     element: <WalletAccountsDetailPage />,
   },
   {
-    path: 'account/account-groups',
+    path: '/account/account-groups',
     element: <AccountGroupsPage />,
   },
   {
