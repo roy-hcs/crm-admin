@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { ReviewTradingRebateForm } from './ReviewTradingRebateForm';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
@@ -14,7 +14,7 @@ import { useServerList } from '@/api/hooks/system/system';
 import { TableCell } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { PageInfo } from '@/components/common/PageInfo';
-import { CRMColumnDef, DataTable } from '@/components/table';
+import { CRMColumnDef, DataTable, DataTableRef } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
 import { RebateCommissionItem } from '@/api/hooks/review';
@@ -26,6 +26,8 @@ import { RrhSorter } from '@/components/common/RrhSorter';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useTabActions } from '@/hooks/useTabActions';
 import { RebateQueueCount } from '@/components/common/RebateQueueCount';
+import { RebateBatchAuditDialog } from '@/components/common/RebateBatchAuditDialog';
+import { toast } from 'sonner';
 
 export const ReviewTradingRebatePage = () => {
   const [params, setParams] = useState<RebateCommissionListParams['params']>({
@@ -55,6 +57,9 @@ export const ReviewTradingRebatePage = () => {
   const [resetKey, setResetKey] = useState(0);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
   const [orderByColumn, setOrderByColumn] = useState('rebateStatusDef');
+  const tableRef = useRef<DataTableRef>(null);
+  const [selectedRows, setSelectedRows] = useState<RebateCommissionItem[]>([]);
+  const [openBatchAudit, setOpenBatchAudit] = useState(false);
 
   const { data: serverList, isLoading: serverListLoading } = useServerList();
   const { data: rebateRuleList } = useRebateCommissionRuleList(2);
@@ -73,7 +78,7 @@ export const ReviewTradingRebatePage = () => {
       setEnabled(true);
     }
   }, [otherParams.serverId]);
-  const { data, isLoading } = useRebateCommissionList(
+  const { data, isLoading, refetch } = useRebateCommissionList(
     {
       orderByColumn,
       isAsc,
@@ -126,6 +131,27 @@ export const ReviewTradingRebatePage = () => {
     });
     setResetKey(k => k + 1);
     setPageNum(0);
+  };
+
+  const clearSelection = useCallback(() => {
+    setSelectedRows([]);
+    tableRef.current?.selectionClear?.();
+  }, []);
+
+  useEffect(() => {
+    clearSelection();
+  }, [pageNum, pageSize, params, otherParams, clearSelection]);
+
+  const handleBatchAudit = () => {
+    if (selectedRows.length === 0) {
+      toast.error(t('review.batchAuditSelectRequired'));
+      return;
+    }
+    if (selectedRows.length > 500) {
+      toast.error(t('review.batchAuditMax'));
+      return;
+    }
+    setOpenBatchAudit(true);
   };
 
   const { openTab } = useTabActions();
@@ -395,7 +421,9 @@ export const ReviewTradingRebatePage = () => {
           <div className="flex items-center gap-2">
             <RrhButton variant="outline">{t('table.export')}</RrhButton>
             <RrhButton variant="outline">{t('table.batchDelete')}</RrhButton>
-            <RrhButton variant="outline">{t('table.batchAudit')}</RrhButton>
+            <RrhButton variant="outline" onClick={handleBatchAudit}>
+              {t('table.batchAudit')}
+            </RrhButton>
             <RebateQueueCount rebateType={1} />
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
@@ -437,6 +465,7 @@ export const ReviewTradingRebatePage = () => {
         </div>
 
         <DataTable
+          ref={tableRef}
           columns={tableColumns}
           data={data?.rows || []}
           pageCount={Math.ceil(+(data?.total || 0) / pageSize)}
@@ -445,6 +474,7 @@ export const ReviewTradingRebatePage = () => {
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
           loading={isLoading}
+          onSelectionChange={setSelectedRows}
           CustomRow={
             <>
               <TableCell colSpan={6} className="text-center">
@@ -480,6 +510,17 @@ export const ReviewTradingRebatePage = () => {
               ) : null}
             </>
           }
+        />
+
+        <RebateBatchAuditDialog
+          open={openBatchAudit}
+          setOpen={setOpenBatchAudit}
+          rebateType={1}
+          rows={selectedRows}
+          onSuccess={() => {
+            clearSelection();
+            refetch();
+          }}
         />
       </TableContentWrapper>
     </div>

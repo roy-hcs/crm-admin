@@ -556,6 +556,23 @@ export function useRebateVerify() {
 }
 
 /**
+ * 按返佣类型提交批量审核（旧版 batchAudit 逐条调用，仅提交状态与备注）
+ */
+export function useRebateVerifyByType() {
+  return useMutation({
+    mutationFn: ({
+      rebateType,
+      ...params
+    }: {
+      rebateType: 1 | 2 | 3;
+      id: string;
+      rebateStatus: string;
+      remark: string;
+    }) => apiFormPost(`/system/crmRebateCommission/verify/${rebateType}`, params),
+  });
+}
+
+/**
  * 获取手续费返佣审核详情
  */
 export function useFeeRebateDetail(id: string, options: { enabled: boolean }) {
