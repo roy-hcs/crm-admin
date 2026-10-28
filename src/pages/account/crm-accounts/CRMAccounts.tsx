@@ -1,4 +1,10 @@
-import { CrmUserItem, CrmUserParams, useCrmUser, useTagUserCountList } from '@/api/hooks/account';
+import {
+  CrmUserItem,
+  CrmUserParams,
+  useCrmUser,
+  useCustomerLoyaltyPlan,
+  useTagUserCountList,
+} from '@/api/hooks/account';
 import { cn } from '@/lib/utils';
 import {
   ChevronDown,
@@ -66,10 +72,17 @@ export const CRMAccounts = () => {
       certiricateNo: '',
       accountType: '',
       accounts: '',
+      vipId: '',
     },
   );
 
   const { data: tagUserCountList, isLoading: tagUserCountListLoading } = useTagUserCountList();
+  const { data: loyaltyPlan } = useCustomerLoyaltyPlan();
+  const vipNameMap = useMemo(() => {
+    const map = new Map<string, string>();
+    (loyaltyPlan?.data?.userVipList || []).forEach(item => map.set(item.id, item.name));
+    return map;
+  }, [loyaltyPlan]);
   const {
     data: crmUsers,
     isLoading: crmUsersLoading,
@@ -104,6 +117,7 @@ export const CRMAccounts = () => {
       certiricateNo: '',
       accountType: '',
       accounts: '',
+      vipId: '',
     });
     setTags('');
     setPageNum(0);
@@ -263,6 +277,15 @@ export const CRMAccounts = () => {
         },
       },
       {
+        id: 'vipId',
+        accessorKey: 'vipId',
+        header: t('CRMAccountPage.LoyaltyLevel'),
+        cell: ({ row }) => {
+          const vipId = row.original.vipId;
+          return <div>{vipId ? vipNameMap.get(vipId) || '-' : '-'}</div>;
+        },
+      },
+      {
         id: 'tags',
         header: t('CRMAccountPage.TagsName'),
         accessorFn: row => row.tags,
@@ -417,7 +440,7 @@ export const CRMAccounts = () => {
         size: 50,
       },
     ],
-    [t, isAsc, openTab],
+    [t, isAsc, openTab, vipNameMap],
   );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, columnMeta, tableColumns } =

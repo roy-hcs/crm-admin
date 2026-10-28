@@ -34,6 +34,7 @@
     "selectAtLeastOneAccount": "Please select at least one account!",
     "BatchSetAccountType": "Modify CRM Account Types in Batch",
     "pleaseSelectAccountType": "Please select a CRM account type!",
+    "LoyaltyLevel": "Loyalty Level",
     "Superior": "Superior",
     "UserStatistics": "User statistics",
     "firstName": "name",

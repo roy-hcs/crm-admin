@@ -1,7 +1,7 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import FormDateRangeInput from '@/components/form/FormDateRangeInput';
-import { CrmUserParams, TagUserItem } from '@/api/hooks/account';
+import { CrmUserParams, TagUserItem, useCustomerLoyaltyPlan } from '@/api/hooks/account';
 import { RefreshCcw, Search } from 'lucide-react';
 import { FormInput } from '@/components/form/FormInput';
 import { FormSelect } from '@/components/form/FormSelect';
@@ -29,6 +29,7 @@ type FormData = {
   certiricateNo: string;
   tags: string;
   walletCurrency: string[];
+  vipId: string;
 };
 
 export interface CRMFormRef {
@@ -66,10 +67,12 @@ export const CRMAccountsForm = ({
       tags: '',
       accountType: otherParams.accountType || '',
       walletCurrency: params.walletCurrency || [],
+      vipId: otherParams.vipId || '',
     },
   });
   const { data: userRoles } = useGetUserRoles();
   const { data: currencyList } = useCurrencyList();
+  const { data: loyaltyPlan } = useCustomerLoyaltyPlan();
   const [currencyKeyword, setCurrencyKeyword] = useState('');
 
   const currencyOptions = useMemo(() => {
@@ -111,6 +114,7 @@ export const CRMAccountsForm = ({
       certiricateNo: data.certiricateNo,
       accountType: data.accountType,
       accounts: selectedAccounts.id,
+      vipId: data.vipId,
     });
     setTags(data.tags);
   };
@@ -131,6 +135,7 @@ export const CRMAccountsForm = ({
       tags: '',
       accountType: '',
       walletCurrency: [],
+      vipId: '',
     });
   };
 
@@ -203,6 +208,12 @@ export const CRMAccountsForm = ({
         label={t('CRMAccountPage.CRMAccountType')}
         placeholder={t('common.pleaseSelect')}
         options={crmAccountTypeOptions.map(i => ({ label: t(i.label), value: i.value }))}
+      />
+      <FormSelect
+        name="vipId"
+        label={t('CRMAccountPage.LoyaltyLevel')}
+        placeholder={t('common.pleaseSelect')}
+        options={(loyaltyPlan?.data?.userVipList || []).map(i => ({ label: i.name, value: i.id }))}
       />
       <FormMultiSelect<FormData>
         name="walletCurrency"

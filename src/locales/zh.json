@@ -31,6 +31,7 @@
     "selectAtLeastOneAccount": "至少选择一个账户！",
     "BatchSetAccountType": "批量修改CRM账户类型",
     "pleaseSelectAccountType": "请选择CRM账户类型！",
+    "LoyaltyLevel": "忠诚等级",
     "UserStatistics": "用户统计",
     "LifecycleAndUserTags": "生命周期&用户标签",
     "firstName": "名",

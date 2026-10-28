@@ -20,6 +20,7 @@ export type CrmUserParams = {
   certiricateNo?: string;
   accountType?: string;
   tags?: string;
+  vipId?: string;
 } & BasicParams;
 
 export type CrmUserItem = BaseEntity & {
@@ -76,6 +77,7 @@ export type CrmUserItem = BaseEntity & {
   antiPhishingCode: string | null;
   tags: string;
   walletCurrencies: string | null;
+  vipId: string | null;
   points: string | null;
   shortCode: string | null;
   userName: string;
