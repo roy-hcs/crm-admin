@@ -104,6 +104,7 @@
     "operationTime": "Operation time",
     "tips": "The data on this page will have a slight delay. \nFor instant data, please wait 1-2 minutes before refreshing the page for query.",
     "statisticTime": "Statistics time",
+    "rebateQueueCount": "Rebate queue count",
     "account": {
       "type": {
         "agent": "acting",

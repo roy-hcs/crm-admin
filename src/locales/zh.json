@@ -137,6 +137,7 @@
     "operationTime": "操作时间",
     "subTime": "提交时间",
     "statisticTime": "统计时间",
+    "rebateQueueCount": "返佣队列排队数量",
     "verifyTime": "完结时间",
     "enable": "启用",
     "disable": "停用",

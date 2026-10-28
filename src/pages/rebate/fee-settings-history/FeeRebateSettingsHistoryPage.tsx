@@ -21,6 +21,7 @@ import dayjs from 'dayjs';
 import { FeeRebateSettingsHistoryForm } from './FeeRebateSettingsHisotryForm';
 import { CalculateRebateDialog } from './CalculateRebateDialog';
 import { useGetSysConfig } from '@/api/hooks/system/system';
+import { RebateQueueCount } from '@/components/common/RebateQueueCount';
 
 export const FeeRebateSettingsHistoryPage = () => {
   const { t } = useTranslation();
@@ -305,6 +306,7 @@ export const FeeRebateSettingsHistoryPage = () => {
               model={Number(model || 1)}
               total={data?.total || '0'}
             />
+            <RebateQueueCount rebateType={2} />
           </div>
         </div>
 

@@ -22,6 +22,7 @@ import { DepositRebateSettingsHistoryForm } from './DepositRebateSettingsHisotry
 import { CalculateRebateDialog } from './CalculateRebateDialog';
 import { useGetSysConfig } from '@/api/hooks/system/system';
 import { oprType } from '@/lib/utils';
+import { RebateQueueCount } from '@/components/common/RebateQueueCount';
 
 export const DepositRebateSettingsHistoryPage = () => {
   const { t } = useTranslation();
@@ -225,6 +226,7 @@ export const DepositRebateSettingsHistoryPage = () => {
               model={Number(model || 1)}
               total={data?.total || '0'}
             />
+            <RebateQueueCount rebateType={3} />
           </div>
         </div>
 

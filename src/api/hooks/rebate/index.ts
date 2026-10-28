@@ -366,6 +366,16 @@ export function useRebateDepositSettingsHistoryList(
   });
 }
 /**
+ * 返佣待处理队列排队数量（1交易/2手续费/3入金），审核列表与历史订单返佣页共用
+ */
+export function useRebateQueueCount(rebateType: 1 | 2 | 3) {
+  return useQuery({
+    queryKey: ['getRebateQueueCount', rebateType],
+    queryFn: () => apiGet<number>(`/system/crmRebateCommission/queueCount/${rebateType}`),
+    refetchInterval: 10000,
+  });
+}
+/**
  * 计算返佣
  */
 export function useCalculateRebateFee() {

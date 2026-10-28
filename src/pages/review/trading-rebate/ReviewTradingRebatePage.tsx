@@ -25,6 +25,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useTabActions } from '@/hooks/useTabActions';
+import { RebateQueueCount } from '@/components/common/RebateQueueCount';
 
 export const ReviewTradingRebatePage = () => {
   const [params, setParams] = useState<RebateCommissionListParams['params']>({
@@ -395,6 +396,7 @@ export const ReviewTradingRebatePage = () => {
             <RrhButton variant="outline">{t('table.export')}</RrhButton>
             <RrhButton variant="outline">{t('table.batchDelete')}</RrhButton>
             <RrhButton variant="outline">{t('table.batchAudit')}</RrhButton>
+            <RebateQueueCount rebateType={1} />
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </Button>

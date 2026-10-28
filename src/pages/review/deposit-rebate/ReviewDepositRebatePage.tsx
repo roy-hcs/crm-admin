@@ -26,6 +26,7 @@ import { RrhSorter } from '@/components/common/RrhSorter';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useTabActions } from '@/hooks/useTabActions';
+import { RebateQueueCount } from '@/components/common/RebateQueueCount';
 
 export const ReviewDepositRebatePage = () => {
   const [params, setParams] = useState<RebateCommissionListParams['params']>({
@@ -406,6 +407,7 @@ export const ReviewDepositRebatePage = () => {
             <RrhButton variant="outline">{t('table.export')}</RrhButton>
             <RrhButton variant="outline">{t('table.batchDelete')}</RrhButton>
             <RrhButton variant="outline">{t('table.batchAudit')}</RrhButton>
+            <RebateQueueCount rebateType={3} />
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </Button>
