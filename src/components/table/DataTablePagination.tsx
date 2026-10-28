@@ -77,6 +77,7 @@ export function DataTablePagination<TData>({
         )}
         <div className="flex items-center gap-x-2">
           <Button
+            type="button"
             variant="ghost"
             size="icon"
             className={cn(
@@ -94,6 +95,7 @@ export function DataTablePagination<TData>({
             if (typeof item === 'string') {
               return (
                 <Button
+                  type="button"
                   variant="ghost"
                   disabled
                   key={`${index}item`}
@@ -105,6 +107,7 @@ export function DataTablePagination<TData>({
             }
             return (
               <Button
+                type="button"
                 variant={activePage === item ? 'outline' : 'ghost'}
                 size="icon"
                 className={cn(
@@ -119,6 +122,7 @@ export function DataTablePagination<TData>({
             );
           })}
           <Button
+            type="button"
             variant="ghost"
             size="icon"
             className={cn('h-8 w-auto gap-1 p-1', !table.getCanNextPage() ? '' : 'cursor-pointer')}

@@ -16,6 +16,7 @@ import { PageInfo } from '@/components/common/PageInfo';
 import { RrhForm } from '@/components/form/RrhForm';
 import { RiskControlTab } from './components/risk-control/RiskControlTab';
 import { IpWarningBanner } from './components/IpWarningBanner';
+import { CrmAccountActivityListPage } from '@/pages/account/crm-accounts-detail/pages/CrmAccountActivityListPage';
 
 export type WithdrawalFormData = {
   withdrawAmount: string;
@@ -59,6 +60,7 @@ export const ReviewWithdrawalDetailPage = () => {
     { value: 'withdrawalInfo', label: t('review.withdrawalInfo') },
     { value: 'depositRecord', label: t('review.depositRecord') },
     { value: 'withdrawalRecord', label: t('review.withdrawalRecord') },
+    { value: 'accountActivity', label: t('CRMAccountPage.accountActivity') },
     { value: 'riskControl', label: t('riskControlPage.tabTitle') },
   ];
   const form = useForm<WithdrawalFormData>({
@@ -212,6 +214,13 @@ export const ReviewWithdrawalDetailPage = () => {
             </TabsContent>
             <TabsContent value="withdrawalRecord">
               <WithdrawalRecordPage userId={withdrawalInfo.userId} />
+            </TabsContent>
+            <TabsContent value="accountActivity">
+              <CrmAccountActivityListPage
+                userId={withdrawalInfo.userId}
+                showOperation={false}
+                columnStorageKey="withdraw-account-activity-table"
+              />
             </TabsContent>
             <TabsContent value="riskControl">
               <RiskControlTab

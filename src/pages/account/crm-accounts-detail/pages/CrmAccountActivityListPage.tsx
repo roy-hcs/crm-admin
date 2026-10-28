@@ -11,7 +11,15 @@ import { useTranslation } from 'react-i18next';
 import { SetRiskButton } from '../components/SetRiskButton';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 
-export const CrmAccountActivityListPage = ({ userId }: { userId: string }) => {
+export const CrmAccountActivityListPage = ({
+  userId,
+  showOperation = true,
+  columnStorageKey = 'crm-account-activity-table',
+}: {
+  userId: string;
+  showOperation?: boolean;
+  columnStorageKey?: string;
+}) => {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -100,7 +108,7 @@ export const CrmAccountActivityListPage = ({ userId }: { userId: string }) => {
           const businessType = row.original.businessType;
           if (!businessType) return 'login';
           const dictItem = operationTypes?.find(item => item.dictValue === businessType);
-          return dictItem ? dictItem.dictValue : businessType;
+          return dictItem ? dictItem.dictLabel || dictItem.dictValue : businessType;
         },
       },
       {
@@ -140,32 +148,36 @@ export const CrmAccountActivityListPage = ({ userId }: { userId: string }) => {
         header: t('table.time'),
         accessorFn: row => row.operTime || '-',
       },
-      {
-        id: 'operation',
-        header: () => {
-          return <div className="flex justify-center">{t('common.Operation')}</div>;
-        },
-        cell: ({ row }) => {
-          const rowData = row.original;
-          return (
-            <SetRiskButton
-              userId={userId}
-              ip={rowData.operIp}
-              ipTrust={rowData.ipRiskyFlag ? rowData.ipRiskyFlag.toString() : ''}
-              device={`${rowData.browser}/${rowData.os}`}
-              deviceTrust={rowData.devRiskyFlag ? rowData.devRiskyFlag.toString() : ''}
-              onSuccess={refetch}
-            />
-          );
-        },
-        fixed: 'right',
-        size: 50,
-      },
+      ...(showOperation
+        ? [
+            {
+              id: 'operation',
+              header: () => {
+                return <div className="flex justify-center">{t('common.Operation')}</div>;
+              },
+              cell: ({ row }: { row: { original: AccountActivityItem } }) => {
+                const rowData = row.original;
+                return (
+                  <SetRiskButton
+                    userId={userId}
+                    ip={rowData.operIp}
+                    ipTrust={rowData.ipRiskyFlag ? rowData.ipRiskyFlag.toString() : ''}
+                    device={`${rowData.browser}/${rowData.os}`}
+                    deviceTrust={rowData.devRiskyFlag ? rowData.devRiskyFlag.toString() : ''}
+                    onSuccess={refetch}
+                  />
+                );
+              },
+              fixed: 'right' as const,
+              size: 50,
+            } as CRMColumnDef<AccountActivityItem, unknown>,
+          ]
+        : []),
     ],
-    [t, operationTypes, userId, refetch],
+    [t, operationTypes, userId, refetch, showOperation],
   );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
-    useColumnVisibility('crm-account-activity-table', allColumns);
+    useColumnVisibility(columnStorageKey, allColumns);
   const reset = () => {
     setPageNum(0);
     setPageSize(10);
@@ -175,7 +187,12 @@ export const CrmAccountActivityListPage = ({ userId }: { userId: string }) => {
     <TableContentWrapper>
       <div className="mb-3 flex items-center justify-end">
         <div className="flex items-center gap-2">
-          <RrhButton variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
+          <RrhButton
+            type="button"
+            variant="ghost"
+            className="size-8 cursor-pointer"
+            onClick={reset}
+          >
             <RefreshCcw className="size-3.5" />
           </RrhButton>
           <ColumnVisibilityButton

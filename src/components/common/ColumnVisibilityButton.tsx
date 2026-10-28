@@ -268,10 +268,10 @@ export const ColumnVisibilityButton = ({
           </DndContext>
         </div>
         <div className="mt-4 flex items-center gap-3">
-          <Button variant="outline" size="sm" onClick={handleCancel}>
+          <Button type="button" variant="outline" size="sm" onClick={handleCancel}>
             {t('common.Cancel')}
           </Button>
-          <Button size="sm" onClick={handleConfirm}>
+          <Button type="button" size="sm" onClick={handleConfirm}>
             {t('common.Confirm')}
           </Button>
         </div>
@@ -349,10 +349,10 @@ export const ColumnVisibilityButton = ({
             {desktopDropdownContent}
             <DropdownMenuSeparator />
             <div className="flex items-center gap-3 p-2">
-              <Button variant="outline" size="sm" onClick={handleCancel}>
+              <Button type="button" variant="outline" size="sm" onClick={handleCancel}>
                 {t('common.Cancel')}
               </Button>
-              <Button size="sm" onClick={handleConfirm}>
+              <Button type="button" size="sm" onClick={handleConfirm}>
                 {t('common.Confirm')}
               </Button>
             </div>
