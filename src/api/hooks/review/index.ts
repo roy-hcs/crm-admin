@@ -20,6 +20,8 @@ export {
   useIpWarningDetail,
   useWithdrawalVerify,
   useCancelWithdrawOrder,
+  useWithdrawOperationLogs,
+  useAddWithdrawTimelineRemark,
   useDepositReviewDetail,
   useDepositVerify,
 } from './review';

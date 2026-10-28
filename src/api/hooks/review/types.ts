@@ -701,6 +701,22 @@ export type VerifyLogItem = BaseEntity & {
   verifyTime: string;
 };
 
+export type WithdrawOperationLog = {
+  id: string;
+  businessId: string;
+  businessType: number;
+  verifyStep: number;
+  verifyUser: string;
+  verifyStatus: number | null;
+  verifyTime: string;
+  remark: string | null;
+  userName: string;
+  userLastName: string;
+  email?: string;
+  operIp?: string | null;
+  operLocation?: string | null;
+};
+
 export type withdrawalDetailItem = WithdrawItem & {
   marginlevel: string;
   marginlevelTime: string;

@@ -1,4 +1,4 @@
-import { apiFormPost, apiFormPostCustom, apiGetCustom } from '@/api/client';
+import { apiFormPost, apiFormPostCustom, apiGet, apiGetCustom } from '@/api/client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createEmptyCrmInfoVerifyDetailData,
@@ -37,6 +37,7 @@ import {
   LeverageVerifyListParams,
   LeverageVerifyListRes,
   WithdrawalReviewDetailRes,
+  WithdrawOperationLog,
   IpWarningDetailRes,
   WithdrawalVerifyParams,
   SumWithdrawalAmountParams,
@@ -387,6 +388,29 @@ export function useCancelWithdrawOrder() {
     },
   });
 }
+export function useWithdrawOperationLogs(withdrawalId: string) {
+  return useQuery({
+    queryKey: ['withdrawOperationLogs', withdrawalId],
+    queryFn: () =>
+      apiGet<WithdrawOperationLog[]>(
+        `/system/crmWithdrawVerify/getOperationLogs?id=${encodeURIComponent(withdrawalId)}`,
+      ),
+    enabled: !!withdrawalId,
+  });
+}
+
+export function useAddWithdrawTimelineRemark() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, remark }: { id: string; remark: string }) =>
+      apiFormPost('/system/crmWithdrawVerify/addTimelineRemark', { id, remark }),
+    onSuccess: (res, variables) => {
+      if (res.code !== 0) return;
+      queryClient.invalidateQueries({ queryKey: ['withdrawOperationLogs', variables.id] });
+    },
+  });
+}
+
 export function useSumWithdrawAmount(params: SumWithdrawalAmountParams) {
   return useQuery({
     queryKey: ['sumWithdrawAmount', params],
