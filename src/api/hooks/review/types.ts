@@ -724,6 +724,19 @@ export type withdrawalDetailItem = WithdrawItem & {
   minAdvanceScale: number;
   maxAdvanceScale: number;
   clientIp?: string | null;
+  mobile?: string | null;
+};
+
+export type WithdrawOrderInfo = {
+  orderId?: string | null;
+  payOrder?: string | null;
+  orderStatus?: number | null;
+  remark?: string | null;
+  channelConfig?: string | null;
+  depositAmount?: number | string | null;
+  baseCurrency?: string | null;
+  receiptAmount?: string | null;
+  receiptCurrency?: string | null;
 };
 
 export type IpWarningUserItem = {
@@ -788,6 +801,7 @@ export type WithdrawalReviewDetailRes = {
     ipWarningCount?: number;
     googleCodeEx?: string | null;
     firstCryptoAddress?: string | null;
+    order?: WithdrawOrderInfo | null;
   };
 };
 

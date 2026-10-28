@@ -81,6 +81,12 @@ export const PersonalInfoCard = ({
             <span>{withdrawalInfo.userShowId}</span>
             {withdrawalInfo.userEmail && withdrawalInfo.userEmail && <span> | </span>}
             <span title={withdrawalInfo.userEmail}>{withdrawalInfo.userEmail}</span>
+            {withdrawalInfo.mobile && (
+              <>
+                <span> | </span>
+                <span>{withdrawalInfo.mobile}</span>
+              </>
+            )}
           </div>
         </div>
         <LabelItem label={t('review.latestLogin')} ContentDom={<InfoItem info={lastLoginTime} />} />

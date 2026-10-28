@@ -357,6 +357,18 @@ export const WithdrawalInfoCard: FC<{
             />
           )}
         />
+        {withdrawalInfo.method === 5 && withdrawData.order && (
+          <FormField
+            name="payOrder"
+            disabled
+            render={() => (
+              <LabelItem
+                label={t('table.outerOrderNo')}
+                ContentDom={<InfoItem info={withdrawData.order?.payOrder || '-'} />}
+              />
+            )}
+          />
+        )}
         {withdrawalInfo.method === 1 && (
           <InternationalTransferInfo withdrawalInfo={withdrawalInfo} isAudit={isAudit} />
         )}
