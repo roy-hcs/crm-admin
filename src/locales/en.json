@@ -522,6 +522,7 @@
     "exportAllDataTip": "Are you sure to export all {{field}}?",
     "fundAccount": "Fund account",
     "nameOrId": "Name/Account ID",
+    "emailOrPhone": "Email/Phone",
     "openLots": "Number of opening lots",
     "operationIP": "Operation IP",
     "operationPerson": "Operator",

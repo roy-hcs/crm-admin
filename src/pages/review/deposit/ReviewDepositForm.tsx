@@ -30,6 +30,7 @@ type FormData = {
   payOrderNum: string;
   channel: string;
   roleId: string;
+  emailOrPhone: string;
 };
 
 export const ReviewDepositForm = ({
@@ -68,6 +69,7 @@ export const ReviewDepositForm = ({
       payOrderNum: otherParams.orderId || '',
       channel: otherParams.channelId || '',
       roleId: otherParams.roleId || '',
+      emailOrPhone: otherParams.emailOrPhone || '',
     },
   });
 
@@ -90,6 +92,7 @@ export const ReviewDepositForm = ({
       depositCurrency: data.currency,
       accounts: selectedAccounts.id,
       roleId: data.roleId,
+      emailOrPhone: data.emailOrPhone,
     });
     setParams({
       beginTime: formatDate(data.submitTime.from),
@@ -116,6 +119,7 @@ export const ReviewDepositForm = ({
       payOrderNum: '',
       channel: '',
       roleId: '',
+      emailOrPhone: '',
     });
   };
   return (
@@ -208,6 +212,11 @@ export const ReviewDepositForm = ({
         verticalLabel
         name="roleId"
         label={t('rewardConfigPage.accountLimitTypeOptions.1')}
+      />
+      <FormInput
+        name="emailOrPhone"
+        label={t('table.emailOrPhone')}
+        placeholder={t('common.pleaseInput', { field: t('table.emailOrPhone') })}
       />
       {depositMethod === '5' && (
         <FormSelect

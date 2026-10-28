@@ -1448,6 +1448,7 @@
     "DemoAccountWithdrawal": "模拟账户出金",
     "Charge": "费用",
     "nameOrId": "姓名/账户ID",
+    "emailOrPhone": "邮箱/手机号",
     "depositWay": "入金方式",
     "balance": "余额",
     "email": "邮箱",

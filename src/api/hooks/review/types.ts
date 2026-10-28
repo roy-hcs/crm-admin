@@ -352,6 +352,7 @@ export type DepositListParams = BasicParams & {
   depositCurrency?: string;
   accounts?: string;
   roleId?: string;
+  emailOrPhone?: string;
   params: {
     beginTime?: string;
     endTime?: string;
