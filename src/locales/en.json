@@ -1656,7 +1656,9 @@
     "rewardAccount": "Rewards account",
     "rewardInfo": "reward information",
     "rewardRecordsDetail": "Reward record details",
-    "rewardSubject": "Award subject"
+    "rewardSubject": "Award subject",
+    "activityDeleted": "Deleted",
+    "activityDeletedTip": "The reward campaign has been deleted; review is not allowed"
   },
   "tradingAccounts": {
     "title": "trading account"

@@ -2141,7 +2141,9 @@
     "rewardInfo": "奖励信息",
     "rewardAccount": "奖励账户",
     "rewardSubject": "奖励标的",
-    "hitActivity": "命中活动"
+    "hitActivity": "命中活动",
+    "activityDeleted": "已删除",
+    "activityDeletedTip": "奖励活动已删除，不允许审核"
   },
   "messageManagement": {
     "title": "消息管理",

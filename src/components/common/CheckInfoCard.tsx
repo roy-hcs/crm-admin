@@ -13,11 +13,15 @@ export const CheckInfoCard = ({
   roleName,
   remarkMaxLength = 500,
   showIsNeedDeposit = false,
+  submitDisabled = false,
+  submitDisabledTip,
 }: {
   back: () => void;
   roleName?: string;
   remarkMaxLength?: number;
   showIsNeedDeposit?: boolean;
+  submitDisabled?: boolean;
+  submitDisabledTip?: string;
 }) => {
   const { t } = useTranslation();
   const status = useWatch({ name: 'status' }) as string | undefined;
@@ -113,7 +117,12 @@ export const CheckInfoCard = ({
         <RrhButton variant="outline" onClick={cancel}>
           {t('common.Cancel')}
         </RrhButton>
-        <RrhButton type="submit" variant="default">
+        <RrhButton
+          type="submit"
+          variant="default"
+          disabled={submitDisabled}
+          title={submitDisabled ? submitDisabledTip : undefined}
+        >
           {t('common.Confirm')}
         </RrhButton>
       </div>

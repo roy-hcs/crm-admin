@@ -13,6 +13,7 @@ export const RewardRecordsInfoCard: FC<{
   const Info = data.detail;
 
   const { t } = useTranslation();
+  const activityDeleted = String(Info.delFlag) === '1' || Info.delFlag === true;
 
   const accountInfo = useMemo(() => {
     return [
@@ -89,7 +90,18 @@ export const RewardRecordsInfoCard: FC<{
             <LabelItem
               key={`${item.label}-${index}`}
               label={t(item.label)}
-              ContentDom={<InfoItem info={item.value || '-'} />}
+              ContentDom={
+                item.label === 'rewardRecords.hitActivity' && activityDeleted ? (
+                  <div className="flex items-center gap-2">
+                    <InfoItem info={item.value || '-'} />
+                    <span className="text-destructive text-sm">
+                      {t('rewardRecords.activityDeleted')}
+                    </span>
+                  </div>
+                ) : (
+                  <InfoItem info={item.value || '-'} />
+                )
+              }
             />
           ))}
         </div>

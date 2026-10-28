@@ -66,6 +66,7 @@ export const RewardRecordsDetailPage = () => {
     return <div></div>;
   }
   const recordData = recordRes.data;
+  const activityDeleted = String(recordInfo.delFlag) === '1' || recordInfo.delFlag === true;
 
   const reviewSteps = [
     {
@@ -92,6 +93,10 @@ export const RewardRecordsDetailPage = () => {
   ] as RrhStepProps['steps'];
 
   const onSubmit = async (data: FormValue) => {
+    if (activityDeleted) {
+      toast.error(t('rewardRecords.activityDeletedTip'));
+      return;
+    }
     await withLoading(async () => {
       try {
         const params = {
@@ -125,7 +130,13 @@ export const RewardRecordsDetailPage = () => {
           <div className="relative md:w-76">
             <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
               <ReviewStepsCard reviewSteps={reviewSteps} />
-              {isAudit && <CheckInfoCard back={back} />}
+              {isAudit && (
+                <CheckInfoCard
+                  back={back}
+                  submitDisabled={activityDeleted}
+                  submitDisabledTip={t('rewardRecords.activityDeletedTip')}
+                />
+              )}
             </div>
           </div>
         </div>

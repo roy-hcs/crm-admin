@@ -344,6 +344,7 @@ export type RewardRecordReviewDetailRes = {
       bonusTypeStr: string | null;
       rewardAmountStr: string | null;
       status: number | null;
+      delFlag: string | number | boolean | null;
     };
     verifyLogs: VerifyLogItem[];
   };

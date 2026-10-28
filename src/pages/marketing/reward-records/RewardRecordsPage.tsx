@@ -9,6 +9,7 @@ import {
   useRewardRecordsList,
   RewardRecordsListParams,
   RewardRecordsListItem,
+  useExportRewardRecords,
 } from '@/api/hooks/marketing';
 import { PageInfo } from '@/components/common/PageInfo';
 import { CRMColumnDef, DataTable } from '@/components/table';
@@ -17,6 +18,7 @@ import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButt
 import { RewardRecordsForm } from './RewardRecordsForm';
 import { depositRebateStatusMap } from '@/lib/constant';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
+import { ExportButton } from '@/components/common/ExportButton';
 import { RewardReviewDialog } from './components/RewardReviewDialog';
 import { useTabActions } from '@/hooks/useTabActions';
 
@@ -53,6 +55,8 @@ export const RewardRecordsPage = () => {
       ...params,
     },
   });
+
+  const { mutateAsync: exportRewardRecords, isPending: exportLoading } = useExportRewardRecords();
 
   const reset = () => {
     setParams(pre => ({
@@ -300,6 +304,15 @@ export const RewardRecordsPage = () => {
               columns={columns}
             />
             <RewardReviewDialog onSuccess={refetch} />
+            <ExportButton<RewardRecordsListParams>
+              exportFunction={exportRewardRecords}
+              params={{
+                ...otherParams,
+                params,
+              }}
+              exportLoading={exportLoading}
+              title={t('rewardRecords.title')}
+            />
           </div>
         </div>
         <DataTable

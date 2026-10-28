@@ -173,6 +173,16 @@ export function useRewardRecordsList(params: RewardRecordsListParams) {
 }
 
 /**
+ * 导出奖励记录
+ */
+export function useExportRewardRecords() {
+  return useMutation({
+    mutationFn: (params: RewardRecordsListParams) =>
+      apiFormPost('/system/marketing/rewardRecord/export', params),
+  });
+}
+
+/**
  * 获取奖励记录审核详情
  */
 export function useRewardRecordReviewDetail(recordId: string, options: { enabled: boolean }) {
