@@ -18,6 +18,12 @@ import { UseFormReturn } from 'react-hook-form';
 import { WithdrawalFormData } from '../ReviewWithdrawalDetailPage';
 import { LabelItem } from '@/components/common/LabelItem';
 type GeneralInfoField = 'dealTicket';
+
+const truncateToScale = (value: number, scale: number) => {
+  const factor = 10 ** scale;
+  return (Math.trunc(value * factor) / factor).toFixed(scale);
+};
+
 export const WithdrawalInfoCard: FC<{
   withdrawData: WithdrawalReviewDetailRes['data'];
   isAudit: boolean;
@@ -27,7 +33,13 @@ export const WithdrawalInfoCard: FC<{
   const { t } = useTranslation();
   const [currentRate, setCurrentRate] = useState(withdrawalInfo.rate?.toString() || '');
   const [currentFee, setCurrentFee] = useState(withdrawalInfo.fee);
-  const [amountOfReceipt, setAmountOfReceipt] = useState('');
+  // 到账金额与期望金额不一致时，说明后台已存在人工调整过的到账金额，汇率/手续费变化不再覆盖
+  const [amountManual, setAmountManual] = useState(() => {
+    const { factWithdraw, expectWithdraw } = withdrawalInfo;
+    if (factWithdraw == null || factWithdraw === '' || expectWithdraw == null) return false;
+    return Number(factWithdraw) !== Number(expectWithdraw);
+  });
+  const [amountOfReceipt, setAmountOfReceipt] = useState(withdrawalInfo.factWithdraw || '');
   const { data: outMoneyMethodList } = useOutMoneyMethodList();
   const calculateTargetWithdraw = useCallback(
     (withdraw: string) => {
@@ -46,31 +58,49 @@ export const WithdrawalInfoCard: FC<{
     },
     [currentRate, withdrawalInfo.currencyPair, form, withdrawalInfo.withdrawCurrency],
   );
-  useEffect(() => {
-    if (currentRate) {
-      const originalCurrency = withdrawalInfo.currencyPair.split('/')[0];
-      const withdrawal = Number(withdrawalInfo.withdraw);
-      const fee = Number(currentFee);
-      const rate = Number(currentRate);
+  const computeAmountOfReceipt = useCallback(
+    (rate: string, fee: string) => {
+      const rateNum = Number(rate);
+      if (!rate || isNaN(rateNum) || rateNum <= 0) return '';
+      const originalCurrency = withdrawalInfo.currencyPair?.split('/')[0];
+      const withdrawNum = Number(withdrawalInfo.withdraw);
+      const feeNum = Number(fee) || 0;
       const isMinusFeeFirst = withdrawalInfo.feeCurrency === originalCurrency;
-      const rawWithdrawalAmount = isMinusFeeFirst ? withdrawal - fee : withdrawal;
+      const rawWithdrawAmount = isMinusFeeFirst ? withdrawNum - feeNum : withdrawNum;
       const rawTargetAmount =
         withdrawalInfo.withdrawCurrency === originalCurrency
-          ? rawWithdrawalAmount * rate
-          : rawWithdrawalAmount / rate;
-      const amountOfReceipt = isMinusFeeFirst ? rawTargetAmount : rawTargetAmount - fee;
-      setAmountOfReceipt(amountOfReceipt.toFixed(5));
-      form.setValue('amountOfReceipt', amountOfReceipt.toFixed(5));
-    }
-  }, [
-    form,
-    currentFee,
-    currentRate,
-    withdrawalInfo.currencyPair,
-    withdrawalInfo.feeCurrency,
-    withdrawalInfo.withdraw,
-    withdrawalInfo.withdrawCurrency,
-  ]);
+          ? rawWithdrawAmount * rateNum
+          : rawWithdrawAmount / rateNum;
+      const amount = isMinusFeeFirst ? rawTargetAmount : rawTargetAmount - feeNum;
+      return truncateToScale(amount, withdrawData.factWithdrawScale);
+    },
+    [
+      withdrawData.factWithdrawScale,
+      withdrawalInfo.currencyPair,
+      withdrawalInfo.feeCurrency,
+      withdrawalInfo.withdraw,
+      withdrawalInfo.withdrawCurrency,
+    ],
+  );
+  useEffect(() => {
+    if (!isAudit || amountManual) return;
+    const amount = computeAmountOfReceipt(currentRate, currentFee);
+    if (!amount) return;
+    setAmountOfReceipt(amount);
+    form.setValue('amountOfReceipt', amount);
+  }, [amountManual, computeAmountOfReceipt, currentFee, currentRate, form, isAudit]);
+  const handleAmountOfReceiptChange = (value: string) => {
+    setAmountOfReceipt(value);
+    setAmountManual(true);
+    form.setValue('amountOfReceipt', value);
+  };
+  const handleAmountOfReceiptBlur = () => {
+    const numValue = Number(amountOfReceipt);
+    if (!amountOfReceipt || isNaN(numValue)) return;
+    const value = truncateToScale(numValue, withdrawData.factWithdrawScale);
+    setAmountOfReceipt(value);
+    form.setValue('amountOfReceipt', value);
+  };
   const methodName = useMemo(() => {
     return (
       outMoneyMethodList?.data?.find(item => item.id === withdrawalInfo.method?.toString())?.name ||
@@ -320,7 +350,8 @@ export const WithdrawalInfoCard: FC<{
                     unit={withdrawalInfo.targetCurrency}
                     disabled={!isAudit}
                     value={!isAudit ? withdrawalInfo.factWithdraw || '' : amountOfReceipt}
-                    onChange={e => setAmountOfReceipt(e.target.value)}
+                    onChange={e => handleAmountOfReceiptChange(e.target.value)}
+                    onBlur={handleAmountOfReceiptBlur}
                   />
                 </>
               }
