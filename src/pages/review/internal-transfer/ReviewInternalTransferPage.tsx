@@ -36,6 +36,7 @@ export const ReviewInternalTransferPage = () => {
     status: '',
     verifyUserName: '',
     dealTicket: '',
+    emailOrPhone: '',
   });
 
   const { data: internalTransferList, isLoading: internalTransferListLoading } =
@@ -64,6 +65,7 @@ export const ReviewInternalTransferPage = () => {
       status: '',
       verifyUserName: '',
       dealTicket: '',
+      emailOrPhone: '',
     });
     setResetKey(k => k + 1);
     setPageNum(0);

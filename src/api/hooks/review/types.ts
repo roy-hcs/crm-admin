@@ -184,6 +184,7 @@ export type InternalTransferListParams = BasicParams & {
   status?: number | string;
   verifyUserName?: string;
   dealTicket?: string | number;
+  emailOrPhone?: string;
   params: {
     fuzzyStartTime?: string;
     fuzzyEndTime?: string;
@@ -514,6 +515,7 @@ export type CrmInfoVerifyListParams = {
   infoType?: string;
   status?: string;
   verifyUserName?: string;
+  emailOrPhone?: string;
   params: {
     beginTime?: string;
     endTime?: string;

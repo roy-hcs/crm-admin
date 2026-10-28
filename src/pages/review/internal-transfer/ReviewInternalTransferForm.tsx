@@ -20,6 +20,7 @@ type FormData = {
   outAccount: string;
   verifyUserName: string;
   dealTicket: string | number;
+  emailOrPhone: string;
 };
 
 export const ReviewInternalTransferForm = ({
@@ -46,6 +47,7 @@ export const ReviewInternalTransferForm = ({
       outAccount: params.fuzzyOutAccount || '',
       dealTicket: otherParams.dealTicket || '',
       verifyUserName: otherParams.verifyUserName || '',
+      emailOrPhone: otherParams.emailOrPhone || '',
       submitTime: { from: params.fuzzyStartTime || '', to: params.fuzzyEndTime || '' },
     },
   });
@@ -57,6 +59,7 @@ export const ReviewInternalTransferForm = ({
       status: data.status,
       dealTicket: String(data.dealTicket || ''),
       verifyUserName: data.verifyUserName,
+      emailOrPhone: data.emailOrPhone,
     });
     setParams({
       fuzzyStartTime: formatDate(data.submitTime.from),
@@ -74,6 +77,7 @@ export const ReviewInternalTransferForm = ({
       outAccount: '',
       dealTicket: '',
       verifyUserName: '',
+      emailOrPhone: '',
       submitTime: { from: '', to: '' },
     });
   };
@@ -141,6 +145,11 @@ export const ReviewInternalTransferForm = ({
         name="tradeServerOrderNumber"
         label={t('table.tradeServerOrderNumber')}
         placeholder={t('common.pleaseInput', { field: t('table.tradeServerOrderNumber') })}
+      />
+      <FormInput
+        name="emailOrPhone"
+        label={t('table.emailOrPhone')}
+        placeholder={t('common.pleaseInput', { field: t('table.emailOrPhone') })}
       />
 
       <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">

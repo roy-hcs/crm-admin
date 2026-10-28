@@ -35,6 +35,7 @@ export function InformationPage() {
     infoType: '',
     status: '',
     verifyUserName: '',
+    emailOrPhone: '',
   });
   const { data: useInfoTyperRes, isLoading: useInfoTypeloading } = useInfoTypeList();
   const { data: data, isLoading: loading } = useCrmInfoVerifyList({
@@ -52,6 +53,7 @@ export function InformationPage() {
       infoType: '',
       status: '',
       verifyUserName: '',
+      emailOrPhone: '',
     });
     setResetKey(k => k + 1);
     setPageNum(0);

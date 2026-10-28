@@ -20,6 +20,7 @@ type FormData = {
   infoType: string;
   status: string;
   verifyUserName: string;
+  emailOrPhone: string;
 };
 
 export const InformationForm = ({
@@ -32,12 +33,24 @@ export const InformationForm = ({
 }: {
   setParams: Dispatch<SetStateAction<CrmInfoVerifyListParams['params']>>;
   setCommonParams: Dispatch<
-    SetStateAction<{ userId: string; infoType: string; status: string; verifyUserName: string }>
+    SetStateAction<{
+      userId: string;
+      infoType: string;
+      status: string;
+      verifyUserName: string;
+      emailOrPhone: string;
+    }>
   >;
   infoTypeList: InfoTypeItem[];
   reset: () => void;
   params: CrmInfoVerifyListParams['params'];
-  commonParams: { userId: string; infoType: string; status: string; verifyUserName: string };
+  commonParams: {
+    userId: string;
+    infoType: string;
+    status: string;
+    verifyUserName: string;
+    emailOrPhone: string;
+  };
 }) => {
   const { t } = useTranslation();
 
@@ -47,6 +60,7 @@ export const InformationForm = ({
       infoType: commonParams.infoType || '',
       status: commonParams.status || '',
       verifyUserName: commonParams.verifyUserName || '',
+      emailOrPhone: commonParams.emailOrPhone || '',
       time: { from: params.beginTime || '', to: params.endTime || '' },
     },
   });
@@ -63,6 +77,7 @@ export const InformationForm = ({
       infoType: data.infoType,
       status: data.status,
       verifyUserName: data.verifyUserName,
+      emailOrPhone: data.emailOrPhone,
     });
   };
 
@@ -73,6 +88,7 @@ export const InformationForm = ({
       infoType: '',
       status: '',
       verifyUserName: '',
+      emailOrPhone: '',
       time: { from: '', to: '' },
     });
   };
@@ -126,6 +142,11 @@ export const InformationForm = ({
         placeholder={t('common.pleaseInput', {
           field: t('information.verifyUserName'),
         })}
+      />
+      <FormInput
+        name="emailOrPhone"
+        label={t('table.emailOrPhone')}
+        placeholder={t('common.pleaseInput', { field: t('table.emailOrPhone') })}
       />
 
       <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
