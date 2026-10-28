@@ -38,6 +38,7 @@ type FormData = {
   accountTypes: string[];
   channelIds: string[];
   roleId: string;
+  emailOrPhone: string;
 };
 
 export const ReviewWithdrawalForm = ({
@@ -81,6 +82,7 @@ export const ReviewWithdrawalForm = ({
       channelIds: toStringArray(otherParams.channelIds),
       orderId: otherParams.orderId || '',
       roleId: otherParams.roleId || '',
+      emailOrPhone: otherParams.emailOrPhone || '',
     },
   });
 
@@ -105,6 +107,7 @@ export const ReviewWithdrawalForm = ({
       channelIds: data.channelIds ? data.channelIds.join(',') : '',
       orderId: data.orderId,
       roleId: data.roleId,
+      emailOrPhone: data.emailOrPhone,
     });
     setParams({
       beginTime: formatDate(data.submitTime.from),
@@ -141,6 +144,7 @@ export const ReviewWithdrawalForm = ({
       channelIds: [],
       roleId: '',
       orderId: '',
+      emailOrPhone: '',
     });
   };
   return (
@@ -197,6 +201,11 @@ export const ReviewWithdrawalForm = ({
         name="verifyUserName"
         label={t('table.currentAuditor')}
         placeholder={t('common.pleaseInput', { field: t('table.currentAuditor') })}
+      />
+      <FormInput
+        name="emailOrPhone"
+        label={t('table.emailOrPhone')}
+        placeholder={t('common.pleaseInput', { field: t('table.emailOrPhone') })}
       />
       <FormSelect
         name="status"

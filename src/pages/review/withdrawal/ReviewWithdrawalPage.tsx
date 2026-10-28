@@ -63,6 +63,7 @@ export const ReviewWithdrawalPage = () => {
     accountTypes: '',
     channelIds: '',
     roleId: '',
+    emailOrPhone: '',
   });
 
   const { data: outMoneyMethodListRes } = useOutMoneyMethodList();
@@ -150,6 +151,7 @@ export const ReviewWithdrawalPage = () => {
       accountTypes: '',
       channelIds: '',
       roleId: '',
+      emailOrPhone: '',
     });
     setResetKey(k => k + 1);
     setPageNum(0);

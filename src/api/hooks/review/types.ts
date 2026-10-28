@@ -314,6 +314,7 @@ export type WithdrawListParams = BasicParams & {
   accountTypes?: string;
   channelIds?: string;
   roleId?: string;
+  emailOrPhone?: string;
   params: {
     beginTime?: string;
     endTime?: string;
