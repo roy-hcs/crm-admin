@@ -36,6 +36,7 @@ export type CrmRebateTradersItem = {
 export type CurrencyItem = {
   id: string;
   currencyAbbr: string;
+  currencyNameChn?: string;
 };
 export type CurrencyListResponse = BasicRes<CurrencyItem>;
 

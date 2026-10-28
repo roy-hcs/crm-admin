@@ -103,6 +103,16 @@ export function useChangeUserStatus() {
   });
 }
 
+/**
+ * 批量创建 CRM 账户钱包（currencies/ids 均为逗号分隔）
+ */
+export function useBatchCreateWallet() {
+  return useMutation({
+    mutationFn: (params: { ids: string; currencies: string }) =>
+      apiFormPost('/system/crmUser/setAllWallet', params),
+  });
+}
+
 // Trading Account hooks
 export function useCrmDealAccountList(
   params: CrmDealAccountListParams,

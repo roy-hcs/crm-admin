@@ -11,16 +11,19 @@ import {
   Tag,
   UserRoundCog,
   UsersRound,
+  Wallet,
 } from 'lucide-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CRMAccountsForm, CRMFormRef } from './components/CRMAccountsForm';
 import { AddUserDialog } from './components/AddUserDialog';
+import { BatchCreateWalletDialog } from './components/BatchCreateWalletDialog';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { RrhButton } from '@/components/common/RrhButton';
 import { useTranslation } from 'react-i18next';
 import { PageInfo } from '@/components/common/PageInfo';
-import { CRMColumnDef, DataTable } from '@/components/table';
+import { CRMColumnDef, DataTable, DataTableRef } from '@/components/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { StatusCell } from './components/StatusCell';
 import { RrhDropdown } from '@/components/common/RrhDropdown';
@@ -107,6 +110,18 @@ export const CRMAccounts = () => {
   const { openTab } = useTabActions();
   const [dialogOpen, setDialogOpen] = useState<DialogType>(null);
   const [id, setId] = useState<string>('');
+  const tableRef = useRef<DataTableRef>(null);
+  const [selectedRows, setSelectedRows] = useState<CrmUserItem[]>([]);
+  const [openBatchWallet, setOpenBatchWallet] = useState(false);
+
+  const clearSelection = useCallback(() => {
+    setSelectedRows([]);
+    tableRef.current?.selectionClear?.();
+  }, []);
+
+  useEffect(() => {
+    clearSelection();
+  }, [pageNum, pageSize, params, otherParams, tags, clearSelection]);
 
   const allColumns = useMemo<CRMColumnDef<CrmUserItem, unknown>[]>(
     () => [
@@ -396,6 +411,15 @@ export const CRMAccounts = () => {
       {
         label: (
           <RrhButton variant="ghost" className="flex w-full items-center justify-start">
+            <Wallet className="size-4" />
+            <span>{t('CRMAccountPage.BatchCreateWallet')}</span>
+          </RrhButton>
+        ),
+        value: 'setAllWallet',
+      },
+      {
+        label: (
+          <RrhButton variant="ghost" className="flex w-full items-center justify-start">
             <UsersRound className="size-4" />
             <span>{t('CRMAccountPage.UserStatistics')}</span>
           </RrhButton>
@@ -470,7 +494,18 @@ export const CRMAccounts = () => {
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </Button>
-            <RrhDropdown Trigger={<Ellipsis className="size-4" />} dropdownList={btnsList} />
+            <RrhDropdown
+              Trigger={<Ellipsis className="size-4" />}
+              dropdownList={btnsList}
+              callToAction={action => {
+                if (action !== 'setAllWallet') return;
+                if (selectedRows.length === 0) {
+                  toast.error(t('CRMAccountPage.selectAtLeastOneAccount'));
+                  return;
+                }
+                setOpenBatchWallet(true);
+              }}
+            />
 
             <ColumnVisibilityButton
               columnMeta={columnMeta}
@@ -483,6 +518,7 @@ export const CRMAccounts = () => {
           </div>
         </div>
         <DataTable
+          ref={tableRef}
           columns={tableColumns}
           data={crmUsers?.rows || []}
           pageCount={Math.ceil(+(crmUsers?.total || 0) / pageSize)}
@@ -491,6 +527,16 @@ export const CRMAccounts = () => {
           onPageChange={setPageNum}
           onPageSizeChange={setPageSize}
           loading={crmUsersLoading}
+          onSelectionChange={setSelectedRows}
+        />
+        <BatchCreateWalletDialog
+          open={openBatchWallet}
+          setOpen={setOpenBatchWallet}
+          rows={selectedRows}
+          onSuccess={() => {
+            clearSelection();
+            refetchCrmUser();
+          }}
         />
         <ResetPassword
           id={id}
