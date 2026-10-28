@@ -450,6 +450,7 @@ type CommonRebateBaseParams = {
 
 export type EditRebateBaseAddOrUpdateParams = CommonRebateBaseParams & {
   timeIntervalSetting: string;
+  negativeRabate: string;
 };
 
 export type RebateFeeAddOrUpdate = {

@@ -2322,6 +2322,8 @@
     "lastOrderRebateTime": "订单开始返佣时间",
     "lastOrderRebateTimeDesc": "订单的平仓时间晚于该时间才可获得返佣；不设置表示没有限制",
     "personRabateCheck": "是否开启自动反佣审核",
+    "negativeRabate": "负余额不返佣(Beta)",
+    "negativeRabateDesc": "当交易账号余额为负值时不对负余额时间内的订单进行交易返佣",
     "settleStyle": "请选择结算方式",
     "settleTimeRadio": {
       "0": "实时 订单平仓后实时返佣到返佣账户",

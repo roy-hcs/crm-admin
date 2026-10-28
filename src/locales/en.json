@@ -2290,6 +2290,8 @@
     },
     "personRabateCheck": "Whether to enable automatic rebate review",
     "personRabateCheckDesc": "If you choose No, it will be reviewed manually.",
+    "negativeRabate": "Negative balance not rebate (Beta)",
+    "negativeRabateDesc": "When the trading account balance is negative, no commission will be applied to orders placed during the negative balance period",
     "rebateAccountSettings": "Rebate account settings",
     "remarkLimit": "Order comment restrictions",
     "remarkLimitDesc": "If the comment of the deposit order contains this character, no commission will be rebate; if it is not set, there is no limit.",

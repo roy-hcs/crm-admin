@@ -279,6 +279,7 @@ export function TradingRebate() {
   const settleWeek = rebateRes?.data?.rebateBase?.settleWeek || '';
   const settleWeekTime = rebateRes?.data?.rebateBase?.settleWeekTime || '';
   const rebateType = rebateRes?.data?.rebateBase?.rebateType || '';
+  const negativeRabate = `${rebateRes?.data?.rebateBase?.negativeRabate ?? '0'}`;
   const { mutateAsync: editBase } = useEditRebateBaseAddOrUpdate();
   const form = useForm<FormValues>({
     defaultValues: {
@@ -294,6 +295,7 @@ export function TradingRebate() {
       settleWeekTime: '', // 周结
       rebateType: '',
       timeIntervalSetting: '1',
+      negativeRabate: '0',
     },
   });
 
@@ -354,6 +356,7 @@ export function TradingRebate() {
           settleWeekTime: data.settleWeekTime,
           rebateType: '1',
           timeIntervalSetting: data.timeIntervalSetting,
+          negativeRabate: data.negativeRabate,
         };
         const res = await editBase(params);
         if (res.code === 0) {
@@ -381,6 +384,7 @@ export function TradingRebate() {
       settleWeekTime: settleWeekTime,
       rebateType: rebateType,
       timeIntervalSetting: timeIntervalSetting,
+      negativeRabate: negativeRabate,
     });
 
     // 记录接口基础值：仅使用接口数据更新缓存，不记录用户临时输入。
@@ -408,6 +412,7 @@ export function TradingRebate() {
     settleWeek,
     settleWeekTime,
     rebateType,
+    negativeRabate,
   ]);
 
   const handleConfirm = () => {
@@ -553,6 +558,21 @@ export function TradingRebate() {
             )}
           </div>
         )}
+
+        <FormRadio
+          name="negativeRabate"
+          orientation="horizontal"
+          label={t('RebateBasicSettingsPage.negativeRabate')}
+          labeTipsDom={
+            <div className="text-muted-foreground text-xs leading-4">
+              *{t('RebateBasicSettingsPage.negativeRabateDesc')}
+            </div>
+          }
+          options={[
+            { label: t('common.yes'), value: '1' },
+            { label: t('common.no'), value: '0' },
+          ]}
+        />
       </RrhForm>
       <div className="flex justify-end">
         <RrhButton variant="default" onClick={handleConfirm}>
