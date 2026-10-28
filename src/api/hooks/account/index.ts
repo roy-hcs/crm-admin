@@ -104,6 +104,16 @@ export function useChangeUserStatus() {
 }
 
 /**
+ * 批量修改 CRM 账户类型（ids 逗号分隔，accountType 取值 1~4）
+ */
+export function useBatchSetAccountType() {
+  return useMutation({
+    mutationFn: (params: { ids: string; accountType: string }) =>
+      apiFormPost('/system/crmUser/setAllAccountType', params),
+  });
+}
+
+/**
  * 批量创建 CRM 账户钱包（currencies/ids 均为逗号分隔）
  */
 export function useBatchCreateWallet() {

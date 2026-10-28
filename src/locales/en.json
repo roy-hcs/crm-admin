@@ -32,6 +32,8 @@
     "WalletCurrency": "Wallet Currency",
     "pleaseSelectWalletCurrency": "Please select wallet currency!",
     "selectAtLeastOneAccount": "Please select at least one account!",
+    "BatchSetAccountType": "Modify CRM Account Types in Batch",
+    "pleaseSelectAccountType": "Please select a CRM account type!",
     "Superior": "Superior",
     "UserStatistics": "User statistics",
     "firstName": "name",

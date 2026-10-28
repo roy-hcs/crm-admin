@@ -9,6 +9,7 @@ import {
   RefreshCcw,
   Search,
   Tag,
+  UserCog,
   UserRoundCog,
   UsersRound,
   Wallet,
@@ -17,6 +18,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CRMAccountsForm, CRMFormRef } from './components/CRMAccountsForm';
 import { AddUserDialog } from './components/AddUserDialog';
 import { BatchCreateWalletDialog } from './components/BatchCreateWalletDialog';
+import { BatchSetAccountTypeDialog } from './components/BatchSetAccountTypeDialog';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
@@ -115,6 +117,7 @@ export const CRMAccounts = () => {
   const tableRef = useRef<DataTableRef>(null);
   const [selectedRows, setSelectedRows] = useState<CrmUserItem[]>([]);
   const [openBatchWallet, setOpenBatchWallet] = useState(false);
+  const [openBatchAccountType, setOpenBatchAccountType] = useState(false);
 
   const clearSelection = useCallback(() => {
     setSelectedRows([]);
@@ -443,6 +446,15 @@ export const CRMAccounts = () => {
       {
         label: (
           <RrhButton variant="ghost" className="flex w-full items-center justify-start">
+            <UserCog className="size-4" />
+            <span>{t('CRMAccountPage.BatchSetAccountType')}</span>
+          </RrhButton>
+        ),
+        value: 'setAllAccountType',
+      },
+      {
+        label: (
+          <RrhButton variant="ghost" className="flex w-full items-center justify-start">
             <Wallet className="size-4" />
             <span>{t('CRMAccountPage.BatchCreateWallet')}</span>
           </RrhButton>
@@ -530,12 +542,16 @@ export const CRMAccounts = () => {
               Trigger={<Ellipsis className="size-4" />}
               dropdownList={btnsList}
               callToAction={action => {
-                if (action !== 'setAllWallet') return;
+                if (action !== 'setAllWallet' && action !== 'setAllAccountType') return;
                 if (selectedRows.length === 0) {
                   toast.error(t('CRMAccountPage.selectAtLeastOneAccount'));
                   return;
                 }
-                setOpenBatchWallet(true);
+                if (action === 'setAllWallet') {
+                  setOpenBatchWallet(true);
+                } else {
+                  setOpenBatchAccountType(true);
+                }
               }}
             />
 
@@ -564,6 +580,15 @@ export const CRMAccounts = () => {
         <BatchCreateWalletDialog
           open={openBatchWallet}
           setOpen={setOpenBatchWallet}
+          rows={selectedRows}
+          onSuccess={() => {
+            clearSelection();
+            refetchCrmUser();
+          }}
+        />
+        <BatchSetAccountTypeDialog
+          open={openBatchAccountType}
+          setOpen={setOpenBatchAccountType}
           rows={selectedRows}
           onSuccess={() => {
             clearSelection();
