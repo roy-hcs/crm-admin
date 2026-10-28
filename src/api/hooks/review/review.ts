@@ -174,10 +174,11 @@ export function useDepositListSum() {
   });
 }
 
-export function useThirdPaymentList() {
+export function useThirdPaymentList(params: { channelType?: number } = {}) {
   return useQuery({
-    queryKey: ['thirdPaymentList'],
-    queryFn: () => apiFormPostCustom<ThirdPaymentListRes>(`/system/thirdPaymentSetting/list`, {}),
+    queryKey: ['thirdPaymentList', params],
+    queryFn: () =>
+      apiFormPostCustom<ThirdPaymentListRes>(`/system/thirdPaymentSetting/list`, params),
   });
 }
 export function useOutMoneyMethodList() {

@@ -1,5 +1,6 @@
 import {
   useOutMoneyMethodList,
+  useThirdPaymentList,
   useWithdrawList,
   useWithdrawListSum,
   WithdrawListParams,
@@ -12,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { formatDate } from '@/lib/utils';
 import { RrhSelect } from '@/components/common/RrhSelect';
 import { RrhRangeInput } from '@/components/common/RrhRangeInput';
+import { RrhMultiSelect } from '@/components/common/RrhMultiSelect';
 import { CRMColumnDef, DataTable } from '@/components/table';
 import { useColumnVisibility } from '@/hooks/useColumnVisibility';
 import { ColumnVisibilityButton } from '@/components/common/ColumnVisibilityButton';
@@ -29,12 +31,14 @@ export const WithdrawalRecordPage = ({ userId }: { userId: string }) => {
   >({
     status: '1',
     method: '',
+    channelIds: '',
   });
   const [orderByColumn, setOrderByColumn] = useState('');
   const [isAsc, setIsAsc] = useState('');
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [withdrawalMethod, setWithdrawalMethod] = useState('');
+  const [channelIds, setChannelIds] = useState<string[]>([]);
   const [finishTimeRange, setFinishTimeRange] = useState<{
     from: Date | undefined;
     to: Date | undefined;
@@ -57,6 +61,8 @@ export const WithdrawalRecordPage = ({ userId }: { userId: string }) => {
     { enabled: true },
   );
   const { data: outMoneyMethodList } = useOutMoneyMethodList();
+  // channelType=2 为出金通道，与旧版通道名称筛选项来源一致
+  const { data: thirdPaymentList } = useThirdPaymentList({ channelType: 2 });
 
   const { mutate: getWithdrawSum } = useWithdrawListSum();
   useEffect(() => {
@@ -75,10 +81,12 @@ export const WithdrawalRecordPage = ({ userId }: { userId: string }) => {
     setOtherParams({
       status: '1',
       method: '',
+      channelIds: '',
     });
     setOrderByColumn('');
     setIsAsc('');
     setPageNum(0);
+    setChannelIds([]);
     setFinishTimeRange({
       from: undefined,
       to: undefined,
@@ -95,6 +103,7 @@ export const WithdrawalRecordPage = ({ userId }: { userId: string }) => {
     setOtherParams({
       status: '1',
       method: withdrawalMethod,
+      channelIds: channelIds.join(','),
     });
     setPageNum(0);
   };
@@ -115,6 +124,11 @@ export const WithdrawalRecordPage = ({ userId }: { userId: string }) => {
             ? outMoneyMethodList?.data?.find(item => item.id === method.toString())?.name || '-'
             : '-';
         },
+      },
+      {
+        id: 'channelName',
+        header: t('table.Channel'),
+        accessorFn: row => row.channelName || '-',
       },
       {
         id: 'withdrawalAccount',
@@ -201,6 +215,17 @@ export const WithdrawalRecordPage = ({ userId }: { userId: string }) => {
             label: item.name,
             value: item.id,
           }))}
+          showRowValue={false}
+          className="min-w-40"
+        />
+        <RrhMultiSelect
+          options={(thirdPaymentList?.rows || []).map(item => ({
+            label: item.channelName,
+            value: String(item.id),
+          }))}
+          value={channelIds}
+          onValueChange={values => setChannelIds(values)}
+          placeholder={t('common.pleaseSelect') + t('table.Channel')}
           showRowValue={false}
           className="min-w-40"
         />
