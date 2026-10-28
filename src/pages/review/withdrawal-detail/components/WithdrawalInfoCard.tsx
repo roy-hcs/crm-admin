@@ -148,11 +148,19 @@ export const WithdrawalInfoCard: FC<{
       <div className="max-w-125">
         {withdrawData.largeWithdrawAmountSingle ||
         withdrawData.orderTipSize ||
-        withdrawData.shortorderTipSum ? (
+        withdrawData.shortorderTipSum ||
+        withdrawData.googleCodeEx != null ||
+        withdrawData.firstCryptoAddress != null ? (
           <div className="text-destructive bg-destructive/5 mb-4 flex gap-3 rounded-lg px-4 py-3">
             <CircleAlert className="text-destructive mt-0.5 size-4" />
             <div>
               <div className="font-medium">{t('review.orderAbnormalWarning')}</div>
+              {withdrawData.googleCodeEx != null && (
+                <div>{t('review.googleCodeNotSubmittedWarning')}</div>
+              )}
+              {withdrawData.firstCryptoAddress != null && (
+                <div>{t('review.firstCryptoAddressWarning')}</div>
+              )}
               {withdrawData.largeWithdrawAmountSingle && (
                 <div>
                   {t('review.largeWithdrawalWarning')}

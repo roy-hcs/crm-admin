@@ -16,6 +16,7 @@ import { PageInfo } from '@/components/common/PageInfo';
 import { RrhForm } from '@/components/form/RrhForm';
 import { RiskControlTab } from './components/risk-control/RiskControlTab';
 import { IpWarningBanner } from './components/IpWarningBanner';
+import { CancelWithdrawOrderDialog } from './components/CancelWithdrawOrderDialog';
 import { CrmAccountActivityListPage } from '@/pages/account/crm-accounts-detail/pages/CrmAccountActivityListPage';
 
 export type WithdrawalFormData = {
@@ -242,6 +243,9 @@ export const ReviewWithdrawalDetailPage = () => {
               />
               <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
                 <ReviewStepsCard reviewSteps={reviewSteps} />
+                {(withdrawalInfo.status === 1 || withdrawalInfo.status === 4) && (
+                  <CancelWithdrawOrderDialog withdrawalId={withdrawalId} />
+                )}
                 {isAudit && (
                   <ReviewInfoCard
                     withdrawalInfo={withdrawalInfo}

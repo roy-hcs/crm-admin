@@ -1,5 +1,5 @@
 import { apiFormPost, apiFormPostCustom, apiGetCustom } from '@/api/client';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createEmptyCrmInfoVerifyDetailData,
   CrmInfoVerifyDetailQueryData,
@@ -372,6 +372,19 @@ export function useWithdrawalVerify() {
   return useMutation({
     mutationFn: (params: WithdrawalVerifyParams) =>
       apiFormPostCustom(`/system/crmWithdrawVerify/verify`, params),
+  });
+}
+
+export function useCancelWithdrawOrder() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, remark }: { id: string; remark: string }) =>
+      apiFormPost(`/system/crmWithdrawVerify/cancelOrder/${id}`, { remark }),
+    onSuccess: res => {
+      if (res.code !== 0) return;
+      queryClient.invalidateQueries({ queryKey: ['withdrawalReviewDetail'] });
+      queryClient.invalidateQueries({ queryKey: ['withdrawList'] });
+    },
   });
 }
 export function useSumWithdrawAmount(params: SumWithdrawalAmountParams) {

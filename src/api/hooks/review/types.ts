@@ -770,6 +770,8 @@ export type WithdrawalReviewDetailRes = {
     ipWarningShow?: boolean;
     ipWarningIp?: string;
     ipWarningCount?: number;
+    googleCodeEx?: string | null;
+    firstCryptoAddress?: string | null;
   };
 };
 

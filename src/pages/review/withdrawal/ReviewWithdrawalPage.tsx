@@ -498,14 +498,9 @@ export const ReviewWithdrawalPage = () => {
           return <div className="flex justify-center">{t('common.Operation')}</div>;
         },
         cell: ({ row }) => (
-          <>
-            <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
-              {row.original.status !== 2 ? t('common.View') : t('table.audit')}
-            </RrhButton>
-            {row.original.status === 1 && (
-              <RrhButton variant="ghost">{t('table.cancelWithdrawal')}</RrhButton>
-            )}
-          </>
+          <RrhButton variant="ghost" onClick={() => goToDetail(row.original)}>
+            {row.original.status !== 2 ? t('common.View') : t('table.audit')}
+          </RrhButton>
         ),
       },
     ],
