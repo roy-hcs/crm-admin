@@ -1297,6 +1297,7 @@
     "reviewRecord": "Audit records",
     "reviewReject": "Review rejection",
     "reviewRemarksPlaceholder": "Required when rejecting, within 500 characters",
+    "reviewRemarksPlaceholderCount": "Required when rejecting, within {{max}} characters",
     "submitForReview": "Submit for review",
     "syncToTransactionPlatform": "Sync to trading platform",
     "withdrawalAmountCumulative": "Withdrawal amount (accumulated)",

@@ -1955,6 +1955,7 @@
     "reviewRecord": "审核记录",
     "syncToTransactionPlatform": "同步至交易平台",
     "reviewRemarksPlaceholder": "拒绝时需填写，500个字符以内",
+    "reviewRemarksPlaceholderCount": "拒绝时需填写，{{max}}个字符以内",
     "latestLogin": "最近登录",
     "withdrawalAmountCumulative": "出金金额（累计）",
     "withdrawalAmountDesc": "不同币种订单以美元做合计",

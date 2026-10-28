@@ -7,7 +7,15 @@ import { RrhCard } from '@/components/common/RrhCard';
 import { LabelItem } from '@/components/common/LabelItem';
 import { InfoItem } from '@/components/common/InfoItem';
 
-export const CheckInfoCard = ({ back, roleName }: { back: () => void; roleName?: string }) => {
+export const CheckInfoCard = ({
+  back,
+  roleName,
+  remarkMaxLength = 500,
+}: {
+  back: () => void;
+  roleName?: string;
+  remarkMaxLength?: number;
+}) => {
   const { t } = useTranslation();
 
   const cancel = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -67,8 +75,8 @@ export const CheckInfoCard = ({ back, roleName }: { back: () => void; roleName?:
                 value={field.value}
                 onChange={field.onChange}
                 className="border-input w-full rounded-lg border px-3 py-1 text-sm"
-                placeholder={t('review.reviewRemarksPlaceholder')}
-                maxLength={500}
+                placeholder={t('review.reviewRemarksPlaceholderCount', { max: remarkMaxLength })}
+                maxLength={remarkMaxLength}
               />
             }
           />

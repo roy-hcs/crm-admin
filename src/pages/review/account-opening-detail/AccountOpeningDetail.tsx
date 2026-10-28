@@ -134,7 +134,7 @@ export const AccountOpeningDetailPage = () => {
               <div className="mt-6">
                 <ReviewStepsCard reviewSteps={reviewSteps} />
               </div>
-              {type === 'audit' && <CheckInfoCard back={back} />}
+              {type === 'audit' && <CheckInfoCard back={back} remarkMaxLength={1200} />}
             </div>
           </div>
         </div>
