@@ -2,6 +2,7 @@ import {
   DepositListParams,
   useDepositList,
   useDepositListSum,
+  useThirdPaymentList,
   DepositListItem,
 } from '@/api/hooks/review';
 import { Button } from '@/components/ui/button';
@@ -57,6 +58,8 @@ export const DepositRecordPage = ({ userId }: { userId: string }) => {
     },
     { enabled: true },
   );
+  // 入金列表不返回通道名称，三方入金按 channelId 关联第三方支付设置
+  const { data: thirdPaymentList } = useThirdPaymentList();
 
   const { mutate: getDepositSum } = useDepositListSum();
   useEffect(() => {
@@ -112,6 +115,19 @@ export const DepositRecordPage = ({ userId }: { userId: string }) => {
         cell: ({ row }) => {
           const method = row.original.method;
           return method ? t(`table.${depositMethodsMap[method]}`) : '-';
+        },
+      },
+      {
+        id: 'channelName',
+        header: t('table.Channel'),
+        cell: ({ row }) => {
+          if (row.original.method === 5) {
+            return (
+              thirdPaymentList?.rows?.find(item => `${item.id}` === row.original.channelId)
+                ?.channelName || '-'
+            );
+          }
+          return '-';
         },
       },
       {
@@ -195,7 +211,7 @@ export const DepositRecordPage = ({ userId }: { userId: string }) => {
         cell: ({ row }) => <div>{row.original.verifyTime || '-'}</div>,
       },
     ],
-    [t],
+    [t, thirdPaymentList],
   );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
