@@ -38,6 +38,7 @@ export const WalletAccountsPage = () => {
     Omit<WalletAccountsListParams, 'params' | 'pageSize' | 'pageNum' | 'orderByColumn' | 'isAsc'>
   >({
     currency: '',
+    accounts: '',
   });
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -99,6 +100,7 @@ export const WalletAccountsPage = () => {
     }));
     setOtherParams({
       currency: '',
+      accounts: '',
     });
     setResetKey(k => k + 1);
     setPageNum(0);

@@ -194,6 +194,7 @@ export type GetGroupByServerResponse = string[];
 // Wallet Account related types
 export type WalletAccountsListParams = BasicParams & {
   currency?: string;
+  accounts?: string;
   params: {
     threeCons?: string;
     regStartTime?: string;
@@ -231,6 +232,7 @@ export type WalletAccountsListSumRes = {
 
 export type WalletAccountsListSumParams = {
   currency?: string;
+  accounts?: string;
   params: {
     threeCons?: string;
     regStartTime?: string;

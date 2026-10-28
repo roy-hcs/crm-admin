@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
 import { FormSelect } from '@/components/form/FormSelect';
+import { FormCrmUserSelect } from '@/components/form/FormCrmUserSelect';
 import { WalletAccountsListParams } from '@/api/hooks/account/types';
 import { formatDate } from '@/lib/utils';
 import { BasicParams } from '@/api/types';
@@ -16,6 +17,7 @@ import { RrhForm } from '@/components/form/RrhForm';
 type FormData = {
   threeCons: string;
   currency: string;
+  accounts: string;
   time: { from: string; to: string };
 };
 
@@ -43,6 +45,7 @@ export const WalletAccountsForm = ({
     defaultValues: {
       threeCons: params.threeCons || '',
       currency: otherParams.currency || '',
+      accounts: otherParams.accounts || '',
       time: { from: params.regStartTime || '', to: params.regEndTime || '' },
     },
   });
@@ -51,6 +54,7 @@ export const WalletAccountsForm = ({
     reset();
     setOtherParams({
       currency: data.currency,
+      accounts: data.accounts,
     });
     setParams(pre => ({
       ...pre,
@@ -64,6 +68,7 @@ export const WalletAccountsForm = ({
     form.reset({
       threeCons: '',
       currency: '',
+      accounts: '',
       time: { from: '', to: '' },
     });
   };
@@ -96,6 +101,8 @@ export const WalletAccountsForm = ({
           return { label: i.currencyAbbr, value: i.id };
         })}
       />
+
+      <FormCrmUserSelect name="accounts" label={t('CRMAccountPage.AccountRange')} verticalLabel />
 
       <FormField
         name="time"
