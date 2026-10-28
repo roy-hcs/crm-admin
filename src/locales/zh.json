@@ -26,6 +26,7 @@
     "BatchCreateWallet": "批量创建钱包",
     "selectedAccounts": "已选择 {{count}} 个账户",
     "walletCurrencyMultiple": "钱包币种(多选)",
+    "WalletCurrency": "钱包币种",
     "pleaseSelectWalletCurrency": "请选择钱包币种！",
     "selectAtLeastOneAccount": "至少选择一个账户！",
     "UserStatistics": "用户统计",

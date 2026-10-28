@@ -74,6 +74,7 @@ export type CrmUserItem = BaseEntity & {
   loginTwoFactorAuth: string | null;
   antiPhishingCode: string | null;
   tags: string;
+  walletCurrencies: string | null;
   points: string | null;
   shortCode: string | null;
   userName: string;

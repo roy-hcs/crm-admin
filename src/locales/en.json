@@ -29,6 +29,7 @@
     "BatchCreateWallet": "Batch Create Wallet",
     "selectedAccounts": "Selected {{count}} accounts",
     "walletCurrencyMultiple": "Wallet Currency (Multiple)",
+    "WalletCurrency": "Wallet Currency",
     "pleaseSelectWalletCurrency": "Please select wallet currency!",
     "selectAtLeastOneAccount": "Please select at least one account!",
     "Superior": "Superior",

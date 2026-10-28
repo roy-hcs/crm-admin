@@ -213,6 +213,36 @@ export const CRMAccounts = () => {
         header: t('table.role'),
       },
       {
+        id: 'walletCurrencies',
+        accessorKey: 'walletCurrencies',
+        header: t('CRMAccountPage.WalletCurrency'),
+        cell: ({ row }) => {
+          const currencies = (row.original.walletCurrencies || '')
+            .split(',')
+            .map(currency => currency.trim())
+            .filter(Boolean);
+          if (currencies.length === 0) return <div>-</div>;
+          const remaining = currencies.slice(3);
+          return (
+            <div className="flex items-center gap-1">
+              {currencies.slice(0, 3).map(currency => (
+                <span key={currency} className="border-border rounded-md border p-1">
+                  {currency}
+                </span>
+              ))}
+              {remaining.length > 0 && (
+                <ToolTip
+                  maxWidth="300px"
+                  content={<div className="break-all">{remaining.join(', ')}</div>}
+                >
+                  <span className="border-border rounded-md border p-1">+{remaining.length}</span>
+                </ToolTip>
+              )}
+            </div>
+          );
+        },
+      },
+      {
         id: 'crmRebateLevel',
         accessorKey: 'crmRebateLevel',
         header: t('CRMAccountPage.Level'),
