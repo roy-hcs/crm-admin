@@ -257,6 +257,19 @@ export const DepositInfoCard: FC<{
           )}
         />
 
+        {depositInfo.payOrder && (
+          <FormField
+            name="payOrder"
+            disabled
+            render={() => (
+              <LabelItem
+                label={t('table.outerOrderNo')}
+                ContentDom={<InfoItem info={depositInfo.payOrder || '-'} />}
+              />
+            )}
+          />
+        )}
+
         {depositInfo?.login && (
           <FormField
             name="directBroker"

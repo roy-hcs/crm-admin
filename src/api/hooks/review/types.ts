@@ -881,6 +881,7 @@ export type DepositDetail = {
   userId: string;
   deposit: string;
   channelName: string;
+  payOrder?: string | null;
   digits: number;
   status: number;
 };
