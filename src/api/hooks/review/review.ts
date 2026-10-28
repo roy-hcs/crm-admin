@@ -37,6 +37,7 @@ import {
   LeverageVerifyListParams,
   LeverageVerifyListRes,
   WithdrawalReviewDetailRes,
+  IpWarningDetailRes,
   WithdrawalVerifyParams,
   SumWithdrawalAmountParams,
   SumWithdrawalAmountRes,
@@ -353,6 +354,17 @@ export function useWithdrawalReviewDetail(withdrawalId: string, options: { enabl
         `/system/crmWithdrawVerify/verifyDetail/${withdrawalId}`,
       ),
     enabled: options.enabled,
+  });
+}
+
+export function useIpWarningDetail(withdrawalId: string, options: { enabled: boolean }) {
+  return useQuery({
+    queryKey: ['ipWarningDetail', withdrawalId],
+    queryFn: () =>
+      apiGetCustom<IpWarningDetailRes>(
+        `/system/crmWithdrawVerify/getIpWarningDetail?id=${encodeURIComponent(withdrawalId)}`,
+      ),
+    enabled: options.enabled && !!withdrawalId,
   });
 }
 

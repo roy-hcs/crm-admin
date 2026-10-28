@@ -15,6 +15,7 @@ import { WithdrawalRecordPage } from './components/WithdrawalRecordPage';
 import { PageInfo } from '@/components/common/PageInfo';
 import { RrhForm } from '@/components/form/RrhForm';
 import { RiskControlTab } from './components/risk-control/RiskControlTab';
+import { IpWarningBanner } from './components/IpWarningBanner';
 
 export type WithdrawalFormData = {
   withdrawAmount: string;
@@ -179,6 +180,13 @@ export const ReviewWithdrawalDetailPage = () => {
     <div>
       <PageInfo wrapperCls="py-3" title={t('review.withdrawalReviewDetail')} />
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
+        {withdrawalData.ipWarningShow && (
+          <IpWarningBanner
+            withdrawalId={withdrawalId}
+            ip={withdrawalData.ipWarningIp}
+            count={withdrawalData.ipWarningCount}
+          />
+        )}
         <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
           <Tabs
             defaultValue="withdrawalInfo"

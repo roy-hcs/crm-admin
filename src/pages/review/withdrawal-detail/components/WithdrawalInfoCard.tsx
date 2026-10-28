@@ -1,4 +1,4 @@
-import { useOutMoneyMethodList, WithdrawalReviewDetailRes, WithdrawItem } from '@/api/hooks/review';
+import { useOutMoneyMethodList, WithdrawalReviewDetailRes } from '@/api/hooks/review';
 import { RrhCard } from '@/components/common/RrhCard';
 import { RrhInputWithUnit } from '@/components/common/RrhInputWithUnit';
 import { ToolTip } from '@/components/common/ToolTip';
@@ -23,7 +23,7 @@ export const WithdrawalInfoCard: FC<{
   isAudit: boolean;
   form: UseFormReturn<WithdrawalFormData>;
 }> = ({ withdrawData, isAudit, form }) => {
-  const withdrawalInfo: WithdrawItem = withdrawData.detail;
+  const withdrawalInfo: WithdrawalReviewDetailRes['data']['detail'] = withdrawData.detail;
   const { t } = useTranslation();
   const [currentRate, setCurrentRate] = useState(withdrawalInfo.rate?.toString() || '');
   const [currentFee, setCurrentFee] = useState(withdrawalInfo.fee);
@@ -316,6 +316,16 @@ export const WithdrawalInfoCard: FC<{
                   />
                 </>
               }
+            />
+          )}
+        />
+        <FormField
+          name="ipAddress"
+          disabled
+          render={() => (
+            <LabelItem
+              label={t('table.ipAddress')}
+              ContentDom={<InfoItem info={withdrawalInfo.clientIp || '-'} />}
             />
           )}
         />

@@ -1970,7 +1970,31 @@
     "accumulatedWithdrawals": "累计出金：",
     "accumulatedApplyWithdrawals": "累计申请出金：",
     "times": "次",
-    "shortTimeLargeWithdrawalWarning": "用户短期大额出金："
+    "shortTimeLargeWithdrawalWarning": "用户短期大额出金：",
+    "ipWarning": {
+      "tag": "IP 示警",
+      "otherUsersChip": "{{count}} 个其他 CRM 用户",
+      "descPrefix": "IP",
+      "descSuffix": "可能还被当前 CRM 用户以外的用户使用。",
+      "viewDetail": "查看明细 >",
+      "modalTitle": "IP 示警明细",
+      "subtitlePrefix": "第一行为当前 CRM 用户",
+      "subtitleMid": "（",
+      "subtitleSuffix": "），其余为同一 IP 关联用户。",
+      "relatedIp": "关联 IP",
+      "otherUsers": "其他 CRM 用户",
+      "usersUnit": "个用户",
+      "excludeNote": "数量不含当前客户",
+      "colName": "姓名",
+      "colCrmId": "CRM ID",
+      "colLastLogin": "该 IP 最近登录",
+      "colTotalLogin": "累计登录次数",
+      "colRecentLogin": "近三个月登录次数",
+      "currentCustomer": "当前客户",
+      "timesUnit": "次",
+      "loadFailed": "明细加载失败",
+      "noData": "该 IP 下暂无关联用户"
+    }
   },
   "adminAccounts": {
     "title": "管理员账户",

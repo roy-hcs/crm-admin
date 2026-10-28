@@ -707,7 +707,31 @@ export type withdrawalDetailItem = WithdrawItem & {
   marginlevelTip: number;
   minAdvanceScale: number;
   maxAdvanceScale: number;
+  clientIp?: string | null;
 };
+
+export type IpWarningUserItem = {
+  userId: string;
+  loginName: string;
+  showId: string;
+  lastLoginTime: string | null;
+  lastLoginTimeStr: string | null;
+  totalLoginCount: number;
+  lastThreeMonthLoginCount: number;
+};
+
+export type IpWarningDetailRes = {
+  code: number;
+  msg: string;
+  data: {
+    ipWarningShow: boolean;
+    ipWarningIp?: string;
+    ipWarningCount?: number;
+    ipWarningLocation?: string | null;
+    ipWarningUserList?: IpWarningUserItem[];
+  };
+};
+
 export type WithdrawalReviewDetailRes = {
   code: number;
   msg: string;
@@ -743,6 +767,9 @@ export type WithdrawalReviewDetailRes = {
     shortorderTipSum: string | null;
     shortorderTipDays: string | null;
     shortorderTipSize: string | null;
+    ipWarningShow?: boolean;
+    ipWarningIp?: string;
+    ipWarningCount?: number;
   };
 };
 

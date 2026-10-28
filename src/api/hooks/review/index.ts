@@ -17,6 +17,7 @@ export {
   useBindVerifyList,
   useLeverageVerifyList,
   useWithdrawalReviewDetail,
+  useIpWarningDetail,
   useWithdrawalVerify,
   useDepositReviewDetail,
   useDepositVerify,

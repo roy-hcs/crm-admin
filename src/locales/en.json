@@ -1310,7 +1310,31 @@
     "orderAbnormalWarning": "Abnormal order warning",
     "shortTimeLargeWithdrawalWarning": "Users can withdraw large amounts of money in the short term:",
     "times": "Second-rate",
-    "withinDays": "within days"
+    "withinDays": "within days",
+    "ipWarning": {
+      "tag": "IP Alert",
+      "otherUsersChip": "{{count}} other CRM users",
+      "descPrefix": "IP",
+      "descSuffix": "may also be used by other CRM users.",
+      "viewDetail": "View Details >",
+      "modalTitle": "IP Alert Details",
+      "subtitlePrefix": "The first row is the current CRM user",
+      "subtitleMid": " (",
+      "subtitleSuffix": "), and the rest are associated users under the same IP.",
+      "relatedIp": "Related IP",
+      "otherUsers": "Other CRM Users",
+      "usersUnit": "users",
+      "excludeNote": "Excludes current customer",
+      "colName": "Name",
+      "colCrmId": "CRM ID",
+      "colLastLogin": "Latest IP Login",
+      "colTotalLogin": "Total Logins",
+      "colRecentLogin": "Logins (Last 3 Months)",
+      "currentCustomer": "Current Customer",
+      "timesUnit": "time(s)",
+      "loadFailed": "Failed to load details",
+      "noData": "No related users under this IP"
+    }
   },
   "rolesManagement": {
     "administrator": "administrator",
