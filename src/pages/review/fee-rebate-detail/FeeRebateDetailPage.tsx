@@ -18,6 +18,7 @@ type FormValue = {
   status: string;
   remark: string;
   verifyStep: string;
+  isNeedDeposit: string;
 };
 
 export const FeeRebateDetailPage = () => {
@@ -43,6 +44,7 @@ export const FeeRebateDetailPage = () => {
       status: '1',
       remark: '',
       verifyStep: '',
+      isNeedDeposit: '1',
     },
   });
 
@@ -78,6 +80,7 @@ export const FeeRebateDetailPage = () => {
           rebateStatus: data.status,
           remark: data.remark,
           verifyStep: `${rebateInfo?.verifyStep || ''}`,
+          isNeedDeposit: data.status === '1' ? data.isNeedDeposit : '0',
         };
         const res = await verifyRebate(params);
         if (res.code === 0) {
@@ -103,7 +106,9 @@ export const FeeRebateDetailPage = () => {
           <div className="relative md:w-76">
             <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
               <ReviewStepsCard reviewSteps={reviewSteps} />
-              {isAudit && <CheckInfoCard back={back} roleName={reviewer?.roleName || ''} />}
+              {isAudit && (
+                <CheckInfoCard back={back} roleName={reviewer?.roleName || ''} showIsNeedDeposit />
+              )}
             </div>
           </div>
         </div>

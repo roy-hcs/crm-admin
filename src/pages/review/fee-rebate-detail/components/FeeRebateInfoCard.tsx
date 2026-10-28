@@ -66,6 +66,10 @@ export const FeeRebateInfoCard: FC<{
         label: 'table.commissionAccount',
         value: Info.commissionBase || '-',
       },
+      {
+        label: 'review.depositComment',
+        value: Info.orderComment || '-',
+      },
     ];
   }, [Info]);
 

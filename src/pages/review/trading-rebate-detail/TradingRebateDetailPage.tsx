@@ -19,6 +19,7 @@ type FormValue = {
   status: string;
   remark: string;
   verifyStep: string;
+  isNeedDeposit: string;
 };
 
 export const TradingRebateDetailPage = () => {
@@ -41,6 +42,7 @@ export const TradingRebateDetailPage = () => {
       status: '1',
       remark: '',
       verifyStep: '',
+      isNeedDeposit: '1',
     },
   });
 
@@ -51,6 +53,7 @@ export const TradingRebateDetailPage = () => {
         status: '1',
         remark: rebateInfo?.remark || '',
         verifyStep: `${rebateInfo?.verifyStep || ''}`,
+        isNeedDeposit: '1',
       });
     }
   }, [form, rebateInfo]);
@@ -90,6 +93,7 @@ export const TradingRebateDetailPage = () => {
           rebateStatus: data.status,
           remark: data.remark,
           verifyStep: `${rebateInfo?.verifyStep || ''}`,
+          isNeedDeposit: data.status === '1' ? data.isNeedDeposit : '0',
         };
         const res = await verifyRebate(params);
         if (res.code === 0) {
@@ -115,7 +119,9 @@ export const TradingRebateDetailPage = () => {
           <div className="relative md:w-76">
             <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
               <ReviewStepsCard reviewSteps={reviewSteps} />
-              {isAudit && <CheckInfoCard back={back} roleName={reviewer?.roleName || ''} />}
+              {isAudit && (
+                <CheckInfoCard back={back} roleName={reviewer?.roleName || ''} showIsNeedDeposit />
+              )}
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { useWatch } from 'react-hook-form';
 import { FormField } from '@/components/ui/form';
 import { RrhRadioGroup } from '@/components/common/RrhRadioGroup';
 import { RrhButton } from '@/components/common/RrhButton';
@@ -11,12 +12,15 @@ export const CheckInfoCard = ({
   back,
   roleName,
   remarkMaxLength = 500,
+  showIsNeedDeposit = false,
 }: {
   back: () => void;
   roleName?: string;
   remarkMaxLength?: number;
+  showIsNeedDeposit?: boolean;
 }) => {
   const { t } = useTranslation();
+  const status = useWatch({ name: 'status' }) as string | undefined;
 
   const cancel = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -64,6 +68,28 @@ export const CheckInfoCard = ({
           />
         )}
       />
+
+      {showIsNeedDeposit && status !== '0' && (
+        <FormField
+          name="isNeedDeposit"
+          render={({ field }) => (
+            <LabelItem
+              label={t('depositReview.depositFunds')}
+              ContentDom={
+                <RrhRadioGroup
+                  value={field.value || '1'}
+                  onValueChange={field.onChange}
+                  labelClassName="font-medium"
+                  radioItems={[
+                    { value: '1', label: t('common.yes') },
+                    { value: '0', label: t('common.no') },
+                  ]}
+                />
+              }
+            />
+          )}
+        />
+      )}
 
       <FormField
         name="remark"

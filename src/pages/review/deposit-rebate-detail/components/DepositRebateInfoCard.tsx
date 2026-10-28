@@ -58,6 +58,10 @@ export const DepositRebateInfoCard: FC<{
         label: 'table.commissionAccount',
         value: Info.rebateAccountName || '-',
       },
+      {
+        label: 'review.depositComment',
+        value: Info.orderComment || '-',
+      },
     ];
   }, [Info]);
 

@@ -1188,6 +1188,7 @@ export type RebateVerifyParams = {
   rebateStatus: string;
   remark: string;
   verifyStep: string;
+  isNeedDeposit?: string;
 };
 
 export type FeeRebateDetail = rebateCommissionDetail;
