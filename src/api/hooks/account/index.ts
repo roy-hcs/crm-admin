@@ -49,6 +49,8 @@ import {
   CrmUserVipEditParams,
   CrmUserVipDetailRes,
   CrmUserVipGetPreferenceRes,
+  CrmUserVipUserListParams,
+  CrmUserVipUserListRes,
   WalletBalanceAdjustParams,
   WalletBalanceAdjustRes,
 } from './types';
@@ -592,6 +594,16 @@ export function useCrmUserVipDetail(id: string) {
     queryKey: ['crmUserVipDetail', id],
     queryFn: () => apiGetCustom<CrmUserVipDetailRes>(`/system/crmUserVip/detail/${id}`),
     enabled: Boolean(id),
+  });
+}
+
+/**
+ * 账户管理-客户忠诚计划 等级客户列表
+ */
+export function useCrmUserVipUserList(params: CrmUserVipUserListParams) {
+  return useQuery({
+    queryKey: ['crmUserVipUserList', params],
+    queryFn: () => apiFormPostCustom<CrmUserVipUserListRes>('/system/crmUserVip/userList', params),
   });
 }
 

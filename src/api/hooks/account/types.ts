@@ -701,6 +701,32 @@ export type CrmUserVipDetailRes = {
   };
 };
 
+export type CrmUserVipUserListParams = BasicParams & {
+  vipId: string;
+  name?: string;
+  params: {
+    accounts?: string;
+    drirectFlag?: string;
+  };
+};
+
+export type CrmUserVipUserItem = {
+  id: string;
+  name: string | null;
+  lastName: string | null;
+  showId: string | null;
+  mzone: string | null;
+  mobile: string | null;
+  email: string | null;
+  accountType: number | null;
+  vipId: string | null;
+  vipLevel: number | null;
+  vipName: string | null;
+  role: string | null;
+};
+
+export type CrmUserVipUserListRes = BasicRes<CrmUserVipUserItem>;
+
 export type WalletBalanceAdjustParams = {
   amount: string;
   operationType: string;
@@ -709,7 +735,6 @@ export type WalletBalanceAdjustParams = {
   googleCode?: string;
   ids: string;
 };
-
 export type WalletBalanceAdjustRes = {
   code: number;
   data: {

@@ -2737,6 +2737,8 @@
     "rankSort": "等级排序",
     "rankSortDesc": "拖拽下方客户等级，越靠近顶部视为更高的等级，反之，靠下方则为较低的客户等级。",
     "quantity": "数量",
+    "customerInfo": "客户信息",
+    "searchPlaceholder": "姓名/账户ID/手机/邮箱",
     "targetAccount": "目标账户(多选)",
     "targetAccountDesc": "仅目标账户类型会参与客户忠诚计划",
     "evaluationMode": "评估模式",

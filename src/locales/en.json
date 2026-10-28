@@ -2722,6 +2722,8 @@
     "or": "or",
     "preference": "Preferences",
     "quantity": "quantity",
+    "customerInfo": "Customer Information",
+    "searchPlaceholder": "Name/Account ID/Phone/Email",
     "rankSort": "Ranking",
     "rankSortDesc": "Drag the customer level below. The closer to the top, the higher the customer level. On the contrary, the lower the customer level, the lower the customer level.",
     "ruleEvent": "event",

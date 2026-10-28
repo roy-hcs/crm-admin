@@ -15,11 +15,13 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RankSortDialog } from './components/RankSortDialog';
 import { PreferencesDialog } from './components/PreferencesDialog';
+import { CustomerListDialog } from './components/CustomerListDialog';
 import { useTabActions } from '@/hooks/useTabActions';
 
 export function CustomerLoyaltyPlan() {
   const { t } = useTranslation();
   const [deleteOpen, setDeleteOpen] = useState({ open: false, id: '', name: '' });
+  const [customerListOpen, setCustomerListOpen] = useState({ open: false, vipId: '' });
   const { openTab } = useTabActions();
   const { data, refetch } = useCustomerLoyaltyPlan();
   const { mutateAsync: modifyStatus } = usePreferenceEdit();
@@ -88,7 +90,14 @@ export function CustomerLoyaltyPlan() {
                         {i.name}
                       </div>
                       <div className="text-muted-foreground text-sm leading-5">
-                        {`${t('customerLoyaltyPlan.rankSort')}: ${i.sort}, ${t('customerLoyaltyPlan.quantity')}: ${i.userCount}`}
+                        {`${t('customerLoyaltyPlan.rankSort')}: ${i.sort}, ${t('customerLoyaltyPlan.quantity')}: `}
+                        <button
+                          type="button"
+                          className="text-primary cursor-pointer font-medium hover:underline"
+                          onClick={() => setCustomerListOpen({ open: true, vipId: i.id })}
+                        >
+                          {i.userCount}
+                        </button>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -138,6 +147,11 @@ export function CustomerLoyaltyPlan() {
               tipsText={t('common.deleteFieldConfirm', {
                 field: deleteOpen.name,
               })}
+            />
+            <CustomerListDialog
+              open={customerListOpen.open}
+              setOpen={open => setCustomerListOpen(prev => ({ ...prev, open }))}
+              vipId={customerListOpen.vipId}
             />
           </RrhCard>
         </div>
