@@ -1485,3 +1485,118 @@ export type CrmInfoVerifyParams = {
   remark: string;
   verifyStep: string;
 };
+
+/* ---------------- 出金审核详情-风控计算 tab ---------------- */
+
+/** 旧后端 Long/Decimal 统一序列化成字符串，这里统一按可转换的联合类型处理 */
+export type RiskNumber = number | string | null;
+
+export type RiskChainNode = {
+  showId: string;
+  name: string;
+  email: string;
+};
+
+export type RiskAccountRow = {
+  crmShowId: string;
+  crmEmail?: string;
+  customerName: string;
+  relationLabel?: string;
+  relationLevel?: RiskNumber;
+  account: string;
+  serverId: string | null;
+  serverName: string;
+  group: string | null;
+  currency: string;
+  balance: RiskNumber;
+  directBroker: string | null;
+  directChain: RiskChainNode[] | null;
+  crmChain: RiskChainNode[] | null;
+  walletDeposit: RiskNumber;
+  walletWithdraw: RiskNumber;
+  walletNetDeposit: RiskNumber;
+  mtDeposit: RiskNumber;
+  mtWithdraw: RiskNumber;
+  mtNetDeposit: RiskNumber;
+  overviewDeposit: RiskNumber;
+  overviewWithdraw: RiskNumber;
+  overviewNetDeposit: RiskNumber;
+  totalClosedCount: RiskNumber;
+  under1MinCount: RiskNumber;
+  under1MinRate: RiskNumber;
+  under3MinCount: RiskNumber;
+  under3MinRate: RiskNumber;
+  reverseCount: RiskNumber;
+  reverseRate: RiskNumber;
+  selfLockVolume: RiskNumber;
+  selfLockRate: RiskNumber;
+  agentLockVolume: RiskNumber;
+  agentLockRate: RiskNumber;
+  totalVolume: RiskNumber;
+  profitOrderCount: RiskNumber;
+  lossOrderCount: RiskNumber;
+  breakEvenOrderCount: RiskNumber;
+  totalTradeProfit: RiskNumber;
+  totalTradeProfitUsd: RiskNumber;
+  totalRebateCommission: RiskNumber;
+  totalMargin: RiskNumber;
+  profitRate: RiskNumber;
+  profitRateWithCommission: RiskNumber;
+  selfRebateCommission: RiskNumber;
+  bonusToReal: RiskNumber;
+  isWalletWithdrawal?: boolean;
+};
+
+export type RiskStatParams = {
+  startTime: string;
+  endTime: string;
+  selfThresholdSeconds: number;
+  agentThresholdSeconds: number;
+};
+
+export type RiskCurrentStatParams = RiskStatParams & {
+  login: string;
+  serverId: string;
+  walletCurrency: string;
+};
+
+export type RiskUmbrellaStatParams = RiskStatParams & {
+  hierarchy: 'direct' | 'all' | 'custom';
+  depth?: number;
+};
+
+export type RiskResultFilter = 'all' | 'profit' | 'loss' | 'breakeven';
+
+export type RiskOrderDetailParams = {
+  serverId: string;
+  account: string;
+  startTime: string;
+  endTime: string;
+  resultFilter: RiskResultFilter;
+};
+
+export type RiskOrderItem = {
+  ticket: string;
+  symbol: string;
+  direction: 'BUY' | 'SELL' | string;
+  volume: RiskNumber;
+  openTime: string | null;
+  closeTime: string | null;
+  durationSeconds: RiskNumber;
+  profit: RiskNumber;
+  rebate: RiskNumber;
+};
+
+export type RiskOrderDetailRes = {
+  crmShowId: string;
+  customerName: string;
+  account: string;
+  currency: string;
+  rebateCurrency: string;
+  orderCount: RiskNumber;
+  totalProfit: RiskNumber;
+  totalRebate: RiskNumber;
+  totalCount: RiskNumber;
+  shownCount: RiskNumber;
+  orders: RiskOrderItem[];
+};

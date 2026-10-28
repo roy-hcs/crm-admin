@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { RrhStepProps } from '@/components/common/RrhStep';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
 import { ReviewInfoCard } from './components/ReviewInfoCard';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ReviewStepsCard } from './components/ReviewStepsCard';
 import { PersonalInfoCard } from './components/PersonalInfoCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -14,6 +14,7 @@ import { DepositRecordPage } from './components/DepositRecordPage';
 import { WithdrawalRecordPage } from './components/WithdrawalRecordPage';
 import { PageInfo } from '@/components/common/PageInfo';
 import { RrhForm } from '@/components/form/RrhForm';
+import { RiskControlTab } from './components/risk-control/RiskControlTab';
 
 export type WithdrawalFormData = {
   withdrawAmount: string;
@@ -41,6 +42,8 @@ export type WithdrawalFormData = {
 
 export const ReviewWithdrawalDetailPage = () => {
   const [searchParams] = useSearchParams();
+  const { t } = useTranslation();
+  const [riskControlExpanded, setRiskControlExpanded] = useState(false);
   const withdrawalId = searchParams.get('id');
   const { data: withdrawalRes, isLoading } = useWithdrawalReviewDetail(
     searchParams.get('id') || '',
@@ -51,7 +54,12 @@ export const ReviewWithdrawalDetailPage = () => {
   const withdrawalInfo = withdrawalRes?.data?.detail;
   const isAudit = searchParams.get('type') === 'audit' || withdrawalInfo?.status === 2;
   const { mutate: withdrawalVerify, isPending } = useWithdrawalVerify();
-  const reviewTabs = ['withdrawalInfo', 'depositRecord', 'withdrawalRecord'];
+  const reviewTabs = [
+    { value: 'withdrawalInfo', label: t('review.withdrawalInfo') },
+    { value: 'depositRecord', label: t('review.depositRecord') },
+    { value: 'withdrawalRecord', label: t('review.withdrawalRecord') },
+    { value: 'riskControl', label: t('riskControlPage.tabTitle') },
+  ];
   const form = useForm<WithdrawalFormData>({
     defaultValues: {
       withdrawAmount: '',
@@ -104,7 +112,6 @@ export const ReviewWithdrawalDetailPage = () => {
       });
     }
   }, [form, withdrawalInfo]);
-  const { t } = useTranslation();
   if (isLoading) {
     <div className="h-100">
       <RrhCircleLoading />;
@@ -173,11 +180,19 @@ export const ReviewWithdrawalDetailPage = () => {
       <PageInfo wrapperCls="py-3" title={t('review.withdrawalReviewDetail')} />
       <RrhForm form={form} onSubmit={form.handleSubmit(onSubmit)}>
         <div className="relative flex flex-col gap-3 md:flex-row md:gap-8">
-          <Tabs defaultValue="withdrawalInfo" className="flex-1 gap-3 overflow-auto">
+          <Tabs
+            defaultValue="withdrawalInfo"
+            className="flex-1 gap-3 overflow-auto"
+            onValueChange={value => {
+              if (value !== 'riskControl') {
+                setRiskControlExpanded(false);
+              }
+            }}
+          >
             <TabsList>
               {reviewTabs.map(tab => (
-                <TabsTrigger key={tab} value={tab}>
-                  {t(`review.${tab}`)}
+                <TabsTrigger key={tab.value} value={tab.value}>
+                  {tab.label}
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -190,24 +205,35 @@ export const ReviewWithdrawalDetailPage = () => {
             <TabsContent value="withdrawalRecord">
               <WithdrawalRecordPage userId={withdrawalInfo.userId} />
             </TabsContent>
+            <TabsContent value="riskControl">
+              <RiskControlTab
+                userId={withdrawalInfo.userId}
+                login={withdrawalInfo.login}
+                serverId={withdrawalInfo.serverId}
+                walletCurrency={withdrawalData.walletCurrency}
+                onExpandedChange={setRiskControlExpanded}
+              />
+            </TabsContent>
           </Tabs>
 
-          <div className="relative md:mt-12 md:w-76">
-            <PersonalInfoCard
-              withdrawalInfo={withdrawalInfo}
-              roleName={withdrawalData.roleName}
-              lastLoginTime={withdrawalData.tLastLogin}
-            />
-            <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
-              <ReviewStepsCard reviewSteps={reviewSteps} />
-              {isAudit && (
-                <ReviewInfoCard
-                  withdrawalInfo={withdrawalInfo}
-                  reviewer={withdrawalData.reviewer}
-                />
-              )}
+          {!riskControlExpanded && (
+            <div className="relative md:mt-12 md:w-76">
+              <PersonalInfoCard
+                withdrawalInfo={withdrawalInfo}
+                roleName={withdrawalData.roleName}
+                lastLoginTime={withdrawalData.tLastLogin}
+              />
+              <div className="sticky -top-6 flex flex-col gap-3 md:gap-6">
+                <ReviewStepsCard reviewSteps={reviewSteps} />
+                {isAudit && (
+                  <ReviewInfoCard
+                    withdrawalInfo={withdrawalInfo}
+                    reviewer={withdrawalData.reviewer}
+                  />
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </RrhForm>
     </div>

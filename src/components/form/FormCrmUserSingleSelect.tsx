@@ -3,7 +3,7 @@ import { CrmUser } from '@/api/hooks/system/types';
 import { useCrmFormContext } from '@/contexts/form';
 import { cn } from '@/lib/utils';
 import { useCallback, useMemo } from 'react';
-import { FieldPath, FieldValues } from 'react-hook-form';
+import { FieldPath, FieldValues, RegisterOptions } from 'react-hook-form';
 import { RrhSearchSelect } from '../common/RrhSearchSelect';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 
@@ -16,6 +16,11 @@ interface FormCrmUserSingleSelectProps<T extends FieldValues> {
   searchPlaceholder?: string;
   pageSize?: number;
   showRowValue?: boolean;
+  rules?: Omit<
+    RegisterOptions<T, FieldPath<T>>,
+    'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
+  >;
+  onSelect?: (option: { value: string; label: string }) => void;
 }
 
 export function FormCrmUserSingleSelect<T extends FieldValues>({
@@ -27,6 +32,8 @@ export function FormCrmUserSingleSelect<T extends FieldValues>({
   searchPlaceholder,
   pageSize = 15,
   showRowValue = false,
+  rules,
+  onSelect,
 }: FormCrmUserSingleSelectProps<T>) {
   const { form } = useCrmFormContext<T>();
   const { mutateAsync: getUserList } = useCrmUsers();
@@ -91,6 +98,7 @@ export function FormCrmUserSingleSelect<T extends FieldValues>({
     <FormField
       name={name}
       control={form.control}
+      rules={rules}
       render={({ field }) => (
         <FormItem
           className={cn(
@@ -117,6 +125,7 @@ export function FormCrmUserSingleSelect<T extends FieldValues>({
               lazy
               onSelect={option => {
                 field.onChange(option.value);
+                onSelect?.(option);
               }}
             />
           </FormControl>

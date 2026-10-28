@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { RrhDrawer } from '@/components/common/RrhDrawer';
 import { ReviewDepositForm } from './ReviewDepositForm';
+import { AgentDepositDialog } from './components/AgentDepositDialog';
 import { Funnel, Search, RefreshCcw } from 'lucide-react';
 import { RrhInputWithIcon } from '@/components/RrhInputWithIcon';
 import { useTranslation } from 'react-i18next';
@@ -54,7 +55,11 @@ export const ReviewDepositPage = () => {
   const { data: thirdPaymentList } = useThirdPaymentList();
   const { data: currencyList } = useCurrencyList();
 
-  const { data: depositList, isLoading: depositListLoading } = useDepositList(
+  const {
+    data: depositList,
+    isLoading: depositListLoading,
+    refetch: refetchDepositList,
+  } = useDepositList(
     {
       pageSize,
       pageNum: pageNum + 1,
@@ -438,6 +443,7 @@ export const ReviewDepositPage = () => {
             />
           </div>
           <div className="flex items-center gap-2">
+            <AgentDepositDialog onSuccess={() => refetchDepositList()} />
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
             </Button>
