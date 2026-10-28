@@ -286,6 +286,7 @@ export type WalletBalanceChangeParams = {
   opType: number | null;
   amount: number;
   remark: string;
+  googleCode?: string;
 };
 
 export type WalletPerm = {
@@ -703,6 +704,7 @@ export type WalletBalanceAdjustParams = {
   operationType: string;
   opType: string;
   remark: string;
+  googleCode?: string;
   ids: string;
 };
 

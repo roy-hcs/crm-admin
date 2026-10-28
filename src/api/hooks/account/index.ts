@@ -258,6 +258,7 @@ export function useBalanceAdjust() {
       remark: string;
       logins: string;
       opType: string;
+      googleCode?: string;
     }) =>
       apiFormPostCustom<{
         code: number;

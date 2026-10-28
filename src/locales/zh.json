@@ -135,6 +135,8 @@
     "AnErrorOccurred": "发生错误",
     "pleaseSelect": "请选择",
     "pleaseInput": "请输入{{field}}",
+    "googleAuthCode": "Google Authenticator 验证码",
+    "googleAuthBindTip": "没有 Google Authenticator？现在去绑定",
     "SomethingWentWrongPleaseTryAgainLater": "发生错误。请稍后再试。",
     "select": "选择",
     "pageOf": "第 {{current}} 页，共 {{total}} 页",

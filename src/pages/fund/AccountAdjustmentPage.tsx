@@ -20,6 +20,8 @@ import { RrhMultiSelect } from '@/components/common/RrhMultiSelect';
 import { CrmDealAccountListItem } from '@/api/hooks/account/types';
 import { CrmDealAccountListParams, DictTypeItem } from '@/api/hooks/system/types';
 import { RrhCircleLoading } from '@/components/common/RrhCircleLoading';
+import { FormGoogleCode } from '@/components/form/FormGoogleCode';
+import { useGoogleAuthRequired } from '@/hooks/useGoogleAuthRequired';
 const FormTradingAccountsSelector = ({
   serverId,
   origin,
@@ -212,11 +214,13 @@ type FormValues = {
   amount: string;
   remark?: string;
   opType?: string;
+  googleCode?: string;
 };
 
 export const AccountAdjustmentPage = () => {
   const { t } = useTranslation();
   const [activeWay, setActiveWay] = useState('301');
+  const googleAuthRequired = useGoogleAuthRequired('balance.adjust');
   const schema = z.object({
     logins: z.array(z.string()).min(1, t('rules.required', { field: t('table.tradingAccount') })),
     serverId: z.string().min(1, t('rules.required', { field: t('table.server') })),
@@ -227,6 +231,9 @@ export const AccountAdjustmentPage = () => {
       .optional(),
     opType: ['301', '302'].includes(activeWay)
       ? z.string().min(1, t('rules.required', { field: t('table.operationType') }))
+      : z.string().optional(),
+    googleCode: googleAuthRequired
+      ? z.string().min(1, t('rules.required', { field: t('common.googleAuthCode') }))
       : z.string().optional(),
   });
 
@@ -239,6 +246,7 @@ export const AccountAdjustmentPage = () => {
       amount: '',
       remark: '',
       opType: '',
+      googleCode: '',
     },
   });
   const btnArr = [
@@ -307,6 +315,7 @@ export const AccountAdjustmentPage = () => {
         remark: values.remark || '',
         opType: values.opType,
         operationType: activeWay,
+        googleCode: values.googleCode || '',
       },
       {
         onSuccess: result => {
@@ -385,6 +394,7 @@ export const AccountAdjustmentPage = () => {
             placeholder={t('rules.limitLength', { field: 32 })}
             maxLength={32}
           />
+          <FormGoogleCode<FormValues> name="googleCode" configCode="balance.adjust" />
           <div>
             <RrhButton type="submit">{t('common.submit')}</RrhButton>
           </div>

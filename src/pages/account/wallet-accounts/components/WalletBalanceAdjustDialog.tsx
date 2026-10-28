@@ -14,12 +14,15 @@ import { FormSwitchGroup } from '@/components/form/FormSwitchGroup';
 import { FormInput } from '@/components/form/FormInput';
 import { useWalletBalanceAdjust } from '@/api/hooks/account';
 import { CircleAlert } from 'lucide-react';
+import { FormGoogleCode } from '@/components/form/FormGoogleCode';
+import { useGoogleAuthRequired } from '@/hooks/useGoogleAuthRequired';
 
 type FormValues = {
   amount: string;
   operationType: string;
   opType: string;
   remark?: string;
+  googleCode?: string;
 };
 
 const schemaConfig = (t: TFunction<'translation', undefined>) => {
@@ -28,6 +31,7 @@ const schemaConfig = (t: TFunction<'translation', undefined>) => {
     amount: z.string().min(1, t('rules.required', { field: t('table.operationAmount') })),
     operationType: z.string().min(1, t('rules.required', { field: t('table.inMethod') })),
     opType: z.string().min(1, t('rules.required', { field: t('table.operationType') })),
+    googleCode: z.string().optional(),
   };
 };
 
@@ -45,8 +49,16 @@ export const WalletBalanceAdjustDialog = ({
   ids: string[];
 }) => {
   const { t } = useTranslation();
+  const googleAuthRequired = useGoogleAuthRequired('balance.adjust');
 
-  const schema = useMemo(() => z.object(schemaConfig(t)), [t]);
+  const schema = useMemo(
+    () =>
+      z.object(schemaConfig(t)).refine(data => !googleAuthRequired || !!data.googleCode, {
+        path: ['googleCode'],
+        message: t('rules.required', { field: t('common.googleAuthCode') }),
+      }),
+    [t, googleAuthRequired],
+  );
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -55,6 +67,7 @@ export const WalletBalanceAdjustDialog = ({
       operationType: '1',
       opType: '',
       remark: '',
+      googleCode: '',
     },
   });
   const { mutateAsync: adjustWalletBalance, isPending } = useWalletBalanceAdjust();
@@ -64,6 +77,7 @@ export const WalletBalanceAdjustDialog = ({
       const res = await adjustWalletBalance({
         ...data,
         remark: data.remark || '',
+        googleCode: data.googleCode || '',
         ids: ids ? ids.join(',') : '',
       });
       if (res.code === 0) {
@@ -157,6 +171,8 @@ export const WalletBalanceAdjustDialog = ({
           placeholder={t('rules.limitLength', { field: 32 })}
           maxLength={32}
         />
+
+        <FormGoogleCode<FormValues> name="googleCode" configCode="balance.adjust" />
       </RrhForm>
     </RrhDialog>
   );

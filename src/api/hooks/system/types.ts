@@ -855,6 +855,7 @@ export type AddCrmUserWalletParams = {
   operationType: string;
   remark: string;
   opType: string;
+  googleCode?: string;
 };
 export type CrmDealAccountListRes = {
   code: number;
@@ -876,6 +877,7 @@ export type AdjustBalanceParams = {
   remark?: string;
   opType?: string;
   operationType: string;
+  googleCode?: string;
 };
 export type AdjustBalanceRes = {
   failedMsg: string;

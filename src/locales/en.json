@@ -104,6 +104,8 @@
     "Search": "search",
     "pleaseInput": "Please enter {field}",
     "pleaseSelect": "Please select",
+    "googleAuthCode": "Google Authenticator Code",
+    "googleAuthBindTip": "No Google Authenticator? Bind now",
     "select": "choose",
     "pageOf": "Page {{current}} of {{total}}",
     "close": "closure",

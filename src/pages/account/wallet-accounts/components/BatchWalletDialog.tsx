@@ -2,13 +2,16 @@ import { CircleAlert, Download, FileDown, Link, Trash2 } from 'lucide-react';
 import { useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router-dom';
 import { RrhDialog } from '@/components/common/RrhDialog';
+import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import * as XLSX from 'xlsx';
 import { useWalletBalanceChange } from '@/api/hooks/account';
 import type { WalletRow } from '@/hooks/useWalletBatchImport';
 import { useWalletBatchImport } from '@/hooks/useWalletBatchImport';
+import { useGoogleAuthRequired } from '@/hooks/useGoogleAuthRequired';
 
 type RowData = string[];
 
@@ -187,6 +190,8 @@ export const BatchWalletDialog = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const { mutateAsync: walletBalanceChange } = useWalletBalanceChange();
+  const googleAuthRequired = useGoogleAuthRequired('balance.adjust');
+  const [googleCode, setGoogleCode] = useState('');
 
   const updateOpen = (nextOpen: boolean) => {
     setOpen(nextOpen);
@@ -205,7 +210,7 @@ export const BatchWalletDialog = ({
     stopImport,
     reset,
   } = useWalletBatchImport({
-    walletBalanceChange,
+    walletBalanceChange: row => walletBalanceChange({ ...row, googleCode }),
     onAllCompleted: () => setStep('three'),
   });
 
@@ -250,6 +255,10 @@ export const BatchWalletDialog = ({
           toast.error(t('walletAccountsPage.pleaseUploadFile'));
           return;
         }
+        if (googleAuthRequired && !googleCode.trim()) {
+          toast.error(t('rules.required', { field: t('common.googleAuthCode') }));
+          return;
+        }
         setStep('two');
         start();
         break;
@@ -269,6 +278,7 @@ export const BatchWalletDialog = ({
     reset();
     setTableHeader([]);
     setFile(null);
+    setGoogleCode('');
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -434,6 +444,25 @@ export const BatchWalletDialog = ({
                   </div>
                 </div>
               </div>
+              {googleAuthRequired && (
+                <div className="mt-3 grid gap-2">
+                  <div className="text-foreground text-sm leading-5 font-medium">
+                    {t('common.googleAuthCode')}
+                  </div>
+                  <Input
+                    value={googleCode}
+                    onChange={e => setGoogleCode(e.target.value)}
+                    autoComplete="off"
+                    placeholder={t('common.pleaseInput', { field: t('common.googleAuthCode') })}
+                  />
+                  <RouterLink
+                    to="/account/profile"
+                    className="text-primary text-xs leading-5 hover:underline"
+                  >
+                    {t('common.googleAuthBindTip')}
+                  </RouterLink>
+                </div>
+              )}
             </div>
           )}
           {step === 'two' && (

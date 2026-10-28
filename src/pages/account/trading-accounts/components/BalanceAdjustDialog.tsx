@@ -15,6 +15,8 @@ import { TFunction } from 'i18next';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RrhForm } from '@/components/form/RrhForm';
+import { FormGoogleCode } from '@/components/form/FormGoogleCode';
+import { useGoogleAuthRequired } from '@/hooks/useGoogleAuthRequired';
 
 type FormValues = {
   serverId?: string;
@@ -23,6 +25,7 @@ type FormValues = {
   remark: string;
   logins?: string;
   opType: string;
+  googleCode?: string;
 };
 
 const initSchema = (t: TFunction<'translation', undefined>) => {
@@ -31,6 +34,7 @@ const initSchema = (t: TFunction<'translation', undefined>) => {
     opType: z.string().min(1, t('rules.required', { field: t('table.operationType') })),
     amount: z.string().min(1, t('rules.required', { field: t('table.operationAmount') })),
     remark: z.string().min(1, t('rules.required', { field: t('table.remarks') })),
+    googleCode: z.string().optional(),
   };
 };
 export const BalanceAdjustDialog = ({
@@ -53,8 +57,16 @@ export const BalanceAdjustDialog = ({
   const [operationTypeLoading, setOperationTypeLoading] = useState(false);
   const { mutateAsync: getOperationTypeData } = useGetDictType();
   const { mutateAsync: balanceAdjust } = useBalanceAdjust();
+  const googleAuthRequired = useGoogleAuthRequired('balance.adjust');
 
-  const schema = useMemo(() => z.object(initSchema(t)), [t]);
+  const schema = useMemo(
+    () =>
+      z.object(initSchema(t)).refine(data => !googleAuthRequired || !!data.googleCode, {
+        path: ['googleCode'],
+        message: t('rules.required', { field: t('common.googleAuthCode') }),
+      }),
+    [t, googleAuthRequired],
+  );
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -65,6 +77,7 @@ export const BalanceAdjustDialog = ({
       remark: '',
       logins: '',
       opType: '',
+      googleCode: '',
     },
   });
 
@@ -80,6 +93,7 @@ export const BalanceAdjustDialog = ({
         remark: data?.remark,
         logins: accounts.join(',') || '',
         opType: data?.opType,
+        googleCode: data?.googleCode || '',
       };
       const res = await balanceAdjust(param);
       if (res.code === 0) {
@@ -221,6 +235,8 @@ export const BalanceAdjustDialog = ({
           placeholder={t('rules.limitLength', { field: 10 })}
           maxLength={10}
         />
+
+        <FormGoogleCode<FormValues> name="googleCode" configCode="balance.adjust" />
       </RrhForm>
     </RrhDialog>
   );

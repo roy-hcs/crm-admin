@@ -17,15 +17,19 @@ import { RrhAlert } from '@/components/common/RrhAlert';
 import { toast } from 'sonner';
 import { BatchWalletDialog } from '@/pages/account/wallet-accounts/components/BatchWalletDialog';
 import { Sheet } from 'lucide-react';
+import { FormGoogleCode } from '@/components/form/FormGoogleCode';
+import { useGoogleAuthRequired } from '@/hooks/useGoogleAuthRequired';
 type FormValues = {
   crmUserId: string;
   walletId: string;
   amount: string;
   remark?: string;
   opType: string;
+  googleCode?: string;
 };
 export const WalletAdjustmentPage = () => {
   const { t } = useTranslation();
+  const googleAuthRequired = useGoogleAuthRequired('balance.adjust');
   const schema = z.object({
     crmUserId: z.string().min(1, t('rules.required', { field: t('walletAccountsPage.account') })),
     walletId: z.string().min(1, t('rules.required', { field: t('table.wallet') })),
@@ -35,6 +39,9 @@ export const WalletAdjustmentPage = () => {
       .max(32, t('rules.limitLength', { field: 32 }))
       .optional(),
     opType: z.string().min(1, t('rules.required', { field: t('table.operationType') })),
+    googleCode: googleAuthRequired
+      ? z.string().min(1, t('rules.required', { field: t('common.googleAuthCode') }))
+      : z.string().optional(),
   });
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -44,6 +51,7 @@ export const WalletAdjustmentPage = () => {
       amount: '',
       remark: '',
       opType: '',
+      googleCode: '',
     },
   });
   const [activeWay, setActiveWay] = useState('deposit');
@@ -81,6 +89,7 @@ export const WalletAdjustmentPage = () => {
         remark: values.remark || '',
         opType: values.opType,
         operationType: activeWay === 'deposit' ? '1' : '2',
+        googleCode: values.googleCode || '',
       },
       {
         onSuccess: result => {
@@ -165,6 +174,7 @@ export const WalletAdjustmentPage = () => {
             placeholder={t('rules.limitLength', { field: 32 })}
             maxLength={32}
           />
+          <FormGoogleCode<FormValues> name="googleCode" configCode="balance.adjust" />
           <div>
             <RrhButton type="submit">{t('common.submit')}</RrhButton>
           </div>
