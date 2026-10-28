@@ -38,6 +38,7 @@ export function AccountOpeningPage() {
     status: '',
     source: '',
     verifyUserName: '',
+    emailOrPhone: '',
   });
   const { data: data, isLoading: loading } = useCrmNewLoginVerifyList({
     params,
@@ -54,6 +55,7 @@ export function AccountOpeningPage() {
       status: '',
       source: '',
       verifyUserName: '',
+      emailOrPhone: '',
     });
     setResetKey(k => k + 1);
     setPageNum(0);

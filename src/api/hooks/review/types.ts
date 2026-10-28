@@ -552,6 +552,7 @@ export type CrmNewLoginVerifyListParams = {
   status?: string;
   source?: string;
   verifyUserName?: string;
+  emailOrPhone?: string;
   params: {
     server?: string;
     serverType?: string;

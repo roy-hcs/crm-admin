@@ -25,6 +25,7 @@ type FormData = {
   status: string;
   source: string;
   verifyUserName: string;
+  emailOrPhone: string;
 };
 
 export const AccountOpeningForm = ({
@@ -36,11 +37,23 @@ export const AccountOpeningForm = ({
 }: {
   setParams: Dispatch<SetStateAction<CrmNewLoginVerifyListParams['params']>>;
   setCommonParams: Dispatch<
-    SetStateAction<{ userId: string; status: string; source: string; verifyUserName: string }>
+    SetStateAction<{
+      userId: string;
+      status: string;
+      source: string;
+      verifyUserName: string;
+      emailOrPhone: string;
+    }>
   >;
   reset: () => void;
   params: CrmNewLoginVerifyListParams['params'];
-  commonParams: { userId: string; status: string; source: string; verifyUserName: string };
+  commonParams: {
+    userId: string;
+    status: string;
+    source: string;
+    verifyUserName: string;
+    emailOrPhone: string;
+  };
 }) => {
   const { data: server } = useServerList();
   const serverOptions = server?.rows || [];
@@ -55,6 +68,7 @@ export const AccountOpeningForm = ({
       status: commonParams.status || '',
       source: commonParams.source || '',
       verifyUserName: commonParams.verifyUserName || '',
+      emailOrPhone: commonParams.emailOrPhone || '',
       time: { from: params.beginTime || '', to: params.endTime || '' },
     },
   });
@@ -74,6 +88,7 @@ export const AccountOpeningForm = ({
       status: data.status,
       source: data.source,
       verifyUserName: data.verifyUserName,
+      emailOrPhone: data.emailOrPhone,
     });
   };
 
@@ -87,6 +102,7 @@ export const AccountOpeningForm = ({
       status: '',
       source: '',
       verifyUserName: '',
+      emailOrPhone: '',
       time: { from: '', to: '' },
     });
   };
@@ -185,6 +201,11 @@ export const AccountOpeningForm = ({
         placeholder={t('common.pleaseInput', {
           field: t('information.verifyUserName'),
         })}
+      />
+      <FormInput
+        name="emailOrPhone"
+        label={t('table.emailOrPhone')}
+        placeholder={t('common.pleaseInput', { field: t('table.emailOrPhone') })}
       />
       <div className="bg-background absolute inset-x-0 bottom-0 flex justify-end gap-4 p-4">
         <RrhButton type="reset" variant={'outline'} onClick={onReset}>
