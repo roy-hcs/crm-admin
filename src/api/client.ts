@@ -105,6 +105,11 @@ export async function apiDelete<T = null>(url: string, options?: RequestInit) {
   return fetchWithAuth<ApiResponse<T>>(url, { ...options, method: 'DELETE' });
 }
 
+// 部分旧接口（如收款账户 change-status）使用 PUT + 查询参数
+export async function apiPut<T = null>(url: string, options?: RequestInit) {
+  return fetchWithAuth<ApiResponse<T>>(url, { ...options, method: 'PUT' });
+}
+
 // Type for form parameters supporting nested objects and arrays
 export type FormParams = {
   [key: string]:

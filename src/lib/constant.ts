@@ -140,3 +140,14 @@ export const OperationMethodMap: Record<number, string> = {
   15: 'table.pointsProductExchange',
   16: 'table.thirdPayment',
 };
+
+// 加密货币收款网络（system/cryptoCurrency）
+export const cryptoNetworkMap: Record<string, string> = {
+  '1': 'TRC20',
+  '2': 'ERC20',
+  '3': 'OMNI',
+  '4': 'P2SH',
+  '5': 'P2PKH',
+  '6': 'BECH32',
+  '8': 'BEP20',
+};

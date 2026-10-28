@@ -304,6 +304,18 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
               path: '/settings/payment/exchange-rate',
             },
             {
+              title: '收款账户',
+              path: '/settings/payment/receive-accounts',
+            },
+            {
+              title: '出金渠道',
+              path: '/settings/payment/withdraw-channel',
+            },
+            {
+              title: '出金手续费',
+              path: '/settings/payment/withdraw-fee',
+            },
+            {
               title: '第三方支付设置',
               path: '/settings/payment/third-party',
             },

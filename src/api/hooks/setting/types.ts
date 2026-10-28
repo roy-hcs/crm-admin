@@ -216,3 +216,355 @@ export type MtServerTypeDetailRes = {
   msg: string;
   data: MtServerTypeDetailItem;
 };
+
+// ==================== 出入金设置（Payment Settings） ====================
+
+// ---------- 货币设置 ----------
+export type CurrencyItem = {
+  id: string;
+  currencyNameChn: string;
+  currencyNameEng: string;
+  currencyAbbr: string;
+  currencyRemark: string | null;
+  status: number;
+  isDefault: number;
+  currencyType: number; // 1-法定货币 2-加密货币
+  decimalPrecision: number;
+  sort: number;
+  network: string | null;
+  createBy: string | null;
+  createTime: string | null;
+  updateBy: string | null;
+  updateTime: string | null;
+};
+export type CurrencyListRes = BasicRes<CurrencyItem>;
+
+export type SaveCurrencyParams = {
+  id?: string;
+  currencyType: number;
+  currencyAbbr: string;
+  currencyNameChn?: string;
+  currencyNameEng?: string;
+  network?: string;
+  decimalPrecision?: number;
+  sort?: number;
+  status?: number;
+  currencyRemark?: string;
+  // 新增货币时一并保存默认汇率
+  currencyPair?: string;
+  updateType?: number;
+  marketPrice?: number;
+  buyRateFloat?: number;
+  inRate?: number;
+  sellRateRise?: number;
+  outRate?: number;
+};
+
+// ---------- 汇率设置 ----------
+export type ExchangeRateItem = {
+  id: number;
+  sCurrency: string;
+  tCurrency: string;
+  inRate: number | null;
+  outRate: number | null;
+  marketPrice: number | null;
+  buyRateFloat: number | null;
+  sellRateRise: number | null;
+  updateType: number; // 1-手动更新 2-自动更新
+  updateTime: string | null;
+};
+export type ExchangeRateListRes = BasicRes<ExchangeRateItem>;
+
+export type SaveExchangeRateParams = {
+  id?: number;
+  sCurrency: string;
+  tCurrency: string;
+  updateType: number;
+  marketPrice?: number;
+  buyRateFloat?: number;
+  inRate?: number;
+  sellRateRise?: number;
+  outRate?: number;
+};
+
+// ---------- 收款账户公共手续费字段 ----------
+export type CommissionFields = {
+  restrictCurrency?: number;
+  minDeposit?: number | null;
+  maxDeposit?: number | null;
+  commissionMod?: number; // 1-比例 2-固定
+  commissionRate?: number | null;
+  minCommission?: number | null;
+  maxCommission?: number | null;
+  fixCommission?: number | null;
+  amountDigits?: number | null;
+};
+
+// ---------- 银行收款账户 ----------
+export type CrmBankItem = BaseEntity & {
+  id: string;
+  name: string;
+  code: string | null;
+  status: number;
+  sort: number;
+  roleNames: string | null;
+  currency: string | null;
+  country: string | null;
+  countryName: string | null;
+  swiftCode: string | null;
+  bsbCode: string | null;
+  ifscCode: string | null;
+  abaCode: string | null;
+  sortCode: string | null;
+};
+export type CrmBankListRes = BasicRes<CrmBankItem>;
+
+export type SaveCrmBankParams = {
+  id?: string;
+  name: string;
+  code?: string;
+  currency?: string;
+  country?: string;
+  swiftCode?: string;
+  bsbCode?: string;
+  ifscCode?: string;
+  abaCode?: string;
+  sortCode?: string;
+  sort?: number;
+  status?: number;
+};
+
+// ---------- 加密货币收款账户 ----------
+export type CryptoCurrencyItem = BaseEntity & {
+  id: number;
+  currencyName: string;
+  network: string; // 1-TRC20 2-ERC20 3-OMNI 4-P2SH 5-P2PKH 6-BECH32 8-BEP20
+  address: string;
+  status: number;
+  sort: number;
+  minDeposit: number | null;
+  maxDeposit: number | null;
+  restrictCurrency: number | null;
+  commissionMod: number | null;
+  commissionRate: number | null;
+  minCommission: number | null;
+  maxCommission: number | null;
+  fixCommission: number | null;
+  amountDigits: number | null;
+} & CommissionFields;
+export type CryptoCurrencyListRes = BasicRes<CryptoCurrencyItem>;
+
+export type SaveCryptoCurrencyParams = CommissionFields & {
+  id?: number;
+  currencyName: string;
+  network: string;
+  address: string;
+  sort?: number;
+  status?: number;
+};
+
+// ---------- 电子钱包收款账户 ----------
+export type CrmEWalletItem = BaseEntity & {
+  id: string;
+  name: string;
+  icon: string | null;
+  status: number;
+  sort: number;
+  roleNames: string | null;
+  country: string | null;
+  currency: string | null;
+};
+export type CrmEWalletListRes = BasicRes<CrmEWalletItem>;
+
+export type SaveCrmEWalletParams = {
+  id?: string;
+  name: string;
+  icon?: string;
+  currency?: string;
+  country?: string;
+  sort?: number;
+  status?: number;
+};
+
+// ---------- PayID 收款账户 ----------
+export type PayIdAccountItem = BaseEntity & {
+  id: number;
+  accountName: string;
+  accountEmail: string | null;
+  accountMobile: string | null;
+  abnCode: string | null;
+  currency: string | null;
+  status: number;
+  sort: number;
+  minDeposit: number | null;
+  maxDeposit: number | null;
+  amountDigits: number | null;
+  qrCode: string | null;
+} & CommissionFields;
+export type PayIdAccountListRes = BasicRes<PayIdAccountItem>;
+
+export type SavePayIdAccountParams = CommissionFields & {
+  id?: number;
+  accountName: string;
+  accountEmail?: string;
+  accountMobile?: string;
+  abnCode?: string;
+  currency?: string;
+  sort?: number;
+  status?: number;
+};
+
+// ---------- 电汇/汇款收款账户 ----------
+export type RemittanceAccountItem = BaseEntity & {
+  id: number;
+  accountType: number; // 1-电汇账户 2-汇款账户
+  account: string;
+  accountName: string;
+  accountAddress: string | null;
+  bankName: string | null;
+  bankAddress: string | null;
+  branchName: string | null;
+  swiftCode: string | null;
+  bsbCode: string | null;
+  currency: string | null;
+  status: number;
+  sort: number;
+  minDeposit: number | null;
+  maxDeposit: number | null;
+  amountDigits: number | null;
+  qrCode: string | null;
+} & CommissionFields;
+export type RemittanceAccountListRes = BasicRes<RemittanceAccountItem>;
+
+export type SaveRemittanceAccountParams = CommissionFields & {
+  id?: number;
+  accountType: number;
+  account: string;
+  accountName: string;
+  accountAddress?: string;
+  bankName?: string;
+  bankAddress?: string;
+  branchName?: string;
+  swiftCode?: string;
+  bsbCode?: string;
+  currency?: string;
+  sort?: number;
+  status?: number;
+};
+
+// ---------- 出金渠道 ----------
+export type WithdrawChannelItem = {
+  id: number;
+  channelName: string;
+  status: number;
+  channelIcon: string | null;
+  channelCurrency: string | null;
+  sort: number;
+  delFlag: number;
+  language: string | null;
+  outMoneyAccountCheck: number | null;
+  outMoneyWithdrawCheck: number | null;
+  outMoneyWithdrawCheckMethod: string | null;
+  verificationRule: number | null;
+  restrictCurrency: number | null;
+  specificCurrencyLimits: string | null;
+  exchangeRateFloat: number | null;
+  specificCurrencyCommissions: string | null;
+  timeEnabled: number | null;
+  availableTimeConfig: string | null;
+  frozen: number | null;
+  minWithdraw: number | null;
+  maxWithdraw: number | null;
+  commissionMod: string | null; // "1"-比例 "2"-固定
+  commissionRate: number | null;
+  fixCommission: number | null;
+  minCommission: number | null;
+  maxCommission: number | null;
+  amountDigits: number | null;
+  commissionAmountDigits: number | null;
+  commissionCurrency: number | null;
+  remark: string | null;
+  updateTime: string | null;
+};
+export type WithdrawChannelListRes = BasicRes<WithdrawChannelItem>;
+
+export type SaveWithdrawChannelParams = {
+  id?: number;
+  channelName: string;
+  channelIcon?: string;
+  channelCurrency?: string;
+  sort?: number;
+  status?: number;
+  restrictCurrency?: number;
+  minWithdraw?: number;
+  maxWithdraw?: number;
+  exchangeRateFloat?: number;
+  amountDigits?: number;
+  commissionCurrency?: number;
+  commissionMod?: string;
+  commissionRate?: number;
+  fixCommission?: number;
+  minCommission?: number;
+  maxCommission?: number;
+  commissionAmountDigits?: number;
+  outMoneyAccountCheck?: number;
+  outMoneyWithdrawCheck?: number;
+  timeEnabled?: number;
+  frozen?: number;
+  remark?: string;
+  // 编辑时透传，避免后端清空
+  fieldList?: unknown[];
+  languageList?: unknown[];
+  selectedLanguages?: string;
+  applicableUserSettings?: unknown;
+  availableTimeConfig?: string;
+  specificCurrencyLimits?: string;
+  specificCurrencyCommissions?: string;
+  verificationRule?: number;
+};
+
+// ---------- 出金手续费设置 ----------
+export type WithdrawFeeSegment = {
+  id?: number;
+  settingsId?: number;
+  startAmount: number;
+  endAmount: number;
+  withdrawFeeScale?: number | null;
+  withdrawFeeFixed?: number | null;
+  minWithdrawFee?: number | null;
+  maxWithdrawFee?: number | null;
+};
+
+export type WithdrawFeeItem = {
+  id: number;
+  name: string | null;
+  method: number; // 出金方式：1-国际电汇 2-银行汇款 3-系统出金 4-快捷支付 5-第三方支付 13-payID
+  currencys: string | null; // 币种，逗号分隔
+  model: number; // 1-比例 2-固定
+  scheme: number; // 1-正常模式 2-阶梯模式 3-免手续费
+  status: number;
+  defaultFlag: number;
+  withdrawFeeFixed: number | null;
+  withdrawFeeScale: number | null;
+  minWithdrawFee: number | null;
+  maxWithdrawFee: number | null;
+  settingsItems: WithdrawFeeSegment[] | null;
+  operator: string | null;
+  operatorEmail: string | null;
+  updateTime: string | null;
+};
+export type WithdrawFeeListRes = BasicRes<WithdrawFeeItem>;
+
+export type SaveWithdrawFeeParams = {
+  id?: number;
+  name?: string;
+  method: number;
+  currencys?: string;
+  model: number;
+  scheme: number;
+  withdrawFeeFixed?: number;
+  withdrawFeeScale?: number;
+  minWithdrawFee?: number;
+  maxWithdrawFee?: number;
+  settingsItemsJsonStr?: string;
+};

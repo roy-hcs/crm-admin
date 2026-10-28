@@ -6,6 +6,11 @@ import { MtServerGroupPage } from '@/pages/setting/trading-platform/mt-server-gr
 import { MtServerAccountTypePage } from '@/pages/setting/trading-platform/account-type/MtServerAccountTypePage';
 import { DownLoadsPage } from '@/pages/setting/trading-platform/downloads/DownLoadsPage';
 import { TradingAccountPage } from '@/pages/setting/trading-platform/trading-account/TradingAccountPage';
+import { CurrencySettingsPage } from '@/pages/setting/payment/currency/CurrencySettingsPage';
+import { ExchangeRateSettingsPage } from '@/pages/setting/payment/exchange-rate/ExchangeRateSettingsPage';
+import { ReceiveAccountsPage } from '@/pages/setting/payment/receive-accounts/ReceiveAccountsPage';
+import { WithdrawChannelPage } from '@/pages/setting/payment/withdraw-channel/WithdrawChannelPage';
+import { WithdrawFeePage } from '@/pages/setting/payment/withdraw-fee/WithdrawFeePage';
 
 const MtServerGroupWrapperPage = () => {
   const [searchParams] = useSearchParams();
@@ -86,6 +91,26 @@ export const settingsRoutes: RouteObject[] = [
   {
     path: '/settings/trading-platform/account-types',
     element: <TradingAccountPage />,
+  },
+  {
+    path: '/settings/payment/currency',
+    element: <CurrencySettingsPage />,
+  },
+  {
+    path: '/settings/payment/exchange-rate',
+    element: <ExchangeRateSettingsPage />,
+  },
+  {
+    path: '/settings/payment/receive-accounts',
+    element: <ReceiveAccountsPage />,
+  },
+  {
+    path: '/settings/payment/withdraw-channel',
+    element: <WithdrawChannelPage />,
+  },
+  {
+    path: '/settings/payment/withdraw-fee',
+    element: <WithdrawFeePage />,
   },
 
   // TODO: Add more routes as pages are developed
