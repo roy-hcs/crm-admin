@@ -12,6 +12,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { CurrencyItem } from '@/api/hooks/system/types';
 import { formatDate } from '@/lib/utils';
 import { SelectUpperDropdown } from '@/components/common/SelectUpperDropdown';
+import { FormCrmRoleSelect } from '@/components/form/FormCrmRoleSelect';
 import { RrhForm } from '@/components/form/RrhForm';
 
 type FormData = {
@@ -28,6 +29,7 @@ type FormData = {
   tradeServerOrderNumber: string;
   payOrderNum: string;
   channel: string;
+  roleId: string;
 };
 
 export const ReviewDepositForm = ({
@@ -65,6 +67,7 @@ export const ReviewDepositForm = ({
       accounts: params.accounts || '',
       payOrderNum: otherParams.orderId || '',
       channel: otherParams.channelId || '',
+      roleId: otherParams.roleId || '',
     },
   });
 
@@ -86,6 +89,7 @@ export const ReviewDepositForm = ({
       channelId: data.channel,
       depositCurrency: data.currency,
       accounts: selectedAccounts.id,
+      roleId: data.roleId,
     });
     setParams({
       beginTime: formatDate(data.submitTime.from),
@@ -111,6 +115,7 @@ export const ReviewDepositForm = ({
       accounts: '',
       payOrderNum: '',
       channel: '',
+      roleId: '',
     });
   };
   return (
@@ -199,6 +204,11 @@ export const ReviewDepositForm = ({
       />
 
       <SelectUpperDropdown />
+      <FormCrmRoleSelect<FormData>
+        verticalLabel
+        name="roleId"
+        label={t('rewardConfigPage.accountLimitTypeOptions.1')}
+      />
       {depositMethod === '5' && (
         <FormSelect
           name="channel"

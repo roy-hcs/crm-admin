@@ -351,6 +351,7 @@ export type DepositListParams = BasicParams & {
   channelId?: string;
   depositCurrency?: string;
   accounts?: string;
+  roleId?: string;
   params: {
     beginTime?: string;
     endTime?: string;

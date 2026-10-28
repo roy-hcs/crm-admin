@@ -51,6 +51,7 @@ export const ReviewDepositPage = () => {
     channelId: '',
     depositCurrency: '',
     accounts: '',
+    roleId: '',
   });
   const { data: thirdPaymentList } = useThirdPaymentList();
   const { data: currencyList } = useCurrencyList();
@@ -106,6 +107,7 @@ export const ReviewDepositPage = () => {
       channelId: '',
       depositCurrency: '',
       accounts: '',
+      roleId: '',
     });
     setResetKey(k => k + 1);
     setPageNum(0);
