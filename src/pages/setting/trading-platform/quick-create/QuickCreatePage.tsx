@@ -2,54 +2,44 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { RrhButton } from '@/components/common/RrhButton';
+import { RrhCard } from '@/components/common/RrhCard';
+import { PageInfo } from '@/components/common/PageInfo';
 import { useTabActions } from '@/hooks/useTabActions';
 import { cn } from '@/lib/utils';
-import { PageInfo } from '@/components/common/PageInfo';
-import { RrhCard } from '@/components/common/RrhCard';
+import { ServerStep } from './components/ServerStep';
+import { AssociationStep } from './components/AssociationStep';
+import { AccountStep } from './components/AccountStep';
 
-type StepKey = 'base' | 'dcPool' | 'account' | 'health';
+type StepKey = 'server' | 'association' | 'account';
 
-type StepConfig = {
-  key: StepKey;
-  title: string;
-  description: string;
+const stepKeys: StepKey[] = ['server', 'association', 'account'];
+const subStepTotals: Record<StepKey, number> = {
+  server: 3,
+  association: 2,
+  account: 1,
 };
 
 export function QuickCreatePage() {
   const { t } = useTranslation();
   const { openTab } = useTabActions();
 
-  const steps = useMemo<StepConfig[]>(
-    () => [
-      {
-        key: 'base',
-        title: t('quickCreatePage.steps.base.title'),
-        description: t('quickCreatePage.steps.base.desc'),
-      },
-      {
-        key: 'dcPool',
-        title: t('quickCreatePage.steps.dcPool.title'),
-        description: t('quickCreatePage.steps.dcPool.desc'),
-      },
-      {
-        key: 'account',
-        title: t('quickCreatePage.steps.account.title'),
-        description: t('quickCreatePage.steps.account.desc'),
-      },
-      {
-        key: 'health',
-        title: t('quickCreatePage.steps.health.title'),
-        description: t('quickCreatePage.steps.health.desc'),
-      },
-    ],
+  const [stepIndex, setStepIndex] = useState(0);
+  const [subStep, setSubStep] = useState(0);
+  const [serverId, setServerId] = useState('');
+  const [serverName, setServerName] = useState('');
+
+  const currentKey = stepKeys[stepIndex];
+  const subTotal = subStepTotals[currentKey];
+
+  const steps = useMemo(
+    () =>
+      stepKeys.map(key => ({
+        key,
+        title: t(`quickCreatePage.steps.${key}.title`),
+        description: t(`quickCreatePage.steps.${key}.desc`),
+      })),
     [t],
   );
-
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [furthestStepIndex, setFurthestStepIndex] = useState(0);
-
-  const currentStep = steps[currentStepIndex];
-  const isLastStep = currentStepIndex === steps.length - 1;
 
   const goBackToServerList = useCallback(() => {
     const url = '/settings/trading-platform/servers';
@@ -60,47 +50,10 @@ export function QuickCreatePage() {
     });
   }, [openTab, t]);
 
-  const goNext = useCallback(() => {
-    if (isLastStep) {
-      toast.success(t('common.success'));
-      goBackToServerList();
-      return;
-    }
-
-    setCurrentStepIndex(prev => {
-      const next = prev + 1;
-      setFurthestStepIndex(old => Math.max(old, next));
-      return next;
-    });
-  }, [goBackToServerList, isLastStep, t]);
-
-  const goPrev = useCallback(() => {
-    setCurrentStepIndex(prev => Math.max(0, prev - 1));
-  }, []);
-
-  const onStepClick = useCallback(
-    (stepIndex: number) => {
-      if (stepIndex > furthestStepIndex) return;
-      setCurrentStepIndex(stepIndex);
-    },
-    [furthestStepIndex],
-  );
-
-  const renderStepPlaceholder = () => {
-    // 接口待对接
-    switch (currentStep.key) {
-      case 'base':
-        return <div>{currentStep.key}</div>;
-      case 'dcPool':
-        return <div>{currentStep.key}</div>;
-      case 'account':
-        return <div>{currentStep.key}</div>;
-      case 'health':
-        return <div>{currentStep.key}</div>;
-      default:
-        return '';
-    }
-  };
+  const finish = useCallback(() => {
+    toast.success(t('common.success'));
+    goBackToServerList();
+  }, [goBackToServerList, t]);
 
   return (
     <div className="mx-auto max-w-[1280px]">
@@ -111,27 +64,21 @@ export function QuickCreatePage() {
           <div className="mb-4 flex items-center justify-between">
             <p className="text-foreground text-lg font-semibold italic">Quick Start</p>
             <span className="border-primary text-primary rounded-full border px-2 py-1 text-sm font-medium">
-              {currentStepIndex + 1}/{steps.length}
+              {stepIndex + 1}/{stepKeys.length}
             </span>
           </div>
 
           <div className="space-y-3">
             {steps.map((step, index) => {
-              const isActive = index === currentStepIndex;
-              const isDone = index < currentStepIndex;
-              const isLocked = index > furthestStepIndex;
+              const isActive = index === stepIndex;
+              const isDone = index < stepIndex;
 
               return (
-                <button
+                <div
                   key={step.key}
-                  type="button"
-                  onClick={() => onStepClick(index)}
-                  disabled={isLocked}
                   className={cn(
-                    'flex w-full items-start gap-3 rounded-xl border px-3 py-3 text-left transition-colors',
-                    isActive && 'border-primary',
-                    !isActive && 'border-transparent bg-transparent',
-                    isLocked && 'cursor-not-allowed opacity-50',
+                    'flex w-full items-start gap-3 rounded-xl border px-3 py-3 text-left',
+                    isActive ? 'border-primary' : 'border-transparent opacity-60',
                   )}
                 >
                   <div
@@ -148,39 +95,81 @@ export function QuickCreatePage() {
                   <div className="space-y-1">
                     <p className="text-foreground text-sm font-medium">{step.title}</p>
                     <p className="text-muted-foreground text-xs">{step.description}</p>
+                    {isActive && (
+                      <p className="text-primary text-xs">
+                        {t('quickCreatePage.subStepProgress', {
+                          current: subStep + 1,
+                          total: subTotal,
+                        })}
+                      </p>
+                    )}
+                    {index === 0 && serverId && (
+                      <p className="text-muted-foreground text-xs">{serverName}</p>
+                    )}
                   </div>
-                </button>
+                </div>
               );
             })}
           </div>
+
+          <div className="mt-6">
+            <RrhButton
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={goBackToServerList}
+            >
+              {t('quickCreatePage.back')}
+            </RrhButton>
+          </div>
         </RrhCard>
+
         <RrhCard>
-          <section className="flex min-h-[560px] flex-col justify-between gap-6">
-            <div>
-              <h2 className="text-foreground text-2xl font-medium">{currentStep.title}</h2>
-              <p className="text-muted-foreground mt-2 text-sm">{currentStep.description}</p>
-            </div>
-
-            <div className="flex-1">{renderStepPlaceholder()}</div>
-
-            <div className="flex items-center justify-between">
+          <section className="flex min-h-[560px] flex-col gap-6">
+            <div className="flex items-start justify-between gap-3">
               <div>
-                {currentStepIndex > 0 && (
-                  <RrhButton type="button" variant="outline" onClick={goPrev}>
-                    {t('common.previous')}
-                  </RrhButton>
-                )}
+                <h2 className="text-foreground text-2xl font-medium">{steps[stepIndex].title}</h2>
+                <p className="text-muted-foreground mt-1 text-sm">{steps[stepIndex].description}</p>
               </div>
-
-              <div className="flex items-center gap-3">
-                <RrhButton type="button" variant="outline" onClick={goBackToServerList}>
-                  {t('common.Cancel')}
-                </RrhButton>
-                <RrhButton type="button" onClick={goNext}>
-                  {isLastStep ? t('quickCreatePage.finish') : t('common.next')}
-                </RrhButton>
-              </div>
+              <span className="text-muted-foreground shrink-0 text-sm">
+                {t('quickCreatePage.subStepProgress', {
+                  current: subStep + 1,
+                  total: subTotal,
+                })}
+              </span>
             </div>
+
+            {currentKey === 'server' && (
+              <ServerStep
+                subStep={subStep}
+                onSubStepChange={setSubStep}
+                onSaved={result => {
+                  setServerId(result.serverId);
+                  setServerName(result.aliasName);
+                  setSubStep(0);
+                  setStepIndex(1);
+                }}
+                onCancel={goBackToServerList}
+              />
+            )}
+
+            {currentKey === 'association' && (
+              <AssociationStep
+                serverId={serverId}
+                subStep={subStep}
+                onSubStepChange={setSubStep}
+                onSaved={() => {
+                  setSubStep(0);
+                  setStepIndex(2);
+                }}
+                onSkip={finish}
+                onCancel={goBackToServerList}
+              />
+            )}
+
+            {currentKey === 'account' && (
+              <AccountStep serverId={serverId} onDone={finish} onCancel={goBackToServerList} />
+            )}
           </section>
         </RrhCard>
       </div>

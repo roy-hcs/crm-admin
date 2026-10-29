@@ -3068,25 +3068,125 @@
   "quickCreatePage": {
     "back": "返回服务器管理",
     "title": "快速创建服务器",
-    "desc": "按步骤完成服务器、DC 池、账号与健康检查配置。",
-    "finish": "完成创建",
+    "desc": "按步骤完成服务器、账号类型与账号申请设置的向导流程。",
+    "subStepProgress": "第 {{current}}/{{total}} 步",
     "steps": {
-      "base": {
-        "title": "添加服务器",
-        "desc": "平台与基础信息"
+      "server": {
+        "title": "服务器添加",
+        "desc": "基础信息、连接配置与账号号段"
       },
-      "dcPool": {
-        "title": "连接与 DC 池",
-        "desc": "主连接、权重和节点"
+      "association": {
+        "title": "关联账号类型",
+        "desc": "账号类型、服务器组别与杠杆"
       },
       "account": {
-        "title": "账户设置",
-        "desc": "编号、排序和生成方式"
-      },
-      "health": {
-        "title": "健康检查",
-        "desc": "检查方式和异常通知"
+        "title": "账号设置",
+        "desc": "默认服务器、账号类型与杠杆配置"
       }
+    },
+    "server": {
+      "subSteps": {
+        "0": {
+          "title": "基础信息",
+          "desc": "选择交易平台、服务器类型与名称"
+        },
+        "1": {
+          "title": "连接配置",
+          "desc": "Manager 账号、服务器地址与 DC 池"
+        },
+        "2": {
+          "title": "账户设置",
+          "desc": "账号号段、排序与生成方式"
+        }
+      },
+      "reportingHost": "报表服务器地址",
+      "reportingHostPlaceholder": "请输入报表服务器地址",
+      "reportingDbName": "报表数据库名",
+      "reportingDbNamePlaceholder": "请输入报表数据库名",
+      "reportingAccount": "报表账号",
+      "reportingAccountPlaceholder": "请输入报表账号",
+      "reportingSecret": "报表密码",
+      "reportingSecretPlaceholder": "请输入报表密码",
+      "testConnect": "检测连接",
+      "positiveInteger": "请输入正整数",
+      "accountEndGteStart": "结束账号不能小于开始账号",
+      "generateType": "账号生成方式",
+      "generateAuto": "自动生成",
+      "generateManual": "手动录入"
+    },
+    "association": {
+      "skip": "跳过此步骤",
+      "skipConfirm": "跳过后将不会创建账号类型关联，确定跳过吗？",
+      "subSteps": {
+        "0": {
+          "title": "账号类型与组别",
+          "desc": "选择或新建账号类型，设置默认组别与杠杆"
+        },
+        "1": {
+          "title": "开户赠金与权限",
+          "desc": "设置开户赠金、可见角色与状态"
+        }
+      },
+      "selectAccountType": "选择已有账号类型",
+      "createNew": "新建账号类型",
+      "createAccountType": "新建账号类型（多语言名称）",
+      "accountTypeName": "账号类型名称",
+      "accountTypeNamePlaceholder": "请输入账号类型名称",
+      "useExisting": "使用已有账号类型",
+      "selectGroup": "默认服务器组别",
+      "noGroup": "暂无可用组别，可先同步服务器组别",
+      "synchGroup": "同步服务器组别",
+      "selectLever": "可用杠杆",
+      "noLever": "暂无可用杠杆，请先选择组别或手动添加",
+      "leverPlaceholder": "输入杠杆数值",
+      "addLever": "添加杠杆",
+      "presetLever": "快捷添加：",
+      "customLevers": "已添加自定义杠杆：{{list}}",
+      "leverTip": "至少选择一个杠杆",
+      "leverRequired": "请输入杠杆数值",
+      "leverDuplicate": "该杠杆已存在",
+      "leverMax": "杠杆最多添加 {{num}} 个",
+      "openCreditBalance": "开户赠金",
+      "roleIds": "可见角色",
+      "creditInvalid": "开户赠金最多保留两位小数"
+    },
+    "account": {
+      "realTitle": "真实账号申请设置",
+      "realDesc": "配置客户申请真实账号时的准入条件与默认开户参数。",
+      "realNoFirstTitle": "真实账号申请设置（已初始化）",
+      "realNoFirstDesc": "该服务器已完成真实账号初始配置，如无需调整可直接完成。",
+      "demoTitle": "模拟账号申请设置",
+      "demoDesc": "配置客户申请模拟账号时的验证方式与默认开户参数。",
+      "applyRealTitle": "允许申请真实账号",
+      "applyRealDesc": "关闭后客户将无法对该服务器提交真实账号申请。",
+      "conditionTitle": "申请条件",
+      "conditions": {
+        "info": "个人信息完整",
+        "finance": "财务状况",
+        "identity": "身份认证",
+        "protocol": "协议签署"
+      },
+      "defaultRealTitle": "真实账号默认设置",
+      "defaultRealFirstDesc": "首次创建时设置客户默认开户的服务器、账号类型与杠杆。",
+      "defaultRealNoFirstDesc": "可调整客户默认开户的服务器、账号类型与杠杆。",
+      "defaultDemoTitle": "模拟账号默认设置",
+      "defaultDemoDesc": "设置客户默认开户的服务器、账号类型与杠杆。",
+      "defaultServer": "默认服务器",
+      "chooseServer": "请选择服务器",
+      "allowSelectType": "允许客户选择账号类型",
+      "appointType": "指定账号类型",
+      "hideType": "前端隐藏账号类型",
+      "allowSelectLever": "允许客户选择杠杆",
+      "appointLever": "指定杠杆",
+      "hideLever": "前端隐藏杠杆",
+      "applyDemoTitle": "允许申请模拟账号",
+      "applyDemoDesc": "关闭后客户将无法对该服务器提交模拟账号申请。",
+      "demoVerifyTitle": "模拟账号需要验证",
+      "demoVerifyDesc": "开启后客户申请模拟账号需完成验证。",
+      "noChange": "无需调整",
+      "conditionRequired": "请至少选择一个申请条件",
+      "typeRequired": "请选择指定的账号类型",
+      "leverRequired": "请选择指定的杠杆"
     }
   },
   "tradingPlatformDownloadsPage": {

@@ -3068,25 +3068,125 @@
   "quickCreatePage": {
     "back": "Back to Server Management",
     "title": "Quick Create Server",
-    "desc": "Complete server, DC pool, account, and health check settings step by step.",
-    "finish": "Finish",
+    "desc": "A guided flow to configure the server, account types, and account application settings step by step.",
+    "subStepProgress": "Step {{current}}/{{total}}",
     "steps": {
-      "base": {
-        "title": "Add Server",
-        "desc": "Platform and basic info"
+      "server": {
+        "title": "Server addition",
+        "desc": "Basic info, connection, and account range"
       },
-      "dcPool": {
-        "title": "Connection and DC Pool",
-        "desc": "Main link, weight, and nodes"
+      "association": {
+        "title": "Associated account type",
+        "desc": "Account type, server group, and leverage"
       },
       "account": {
-        "title": "Account Settings",
-        "desc": "Range, sort, and generation"
-      },
-      "health": {
-        "title": "Health Check",
-        "desc": "Check mode and alerting"
+        "title": "Account setting",
+        "desc": "Default server, account type, and leverage"
       }
+    },
+    "server": {
+      "subSteps": {
+        "0": {
+          "title": "Basic Info",
+          "desc": "Choose the trading platform, server type, and name"
+        },
+        "1": {
+          "title": "Connection",
+          "desc": "Manager account, server host, and DC pool"
+        },
+        "2": {
+          "title": "Account Range",
+          "desc": "Account numbers, sort, and generation mode"
+        }
+      },
+      "reportingHost": "Reporting Host",
+      "reportingHostPlaceholder": "Enter the reporting host",
+      "reportingDbName": "Reporting DB Name",
+      "reportingDbNamePlaceholder": "Enter the reporting database name",
+      "reportingAccount": "Reporting Account",
+      "reportingAccountPlaceholder": "Enter the reporting account",
+      "reportingSecret": "Reporting Password",
+      "reportingSecretPlaceholder": "Enter the reporting password",
+      "testConnect": "Test Connection",
+      "positiveInteger": "Enter a positive integer",
+      "accountEndGteStart": "End account must not be less than start account",
+      "generateType": "Generation Mode",
+      "generateAuto": "Auto",
+      "generateManual": "Manual"
+    },
+    "association": {
+      "skip": "Skip this step",
+      "skipConfirm": "Skipping means no account type association will be created. Continue?",
+      "subSteps": {
+        "0": {
+          "title": "Account Type and Group",
+          "desc": "Select or create an account type, then set the default group and leverage"
+        },
+        "1": {
+          "title": "Credit and Permission",
+          "desc": "Set opening credit, visible roles, and status"
+        }
+      },
+      "selectAccountType": "Select an existing account type",
+      "createNew": "Create account type",
+      "createAccountType": "Create account type (multilingual names)",
+      "accountTypeName": "Account type name",
+      "accountTypeNamePlaceholder": "Enter the account type name",
+      "useExisting": "Use an existing account type",
+      "selectGroup": "Default server group",
+      "noGroup": "No group available. Sync server groups first.",
+      "synchGroup": "Sync server groups",
+      "selectLever": "Available leverage",
+      "noLever": "No leverage available. Select a group or add one manually.",
+      "leverPlaceholder": "Enter leverage value",
+      "addLever": "Add leverage",
+      "presetLever": "Quick add:",
+      "customLevers": "Custom leverage added: {{list}}",
+      "leverTip": "Select at least one leverage",
+      "leverRequired": "Enter a leverage value",
+      "leverDuplicate": "This leverage already exists",
+      "leverMax": "At most {{num}} leverage values are allowed",
+      "openCreditBalance": "Opening Credit",
+      "roleIds": "Visible Roles",
+      "creditInvalid": "Opening credit allows at most two decimal places"
+    },
+    "account": {
+      "realTitle": "Real Account Application",
+      "realDesc": "Configure eligibility and default opening parameters for real account applications.",
+      "realNoFirstTitle": "Real Account Application (Initialized)",
+      "realNoFirstDesc": "This server already has its initial real account configuration. Finish directly if no changes are needed.",
+      "demoTitle": "Demo Account Application",
+      "demoDesc": "Configure verification and default opening parameters for demo account applications.",
+      "applyRealTitle": "Allow real account applications",
+      "applyRealDesc": "When disabled, clients cannot submit real account applications for this server.",
+      "conditionTitle": "Application conditions",
+      "conditions": {
+        "info": "Complete personal info",
+        "finance": "Financial profile",
+        "identity": "Identity verification",
+        "protocol": "Signed agreement"
+      },
+      "defaultRealTitle": "Default real account settings",
+      "defaultRealFirstDesc": "Set the default server, account type, and leverage for the first-time configuration.",
+      "defaultRealNoFirstDesc": "Adjust the default server, account type, and leverage.",
+      "defaultDemoTitle": "Default demo account settings",
+      "defaultDemoDesc": "Set the default server, account type, and leverage.",
+      "defaultServer": "Default server",
+      "chooseServer": "Select a server",
+      "allowSelectType": "Let clients choose the account type",
+      "appointType": "Specify account type",
+      "hideType": "Hide account type on the client",
+      "allowSelectLever": "Let clients choose leverage",
+      "appointLever": "Specify leverage",
+      "hideLever": "Hide leverage on the client",
+      "applyDemoTitle": "Allow demo account applications",
+      "applyDemoDesc": "When disabled, clients cannot submit demo account applications for this server.",
+      "demoVerifyTitle": "Require verification for demo accounts",
+      "demoVerifyDesc": "When enabled, clients must complete verification to apply for a demo account.",
+      "noChange": "No changes needed",
+      "conditionRequired": "Select at least one application condition",
+      "typeRequired": "Select the specified account type",
+      "leverRequired": "Select the specified leverage"
     }
   },
   "tradingAccountPage": {
