@@ -18,6 +18,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useTabActions } from '@/hooks/useTabActions';
+import { AgentDataScopeDialog } from './components/AgentDataScopeDialog';
 
 export const ReviewAgentPage = () => {
   const [params, setParams] = useState<AgentApplyListParams['params']>({
@@ -36,6 +37,7 @@ export const ReviewAgentPage = () => {
   const [pageSize, setPageSize] = useState(10);
   const { t } = useTranslation();
   const [resetKey, setResetKey] = useState(0);
+  const [dataScopeOpen, setDataScopeOpen] = useState(false);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('asc');
   const [orderByColumn, setOrderByColumn] = useState('');
 
@@ -271,6 +273,9 @@ export const ReviewAgentPage = () => {
             />
           </div>
           <div className="flex items-center gap-2">
+            <RrhButton variant="outline" onClick={() => setDataScopeOpen(true)}>
+              {t('agentDataScope.entryButton')}
+            </RrhButton>
             <RrhButton variant="outline">{t('table.export')}</RrhButton>
             <RrhButton variant="outline">{t('table.batchDelete')}</RrhButton>
             <RrhButton variant="outline">{t('table.batchAudit')}</RrhButton>
@@ -321,6 +326,7 @@ export const ReviewAgentPage = () => {
           loading={agentApplyListLoading}
         />
       </TableContentWrapper>
+      <AgentDataScopeDialog open={dataScopeOpen} setOpen={setDataScopeOpen} />
     </div>
   );
 };

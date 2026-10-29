@@ -590,3 +590,61 @@ export type SaveWithdrawFeeParams = {
   maxWithdrawFee?: number;
   settingsItemsJsonStr?: string;
 };
+
+/** 内转可转出预付金比例设置 */
+export type AdvanceScaleRuleItem = {
+  id?: string | null;
+  minValue: string;
+  maxValue: string;
+  withdralRatio: string;
+  type?: number;
+};
+
+export type AdvanceScaleTimeRuleItem = {
+  id?: string | null;
+  weekDay: string;
+  startTime: string;
+  endTime: string;
+  type?: number;
+  withdrawRatioJson: string;
+};
+
+export type InterTransAdvanceScaleSetting = {
+  interTransAdvanceScaleStatus: string | number | null;
+  interTransAdvanceScaleScheme: string | number | null;
+  generalSettingList: AdvanceScaleRuleItem[] | null;
+  personalSettingList: AdvanceScaleTimeRuleItem[] | null;
+};
+
+export type SaveInterTransAdvanceScaleParams = {
+  interTransAdvanceScaleStatus: number;
+  interTransAdvanceScaleScheme: string;
+  generalSettingList: AdvanceScaleRuleItem[];
+  personalSettingList: AdvanceScaleTimeRuleItem[];
+};
+
+/** 代理业务数据可见范围 */
+export type AgentScopeRef = { id: string; name: string; showId?: string | null };
+
+export type AgentScopeRule = {
+  id?: string | null;
+  rangeType: number;
+  customDays?: number | null;
+  applySpecified: number;
+  applySub: number;
+  agentList: AgentScopeRef[];
+  agents?: string | null;
+  sortNo?: number | null;
+};
+
+export type AgentDataScopeSetting = {
+  dataScopeRangeType: string | number | null;
+  dataScopeCustomDays: string | number | null;
+  agentScopeRules: AgentScopeRule[] | null;
+};
+
+export type SaveAgentDataScopeParams = {
+  dataScopeRangeType: string;
+  dataScopeCustomDays: string;
+  agentScopeRules: AgentScopeRule[];
+};

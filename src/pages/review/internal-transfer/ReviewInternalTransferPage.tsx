@@ -17,12 +17,14 @@ import { RrhButton } from '@/components/common/RrhButton';
 import { RrhSorter } from '@/components/common/RrhSorter';
 import { TableContentWrapper } from '@/components/common/TableContentWrapper';
 import { useTabActions } from '@/hooks/useTabActions';
+import { AdvanceScaleSettingDialog } from './components/AdvanceScaleSettingDialog';
 
 export const ReviewInternalTransferPage = () => {
   const { t } = useTranslation();
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [resetKey, setResetKey] = useState(0);
+  const [advanceScaleOpen, setAdvanceScaleOpen] = useState(false);
   const [isAsc, setIsAsc] = useState<'asc' | 'desc' | ''>('desc');
   const [orderByColumn, setOrderByColumn] = useState('');
   const [params, setParams] = useState<InternalTransferListParams['params']>({
@@ -291,6 +293,9 @@ export const ReviewInternalTransferPage = () => {
             />
           </div>
           <div className="flex items-center gap-2">
+            <RrhButton variant="outline" onClick={() => setAdvanceScaleOpen(true)}>
+              {t('internalTransferAdvanceScale.entryButton')}
+            </RrhButton>
             <RrhButton variant="outline">{t('table.export')}</RrhButton>
             <Button variant="ghost" className="size-8 cursor-pointer" onClick={reset}>
               <RefreshCcw className="size-3.5" />
@@ -338,6 +343,7 @@ export const ReviewInternalTransferPage = () => {
           loading={internalTransferListLoading}
         />
       </TableContentWrapper>
+      <AdvanceScaleSettingDialog open={advanceScaleOpen} setOpen={setAdvanceScaleOpen} />
     </div>
   );
 };
