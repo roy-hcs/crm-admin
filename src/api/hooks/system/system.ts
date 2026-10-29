@@ -474,6 +474,14 @@ export function useGetEmailMsgDetail(id: string, { enabled }: { enabled?: boolea
   });
 }
 
+// 邮箱详情-Google 验证码通过后返回未脱敏内容
+export function useShowEmailVerifyCode() {
+  return useMutation({
+    mutationFn: (params: { id: string; googleCode: string }) =>
+      apiFormPost<string>('/system/msg/showEmailVerifyCode', params),
+  });
+}
+
 // 重发邮箱详情
 export function useGetResendEmailMsgDetail(
   params: { id: string; userMsgId: string },

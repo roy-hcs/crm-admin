@@ -9,6 +9,10 @@ import { FormSelect } from '@/components/form/FormSelect';
 import { FormTextarea } from '@/components/form/FormTextarea';
 import { FormSelectCountries } from '@/pages/points-mall/add-edit-good/components/FormSelectCountries';
 import { UploadFile } from '@/components/common/UploadFile';
+import {
+  applyInputNormalizer,
+  normalizePositiveIntegerInput,
+} from '@/pages/marketing/shared/formValueUtils';
 
 type SelectOption = {
   label: string;
@@ -80,6 +84,10 @@ export function AddEditSignalsStepOne({
           placeholder={t('common.pleaseInput', {
             field: t('signals.minBalanceForSubscription'),
           })}
+          maxLength={9}
+          onInput={event =>
+            applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+          }
         />
         <FormInput
           name="maxBalanceForSubscription"
@@ -87,6 +95,10 @@ export function AddEditSignalsStepOne({
           placeholder={t('common.pleaseInput', {
             field: t('signals.maxBalanceForSubscription'),
           })}
+          maxLength={9}
+          onInput={event =>
+            applyInputNormalizer(event.currentTarget, normalizePositiveIntegerInput)
+          }
         />
       </div>
       <FormInput

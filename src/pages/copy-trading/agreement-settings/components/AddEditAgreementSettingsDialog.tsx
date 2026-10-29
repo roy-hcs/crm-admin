@@ -423,7 +423,7 @@ export const AddEditAgreementSettingsDialog = ({
                             field={fileField}
                             description={t('ticketList.attachmentDescription', {
                               fileTypes: 'pdf',
-                              maxSize: 10,
+                              maxSize: 20,
                             })}
                             accept=".pdf"
                           />

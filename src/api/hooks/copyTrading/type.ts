@@ -73,6 +73,7 @@ export type MamSignalSourceItem = {
   serverProperty: string | null;
   subscriptionReview: number;
   minBalanceForSubscription: null;
+  maxBalanceForSubscription?: number | null;
   performanceFeeEnable: number;
   performanceFeeCycle: number;
   performanceFeeRatio: number;

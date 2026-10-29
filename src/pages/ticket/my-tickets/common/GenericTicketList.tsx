@@ -22,6 +22,7 @@ import { toast } from 'sonner';
 import { CloseOrderDialog } from '../../ticket-list/components/CloseOrderDialog';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
 import { useTabActions } from '@/hooks/useTabActions';
+import { stripHtmlTags } from '@/lib/utils';
 
 type Props = {
   mode: TicketTabsParams;
@@ -89,7 +90,7 @@ export const GenericTicketList: React.FC<Props> = ({
       const url = `/ticket/detail?id=${row.id}`;
       openTab({
         key: url,
-        title: t('ticketList.ticketDetail'),
+        title: `${t('ticketList.ticketSingle')}-${stripHtmlTags(row.belongUser)}-${row.orderId}`,
         path: url,
       });
     },

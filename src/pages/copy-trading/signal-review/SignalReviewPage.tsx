@@ -163,6 +163,11 @@ export const SignalReviewPage = () => {
         cell: ({ row }) => row?.original?.minBalanceForSubscription || '-',
       },
       {
+        id: 'maxBalanceForSubscription',
+        header: t('signalReview.maxBalanceForSubscription'),
+        cell: ({ row }) => row?.original?.maxBalanceForSubscription || '-',
+      },
+      {
         id: 'upperLimit',
         label: t('signalReview.upperLimit'),
         header: () => {

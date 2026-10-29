@@ -386,3 +386,10 @@ export function formatFileSize(bytes: string | number, decimals: number = 1): st
   const finalSize = parseFloat(formatted);
   return `${finalSize} ${units[unitIndex]}`;
 }
+
+/**
+ * 去除字符串中的 HTML 标签（如工单归属用户的 <br/> 拼接）
+ */
+export function stripHtmlTags(value?: string | null) {
+  return (value || '').replace(/<[^>]*>/g, '');
+}

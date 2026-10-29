@@ -60,6 +60,19 @@ export function useRemoveServerSetting() {
   });
 }
 
+// 服务器设置-DC 节点连通性检测
+export function useCheckMtConnect() {
+  return useMutation({
+    mutationFn: (params: {
+      serviceType: string;
+      serviceHost: string;
+      serverName: string;
+      managerAccount: string;
+      managerSecret: string;
+    }) => apiPost('/system/mtService/checkMtConnect', params),
+  });
+}
+
 // 服务器组别列表
 export function useCrmMtServerGroupList(
   params: BasicParams,

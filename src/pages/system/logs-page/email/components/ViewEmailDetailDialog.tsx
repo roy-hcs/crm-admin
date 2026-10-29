@@ -1,8 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { RrhDialog } from '@/components/common/RrhDialog';
-import { useGetEmailMsgDetail } from '@/api/hooks/system/system';
+import { RrhButton } from '@/components/common/RrhButton';
+import { Input } from '@/components/ui/input';
+import { useGetEmailMsgDetail, useShowEmailVerifyCode } from '@/api/hooks/system/system';
 import { toast } from 'sonner';
+
+const maskedCodeReg = /\*{6}<\/span>/;
 
 export const ViewEmailDetailDialog = ({
   open: openProp,
@@ -26,18 +31,33 @@ export const ViewEmailDetailDialog = ({
   });
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [iframeElement, setIframeElement] = useState<HTMLIFrameElement | null>(null);
+  // Google 验证码校验通过后的未脱敏内容
+  const [verifiedContent, setVerifiedContent] = useState('');
+  const [verifyOpen, setVerifyOpen] = useState(false);
+  const [googleCode, setGoogleCode] = useState('');
+  const { mutateAsync: showVerifyCode, isPending: verifyLoading } = useShowEmailVerifyCode();
+
+  const rawContent = emailMsgDetail?.data?.content || '';
+  const displayContent = verifiedContent || rawContent;
+  const hasMaskedCode = !!rawContent && maskedCodeReg.test(rawContent);
+
+  useEffect(() => {
+    setVerifiedContent('');
+    setVerifyOpen(false);
+    setGoogleCode('');
+  }, [userMsgId]);
 
   useEffect(() => {
     if (!open) return;
     const iframe = iframeElement;
-    if (emailMsgDetail?.data?.content && iframe) {
+    if (displayContent && iframe) {
       if (!iframe) return;
 
       // 写入 HTML 内容
       const doc = iframe.contentDocument || iframe.contentWindow?.document;
       if (doc) {
         doc.open();
-        doc.write(emailMsgDetail.data.content);
+        doc.write(displayContent);
         doc.close();
 
         if (doc.documentElement) {
@@ -75,7 +95,7 @@ export const ViewEmailDetailDialog = ({
         });
       }
     }
-  }, [open, emailMsgDetail, iframeElement]);
+  }, [open, displayContent, iframeElement]);
 
   useEffect(() => {
     if (isError) toast.error(t('common.AnErrorOccurred'));
@@ -85,9 +105,31 @@ export const ViewEmailDetailDialog = ({
     setOpen(false);
   };
 
+  const onVerifySubmit = async () => {
+    const code = googleCode.trim();
+    if (!code) {
+      toast.error(t('common.pleaseInput', { field: t('common.googleAuthCode') }));
+      return;
+    }
+    try {
+      const res = await showVerifyCode({ id: userMsgId, googleCode: code });
+      if (res.code === 0) {
+        setVerifiedContent(res.data || '');
+        setVerifyOpen(false);
+        setGoogleCode('');
+      } else {
+        toast.error(res.msg);
+      }
+    } catch (error) {
+      console.error('Error verifying google code:', error);
+    }
+  };
+
   const onClose = (open: boolean) => {
     setOpen(open);
     if (!open) {
+      setVerifyOpen(false);
+      setGoogleCode('');
       // 清空 iframe 内容
       const iframe = iframeRef.current;
       if (iframe) {
@@ -102,30 +144,72 @@ export const ViewEmailDetailDialog = ({
   };
 
   return (
-    <RrhDialog
-      title={t('emailLogsPage.emailPreview')}
-      isConfirmDisabled={getDetailLoading}
-      open={open}
-      onOpenChange={onClose}
-      onCancel={onCancel}
-      variant="adaptive"
-      className="md:max-w-[92vw]"
-      contentClassName="max-h-[calc(90vh-96px)]"
-      type="view"
-      formLoading={getDetailLoading}
-      confirmShow={false}
-    >
-      <div className="flex justify-center">
-        <iframe
-          ref={node => {
-            iframeRef.current = node;
-            setIframeElement(node);
-          }}
-          style={{ border: 'none', minHeight: '120px' }}
-          title="HTML Preview"
-          sandbox="allow-same-origin" // 如果需要允许加载同源资源，可添加，但注意安全
-        />
-      </div>
-    </RrhDialog>
+    <>
+      <RrhDialog
+        title={t('emailLogsPage.emailPreview')}
+        isConfirmDisabled={getDetailLoading}
+        open={open}
+        onOpenChange={onClose}
+        onCancel={onCancel}
+        variant="adaptive"
+        className="md:max-w-[92vw]"
+        contentClassName="max-h-[calc(90vh-96px)]"
+        type="view"
+        formLoading={getDetailLoading}
+        confirmShow={false}
+      >
+        {hasMaskedCode && !verifiedContent && (
+          <div className="mb-2 flex justify-end">
+            <RrhButton
+              variant="outline"
+              size="sm"
+              onClick={() => setVerifyOpen(true)}
+              className="cursor-pointer"
+            >
+              {t('emailLogsPage.viewVerifyCode')}
+            </RrhButton>
+          </div>
+        )}
+        <div className="flex justify-center">
+          <iframe
+            ref={node => {
+              iframeRef.current = node;
+              setIframeElement(node);
+            }}
+            style={{ border: 'none', minHeight: '120px' }}
+            title="HTML Preview"
+            sandbox="allow-same-origin" // 如果需要允许加载同源资源，可添加，但注意安全
+          />
+        </div>
+      </RrhDialog>
+      <RrhDialog
+        title={t('emailLogsPage.viewVerifyCode')}
+        open={verifyOpen}
+        onOpenChange={setVerifyOpen}
+        onCancel={() => {
+          setVerifyOpen(false);
+          setGoogleCode('');
+        }}
+        onConfirm={onVerifySubmit}
+        isConfirmDisabled={verifyLoading}
+        formLoading={verifyLoading}
+        variant="middle"
+        type="submit"
+      >
+        <div className="space-y-2">
+          <p className="text-muted-foreground text-sm">{t('emailLogsPage.viewVerifyCodeTip')}</p>
+          <Input
+            value={googleCode}
+            onChange={e => setGoogleCode(e.target.value.replace(/\D/g, ''))}
+            placeholder={t('common.pleaseInput', { field: t('common.googleAuthCode') })}
+            autoComplete="off"
+            inputMode="numeric"
+          />
+          <Link to="/account/profile" className="text-primary text-xs hover:underline">
+            {t('common.googleAuthBindTip')}
+          </Link>
+        </div>
+      </RrhDialog>
+    </>
   );
 };

@@ -273,6 +273,24 @@ export const AddEditSignalsDialog = ({
     return !hasError;
   };
 
+  const validateBalanceRange = () => {
+    form.clearErrors('maxBalanceForSubscription');
+
+    const minRaw = String(form.getValues('minBalanceForSubscription') || '').trim();
+    const maxRaw = String(form.getValues('maxBalanceForSubscription') || '').trim();
+    if (!minRaw || !maxRaw) return true;
+
+    if (Number(minRaw) > Number(maxRaw)) {
+      form.setError('maxBalanceForSubscription', {
+        type: 'manual',
+        message: t('signals.balanceRangeError'),
+      });
+      return false;
+    }
+
+    return true;
+  };
+
   const onSubmit = async (data: FormValues) => {
     try {
       setIsSubmitting(true);
@@ -342,7 +360,7 @@ export const AddEditSignalsDialog = ({
   const onConfirm = async () => {
     switch (step) {
       case 'one': {
-        if (validateRequiredFields()) {
+        if (validateRequiredFields() && validateBalanceRange()) {
           setStep('two');
         }
         break;

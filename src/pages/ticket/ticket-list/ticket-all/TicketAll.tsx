@@ -22,6 +22,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { CancelOrderDialog } from '../components/CancelOrderDialog';
 import { CloseOrderDialog } from '../components/CloseOrderDialog';
 import { RrhDeleteAlert } from '@/components/common/RrhDeleteAlert';
+import { stripHtmlTags } from '@/lib/utils';
 import { AddTicketDialog } from '../components/AddTicketDialog';
 import { RrhFollowAlert } from '@/components/common/RrhFollowAlert';
 import { useTabActions } from '@/hooks/useTabActions';
@@ -82,7 +83,7 @@ export const TicketAll = () => {
       const url = `/ticket/detail?id=${row.id}`;
       openTab({
         key: url,
-        title: t('ticketList.ticketDetail'),
+        title: `${t('ticketList.ticketSingle')}-${stripHtmlTags(row.belongUser)}-${row.orderId}`,
         path: url,
       });
     },

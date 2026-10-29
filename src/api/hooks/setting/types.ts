@@ -1,6 +1,16 @@
 import { BasicRes, BaseEntity } from '@/api/types';
 import { MtServerGroupRes } from '../agent/types';
 
+export type MtServiceDcNodeItem = {
+  id?: string;
+  nodeName: string;
+  serverAddress: string;
+  region?: string | null;
+  weight?: number | null;
+  enabled?: number | null;
+  sort?: number | null;
+};
+
 export type CrmMtServiceListItem = BaseEntity & {
   id: string;
   serviceType: number;
@@ -30,6 +40,13 @@ export type CrmMtServiceListItem = BaseEntity & {
   reportingDbName: string | null;
   reportingAccount: string | null;
   reportingSecret: string | null;
+  // 连接配置：1-单服务器，2-DC 池
+  connectConfig?: number | null;
+  primaryWeight?: number | null;
+  switchStrategy?: number | null;
+  connectionTimeout?: number | null;
+  // 列表接口暂未返回，后端补齐后编辑弹窗可直接回显 DC 节点
+  mtServiceDcNodes?: MtServiceDcNodeItem[] | null;
 };
 export type CrmMtServiceListRes = BasicRes<CrmMtServiceListItem>;
 
@@ -48,6 +65,11 @@ export type AddServerSetting = {
   reportingSecret: string;
   generateType: number;
   sort: number;
+  connectConfig?: number;
+  primaryWeight?: number | null;
+  switchStrategy?: number | null;
+  connectionTimeout?: number | null;
+  mtServiceDcNodes?: MtServiceDcNodeItem[];
 };
 
 export type EditServerSetting = AddServerSetting & {

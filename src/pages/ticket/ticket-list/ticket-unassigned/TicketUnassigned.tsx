@@ -23,6 +23,7 @@ import { useRoleList } from '@/api/hooks/system';
 import { toast } from 'sonner';
 import { RrhFollowAlert } from '@/components/common/RrhFollowAlert';
 import { useTabActions } from '@/hooks/useTabActions';
+import { stripHtmlTags } from '@/lib/utils';
 
 export const TicketUnassigned = () => {
   const { t } = useTranslation();
@@ -96,7 +97,7 @@ export const TicketUnassigned = () => {
       const url = `/ticket/detail?id=${row.id}`;
       openTab({
         key: url,
-        title: t('ticketList.ticketDetail'),
+        title: `${t('ticketList.ticketSingle')}-${stripHtmlTags(row.belongUser)}-${row.orderId}`,
         path: url,
       });
     },
