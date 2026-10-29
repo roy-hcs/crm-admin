@@ -52,6 +52,10 @@ import {
   AgencyPreferenceParams,
   TradingAccountSnapshotParams,
   TradingAccountSnapshotRes,
+  AgencyCrmDetailParams,
+  AgencyCrmDetailResponse,
+  AgencyDealAccountDetailParams,
+  AgencyDealAccountDetailResponse,
 } from './types';
 
 /**
@@ -79,6 +83,42 @@ export function useAgencyOverviewList(params: OverviewParams, options?: { enable
     enabled: options?.enabled ?? true,
   });
 }
+/**
+ * ib数据总览-CRM账户明细弹窗列表
+ */
+export function useAgencyOverviewCrmDetailList(
+  params: AgencyCrmDetailParams,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['agencyOverviewListByCrm', params],
+    queryFn: () =>
+      apiFormPostCustom<AgencyCrmDetailResponse>(
+        '/system/statistics/agencyOverviewListByCrm',
+        params || {},
+      ),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+/**
+ * ib数据总览-交易账号明细弹窗列表
+ */
+export function useAgencyOverviewDealAccountDetailList(
+  params: AgencyDealAccountDetailParams,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ['agencyOverviewListByAccount', params],
+    queryFn: () =>
+      apiFormPostCustom<AgencyDealAccountDetailResponse>(
+        '/system/statistics/agencyOverviewListByAccount',
+        params || {},
+      ),
+    enabled: options?.enabled ?? true,
+  });
+}
+
 /**
  * ib数据总览-获取偏好设置 1 2 3 多个页面共用
  */

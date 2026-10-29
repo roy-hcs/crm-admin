@@ -16,6 +16,9 @@ import { useAgencyOverviewExport } from '@/api/hooks/report/report';
 import { Switch } from '@/components/ui/switch';
 import { OverviewForm } from './components/OverviewForm';
 import { PreferDialog } from './components/PreferDialog';
+import { CrmAccountDetailDialog } from './components/CrmAccountDetailDialog';
+import { DealAccountDetailDialog } from './components/DealAccountDetailDialog';
+import { RrhButton } from '@/components/common/RrhButton';
 import { ExportButton } from '@/components/common/ExportButton';
 import { formatCurrencyAmount } from '@/lib/utils';
 import {
@@ -38,8 +41,20 @@ export function OverviewPage() {
     level: '',
   });
   const [drirectFlag, setDrirectFlag] = useState(false);
+  const [crmDetail, setCrmDetail] = useState<{
+    open: boolean;
+    userId: string;
+    userName: string;
+    depositFlag?: string;
+  }>({ open: false, userId: '', userName: '' });
+  const [dealAccountDetail, setDealAccountDetail] = useState<{
+    open: boolean;
+    userId: string;
+    userName: string;
+  }>({ open: false, userId: '', userName: '' });
 
   const { serverId, setServerId, server, serverLoading } = useInitServerId();
+  const serverType = `${server?.rows?.find(item => item.id === serverId)?.serviceType || ''}`;
   const valueIndicatorEnabled = useValueIndicatorEnabled(VALUE_INDICATOR_SHOW_KEYS.ibDataOverview);
   const { data: rebateLevel } = useRebateLevelList();
   const {
@@ -53,7 +68,7 @@ export function OverviewPage() {
       serverId,
       ...params,
       isAsc,
-      serverType: '4',
+      serverType,
       directClient: drirectFlag ? '1' : '0',
     },
     { enabled: !!serverId },
@@ -96,21 +111,73 @@ export function OverviewPage() {
       },
       {
         id: 'userNumber',
-        accessorKey: 'userNumber',
         header: t('overview.userNumber'),
-        accessorFn: row => row.userNumber,
+        cell: ({ row }) => {
+          const value = row.original.userNumber;
+          if (!value || value === '0') return <div>{value ?? '-'}</div>;
+          return (
+            <RrhButton
+              variant="ghost"
+              className="h-auto p-0"
+              onClick={() =>
+                setCrmDetail({
+                  open: true,
+                  userId: row.original.userId || '',
+                  userName: row.original.username || '',
+                })
+              }
+            >
+              {value}
+            </RrhButton>
+          );
+        },
       },
       {
         id: 'depositUserNumber',
-        accessorKey: 'depositUserNumber',
         header: t('overview.depositUserNumber'),
-        accessorFn: row => row.depositUserNumber,
+        cell: ({ row }) => {
+          const value = row.original.depositUserNumber;
+          if (!value || value === '0') return <div>{value ?? '-'}</div>;
+          return (
+            <RrhButton
+              variant="ghost"
+              className="h-auto p-0"
+              onClick={() =>
+                setCrmDetail({
+                  open: true,
+                  userId: row.original.userId || '',
+                  userName: row.original.username || '',
+                  depositFlag: '1',
+                })
+              }
+            >
+              {value}
+            </RrhButton>
+          );
+        },
       },
       {
         id: 'accountNumber',
-        accessorKey: 'accountNumber',
         header: t('overview.accountNumber'),
-        accessorFn: row => row.accountNumber,
+        cell: ({ row }) => {
+          const value = row.original.accountNumber;
+          if (!value || value === '0') return <div>{value ?? '-'}</div>;
+          return (
+            <RrhButton
+              variant="ghost"
+              className="h-auto p-0"
+              onClick={() =>
+                setDealAccountDetail({
+                  open: true,
+                  userId: row.original.userId || '',
+                  userName: row.original.username || '',
+                })
+              }
+            >
+              {value}
+            </RrhButton>
+          );
+        },
       },
       {
         id: 'balance',
@@ -257,7 +324,7 @@ export function OverviewPage() {
               params={{
                 serverId,
                 ...params,
-                serverType: '4',
+                serverType,
                 directClient: drirectFlag ? '1' : '0',
               }}
               exportLoading={exportLoading}
@@ -285,6 +352,33 @@ export function OverviewPage() {
           loading={isLoading || serverLoading}
         />
       </TableContentWrapper>
+      <CrmAccountDetailDialog
+        open={crmDetail.open}
+        setOpen={open => setCrmDetail(prev => ({ ...prev, open }))}
+        userId={crmDetail.userId}
+        userName={crmDetail.userName}
+        depositFlag={crmDetail.depositFlag}
+        baseParams={{
+          serverId,
+          serverType,
+          beginTime: params.beginTime,
+          endTime: params.endTime,
+          directClient: drirectFlag ? '1' : '0',
+        }}
+      />
+      <DealAccountDetailDialog
+        open={dealAccountDetail.open}
+        setOpen={open => setDealAccountDetail(prev => ({ ...prev, open }))}
+        userId={dealAccountDetail.userId}
+        userName={dealAccountDetail.userName}
+        baseParams={{
+          serverId,
+          serverType,
+          beginTime: params.beginTime,
+          endTime: params.endTime,
+          directClient: drirectFlag ? '1' : '0',
+        }}
+      />
     </div>
   );
 }

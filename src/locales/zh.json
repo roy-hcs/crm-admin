@@ -433,6 +433,10 @@
     "rebateOnCommission": "手续费返佣",
     "rebateOnDeposit": "入金返佣",
     "serverId": "服务器",
+    "crmAccountDetailTitle": "CRM账户明细（{{name}}）",
+    "dealAccountDetailTitle": "交易账号明细（{{name}}）",
+    "account": "交易账号",
+    "accountOwnerRole": "归属人角色",
     "preferenceSettings": "偏好设置",
     "depositWithdrawPreference": "入金和出金类型偏好",
     "preferenceSettingsDescription": "一旦提交偏好设置，将在下次预定时间生效"

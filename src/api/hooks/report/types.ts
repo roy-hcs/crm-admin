@@ -44,6 +44,7 @@ export type OverviewParams = BasicParams & {
   serverType?: string;
 };
 export type OverviewItem = {
+  userId?: string | null;
   rebateLevel: string | null;
   username: string | null;
   email: string | null;
@@ -65,6 +66,62 @@ export type OverviewItem = {
 };
 
 export type OverviewResponse = BasicRes<OverviewItem>;
+
+// ib数据总览-下钻明细
+export type AgencyDetailParams = BasicParams & {
+  userId: string;
+  serverId?: string;
+  serverType?: string;
+  beginTime?: string;
+  endTime?: string;
+  directClient?: string;
+};
+export type AgencyCrmDetailParams = AgencyDetailParams & {
+  depositFlag?: string;
+  name?: string;
+  email?: string;
+  roleId?: string;
+};
+export type AgencyDealAccountDetailParams = AgencyDetailParams & {
+  fuzzyName?: string;
+  fuzzyAccount?: string;
+  threeCons?: string;
+};
+export type AgencyDetailBaseItem = {
+  userId: string | null;
+  username: string | null;
+  balance: string | null;
+  depositAmount: string | null;
+  withdrawAmount: string | null;
+  netDeposit: string | null;
+  volume: string | null;
+  profitAndLoss: string | null;
+  commission: string | null;
+  swaps: string | null;
+  rebateOnTrade: string | null;
+  rebateOnCommission: string | null;
+  rebateOnDeposit: string | null;
+};
+export type AgencyCrmDetailItem = AgencyDetailBaseItem & {
+  email: string | null;
+  roleName: string | null;
+  inviterName: string | null;
+  inviterEmail: string | null;
+  accountNumber: string | null;
+};
+export type AgencyDealAccountDetailItem = AgencyDetailBaseItem & {
+  account: string | null;
+  accountId: string | null;
+  aspName: string | null;
+  aspShowId: string | null;
+  roleName: string | null;
+  directBroker: string | null;
+  brokerName: string | null;
+  brokerShowId: string | null;
+  valueIndicator?: number | null;
+};
+export type AgencyCrmDetailResponse = BasicRes<AgencyCrmDetailItem>;
+export type AgencyDealAccountDetailResponse = BasicRes<AgencyDealAccountDetailItem>;
 
 // 交易佣金报表
 export type TradingParams = BasicParams & {
