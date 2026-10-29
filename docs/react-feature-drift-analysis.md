@@ -42,7 +42,9 @@
 | CopyTrading   | 无（协议上传 20M、信号源订阅余额上下限已于 2026-10-29 补齐）                                                                                                                                      | —                |
 | 交易平台      | 无（服务器多 DC 配置、QuickCreate 3 步 6 子页向导已于 2026-10-29 补齐）                                                                                                                           | —                |
 
-剩余未实现项仅 **P0**：三方出金手动分发/出金执行（见 §4.1）。
+剩余未实现项仅
+**P0**：三方出金手动分发/出金执行（见 §4.1）。`react-migration-gap-analysis.md`
+§二/§三 的页面级缺口（54 + 6 项）的前端可做性分类、接口依据与排期见 §8。
 
 ## 3. 缺失功能清单
 
@@ -267,3 +269,128 @@
 | P2     | QuickCreate 新建服务器向导（✅ 2026-10-29 已完成，3 步 6 子页）      | 3~5 人日     |
 
 > 说明：以上为前端改造量估算，不含后端接口新增/联调与回归测试；三方出金分发、DC 池编辑（节点查询接口）强依赖后端接口，需先确认接口是否已在当前环境可用。风控 tab、IP 示警所需接口已存在；代客入金自定义渠道列表、账户活动的权限点与真实操作类型需后端/平台补充（见第 4 节）。
+
+## 8. 前端可做性分类（2026-10-29）
+
+> 范围：`react-migration-gap-analysis.md` §二（页面级缺口 54 个）+
+> §三（已实现页面的 6 项功能缺口），去重后
+> **59 项**（历史订单补发在两份清单中各计 1 次）。分类口径为**当前后端是否已有可用的 JSON 接口**，依据是旧版
+> `release@acde80a7f2` 的 controller 映射与 React 现有 hook：
+>
+> - **A 类**：读取/保存均已有 JSON 接口，或可用「`getConfig` 读标量 +
+>   `platFormSetting/edit` 写」组合，纯前端即可交付。
+> - **B 类**：旧版页面数据由 `ModelMap`
+>   注入、无 JSON 读取；前端可按旧模板字段先写 UI，但需后端补**一个读取接口**（契约写法沿用 §4.3）。
+> - **C 类**：旧版 controller 缺失或被注释、或依赖客户端/三方系统，必须后端先行。
+>
+> 估算为前端改造量（含自测与 i18n），不含联调、回归与后端接口开发。
+
+### 8.1 A 类：现有接口即可完成（27 项，约 36~38 人日）
+
+| 域          | 页面/功能                                   | 现有接口                                                                              | 估算    |
+| ----------- | ------------------------------------------- | ------------------------------------------------------------------------------------- | ------- |
+| 系统        | 菜单管理表单补图标输入                      | `POST /system/menu/{add,edit}` 已接，schema 已声明 `icon`                             | 0.5     |
+| 设置-出入金 | 第三方支付设置（入金 + 出金）               | `/system/thirdPaymentSetting`（`list` 已在出金通道筛选中使用）                        | 2       |
+| 设置-出入金 | 个性化汇率                                  | `/system/personalizedExchangeRate`                                                    | 1.5     |
+| 设置-出入金 | 快捷支付设置                                | `/system/quickPaySet`                                                                 | 1       |
+| 设置-消息   | 发件箱设置                                  | `/system/emailConfig`（含默认发件配置、集成方式）                                     | 1       |
+| 设置-消息   | 邮件模板（含批量子设置）                    | `/system/emailTemplate`（`list`、`batchSettings`、`doBatchSettings`）                 | 2       |
+| 设置-消息   | 短信设置                                    | `/system/smsConfig`                                                                   | 1       |
+| 设置-消息   | 短信模板                                    | `/system/smsTemplate`（`list/{parentId}`、`viewByParentId`）                          | 1.5     |
+| 设置-消息   | Telegram 机器人设置                         | `/system/robotConfig`                                                                 | 1       |
+| 设置-消息   | Telegram 模板                               | `/system/telegramTemplate`（含批量子设置）                                            | 1.5     |
+| 设置-消息   | Web 推送模板                                | `/system/webMsgTemplate`                                                              | 1       |
+| 设置-推广   | 推广链接（平台/代理/直客/个人）             | `/system/spreadLink`                                                                  | 1.5     |
+| 设置-推广   | 权限包管理                                  | `/system/spreadPermPackage`                                                           | 1.5     |
+| 设置-其他   | 三方集成配置（含 Brokeree）                 | `/system/intergration`                                                                | 1.5     |
+| 设置-其他   | 钱包设置                                    | `getConfig` ×2 + `POST /system/platFormSetting/edit`（见 8.6 修正说明）               | 1       |
+| 设置-CRM    | 国家管理                                    | `/system/country`（创建账户国家下拉已在用）                                           | 2       |
+| 设置-CRM    | 平台设置                                    | `getConfig` + `platFormSetting/edit`（选择性写入）                                    | 1       |
+| 设置-CRM    | 时间设置                                    | 同上（旧页 `system/config/time_zone.html` 即 `platFormSetting/edit`）                 | 1.5     |
+| 设置-CRM    | 偏好设置                                    | `/system/crmPreference/{list,save,edit}` 全 JSON                                      | 1       |
+| 设置-代理   | 推广素材（含二维码下载）                    | `/system/marketing/material`（含 `export`、`toggleStatus`、`batchUpdateStatus`）      | 1.5     |
+| 账户        | 财务安全问题                                | `/system/crmUserFinanceQuestion`（含 `list`/`export`/CRUD）                           | 1.5     |
+| 账户        | 客户详情「推广」tab（权限包/推广链接/统计） | `/system/crmUserSpread/{oneUserSpreadInfo,permPackage/*}`                             | 2       |
+| 审核        | 审核设置补齐（排序/启用禁用/导航审核数）    | `/system/crmPreference/{list,save,edit,reviewer/*}`，React 已接 `list`                | 2       |
+| 返佣        | 历史订单补发                                | `crmRebateHistoryDeal/{deal-list/{id},deal-list/3,send-deal/{id}}`，hook 已有无消费方 | 1.5     |
+| 营销        | 转介绍开户奖励（奖励类型 6）                | `/system/marketing/bonusSetting/{list,add,edit,detail,activitySetting}`               | 2       |
+| PAMM        | 外部系统集成（iframe + 免登录地址）         | `GET /system/pammIntegration/getLoginUrl`（返回免登录 URL）                           | 0.5     |
+| 系统        | 各列表页导出逐页核对                        | 各页 toolbar 与旧模板对照（`react-migration-gap-analysis.md` §五.1）                  | 1       |
+| **合计**    | **27 项**                                   |                                                                                       | **≈37** |
+
+### 8.2 B 类：需补 1 个读取契约（23 项，约 38~42 人日）
+
+| 域          | 页面/功能                           | 旧版读取方式                                                       | 需补的读取契约                                                             | 估算    |
+| ----------- | ----------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------- |
+| 交易平台    | 账号设置（基础/真实/模拟 3 tab）    | `ModelMap` 注入                                                    | 参照 QuickCreate 的 `getSettingInfoByQS` 增 `getSettingInfo`               | 3       |
+| 设置-出入金 | 基础设置（出金/内转递减两个子设置） | `ModelMap` 注入                                                    | 读取 `sys.*` 配置组                                                        | 2       |
+| 设置-出入金 | 客户渠道（字段元数据）              | `add`/`edit` 页由 `ModelMap` 注入可配置字段                        | 渠道字段元数据（类型/必填/选项/校验）                                      | 2       |
+| 设置-消息   | 邮件提醒批量设置                    | 仅 `POST /system/emailMind/saveMind`，无 list                      | 提醒项与批量设置读取                                                       | 1.5     |
+| 设置-消息   | 邮件样式设置                        | `/add`、`/edit`、`/preview`、`/saveDefault`，无 list               | 样式列表读取                                                               | 1.5     |
+| 设置-推广   | 推广落地页设置                      | `GET` 页面 + `POST /system/spreadPageSetting/edit`                 | 落地页配置读取                                                             | 1       |
+| 设置-CRM    | NPS 配置                            | `ModelMap` 注入                                                    | NPS 规则读取                                                               | 2       |
+| 设置-CRM    | 登录注册设置                        | `ModelMap` 注入                                                    | 配置读取                                                                   | 2       |
+| 设置-CRM    | 代理注册设置                        | `ModelMap` 注入（业务数据范围已做成审核工具栏弹窗，见 §3.1）       | 其余注册项读取                                                             | 2       |
+| 设置-CRM    | 协议设置（含签名）                  | `ModelMap` 注入                                                    | 协议内容 + 签名图读取                                                      | 2.5     |
+| 设置-CRM    | 代理协议                            | `ModelMap` 注入                                                    | 协议内容读取                                                               | 1.5     |
+| 设置-CRM    | 免责声明设置                        | `ModelMap` 注入                                                    | 内容读取                                                                   | 1.5     |
+| 设置-CRM    | 风险协议设置                        | `ModelMap` 注入                                                    | 内容读取                                                                   | 1.5     |
+| 设置-CRM    | 风险警告设置                        | `ModelMap` 注入                                                    | 内容读取                                                                   | 1.5     |
+| 设置-CRM    | 社交媒体设置                        | `ModelMap` 注入                                                    | 配置读取                                                                   | 1.5     |
+| 设置-CRM    | Sumsub / KYC 配置                   | `ModelMap` 注入                                                    | 等级/校验项读取                                                            | 2       |
+| 设置-CRM    | 客户自定义列 / 身份认证模式         | `ModelMap` 注入                                                    | 列定义 + 模式读取                                                          | 2       |
+| 设置-CRM    | 用户体验计划                        | `ModelMap` 注入                                                    | 配置读取                                                                   | 1       |
+| 审核        | 谷歌验证器重置申请                  | `list`/`audit` 已 JSON，详情 `GET /detail/{id}` 为模板片段         | 申请详情读取                                                               | 2       |
+| 代理        | 代理申请设置                        | `GET` 页面 + `POST /system/agentApplySettings/edit`                | 配置读取                                                                   | 1.5     |
+| 账户        | 客户详情「交易账号登录设置」tab     | `GET /system/crmUser/manage/5` 为模板片段，`manageInfo` 不含该 tab | 登录设置读取（保存沿用 `POST /system/crmUser/manage/5`）                   | 2       |
+| 营销        | 活动文案配置                        | `GET /activitySetting/{rewardId}` 由 `ModelMap` 注入               | 活动文案读取（保存沿用 `POST /activitySetting`）                           | 1.5     |
+| MAM         | 跟单异常处置                        | `mamFollow` 仅 `list`/`detail`/`detailInfo`                        | 异常处置接口（旧页仅 `POST /edit` 改状态，异常流程无独立端点，需产品确认） | 1       |
+| **合计**    | **23 项**                           |                                                                    |                                                                            | **≈40** |
+
+### 8.3 C 类：后端先行（6 项）
+
+| 域        | 页面/功能                   | 阻塞原因                                                                               |
+| --------- | --------------------------- | -------------------------------------------------------------------------------------- |
+| 系统管理  | 岗位管理                    | 无 `SysPostController`                                                                 |
+| 系统管理  | 字典类型                    | 只有 `SysDictDataController`，无 `SysDictTypeController`                               |
+| 系统管理  | 参数设置                    | `SysConfigController` 只有 `list`/`getConfig`/`checkConfigKeyUnique`，无新增/编辑/删除 |
+| 系统管理  | 通知公告                    | 无 `SysNoticeController`                                                               |
+| 系统管理  | 在线用户                    | 无在线会话接口                                                                         |
+| 设置-推广 | 链接组（`spreadLinkGroup`） | `SpreadLinkGroupController` 的 `@RequestMapping` 整类被注释，接口当前不可用            |
+
+> §4 中的未实现项同属 C 类：三方出金手动分发（渠道配置表单由后端返回 HTML 片段，§4.2）、服务器 DC 节点查询（§4.5）、RBAC 权限点体系、文件服务 20M 上限确认。
+
+### 8.4 疑似已覆盖（3 项，按验收处理，不另建页面）
+
+| 清单项                  | 对应 React 实现                                                                             | 结论                                                                                      |
+| ----------------------- | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| 交易账户日志            | `/reports/financial/transaction-account-snapshot`                                           | 旧 `dealAccountLog` 与快照同源；按快照页验收列与筛选是否齐全，不再单列页面                |
+| 新设备/新登录审核       | `/review/account-opening`（`CrmNewLoginVerifyController`）                                  | 旧页面即新登录审核，已迁移                                                                |
+| MAM 跟单管理 / 跟随列表 | `/copy-trading/order-management`（旧 `mam/follow/mamFollow.html` ↔ `MamFollowController`） | 旧版 `mam/` 目录即 React copy-trading 的来源，非两个模块；列表/详情已覆盖，仅异常处置归 B |
+
+### 8.5 建议批次
+
+| 批次 | 内容                                                                                          | 估算        |
+| ---- | --------------------------------------------------------------------------------------------- | ----------- |
+| 一   | 菜单图标、历史订单补发、转介绍开户奖励、第三方支付、国家管理、财务安全问题、钱包设置          | 10~11 人日  |
+| 二   | 个性化汇率、快捷支付、平台/时间/偏好设置、推广链接、权限包、推广素材、三方集成、PAMM 集成     | 13~14 人日  |
+| 三   | 消息设置 7 页（发件箱/邮件模板/短信/短信模板/Telegram 机器人/Telegram 模板/Web 推送）         | 9.5~10 人日 |
+| 四   | 审核设置补齐、客户详情「推广」tab、导出逐页核对                                               | 4~5 人日    |
+| B 类 | 按「一页一个读取契约」推进；CRM 设置 12 页可合并为**一个**配置读取接口（约定契约写法见 §4.3） | 38~42 人日  |
+
+### 8.6 分类口径修正（相对上一轮口头结论）
+
+- 消息设置 9 页中 7 页有 JSON
+  `/list`（`emailConfig`/`emailTemplate`/`smsConfig`/`smsTemplate`/`robotConfig`/`telegramTemplate`/`webMsgTemplate`），仅
+  `emailMind`（只有 `saveMind`）与 `emailStyle`（无 list）需读取契约 →
+  B 改判 A。
+- 钱包设置：读走 `getConfig` 的
+  `sys.crmConfig.walletSetting.account`、`sys.crmConfig.walletSetting.allow.create`，写
+  `POST /system/platFormSetting/edit`；该接口按 `StringUtils.isNotBlank`
+  逐字段落库，部分提交不会覆盖其他配置 →
+  B 改判 A。同一依据用于平台设置、时间设置。
+- 推广素材（`/system/marketing/material`）是完整 JSON CRUD → B 改判 A。
+- 客户详情「交易账号登录设置」tab：`manage/5` 只提供模板片段，`manageInfo`
+  不覆盖该 tab → A 改判 B。
+- MAM 与 CopyTrading 不是两个模块（旧 `mam/`
+  即 copy-trading 前身），跟单列表按 §8.4 验收，不再计为缺失页面。
