@@ -18,6 +18,7 @@ import {
 } from '@/api/hooks/report/report';
 import { useDictType, useServerList } from '@/api/hooks/system';
 import { PreferencesDialog } from './components/PreferencesDialog';
+import { ValueIndicatorConfigDialog } from './components/ValueIndicatorConfigDialog';
 import { ExportButton } from '@/components/common/ExportButton';
 import { DailySnapshotDialog } from './components/DailySnapshotDialog';
 import { useGetSysConfig } from '@/api/hooks/system/system';
@@ -256,6 +257,7 @@ export function TransactionAccountSnapshotPage() {
             />
             <DailySnapshotDialog logGeneratedTime={logGeneratedTime || ''} />
             <PreferencesDialog />
+            <ValueIndicatorConfigDialog />
             <ExportButton<TradingAccountSnapshotParams>
               exportFunction={exportSnapshot}
               params={{

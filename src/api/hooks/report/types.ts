@@ -61,6 +61,7 @@ export type OverviewItem = {
   rebateOnTrade: string | null;
   rebateOnCommission: string | null;
   rebateOnDeposit: string | null;
+  valueIndicator?: number | null;
 };
 
 export type OverviewResponse = BasicRes<OverviewItem>;
@@ -850,6 +851,13 @@ export type DataStatisticsItem = {
   rebateTraderAmount?: string;
   rebateCommissionAmount?: string;
   rebateDepositAmount?: string;
+  valueIndicator?: number | null;
+  beginningEquity?: number | null;
+  endingEquity?: number | null;
+  equityDiff?: number | null;
+  creditNetChangeAmt?: number | null;
+  firstDepositAmt?: number | null;
+  firstDepositTime?: string | null;
   pammDepositCount?: string;
   pammDepositAmount?: string;
   pammWithdrawalCount?: string;

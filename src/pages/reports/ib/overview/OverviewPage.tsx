@@ -17,6 +17,12 @@ import { Switch } from '@/components/ui/switch';
 import { OverviewForm } from './components/OverviewForm';
 import { PreferDialog } from './components/PreferDialog';
 import { ExportButton } from '@/components/common/ExportButton';
+import { formatCurrencyAmount } from '@/lib/utils';
+import {
+  VALUE_INDICATOR_SHOW_KEYS,
+  useValueIndicatorEnabled,
+} from '../../components/valueIndicator';
+import { ValueIndicatorHeader } from '../../components/ValueIndicatorHelp';
 
 export function OverviewPage() {
   const { t } = useTranslation();
@@ -34,6 +40,7 @@ export function OverviewPage() {
   const [drirectFlag, setDrirectFlag] = useState(false);
 
   const { serverId, setServerId, server, serverLoading } = useInitServerId();
+  const valueIndicatorEnabled = useValueIndicatorEnabled(VALUE_INDICATOR_SHOW_KEYS.ibDataOverview);
   const { data: rebateLevel } = useRebateLevelList();
   const {
     data: AgencyClientTracking,
@@ -129,6 +136,19 @@ export function OverviewPage() {
         header: t('overview.netDeposit'),
         accessorFn: row => row.netDeposit,
       },
+      ...(valueIndicatorEnabled
+        ? ([
+            {
+              id: 'valueIndicator',
+              label: t('valueIndicator.title'),
+              header: () => <ValueIndicatorHeader />,
+              cell: ({ row }) =>
+                row.original.valueIndicator === null || row.original.valueIndicator === undefined
+                  ? '-'
+                  : formatCurrencyAmount(row.original.valueIndicator, 'USD'),
+            },
+          ] as CRMColumnDef<OverviewItem, unknown>[])
+        : []),
       {
         id: 'volume',
         accessorKey: 'volume',
@@ -172,7 +192,7 @@ export function OverviewPage() {
         accessorFn: row => row.rebateOnDeposit,
       },
     ],
-    [t],
+    [t, valueIndicatorEnabled],
   );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =

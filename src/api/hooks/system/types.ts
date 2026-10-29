@@ -950,6 +950,7 @@ export type AgencyPreforOverviewItem = {
   accountId: string | null;
   parentId: string | null;
   isTreeLeaf: number;
+  valueIndicator?: number | null;
 };
 
 export type AgencyPreforOverviewRes = BasicRes<AgencyPreforOverviewItem>;

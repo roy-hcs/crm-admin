@@ -669,3 +669,17 @@ export function useSavePreferenceSetting() {
       apiFormPost(`/system/crmDealAccountLog/savePreferenceSetting`, params),
   });
 }
+
+/**
+ * 交易账号快照列表--保存净盈亏配置
+ */
+export function useSaveMeritIndexSetting() {
+  return useMutation({
+    mutationFn: (params: {
+      dealAccountStatistic: string;
+      ibDataOverview: string;
+      ibPerformanceOverview: string;
+      formula: string;
+    }) => apiFormPost(`/system/crmDealAccountLog/saveMeritIndexSetting`, params),
+  });
+}

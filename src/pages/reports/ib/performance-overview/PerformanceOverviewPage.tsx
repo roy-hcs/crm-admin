@@ -22,6 +22,11 @@ import { AgencyPreforOverviewItem, AgencyPreforOverviewParams } from '@/api/hook
 import { BasicParams } from '@/api/types';
 import { ExpandedState } from '@tanstack/react-table';
 import { formatCurrencyAmount } from '@/lib/utils';
+import {
+  VALUE_INDICATOR_SHOW_KEYS,
+  useValueIndicatorEnabled,
+} from '../../components/valueIndicator';
+import { ValueIndicatorHeader } from '../../components/ValueIndicatorHelp';
 
 type TreeAgencyPreforOverviewItem = AgencyPreforOverviewItem & {
   children?: TreeAgencyPreforOverviewItem[];
@@ -97,6 +102,9 @@ export function PerformanceOverviewPage() {
 
   const { data: rebateLevel } = useRebateLevelList();
   const { serverId, setServerId, server, serverLoading } = useInitServerId();
+  const valueIndicatorEnabled = useValueIndicatorEnabled(
+    VALUE_INDICATOR_SHOW_KEYS.ibPerformanceOverview,
+  );
 
   const serverType = `${server?.rows?.find(item => item.id === serverId)?.serviceType || ''}`;
 
@@ -266,6 +274,19 @@ export function PerformanceOverviewPage() {
         header: t('overview.netDeposit'),
         accessorFn: row => formatCurrencyAmount(row.netDeposit),
       },
+      ...(valueIndicatorEnabled
+        ? ([
+            {
+              id: 'valueIndicator',
+              label: t('valueIndicator.title'),
+              header: () => <ValueIndicatorHeader />,
+              cell: ({ row }) =>
+                row.original.valueIndicator === null || row.original.valueIndicator === undefined
+                  ? '-'
+                  : formatCurrencyAmount(row.original.valueIndicator, 'USD'),
+            },
+          ] as CRMColumnDef<TreeAgencyPreforOverviewItem, unknown>[])
+        : []),
       {
         id: 'clients',
         header: t('overview.clients'),
@@ -315,7 +336,7 @@ export function PerformanceOverviewPage() {
         accessorFn: row => formatCurrencyAmount(row.overallRebate),
       },
     ],
-    [t],
+    [t, valueIndicatorEnabled],
   );
 
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =

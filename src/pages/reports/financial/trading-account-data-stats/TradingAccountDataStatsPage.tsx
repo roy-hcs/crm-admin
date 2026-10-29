@@ -16,6 +16,27 @@ import { useInitServerId } from '@/hooks/useInitServerId';
 import { Switch } from '@/components/ui/switch';
 import { ExportButton } from '@/components/common/ExportButton';
 import { useDealDataExport } from '@/api/hooks/report/report';
+import { formatMoneyNumber } from '@/lib/utils';
+import {
+  VALUE_INDICATOR_SHOW_KEYS,
+  useValueIndicatorEnabled,
+} from '../../components/valueIndicator';
+import { ValueIndicatorHeader } from '../../components/ValueIndicatorHelp';
+
+const renderIndicatorAmount = (
+  value: number | null | undefined,
+  currency: string | null | undefined,
+) => {
+  if (value === null || value === undefined) {
+    return '-';
+  }
+  return (
+    <div>
+      <div>{formatMoneyNumber(value)}</div>
+      <div>{currency || '-'}</div>
+    </div>
+  );
+};
 
 export function TradingAccountDataStatsPage() {
   const { t } = useTranslation();
@@ -41,6 +62,9 @@ export function TradingAccountDataStatsPage() {
   });
 
   const { serverId, setServerId, server, serverLoading } = useInitServerId();
+  const valueIndicatorEnabled = useValueIndicatorEnabled(
+    VALUE_INDICATOR_SHOW_KEYS.dealAccountStatistic,
+  );
 
   const { data: data, isLoading: dataLoading } = useDataStatistics(
     {
@@ -209,6 +233,60 @@ export function TradingAccountDataStatsPage() {
             <div>
               <div>{row?.original?.netWorth || '0'}</div>
               <div>{row?.original?.currency}</div>
+            </div>
+          );
+        },
+      },
+      ...(valueIndicatorEnabled
+        ? ([
+            {
+              id: 'valueIndicator',
+              label: t('valueIndicator.title'),
+              header: () => <ValueIndicatorHeader />,
+              cell: ({ row }) =>
+                renderIndicatorAmount(row.original.valueIndicator, row.original.currency),
+            },
+            {
+              id: 'beginningEquity',
+              header: t('valueIndicator.beginningEquity'),
+              cell: ({ row }) =>
+                renderIndicatorAmount(row.original.beginningEquity, row.original.currency),
+            },
+            {
+              id: 'endingEquity',
+              header: t('valueIndicator.endingEquity'),
+              cell: ({ row }) =>
+                renderIndicatorAmount(row.original.endingEquity, row.original.currency),
+            },
+            {
+              id: 'equityDiff',
+              header: t('valueIndicator.equityDiff'),
+              cell: ({ row }) =>
+                renderIndicatorAmount(row.original.equityDiff, row.original.currency),
+            },
+            {
+              id: 'creditNetChangeAmt',
+              header: t('valueIndicator.creditNetChangeAmt'),
+              cell: ({ row }) =>
+                renderIndicatorAmount(row.original.creditNetChangeAmt, row.original.currency),
+            },
+          ] as CRMColumnDef<DataStatisticsItem, unknown>[])
+        : []),
+      {
+        id: 'firstDepositAmt',
+
+        header: t('valueIndicator.firstDeposit'),
+
+        cell: ({ row }) => {
+          if (row.original.firstDepositAmt === null || row.original.firstDepositAmt === undefined) {
+            return '-';
+          }
+          return (
+            <div>
+              <div>
+                {formatMoneyNumber(row.original.firstDepositAmt)} {row.original.currency}
+              </div>
+              <div>{row.original.firstDepositTime || '-'}</div>
             </div>
           );
         },
@@ -411,7 +489,7 @@ export function TradingAccountDataStatsPage() {
         accessorFn: row => row.rebateDepositAmount || 0,
       },
     ],
-    [t],
+    [t, valueIndicatorEnabled],
   );
   const { visibleColumns, toggleColumn, batchUpdateColumns, columns, tableColumns, columnMeta } =
     useColumnVisibility('trading-account-data-stats-table', allColumns);
