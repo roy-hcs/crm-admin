@@ -397,7 +397,10 @@ describe('P2 契约断言（atlas 快照 vs src 调用点）', () => {
     }
     // assert: 守护「调用点 ⊆ 契约 ∪ 白名单」（P2 卡 §3 C4）—— 抓 path 拼错 / 参数名与旧版
     // 不一致 / 调用未文档化端点。失败清单含 文件:行 → 调用点 → 最近候选 path。
-    // 当前 629 调用点中 625 命中、4 条白名单（见 allowlist.ts 逐条 reason）、3 条 skip 计数打印。
+    // 当前 641 调用点中 632 命中、4 条白名单（见 allowlist.ts 逐条 reason）、3 条 skip 计数打印。
+    // P3a 补页新增 5 个 atlas 快照缺口（add / edit / checkNameUnique / checkCodeUnique /
+    // listEnabled），按 P3a 卡 §7.3 停机披露；待补页推 origin/develop 后跑 weekly/export 收口，
+    // 不塞白名单、不改断言。
     expect(failures).toEqual([]);
     // assert: skip 计数锁口径 —— 无法静态判定的动态拼接必须显式登记而非静默丢弃（C3）。
     // 当前 3 条 = src/api/hooks/system/system.ts:338/354/655 的局部包装函数（首参为 url 变量）；

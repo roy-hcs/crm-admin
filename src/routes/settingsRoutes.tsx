@@ -11,6 +11,7 @@ import { ExchangeRateSettingsPage } from '@/pages/setting/payment/exchange-rate/
 import { ReceiveAccountsPage } from '@/pages/setting/payment/receive-accounts/ReceiveAccountsPage';
 import { WithdrawChannelPage } from '@/pages/setting/payment/withdraw-channel/WithdrawChannelPage';
 import { WithdrawFeePage } from '@/pages/setting/payment/withdraw-fee/WithdrawFeePage';
+import { PermPackagePage } from '@/pages/setting/promotion/perm-package/PermPackagePage';
 
 const MtServerGroupWrapperPage = () => {
   const [searchParams] = useSearchParams();
@@ -111,6 +112,10 @@ export const settingsRoutes: RouteObject[] = [
   {
     path: '/settings/payment/withdraw-fee',
     element: <WithdrawFeePage />,
+  },
+  {
+    path: '/settings/promotion/perm-package',
+    element: <PermPackagePage />,
   },
 
   // TODO: Add more routes as pages are developed

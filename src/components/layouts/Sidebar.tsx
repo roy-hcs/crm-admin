@@ -401,6 +401,10 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
               path: '/settings/promotion/links',
               disabled: true,
             },
+            {
+              title: '权限包管理',
+              path: '/settings/promotion/perm-package',
+            },
           ],
         },
         {

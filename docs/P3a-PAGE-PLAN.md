@@ -1,8 +1,9 @@
-# 权限包管理页补页实施计划（P3a 预备，**未放行**）
+# 权限包管理页补页实施计划（P3a，**11-14 17:2x 已执行**）
 
-> ⚠️
-> **状态：2026-11-12 人审编制，未放行。本文件是实施计划，不是执行指令，flash 现在不要动手。**
-> 用户诉求：React 侧目前没有该页面，须参照 CRM（旧 RuoYi）实现、用 React 现有风格补一版，让后续 admin 相关测试用例**有可自动化实施的载体**，避免「只有 md 用例、跑不了自动化测试」。上位：`docs/REACT-TEST-INFRA-CHECKLIST.md`
+> ⚠️ **状态：2026-11-12 人审编制；2026-11-14
+> 17:2x 使用者放行「参照当前 CRM（ruoyi 后台）实现 react-admin 的权限包管理代码，做完允许 push」→ 已实现并推送。**
+> 本文件保留为实施计划与旧页事实来源，执行结果与口径差异见
+> **§10**；flash 勿据此重复动手。用户诉求：React 侧目前没有该页面，须参照 CRM（旧 RuoYi）实现、用 React 现有风格补一版，让后续 admin 相关测试用例**有可自动化实施的载体**，避免「只有 md 用例、跑不了自动化测试」。上位：`docs/REACT-TEST-INFRA-CHECKLIST.md`
 > §0 十三条红线 / §3 拍板 B·C·D / §4 缺页事实 / §7
 > testid 契约；工作流：`docs/TASK-CARD-TEMPLATE.md`（放行时转「覆盖表 + JSON +
 > 12 行指令」，**不再写长执行单**）。
@@ -175,3 +176,50 @@ MSW，不打真实写接口**）；抽查 `data-testid` 与 `docs/testids.md`
 `pnpm test:contract`， `mutations` 留给 P3b，P3a 不伪造变异）、**§7
 → 停机条件**；再配约 12 行指令即可发。
 **不再另写 200+ 行散文执行单**，红线十三条以清单为准。
+
+## 10. 执行回执（11-14 17:2x，使用者放行）
+
+**放行原话**：「1.参照当前 CRM（ruoyi 后台）实现 react-admin 的权限包管理代码。2.做完允许 push」。此句视为对
+**P-2** 的答复（旧模板为事实来源、1:1 复刻、不砍字段）。
+**P-3 路由/菜单命名采用 §2 推荐值**（`/settings/promotion/perm-package`、中文「权限包管理」、英文
+`Permission Package`），**P-4 按 A0 卡 §5 顺序，本轮只到「补页 + 推 origin/develop」**，周更 / 快照重生 /
+P3b 留下一轮 —— 这两项**仍待人审确认**。
+
+**落盘**：新增 5 文件（`PermPackagePage.tsx`、`components/PermPackageDialog.tsx`、
+`spreadPermPackage.ts`、`permPackageTypes.ts`、`docs/testids.md`）；最小接线 4 处（`settingsRoutes.tsx`
++1 路由、`Sidebar.tsx` +1 子项、 `zh.json` / `en.json` 各 +1 命名空间）；另同步
+`endpoints.test.ts` 注释数字与本文档 / 清单状态。 **未碰**
+`client.ts`、3 个受保护文件、lockfile、`vitest.config.ts`、其它页面/菜单、crm-e2e
+/ KB / 旧后台、`allowlist.ts`、`admin-paths.json`、atlas 仓。
+
+**覆盖**：旧页 19 个 `name=` 字段一个不少；`name` 必填 / 32、`code` 64、`remark`
+200
+
+- 计数、多语言 `lang-name` 50 / `lang-remark` 200 + 计数、两个查重、
+  `getServerAccountTypes` 联动、`countApplicableUsers`
+  回显、列表 name+status 搜索 / `resetForm()`
+  清空 / 启停 / 删除确认 / 分配代理 hook；17 个 `data-testid` 全落地（清单见
+  `docs/testids.md`
+  §1）。16 个后端映射中 12 个业务端点 1:1 落地，4 个返回 Thymeleaf 视图页的 GET 不迁移（SPA 用客户端弹窗承接，理由见
+  `testids.md` §3）。
+
+**实跑**：`typecheck` 0 错；`lint` **0 error / 49
+warning**（与基线一致，新文件零贡献）； `build` exit 0；`test` 57 passed / 1
+failed（即契约）；`test:contract` 1 failed / 3 passed。调用点 629 →
+**641**、skip 3。`C4` 报 **5 条 MISS**： `POST add` / `POST edit` /
+`POST checkNameUnique` / `POST checkCodeUnique` / `GET listEnabled`。
+
+**契约红 =
+§7.3 停机项，如实披露、不自行处置**：这 5 个端点不在 947 条 atlas 快照里（旧模板变量拼接调用提取不到 →
+usage-driven 无 caller）。**未塞 `allowlist.ts`
+换绿、未改 atlas 仓、未跑 weekly/export**；按 A0 卡 §5，补页推远端后需跑一轮
+`weekly/export` → `verify-a0.mjs --after-p3a`（V7）→ 重跑 P2 快照，契约才收口。
+
+**过程中修掉一处漏扫**：`apiFormPost<AjaxResult<unknown>>`
+的嵌套泛型使扫描器正则失配， `add` / `edit`
+曾被静默跳过（只报 3 条）；改为无泛型后 5 条全部暴露。属**增加覆盖**，非改调用点换绿。
+
+**未做 / 待办**：`scripts/verify-p3a.json`、P3b 五条组件用例、`pnpm dev`
+浏览器人工验证（独立通道，须单独放行）、weekly/export、V7 判卷、P2 快照重生、P4。
+**口径差异 4 条**（视图端点 / 多语言字典来源 / 编辑回显范围 / 数组提交形态）见
+`docs/testids.md` §3，**均待人审确认**，未自行简化字段或边界。
