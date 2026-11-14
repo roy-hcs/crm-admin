@@ -318,34 +318,43 @@
 | 系统        | 各列表页导出逐页核对                        | 各页 toolbar 与旧模板对照（`react-migration-gap-analysis.md` §五.1）                  | 1       |
 | **合计**    | **27 项**                                   |                                                                                       | **≈37** |
 
-### 8.2 B 类：需补 1 个读取契约（23 项，约 38~42 人日）
+### 8.2 B 类：需补 1 个读取契约（24 项，约 38~42 人日；其中 1 项长期挂起不计估算）
 
-| 域          | 页面/功能                           | 旧版读取方式                                                       | 需补的读取契约                                                             | 估算    |
-| ----------- | ----------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------- |
-| 交易平台    | 账号设置（基础/真实/模拟 3 tab）    | `ModelMap` 注入                                                    | 参照 QuickCreate 的 `getSettingInfoByQS` 增 `getSettingInfo`               | 3       |
-| 设置-出入金 | 基础设置（出金/内转递减两个子设置） | `ModelMap` 注入                                                    | 读取 `sys.*` 配置组                                                        | 2       |
-| 设置-出入金 | 客户渠道（字段元数据）              | `add`/`edit` 页由 `ModelMap` 注入可配置字段                        | 渠道字段元数据（类型/必填/选项/校验）                                      | 2       |
-| 设置-消息   | 邮件提醒批量设置                    | 仅 `POST /system/emailMind/saveMind`，无 list                      | 提醒项与批量设置读取                                                       | 1.5     |
-| 设置-消息   | 邮件样式设置                        | `/add`、`/edit`、`/preview`、`/saveDefault`，无 list               | 样式列表读取                                                               | 1.5     |
-| 设置-推广   | 推广落地页设置                      | `GET` 页面 + `POST /system/spreadPageSetting/edit`                 | 落地页配置读取                                                             | 1       |
-| 设置-CRM    | NPS 配置                            | `ModelMap` 注入                                                    | NPS 规则读取                                                               | 2       |
-| 设置-CRM    | 登录注册设置                        | `ModelMap` 注入                                                    | 配置读取                                                                   | 2       |
-| 设置-CRM    | 代理注册设置                        | `ModelMap` 注入（业务数据范围已做成审核工具栏弹窗，见 §3.1）       | 其余注册项读取                                                             | 2       |
-| 设置-CRM    | 协议设置（含签名）                  | `ModelMap` 注入                                                    | 协议内容 + 签名图读取                                                      | 2.5     |
-| 设置-CRM    | 代理协议                            | `ModelMap` 注入                                                    | 协议内容读取                                                               | 1.5     |
-| 设置-CRM    | 免责声明设置                        | `ModelMap` 注入                                                    | 内容读取                                                                   | 1.5     |
-| 设置-CRM    | 风险协议设置                        | `ModelMap` 注入                                                    | 内容读取                                                                   | 1.5     |
-| 设置-CRM    | 风险警告设置                        | `ModelMap` 注入                                                    | 内容读取                                                                   | 1.5     |
-| 设置-CRM    | 社交媒体设置                        | `ModelMap` 注入                                                    | 配置读取                                                                   | 1.5     |
-| 设置-CRM    | Sumsub / KYC 配置                   | `ModelMap` 注入                                                    | 等级/校验项读取                                                            | 2       |
-| 设置-CRM    | 客户自定义列 / 身份认证模式         | `ModelMap` 注入                                                    | 列定义 + 模式读取                                                          | 2       |
-| 设置-CRM    | 用户体验计划                        | `ModelMap` 注入                                                    | 配置读取                                                                   | 1       |
-| 审核        | 谷歌验证器重置申请                  | `list`/`audit` 已 JSON，详情 `GET /detail/{id}` 为模板片段         | 申请详情读取                                                               | 2       |
-| 代理        | 代理申请设置                        | `GET` 页面 + `POST /system/agentApplySettings/edit`                | 配置读取                                                                   | 1.5     |
-| 账户        | 客户详情「交易账号登录设置」tab     | `GET /system/crmUser/manage/5` 为模板片段，`manageInfo` 不含该 tab | 登录设置读取（保存沿用 `POST /system/crmUser/manage/5`）                   | 2       |
-| 营销        | 活动文案配置                        | `GET /activitySetting/{rewardId}` 由 `ModelMap` 注入               | 活动文案读取（保存沿用 `POST /activitySetting`）                           | 1.5     |
-| MAM         | 跟单异常处置                        | `mamFollow` 仅 `list`/`detail`/`detailInfo`                        | 异常处置接口（旧页仅 `POST /edit` 改状态，异常流程无独立端点，需产品确认） | 1       |
-| **合计**    | **23 项**                           |                                                                    |                                                                            | **≈40** |
+| 域          | 页面/功能                           | 旧版读取方式                                                       | 需补的读取契约                                                             | 估算     |
+| ----------- | ----------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------- | -------- |
+| 交易平台    | 账号设置（基础/真实/模拟 3 tab）    | `ModelMap` 注入                                                    | 参照 QuickCreate 的 `getSettingInfoByQS` 增 `getSettingInfo`               | 3        |
+| 设置-出入金 | 基础设置（出金/内转递减两个子设置） | `ModelMap` 注入                                                    | 读取 `sys.*` 配置组                                                        | 2        |
+| 设置-出入金 | 客户渠道（字段元数据）              | `add`/`edit` 页由 `ModelMap` 注入可配置字段                        | 渠道字段元数据（类型/必填/选项/校验）                                      | 2        |
+| 设置-消息   | 邮件提醒批量设置                    | 仅 `POST /system/emailMind/saveMind`，无 list                      | 提醒项与批量设置读取                                                       | 1.5      |
+| 设置-消息   | 邮件样式设置                        | `/add`、`/edit`、`/preview`、`/saveDefault`，无 list               | 样式列表读取                                                               | 1.5      |
+| 设置-推广   | 推广落地页设置                      | `GET` 页面 + `POST /system/spreadPageSetting/edit`                 | 落地页配置读取                                                             | 1        |
+| 设置-返佣   | 返佣设置页面初始数据（白名单 #2）   | `oneUserTemplateInfo/{rebateType}/{id}` 视图，`ModelMap` 注入      | 增 JSON 读取契约（字段与证据见 `P2-TASK-CARD.md` §9.10）                   | 长期挂起 |
+| 设置-CRM    | NPS 配置                            | `ModelMap` 注入                                                    | NPS 规则读取                                                               | 2        |
+| 设置-CRM    | 登录注册设置                        | `ModelMap` 注入                                                    | 配置读取                                                                   | 2        |
+| 设置-CRM    | 代理注册设置                        | `ModelMap` 注入（业务数据范围已做成审核工具栏弹窗，见 §3.1）       | 其余注册项读取                                                             | 2        |
+| 设置-CRM    | 协议设置（含签名）                  | `ModelMap` 注入                                                    | 协议内容 + 签名图读取                                                      | 2.5      |
+| 设置-CRM    | 代理协议                            | `ModelMap` 注入                                                    | 协议内容读取                                                               | 1.5      |
+| 设置-CRM    | 免责声明设置                        | `ModelMap` 注入                                                    | 内容读取                                                                   | 1.5      |
+| 设置-CRM    | 风险协议设置                        | `ModelMap` 注入                                                    | 内容读取                                                                   | 1.5      |
+| 设置-CRM    | 风险警告设置                        | `ModelMap` 注入                                                    | 内容读取                                                                   | 1.5      |
+| 设置-CRM    | 社交媒体设置                        | `ModelMap` 注入                                                    | 配置读取                                                                   | 1.5      |
+| 设置-CRM    | Sumsub / KYC 配置                   | `ModelMap` 注入                                                    | 等级/校验项读取                                                            | 2        |
+| 设置-CRM    | 客户自定义列 / 身份认证模式         | `ModelMap` 注入                                                    | 列定义 + 模式读取                                                          | 2        |
+| 设置-CRM    | 用户体验计划                        | `ModelMap` 注入                                                    | 配置读取                                                                   | 1        |
+| 审核        | 谷歌验证器重置申请                  | `list`/`audit` 已 JSON，详情 `GET /detail/{id}` 为模板片段         | 申请详情读取                                                               | 2        |
+| 代理        | 代理申请设置                        | `GET` 页面 + `POST /system/agentApplySettings/edit`                | 配置读取                                                                   | 1.5      |
+| 账户        | 客户详情「交易账号登录设置」tab     | `GET /system/crmUser/manage/5` 为模板片段，`manageInfo` 不含该 tab | 登录设置读取（保存沿用 `POST /system/crmUser/manage/5`）                   | 2        |
+| 营销        | 活动文案配置                        | `GET /activitySetting/{rewardId}` 由 `ModelMap` 注入               | 活动文案读取（保存沿用 `POST /activitySetting`）                           | 1.5      |
+| MAM         | 跟单异常处置                        | `mamFollow` 仅 `list`/`detail`/`detailInfo`                        | 异常处置接口（旧页仅 `POST /edit` 改状态，异常流程无独立端点，需产品确认） | 1        |
+| **合计**    | **24 项（含 1 项挂起）**            |                                                                    |                                                                            | **≈40**  |
+
+> 11-14 追加「设置-返佣」一项 = P2 白名单 #2：CRM 仓只读核查确认
+> `CrmUserRebateTemplateController` 下没有任何返回 `RebateSettingPageData`
+> 的 JSON GET（唯一 JSON GET `/getRebateAccount/{userId}`
+> 返回账户钱包列表，语义不同），证据链见 `docs/P2-TASK-CARD.md`
+> §9.10。**后端暂无排期 ⇒ 长期挂起**，不计入前端交付估算；契约白名单 #2 的
+> `2026-12-05`
+> 只作人审复核点，到期按缺口清单状态再次复核，不视为前端待办、不改调用点换绿（C5）。
 
 ### 8.3 C 类：后端先行（6 项）
 

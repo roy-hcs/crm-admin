@@ -522,6 +522,13 @@ build、V9-no-touch、V10 静态断言、MUT-1/2 变红还原
 | #3 `viewDetailInfo/{id}/{infoType}`        | 2026-11-20 | **2026-11-27** | atlas 提取器常量折叠缺陷已修（本地 commit `df9833e`，74/74）；双参 route 是 `@ResponseBody` JSON，修复随下轮 `weekly` + `export` 落入快照 | 周更后人审差异 → `orphan` 断言判红 → 删条目 |
 | #2 `oneUserTemplateInfo/{rebateType}/{id}` | 2026-11-20 | **2026-12-05** | 结构性范围缺口，周更永远补不出；上方只读核查确认无 JSON REST 接口，需后端立项                                                             | 后端接口落地并人审后，或再次人审延期        |
 
+> **11-15
+> 00:1x 后续挂账**：使用者告知后端暂时无排期、该缺口可能**长期挂起**，已挂载到
+> `docs/react-feature-drift-analysis.md` §8.2「B 类：需补 1 个读取契约」与
+> `docs/REACT-TEST-INFRA-CHECKLIST.md` §4「缺页清单」，两处均标
+> **长期挂起 / 待后端**。白名单 #2 的 `2026-12-05`
+> **只作人审复核点**，到期按缺口清单状态再次复核（人审延期，或接口落地后收口），不改变 C5 口径、不改调用点、不改断言。
+
 **红线遵守**：只改 `allowlist.ts` 的 `expires` 与
 `reason`（以及本卡 / 清单留痕）；
 `path / method / date / owner / bugId`、`endpoints.test.ts` 的断言、
