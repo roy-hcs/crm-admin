@@ -11,6 +11,12 @@
  * 留下无人引用的幽灵豁免。故每条补 expires（UTC 复核到期日）+ owner（责任归属），
  * 由 endpoints.test.ts 的到期 / orphan 断言兜底。到期后只允许「收口删条目」或
  * 「人审复核后改 expires」，不许改断言换绿。bugId 关联 §9.5 缺陷台账。
+ *
+ * 11-14 23:4x 根因核查（人审，只读）：#2/#3 的「atlas 版本差缺口」分类均属误判，已按事实
+ * 订正 reason，expires / path / 断言 / 调用点一字未动。#2 是结构性范围缺口（Thymeleaf
+ * 视图端点被 exports 按设计跳过），周更永远补不出；#3 是 atlas 提取器缺陷（本地 commit
+ * df9833e 已修），需下轮 weekly + export 才落入快照。两条 11-20 到期仍须人裁定：人审延期，
+ * 或提前周更后按 orphan 收口；不许改断言换绿。
  */
 export interface AllowlistEntry {
   /** 调用点归一化 method（GET/POST/PUT/DELETE） */
@@ -43,7 +49,7 @@ export const ALLOWLIST: AllowlistEntry[] = [
     method: 'GET',
     path: '/system/crmUserRebateTemplate/oneUserTemplateInfo/{param}/{param}',
     reason:
-      'atlas 版本差缺口：快照只有旧 UI 单参变体 oneUserTemplateInfo/{id}；后端存在双参映射 @GetMapping("oneUserTemplateInfo/{rebateType}/{id}")（CrmUserRebateTemplateController.java:91），React 调用有效',
+      '结构性范围缺口（非 atlas 版本差）：双参端点 GET /system/crmUserRebateTemplate/oneUserTemplateInfo/{rebateType}/{id} 是 Thymeleaf 视图端点（CrmUserRebateTemplateController.java:91 返回 String + ModelMap），atlas src/exports.mjs:82 按设计跳过 response.kind=view，usage-driven 路线 A 下任何周更都不会收进 exports。React 侧 agent.ts:329 却用 apiGet 当 JSON 读取该视图端点，源码 :322 TODO 已注明需与后端确认对应的 JSON REST 接口——属调用点侧待确认疑点，未经人审不得改调用点（C5）。11-14 23:4x 根因核查订正。',
     date: '2026-11-13',
     expires: '2026-11-20',
     owner: 'kb-sync',
@@ -52,7 +58,7 @@ export const ALLOWLIST: AllowlistEntry[] = [
     method: 'GET',
     path: '/system/crmInfoVerify/viewDetailInfo/{param}/{param}',
     reason:
-      'atlas 版本差缺口：快照只有单参变体 viewDetailInfo/{id}；后端存在双参映射 @GetMapping("/viewDetailInfo/{id}/{infoType}")（CrmInfoVerifyController.java:385），React 调用有效',
+      'atlas 提取器缺陷（已修，待下轮周更生效）：frontend.mjs 的 LogicalExpression 折叠把 review.ts:250 的 const detailId = params.id 带空串回退 折成空串，使 :269 的双参调用退化成单参 /viewDetailInfo/{} 并误匹配到单参 route（CrmInfoVerifyController.java:199），双参 route（:385，@ResponseBody JSON）因此无 UI caller、不进 exports。atlas 本地 commit df9833e 已修并补 2 条回归测试（74/74 PASS）；修复需下轮 weekly + export 才落入快照，届时本条按 orphan 收口删除，不许改断言换绿。11-14 23:4x 根因核查订正。',
     date: '2026-11-13',
     expires: '2026-11-20',
     owner: 'kb-sync',
