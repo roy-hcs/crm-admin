@@ -1,0 +1,134 @@
+{
+  "batch": "P1",
+  "_comment": "每批复制本文件改差值即可；判据全集见 docs/TASK-CARD-TEMPLATE.md §3。脚本: node scripts/verify-test-batch.mjs --config scripts/verify-p1.json",
+  "expectedHead": "391f701",
+  "pnpmVersion": "10.34.5",
+  "expected": {
+    "testFiles": 4,
+    "tests": 54,
+    "lintErrors": 0,
+    "lintWarnings": 49,
+    "domMarker": "dom  src/api/client.flatten.test.tsx"
+  },
+  "assertMaxDistance": 10,
+  "commands": {
+    "test": "pnpm test",
+    "typecheck": "pnpm typecheck",
+    "coverage": "pnpm test:coverage",
+    "lint": "pnpm lint",
+    "build": "pnpm build"
+  },
+  "build": true,
+  "baselineStatus": [
+    " M|.gitignore",
+    " M|docs/react-feature-drift-analysis.md",
+    " M|docs/react-migration-gap-analysis.md",
+    " M|package.json",
+    " M|pnpm-lock.yaml",
+    " M|src/pages/review/leverage-detail/components/LeverageInfoCard.tsx",
+    "??|docs/P0-REWORK-ORDER-v2.md",
+    "??|docs/P1-TASK-ORDER.md",
+    "??|docs/REACT-TEST-INFRA-CHECKLIST.md",
+    "??|src/components/ui/button.test.tsx",
+    "??|src/lib/utils.test.ts",
+    "??|src/test/",
+    "??|vitest.config.ts"
+  ],
+  "allowedNewStatus": [
+    " M|eslint.config.js",
+    "??|src/lib/validators.test.ts",
+    "??|src/api/client.flatten.test.tsx",
+    "??|docs/TASK-CARD-TEMPLATE.md",
+    "??|scripts/"
+  ],
+  "mustNotChange": [
+    "src/api/client.ts",
+    "src/lib/utils.ts",
+    "src/lib/validators.ts",
+    "pnpm-lock.yaml",
+    "vitest.config.ts",
+    "src/test/setup.ts",
+    "package.json",
+    "docs/react-feature-drift-analysis.md",
+    "docs/react-migration-gap-analysis.md",
+    "src/pages/review/leverage-detail/components/LeverageInfoCard.tsx"
+  ],
+  "newTestFiles": [
+    "src/lib/utils.test.ts",
+    "src/lib/validators.test.ts",
+    "src/api/client.flatten.test.tsx",
+    "src/components/ui/button.test.tsx"
+  ],
+  "implementationFiles": [
+    "src/api/client.ts",
+    "src/lib/utils.ts",
+    "src/lib/validators.ts"
+  ],
+  "forbiddenScanFiles": [
+    "src/lib/utils.test.ts",
+    "src/lib/validators.test.ts",
+    "src/api/client.flatten.test.tsx"
+  ],
+  "requiredSuffix": {
+    "src/api/client.flatten.test.tsx": ".tsx"
+  },
+  "requiredSnippets": {
+    "src/api/client.flatten.test.tsx": [
+      "await request.text()",
+      "new URLSearchParams",
+      "/p1-flatten"
+    ]
+  },
+  "forbiddenPatterns": [
+    "vi.mock('fetch')",
+    "vi.mock(\"fetch\")",
+    "vi.spyOn(globalThis",
+    "vi.mock('@/api/client')",
+    "export function flattenParams",
+    "data-testid"
+  ],
+  "mutations": [
+    {
+      "id": "1-flatten",
+      "file": "src/api/client.ts",
+      "find": "`${parentKey}[${key}]`",
+      "replace": "`${parentKey}.${key}`",
+      "minFailed": 3
+    },
+    {
+      "id": "2-transformTotalList",
+      "file": "src/lib/utils.ts",
+      "find": "if (value !== null) {",
+      "replace": "if (value === null) {",
+      "minFailed": 3
+    },
+    {
+      "id": "3-formatMoneyNumber",
+      "file": "src/lib/utils.ts",
+      "find": "significantDigits = 2) => {",
+      "replace": "significantDigits = 3) => {",
+      "minFailed": 2
+    },
+    {
+      "id": "4-timeBound",
+      "file": "src/lib/utils.ts",
+      "find": "Number(hh) > 23",
+      "replace": "Number(hh) > 25",
+      "minFailed": 2
+    },
+    {
+      "id": "5-percentage",
+      "file": "src/lib/utils.ts",
+      "find": "numericValue > 100",
+      "replace": "numericValue > 1000",
+      "minFailed": 1
+    },
+    {
+      "id": "6-passwordSchema",
+      "file": "src/lib/validators.ts",
+      "find": "(?=.*[A-Z])",
+      "replace": "",
+      "minFailed": 1
+    }
+  ]
+}

@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Test infrastructure (P0)
+coverage/
+.vitest/
+
 # Environment files
 .env
 .env.*

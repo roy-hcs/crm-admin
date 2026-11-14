@@ -1,0 +1,111 @@
+{
+  "batch": "P2",
+  "_comment": "P2 已放行（11-13 13:35；指令 = docs/P2-TASK-CARD.md §6）。判据全集见 docs/TASK-CARD-TEMPLATE.md；覆盖表见 docs/P2-TASK-CARD.md。放行前核验见该卡 §2.1：crm-admin 21 行状态与本基线+白名单吻合、atlas 导出 947 path 且 MUT 依赖的 /system/mtService/list 仍在。脚本: node scripts/verify-test-batch.mjs --config scripts/verify-p2.json",
+  "expectedHead": "391f701",
+  "pnpmVersion": "10.34.5",
+  "expected": {
+    "minTestFiles": 5,
+    "minTests": 55,
+    "lintErrors": 0,
+    "lintWarnings": 49
+  },
+  "assertMaxDistance": 10,
+  "commands": {
+    "test": "pnpm test",
+    "typecheck": "pnpm typecheck",
+    "coverage": "pnpm test:coverage",
+    "lint": "pnpm lint",
+    "build": "pnpm build"
+  },
+  "extraCommands": [
+    {
+      "id": "contract",
+      "cmd": "pnpm test:contract",
+      "expectExit": 0
+    }
+  ],
+  "build": true,
+  "baselineStatus": [
+    " M|.gitignore",
+    " M|docs/react-feature-drift-analysis.md",
+    " M|docs/react-migration-gap-analysis.md",
+    " M|eslint.config.js",
+    " M|package.json",
+    " M|pnpm-lock.yaml",
+    " M|src/pages/review/leverage-detail/components/LeverageInfoCard.tsx",
+    "??|docs/P0-REWORK-ORDER-v2.md",
+    "??|docs/P1-TASK-ORDER.md",
+    "??|docs/P2-TASK-CARD.md",
+    "??|docs/P3a-PAGE-PLAN.md",
+    "??|docs/REACT-TEST-INFRA-CHECKLIST.md",
+    "??|docs/TASK-CARD-TEMPLATE.md",
+    "??|scripts/",
+    "??|src/api/client.flatten.test.tsx",
+    "??|src/components/ui/button.test.tsx",
+    "??|src/lib/utils.test.ts",
+    "??|src/lib/validators.test.ts",
+    "??|src/test/",
+    "??|vitest.config.ts"
+  ],
+  "allowedNewStatus": ["??|docs/A0-TASK-CARD.md"],
+  "mustNotChange": [
+    "src/api/client.ts",
+    "src/lib/utils.ts",
+    "src/lib/validators.ts",
+    "src/api/hooks/setting/setting.ts",
+    "src/components/layouts/Sidebar.tsx",
+    "src/routes/settingsRoutes.tsx",
+    "pnpm-lock.yaml",
+    "vitest.config.ts",
+    "src/test/setup.ts",
+    "docs/react-feature-drift-analysis.md",
+    "docs/react-migration-gap-analysis.md",
+    "src/pages/review/leverage-detail/components/LeverageInfoCard.tsx"
+  ],
+  "newTestFiles": [
+    "src/lib/utils.test.ts",
+    "src/lib/validators.test.ts",
+    "src/api/client.flatten.test.tsx",
+    "src/components/ui/button.test.tsx",
+    "src/test/contract/endpoints.test.ts"
+  ],
+  "implementationFiles": [
+    "src/api/client.ts",
+    "src/api/hooks/setting/setting.ts"
+  ],
+  "forbiddenScanFiles": [
+    "src/test/contract/endpoints.test.ts",
+    "src/test/contract/allowlist.ts",
+    "scripts/gen-api-contract.mjs"
+  ],
+  "requiredSnippets": {
+    "src/test/contract/endpoints.test.ts": ["apiPostFormData"],
+    "src/test/contract/allowlist.ts": ["reason"],
+    "scripts/gen-api-contract.mjs": ["openapi.admin.json", "info.version"]
+  },
+  "forbiddenPatterns": [
+    "vi.mock('fetch')",
+    "vi.mock(\"fetch\")",
+    "vi.spyOn(globalThis",
+    "describe.skip",
+    "it.skip",
+    "test.skip",
+    "expect(true).toBe(true)"
+  ],
+  "mutations": [
+    {
+      "id": "1-callpoint",
+      "file": "src/api/hooks/setting/setting.ts",
+      "find": "'/system/mtService/list'",
+      "replace": "'/system/mtService/list-not-exist'",
+      "minFailed": 1
+    },
+    {
+      "id": "2-snapshot",
+      "file": "src/test/contract/admin-paths.json",
+      "find": "/system/mtService/list",
+      "replace": "/system/mtService/list-mutated",
+      "minFailed": 1
+    }
+  ]
+}
