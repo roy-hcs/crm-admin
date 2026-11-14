@@ -59,16 +59,6 @@ export const ALLOWLIST: AllowlistEntry[] = [
   },
   {
     method: 'POST',
-    path: '/grobal/search/list',
-    reason:
-      '疑似调用点缺陷，待人审裁定：后端唯一映射 = /system/grobal/search/list（GrobalSearchController.java:21 @RequestMapping + :30 @PostMapping，全 CRM 仓仅此一处），React 调用缺 /system 前缀；Header.tsx 全局搜索在用。非 atlas 缺口，按 C5 争议入口登记 + 回执披露。11-13 运行时只读探测因会话层登录失败未完成，按人审兜底口径「读不到即视为接口有误」登记 BUG-P2-01；未证实 404',
-    date: '2026-11-13',
-    expires: '2026-11-27',
-    owner: 'crm-admin-frontend',
-    bugId: 'BUG-P2-01',
-  },
-  {
-    method: 'POST',
     path: '/system/crmUserVip/edit',
     reason:
       '疑似调用点缺陷，待人审裁定：后端 CrmUserVipController 无 POST /edit 映射（保存端点为 /editRule:287；GET /edit/{id}:148 是视图页；父链 NoticeController→CalculateController→BaseController 均无映射），疑应调 /editRule。非 atlas 缺口，按 C5 争议入口登记 + 回执披露。11-13 人审：静态证据链闭合、属写操作禁运行时探测，登记 BUG-P2-02 待后端 / 产品确认语义',
@@ -76,15 +66,5 @@ export const ALLOWLIST: AllowlistEntry[] = [
     expires: '2026-11-27',
     owner: 'crm-admin-frontend',
     bugId: 'BUG-P2-02',
-  },
-  {
-    method: 'GET',
-    path: '/system/crmUserProtocolRelation//oneUserProtocol/{param}',
-    reason:
-      '调用点笔误，待人审裁定：调用路径含空段（//），后端映射 = /oneUserProtocol/{userId}（CrmUserProtocolRelationController.java:103）已在快照；仅调用方多一个空段，运行时是否被归一化匹配未验证。本批不修生产代码。11-13 运行时只读探测因会话层登录失败未完成，按兜底口径登记 BUG-P2-03；未证实 404',
-    date: '2026-11-13',
-    expires: '2026-11-27',
-    owner: 'crm-admin-frontend',
-    bugId: 'BUG-P2-03',
   },
 ];

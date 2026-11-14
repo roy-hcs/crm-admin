@@ -393,3 +393,47 @@ B 结果不同 ⇒
 
 **未做 / 需单独放行**：三条 bug 的生产代码修复；P3a / P3b / P4；weekly /
 export；浏览器端到端验证。本轮只做只读探测与事实登记。
+
+### 9.8 生产代码修复 + 白名单收口（11-14 16:4x，使用者放行）
+
+**放行原话**：「按你说的做，授权修改和 push react-admin 的库」（11-14
+16:43）。本轮**只执行推荐顺序的第一梯队**，P3a / P3b / P4 未放行、未执行。
+
+**改动范围（4 个代码 / 测试文件 + 2 份文档）**：
+
+| 文件                                  | 改动                                                     | 依据                                                                              |
+| ------------------------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `src/api/hooks/common/index.ts:10`    | `'/grobal/search/list'` → `'/system/grobal/search/list'` | §9.7 A 404 / B 200；快照含 `POST /system/grobal/search/list`                      |
+| `src/api/hooks/review/review.ts:719`  | `//oneUserProtocol` → `/oneUserProtocol`                 | 与 `agent/agent.ts:177` 同端点写法对齐；快照含 `GET .../oneUserProtocol/{userId}` |
+| `src/test/contract/allowlist.ts`      | 删 #4 / #6 两条（**6 → 4 条**）                          | 调用点修复后条目无引用，`orphan` 断言按 §9.6 设计**变红强制收口**；非为绿改调用点 |
+| `src/test/contract/endpoints.test.ts` | 注释 `623 命中 / 6 条白名单` → `625 / 4`                 | 事实同步，**断言一字未动**                                                        |
+
+**修复后契约状态**：`pnpm test:contract` → **4/4 PASS**；629 调用点 / 3
+skip 不变、无 MISS、无 orphan。两个新 path 均**命中现有 947 条快照**（段级绑定
+`{param}` ↔ `{userId}`）⇒ **未改
+`admin-paths.json`、未重生快照、未跑 weekly/export**。
+
+**完整判卷**：`node scripts/verify-test-batch.mjs --config scripts/verify-p2.json`
+→ **12/14 / exit 1**，仅 `V7-head` / `V8-status` 红（配置写死 P2 批次放行前的
+`expectedHead=391f701` 与 20 行在途基线），属**基线时效**；其余 12 项全绿：V2
+`5/5 · 58/55`、`X-contract`、V3 typecheck、V4 coverage、V5 lint `0e/49w`、V6
+build、V9-no-touch、V10 静态断言、MUT-1/2 变红还原
+`diff_empty=true`、V11 零残留。 **未改任何判据 / `allowedNewStatus` / `expected`
+换绿**。
+
+> **为什么不「更新 `verify-p2.json` 基线」**：该配置 `_comment` 明确它是
+> **P2 批次放行前的状态基线**（21 行在途 +
+> `391f701`），批次交付并提交后必然失效；而 `V7` 判的是
+> `head.startsWith(expectedHead)`，若把 `expectedHead`
+> 填成「本轮最终 commit」，填值这次修改本身又会产生新 commit 改变 HEAD（**自指**），除非改判据或永久留一个脏工作区 ——二者都违反纪律。故**历史基线保持不动**，后续批次用各自的
+> `verify-<batch>.json`。本卡 11-14
+> 16:3x 曾建议「更新基线」，经代码复核后**撤回该建议**。
+
+**BUG-P2-02（#5）未修**：保存 mutation，静态证据链虽已闭合（后端
+`POST /editRule`、旧模板同），但按 §9.5 禁止事项须后端 / 产品确认
+`CrmUserVipEditParams`
+入参与该 mutation 是否仍在使用；**绝不发写请求、不凭静态证据改保存逻辑**。白名单 #5 保留至
+`2026-11-27`。
+
+**未做**：weekly / export、P3a 补页、P3b、P4、浏览器端到端验证；
+`crm-e2e/admin/client.ts` 的 UA 问题未动。P3a 补页仍需先裁定 P-2 / P-3 / P-4。

@@ -7,7 +7,7 @@ export * from './types';
 export function useGlobalSearch() {
   return useMutation({
     mutationFn: (params: { nameCn: string }) =>
-      apiFormPost<GlobalSearchRes>('/grobal/search/list', params),
+      apiFormPost<GlobalSearchRes>('/system/grobal/search/list', params),
   });
 }
 

@@ -716,7 +716,7 @@ export function useCrmUserProtocolInfo(id: string, options: { enabled: boolean }
     queryKey: ['crmUserProtocolInfo', id],
     queryFn: () =>
       apiGetCustom<CrmUserProtocolInfoRes>(
-        `/system/crmUserProtocolRelation//oneUserProtocol/${id}?from=1`,
+        `/system/crmUserProtocolRelation/oneUserProtocol/${id}?from=1`,
       ),
     enabled: options.enabled,
   });
