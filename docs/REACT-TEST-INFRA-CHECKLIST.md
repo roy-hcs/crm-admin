@@ -1,5 +1,30 @@
 # React 后台：测试基建 + 推广域补页 实施清单
 
+> **v1.22 增量（11-14 23:5x 白名单到期裁定 + admin 登录链路打通）**： **①
+> e2e 登录链路打通**：`crm-e2e/admin/client.ts` 5 处 `fetch` 统一带
+> `ADMIN_BROWSER_UA` + 常规 Accept（`tsc --noEmit` exit 0），本地 commit
+> **`07b15ab`**（crm-e2e 默认禁 push，未 push）。一次性冒烟 **PASS**：4 个请求
+> `uaOk=4 / uaMissing=0`、`POST /login` 严格 **1 次**、零重试、零其它写请求、
+> `code=0`；登录后只读 `GET /system/inOutMoneySetting` 返回 760642 字节 /
+> 569 个字段、未重定向回登录页 ⇒ A1「可登录」与「带会话读配置」两项已实跑证实；
+> **种子数据仍缺**，A4 e2e 通道仍未裁定，未发任何写请求、凭证与 Cookie 未落盘。
+> **② #2 后端只读核查**（CRM 仓 release、零分歧、未改一字）：
+> `CrmUserRebateTemplateController` 下**没有**返回 `RebateSettingPageData`
+> 的 JSON GET——只有 2 个视图 GET、3 个 `@ResponseBody` POST 写接口，以及
+> `/getRebateAccount/{userId}`（返回账户钱包列表，语义不同）。React
+> `useGetRebateSettingPageData` 拿到的是
+> `manage_template.html`，属真实功能缺口，
+> **需后端立项补接口**；C5 下不改调用点。证据链见 `P2-TASK-CARD.md` **§9.10**。
+> **③ 两条 11-20 到期项按人审复核后延期**（使用者「按你推荐的做」放行）： **#3 →
+> `2026-11-27`**（提取器修复 `df9833e` 已就位，等下轮 `weekly`+`export` 后按
+> `orphan` 判红删条目）；**#2 → `2026-12-05`**（等后端立项）。只动
+> `allowlist.ts` 的 `expires` + `reason`，**断言 / 调用点 / 快照 / atlas 锚点 /
+> CRM 仓一字未动**，未删条目、未提前周更。`atlas-check` 仍
+> `audit-incomplete`，API 契约类问答须写「API 审计未完成」；**P4 未放行**；#1
+> `/logout` `2026-11-27`
+> 不变。下方 v1.21 及更早括号内的「11-20 到期」「`client.ts`
+> 未改」等均为当时状态，已被本段取代；其余历史裁定继续有效。
+>
 > **v1.21 增量（11-14 23:0x P3b 交付物归档）**：**P3b 验收通过**
 > —— 由 flash 执行、贵模型只读验收，正式门禁
 > `node scripts/verify-test-batch.mjs --config scripts/verify-p3b.json` **17/17

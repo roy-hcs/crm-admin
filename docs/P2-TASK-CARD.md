@@ -481,3 +481,50 @@ build、V9-no-touch、V10 静态断言、MUT-1/2 变红还原
 **红线遵守**：这是写库 mutation，**未发任何运行时保存请求、未登录、未动测试环境数据**；结论只来自 CRM 代码与快照的静态比对。若线上编辑仍异常，排查顺序 = 后端
 `system:crmUserVip:edit` 权限 → `languageList`
 是否为 null（editRule 直接遍历）→ 规则项 `ruleEvent` 为 null 时后端会跳过该条。
+
+## 9.10 白名单 #2/#3 到期处置（11-14 23:5x，使用者「按你推荐的做」放行）
+
+### 只读核查：#2 到底有没有对应的 JSON REST 接口
+
+目标：判定 React
+`useGetRebateSettingPageData`（`src/api/hooks/agent/agent.ts:325`）打的
+`GET /system/crmUserRebateTemplate/oneUserTemplateInfo/{rebateType}/{id}`
+能否改指到某个返回 JSON 的后端接口。**CRM 仓全程只读（release 分支与远程零分歧），未改任何文件、未发任何请求。**
+
+`CrmUserRebateTemplateController.java` 的全部映射（类级
+`@RequestMapping("/system/crmUserRebateTemplate")`）：
+
+| 行   | 映射                                        | 返回                            | 语义                                                    |
+| ---- | ------------------------------------------- | ------------------------------- | ------------------------------------------------------- |
+| :79  | GET `oneUserTemplateInfo/{id}`              | `String` + `ModelMap`           | 视图（转调双参，rebateType=1）                          |
+| :91  | GET `oneUserTemplateInfo/{rebateType}/{id}` | `String` + `ModelMap`           | **视图** `system/crmUserRebateTemplate/manage_template` |
+| :123 | POST `oneUserTemplateInfo/edit`             | `@ResponseBody AjaxResult`      | 写（保存模板）                                          |
+| :240 | POST `oneUserTemplateInfo/editSaveModel2`   | `@ResponseBody AjaxResult`      | 写（模式二保存）                                        |
+| :690 | POST `checkSubUserGroupSetting`             | `@ResponseBody AjaxResult`      | 写（校验）                                              |
+| :820 | GET `toRebateAccount/{userId}`              | `String` + `ModelMap`           | 视图（返佣账户页）                                      |
+| :827 | GET `/getRebateAccount/{userId}`            | `@ResponseBody AjaxResult<Map>` | **唯一 JSON GET**                                       |
+
+`RebateSettingPageData`（`src/api/hooks/agent/types.ts:437`）需要
+`model / commissionType / paramFillType / rebateLevelSetting / userId / rebateType / userInviter / crmUserRebateTemplate / source`——这些值原本由 :91 的视图方法
+`mmap.put(...)` 注入 Thymeleaf 模板。而 :827 的 `getRebateAccountInfo` 返回的是
+`accountList`（用户账户钱包）、`setUserInfo` / `setUserTagProgress`
+的用户与标签信息， **不含任何返佣模板配置项**，语义不同，不能替代。
+
+**结论**：后端没有同语义的 JSON REST GET。React 侧以 GET 读视图端点，实际会拿到
+`manage_template.html`，拿不到 `RebateSettingPageData`
+⇒ 这是真实的功能缺口，需要后端新增读取接口（或由产品裁定改数据源），属跨团队立项；按 C5
+**不改调用点**、不改断言、不塞白名单换绿。
+
+### 两条到期项的裁定（人审复核后延期）
+
+| 条目                                       | 原到期     | 新到期         | 依据                                                                                                                                      | 收口条件                                    |
+| ------------------------------------------ | ---------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| #3 `viewDetailInfo/{id}/{infoType}`        | 2026-11-20 | **2026-11-27** | atlas 提取器常量折叠缺陷已修（本地 commit `df9833e`，74/74）；双参 route 是 `@ResponseBody` JSON，修复随下轮 `weekly` + `export` 落入快照 | 周更后人审差异 → `orphan` 断言判红 → 删条目 |
+| #2 `oneUserTemplateInfo/{rebateType}/{id}` | 2026-11-20 | **2026-12-05** | 结构性范围缺口，周更永远补不出；上方只读核查确认无 JSON REST 接口，需后端立项                                                             | 后端接口落地并人审后，或再次人审延期        |
+
+**红线遵守**：只改 `allowlist.ts` 的 `expires` 与
+`reason`（以及本卡 / 清单留痕）；
+`path / method / date / owner / bugId`、`endpoints.test.ts` 的断言、
+`admin-paths.json`、React 调用点、atlas 锚点、CRM 仓**一字未动**；没有提前
+`weekly`/`export`，没有删条目换绿。`atlas-check` 仍
+`audit-incomplete`，API 契约类问答继续写「API 审计未完成」。到期日仍是硬约束，到期未收口即判红。
