@@ -1,6 +1,6 @@
 # React 后台：测试基建 + 推广域补页 实施清单
 
-> **v1.19 增量（11-14 19:0x，本轮契约收口）**：本轮
+> **v1.20 增量（11-14 19:0x 契约收口 + 19:2x push 补记）**：本轮
 > `/kb-sync`（flash 执行、贵模型只读校验）产出 atlas 快照
 > `2026-11-14T10-22-35-654Z`，exports **951 path = 947 +5 −1** （新增 5 条
 > `spreadPermPackage` 端点、删
@@ -11,15 +11,18 @@
 > **3 条**（#2/#3 `2026-11-20`、#1
 > `2026-11-27`），到期只允许收口删条目或人审延期。门禁复跑：`verify-a0 --after-p3a`
 > **6/7**（V7 PASS、V6 写死旧 HEAD 时效红）、`verify-p2.json` **12/14**（V7-head
-> /
-> V8-status 批次放行前基线时效红，其余含 MUT-1/2 全绿）。KB 仓侧修复（`extract-inventory`
-> 的 state 合并、`lastProcessed` 按 SKILL
-> §5.3 回滚）与 atlas 周更产物均**只本地 commit、未 push**，见 KB
-> `sync/state.json` 的 `sync.branchOverrideNote`。**P3b /
+> / V8-status 批次放行前基线时效红，其余含 MUT-1/2 全绿）。**11-14 19:2x
+> push 补记**：KB 仓侧修复（`extract-inventory` 的 state 合并、`lastProcessed`
+> 按 SKILL §5.3 回滚，见 KB `sync/state.json` 的
+> `sync.branchOverrideNote`）已随 KB /
+> crm-e2e 两个公司仓首次 push 上远端，crm-admin 契约快照 `dcda848` 已 push
+> `origin/develop`，三仓 ahead 归零；**atlas 周更产物 `21ac85d`
+> 仍为本地 commit（0 remote，物理不可 push）**；CRM `[ahead 14, behind 37]`
+> 有分歧，按红线禁 fetch/merge、绝不 push。**P3b /
 > P4 仍未放行**。⚠️ 下方 v1.18 及更早括号内的「947
 > path」「快照未重生」「11-20 双事件窗口」均为当时状态，已被本段取代；其余历史裁定继续有效。
 
-> 版本：2026-11-14 **v1.19**（**11-14 17:4x 更新**：#5 /
+> 版本：2026-11-14 **v1.20**（**11-14 17:4x 更新**：#5 /
 > BUG-P2-02 按 CRM 仓代码比对确认为**调用点 URL 写错**（`/edit` →
 > `/editRule`），已修并收口白名单4 → **3 条**，证据链见 `P2-TASK-CARD.md`
 > **§9.9**；P3a 的 4 条口径差异 + P-3 命名 +
