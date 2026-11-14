@@ -1,6 +1,25 @@
 # React 后台：测试基建 + 推广域补页 实施清单
 
-> 版本：2026-11-14 **v1.18**（**11-14 17:4x 更新**：#5 /
+> **v1.19 增量（11-14 19:0x，本轮契约收口）**：本轮
+> `/kb-sync`（flash 执行、贵模型只读校验）产出 atlas 快照
+> `2026-11-14T10-22-35-654Z`，exports **951 path = 947 +5 −1** （新增 5 条
+> `spreadPermPackage` 端点、删
+> `GET /system/crmUser/getUserParents`，该端点在 crm-admin 无调用点）。本仓已跑
+> `pnpm gen:api-contract` 把 `src/test/contract/admin-paths.json` 重生为
+> **951 键**、`atlasVersion` 同步， `pnpm test:contract` 从 1 红变 **4/4
+> PASS**（5 条 P3a MISS 全部命中，未塞白名单、未改断言）。白名单仍
+> **3 条**（#2/#3 `2026-11-20`、#1
+> `2026-11-27`），到期只允许收口删条目或人审延期。门禁复跑：`verify-a0 --after-p3a`
+> **6/7**（V7 PASS、V6 写死旧 HEAD 时效红）、`verify-p2.json` **12/14**（V7-head
+> /
+> V8-status 批次放行前基线时效红，其余含 MUT-1/2 全绿）。KB 仓侧修复（`extract-inventory`
+> 的 state 合并、`lastProcessed` 按 SKILL
+> §5.3 回滚）与 atlas 周更产物均**只本地 commit、未 push**，见 KB
+> `sync/state.json` 的 `sync.branchOverrideNote`。**P3b /
+> P4 仍未放行**。⚠️ 下方 v1.18 及更早括号内的「947
+> path」「快照未重生」「11-20 双事件窗口」均为当时状态，已被本段取代；其余历史裁定继续有效。
+
+> 版本：2026-11-14 **v1.19**（**11-14 17:4x 更新**：#5 /
 > BUG-P2-02 按 CRM 仓代码比对确认为**调用点 URL 写错**（`/edit` →
 > `/editRule`），已修并收口白名单4 → **3 条**，证据链见 `P2-TASK-CARD.md`
 > **§9.9**；P3a 的 4 条口径差异 + P-3 命名 +

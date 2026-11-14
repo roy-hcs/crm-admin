@@ -1,8 +1,8 @@
 {
   "generatedFrom": {
-    "atlasVersion": "2026-11-13T04-15-35-768Z",
-    "sourceCommits": "crm@011fb14fd · knowledgeBase@bd287437e(dirty) · crmFe@50f3541bf · mamFe@6cb5fec4c · crmAdminReact@391f701b0",
-    "generatedAt": "2026-11-13T07:30:50.310Z"
+    "atlasVersion": "2026-11-14T10-22-35-654Z",
+    "sourceCommits": "crm@1c0b9a94a · knowledgeBase@93ed2cc76(dirty) · crmFe@ba2364814 · mamFe@6cb5fec4c · crmAdminReact@77afe90f0",
+    "generatedAt": "2026-11-14T11:09:46.421Z"
   },
   "paths": {
     "POST /common/upload": true,
@@ -317,7 +317,6 @@
     "POST /system/crmUser/getUpperAllList": true,
     "GET /system/crmUser/getUserInfo": true,
     "POST /system/crmUser/getUserInviterLevel": true,
-    "GET /system/crmUser/getUserParents": true,
     "GET /system/crmUser/getUserTagProgress": true,
     "POST /system/crmUser/levelUsers": true,
     "POST /system/crmUser/list": true,
@@ -823,12 +822,17 @@
     "POST /system/spreadLink/setDefault/{id}": true,
     "POST /system/spreadLink/setShowPromoteLink": true,
     "POST /system/spreadPageSetting/edit": true,
+    "POST /system/spreadPermPackage/add": true,
     "POST /system/spreadPermPackage/applicableUserList": true,
     "POST /system/spreadPermPackage/assignAgent": true,
     "PUT /system/spreadPermPackage/change-status": true,
+    "POST /system/spreadPermPackage/checkCodeUnique": true,
+    "POST /system/spreadPermPackage/checkNameUnique": true,
     "POST /system/spreadPermPackage/countApplicableUsers": true,
+    "POST /system/spreadPermPackage/edit": true,
     "GET /system/spreadPermPackage/getServerAccountTypes": true,
     "POST /system/spreadPermPackage/list": true,
+    "GET /system/spreadPermPackage/listEnabled": true,
     "POST /system/spreadPermPackage/remove": true,
     "POST /system/statistics/account-export": true,
     "POST /system/statistics/accountStaticsSum": true,
