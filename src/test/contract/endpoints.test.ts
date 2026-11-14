@@ -397,7 +397,9 @@ describe('P2 契约断言（atlas 快照 vs src 调用点）', () => {
     }
     // assert: 守护「调用点 ⊆ 契约 ∪ 白名单」（P2 卡 §3 C4）—— 抓 path 拼错 / 参数名与旧版
     // 不一致 / 调用未文档化端点。失败清单含 文件:行 → 调用点 → 最近候选 path。
-    // 当前 641 调用点中 632 命中、4 条白名单（见 allowlist.ts 逐条 reason）、3 条 skip 计数打印。
+    // 当前 641 调用点中 633 命中、3 条白名单（见 allowlist.ts 逐条 reason）、3 条 skip 计数打印。
+    // 白名单 6 → 4 条（11-14 #4/#6 修复，P2 卡 §9.8）→ 3 条（#5 改投 /editRule 后命中
+    // 快照，P2 卡 §9.9）；三次都是调用点修好后由 orphan 断言判红触发的收口，断言未改。
     // P3a 补页新增 5 个 atlas 快照缺口（add / edit / checkNameUnique / checkCodeUnique /
     // listEnabled），按 P3a 卡 §7.3 停机披露；待补页推 origin/develop 后跑 weekly/export 收口，
     // 不塞白名单、不改断言。

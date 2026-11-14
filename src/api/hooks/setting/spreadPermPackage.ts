@@ -9,6 +9,28 @@
  * （`GET ""`、`GET /add`、`GET /edit/{id}`、`GET /applicableUserList/{id}`），
  * React 为 SPA、用客户端弹窗替代服务端渲染页，**不迁移这 4 个视图端点**；
  * 其余 12 个业务端点在此 1:1 落地。视图页里的字段与行为由 PermPackageDialog 承接。
+ *
+ * ── 决策留痕（11-14 17:4x 使用者裁定「使用你的方案，留好注释」）─────────────
+ * P-2 以旧 RuoYi `add.html` / `edit.html` 的 19 个 name= 字段为事实来源，1:1 复刻、不砍字段；
+ * P-3 路由与菜单采用 P3a 卡 §2 推荐值（见 settingsRoutes.tsx / Sidebar.tsx 的落点注释）；
+ * P-4 顺序按 A0 卡 §5，本轮只到「补页 + 推 origin/develop」，weekly/export → V7 判卷 →
+ *     P2 快照重生 → P3b 留下一轮，中间不留空档。
+ *
+ * 四项与旧 RuoYi 的口径差异（完整说明 = docs/testids.md §3，代码内落点见该卡 §6 索引）：
+ *   ① 4 个 Thymeleaf 视图端点不迁移（本文件头 + 1:1 的 12 个业务端点）；
+ *   ② 多语言列表不硬编码 sys_language 字典值（PermPackageDialog 多语言区）；
+ *   ③ 编辑时 applicableUserSettings 无法回显（PermPackageDialog.fromListItem）；
+ *   ④ 数组字段统一 join(',') 提交（本文件 toPermPackageFormParams）。
+ * 四项均为「待人审确认的口径差异」而非自行简化，字段与可测边界一个未减。
+ *
+ * 契约层：本页 5 个端点（add / edit / checkNameUnique / checkCodeUnique / listEnabled）
+ * 不在 947 条 atlas 快照（usage-driven，旧模板变量拼接调用提取不到 → 无 caller），
+ * `test:contract` 的 C4 会如实报 5 条 MISS，属 P3a 卡 §7.3 预期停机项。
+ * 收口路径 = 补页推 origin/develop → 一轮 weekly/export → verify-a0 --after-p3a（V7）
+ * → 重跑 P2 快照；**不塞 allowlist.ts、不改 admin-paths.json、不改 atlas、不改断言**。
+ *
+ * ⚠️ 注释纪律：endpoints.test.ts 的 FN_RE 对整份源码文本扫描且不剥离注释，
+ * 因此本文件注释里不要写出「API 函数名 + 左括号」的形态，否则会被当作新调用点计数。
  */
 import { apiFormPost, apiFormPostCustom, apiGet, apiPut } from '@/api/client';
 import type { FormParams } from '@/api/client';
@@ -22,7 +44,16 @@ import type {
   ServerAccountTypesResult,
 } from './permPackageTypes';
 
-/** 把表单值转成 RuoYi 表单提交形状：数组字段 join 成逗号串，嵌套对象交给 flattenParams */
+/**
+ * 把表单值转成 RuoYi 表单提交形状：数组字段 join 成逗号串，嵌套对象交给 flattenParams。
+ *
+ * 【口径差异 ④ / docs/testids.md §3.4】旧页 select2 multiple 由 jQuery serialize
+ * 成「多个同名参数」；这里统一 join(',') 成单个逗号串。依据：后端实体
+ * `CrmSpreadPermPackage` 的 serverIds / accountGroupIds / defaultRoleIds 本身即逗号串，
+ * `CrmApplicableUserSettings` 的 List<String> 依赖 Spring 转换器。
+ * ⚠️ 该形状差异**尚未被运行时/MSW 断言确认**：P3b 需用 MSW 断请求体形状，
+ * 若后端实际要求多值同名参数，改本函数即可（不要改调用点或塞白名单）。
+ */
 export function toPermPackageFormParams(values: PermPackageFormValues): FormParams {
   const settings = values.applicableUserSettings;
   return {
@@ -73,7 +104,9 @@ export function usePermPackageList(params: PermPackageListParams, options?: { en
   });
 }
 
-/** 2. 新增（旧页 `prefix + "/add"`，后端 `addSave(CrmSpreadPermPackage)`） */
+/** 2. 新增（旧页 `prefix + "/add"`，后端 `addSave(CrmSpreadPermPackage)`）
+ *  ⚠️ 契约缺口 ①：不在 947 条 atlas 快照（旧模板 add.html:1082 用 `prefix+"/add"` 变量拼接，
+ *  usage-driven 提取器拿不到 caller）。C4 判红属 P3a 卡 §7.3 预期，收口路径见文件头。 */
 export function useAddPermPackage() {
   return useMutation({
     mutationFn: (values: PermPackageFormValues) =>
@@ -81,7 +114,8 @@ export function useAddPermPackage() {
   });
 }
 
-/** 3. 编辑（旧页 `prefix + "/edit"`，后端 `editSave(CrmSpreadPermPackage)`） */
+/** 3. 编辑（旧页 `prefix + "/edit"`，后端 `editSave(CrmSpreadPermPackage)`）
+ *  ⚠️ 契约缺口 ②：同 ①，旧模板 edit.html:1180 变量拼接调用 → 快照无此 path。 */
 export function useEditPermPackage() {
   return useMutation({
     mutationFn: (values: PermPackageFormValues) =>
@@ -96,7 +130,8 @@ export function useRemovePermPackage() {
   });
 }
 
-/** 5. 名称查重（旧页 remote；后端返回纯文本 "0"=唯一 / "1"=已存在） */
+/** 5. 名称查重（旧页 remote；后端返回纯文本 "0"=唯一 / "1"=已存在）
+ *  ⚠️ 契约缺口 ③：不在 947 条快照，原因同上（旧页 validate remote 规则非静态调用）。 */
 export function useCheckNameUnique() {
   return useMutation({
     mutationFn: (params: { name: string; id?: string }) =>
@@ -107,7 +142,8 @@ export function useCheckNameUnique() {
   });
 }
 
-/** 6. 编码查重（旧页 remote；同上返回纯文本） */
+/** 6. 编码查重（旧页 remote；同上返回纯文本）
+ *  ⚠️ 契约缺口 ④：不在 947 条快照，原因同上。 */
 export function useCheckCodeUnique() {
   return useMutation({
     mutationFn: (params: { code: string; id?: string }) =>
@@ -155,7 +191,9 @@ export function useChangePermPackageStatus() {
   });
 }
 
-/** 10. 已启用权限包列表（旧页分配代理下拉 `prefix + "/listEnabled"`） */
+/** 10. 已启用权限包列表（旧页分配代理下拉 `prefix + "/listEnabled"`）
+ *  ⚠️ 契约缺口 ⑤：不在 947 条快照（旧页下拉由服务端模板注入，非 UI caller）。
+ *  另注：`apiGet` 的查询串会带 keyword，契约扫描按 path 归一化，不影响比对。 */
 export function useListEnabledPermPackages(keyword: string, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['spreadPermPackageListEnabled', keyword],

@@ -113,6 +113,12 @@ export const settingsRoutes: RouteObject[] = [
     path: '/settings/payment/withdraw-fee',
     element: <WithdrawFeePage />,
   },
+  // 【P-3 命名决策 / P3a 卡 §2 推荐值，11-14 17:4x 使用者裁定「使用你的方案」】
+  // 路径 /settings/promotion/perm-package，菜单中文「权限包管理」、英文 Permission Package。
+  // 与 Sidebar.tsx 的同名菜单项必须成对修改；旧 RuoYi 侧路径是 /system/spreadPermPackage，
+  // 二者不是同一个东西（前者是 SPA 前端路由，后者是后端 Controller 前缀），排查时别混。
+  // 【P-4 顺序 / A0 卡 §5】本轮只到「补页 + 推 origin/develop」；后续 weekly/export →
+  // verify-a0 --after-p3a（V7）→ P2 快照重生 → P3b 组件用例，均留下一轮。
   {
     path: '/settings/promotion/perm-package',
     element: <PermPackagePage />,

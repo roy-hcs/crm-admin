@@ -435,5 +435,49 @@ build、V9-no-touch、V10 静态断言、MUT-1/2 变红还原
 入参与该 mutation 是否仍在使用；**绝不发写请求、不凭静态证据改保存逻辑**。白名单 #5 保留至
 `2026-11-27`。
 
+> ⚠️ 本段为 §9.8 当时的状态，**已被 11-14 17:4x 使用者裁定覆盖，见 §9.9**。
+
 **未做**：weekly / export、P3a 补页、P3b、P4、浏览器端到端验证；
 `crm-e2e/admin/client.ts` 的 UA 问题未动。P3a 补页仍需先裁定 P-2 / P-3 / P-4。
+
+### 9.9 BUG-P2-02（#5）收口：按 CRM 代码比对后修复（11-14 17:4x，使用者放行）
+
+**放行原话**：「1.关于 #5，直接取 CRM 的代码里看看它忠诚计划使用的哪个接口，需要哪些字段，比对一下就好了。如果有，就参照 CRM 的代码实现，如果没有，说明后端没有抛出接口（类似于直接写库的操作）那就把这个单子挂在后续待补的地方，之后在根后端确认。」⇒ 以
+**CRM 仓静态事实**取代 §9.8 的「须后端 / 产品确认」前置条件。
+**结论：后端有抛出接口，属调用点 URL 写错，不挂账。**
+
+#### 证据链（全部只读，CRM 仓 HEAD `10981ad079`）
+
+| #   | 事实                                                                                                                                                                                                                                                                                                        | 位置                                                                                          |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| 1   | 旧 RuoYi 保存提交 `prefix + "/editRule"`（postJson，JSON body），`data = { id, languageList, crmUserVipAndRuleList, crmUserVipOrRuleList }`                                                                                                                                                                 | `crm-admin/src/main/resources/templates/system/crmUserVip/edit.html:159, :205-227`            |
+| 2   | 后端 `POST /editRule`，`editRule(@RequestBody CrmUserVip)`，`@Transactional`：`updateUserVip` → 删插 `languageList` → 删插两组规则                                                                                                                                                                          | `CrmUserVipController.java:287-323`                                                           |
+| 3   | **不存在 `POST /edit`**：`:148` 的 `GET /edit/{id}` 是 Thymeleaf 视图页；类继承 `NoticeController`，父链无额外 `@*Mapping` ⇒ 原调用必然 404                                                                                                                                                                 | 同上 `:38/:40/:148`                                                                           |
+| 4   | 字段一一对齐：`CrmUserVip` = `id / sort / status / languageList / crmUserVipAndRuleList / crmUserVipOrRuleList`；`CrmUserVipLang` = `name / description / language ...`；`CrmUserVipRule` = `ruleEvent / ruleSymbol / ruleType / ruleValue / ruleLevel / ruleTag ...`，与 React `CrmUserVipEditParams` 同名 | `crm-common/.../domain/CrmUserVip{,Lang,Rule}.java`、`src/api/hooks/account/types.ts:643-678` |
+| 5   | React 多传的 `sort / status` 不是多余字段：`updateUserVip` 的 SQL 显式按非空更新这两列                                                                                                                                                                                                                      | `crm-common/.../mapper/crm/CrmUserVipMapper.xml:144-157`                                      |
+| 6   | 传输形态匹配：本仓 JSON POST 封装由 `fetchWithAuth` 设 `Content-Type: application/json`，与 `@RequestBody` 一致（不能用表单封装）                                                                                                                                                                           | `src/api/client.ts:20-26, :92-102`                                                            |
+| 7   | `POST /system/crmUserVip/editRule` **已在 947 条快照** ⇒ 改完直接命中契约，无需动 `admin-paths.json` / atlas / 周更                                                                                                                                                                                         | `src/test/contract/admin-paths.json:417`                                                      |
+
+#### 改动（5 文件，均为 crm-admin）
+
+- `src/api/hooks/account/index.ts`：`useCrmUserVipEdit` 的 `/edit` →
+  `/editRule`，并落下上面 1–6 的完整比对注释（含「为什么不发写请求」「线上若报错查哪里」）。
+- `src/test/contract/allowlist.ts`：删 #5 / `BUG-P2-02` 条目（**4 →
+  3 条**），留收口注记。删条目是 P2b `orphan`
+  断言按设计判红后的正常收口，**未改断言**。
+- `src/test/contract/endpoints.test.ts`：仅注释计数 `632 → 633` 命中、`4 → 3`
+  白名单， **断言与 skip 下界一字未动**。
+- 本卡 §9.9、`docs/REACT-TEST-INFRA-CHECKLIST.md`（v1.17 → v1.18）。
+
+#### 实跑与纪律
+
+`pnpm test:contract` →
+`1 failed / 3 passed`，`[contract] src 文件 867 个 · 调用点 641 · skip 3`；**C5 白名单卫生（≤10
+/ 到期 / unowned / orphan）全绿**，5 条 MISS 全为 P3a 补页预期缺口（`add` /
+`edit` / `checkNameUnique` / `checkCodeUnique` /
+`listEnabled`），与 #5 无关。调用点命中数 632 → **633**，白名单 6 → 4 → **3**
+条（剩余 #1 `/logout` 至 `2026-11-27`、#2/#3 双参变体至 `2026-11-20`）。
+
+**红线遵守**：这是写库 mutation，**未发任何运行时保存请求、未登录、未动测试环境数据**；结论只来自 CRM 代码与快照的静态比对。若线上编辑仍异常，排查顺序 = 后端
+`system:crmUserVip:edit` 权限 → `languageList`
+是否为 null（editRule 直接遍历）→ 规则项 `ruleEvent` 为 null 时后端会跳过该条。

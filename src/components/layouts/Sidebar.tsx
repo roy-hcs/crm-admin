@@ -401,6 +401,8 @@ export function Sidebar({ open = true, cls }: SidebarProps) {
               path: '/settings/promotion/links',
               disabled: true,
             },
+            // 【P-3】与 settingsRoutes.tsx 的 /settings/promotion/perm-package 成对，
+            // 命名依据 P3a 卡 §2；上方「推广链接」仍是原 disabled 占位，本轮未动。
             {
               title: '权限包管理',
               path: '/settings/promotion/perm-package',

@@ -42,7 +42,10 @@
   失焦查重；`getServerAccountTypes` 联动；`countApplicableUsers` 回显。
 - 列表：`name` + `status` 搜索、`resetForm()` 清空、启停、删除确认。
 
-## 3. 与旧 RuoYi 的口径差异（**待人审确认，不是自行简化**）
+## 3. 与旧 RuoYi 的口径差异（11-14 17:4x 使用者裁定**采用本方案**，差异保留披露）
+
+> 裁定原话：「关于待拍板的 1 和 2，使用你的方案，但留好注释，方便后续排查」。四项差异**不作简化、不砍字段、不伪造默认值**，均已按下方 §6 索引落到代码注释里。待后端补接口 /
+> P3b 断言收口时，按注释里的「排查入口」定位即可。
 
 1. **4 个视图端点不迁移**：`GET /system/spreadPermPackage`、`GET /add`、
    `GET /edit/{id}`、`GET /applicableUserList/{id}` 返回 Thymeleaf
@@ -86,3 +89,23 @@
 **过程中修掉一处漏扫**（重要）：最初 `apiFormPost<AjaxResult<unknown>>(...)`
 的**嵌套泛型** 使 `endpoints.test.ts` 的 `FN_RE` 正则失配，`add` / `edit`
 两个调用点被静默跳过，契约只报 3 条 MISS。已改为无泛型调用，**5 条缺口全部如实暴露**。这是增加覆盖而非为绿改调用点；扫描器本身的嵌套泛型局限未改判据，留作后续评估。
+
+## 6. 决策注释索引（11-14 17:4x 补，排查入口）
+
+使用者裁定「使用你的方案，但留好注释」。所有决策点就近写在代码里，按此表反查：
+
+| 决策 / 差异                     | 代码落点                                                                                    | 注释里写了什么                                                                                                        |
+| ------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| **P-2** 旧模板 1:1、19 字段不砍 | `src/api/hooks/setting/spreadPermPackage.ts` 文件头                                         | 事实来源、不设二期缩减                                                                                                |
+| **P-3** 路由 / 菜单命名         | `src/routes/settingsRoutes.tsx` 路由项上方、`src/components/layouts/Sidebar.tsx` 菜单项上方 | 采用 §2 推荐值；两处成对修改；前端路由 ≠ 后端 `/system/spreadPermPackage` 前缀                                        |
+| **P-4** 批次顺序                | `spreadPermPackage.ts` 文件头 + `settingsRoutes.tsx` 路由项上方                             | 本轮只到补页 + 推远端；weekly/export → V7 → 快照重生 → P3b 留下一轮                                                   |
+| 差异 ① 4 个视图端点不迁移       | `spreadPermPackage.ts` 文件头                                                               | 16 映射拆 12 业务 + 4 Thymeleaf 视图，SPA 用弹窗承接                                                                  |
+| 差异 ② 多语言字典               | `PermPackageDialog.tsx` 多语言 `<section>` 内 JSX 注释                                      | 旧页靠 `sys_language` 注入、React 无 REST ⇒ 手填语言代码，**不硬编码猜字典值**；待后端补字典接口                      |
+| 差异 ③ 编辑不回显适用用户配置   | `PermPackageDialog.tsx` 的 `fromListItem` 上方                                              | `/list` 不带该结构、不伪造默认值；**已知影响 = 编辑态直接保存会提交空配置**；收口二选一（详情接口 / P3b MSW fixture） |
+| 差异 ④ 数组 `join(',')`         | `spreadPermPackage.ts` 的 `toPermPackageFormParams` 上方                                    | 后端实体本身是逗号串；**尚未被运行时 / MSW 确认**，P3b 需断请求体形状                                                 |
+| 契约 5 条 MISS                  | `spreadPermPackage.ts` 文件头 + 5 个 hook（缺口 ①–⑤）上方                                   | 逐条标根因（旧模板变量拼接 → usage-driven 无 caller）+ 收口路径；**不塞白名单 / 不改 atlas / 不改断言**               |
+| #5 / BUG-P2-02 收口             | `src/api/hooks/account/index.ts` 的 `useCrmUserVipEdit` 上方、`P2-TASK-CARD.md` §9.9        | CRM 仓 7 条证据链、字段比对、未发写请求声明、线上异常排查顺序                                                         |
+
+> ⚠️ **注释写法纪律**：`endpoints.test.ts` 的 `FN_RE` 对整份 `src`
+> 文本扫描且**不剥离注释**，所以 `src`
+> 下任何注释都不要写出「API 函数名 + 左括号」的形态（会被当成新调用点，改变 641 这个计数）。文档文件（docs/）不在扫描范围内，不受此限。

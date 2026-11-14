@@ -40,7 +40,18 @@ const csv = (value?: string): string[] =>
         .filter(Boolean)
     : [];
 
-/** 列表行 → 表单值。旧页编辑页由服务端渲染带出适用用户配置，REST 列表无该结构，见 docs/testids.md 口径差异 */
+/**
+ * 列表行 → 表单值。
+ *
+ * 【口径差异 ③ / docs/testids.md §3.3】旧 RuoYi 编辑页由服务端渲染补出
+ * `applicableUserSettings`（适用用户配置），但 REST `/list` 的行只带主表字段、
+ * **不带该结构**，本仓也暂无详情接口。因此编辑时该配置保持 EMPTY 默认值，
+ * 未伪造任何默认值、未自行猜字段。
+ * ⚠️ 已知影响：编辑态打开后若不重新选择适用用户配置就保存，会把该配置提交为空。
+ * 收口方式（二选一，待人裁定）：① 后端提供详情接口后在此处回填；
+ * ② P3b 用 MSW fixture 覆盖编辑回显场景，把缺口显式变成待断言行为。
+ * 排查入口：`fromListItem` → EMPTY_PERM_PACKAGE_FORM → toPermPackageFormParams。
+ */
 function fromListItem(item: PermPackageItem): PermPackageFormValues {
   return {
     ...EMPTY_PERM_PACKAGE_FORM,
@@ -398,6 +409,11 @@ export const PermPackageDialog = ({
 
         <section className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
+            {/* 【口径差异 ② / docs/testids.md §3.2】旧页语言列表由服务端 sys_language
+                字典注入（SpreadPermPackageController#resolveLanguageLabel），React 侧
+                暂无对应 REST 端点。这里做成「手动添加条目 + 手填语言代码」，
+                **不硬编码猜测任何字典值**，lang-name 50 / lang-remark 200 约束保留。
+                待后端给出字典接口后，由人裁定补一个调用点替换本输入框。 */}
             <h3 className="text-sm font-semibold">{t('permPackagePage.languages')}</h3>
             <Button
               type="button"

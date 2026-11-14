@@ -618,9 +618,32 @@ export function useCrmUserVipAdd() {
 
 /**
  * 账户管理-客户忠诚计划 编辑等级配置
+ *
+ * 【BUG-P2-02 / 白名单 #5 收口，2026-11-14】端点为 /system/crmUserVip/editRule，
+ * 旧实现误写成 /system/crmUserVip/edit（后端无 POST /edit 映射）。依据 CRM 仓事实链：
+ *  1. 旧 RuoYi 模板 `crm-admin/src/main/resources/templates/system/crmUserVip/edit.html:227`
+ *     保存时提交 `prefix + "/editRule"`，data = { id, languageList,
+ *     crmUserVipAndRuleList, crmUserVipOrRuleList }，且用 postJson（JSON body）。
+ *  2. 后端 `CrmUserVipController.java:287` `POST /editRule`，签名
+ *     `editRule(@RequestBody CrmUserVip)`；`:148` 的 `GET /edit/{id}` 只是 Thymeleaf
+ *     视图页，父链 NoticeController→CalculateController→BaseController 无额外映射，
+ *     因此 **不存在 POST /edit**（原调用必然 404）。
+ *  3. 字段一一对齐：`CrmUserVip`（crm-common/.../domain/CrmUserVip.java）含
+ *     id / sort / status / languageList / crmUserVipAndRuleList / crmUserVipOrRuleList，
+ *     与本仓 CrmUserVipEditParams 完全同名；`CrmUserVipLang` / `CrmUserVipRule` 的
+ *     子字段也与 CrmUserVipLanguageItem / CrmUserVipRuleItem 对齐。旧页未提交
+ *     sort / status，React 多传这两项 —— `CrmUserVipMapper.xml:144-157` 的
+ *     updateUserVip 显式按非空更新这两列，属更完整而非多余字段。
+ *  4. 后端 editRule 事务内：updateUserVip → 删插 languageList → 删插两组规则。
+ *     本仓 JSON POST 封装由 fetchWithAuth 设 `Content-Type: application/json`，
+ *     与 @RequestBody 匹配；不能用表单封装。
+ *
+ * 排查提示：此为写库 mutation，按红线**未发任何运行时保存请求**，结论仅来自静态比对；
+ * 若线上仍报错，优先查后端权限 `system:crmUserVip:edit` 与 languageList 非空
+ * （editRule 直接遍历该列表，传 null 会 NPE）。台账见 docs/P2-TASK-CARD.md §9.9。
  */
 export function useCrmUserVipEdit() {
   return useMutation({
-    mutationFn: (params: CrmUserVipEditParams) => apiPost(`/system/crmUserVip/edit`, params),
+    mutationFn: (params: CrmUserVipEditParams) => apiPost(`/system/crmUserVip/editRule`, params),
   });
 }

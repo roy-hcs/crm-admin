@@ -183,7 +183,12 @@ MSW，不打真实写接口**）；抽查 `data-testid` 与 `docs/testids.md`
 **P-2** 的答复（旧模板为事实来源、1:1 复刻、不砍字段）。
 **P-3 路由/菜单命名采用 §2 推荐值**（`/settings/promotion/perm-package`、中文「权限包管理」、英文
 `Permission Package`），**P-4 按 A0 卡 §5 顺序，本轮只到「补页 + 推 origin/develop」**，周更 / 快照重生 /
-P3b 留下一轮 —— 这两项**仍待人审确认**。
+P3b 留下一轮。
+
+> ✅ **11-14 17:4x 已裁定**：使用者对 §2 中 P-3 /
+> P-4 及「4 条口径差异」给出「关于待拍板的 1 和 2，使用你的方案，但留好注释，方便后续排查」——
+> **三项不再挂待人审**，按现方案定稿；差异仍如实保留披露、不简化。决策依据已就近写进代码，索引见
+> `docs/testids.md` §6。
 
 **落盘**：新增 5 文件（`PermPackagePage.tsx`、`components/PermPackageDialog.tsx`、
 `spreadPermPackage.ts`、`permPackageTypes.ts`、`docs/testids.md`）；最小接线 4 处（`settingsRoutes.tsx`
@@ -222,4 +227,5 @@ usage-driven 无 caller）。**未塞 `allowlist.ts`
 **未做 / 待办**：`scripts/verify-p3a.json`、P3b 五条组件用例、`pnpm dev`
 浏览器人工验证（独立通道，须单独放行）、weekly/export、V7 判卷、P2 快照重生、P4。
 **口径差异 4 条**（视图端点 / 多语言字典来源 / 编辑回显范围 / 数组提交形态）见
-`docs/testids.md` §3，**均待人审确认**，未自行简化字段或边界。
+`docs/testids.md` §3；**11-14
+17:4x 使用者已裁定采用本方案**，差异保留披露、未自行简化字段或边界，代码注释索引见该卡 §6。

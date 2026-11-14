@@ -57,14 +57,8 @@ export const ALLOWLIST: AllowlistEntry[] = [
     expires: '2026-11-20',
     owner: 'kb-sync',
   },
-  {
-    method: 'POST',
-    path: '/system/crmUserVip/edit',
-    reason:
-      '疑似调用点缺陷，待人审裁定：后端 CrmUserVipController 无 POST /edit 映射（保存端点为 /editRule:287；GET /edit/{id}:148 是视图页；父链 NoticeController→CalculateController→BaseController 均无映射），疑应调 /editRule。非 atlas 缺口，按 C5 争议入口登记 + 回执披露。11-13 人审：静态证据链闭合、属写操作禁运行时探测，登记 BUG-P2-02 待后端 / 产品确认语义',
-    date: '2026-11-13',
-    expires: '2026-11-27',
-    owner: 'crm-admin-frontend',
-    bugId: 'BUG-P2-02',
-  },
+  // 2026-11-14 收口：原 #5 / BUG-P2-02（POST /system/crmUserVip/edit）已按 CRM 仓
+  // 事实链确认是调用点 URL 写错，改为 /system/crmUserVip/editRule 后命中 947 条快照，
+  // 条目由 orphan 断言判红后删除。详见 docs/P2-TASK-CARD.md §9.9 与
+  // src/api/hooks/account/index.ts 中 useCrmUserVipEdit 的比对注释。
 ];
