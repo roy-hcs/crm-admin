@@ -1,5 +1,26 @@
 # React 后台：测试基建 + 推广域补页 实施清单
 
+> **v1.21 增量（11-14 23:0x P3b 交付物归档）**：**P3b 验收通过**
+> —— 由 flash 执行、贵模型只读验收，正式门禁
+> `node scripts/verify-test-batch.mjs --config scripts/verify-p3b.json` **17/17
+> PASS / exit=0 / tests=65/63**；5 组变异全
+> `red_exit=1 failed=1/1 green_exit=0 diff_empty=true`。两个用例文件
+> `PermPackageDialog.test.tsx` / `PermPackagePage.test.tsx` 本次提交并 push
+> `origin/develop` 归档；B2 第二道防线（`form.name.length > 32`、
+> `zh.json:3386`）由 flash 补漏、B5 注释订正，断言区零改动。**MUT-B5 判据人审收口**（21:5x 使用者放行选项①）：`replace`
+> 由依赖 `reset=useCallback(...,[])` 陈旧闭包的 `setQuery({ name, status })`
+> 改为字面量 `setQuery({ name: 'MUT', status: '' });`，`find` / `minFailed`
+> / 覆盖表 / 断言 / 实现文件全未动；放行单 §2 表格 B5 旧值作废，本次归档一并订正。
+> `scripts/verify-p3b.json` **仍故意不提交**（V7 `expectedHead`
+> 自指），归档推进 HEAD 后由人审刷新 `expectedHead`，`baselineStatus` 仍为 1 行
+> `??|scripts/verify-p3b.json`。⚠️ `atlas-check` 仍
+> `audit-incomplete`（第 4 源锚点 `77afe90f0`
+> 落后 develop），API 契约类问答须写「API 审计未完成」，待下轮 weekly/export 收口；**先归档再跑周更**，否则两边推进 HEAD 会互相干扰判卷基线。
+> **P4 未放行**；白名单 #2/#3 `2026-11-20` 到期（判红的是
+> `stale`，只能人审延期或查后端收口）、#1
+> `2026-11-27`。下方 v1.20 及更早括号内的「947
+> path」「P3b 待放行」等均为当时状态，已被本段取代；其余历史裁定继续有效。
+>
 > **v1.20 增量（11-14 19:0x 契约收口 + 19:2x push 补记）**：本轮
 > `/kb-sync`（flash 执行、贵模型只读校验）产出 atlas 快照
 > `2026-11-14T10-22-35-654Z`，exports **951 path = 947 +5 −1** （新增 5 条
@@ -22,7 +43,7 @@
 > P4 仍未放行**。⚠️ 下方 v1.18 及更早括号内的「947
 > path」「快照未重生」「11-20 双事件窗口」均为当时状态，已被本段取代；其余历史裁定继续有效。
 
-> 版本：2026-11-14 **v1.20**（**11-14 17:4x 更新**：#5 /
+> 版本：2026-11-14 **v1.21**（**11-14 17:4x 更新**：#5 /
 > BUG-P2-02 按 CRM 仓代码比对确认为**调用点 URL 写错**（`/edit` →
 > `/editRule`），已修并收口白名单4 → **3 条**，证据链见 `P2-TASK-CARD.md`
 > **§9.9**；P3a 的 4 条口径差异 + P-3 命名 +

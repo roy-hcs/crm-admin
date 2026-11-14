@@ -28,8 +28,18 @@
 - **19:5x 时效刷新**：使用者要求提交两份 kb-sync 漂移文档，`develop` HEAD 由
   `3358768` 推进；`scripts/verify-p3b.json` 的 `expectedHead` 与
   `baselineStatus`
-  由人审同步刷新为提交后终态。**本卡 §1 覆盖表、§2 判据值、5 组变异一字未改**；flash 一律以
-  `scripts/verify-p3b.json` 文件为准，不按本卡日期/正文推断 HEAD 或工作区状态。
+  由人审同步刷新为提交后终态。**本卡 §1 覆盖表一字未改**；flash 一律以
+  `scripts/verify-p3b.json` 文件为准，不按本卡日期/正文推断 HEAD或工作区状态。
+- **23:0x 归档订正（人审，非 flash 改动）**：P3b 验收通过（**17/17 PASS / exit=0
+  / tests=65/63**），两个 `.test.tsx` 由维护者提交并 push 归档；`develop`
+  HEAD 再次推进，`scripts/verify-p3b.json` 的 `expectedHead`
+  由人审刷新为归档后 HEAD（本 JSON 仍故意不提交）。MUT-B5 的 `replace`
+  已于 21:5x 经使用者放行改为字面量
+  `setQuery({ name: 'MUT', status: '' });`，本卡 §2 表格 B5 行同步订正—— 原
+  `setQuery({ name, status });` 因依赖陈旧闭包与原实现恒等价、变异不可观测。
+  **§1 覆盖表、`find` 锚点、断言、实现文件始终未改。**
+  本卡是历史放行凭证，已归档批次不再重跑，仅供追溯；后续判据一律以
+  `scripts/verify-p3b.json` 为准。
 
 ## 1. 覆盖表（人定契约，边界只增不减）
 
@@ -60,7 +70,7 @@
 | `expectedHead`                        | 放行单提交后由人审实读写入 `develop` HEAD（见 §0 时效刷新）。**该 JSON 故意不提交**，以保持 HEAD 稳定、避免 V7 自指；flash 以文件为准，不得自行推断          |
 | `expected`                            | `minTestFiles: 6` / `minTests: 63` / `lintErrors: 0` / `lintWarnings: 49`                                                                                    |
 | `extraCommands`                       | `pnpm test:contract`，`expectExit: 0`                                                                                                                        |
-| `baselineStatus`                      | 漂移文档提交后工作区仅 1 行未跟踪文件 `scripts/verify-p3b.json`，无任何修改行（**原样，不许改**）                                                            |
+| `baselineStatus`                      | 漂移文档提交后工作区仅 1 行未跟踪文件 `scripts/verify-p3b.json`，无任何修改行（**原样，不许改**）；23:0x 两个用例归档后仍为此态，`expectedHead` 由人审刷新   |
 | `allowedNewStatus`                    | 仅 §1 两个 `.test.tsx`；别的文件一律不许新增                                                                                                                 |
 | `mustNotChange`                       | `client.ts` / `setup.ts` / `msw/server.ts` / `vitest.config.ts` / `pnpm-lock.yaml` / 契约三文件 / `Sidebar` / `settingsRoutes` / 两个实现文件 / 两份漂移文档 |
 | `newTestFiles` / `forbiddenScanFiles` | §1 两个用例文件                                                                                                                                              |
@@ -69,13 +79,21 @@
 
 `mutations` 的 `find → replace`（人审定，**flash 写的用例必须让它们变红**）：
 
-| 组  | 文件   | find → replace                                                        |
-| --- | ------ | --------------------------------------------------------------------- |
-| B1  | Dialog | `if (!form.name.trim())` → `if (false)`                               |
-| B2  | Dialog | `maxLength={32}` → `maxLength={64}`                                   |
-| B3  | Dialog | `form.remark.length > 200` → `form.remark.length > 400`               |
-| B4  | Dialog | `enabled: showAccountTypes` → `enabled: false`                        |
-| B5  | Page   | `setQuery({ name: '', status: '' });` → `setQuery({ name, status });` |
+| 组  | 文件   | find → replace                                                                   |
+| --- | ------ | -------------------------------------------------------------------------------- |
+| B1  | Dialog | `if (!form.name.trim())` → `if (false)`                                          |
+| B2  | Dialog | `maxLength={32}` → `maxLength={64}`                                              |
+| B3  | Dialog | `form.remark.length > 200` → `form.remark.length > 400`                          |
+| B4  | Dialog | `enabled: showAccountTypes` → `enabled: false`                                   |
+| B5  | Page   | `setQuery({ name: '', status: '' });` → `setQuery({ name: 'MUT', status: '' });` |
+
+> **B5 行已于 23:0x 归档时订正**（21:5x 使用者放行验收选项①）：原注入值
+> `setQuery({ name, status });` 依赖 `reset = useCallback(..., [])` 的陈旧闭包，
+> `name/status`
+> 恒为首渲染空串 ⇒ 与原实现任何调用时机等价、变异不可观测；改字面量后 B5 变红（`AssertionError: expected 'MUT' to be ''`）、还原
+> `git diff` 0 行。 `find`
+> 锚点、`minFailed`、覆盖表、断言、实现文件均未改；判据以
+> `scripts/verify-p3b.json` 为准。
 
 > 每组 `minFailed: 1`。门禁自动完成「改实现 → 红 → 还原 → 绿 → `git diff` 空」；
 > **变异不红 / 还原不绿 / diff 非空 = 停机**，不许改判据或断言换绿。
