@@ -399,8 +399,8 @@
 
 ## 9. 增量（kb-sync 2026-10-29，回填审计基线 acde80a7f2 → 切换点 b84a73db2）
 
-> 口径：`git diff acde80a7f2 b84a73db2e -- crm-admin/src/main/resources/templates`
-> =
+> # 口径：`git diff acde80a7f2 b84a73db2e -- crm-admin/src/main/resources/templates`
+>
 > 189 文件，逐提交分诊（排除样式/文案/翻译/静态资源/纯后端/编码重构，判定纪律同 §1.4）；「是否已发布」按工单号在 release
 > log 检索（基线 release@acde80a7f2 = 2026-10-24）。本节行均为**未发布**
 > （审计时 release 树不可见，故 §3 未收录）。
@@ -482,3 +482,50 @@
   顶栏 AI 入口 → 全新功能面，已记 gap §二.5（React 无实现）。
 - 本轮**无已迁移页面的新功能漂移**（§2 摘要数字不变：58 项已补齐 /
   1 项待人工确认）。
+
+## 12. 增量（kb-sync 2026-11-14，d2da9241dc → 1c0b9a94a2）
+
+> # 口径：`git diff d2da9241dc 1c0b9a94a2 -- crm-admin/src/main/resources/templates`
+>
+> 24 文件全为修改（无新增页面，gap 清单本轮不动）；逐提交分诊（纪律同 §1.4）；「是否已发布」按工单号/提交 hash 在 release
+> log 检索（release@fd6aeece1，2026-11-14）：
+> **已进 release：CAP-31663/31787/31886/31830/31738/31800/31662/31879/31916/31882/31918/31914；未进 release：CAP-31580、CRM4FX-7804/CAP-17654 系列、dde658f2fa、1b005aa706、5276c45411、CAP-31929/31862/31794/31715、CAP-25046**。
+
+| React 页面                                                      | 旧版变更（test）                                                                                                                                                                                  | React 是否更新 | 缺失功能                                                                         |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | -------------------------------------------------------------------------------- |
+| `/review/in-formation`（信息审核列表）                          | CAP-31580 `21c3f394ad`（未发布）：列表新增推荐人/代理字段（Finfo/Iinfo mapper +3 列，树 diff 佐证 10 行）                                                                                         | 否             | 审核列表推荐人归属列                                                             |
+| `/review/withdrawal`（出金审核）                                | CAP-31886 `d14cb18919`（已发布）：报表导出加"角色"列（WithdrawVerifyExportVO roleName，按 userId 批量查角色名）                                                                                   | 待确认         | 导出角色列（服务端导出，React 若有对应导出入口需同步）                           |
+| 资金流水列表（`crmUserDeal/crmUserDeal.html`，对应 reports 域） | CAP-31663（已发布，4 提交补齐）：操作类型新增 **SO compensation / SO Credit Compensation** 两枚举                                                                                                 | 待确认         | 流水操作类型映射需补两项（React 侧操作类型字典是否含新枚举）                     |
+| `/points-mall`（积分商城）                                      | CAP-31787 `f1e9bcc664`（已发布）：兑换审核前加状态判断（非待审/审核中拒绝，`common.STATUS_CHANGED`）                                                                                              | 待确认         | React 审核入口若直调接口，服务端已拦；页面侧报错文案分支是否处理                 |
+| `/account`（CRM 账户管理）                                      | CAP-31830 `9a65deafbc`（已发布）：创建用户密码长度上限扩到 30 位（后台创建同步处理）                                                                                                              | 待确认         | 创建账户表单密码 maxlength 校验                                                  |
+| `/system/roles`、`/system/admin-accounts`                       | CAP-31738 `487bfd7614`（已发布）：角色/管理员名称字符限制扩大（旧页编辑表单前端校验）；CAP-31662 `643bd97e5f`（已发布）：管理员列表"更多"下拉展示不全修复；`5276c45411`（未发布）：管理员列表调整 | 部分待确认     | 表单字符上限、下拉溢出样式（React 表单实现不同，核对校验规则数值）               |
+| `/system/logs`（操作日志）                                      | CAP-31800 `0009015e0e`（已发布）：操作记录"操作类型"搜索失效修复                                                                                                                                  | 待确认         | React 操作日志类型筛选是否受同一后端修复影响（服务端修复，页面无需改动可能性大） |
+| `/account/relationships`（客户关系）                            | `1b005aa706`（未发布）：客户关系优化（上级链/归属）                                                                                                                                               | 待确认         | 服务端优化为主，页面行为差异待核对                                               |
+
+**无需行动/不产生 drift 行的项**（避免下轮重复排查）：
+
+- `commonFields.html`/`account_flow.html`/`userInfoBox.html`：公共片段（非独立页面）。
+- `blacklist.html`（CAP-31882 命中日志 4 环境字段+关键词搜索、CAP-31918 权限标识改名、CAP-31929
+  tab 切换修复）→ 黑名单管理页未迁移（gap
+  §二.2 挂账），页内演进；其中 CAP-31882/31918 已进 release。
+- `commissionReduceRule/*`（CAP-17654 系列修复+表单增强）→ 手续费减免设置页未迁移（gap 挂账，同 §10/§11 口径）；系列均未进 release。
+- `inOutMoneySetting.html`（账号类型限制校验配套、样式）→ 出入金设置页未迁移（gap 设置域挂账）；校验为服务端行为（`0597243fee`），React 若直调接口同样被拦。
+- `crmThirdPaymentSetting/addWithdraw|editWithdraw`（CAP-31794 删用户角色配置项、翻译）→ 三方出金通道配置页未迁移；CAP-31914
+  isfccode 兜底为服务端行为（已发布）。
+- `riskAgreementSetting.html`（CAP-31715 隐私协议上传回显修复，未发布）→
+  React 无该页（grep 无 riskAgreement），gap 清单是否收录待下轮核对设置域清单。
+- `role/edit.html` 其余变更、`crmUser/accountScopeAdvanced.html`（样式优化
+  `a36f6f4298`）→ §9「账户范围-高级搜索整套缺失」行组件内演进，不产生新行。
+- `crmDepositVerify/detail.html`/`crmWithdrawVerify/detail.html`
+  减免展示补行（CAP-17654 系列，未发布）→ §11 手续费三列修复行延续，不新增行。
+- 账户范围返回契约统一（`dde658f2fa`，未发布：resolveAccountScope 空列表转
+  ["-1"]
+  占位）与后台登录黑名单同人并联校验（CAP-31862，未发布）→ 服务端行为，React 受同一保护/约束，无页面改动。
+- CAP-25046 标准手数换算缺陷修复（未发布）→ 服务端计算行为，无页面改动。
+- `crmOperlog.html`
+  样式/文案类提交、导出重构（§导出骨架见 §4.x 后端域）无页面差异。
+
+**摘要数字**：本轮新增功能漂移 1 项确认（信息审核推荐人列）+
+7 项待确认（多为服务端行为或已发布修复，React 侧核对成本低）；§2 摘要数字更新为 58 项已补齐 /
+1 项待人工确认 /
+**本轮新增待办 1+7**（待确认项并入 §3 对应页面的"React 是否更新"列复核）。

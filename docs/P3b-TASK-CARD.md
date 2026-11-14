@@ -25,6 +25,11 @@
 - 环境：node v22.22.2 / pnpm 10.34.5（`packageManager` 已锁）、Vitest 4.1.12 /
   jsdom 27.4.0 / RTL 16.3.3 / MSW 2.15.0。**不得 corepack enable / 改 lockfile
   / 重装 node_modules**（R-11）。
+- **19:5x 时效刷新**：使用者要求提交两份 kb-sync 漂移文档，`develop` HEAD 由
+  `3358768` 推进；`scripts/verify-p3b.json` 的 `expectedHead` 与
+  `baselineStatus`
+  由人审同步刷新为提交后终态。**本卡 §1 覆盖表、§2 判据值、5 组变异一字未改**；flash 一律以
+  `scripts/verify-p3b.json` 文件为准，不按本卡日期/正文推断 HEAD 或工作区状态。
 
 ## 1. 覆盖表（人定契约，边界只增不减）
 
@@ -51,11 +56,11 @@
 复制改差值生成，**flash 不得创建、修改或「修正」**。关键值（现场核对用，以文件为准）：
 
 | 键                                    | 值                                                                                                                                                           |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
-| `expectedHead`                        | 放行当刻 HEAD（人审实读写入）。**该 JSON 故意不提交**，以保持 HEAD 稳定、避免 V7 `expectedHead` 自指                                                         |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `expectedHead`                        | 放行单提交后由人审实读写入 `develop` HEAD（见 §0 时效刷新）。**该 JSON 故意不提交**，以保持 HEAD 稳定、避免 V7 自指；flash 以文件为准，不得自行推断          |
 | `expected`                            | `minTestFiles: 6` / `minTests: 63` / `lintErrors: 0` / `lintWarnings: 49`                                                                                    |
 | `extraCommands`                       | `pnpm test:contract`，`expectExit: 0`                                                                                                                        |
-| `baselineStatus`                      | 2 行漂移文档 ` M` + `??                                                                                                                                      | scripts/verify-p3b.json`（**原样，不许改**） |
+| `baselineStatus`                      | 漂移文档提交后工作区仅 1 行未跟踪文件 `scripts/verify-p3b.json`，无任何修改行（**原样，不许改**）                                                            |
 | `allowedNewStatus`                    | 仅 §1 两个 `.test.tsx`；别的文件一律不许新增                                                                                                                 |
 | `mustNotChange`                       | `client.ts` / `setup.ts` / `msw/server.ts` / `vitest.config.ts` / `pnpm-lock.yaml` / 契约三文件 / `Sidebar` / `settingsRoutes` / 两个实现文件 / 两份漂移文档 |
 | `newTestFiles` / `forbiddenScanFiles` | §1 两个用例文件                                                                                                                                              |
@@ -81,6 +86,7 @@
 读 docs/REACT-TEST-INFRA-CHECKLIST.md §0/§3、docs/TASK-CARD-TEMPLATE.md、
 docs/P3b-TASK-CARD.md、scripts/verify-p3b.json 与任务卡 §1 覆盖表。
 红线十三条以清单为准，本指令不重复。
+HEAD 与工作区基线一律以 scripts/verify-p3b.json 为准，不按任务卡日期推断。
 按覆盖表写 5 组组件用例（renderWithProviders + MSW，onUnhandledRequest:'error'），
 只落盘 allowedNewStatus 里的两个 .test.tsx；实现文件只允许即改即还原的变异。
 期望值从当前实现推导，回执写「输入 → 期望 → 实现文件:行号」，禁止编造。
