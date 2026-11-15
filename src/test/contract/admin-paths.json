@@ -1,8 +1,8 @@
 {
   "generatedFrom": {
-    "atlasVersion": "2026-11-14T10-22-35-654Z",
-    "sourceCommits": "crm@1c0b9a94a · knowledgeBase@93ed2cc76(dirty) · crmFe@ba2364814 · mamFe@6cb5fec4c · crmAdminReact@77afe90f0",
-    "generatedAt": "2026-11-14T11:09:46.421Z"
+    "atlasVersion": "2026-11-15T11-14-10-915Z",
+    "sourceCommits": "crm@1c0b9a94a · knowledgeBase@d3e52697e · crmFe@ba2364814 · mamFe@6cb5fec4c · crmAdminReact@ad0d975d8",
+    "generatedAt": "2026-11-15T11:19:57.244Z"
   },
   "paths": {
     "POST /common/upload": true,
@@ -152,6 +152,7 @@
     "POST /system/crmInfoVerify/list": true,
     "POST /system/crmInfoVerify/verify": true,
     "GET /system/crmInfoVerify/viewDetailInfo/{id}": true,
+    "GET /system/crmInfoVerify/viewDetailInfo/{id}/{infoType}": true,
     "GET /system/crmInfoVerify/viewSumsubDetailInfo": true,
     "POST /system/crmInternalTransferVerify/dealTicket/edit/{id}": true,
     "POST /system/crmInternalTransferVerify/dealTicket/list/{id}": true,

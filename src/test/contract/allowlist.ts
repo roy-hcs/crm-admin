@@ -19,11 +19,15 @@
  *
  * 11-14 23:5x 人审裁定（使用者「按你推荐的做」放行）：两条 11-20 到期项均作
  * 「人审复核后延期」——不改断言、不改调用点、不提前周更、不删条目换绿。
- *   #3 延至 2026-11-27：下轮 weekly + export 后按 orphan 断言判红删除收口；周更
- *      本身仍须人审差异。
- *   #2 延至 2026-12-05：CRM 仓只读核查确认该 Controller 下没有返回
- *      RebateSettingPageData 的 JSON GET，需后端立项补接口（见 P2-TASK-CARD.md §9.10）。
+ *   #3 延至 2026-11-27；#2 延至 2026-12-05（CRM 仓只读核查确认该 Controller 下没有返回
+ *      RebateSettingPageData 的 JSON GET，需后端立项补接口，见 P2-TASK-CARD.md §9.10）。
  * 到期日仍是硬约束，到期未收口即判红；下次只允许收口删条目或再次人审延期。
+ *
+ * 2026-11-15 #3 收口（atlas 提取器 {} 回归后续批）：修 normalizeCallPath 剥离 query 位
+ * 尾部 {}（atlas eceb037，npm test 76/76）→ weekly+export 快照
+ * 2026-11-15T11-14-10-915Z → 重生 admin-paths.json（951→952，仅 +1 双参 route、
+ * 零删除、零新 MISS）→ C5 stale 断言按设计判红（仅 #3 一条）→ 删本条目收口。
+ * 断言、调用点、其余白名单一字未动；当前白名单 2 条（#1 11-27 / #2 12-05）。
  */
 export interface AllowlistEntry {
   /** 调用点归一化 method（GET/POST/PUT/DELETE） */
@@ -61,15 +65,9 @@ export const ALLOWLIST: AllowlistEntry[] = [
     expires: '2026-12-05',
     owner: 'kb-sync',
   },
-  {
-    method: 'GET',
-    path: '/system/crmInfoVerify/viewDetailInfo/{param}/{param}',
-    reason:
-      'atlas 提取器缺陷（已修，待下轮周更生效）：frontend.mjs 的 LogicalExpression 折叠把 review.ts:250 的 const detailId = params.id 带空串回退 折成空串，使 :269 的双参调用退化成单参 /viewDetailInfo/{} 并误匹配到单参 route（CrmInfoVerifyController.java:199），双参 route（:385，@ResponseBody JSON）因此无 UI caller、不进 exports。atlas 本地 commit df9833e 已修并补 2 条回归测试（74/74 PASS）；修复需下轮 weekly + export 才落入快照，届时本条按 orphan 收口删除，不许改断言换绿。11-14 23:4x 根因核查订正；11-14 人审延期至 2026-11-27：等下轮 weekly/export 后按 orphan 断言判红删除收口，周更本身仍须人审差异；不提前周更、不改断言、不改调用点。',
-    date: '2026-11-13',
-    expires: '2026-11-27',
-    owner: 'kb-sync',
-  },
+  // 2026-11-15 收口：原 #3（GET /system/crmInfoVerify/viewDetailInfo/{param}/{param}）
+  // ——atlas 提取器缺陷由 eceb037 修复，本轮 weekly+export 后双参 route 进快照，
+  // 重生 admin-paths.json 使 C5 stale 断言按设计判红，再删条目收口；断言/调用点未动。
   // 2026-11-14 收口：原 #5 / BUG-P2-02（POST /system/crmUserVip/edit）已按 CRM 仓
   // 事实链确认是调用点 URL 写错，改为 /system/crmUserVip/editRule 后命中 947 条快照，
   // 条目由 orphan 断言判红后删除。详见 docs/P2-TASK-CARD.md §9.9 与
